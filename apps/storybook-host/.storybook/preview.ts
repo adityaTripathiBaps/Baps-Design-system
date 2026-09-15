@@ -674,8 +674,15 @@ const preview: Preview = {
           out = out.replace(
             /\[([\w.$]+)\]="([A-Za-z_$][\w$]*)"/g,
             (whole, input: string, expr: string) => {
-              if (!Object.prototype.hasOwnProperty.call(args, expr)) return whole;
+              // `brand` goes first and unconditionally. It used to be dropped
+              // only when the story supplied it as an arg, which held while
+              // every meta carried `brand: 'mybky'`. Those args were removed as
+              // dead — dead for RENDERING, since a mybky pin cannot beat the
+              // page scope — and the snippets then started showing a raw
+              // `[brand]="brand"` binding. The brand comes from the page scope,
+              // so it is noise in a copied snippet either way.
               if (input === 'brand') return '';
+              if (!Object.prototype.hasOwnProperty.call(args, expr)) return whole;
               const value = args[expr];
               if (value === undefined || value === null) return '';
               if (typeof value === 'string') return input + '="' + value + '"';
