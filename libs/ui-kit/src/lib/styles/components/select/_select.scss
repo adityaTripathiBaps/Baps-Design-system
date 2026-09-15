@@ -1,0 +1,1100 @@
+@use '../input/input';
+
+/* =====================================================================
+   libs/ui-kit/src/lib/styles/components/select/_select.scss
+   PrimeNG v21 Select Family — Figma Design Token Overrides
+   Targets .p-select / .p-multiselect / .p-datepicker / .p-autocomplete /
+   .p-cascadeselect / .p-treeselect / .p-inputnumber directly.
+   Uses !important to override PrimeNG compiled theme specificity.
+
+   ARCHITECTURE — how this file relates to _input.scss:
+   Every closed (trigger) control here wears the SAME silhouette and
+   state model as the text input: pill radius, 36px height, 1px→1.5px
+   border promotion on hover/focus, 3px ring on focus/open. All colors
+   flow through the --input-* custom properties _input.scss declares on
+   :root, so the Sampark skin (_input-sampark.scss) re-skins these
+   controls automatically by re-pointing the same variables. Only
+   overlay-specific tokens are new — declared below as --select-*.
+   IMPORT ORDER: after components/input/input, BEFORE input-sampark
+   (sampark restates .p-select geometry and must win on source order).
+
+   CRITICAL: PrimeNG v21 changes from v17:
+   - Dropdown:       p-dropdown          → p-select (.p-select)
+   - Dropdown panel: .p-dropdown-panel   → .p-select-overlay
+   - Items:          .p-dropdown-item    → .p-select-option
+   - Selected item:  .p-highlight        → .p-select-option-selected
+   - Calendar:       p-calendar          → p-datepicker (.p-datepicker-panel)
+   - MS panel:       .p-multiselect-panel→ .p-multiselect-overlay
+   - Filled class:   added .p-filled directly on the root element
+   Import: SelectModule from 'primeng/select', MultiSelectModule from
+   'primeng/multiselect', DatePickerModule from 'primeng/datepicker'
+
+   USAGE IN TEMPLATES:
+   <p-select [options]="cities" [(ngModel)]="city" />
+   <p-select class="p-select-sm" ... />          (32px compact)
+   <p-select class="p-select-lg" ... />          (44px large)
+   <p-select [invalid]="true" ... />             (error state)
+   <p-select class="p-inputtext-warning" ... />  (warning state)
+   <p-select [disabled]="true" ... />
+   <p-multiselect display="chip" [options]="tags" [(ngModel)]="sel" />
+   <p-datepicker [(ngModel)]="date" [showIcon]="true" />
+   (error state also applied automatically via ng-invalid ng-dirty)
+
+   FIGMA SOURCE (MyBKY 1.5 — Web Input Text / Dropdown — LIGHT):
+   Trigger    : Fill × 36px fixed · radius 99px (PILL) · border 1px / 1.5px
+   Overlay    : bg #FFFFFF · border #E4ECF1 · radius 12px · soft shadow
+   Option     : 36px row · Inter 14px Regular 400 · #181B1D
+   Selected   : bg Primary/5 #EEF0F8 · text Primary #5F78B8 · check icon
+   Hover      : bg Mono/10 #F8FAFB
+   Typography : Inter 14px Regular 400 · line-height 130%
+
+   STATES   (trigger border color · width · shadow — mirrors _input.scss):
+   Default         : #E4ECF1 · 1px   · none
+   Hover           : #9FADD9 · 1.5px · none
+   Open / Focused  : #9FADD9 · 1.5px · 0 0 0 3px rgba(95,120,184,.35)
+   Warning         : #E0A652 · 1.5px · 0 0 0 3px rgba(224,166,82,.35)
+   Error (rest)    : #E05255 · 1px   · none
+   Error focused   : #E05255 · 1.5px · 0 0 0 3px rgba(224,82,85,.35)
+   Disabled        : #E4ECF1 · 1px   · none  (bg #F8FAFB)
+===================================================================== */
+
+/* ══════════════════════════════════════════════════════════════════════
+   DESIGN TOKENS — CSS Custom Properties
+   Overlay/option/calendar tokens only. Trigger colors intentionally
+   reference the --input-* set from _input.scss — one source of truth
+   per state so both files re-skin together (see _input-sampark.scss).
+   Palette hexes resolve from Style Dictionary (build/css/tokens.css);
+   literal fallbacks mirror the Figma spec verbatim.
+   ══════════════════════════════════════════════════════════════════════ */
+:root {
+  /* ── Overlay container ───────────────────────────────────────────── */
+  --select-overlay-bg: var(--color-mybky-mono-0, #ffffff);
+  --select-overlay-border: var(--color-mybky-mono-300, #e4ecf1);
+  --select-overlay-radius: 1rem; /* 16px — the MyBKY panel shell */
+  --select-overlay-shadow:
+    0 4px 6px rgba(16, 24, 40, 0.06),
+    0 12px 16px rgba(16, 24, 40, 0.12);
+  --select-overlay-padding: 0.25rem; /* 4px breathing room around list */
+
+  /* The panel's rows run edge to edge, so the list carries no padding of its
+     own — the 4px above is only a fallback for panels without a header. */
+  --select-list-padding: 0;
+
+  /* ── Header (the grey search bar) ────────────────────────────────── */
+  --select-header-bg: var(--color-mybky-mono-300, #e4ecf1);
+  --select-header-padding: 0.5rem;
+
+  /* ── Select-all row ──────────────────────────────────────────────── */
+  --select-selectall-height: 3rem;
+  --select-selectall-padding-x: 0.75rem;
+
+  /* ── Option rows ─────────────────────────────────────────────────── */
+  --select-option-height: 3rem; /* 48px — the MyBKY panel row */
+  /* The selected/hover left bar. Sampark sets this to 0: its rows carry a
+     checkbox, which already says which are on. */
+  --select-option-bar-width: 3px;
+  --select-option-bar: var(--color-mybky-blue-600, #5f78b8);
+  --select-option-padding-x: 0.75rem; /* 12px */
+  /* Square. The rows run edge to edge now that --select-list-padding is 0, and
+     a radius on a full-bleed fill leaves a notch at each corner instead of
+     reading as a rounded row — the highlighted option ends up looking like a
+     floating chip inside the list. The 8px here was correct only while the
+     list still inset its rows by 4px. Sampark has been 0 for this exact
+     reason. */
+  --select-option-radius: 0;
+  --select-option-text: var(--color-mybky-mono-900, #181b1d);
+  --select-option-hover-bg: var(--color-mybky-mono-50, #f8fafb);
+  --select-option-selected-bg: var(--color-mybky-blue-50, #eef0f8);
+  --select-option-selected-text: var(--color-mybky-blue-600, #5f78b8);
+  --select-option-selected-hover-bg: var(--color-mybky-blue-100, #d5dbee);
+  --select-option-disabled-text: var(--color-mybky-mono-400, #b6b6af);
+  --select-option-group-text: var(--color-mybky-mono-500, #6f777d);
+
+  /* ── Trigger internals ───────────────────────────────────────────── */
+  --select-trigger-icon: var(
+    --color-mybky-mono-900,
+    #181b1d
+  ); /* chevron — matches --input-trailing-icon-color */
+  --select-trigger-icon-size: 0.875rem; /* 14px */
+
+  /* ── Filter (search inside overlay) ──────────────────────────────── */
+  /* White pill on the grey header bar — the search reads as a control sitting
+     ON the bar, not as a tinted well cut into it. */
+  --select-filter-bg: var(--color-mybky-mono-0, #ffffff);
+  --select-filter-radius: 99px;
+  --select-filter-height: 2.25rem; /* 36px */
+
+  /* ── MultiSelect chips ─────────────────────────────────────────────
+     A chip IS the grey (no-severity) tag, so it takes the tag's own grey
+     tokens rather than a second set of near-identical greys. That is also
+     what the events-ui chip guide describes as --badge-grey-*: the values
+     line up token for token. */
+  --select-chip-bg: var(--tag-mybky-grey-background, #2b2f3205);
+  --select-chip-text: var(--tag-mybky-grey-text, #2b2f32);
+  --select-chip-border: var(--tag-mybky-grey-border, #e4ecf1);
+  --select-chip-border-hover: var(--tag-mybky-grey-border-hover, #9f9c9c);
+  --select-chip-radius: 99px; /* chips ARE pills */
+  --select-chip-height: 1.375rem; /* 22px */
+  --select-chip-padding: 0.25rem 0.375rem; /* 4px 6px */
+  --select-chip-font-size: 0.75rem; /* 12px */
+  --select-chip-font-weight: 500;
+  --select-chip-remove-color: var(--color-mybky-text-muted, #6f777d);
+
+  /* ── DatePicker calendar ─────────────────────────────────────────── */
+  --datepicker-cell-size: 2rem; /* 32px day cells */
+  --datepicker-cell-radius: 99px; /* circular day highlight */
+  --datepicker-day-hover-bg: var(--color-mybky-mono-100, #eff1f3);
+  --datepicker-day-selected-bg: var(--color-mybky-blue-600, #5f78b8);
+  --datepicker-day-selected-text: var(--color-mybky-mono-0, #ffffff);
+  --datepicker-today-border: var(--color-mybky-blue-400, #9fadd9);
+  --datepicker-muted-text: var(--color-mybky-mono-500, #6f777d);
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   DARK MODE — overlay / option / chip / calendar surfaces. The trigger
+   itself reuses the --input-* set (re-pointed in _input.scss's dark block),
+   so only the overlay-specific tokens are flipped here. Overlays render on
+   <body> (PrimeNG appendTo), which carries `.baps-dark`, so this scope
+   reaches them. Values from the generated mono/blue tokens (tokens.css).
+   ══════════════════════════════════════════════════════════════════════ */
+body.baps-dark {
+  /* Overlay container — recessed near-black panel, light hairline */
+  --select-overlay-bg: var(--color-mybky-mono-900, #181b1d);
+  --select-overlay-border: var(--color-mybky-mono-700, #3d4144);
+
+  /* Option rows */
+  --select-option-text: var(--color-mybky-mono-50, #f8fafb);
+  --select-option-hover-bg: var(--color-mybky-mono-800, #2b2f32);
+  --select-option-selected-bg: var(--color-mybky-blue-900, #252f4a);
+  --select-option-selected-text: var(--color-mybky-blue-200, #bdc6e4);
+  --select-option-selected-hover-bg: var(--color-mybky-blue-800, #384871);
+  --select-option-disabled-text: var(--color-mybky-mono-500, #6f777d);
+  --select-option-group-text: var(--color-mybky-mono-400, #b6b6af);
+
+  /* Trigger chevron — light on dark */
+  --select-trigger-icon: var(--color-mybky-mono-100, #eff1f3);
+
+  /* Filter search field inside the overlay */
+  --select-filter-bg: var(--color-mybky-mono-800, #2b2f32);
+
+  /* MultiSelect chips */
+  --select-chip-bg: var(--color-mybky-mono-800, #2b2f32);
+  --select-chip-text: var(--color-mybky-mono-50, #f8fafb);
+
+  /* DatePicker calendar */
+  --datepicker-day-hover-bg: var(--color-mybky-mono-800, #2b2f32);
+  --datepicker-muted-text: var(--color-mybky-mono-500, #6f777d);
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   SCSS HELPERS — compile-time only. input.$input-valid /
+   input.invalid-set() / input.input-state() come from the `input`
+   module (@use '../input/input' above). Triggers here are DIVs, so the
+   guards drop the :disabled/:not(.step-input--error) fragments that
+   only apply to real inputs.
+   ══════════════════════════════════════════════════════════════════════ */
+$select-guard: ':not(.p-disabled)#{input.$input-valid}:not(.p-inputtext-warning)';
+$select-plain-guard: ':not(.p-disabled)#{input.$input-valid}';
+
+/* ══════════════════════════════════════════════════════════════════════
+   STEP 1 — TRIGGER SILHOUETTE (shared reset + geometry)
+   ══════════════════════════════════════════════════════════════════════
+   All closed controls share the text-input silhouette. PrimeNG v21
+   compiles its own radius/height per component — reset all of them in
+   one selector list so a p-select sitting next to an <input pInputText>
+   is indistinguishable at rest.
+
+   ┌─────────────────────┬──────────────────────────────────────────┐
+   │ Property            │ Value                                    │
+   ├─────────────────────┼──────────────────────────────────────────┤
+   │ Height              │ 36px (2.25rem) — Figma Fixed 36px        │
+   │ Radius              │ 99px PILL                                │
+   │ Border              │ 1px solid #E4ECF1 (--input-border-default)│
+   │ Background          │ #FFFFFF (--input-bg-default)             │
+   │ Font                │ Inter 14px / 400 / lh 1.3                │
+   └─────────────────────┴──────────────────────────────────────────┘
+   ══════════════════════════════════════════════════════════════════════ */
+
+.p-select,
+.p-multiselect,
+.p-cascadeselect,
+.p-treeselect,
+.p-autocomplete,
+.p-inputnumber,
+p-datepicker.p-datepicker {
+  box-sizing: border-box !important;
+}
+
+.p-select,
+.p-multiselect,
+.p-cascadeselect,
+.p-treeselect {
+  display: inline-flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  height: 2.25rem !important; /* 36px */
+  min-height: 2rem !important; /* 32px */
+  border: 1px solid var(--input-border-default) !important;
+  border-radius: 99px !important; /* PILL — Figma radius */
+  background: var(--input-bg-default) !important;
+  outline: none !important;
+  box-shadow: none !important;
+  font-size: 0.875rem !important; /* 14px */
+  font-weight: 400 !important;
+  line-height: 1.3 !important;
+  transition:
+    border-color 150ms ease,
+    border-width 150ms ease,
+    box-shadow 150ms ease,
+    background 150ms ease !important;
+}
+
+/* Label region — v21 renders the value inside .p-*-label; the container
+   owns the border so the label must stay chromeless (mirrors 8e in
+   _input.scss where inner .p-inputtext is stripped). */
+.p-select .p-select-label,
+.p-multiselect .p-multiselect-label,
+.p-cascadeselect .p-cascadeselect-label,
+.p-treeselect .p-treeselect-label {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0.375rem 0 0.375rem 0.875rem !important; /* 6px / 14px — pill inset */
+  font-size: 0.875rem !important;
+  line-height: 1.3 !important;
+  color: var(--input-text-filled) !important;
+}
+
+/* Placeholder shown when no value selected */
+.p-select .p-select-label.p-placeholder,
+.p-multiselect .p-multiselect-label.p-placeholder,
+.p-cascadeselect .p-cascadeselect-label.p-placeholder,
+.p-treeselect .p-treeselect-label.p-placeholder {
+  color: var(--input-text-placeholder) !important;
+}
+
+/* ── Size modifiers — mirror .p-inputtext-sm/-lg steps ── */
+.p-select.p-select-sm,
+.p-multiselect.p-multiselect-sm {
+  height: 2rem !important; /* 32px */
+  font-size: 0.75rem !important; /* 12px */
+}
+
+.p-select.p-select-lg,
+.p-multiselect.p-multiselect-lg {
+  height: 2.75rem !important; /* 44px */
+  font-size: 1rem !important; /* 16px */
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   STEP 2 — TRIGGER INTERACTIVE STATES
+   ══════════════════════════════════════════════════════════════════════
+   Same promotion rules as _input.scss Step 4: hover thickens the border
+   to 1.5px in the hover hue; open/keyboard-focus adds the 3px ring.
+   PrimeNG marks the open control with .p-select-open /
+   .p-multiselect-open and keyboard focus with .p-focus — all three
+   must present identically (Figma has one "focused" state).
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* ── 2a — HOVER (not disabled · not error · not warning) ── */
+.p-select:hover#{$select-guard},
+.p-multiselect:hover#{$select-guard},
+.p-cascadeselect:hover#{$select-plain-guard},
+.p-treeselect:hover#{$select-plain-guard} {
+  @include input.input-state(1.5px solid var(--input-border-hover));
+}
+
+/* ── 2b — OPEN / FOCUSED — ring always, matching input focus ── */
+.p-select.p-select-open#{$select-guard},
+.p-select.p-focus#{$select-guard},
+.p-select:focus-visible#{$select-guard},
+.p-multiselect.p-multiselect-open#{$select-guard},
+.p-multiselect.p-focus#{$select-guard},
+.p-multiselect:focus-visible#{$select-guard},
+.p-cascadeselect.p-focus#{$select-plain-guard},
+.p-treeselect.p-focus#{$select-plain-guard} {
+  @include input.input-state(
+    1.5px solid var(--input-border-hover),
+    var(--input-shadow-focused)
+  );
+  outline: none !important;
+}
+
+/* ── 2c — WARNING (opt-in class, ring always visible — Step 4e twin) ── */
+.p-select.p-inputtext-warning,
+.p-multiselect.p-inputtext-warning {
+  @include input.input-state(
+    1.5px solid var(--input-border-warning),
+    var(--input-shadow-warning)
+  );
+}
+
+/* ── 2d — ERROR (ng-invalid ng-dirty/touched + [invalid] — Step 5 twin) ── */
+#{input.invalid-set('.p-select')},
+#{input.invalid-set('.p-multiselect')} {
+  @include input.input-state(1px solid var(--input-border-error));
+}
+
+/* bg untouched on hover/open — only stroke and ring react */
+#{input.invalid-set('.p-select', ':hover:not(.p-disabled)')},
+#{input.invalid-set('.p-multiselect', ':hover:not(.p-disabled)')} {
+  border: 1.5px solid var(--input-border-error) !important;
+  box-shadow: none !important;
+}
+
+#{input.invalid-set('.p-select', '.p-select-open')},
+#{input.invalid-set('.p-select', '.p-focus')},
+#{input.invalid-set('.p-multiselect', '.p-multiselect-open')},
+#{input.invalid-set('.p-multiselect', '.p-focus')} {
+  border: 1.5px solid var(--input-border-error) !important;
+  box-shadow: 0 0 0 3px var(--input-shadow-error) !important;
+}
+
+/* ── 2e — DISABLED (Step 7 twin: bg swap, NO opacity fade) ── */
+.p-select.p-disabled,
+.p-multiselect.p-disabled,
+.p-cascadeselect.p-disabled,
+.p-treeselect.p-disabled {
+  @include input.input-state(
+    1px solid var(--input-border-default),
+    $bg: var(--input-bg-disabled)
+  );
+  cursor: not-allowed !important;
+  opacity: 1 !important;
+}
+
+.p-select.p-disabled .p-select-label,
+.p-multiselect.p-disabled .p-multiselect-label {
+  color: var(--input-text-disabled) !important;
+  cursor: not-allowed !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   STEP 3 — TRIGGER ICON (chevron) & CLEAR ICON
+   ══════════════════════════════════════════════════════════════════════
+   Chevron inherits the trailing-icon color and does NOT change on
+   hover/focus (8l rule in _input.scss). It rotates 180° while open —
+   the only motion this control performs.
+   ══════════════════════════════════════════════════════════════════════ */
+
+.p-select .p-select-dropdown,
+.p-multiselect .p-multiselect-dropdown,
+.p-cascadeselect .p-cascadeselect-dropdown,
+.p-treeselect .p-treeselect-dropdown {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 2.25rem !important; /* square touch target inside the pill */
+  background: transparent !important;
+  border: none !important;
+  color: var(--select-trigger-icon) !important;
+  flex-shrink: 0 !important;
+}
+
+.p-select .p-select-dropdown svg,
+.p-select .p-select-dropdown .p-icon,
+.p-multiselect .p-multiselect-dropdown svg,
+.p-multiselect .p-multiselect-dropdown .p-icon {
+  width: var(--select-trigger-icon-size) !important;
+  height: var(--select-trigger-icon-size) !important;
+  transition: transform 150ms ease !important;
+}
+
+.p-select.p-select-open .p-select-dropdown svg,
+.p-multiselect.p-multiselect-open .p-multiselect-dropdown svg {
+  transform: rotate(180deg) !important;
+}
+
+/* Clear × — mirrors --input-clear-btn-color; keep hit area generous */
+.p-select .p-select-clear-icon,
+.p-multiselect .p-multiselect-clear-icon,
+.p-autocomplete .p-autocomplete-clear-icon {
+  color: var(--input-clear-btn-color) !important;
+  width: 0.875rem !important;
+  height: 0.875rem !important;
+  cursor: pointer !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   STEP 4 — MULTISELECT CHIPS
+   ══════════════════════════════════════════════════════════════════════
+   display="chip" renders selected values as removable pills inside the
+   label region. Chips are the ONE pill-shaped inner element (filter
+   chips are pills per the design language).
+
+   ┌────────────┬─────────────────────────────┐
+   │ Property   │ Value                       │
+   ├────────────┼─────────────────────────────┤
+   │ Height     │ 24px                        │
+   │ Radius     │ 99px pill                   │
+   │ BG         │ #EFF1F3 (Mono/20)           │
+   │ Font       │ Inter 12px / 400            │
+   └────────────┴─────────────────────────────┘
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* CHIPS WRAP, and the label must be allowed to shrink.
+ *
+ * Two separate things were wrong here, and only the second is obvious:
+ *
+ * 1. `min-width: 0`. The label is a flex ITEM of `.p-multiselect`, so its
+ *    automatic minimum size is its CONTENT size — the classic flexbox trap.
+ *    `overflow: hidden` alone does not defeat it. Without this the field
+ *    demands the full width of its chip row and drags every ancestor with it:
+ *    measured in the Projects filter drawer, 20 chips made a 437px panel
+ *    scroll to 762px and pushed chips off the edge.
+ * 2. `flex-wrap: wrap`. The old value was `nowrap`, commented "single row
+ *    inside the 36px pill". That is right for a compact inline field and wrong
+ *    for a filter panel, which is where this component mostly lives — and with
+ *    nowrap the extra selections were not merely compact, they were
+ *    unreachable. A consumer that genuinely wants one row should cap the chips
+ *    with PrimeNG's own `maxSelectedLabels`, which then shows "+N more"
+ *    instead of hiding them silently.
+ *
+ * The height rule below releases the 36px pill when chips are present, so the
+ * wrapped rows are visible rather than clipped by it. */
+.p-multiselect .p-multiselect-label:has(.p-multiselect-chip-item) {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.25rem !important; /* 4px between chips */
+  padding-top: 0.25rem !important;
+  padding-bottom: 0.25rem !important;
+  flex-wrap: wrap !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+}
+
+/* A chip field grows with its content. Everything else keeps the fixed pill. */
+.p-multiselect:has(.p-multiselect-chip-item) {
+  height: auto !important;
+  min-height: 2.25rem !important; /* the 36px pill is the floor, not the cap */
+  align-items: flex-start !important;
+  border-radius: 1rem !important; /* a pill radius on a multi-row box reads as a lozenge */
+}
+
+/* The `align-items: flex-start` above is what lets the chip rows start at the
+   top of a grown field — but it applies to EVERY flex child, and the chevron
+   trigger is one of them. Its own rule gives it a width and centres the glyph
+   inside itself; it has no height of its own, so top-aligned it collapsed to
+   the icon (measured 10px tall, sitting flush with the top border while the
+   field was 34px) and the arrow read as unaligned with the chips beside it.
+   Stretching it back restores exactly what a non-chip select already does, so
+   the chevron sits where it does in every other field in the system. */
+.p-multiselect:has(.p-multiselect-chip-item) .p-multiselect-dropdown {
+  align-self: stretch !important;
+}
+
+/* Both the v21 class and the v17 one. PrimeNG renamed the chip between
+   majors — v17 renders `.p-multiselect-token`, v21
+   `.p-multiselect-chip-item > .p-chip` — and consumer stylesheets written
+   against v17 match nothing here unless both are listed. */
+.p-multiselect .p-multiselect-chip-item .p-chip,
+.p-multiselect-chip .p-multiselect-token {
+  /* Anchor for the absolutely positioned remove glyph below. */
+  position: relative !important;
+  height: var(--select-chip-height) !important;
+  border-radius: var(--select-chip-radius) !important;
+  background: var(--select-chip-bg) !important;
+  color: var(--select-chip-text) !important;
+  border: 1px solid var(--select-chip-border) !important;
+  font-size: var(--select-chip-font-size) !important;
+  font-weight: var(--select-chip-font-weight, 400) !important;
+  line-height: 1 !important;
+  padding: var(--select-chip-padding, 0 0.5rem) !important;
+  gap: 0.25rem !important;
+  white-space: nowrap !important;
+  cursor: default !important;
+  /* Only the BORDER transitions. The remove glyph is a hard toggle — see
+     below — so a transition here must not be a shorthand that catches it. */
+  transition: border-color 150ms ease !important;
+}
+
+.p-multiselect .p-multiselect-chip-item .p-chip:hover,
+.p-multiselect-chip .p-multiselect-token:hover {
+  border-color: var(--select-chip-border-hover) !important;
+}
+
+.p-multiselect .p-multiselect-chip-item .p-chip .p-chip-label,
+.p-multiselect-chip .p-multiselect-token .p-multiselect-token-label {
+  font-size: var(--select-chip-font-size) !important;
+  font-weight: var(--select-chip-font-weight, 400) !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+/* ── The remove control ────────────────────────────────────────────────
+   Just the icon PrimeNG already renders, shown and hidden. No pseudo-element.
+
+   An earlier pass drew the cross as a ::after and hid the real <svg>. That was
+   wrong twice over: PrimeNG's own glyph is already a times-CIRCLE, which is the
+   mark the portal shows, and the SVG is the actual control — role="button",
+   tabindex="0", aria-label="Remove". Hiding it left a cross that could not be
+   clicked and a chip that could not be removed at all by keyboard.
+
+   Taken OUT OF FLOW — absolutely positioned against the chip, which is why
+   nothing is reserved for it at rest and why the chip does not resize when it
+   appears. Earlier passes kept it in flow and tried to collapse it; a
+   zero-width flex child still leaves the chip's gap behind, which is the
+   sliver of empty space that kept showing up beside the label.
+
+   The disc carries the CHIP's own background, so when it appears it sits over
+   the tail of the label rather than beside it. That is what makes an
+   out-of-flow control readable instead of a cross printed on top of text.
+
+   NOTE: `visibility: hidden` drops the element from the tab order, so the
+   cross is pointer-only — this matches the portal's shipping CSS verbatim,
+   but it does mean a keyboard user cannot remove a chip. Removing the
+   `visibility` line (leaving opacity) restores that if it is ever wanted.
+   ──────────────────────────────────────────────────────────────────── */
+.p-multiselect .p-multiselect-chip-item .p-chip .p-chip-remove-icon,
+.p-multiselect .p-multiselect-chip-item .p-chip .p-icon-wrapper:not(.p-checkbox-icon),
+.p-multiselect-chip .p-multiselect-token .p-multiselect-token-icon,
+.p-multiselect-chip .p-multiselect-token .p-multiselect-close-icon {
+  position: absolute !important;
+  inset-inline-end: 0.25rem !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 0.875rem !important;
+  min-height: 0.875rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  /* Layered over an opaque base: --select-chip-bg is Mono/80 at 2% in MyBKY,
+     and a translucent disc would let the label read straight through the
+     cross. Painting the chip colour on the surface colour reproduces exactly
+     what the chip already looks like, in both brands — and resolves to a flat
+     #f3f2f2 in Sampark, which is the portal's literal value. */
+  background-color: var(--card-background, #ffffff) !important;
+  background-image: linear-gradient(var(--select-chip-bg), var(--select-chip-bg)) !important;
+  color: var(--select-chip-remove-color) !important;
+  font-size: 0.625rem !important;
+  margin: 0 !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity 120ms ease !important;
+}
+
+.p-multiselect .p-multiselect-chip-item .p-chip:hover .p-chip-remove-icon,
+.p-multiselect .p-multiselect-chip-item .p-chip:hover .p-icon-wrapper,
+.p-multiselect-chip .p-multiselect-token:hover .p-multiselect-token-icon,
+.p-multiselect-chip .p-multiselect-token:hover .p-multiselect-close-icon {
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: all !important;
+  cursor: pointer !important;
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   STEP 5 — AUTOCOMPLETE & INPUTNUMBER
+   ══════════════════════════════════════════════════════════════════════
+   Both wrap a real <input class="p-inputtext"> which _input.scss has
+   already skinned — only the wrapper-level geometry needs pinning so
+   dropdown buttons/steppers sit INSIDE the pill instead of beside it.
+   ══════════════════════════════════════════════════════════════════════ */
+
+.p-autocomplete,
+.p-inputnumber {
+  display: inline-flex !important;
+  width: 100% !important;
+  position: relative !important;
+}
+
+/* AutoComplete dropdown button (optional [dropdown]="true") merges into
+   the pill: the input keeps the left radius, the button takes the right */
+.p-autocomplete .p-autocomplete-dropdown {
+  border: 1px solid var(--input-border-default) !important;
+  border-left: none !important;
+  border-radius: 0 99px 99px 0 !important;
+  background: var(--input-bg-default) !important;
+  color: var(--select-trigger-icon) !important;
+  width: 2.25rem !important;
+  flex-shrink: 0 !important;
+}
+
+.p-autocomplete:has(.p-autocomplete-dropdown) .p-inputtext {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+/* InputNumber steppers — chromeless, inside the pill on the right */
+.p-inputnumber .p-inputnumber-button-group {
+  position: absolute !important;
+  right: 0.5rem !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+}
+
+.p-inputnumber .p-inputnumber-button {
+  border: none !important;
+  background: transparent !important;
+  color: var(--select-trigger-icon) !important;
+  width: 1.25rem !important;
+  height: 0.875rem !important;
+}
+
+.p-inputnumber .p-inputnumber-button:hover {
+  color: var(--input-border-hover) !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   STEP 6 — DATEPICKER INPUT
+   ══════════════════════════════════════════════════════════════════════
+   p-datepicker renders an <input class="p-inputtext p-datepicker-input">
+   (already pill via _input.scss) plus an optional calendar icon button
+   ([showIcon]="true") that must merge into the pill like the
+   autocomplete dropdown does.
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* v21 puts .p-datepicker ON the host element — p-datepicker.p-datepicker,
+   not a descendant. A `p-datepicker .p-datepicker` chain matches nothing. */
+p-datepicker.p-datepicker {
+  display: inline-flex !important;
+  width: 100% !important;
+}
+
+p-datepicker .p-datepicker-dropdown {
+  border: 1px solid var(--input-border-default) !important;
+  border-left: none !important;
+  border-radius: 0 99px 99px 0 !important;
+  background: var(--input-bg-default) !important;
+  color: var(--select-trigger-icon) !important;
+  width: 2.25rem !important;
+  flex-shrink: 0 !important;
+}
+
+p-datepicker.p-datepicker:has(.p-datepicker-dropdown) .p-datepicker-input {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+/* Inline calendar (no popup) hosts the panel directly — give it the
+   overlay treatment minus the shadow (it is not floating). */
+p-datepicker .p-datepicker-panel-inline {
+  border: 1px solid var(--select-overlay-border) !important;
+  border-radius: var(--select-overlay-radius) !important;
+  box-shadow: none !important;
+}
+
+/* ...and undo the input silhouette for that case. In inline mode the root is
+   not a trigger, it IS the calendar's container, so the
+   display:inline-flex/width:100% pair above is wrong for it: the 100% width
+   stretched the calendar to its container (measured 1067px against a ~280px
+   design) and the flex row pinned the panel to the 32px input height, so the
+   calendar spilled out of a box a fraction of its size. Scoped with :has() so
+   the popup trigger, which does want the input silhouette, is untouched. */
+p-datepicker.p-datepicker:has(.p-datepicker-panel-inline) {
+  display: inline-block !important;
+  width: max-content !important;
+  /* The shared input height applies here too, so the root stayed 32px tall
+     while the calendar inside it measured 290px and simply overflowed. */
+  height: auto !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   STEP 7 — OVERLAY CONTAINER (shared)
+   ══════════════════════════════════════════════════════════════════════
+   The ONE place shadows are allowed: overlays float. The page-dimming
+   backdrop (body::before) ships from _input.scss 8h and already keys
+   on .p-select-open/.p-select-overlay — nothing to re-declare here.
+
+   ┌────────────┬────────────────────────────────────┐
+   │ Property   │ Value                              │
+   ├────────────┼────────────────────────────────────┤
+   │ BG         │ #FFFFFF                            │
+   │ Border     │ 1px #E4ECF1                        │
+   │ Radius     │ 12px                               │
+   │ Shadow     │ long + soft (--select-overlay-shadow)│
+   │ Offset     │ 6px from anchor (.p-overlay margin)│
+   └────────────┴────────────────────────────────────┘
+   ══════════════════════════════════════════════════════════════════════ */
+
+.p-select-overlay,
+.p-multiselect-overlay,
+.p-cascadeselect-overlay,
+.p-treeselect-overlay,
+.p-autocomplete-overlay,
+.p-datepicker-panel:not(.p-datepicker-panel-inline) {
+  background: var(--select-overlay-bg) !important;
+  border: 1px solid var(--select-overlay-border) !important;
+  border-radius: var(--select-overlay-radius) !important;
+  box-shadow: var(--select-overlay-shadow) !important;
+  overflow: hidden !important; /* clip option hover bg to the radius */
+  /* Gap between trigger and panel. PrimeNG leaves this at 0; a brand whose
+     panel border is close in value to the trigger's needs the separation. */
+  margin-top: var(--select-overlay-offset, 0) !important;
+}
+
+.p-select-overlay .p-select-list,
+.p-multiselect-overlay .p-multiselect-list,
+.p-autocomplete-overlay .p-autocomplete-list {
+  padding: var(--select-list-padding, var(--select-overlay-padding)) !important;
+  margin: 0 !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   STEP 8 — OPTION LIST
+   ══════════════════════════════════════════════════════════════════════
+   Option rows carry every list state. Keyboard focus (.p-focus) and
+   pointer hover present identically — Figma defines a single hover
+   treatment. Selection = tinted bg + primary text (+ PrimeNG's own
+   check icon in multiselect via its checkbox).
+
+   ┌──────────────────────┬───────────┬──────────┐
+   │ State                │ BG        │ Text     │
+   ├──────────────────────┼───────────┼──────────┤
+   │ Default              │ transparent│ #181B1D │
+   │ Hover / kbd focus    │ #F8FAFB   │ #181B1D  │
+   │ Selected             │ #EEF0F8   │ #5F78B8  │
+   │ Selected + hover     │ #D5DBEE   │ #5F78B8  │
+   │ Disabled             │ transparent│ #B6B6AF │
+   └──────────────────────┴───────────┴──────────┘
+   ══════════════════════════════════════════════════════════════════════ */
+
+.p-select-option,
+.p-multiselect-option,
+.p-cascadeselect-option .p-cascadeselect-option-content,
+.p-treeselect-overlay .p-tree-node-content,
+.p-autocomplete-option {
+  min-height: var(--select-option-height) !important;
+  padding: var(--select-option-padding-y, 0) var(--select-option-padding-x) !important;
+  border-radius: var(--select-option-radius) !important;
+  color: var(--select-option-text) !important;
+  font-size: 0.875rem !important;
+  line-height: 1.3 !important;
+  background: transparent !important;
+  transition: background 120ms ease !important;
+}
+
+/* Option labels never wrap. Every option row is pinned to
+   --select-option-height above, so a wrapped label overflows its own row
+   instead of growing it. A tree is the worst case: the indent guides eat the
+   available width, and inside a 132px overlay "Yuva Sabha" broke across two
+   lines and overran the 32px row. Truncation is the honest failure here — the
+   full text is still reachable via the title attribute PrimeNG sets. */
+.p-select-option,
+.p-multiselect-option,
+.p-autocomplete-option,
+.p-treeselect-overlay .p-tree-node-label,
+.p-cascadeselect-option .p-cascadeselect-option-content {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* A tree overlay may outgrow its trigger. PrimeNG sets min-width: 100% of the
+   trigger, which is the right FLOOR and the wrong ceiling once nodes indent
+   three levels deep — the trigger is sized to its placeholder, not to the
+   deepest branch. max-content lets it take what the deepest label needs; the
+   cap stops a long branch turning the overlay into a full-width sheet. */
+.p-treeselect-overlay {
+  width: max-content !important;
+  max-width: 22rem !important;
+}
+
+/* Hover + keyboard focus — one treatment */
+.p-select-option:not(.p-disabled):hover,
+.p-select-option.p-focus:not(.p-disabled),
+.p-multiselect-option:not(.p-disabled):hover,
+.p-multiselect-option.p-focus:not(.p-disabled),
+.p-autocomplete-option:not(.p-disabled):hover,
+.p-autocomplete-option.p-focus:not(.p-disabled),
+.p-cascadeselect-option:not(.p-disabled):hover
+  > .p-cascadeselect-option-content,
+.p-treeselect-overlay .p-tree-node-content:not(.p-disabled):hover {
+  background: var(--select-option-hover-bg) !important;
+  color: var(--select-option-text) !important;
+  box-shadow: inset var(--select-option-bar-width, 0) 0 0 0 var(--select-option-bar, transparent) !important;
+}
+
+/* Selected — with [checkmark]="true" PrimeNG drops .p-select-option-selected
+   and marks the row via data-p-selected instead, so both hooks are needed */
+.p-select-option.p-select-option-selected,
+.p-select-option[data-p-selected='true'],
+.p-multiselect-option.p-multiselect-option-selected,
+.p-autocomplete-option.p-autocomplete-option-selected,
+.p-treeselect-overlay .p-tree-node-content.p-tree-node-selected {
+  background: var(--select-option-selected-bg) !important;
+  color: var(--select-option-selected-text) !important;
+  /* MyBKY bolds a selected row so it reads at a glance in a long list. Sampark
+     deliberately does not — its rows carry a checkbox, which already says it. */
+  font-weight: var(--select-option-selected-weight, 500) !important;
+  /* The left bar, as an inset shadow rather than a border: a border changes the
+     row's box and shifts its label 3px, so rows would jog sideways as selection
+     moves. Width is a variable and Sampark sets it to 0. */
+  box-shadow: inset var(--select-option-bar-width, 0) 0 0 0 var(--select-option-bar, transparent) !important;
+}
+
+/* Selected + HOVER — one step darker, still primary text.
+ *
+ * `.p-focus` is deliberately NOT in this list. It is PrimeNG's roving-focus
+ * marker, and it lands on the first selected option the moment the panel
+ * opens — with a mouse, before the pointer is anywhere near the list. Having
+ * it here meant a panel with two selected rows opened showing them in two
+ * different shades, with nothing hovered and nothing to explain the
+ * difference. Measured in the app: "Bal Group 1" #D5DBEE against "Bal Group 2"
+ * #EEF0F8, both selected, neither hovered.
+ *
+ * Keyboard focus is not left unmarked — _overlay-list.scss gives it a
+ * `:focus-visible` outline, which reads as a cursor rather than as a second
+ * kind of selection. */
+.p-select-option.p-select-option-selected:hover,
+.p-select-option[data-p-selected='true']:hover,
+.p-multiselect-option.p-multiselect-option-selected:hover {
+  background: var(--select-option-selected-hover-bg) !important;
+  color: var(--select-option-selected-text) !important;
+}
+
+/* Check icon on the selected row (single select, [checkmark]="true").
+   The blank icon is PrimeNG's spacer on unselected rows — same box keeps
+   labels column-aligned. */
+.p-select-option .p-select-option-check-icon,
+.p-select-option .p-select-option-blank-icon {
+  color: var(--select-option-selected-text) !important;
+  width: 0.875rem !important;
+  height: 0.875rem !important;
+  flex-shrink: 0 !important;
+}
+
+/* Disabled option */
+.p-select-option.p-disabled,
+.p-multiselect-option.p-disabled,
+.p-autocomplete-option.p-disabled {
+  color: var(--select-option-disabled-text) !important;
+  cursor: not-allowed !important;
+  opacity: 1 !important; /* color carries the state, not opacity */
+}
+
+/* Option group headers — quiet, never selectable */
+.p-select-option-group,
+.p-multiselect-option-group,
+.p-autocomplete-option-group {
+  padding: 0.5rem var(--select-option-padding-x) 0.25rem !important;
+  color: var(--select-option-group-text) !important;
+  font-size: 0.75rem !important; /* 12px */
+  font-weight: 500 !important;
+  background: transparent !important;
+}
+
+/* Empty message ("No results") */
+.p-select-empty-message,
+.p-multiselect-empty-message,
+.p-autocomplete-empty-message {
+  padding: 0.75rem var(--select-option-padding-x) !important;
+  color: var(--select-option-group-text) !important;
+  font-size: 0.875rem !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   STEP 9 — FILTER INPUT (search inside overlay)
+   ══════════════════════════════════════════════════════════════════════
+   The overlay search box is utilitarian: 8px radius (NOT pill — it sits
+   inside a 12px container; pill-in-panel reads as a nested control),
+   sunken bg, no border promotion. It is still a .p-inputtext, so
+   _input.scss Step 2-4 applies first — geometry is re-pinned here at
+   higher specificity (0,2,0 beats 0,1,0).
+   ══════════════════════════════════════════════════════════════════════ */
+
+.p-select-header,
+.p-multiselect-header {
+  padding: var(--select-header-padding, var(--select-overlay-padding)) !important;
+  border-bottom: 1px solid var(--select-header-border, var(--select-overlay-border)) !important;
+  background: var(--select-header-bg, transparent) !important;
+}
+
+.p-select-filter.p-inputtext,
+.p-multiselect-filter.p-inputtext {
+  height: var(--select-filter-height, 2rem) !important;
+  border-radius: var(--select-filter-radius) !important;
+  background: var(--select-filter-bg) !important;
+  border-color: transparent !important;
+}
+
+.p-select-filter.p-inputtext:focus,
+.p-multiselect-filter.p-inputtext:focus {
+  border-color: var(--input-border-hover) !important;
+  box-shadow: none !important; /* no ring inside a floating panel */
+}
+
+/* The filter's own search and clear glyphs. The panel's search row is a single
+   pill with placeholder text; PrimeNG's icons sit inside it and make the pill
+   read as two controls. Hidden rather than removed — they are PrimeNG's markup,
+   and the placeholder is what names the field (see `filterPlaceholder`, which
+   now defaults to "Search" so the pill is never a blank box). */
+.p-select-filter-icon,
+.p-multiselect-filter-icon,
+.p-multiselect-filter-container > .p-icon:not(.p-checkbox-icon) {
+  display: none !important;
+}
+
+/* ── Select-all row: NOT attempted here ──
+   The guide describes two rows — a grey search bar, then a white 48px band
+   with a "Select All" label. PrimeNG v21 renders BOTH the filter and the
+   toggle-all checkbox inside ONE .p-multiselect-header, so there is no second
+   element to paint or to label.
+
+   A version of this shipped briefly and was reverted: it flexed the single
+   header, repainted it, and injected the label with ::after. The result put the
+   checkbox, the search pill and a wrapped "Select All" on one cramped 48px row
+   — worse than the header it replaced. Splitting them needs a DOM change (a
+   wrapper component rendering its own select-all row above PrimeNG"s header),
+   not CSS, and that is a call to make deliberately rather than in passing. */
+
+/* ══════════════════════════════════════════════════════════════════════
+   STEP 10 — DATEPICKER CALENDAR PANEL
+   ══════════════════════════════════════════════════════════════════════
+   Month grid inside the overlay. Day cells are circular (99px on a
+   square cell); selected day is the ONLY filled-primary element in the
+   whole family. "Today" is outlined, never filled — an unselected
+   today must not compete with the actual selection.
+
+   ┌──────────────────┬──────────────┬──────────┐
+   │ Cell state       │ BG           │ Text     │
+   ├──────────────────┼──────────────┼──────────┤
+   │ Default          │ transparent  │ #181B1D  │
+   │ Hover            │ #EFF1F3      │ #181B1D  │
+   │ Today (unselected)│ 1px #9FADD9 outline │ #181B1D │
+   │ Selected         │ #5F78B8      │ #FFFFFF  │
+   │ Other month      │ transparent  │ #6F777D  │
+   │ Disabled         │ transparent  │ #B6B6AF  │
+   └──────────────────┴──────────────┴──────────┘
+   ══════════════════════════════════════════════════════════════════════ */
+
+.p-datepicker-panel {
+  padding: 0.75rem !important;
+}
+
+/* Header: month/year title + prev/next — quiet ghost buttons */
+.p-datepicker-header {
+  border-bottom: none !important;
+  padding: 0 0 0.5rem !important;
+  background: transparent !important;
+}
+
+.p-datepicker-title .p-datepicker-select-month,
+.p-datepicker-title .p-datepicker-select-year {
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  color: var(--select-option-text) !important;
+  border: none !important;
+  background: transparent !important;
+  border-radius: 0.5rem !important;
+  padding: 0.25rem 0.5rem !important;
+}
+
+.p-datepicker-title .p-datepicker-select-month:hover,
+.p-datepicker-title .p-datepicker-select-year:hover {
+  background: var(--datepicker-day-hover-bg) !important;
+}
+
+.p-datepicker-prev-button,
+.p-datepicker-next-button {
+  width: 2rem !important;
+  height: 2rem !important;
+  border: none !important;
+  border-radius: 99px !important;
+  background: transparent !important;
+  color: var(--select-trigger-icon) !important;
+}
+
+.p-datepicker-prev-button:hover,
+.p-datepicker-next-button:hover {
+  background: var(--datepicker-day-hover-bg) !important;
+}
+
+/* Weekday header row — eyebrow treatment, the one ALL-CAPS site */
+.p-datepicker-weekday {
+  font-size: 0.75rem !important;
+  font-weight: 500 !important;
+  color: var(--datepicker-muted-text) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+}
+
+/* Day cells */
+.p-datepicker-day {
+  width: var(--datepicker-cell-size) !important;
+  height: var(--datepicker-cell-size) !important;
+  border-radius: var(--datepicker-cell-radius) !important;
+  font-size: 0.875rem !important;
+  color: var(--select-option-text) !important;
+  border: 1px solid transparent !important; /* reserve for today outline — no layout shift */
+  transition: background 120ms ease !important;
+}
+
+.p-datepicker-day:not(.p-datepicker-day-selected):not(.p-disabled):hover {
+  background: var(--datepicker-day-hover-bg) !important;
+}
+
+/* Today — outlined only */
+.p-datepicker-day.p-datepicker-today:not(.p-datepicker-day-selected) {
+  border-color: var(--datepicker-today-border) !important;
+  background: transparent !important;
+}
+
+/* Selected day — the single filled-primary element */
+.p-datepicker-day.p-datepicker-day-selected {
+  background: var(--datepicker-day-selected-bg) !important;
+  color: var(--datepicker-day-selected-text) !important;
+  font-weight: 500 !important;
+}
+
+/* Days that belong to the previous/next month */
+.p-datepicker-day.p-datepicker-other-month {
+  color: var(--datepicker-muted-text) !important;
+}
+
+/* Unavailable dates */
+.p-datepicker-day.p-disabled {
+  color: var(--select-option-disabled-text) !important;
+  cursor: not-allowed !important;
+  opacity: 1 !important;
+}
+
+/* Month / year grid pickers reuse the day-cell states on larger cells */
+.p-datepicker-month,
+.p-datepicker-year {
+  border-radius: 0.5rem !important;
+  font-size: 0.875rem !important;
+  color: var(--select-option-text) !important;
+}
+
+.p-datepicker-month:not(.p-datepicker-month-selected):not(.p-disabled):hover,
+.p-datepicker-year:not(.p-datepicker-year-selected):not(.p-disabled):hover {
+  background: var(--datepicker-day-hover-bg) !important;
+}
+
+.p-datepicker-month.p-datepicker-month-selected,
+.p-datepicker-year.p-datepicker-year-selected {
+  background: var(--datepicker-day-selected-bg) !important;
+  color: var(--datepicker-day-selected-text) !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   STEP 11 — SCROLLBAR (overlay lists)
+   ══════════════════════════════════════════════════════════════════════
+   Long option lists scroll inside the overlay. A hairline scrollbar
+   keeps the panel quiet; WebKit + Firefox syntaxes both needed.
+   ══════════════════════════════════════════════════════════════════════ */
+
+.p-select-overlay .p-select-list-container,
+.p-multiselect-overlay .p-multiselect-list-container,
+.p-autocomplete-overlay .p-autocomplete-list-container {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-mybky-mono-300, #e4ecf1) transparent;
+}
+
+.p-select-overlay .p-select-list-container::-webkit-scrollbar,
+.p-multiselect-overlay .p-multiselect-list-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.p-select-overlay .p-select-list-container::-webkit-scrollbar-thumb,
+.p-multiselect-overlay .p-multiselect-list-container::-webkit-scrollbar-thumb {
+  background: var(--color-mybky-mono-300, #e4ecf1);
+  border-radius: 99px;
+}

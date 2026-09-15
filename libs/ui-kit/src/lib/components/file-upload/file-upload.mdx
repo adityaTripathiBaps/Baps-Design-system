@@ -1,0 +1,50 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as FileUploadStories from './file-upload.stories';
+
+<Meta of={FileUploadStories} />
+
+# FileUpload
+
+A click-or-drag dropzone (Sampark Portal "Web File Upload", Figma node 13197:87830). Deliberately **not** a PrimeNG `p-fileupload` wrap: the Figma spec is a plain dropzone (icon, button, hint), while `p-fileupload` ships a toolbar/file-list UI that would need more CSS to erase than this component costs to build. Selection and drag-drop use the native `<input type="file">`; the component emits raw `File[]` and leaves upload/validation entirely to the consumer.
+
+## Usage
+
+```html
+<baps-file-upload
+  accept="image/*"
+  [multiple]="false"
+  [invalid]="hasError"
+  buttonLabel="Upload Image"
+  hint="Click to upload or drag and drop"
+  description="SVG, PNG, JPG or GIF (max. 800×400px)"
+  brand="sampark"
+  (filesSelected)="onFiles($event)"
+/>
+```
+
+## Examples
+
+### Playground
+
+<Canvas of={FileUploadStories.Playground} />
+
+### States
+
+<Canvas of={FileUploadStories.States} />
+
+## When Not to Use
+
+| Need | Use | Not this |
+| --- | --- | --- |
+| Upload progress, a file list, auto-upload, or a cancel control | PrimeNG `p-fileupload` directly | `baps-file-upload` — it has no list, no progress and issues no request |
+| Showing progress after the drop | `baps-progressbar` beside the zone | The zone — it has no busy state |
+| Explaining *why* a file was rejected | `baps-message` inline, or `baps-alert` for a summary | `invalid` on its own — it only paints the border red |
+| A compact "choose file" control in a dense form row | `baps-button` driving your own hidden input | The dropzone — it is roughly 200px tall and does not compact |
+| A one-off action that happens to involve a file | `baps-button` | A dropzone, which reads as a drop surface whether or not one is supported |
+
+## Accessibility
+
+- The dropzone is the actual control: `role="button"`, a computed `tabindex` (removed via `null` when `disabled`), and `aria-label` set to the `hint` text.
+- `keydown.enter` and `keydown.space` both trigger `open()`; the Space handler calls `preventDefault()` first so the page doesn't scroll.
+- The projected `baps-button` is marked `inert` deliberately — without it, the button is a second tab stop whose own Enter/Space both activates itself *and* bubbles to the dropzone, opening the native picker twice. `inert` keeps the visual affordance but removes it from the tab order and lets clicks fall through to the zone (see the source comment in `file-upload.component.ts`).
+- `aria-disabled` is set alongside the native `disabled` on the hidden input, so both the control's accessible state and its actual interactivity move together.

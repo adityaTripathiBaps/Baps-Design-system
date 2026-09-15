@@ -1,0 +1,46 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as DividerStories from './divider.stories';
+
+<Meta of={DividerStories} />
+
+# Divider
+
+A visual separator between content sections. `baps-divider` wraps PrimeNG's `p-divider` and projects `<ng-content>` straight through to it for the optional content slot (text or icon centered on the line).
+
+## Usage
+
+```html
+<p>Section 1</p>
+<baps-divider layout="horizontal" align="center" brand="sampark">
+  <b>Divider Text</b>
+</baps-divider>
+<p>Section 2</p>
+
+<!-- Vertical, inside a flex row -->
+<div style="display: flex; align-items: stretch; height: 2rem">
+  <span>Left</span>
+  <baps-divider layout="vertical" brand="sampark" />
+  <span>Right</span>
+</div>
+```
+
+## Examples
+
+### Default
+
+<Canvas of={DividerStories.Default} />
+
+## When Not to Use
+
+| Need | Use | Not this |
+| --- | --- | --- |
+| Structure that assistive technology should perceive | A real heading element, optionally inside `baps-card` | Divider — it carries no role and its projected text is not announced as a heading |
+| Grouping content into a bounded region | `baps-card`, with `[divided]="true"` for internal hairlines | Dividers stacked above and below content to fake a box |
+| Separating rows of tabular data | `baps-table`'s own row borders | A divider per row |
+| A separator inside a menu | The menu's own separator handling around `baps-menu-item` | `baps-divider` dropped into the item list |
+| Section breaks in a page-level action bar | `baps-toolbar`'s layout slots | Vertical dividers positioned by hand |
+
+## Accessibility
+
+- A divider is presentational — PrimeNG renders it without a semantic role for reading order, and its content (if any) is not announced as a heading or landmark.
+- Don't rely on a divider's projected text to convey document structure to assistive technology; use a real heading element for that, and treat the divider purely as a visual rule.

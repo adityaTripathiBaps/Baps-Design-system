@@ -1,0 +1,66 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as InternalNavbarStories from './internal-navbar.stories';
+
+<Meta of={InternalNavbarStories} />
+
+# Internal Navbar
+
+Sidebar / secondary navigation. `baps-internal-navbar` is a fully custom component (not a PrimeNG wrap) — it renders a 264px vertical menu with an optional collapsed state and a left accent bar on the active item.
+
+Setting `brand="sampark"` together with `[collapsed]="true"` switches to a distinct **dark 72px icon rail** modelled on the Sampark Portal Figma ("Web Nav Bar" component, node 13197:89998) — icon-over-label tiles on a Secondary/100 background, Secondary/80 on hover, Secondary/60 + drop shadow when selected. This is a genuinely different collapsed layout from the generic (MyBKY) collapse, which stays a plain 56px icon-only rail — every rail-specific rule in the component is scoped under `.baps-sampark` so the two never bleed into each other.
+
+## Usage
+
+```html
+<baps-internal-navbar
+  [items]="menuItems"
+  [activeItem]="currentRoute"
+  title="Workspace"
+  brand="sampark"
+  [collapsed]="isCollapsed"
+  (itemClick)="onNav($event)"
+>
+  <button type="button">Collapse</button>
+</baps-internal-navbar>
+```
+
+```typescript
+menuItems: InternalNavItem[] = [
+  { label: 'Dashboard', icon: 'pi-th-large' },
+  { label: 'Reports', icon: 'pi-chart-bar', notification: true },
+  { separator: true },
+  { label: 'Settings', icon: 'pi-cog', disabled: !hasAccess },
+];
+```
+
+## Examples
+
+### Default
+
+<Canvas of={InternalNavbarStories.Default} />
+
+### Sampark Rail
+
+<Canvas of={InternalNavbarStories.SamparkRail} />
+
+### Nested
+
+<Canvas of={InternalNavbarStories.Nested} />
+
+## When Not to Use
+
+| Need | Use | Not this |
+| --- | --- | --- |
+| Top-level app chrome (logo, product title, account actions) | `baps-navbar` | `baps-internal-navbar` — it has no start/end action slots |
+| Showing where the current page sits in a hierarchy | `baps-breadcrumb` | A nav item styled to look like a path |
+| A panel that overlays the page and can be dismissed | `baps-drawer` | This component — it is an in-flow block, not an overlay |
+| Switching between views of the *same* page | `bapsTabs` | A sidebar, which implies navigation away |
+| A menu of actions fired from a trigger | `baps-menu-item` rows inside `baps-listbox`, or `baps-split-button` | A sidebar — items here are destinations, not commands |
+| A single hyperlink somewhere in the page | `baps-link` | A one-item nav |
+
+## Accessibility
+
+- Renders as a `<nav>` landmark with `aria-label` (defaults to `"Section navigation"`, overridable via the `ariaLabel` input).
+- Each item is a native `<button>` — focusable and keyboard-activatable by default; `aria-current="page"` is set on the active item's button.
+- Icons carry `aria-hidden="true"` — they are decorative alongside the text label.
+- **Known gap**: when `collapsed` is true and `brand` is **not** `'sampark'`, the label `<span>` is removed from the DOM outright (`@if (!collapsed || brand === 'sampark')`), not just visually hidden — the icon itself is `aria-hidden`, so a collapsed MyBKY item button has **no accessible name** at all. There's no per-item `ariaLabel`/tooltip override in the current `InternalNavItem` API to compensate. Worth fixing (e.g. keep the label in the DOM as visually-hidden text, or add an `ariaLabel` field to `InternalNavItem`) before shipping a collapsed MyBKY rail in a real app.

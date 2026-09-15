@@ -1,0 +1,113 @@
+import { Meta } from '@storybook/blocks';
+import { ResourceTabs, DemoCard } from '@baps/docs-blocks';
+import * as ColourStories from './colour.stories';
+
+<Meta of={ColourStories} />
+
+# Colour
+
+The primitive colour ramps both brands are built from.
+
+<ResourceTabs sections={['Usage', 'Examples', 'Accessibility']} />
+
+Source: Figma [node 13193:59098](https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/%F0%9F%9F%A2-Sampark-Portal?node-id=13193-59098) — the "BAPS Pixel" variable sheet, 74 values.
+
+Every swatch below is rendered **from the token module**, not from a list typed into this page. A ramp that changes in `libs/tokens` changes here on the next build, which is the one property a hand-maintained swatch sheet never has.
+
+## Usage
+
+Primitives are the bottom tier and carry no meaning on their own. Reach for a semantic token first — `--color-sampark-text-primary` says what it is for; `--color-sampark-mono-100` only says what colour it is.
+
+```scss
+/* Prefer the semantic tier */
+color: var(--color-sampark-text-primary);
+border-color: var(--color-sampark-border-default);
+
+/* Primitives are for defining semantics, or for a one-off with no semantic yet */
+background: var(--color-sampark-primary-60);
+```
+
+The alpha steps are not interchangeable with the opaque tints of the same number. `primary.10` is an opaque pink; `primary.alpha10` is the maroon at 10% and keeps whatever sits behind it — which is why the count badge on the accordion filter header uses the alpha version over a tinted header.
+
+### Alpha steps derive from their base, they do not restate it
+
+Three alpha primitives are written as **relative colours** rather than as an
+`rgba()` literal, so their channels are read off the base token instead of being
+copied from it:
+
+```css
+--color-mybky-blue-alpha10:     rgb(from var(--color-mybky-blue-600) r g b / 0.1);
+--color-mybky-blue-alpha20:     rgb(from var(--color-mybky-blue-400) r g b / 0.2);
+--color-sampark-primary-alpha20: rgb(from var(--color-sampark-primary-100) r g b / 0.2);
+```
+
+That is the whole point: change the base at runtime — a theme switch, a primary
+swatch — and every alpha step built on it follows. An `rgba(95, 120, 184, 0.1)`
+literal would keep the old hue after the switch, which is the bug this replaces.
+`mybky.blue.alpha10` and `alpha20` are new; `sampark.primary.alpha20` was a
+literal and now derives.
+
+Two things to know when adding one:
+
+- **Pick the base the design actually uses.** `blue.alpha20` reads off `blue.400`,
+  not `blue.600`: a primary tag's ring is a lighter step than its fill. Deriving
+  from the wrong step gives a colour that is right today and wrong after a change.
+- **The remaining alpha steps are still literals.** 20 of the 23 have not been
+  converted, `sampark.primary.alpha10` among them — see
+  [Guidelines → Known gaps](?path=/docs/guidelines-known-gaps--docs).
+
+## Examples
+
+<DemoCard
+  title="Sampark Brand"
+  description="Primary, secondary and tertiary. The secondary ramp doubles as the dark-mode neutral scale."
+  of={ColourStories.SamparkBrand}
+/>
+
+<DemoCard
+  title="Sampark Neutrals"
+  description="Surfaces, text, borders and the alpha scrims. Swatches sit on a checkerboard so transparency is visible."
+  of={ColourStories.SamparkNeutrals}
+/>
+
+<DemoCard
+  title="Sampark Status"
+  description="Error, info, success and warning."
+  of={ColourStories.SamparkStatus}
+/>
+
+<DemoCard
+  title="MyBKY"
+  description="The MyBKY blue and mono ramps."
+  of={ColourStories.MyBky}
+/>
+
+## Step labels differ from Figma on three ramps
+
+Worth knowing before you match a value against the Figma sheet by its step number.
+
+`Error` uses the same scale as Figma: `10, 20, 40, 60, 80, 100`. `Info`, `Success` and `Warning` use `5, 10, 20, 40, 60, 80`.
+
+**The colours are identical and in the same order.** Only the labels are offset by one position:
+
+| Repo step | Figma step | Example — Warning |
+| --- | --- | --- |
+| `5` | `10` | `#fff9ef` |
+| `10` | `20` | `#fef4e6` |
+| `20` | `40` | `#fddfb4` |
+| `40` | `60` | `#fcca83` |
+| `60` | `80` | `#faab38` |
+| `80` | `100` | `#e08705` |
+
+So `--color-sampark-warning-60` gives you what Figma calls Warning/80. Nothing renders the wrong colour — every consumer was authored against these names — but a designer reading a step number off the Figma sheet and a developer reading one off the token name are not talking about the same swatch.
+
+Realigning the labels would be a pure rename across three ramps, breaking every consumer for no visual gain, so it has not been done. If the two vocabularies need to converge, that is a deliberate migration, not a token edit.
+
+## Accessibility
+
+Contrast is a property of a *pair*, so a ramp on its own cannot be compliant or non-compliant. Two rules of thumb for these ramps:
+
+- On white, the `80` and `100` steps clear 4.5:1 for body text; `60` and lighter generally do not, and belong to fills, borders and large text.
+- On the dark ground, the relationship inverts — see the dark role mapping documented on each component's Theming section.
+
+Non-text UI needs 3:1 (WCAG 1.4.11), which is why the dark palette splits its border role in two: a quiet divider tier and a control tier that clears the threshold. A decorative rule and the outline of a text input are not the same job.

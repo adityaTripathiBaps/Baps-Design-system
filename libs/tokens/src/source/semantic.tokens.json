@@ -1,0 +1,105 @@
+{
+  "color": {
+    "mybky": {
+      "text": {
+        "primary": { "value": "{color.mybky.mono.900}", "legacyMapping": { "eventsUi": "--high-contrast-text-color" } },
+        "secondary": { "value": "{color.mybky.mono.800}", "legacyMapping": { "eventsUi": "--text-color-secondary" } },
+        "muted": { "value": "{color.mybky.mono.500}", "legacyMapping": { "eventsUi": "--text-color-muted" } },
+        "disabled": { "value": "#869097", "legacyMapping": { "eventsUi": "--text-color-disabled" } },
+        "inverse": { "value": "{color.mybky.mono.0}" }
+      },
+      "border": { "default": { "value": "{color.mybky.mono.300}", "legacyMapping": { "eventsUi": "--border-color" } } },
+      "surface": {
+        "card": { "value": "{color.mybky.mono.0}", "legacyMapping": { "eventsUi": "--card-background" } },
+        "ground": { "value": "{color.mybky.mono.50}", "legacyMapping": { "eventsUi": "--ground-background (post-login shell)" } },
+        "auth": { "value": "{color.mybky.mono.300}", "legacyMapping": { "eventsUi": "--auth-background (sign-in pages)" } }
+      },
+      "primary": {
+        "default": { "value": "{color.mybky.blue.600}" },
+        "hover": { "value": "{color.mybky.blue.700}" },
+        "active": { "value": "{color.mybky.blue.800}" }
+      },
+      "state": {
+        "error": { "value": "{color.mybky.error.80}", "legacyMapping": { "eventsUi": "--error-color" } },
+        "success": { "value": "{color.mybky.success.400}" },
+        "info": { "value": "{color.mybky.info.60}" },
+        "warning": { "value": "{color.mybky.warning.60}" }
+      },
+      "dark": {
+        "text": {
+          "primary": { "value": "{color.mybky.mono.50}" },
+          "secondary": { "value": "{color.mybky.mono.300}" },
+          "muted": { "value": "{color.mybky.mono.400}" },
+          "disabled": { "value": "{color.mybky.mono.500}" },
+          "inverse": { "value": "{color.mybky.mono.900}" }
+        },
+        "border": {
+          "divider": { "value": "{color.mybky.mono.700}", "comment": "Decorative separators only - 1.68:1 on the dark ground" },
+          "control": { "value": "{color.mybky.mono.500}", "comment": "Control boundaries - 3.80:1, clears WCAG 1.4.11" }
+        },
+        "surface": {
+          "ground": { "value": "{color.mybky.mono.900}" },
+          "card": { "value": "{color.mybky.mono.800}" },
+          "hover": { "value": "{color.mybky.mono.700}" }
+        },
+        "primary": {
+          "default": { "value": "{color.mybky.blue.400}", "comment": "One step lighter than light mode - 7.79:1 on the dark ground" },
+          "hover": { "value": "{color.mybky.blue.200}" }
+        }
+      }
+    },
+    "sampark": {
+      "text": {
+        "primary": { "value": "{color.sampark.mono.100}", "legacyMapping": { "spmUi": "--mono-100" } },
+        "secondary": { "value": "{color.sampark.mono.80}", "legacyMapping": { "spmUi": "--mono-80" } },
+        "muted": { "value": "{color.sampark.mono.60}", "legacyMapping": { "spmUi": "--mono-60" } },
+        "disabled": { "value": "{color.sampark.mono.40}", "legacyMapping": { "spmUi": "--mono-40" } },
+        "placeholder": { "value": "#979493", "legacyMapping": { "spmUi": "--input-text-placeholder" } },
+        "inverse": { "value": "{color.sampark.mono.0}" }
+      },
+      "border": {
+        "default": { "value": "{color.sampark.mono.borders}", "legacyMapping": { "spmUi": "--mono-borders" } },
+        "hover": { "value": "#94928f", "legacyMapping": { "spmUi": "--input-border-hover" } },
+        "error": { "value": "{color.sampark.error.80}", "legacyMapping": { "spmUi": "--input-border-error" } }
+      },
+      "surface": {
+        "card": { "value": "{color.sampark.mono.0}" },
+        "ground": { "value": "{color.sampark.mono.20}" },
+        "disabled": { "value": "{color.sampark.mono.5}", "legacyMapping": { "spmUi": "--input-bg-disabled" } }
+      },
+      "primary": {
+        "default": { "value": "{color.sampark.primary.60}" },
+        "hover": { "value": "{color.sampark.primary.80}" },
+        "tint": { "value": "{color.sampark.primary.0}" }
+      },
+      "state": {
+        "error": { "value": "{color.sampark.error.80}", "legacyMapping": { "spmUi": "--red-600 / input-border-error" } },
+        "success": { "value": "{color.sampark.success.60}", "legacyMapping": { "spmUi": "--progress-fill-bg" } },
+        "info": { "value": "{color.sampark.info.60}" },
+        "warning": { "value": "{color.sampark.warning.80}" }
+      },
+      "dark": {
+        "text": {
+          "primary": { "value": "{color.sampark.secondary.0}" },
+          "secondary": { "value": "{color.sampark.secondary.10}" },
+          "muted": { "value": "{color.sampark.secondary.20}" },
+          "disabled": { "value": "{color.sampark.secondary.40}" },
+          "inverse": { "value": "{color.sampark.secondary.100}" }
+        },
+        "border": {
+          "divider": { "value": "{color.sampark.secondary.60}", "comment": "Decorative separators only - 1.89:1 on the dark ground" },
+          "control": { "value": "{color.sampark.secondary.40}", "comment": "Control boundaries - 5.48:1, clears WCAG 1.4.11" }
+        },
+        "surface": {
+          "ground": { "value": "{color.sampark.secondary.100}" },
+          "card": { "value": "{color.sampark.secondary.80}" },
+          "hover": { "value": "{color.sampark.secondary.60}" }
+        },
+        "primary": {
+          "default": { "value": "{color.sampark.primary.40}", "comment": "One step lighter than light mode - 6.17:1 on the dark ground" },
+          "hover": { "value": "{color.sampark.primary.20}" }
+        }
+      }
+    }
+  }
+}

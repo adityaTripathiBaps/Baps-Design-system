@@ -1,0 +1,139 @@
+/* =====================================================================
+   libs/ui-kit/src/lib/styles/components/drawer/_drawer.scss
+   PrimeNG v21 Drawer — MyBKY slide-in panel skin
+
+   Why this file exists: baps.theme.ts has no `drawer` section, so MyBKY
+   drawers were rendering Material's own surface while the drawer.mybky.*
+   tokens sat unused with no consumer at all.
+
+   SCOPE — a drawer is an OVERLAY. With appendTo="body" the panel is moved out
+   of <baps-drawer> entirely, so a host-anchored selector cannot reach it and
+   the usual "MyBKY is the unscoped default" arrangement does not work either:
+   a bare `.p-drawer` rule would repaint the Sampark panel too. BapsDrawer
+   therefore names BOTH brands on PrimeNG's styleClass, and this file keys off
+   `.baps-drawer-mybky` — the same reasoning _drawer-sampark.scss spells out
+   for its own class.
+
+   No .baps-ds-mybky fallback is listed because no such page class exists;
+   MyBKY is reached through the per-instance class only.
+   ===================================================================== */
+
+.p-drawer.baps-drawer-mybky {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  gap: var(--drawer-mybky-gap, 1.5rem);
+  padding: var(--drawer-mybky-padding, 2rem);
+  background: var(--drawer-mybky-background, #ffffff);
+  border: none;
+  border-radius: var(--drawer-mybky-radius, 2rem);
+  box-shadow: var(--drawer-mybky-shadow, 0 4px 6px rgba(16, 24, 40, 0.06), 0 12px 16px rgba(16, 24, 40, 0.12));
+  color: var(--color-mybky-text-primary, #181b1d);
+}
+
+/* A drawer is anchored to an edge, so a radius on all four corners would leave
+   two of them floating off-screen. Only the INNER pair is rounded, per side. */
+.p-drawer-right.baps-drawer-mybky {
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+}
+.p-drawer-left.baps-drawer-mybky {
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
+}
+.p-drawer-top.baps-drawer-mybky {
+  border-start-start-radius: 0;
+  border-start-end-radius: 0;
+}
+.p-drawer-bottom.baps-drawer-mybky {
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
+}
+
+/* The header carries no fill of its own — the panel surface runs behind it, so
+   the title sits on the same plane as the content rather than in a banded bar.
+   The token says `transparent` explicitly; it is not an oversight. */
+.p-drawer.baps-drawer-mybky .p-drawer-header {
+  background: var(--drawer-mybky-header-background, transparent);
+  padding: 0;
+  gap: 0.5rem;
+}
+
+.p-drawer.baps-drawer-mybky .p-drawer-content {
+  padding: 0;
+}
+
+/* NOT here: --drawer-mybky-backdrop-blur. The blur belongs on the SCRIM
+   (blurring the panel would blur its own content), and the scrim is an EMPTY
+   element that is a SIBLING of the panel under <body> — measured. No selector
+   rooted at the panel's brand class can reach it, :has() included, because
+   there is no containment either way. BapsDrawer sets it through PrimeNG's
+   `maskStyle` instead, which is the supported way in. */
+
+/* ── Dark ── */
+.baps-dark .p-drawer.baps-drawer-mybky {
+  background: var(--color-mybky-dark-surface-card, #2b2f32);
+  color: var(--color-mybky-dark-text-primary, #f8fafb);
+}
+
+/* ── Header actions ─────────────────────────────────────────────────────
+   The slot between the title and the close button. Mirrors the Sampark half in
+   _drawer-sampark.scss; this file had NO rules for it at all, so a MyBKY drawer
+   laid its actions out as plain inline content: no gap between buttons, no
+   collapse when the slot is empty, and `order` left at its 0 default, which put
+   the actions ahead of the title in a header the skin reorders.
+
+   The gap has to be declared TWICE, and the second one is the one that does the
+   work. A gap on the slot sits between the slot's CHILDREN, and the documented
+   anatomy (see drawer.component.ts) projects ONE `<div drawer-actions>` holding
+   the buttons — so the slot has a single child and its gap has nothing to act
+   on. In the Sampark twin this measured as two buttons ending and starting one
+   pixel apart while the slot reported a correct-looking 8px. The rule on
+   `> [drawer-actions]` is what actually separates them. */
+.p-drawer.baps-drawer-mybky .baps-drawer__actions {
+  order: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--drawer-mybky-header-gap, 0.5rem);
+  flex: none;
+}
+
+.p-drawer.baps-drawer-mybky .baps-drawer__actions > [drawer-actions] {
+  display: flex;
+  align-items: center;
+  gap: var(--drawer-mybky-header-gap, 0.5rem);
+}
+
+/* No actions projected — collapse, so the slot does not add the header's own
+   0.5rem gap next to the close button. Safe as :empty: the slot's only child is
+   an <ng-content>, which leaves no DOM node when nothing is projected.
+
+   NOT ported from Sampark: the ::after divider between the actions and the
+   close. That one is a Figma "Divider" instance in the SAMPARK header frame;
+   there is no MyBKY node showing the same rule, and drawing one here would be
+   inventing design rather than implementing it. */
+.p-drawer.baps-drawer-mybky .baps-drawer__actions:empty {
+  display: none;
+}
+
+/* ── Close button ───────────────────────────────────────────────────────
+   Ours, not PrimeNG's — see drawer.component.ts. It sits last in the header
+   row, which is a flex container the skin reorders.
+
+   The size is pinned on the inner button because PrimeNG's icon-only default
+   is 48px and the design's close is 32px; retheming the shared icon-only
+   token would move every icon-only button in the app. */
+.p-drawer.baps-drawer-mybky .baps-drawer__close {
+  order: 2;
+  flex: none;
+}
+
+.p-drawer.baps-drawer-mybky .baps-drawer__close .p-button {
+  width: 2rem;
+  height: 2rem;
+  color: var(--color-mybky-text-secondary, #2b2f32);
+}
+
+.p-drawer.baps-drawer-mybky .baps-drawer__close .p-button:hover {
+  color: var(--color-mybky-text-primary, #181b1d);
+}

@@ -1,0 +1,1175 @@
+@use 'sass:list';
+@use 'sass:string';
+
+/* =====================================================================
+   libs/ui-kit/src/lib/styles/components/input/_input.scss
+   PrimeNG v21 InputText — Figma Design Token Overrides
+   Targets PrimeNG v21 .p-inputtext CSS class directly.
+   Uses !important to override PrimeNG compiled theme specificity.
+
+   CRITICAL: PrimeNG v21 changes from v17:
+   - Icon wrapper: .p-input-icon-left → p-iconfield + p-inputicon
+   - Dropdown:     .p-dropdown        → .p-select
+   - Dropdown panel: .p-dropdown-panel → .p-select-overlay
+   - Filled class: added .p-filled directly on input element
+   Import: InputTextModule from 'primeng/inputtext'
+
+   USAGE IN TEMPLATES:
+   <input type="text" pInputText [(ngModel)]="value" />
+   <input type="text" pInputText class="p-inputtext-sm" [(ngModel)]="value" />
+   <input type="text" pInputText class="p-inputtext-lg" [(ngModel)]="value" />
+   <input type="text" pInputText [disabled]="true" [(ngModel)]="value" />
+   <input type="text" pInputText class="p-inputtext-ghost" [(ngModel)]="value" />
+   <input type="text" pInputText class="p-inputtext-warning" [(ngModel)]="value" />
+   (error state applied automatically via ng-invalid ng-dirty)
+
+   FIGMA SOURCE (MyBKY 1.5 — Web Input Text — LIGHT):
+   Container  : Fill × 36px fixed · radius 99px (PILL) · border 1px / 1.5px
+   Min height : 32px
+   Typography : Inter 14px Regular 400 · line-height 130%
+   Hint text  : Inter 12px Regular 400 · #6F777D (Mono/60)
+
+   STATES   (border color · width · shadow):
+   PH default      : #E4ECF1 · 1px   · none
+   PH hover        : #9FADD9 · 1.5px · none
+   PH focused      : #9FADD9 · 1.5px · 0 0 0 3px rgba(95,120,184,.20)
+   Filled default  : #E4ECF1 · 1px   · none
+   Filled hover    : #9FADD9 · 1.5px · none
+   Filled focused  : #9FADD9 · 1.5px · 0 0 0 3px rgba(95,120,184,.20)
+   Warning         : #E0A652 · 1.5px · 0 0 0 3px rgba(224,166,82,.20)
+   Error (rest)    : #E05255 · 1px   · none
+   Error focused   : #E05255 · 1.5px · 0 0 0 3px rgba(176,71,74,.20)
+   Ghost default   : none    · —     · none  (transparent bg)
+   Ghost hover     : #9FADD9 · 1.5px · none  (bg → #FFFFFF)
+   Disabled        : #E4ECF1 · 1px   · none  (bg #F8FAFB)
+   Ghost disabled  : none    · —     · none  (transparent, faded)
+===================================================================== */
+
+/* ══════════════════════════════════════════════════════════════════════
+   SCSS HELPERS — compile-time only, nothing here reaches the CSS output.
+   _select.scss and _input-sampark.scss reach these via `@use '…/input'`
+   (namespaced, e.g. input.$input-guard). The :not() chains double as
+   specificity ballast — the Sampark skin wins cascade ties only because
+   it mirrors them 1:1, so never shorten a chain: change it here and
+   every consumer stays in lock-step automatically.
+   ══════════════════════════════════════════════════════════════════════ */
+
+// ── Guard fragments ──────────────────────────────────────────────────
+$input-enabled: ':not(:disabled):not(.p-disabled)';
+$input-valid: ':not(.ng-invalid):not(.p-invalid)';
+// Full guard for hover/focus rules on the plain input
+$input-guard: '#{$input-enabled}#{$input-valid}:not(.p-inputtext-warning):not(.step-input--error)';
+
+// ── Error detection — signalled three ways ───────────────────────────
+// · ng-invalid.ng-dirty   — value was changed (reactive forms submit)
+// · ng-invalid.ng-touched — field was visited/focused then left
+// · p-invalid             — PrimeNG [invalid]="true" binding
+$input-invalid-variants: (
+  '.ng-invalid.ng-dirty',
+  '.ng-invalid.ng-touched',
+  '.p-invalid'
+);
+
+// Grouped selector "<base><variant><suffix>" for all three error
+// variants, e.g. invalid-set('.p-inputtext', ':hover#{$input-enabled}')
+@function invalid-set($base, $suffix: '') {
+  $result: ();
+  @each $variant in $input-invalid-variants {
+    $result: list.append(
+      $result,
+      string.unquote('#{$base}#{$variant}#{$suffix}'),
+      comma
+    );
+  }
+  @return $result;
+}
+
+// ── One field state = border + background + ring (none | a color) ────
+@mixin input-state($border, $ring: none, $bg: var(--input-bg-default)) {
+  border: $border !important;
+  background: $bg !important;
+  @if $ring == none {
+    box-shadow: none !important;
+  } @else {
+    box-shadow: 0 0 0 3px $ring !important;
+  }
+}
+
+// ── Strip chrome — input-group inners, borderless variants ──────────
+@mixin chromeless {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   DESIGN TOKENS — CSS Custom Properties
+   All values sourced from MyBKY 1.5 Figma · LIGHT MODE only.
+   Declare on :root so they cascade into every component globally.
+   ══════════════════════════════════════════════════════════════════════ */
+:root {
+  /* ── Border ──────────────────────────────────────────────────────── */
+  --input-border-default: #e4ecf1; /* Mono/Borders — default stroke */
+  --input-border-hover: #9fadd9; /* Primary/40 — hover + focus stroke */
+  --input-border-error: #e05255; /* Error/80 — all error strokes */
+  --input-border-warning: #e0a652; /* Warning/80 — warning/updated stroke */
+
+  /* ── Background ──────────────────────────────────────────────────── */
+  --input-bg-default: #ffffff; /* Mono/0 White */
+  --input-bg-disabled: #f8fafb; /* Mono/10 Light Background */
+  --input-bg-ghost: transparent;
+
+  /* ── Text ────────────────────────────────────────────────────────── */
+  --input-text-placeholder: #6f777d; /* Mono/60 — placeholder text */
+  --input-text-filled: var(
+    --high-contrast-text-color,
+    #181b1d
+  ); /* project dark text */
+  --input-text-disabled: #8d9ba5; /* muted — disabled text */
+
+  /* ── Focus Rings / Shadows ───────────────────────────────────────── */
+  --input-shadow-focused: rgba(
+    95,
+    120,
+    184,
+    0.35
+  ); /* Primary #5F78B8 @ 35% — visible ring */
+  --input-shadow-error: rgba(224, 82, 85, 0.35); /* Error #E05255 @ 35% */
+  --input-shadow-warning: rgba(224, 166, 82, 0.35); /* Warning #E0A652 @ 35% */
+
+  /* ── Hint Text ───────────────────────────────────────────────────── */
+  --input-hint-color: #6f777d; /* Mono/60 — default hint */
+  --input-hint-color-error: #e05255; /* Error/80 — error hint */
+  --input-hint-color-warning: #e0a652; /* Warning/80 — warning hint */
+
+  /* ── Labels ──────────────────────────────────────────────────────── */
+  --label-color: #595656; /* Mono/80 */
+  --label-color-disabled: #9f9c9c; /* Mono/40 */
+  --label-font-size: 0.75rem; /* 12px */
+  --label-font-weight: 400;
+  --label-line-height: 1.3;
+  --label-gap-bottom: 0.25rem; /* 4px */
+  --label-required-color: #ea151a; /* red asterisk */
+
+  /* ── Input Group Addon ───────────────────────────────────────────── */
+  --input-addon-bg: #f8fafb;
+  --input-addon-border: #e4ecf1;
+  --input-addon-text: #595656;
+  --input-addon-width: 2.5rem;
+
+  /* ── Overlay Backdrop ──────────────────────────────────────────────
+     The scrim behind an open dropdown, multiselect, popover or calendar.
+
+     20%, not the 8% this used to be. The mechanism was always firing — the
+     `:has()` list matched, z-index and pointer-events both landed — but 8%
+     black over a light page is roughly two shades of grey and reads as no
+     backdrop at all, which is exactly how it was reported. Measured on the
+     dropdowns story: opacity animating correctly to 1 with nothing visibly
+     changing behind the panel.
+
+     Deliberately lighter than a modal's: a drawer or dialog blocks the page
+     and its mask says so (the Sampark drawer uses rgba(14,13,13,.45)); a
+     dropdown only needs enough separation to push the page back a step. Ink
+     is the 16/24/40 slate the panel shadows already use, not pure black.
+
+     One variable — raise or lower it here and every panel follows. */
+  --overlay-backdrop-color: rgba(16, 24, 40, 0.2);
+  --overlay-backdrop-z-index: 500;
+  --overlay-backdrop-fade: 150ms;
+
+  /* ── Trailing / Leading Elements ─────────────────────────────────── */
+  --input-char-count-color: #181b1d; /* Mono/60 — character count text */
+  --input-char-count-font-size: 0.75rem; /* 12px */
+  --input-shortcut-color: #181b1d; /* Mono/60 — keyboard shortcut text */
+  --input-trailing-icon-color: #181b1d; /* Mono/60 — chevron/trailing icon */
+  --input-leading-icon-color: #181b1d; /* Mono/60 — leading icon */
+  --input-clear-btn-color: #181b1d; /* Mono/60 — clear × button icon */
+  --input-internal-gap: 0.5rem; /* 8px — gap between inner elements */
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   DARK MODE — re-point the token variables to the dark end of the mono
+   scale. PrimeNG's darkModeSelector puts `.baps-dark` on the preview <body>
+   (see preview.ts); every rule above reads these vars, so the fields, group
+   addons, textarea and select trigger all flip in one place. Only the
+   surface/text/border vars change — the accent hover + focus-ring colours
+   already read correctly on a dark field. Values come from the generated
+   mono tokens (tokens.css), not hardcoded darks. The `body.baps-dark`
+   selector outranks both `:root` and the `.baps-ds-sampark` skin, so dark
+   wins even under Sampark (acceptable until Sampark gets its own dark set).
+   ══════════════════════════════════════════════════════════════════════ */
+body.baps-dark {
+  /* Border — subtle light hairline on dark */
+  --input-border-default: var(--color-mybky-mono-700, #3d4144);
+
+  /* Background — field sits one step above the near-black page */
+  --input-bg-default: var(--color-mybky-mono-800, #2b2f32);
+  --input-bg-disabled: var(--color-mybky-mono-900, #181b1d);
+
+  /* Text */
+  --input-text-placeholder: var(--color-mybky-mono-400, #b6b6af);
+  --input-text-filled: var(--color-mybky-mono-50, #f8fafb);
+  --input-text-disabled: var(--color-mybky-mono-500, #6f777d);
+
+  /* Hint */
+  --input-hint-color: var(--color-mybky-mono-400, #b6b6af);
+
+  /* Labels — bright mono-300 on dark (mono-400 read too dim against the field);
+     matches the light, legible field label in the PrimeNG dark reference. */
+  --label-color: var(--color-mybky-mono-300, #e4ecf1);
+  --label-color-disabled: var(--color-mybky-mono-500, #6f777d);
+
+  /* Input group addon */
+  --input-addon-bg: var(--color-mybky-mono-900, #181b1d);
+  --input-addon-border: var(--color-mybky-mono-700, #3d4144);
+  --input-addon-text: var(--color-mybky-mono-100, #eff1f3);
+
+  /* Trailing / leading / count / shortcut / clear — dark ink → light */
+  --input-char-count-color: var(--color-mybky-mono-100, #eff1f3);
+  --input-shortcut-color: var(--color-mybky-mono-100, #eff1f3);
+  --input-trailing-icon-color: var(--color-mybky-mono-100, #eff1f3);
+  --input-leading-icon-color: var(--color-mybky-mono-100, #eff1f3);
+  --input-clear-btn-color: var(--color-mybky-mono-100, #eff1f3);
+
+  /* Overlay backdrop — deeper dim on dark (ink @ 40%, CLAUDE.md) */
+  --overlay-backdrop-color: rgba(0, 0, 0, 0.4);
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   STEP 1 — HARD RESET
+   ══════════════════════════════════════════════════════════════════════
+   Strip ALL PrimeNG v21 default InputText styles. PrimeNG v21 compiles
+   a high-specificity preset — reset everything before applying tokens.
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* Box sizing on all children */
+.p-inputtext,
+.p-inputtext *,
+.p-inputtext *::before,
+.p-inputtext *::after {
+  box-sizing: border-box !important;
+}
+
+/* Core reset on the input element */
+.p-inputtext {
+  border-radius: 99px !important; /* PILL — Figma radius */
+  outline: none !important;
+  box-shadow: none !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  transition:
+    border-color 150ms ease,
+    border-width 150ms ease,
+    box-shadow 150ms ease,
+    background 150ms ease,
+    color 150ms ease !important;
+}
+
+/* Suppress PrimeNG v21 default focus ring */
+.p-inputtext:focus,
+.p-inputtext:focus-visible,
+.p-inputtext.p-focus {
+  outline: none !important;
+  box-shadow: none !important; /* re-applied per state in STEP 4 */
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   STEP 2 — BASE DIMENSIONS & TYPOGRAPHY
+   Height 36px · min 32px · padding 6px 14px · Inter 14px/400 · lh 1.3
+   SIZE MODIFIERS:
+   .p-inputtext-sm  → height 32px · padding 0.25rem 0.75rem · font 12px
+   .p-inputtext-lg  → height 44px · padding 0.5rem 1rem     · font 16px
+   ══════════════════════════════════════════════════════════════════════ */
+
+.p-inputtext {
+  width: 100% !important;
+  height: 2.25rem !important; /* 36px */
+  min-height: 2rem !important; /* 32px */
+  padding: 0.375rem 0.875rem !important;
+  font-size: 0.875rem !important; /* 14px */
+  font-weight: 400 !important;
+  line-height: 1.3 !important;
+  letter-spacing: 0 !important;
+
+  /* ── Small modifier ── */
+  &.p-inputtext-sm {
+    height: 2rem !important; /* 32px */
+    min-height: 2rem !important;
+    padding: 0.25rem 0.75rem !important;
+    font-size: 0.75rem !important; /* 12px */
+  }
+
+  /* ── Large modifier ── */
+  &.p-inputtext-lg {
+    height: 2.75rem !important; /* 44px */
+    min-height: 2.75rem !important;
+    padding: 0.5rem 1rem !important;
+    font-size: 1rem !important; /* 16px */
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   STEP 3 — DEFAULT STATE (Placeholder)
+   Border 1px #E4ECF1 · BG #FFFFFF · placeholder #6F777D
+   ══════════════════════════════════════════════════════════════════════ */
+
+.p-inputtext {
+  border: 1px solid var(--input-border-default) !important;
+  background: var(--input-bg-default) !important;
+  color: var(--input-text-filled) !important;
+}
+
+.p-inputtext::placeholder {
+  color: var(--input-text-placeholder) !important;
+  opacity: 1 !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   STEP 4 — INTERACTIVE STATES (non-error, non-disabled)
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* ── 4a — HOVER (Placeholder Hover AND Filled Hover — identical) ─────────
+   Border 1.5px #9FADD9 · no shadow
+   Guard: not disabled · not error · not warning · not ghost */
+.p-inputtext:hover#{$input-guard}:not(.p-inputtext-ghost) {
+  @include input-state(1.5px solid var(--input-border-hover));
+}
+
+/* ── 4b — FILLED (input has a value) ─────────────────────────────────────
+   Target BOTH .p-filled (PrimeNG JS) and :not(:placeholder-shown) */
+.p-inputtext.p-filled,
+.p-inputtext:not(:placeholder-shown) {
+  border: 1px solid var(--input-border-default) !important;
+  background: var(--input-bg-default) !important;
+  color: var(--input-text-filled) !important;
+}
+
+/* ── 4c — FILLED HOVER — border 1.5px #9FADD9 ── */
+.p-inputtext.p-filled:hover#{$input-enabled}#{$input-valid},
+.p-inputtext:not(:placeholder-shown):hover#{$input-enabled}#{$input-valid} {
+  @include input-state(1.5px solid var(--input-border-hover));
+}
+
+/* ── 4d — FOCUSED (non-error, non-warning) ───────────────────────────────
+   Border 1.5px #9FADD9 · ring 0 0 0 3px rgba(95,120,184,.35) */
+.p-inputtext:focus#{$input-guard},
+.p-inputtext:focus-visible#{$input-guard} {
+  @include input-state(
+    1.5px solid var(--input-border-hover),
+    var(--input-shadow-focused)
+  );
+  outline: none !important;
+}
+
+/* ── 4e — WARNING / UPDATED (.p-inputtext-warning) ───────────────────────
+   Border 1.5px #E0A652 · ring always visible */
+.p-inputtext.p-inputtext-warning {
+  @include input-state(
+    1.5px solid var(--input-border-warning),
+    var(--input-shadow-warning)
+  );
+}
+
+.p-inputtext.p-inputtext-warning:focus#{$input-enabled},
+.p-inputtext.p-inputtext-warning:focus-visible#{$input-enabled} {
+  @include input-state(
+    1.5px solid var(--input-border-warning),
+    var(--input-shadow-warning)
+  );
+  outline: none !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   STEP 5 — ERROR STATES
+   Angular adds ng-invalid + ng-dirty automatically on failed validation.
+   Rest 1px · hover/focus 1.5px · focus ring rgba error @ .35
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* ── Error — Default (see $input-invalid-variants for the three routes) ── */
+#{invalid-set('.p-inputtext')} {
+  @include input-state(1px solid var(--input-border-error));
+}
+
+/* ── Error — Hover ── */
+#{invalid-set('.p-inputtext', ':hover#{$input-enabled}')} {
+  @include input-state(1.5px solid var(--input-border-error));
+}
+
+/* ── Error — Focused / Focus-visible ── */
+#{invalid-set('.p-inputtext', ':focus#{$input-enabled}')},
+#{invalid-set('.p-inputtext', ':focus-visible#{$input-enabled}')} {
+  @include input-state(
+    1.5px solid var(--input-border-error),
+    var(--input-shadow-error)
+  );
+  outline: none !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   STEP 6 — GHOST VARIANT (.p-inputtext-ghost)
+   Borderless + transparent by default. Border appears on hover.
+   BG changes transparent → #FFFFFF when border appears on hover.
+   ══════════════════════════════════════════════════════════════════════ */
+
+.p-inputtext.p-inputtext-ghost {
+  /* ── Default ── */
+  @include input-state(1px solid transparent, $bg: var(--input-bg-ghost));
+
+  /* ── Hover (gains border + white bg) ── */
+  &:hover#{$input-enabled} {
+    @include input-state(1.5px solid var(--input-border-hover));
+  }
+
+  /* ── Filled default ── */
+  &.p-filled,
+  &:not(:placeholder-shown) {
+    @include input-state(1px solid transparent, $bg: var(--input-bg-ghost));
+  }
+
+  /* ── Filled hover ── */
+  &.p-filled:hover#{$input-enabled},
+  &:not(:placeholder-shown):hover#{$input-enabled} {
+    @include input-state(1.5px solid var(--input-border-hover));
+  }
+
+  /* ── Disabled (no border, transparent, faded text) ── */
+  &:disabled,
+  &.p-disabled {
+    @include input-state(1px solid transparent, $bg: var(--input-bg-ghost));
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+    /* pointer-events intentionally omitted — cursor: not-allowed must be visible on hover */
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   STEP 7 — DISABLED STATE
+   Border 1px #E4ECF1 · BG #F8FAFB · cursor not-allowed · opacity 1
+   opacity: 1 — BG color handles the visual disabled state, not opacity.
+   ══════════════════════════════════════════════════════════════════════ */
+
+.p-inputtext:disabled,
+.p-inputtext.p-disabled,
+.p-inputtext[disabled] {
+  @include input-state(
+    1px solid var(--input-border-default),
+    $bg: var(--input-bg-disabled)
+  );
+  color: var(--input-text-disabled) !important;
+  -webkit-text-fill-color: var(--input-text-disabled) !important;
+  cursor: not-allowed !important;
+  opacity: 1 !important;
+}
+
+/* Generic disabled — plain inputs/textareas without pInputText/pTextarea
+   directive. checkbox/radio types are excluded: PrimeNG control wrappers
+   (ToggleSwitch, Checkbox, RadioButton) hide a native checkbox/radio input
+   over the styled control at opacity 0 — the `opacity: 1 !important` below
+   was resurrecting it as an opaque #F8FAFB rectangle covering the whole
+   disabled control. */
+input:disabled:not(.p-inputtext):not([type='checkbox']):not([type='radio']),
+textarea:disabled:not(.p-inputtext):not(.p-textarea) {
+  background: var(--input-bg-disabled) !important;
+  border-color: var(--input-border-default) !important;
+  color: var(--input-text-disabled) !important;
+  -webkit-text-fill-color: var(--input-text-disabled) !important;
+  cursor: not-allowed !important;
+  opacity: 1 !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   STEP 8 — SUPPORTING ELEMENTS
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* ─────────────────────────────────────────────────────────────────────
+   8a — HINT TEXT
+   Inter 12px/400 · margin-top 4px · #6F777D / error #E05255 / warn #E0A652
+   ───────────────────────────────────────────────────────────────── */
+.p-inputtext ~ .input-hint,
+.field > .input-hint,
+.form-field > .input-hint,
+.p-field > .input-hint {
+  display: block !important;
+  margin-top: 0.25rem !important;
+  font-size: 0.75rem !important;
+  font-weight: 400 !important;
+  line-height: 1.3 !important;
+  color: var(--input-hint-color) !important;
+}
+
+/* Error hint — via :has() on field wrapper */
+.field:has(.ng-invalid.ng-dirty) > .input-hint,
+.form-field:has(.ng-invalid.ng-dirty) > .input-hint {
+  color: var(--input-hint-color-error) !important;
+}
+
+/* Error hint — sibling of error input */
+.p-inputtext.ng-invalid.ng-dirty ~ .input-hint,
+.p-inputtext.p-invalid ~ .input-hint {
+  color: var(--input-hint-color-error) !important;
+}
+
+/* Warning hint — via :has() on field wrapper */
+.field:has(.p-inputtext-warning) > .input-hint,
+.form-field:has(.p-inputtext-warning) > .input-hint {
+  color: var(--input-hint-color-warning) !important;
+}
+
+/* Warning hint — sibling of warning input */
+.p-inputtext.p-inputtext-warning ~ .input-hint {
+  color: var(--input-hint-color-warning) !important;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   8b — FORM LABELS
+   Inter 12px/400 · lh 1.3 · #595656 (Mono/80) · gap-below 4px
+   ───────────────────────────────────────────────────────────────── */
+.field > label,
+.field label:first-child,
+.form-field > label,
+.form-field label:first-child,
+.p-field > label,
+.p-field label:first-child,
+.v-field > label,
+.v-field label:first-child,
+.p-floatlabel > label,
+.p-float-label > label {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.125rem !important;
+  font-size: var(--label-font-size) !important; /* 0.75rem / 12px */
+  font-weight: var(--label-font-weight) !important; /* 400 */
+  line-height: var(--label-line-height) !important; /* 1.3 */
+  color: var(--label-color) !important; /* #595656 */
+  margin-bottom: var(--label-gap-bottom) !important; /* 0.25rem / 4px */
+}
+
+/* Required asterisk */
+.field > label .p-error,
+.form-field > label .p-error {
+  color: var(--label-required-color) !important; /* #EA151A */
+  font-weight: 500 !important;
+}
+
+/* Disabled label */
+.field:has(:disabled) > label,
+.form-field:has(:disabled) > label,
+.field:has(.p-disabled) > label,
+.form-field:has(.p-disabled) > label {
+  color: var(--label-color-disabled) !important; /* #9F9C9C */
+  cursor: not-allowed !important;
+}
+
+/* v-field labels — no bottom margin (vertically aligned fields) */
+.v-field > label,
+.v-field label:first-child {
+  margin-bottom: 0 !important;
+}
+
+/* Info icon (ⓘ) next to label text */
+.field > label .label-icon,
+.form-field > label .label-icon {
+  color: var(--label-color) !important; /* #595656 */
+  font-size: var(--label-font-size) !important; /* 12px */
+  display: inline-flex !important;
+  align-items: center !important;
+  margin-left: 0.125rem !important;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   8c — ICON FIELD padding compensation
+   PrimeNG v21 handles icon positioning natively. We only compensate for
+   our !important padding on .p-inputtext (Step 2), which would otherwise
+   reset PrimeNG's icon-offset padding. Between two !important rules
+   specificity wins:
+     p-iconfield.p-iconfield-left .p-inputtext  → (0,2,1)
+     .p-inputtext                               → (0,1,0)  ← Step 2
+   ───────────────────────────────────────────────────────────────── */
+
+/* Keyed off WHERE THE ICON ACTUALLY IS, not what the wrapper claims.
+
+   PrimeNG positions the icon purely by DOM order:
+     .p-iconfield .p-inputicon:first-child { inset-inline-start: ... }
+     .p-iconfield .p-inputicon:last-child  { inset-inline-end: ... }
+
+   and its own components do not always keep the class and the order in
+   agreement. Listbox's filter field is the case that exposed it: the wrapper
+   is marked p-iconfield-left, but the icon is rendered AFTER the input, so
+   PrimeNG placed it on the right while the class-keyed rule below reserved
+   2.5rem on the LEFT. Measured on the listbox filter: 40px of dead space at
+   the start and the search glyph sitting 20px over the placeholder at the end.
+   The same field backs the Select, MultiSelect and TreeSelect filter rows.
+
+   Matching on :first-child / :last-child mirrors PrimeNG's own logic, so the
+   padding can no longer disagree with the placement. The input is always the
+   icon's sibling, so exactly one of the two matches — a lone icon is not
+   simultaneously first and last. The p-iconfield-* classes are still honoured
+   below for the case where a consumer sets the position explicitly and the
+   order agrees. */
+/* Matched on the INPUT's position, not the icon's. The icon is not reliably a
+   direct child of p-iconfield: this library's own baps-input-icon renders a
+   <baps-inputicon> host around it, so a "> .p-inputicon" combinator matches
+   PrimeNG's internal fields but not ours, and keying on it dropped the padding
+   to 8px and put the glyph back on top of the text. The .p-inputtext IS always
+   a direct child, and it is always either the first or the last one, so its
+   position tells us which side the icon is on whatever wraps it. */
+p-iconfield:has(> .p-inputtext:last-child) .p-inputtext {
+  padding-left: 2.5rem !important;
+  padding-right: 0.875rem !important;
+}
+
+p-iconfield:has(> .p-inputtext:first-child) .p-inputtext {
+  padding-right: 2.5rem !important;
+  padding-left: 0.875rem !important;
+}
+
+/* Un-stretch the icon box.
+
+   PrimeNG positions the icon by anchoring an absolutely-positioned
+   .p-inputicon to ONE edge:
+     .p-iconfield .p-inputicon:first-child { inset-inline-start: <pad>; }
+     .p-iconfield .p-inputicon:last-child  { inset-inline-end: <pad>; }
+
+   Those are descendant selectors, and first/last-child are relative to the
+   icon's OWN parent. This library's baps-input-icon renders a
+   <baps-inputicon> host between the field and the icon, so the icon is the
+   only child of that host and therefore matches BOTH rules. Anchored to both
+   edges with no width, the box stretches the full field: measured 296px wide
+   across a 320px input, at z-index 1 with pointer-events auto. The visible
+   glyph still looked right, because it sits at the box's start — but
+   document.elementFromPoint at the centre of the input returned the ICON, so
+   clicking the middle of the field did not focus it and typing went nowhere.
+
+   Releasing the far edge and letting the box size to its glyph fixes the hit
+   testing without touching interactivity, so a projected clickable icon keeps
+   working. Which edge to release follows the input's position, the same signal
+   the padding rules above use. */
+p-iconfield:has(> .p-inputtext:last-child) baps-inputicon .p-inputicon {
+  inset-inline-end: auto !important;
+  width: max-content !important;
+}
+
+p-iconfield:has(> .p-inputtext:first-child) baps-inputicon .p-inputicon {
+  inset-inline-start: auto !important;
+  width: max-content !important;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   8d — INPUT GROUPS (.p-inputgroup)
+   Group container owns the visible border; inner input is transparent
+   in every state. Pill (99px) is for standalone inputs only — groups
+   use 4px corner radii.
+   ───────────────────────────────────────────────────────────────── */
+.p-inputgroup {
+  display: flex !important;
+  align-items: stretch !important;
+  height: 2.25rem !important;
+}
+
+/* Base — default state */
+.p-inputgroup .p-inputtext {
+  @include chromeless;
+  border-radius: 0 !important;
+  background: transparent !important;
+  height: 100% !important;
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  outline: none !important;
+}
+
+/* Hover — beats Step 4a by prepending .p-inputgroup with identical :not() chain */
+.p-inputgroup .p-inputtext:hover#{$input-guard} {
+  @include chromeless;
+}
+
+/* Filled hover — beats Step 4c */
+.p-inputgroup .p-inputtext.p-filled:hover#{$input-enabled}#{$input-valid},
+.p-inputgroup
+  .p-inputtext:not(:placeholder-shown):hover#{$input-enabled}#{$input-valid} {
+  @include chromeless;
+}
+
+/* Focus / focus-visible — beats Step 4d */
+.p-inputgroup .p-inputtext:focus#{$input-guard},
+.p-inputgroup .p-inputtext:focus-visible#{$input-guard} {
+  @include chromeless;
+  outline: none !important;
+}
+
+/* Warning — beats Step 4e */
+.p-inputgroup .p-inputtext.p-inputtext-warning,
+.p-inputgroup .p-inputtext.p-inputtext-warning:focus,
+.p-inputgroup .p-inputtext.p-inputtext-warning:focus-visible {
+  @include chromeless;
+}
+
+/* Error states — beats Step 5 */
+#{invalid-set('.p-inputgroup .p-inputtext')} {
+  @include chromeless;
+}
+
+/* Error hover — beats Step 5 hover */
+#{invalid-set('.p-inputgroup .p-inputtext', ':hover#{$input-enabled}')} {
+  @include chromeless;
+}
+
+/* Error focus — beats Step 5 focus */
+#{invalid-set('.p-inputgroup .p-inputtext', ':focus#{$input-enabled}')},
+#{invalid-set('.p-inputgroup .p-inputtext', ':focus-visible#{$input-enabled}')} {
+  @include chromeless;
+  outline: none !important;
+}
+
+/* NOTE — the group container hover/focus rules that used to live here have
+   been removed. They set border-color on .p-inputgroup, but the rule above
+   never declares a border, so border-style stayed at its initial value of
+   none and the colour was never painted. The section header claims the
+   container owns the visible border; nothing ever gave it one.
+
+   The focus ring did paint, and inside baps-input-group (which declares its
+   own border) the border-color took effect too — but always in MyBKY blue,
+   because --input-border-hover is only re-pointed under .baps-ds-sampark and
+   a per-instance brand="sampark" emits .baps-sampark instead. A Sampark group
+   went blue on hover.
+
+   Both now live on baps-input-group against its own --baps-ig-* variables,
+   which are re-pointed for both the per-instance and page-wide brand scopes.
+   Anything else rendering a bare p-inputgroup has to supply its own border;
+   this sheet deliberately does not, so it cannot override a component that
+   sizes its ring from Figma. */
+
+.p-inputgroup .p-inputtext:first-child,
+.p-inputgroup > *:first-child .p-inputtext {
+  border-radius: 0.25rem 0 0 0.25rem !important;
+}
+
+.p-inputgroup .p-inputtext:last-child,
+.p-inputgroup > *:last-child .p-inputtext {
+  border-radius: 0 0.25rem 0.25rem 0 !important;
+}
+
+.p-inputgroup .p-inputtext:only-child {
+  border-radius: 0.25rem !important;
+}
+
+/* NOTE — the addon skin that used to live here has been removed.
+   It selected `.p-inputgroup-addon`, PrimeNG's pre-v19 class name. PrimeNG
+   v21 stamps `p-inputgroupaddon` (no hyphen) on the addon element — the
+   hyphenated form survives only as the *element selector*
+   (`p-inputgroup-addon, p-inputGroupAddon`), never as a class. So every rule
+   in that block, ~25 `!important` declarations included, had matched nothing
+   since the v21 upgrade.
+
+   Rather than revive it globally, addon styling now lives on the one thing
+   that renders an addon: `baps-input-group`, keyed to the correct class and
+   driven by PrimeNG `dt` tokens. Deleting rather than renaming was deliberate
+   — reviving 25 unreviewed `!important`s would have overridden that
+   component's Figma-verified geometry to no benefit.
+
+   Two patterns the old block covered are NOT yet built anywhere: a
+   disabled-select addon (`cursor: not-allowed` on the whole addon) and a
+   `p-select` sitting inside an addon (addon owns border/bg/radius, select
+   goes chromeless). Build them on `baps-input-group` when a design asks. */
+
+/* Compact modifier */
+.p-inputgroup.ig-sm {
+  height: 1.75rem !important; /* 28px */
+}
+
+.p-inputgroup.ig-sm .p-inputtext {
+  font-size: 0.75rem !important; /* 12px */
+  padding: 0 0.5rem !important;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   8e — REMOVE DOUBLE BORDERS (PrimeNG v21 inner .p-inputtext)
+   PrimeNG v21 adds .p-inputtext inside select/multiselect label
+   containers. Strip it so the outer component border wins.
+   ───────────────────────────────────────────────────────────────── */
+.p-select .p-inputtext,
+.p-multiselect .p-inputtext {
+  @include chromeless;
+  background: transparent !important;
+  height: auto !important;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   8f — FLOAT LABEL ACTIVE STATE
+   Keep label color at #595656 (Mono/80) always — no blue on focus.
+   ───────────────────────────────────────────────────────────────── */
+.p-floatlabel > input:focus ~ label,
+.p-floatlabel > .p-inputwrapper-focus ~ label,
+.p-floatlabel > input.p-filled ~ label,
+.p-floatlabel > .p-inputwrapper-filled ~ label,
+.p-float-label > input:focus ~ label,
+.p-float-label > .p-inputwrapper-focus ~ label,
+.p-float-label > input.p-filled ~ label,
+.p-float-label > .p-inputwrapper-filled ~ label {
+  color: var(
+    --label-color
+  ) !important; /* #595656 — stays same color on focus */
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   8g — BORDERLESS MODIFIER
+   Opt-in for table cells / inline use where no visible border needed.
+   ───────────────────────────────────────────────────────────────── */
+.p-select.p-select-borderless,
+.p-multiselect.p-multiselect-borderless {
+  @include chromeless;
+  background: transparent !important;
+  border-radius: 0 !important;
+}
+
+.p-select.p-select-borderless .p-select-trigger,
+.p-multiselect.p-multiselect-borderless .p-multiselect-trigger {
+  display: none !important;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   8h — OVERLAY BACKDROP
+   Dims the page when a dropdown, multiselect, or calendar overlay opens.
+   Uses body::before for the backdrop layer (no extra DOM element needed).
+   ───────────────────────────────────────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: var(--overlay-backdrop-color);
+  z-index: var(--overlay-backdrop-z-index);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--overlay-backdrop-fade) ease;
+}
+
+/* Activated — every signal that means "an overlay is open". The backdrop
+   selector list is generated from this data list; add new components here. */
+$overlay-open-signals: (
+  // Trigger-element open-state classes. Verified present in primeng 21.1.3.
+  //
+  // Every entry here was checked against node_modules/primeng/fesm2022 rather
+  // than carried forward. The list previously paired each of these with a
+  // .p-overlay-open variant, plus .p-datepicker-open; neither class exists
+  // anywhere in v21, so those five entries had matched nothing. They were
+  // harmless only because the sibling -open class covers the same component.
+  '.p-select.p-select-open',
+  '.p-multiselect.p-multiselect-open',
+  '.p-cascadeselect.p-cascadeselect-open',
+  '.p-treeselect.p-treeselect-open',
+  '.p-autocomplete.p-autocomplete-open',
+  // Rendered-overlay probes — the panel element itself, for components that
+  // mark no open state on their trigger.
+  //
+  // Three of these were renamed in v21 and had stopped matching:
+  // p-autocomplete-panel -> p-autocomplete-overlay, p-multiselect-panel ->
+  // p-multiselect-overlay, and p-overlaypanel -> p-popover. The first two
+  // were masked by the trigger classes above, but Popover marks no open
+  // state anywhere, so an open popover raised no backdrop at all until this
+  // was corrected. treeselect and cascadeselect overlays are new here for
+  // the same reason.
+  // NOT the inline calendar. p-datepicker stamps .p-datepicker-panel on both
+  // the popup AND an [inline] calendar, and an inline one is in the DOM from
+  // first paint — so any page holding one had the backdrop stuck on:
+  // opacity 1, z-index 500 and pointer-events auto over the whole viewport,
+  // swallowing every click outside the calendar. Measured on
+  // components-datepicker--default.
+  '.p-datepicker-panel:not(.p-datepicker-panel-inline)',
+  ".p-select-overlay:not([style*='display: none'])",
+  ".p-multiselect-overlay:not([style*='display: none'])",
+  ".p-autocomplete-overlay:not([style*='display: none'])",
+  ".p-treeselect-overlay:not([style*='display: none'])",
+  ".p-cascadeselect-overlay:not([style*='display: none'])",
+  ".p-popover:not([style*='display: none'])",
+  ".p-tieredmenu-overlay:not([style*='display: none'])",
+  ".p-menu-overlay:not([style*='display: none'])",
+  '.p-connected-overlay-visible'
+);
+
+$overlay-backdrop-selectors: ();
+@each $signal in $overlay-open-signals {
+  $overlay-backdrop-selectors: list.append(
+    $overlay-backdrop-selectors,
+    string.unquote('body:has(#{$signal})::before'),
+    comma
+  );
+}
+
+/* pointer-events stays NONE while lit. The backdrop is decorative — PrimeNG
+   already closes an overlay on its own outside-click listener, so the scrim
+   never needed to catch anything, and catching things is what broke it.
+
+   The z-index raise above lifts a panel over the scrim only when the panel can
+   reach the root stacking context. One that renders inline inside a container
+   with its own stacking context (a Storybook docs canvas, a transformed card,
+   an `overflow` pane) is sealed in: its 501 is scoped to that container, so a
+   body-level backdrop at 500 still paints over it. With `pointer-events: auto`
+   every click on such a panel was absorbed by BODY and the list could not be
+   used at all — measured, the option never received the event.
+
+   `none` makes that failure impossible everywhere, trapped or not: clicks pass
+   straight through the scrim to whatever is beneath. The only thing given up is
+   click-the-scrim-to-close, which PrimeNG was doing anyway. */
+#{$overlay-backdrop-selectors} {
+  opacity: 1 !important;
+  pointer-events: none !important;
+  z-index: 500 !important;
+}
+
+/* Raise the PANELS themselves above the backdrop.
+   Without this the scrim covers the very thing it is meant to lift out of the
+   page: PrimeNG v21 leaves an overlay at `z-index: auto` (measured on
+   .p-select-overlay) and relies on DOM order, so a backdrop at 500 paints
+   straight over it and the open panel is dimmed along with the page.
+
+   NO !important, deliberately. PrimeNG writes an INLINE z-index whenever it
+   manages stacking itself — an overlay opened inside a dialog or drawer gets
+   1100+ so it clears that container. An inline value beats a normal author
+   rule, so those cases keep PrimeNG's number and only the unmanaged ones
+   (z-index: auto) fall through to this. Marking it !important would drag every
+   overlay down to 501 and push panels behind dialogs. */
+.p-select-overlay,
+.p-multiselect-overlay,
+.p-autocomplete-overlay,
+.p-treeselect-overlay,
+.p-cascadeselect-overlay,
+.p-datepicker-panel:not(.p-datepicker-panel-inline),
+.p-popover,
+.p-tieredmenu-overlay,
+.p-menu-overlay {
+  z-index: calc(var(--overlay-backdrop-z-index) + 1);
+}
+
+/* Raise parent containers that contain an open overlay.
+   .p-sidebar was PrimeNG pre-v19 naming for this panel; v21 renders
+   .p-drawer, so neither this rule nor the dimming rule below ever reached a
+   drawer. A select opened inside baps-drawer therefore sat *under* the
+   z-500 body backdrop. .p-overlay-open is dropped for the reason given in
+   the signal list above. */
+.p-dialog:has(.p-select-open),
+.p-dialog:has(.p-multiselect-open),
+.p-drawer:has(.p-select-open),
+.p-drawer:has(.p-multiselect-open) {
+  z-index: calc(var(--overlay-backdrop-z-index) + 1) !important;
+}
+
+/* Local dimming — dim dialog/sidebar content behind open overlay */
+.p-dialog:has(.p-select-open)::after,
+.p-dialog:has(.p-multiselect-open)::after,
+.p-dialog:has(.p-tieredmenu-overlay:not([style*='display: none']))::after,
+.p-drawer:has(.p-select-open)::after,
+.p-drawer:has(.p-multiselect-open)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--overlay-backdrop-color);
+  z-index: 999;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* Overlay margin from anchor */
+.p-overlay {
+  margin-top: 0.375rem !important;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   8i — CLEAR BUTTON ACCOMMODATION
+   ───────────────────────────────────────────────────────────────── */
+.p-inputtext.p-inputtext-clearable {
+  padding-right: 2.5rem !important;
+}
+
+/* When clear + character count + shortcut all present */
+.p-inputtext.p-inputtext-clearable.p-inputtext-with-count {
+  padding-right: 5rem !important;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   8j — CHARACTER COUNT
+   Reusable counter for any input or textarea.
+   WRAPPER (.input-char-wrap): position: relative so the --inside
+   modifier can absolutely position within the field container.
+   ───────────────────────────────────────────────────────────────── */
+.input-char-wrap {
+  position: relative !important;
+}
+
+.input-char-count,
+.p-input-char-count {
+  display: block !important;
+  text-align: right !important;
+  margin-top: 0.25rem !important;
+  font-size: var(--input-char-count-font-size) !important; /* 0.75rem / 12px */
+  font-weight: 400 !important;
+  line-height: 1.3 !important;
+  color: var(--input-char-count-color) !important;
+  pointer-events: none !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+
+  /* --inside: overlaid inside the field, vertically centered (single-line inputs) */
+  &.input-char-count--inside {
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    right: 0.75rem !important;
+    margin-top: 0 !important;
+    text-align: unset !important;
+  }
+}
+
+/* When --inside counter is paired with a textarea, anchor to the bottom instead */
+.input-char-wrap:has(textarea) .input-char-count--inside {
+  top: auto !important;
+  transform: none !important;
+  bottom: 0.5rem !important;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   8k — SHORTCUT BADGE
+   e.g. ⌘ C shortcut text in trailing area of input.
+   ───────────────────────────────────────────────────────────────── */
+.input-shortcut,
+.p-input-shortcut {
+  font-size: 0.75rem !important;
+  font-weight: 400 !important;
+  line-height: 1.3 !important;
+  color: var(--input-shortcut-color) !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   8l — TRAILING ICON / CHEVRON
+   Color does NOT change on hover/focus.
+   ───────────────────────────────────────────────────────────────── */
+.input-trailing-icon,
+.p-input-trailing-icon {
+  color: var(--input-trailing-icon-color) !important;
+  flex-shrink: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  pointer-events: none !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   TEXTAREA OVERRIDES
+   Textarea uses r:16 (NOT pill). Override the 99px set above.
+   PrimeNG 21 directive adds .p-textarea (not .p-inputtext) to pTextarea.
+   ══════════════════════════════════════════════════════════════════════ */
+
+textarea.p-inputtext,
+textarea.p-textarea {
+  /* pTextarea adds .p-textarea only (not .p-inputtext), so repeat base token styles here */
+  font-size: 0.875rem !important; /* 14px — same as input */
+  font-weight: 400 !important;
+  color: var(--input-text-filled) !important;
+  background: var(--input-bg-default) !important;
+  border: 1px solid var(--input-border-default) !important;
+  border-radius: 1rem !important; /* 16px — Figma r:16, NOT pill */
+  height: auto !important;
+  padding: 0.75rem 1rem !important;
+  resize: none !important;
+  min-height: 5rem !important;
+  line-height: 1.6 !important;
+  transition:
+    border-color 150ms ease,
+    border-width 150ms ease,
+    box-shadow 150ms ease,
+    background 150ms ease !important;
+}
+
+textarea.p-textarea::placeholder {
+  color: var(--input-text-placeholder) !important;
+  opacity: 1 !important;
+}
+
+textarea.p-textarea:hover#{$input-enabled}#{$input-valid}:not(
+    .p-inputtext-warning
+  ) {
+  border: 1.5px solid var(--input-border-hover) !important;
+  box-shadow: none !important;
+}
+
+textarea.p-textarea:disabled,
+textarea.p-textarea.p-disabled {
+  @include input-state(
+    1px solid var(--input-border-default),
+    $bg: var(--input-bg-disabled)
+  );
+  color: var(--input-text-disabled) !important;
+  -webkit-text-fill-color: var(--input-text-disabled) !important;
+  cursor: not-allowed !important;
+  opacity: 1 !important;
+}
+
+/* Longhand border-* on purpose — the Sampark skin re-pins border-width
+   alone (1px) and must keep this rule's color/ring untouched. */
+textarea.p-inputtext:focus#{$input-enabled}#{$input-valid}:not(
+    .p-inputtext-warning
+  ),
+textarea.p-textarea:focus#{$input-enabled}#{$input-valid}:not(
+    .p-inputtext-warning
+  ) {
+  border-width: 1.5px !important;
+  border-color: var(--input-border-hover) !important;
+  box-shadow: 0 0 0 3px var(--input-shadow-focused) !important;
+  outline: none !important;
+}
+
+/* ── Textarea — Error states ─────────────────────────────────────────────
+   textarea.p-textarea is NOT covered by the general .p-inputtext error
+   rules because the class differs. Mirrors the same 3-state pattern.
+   ──────────────────────────────────────────────────────────────────── */
+#{invalid-set('textarea.p-textarea')} {
+  @include input-state(1px solid var(--input-border-error));
+}
+
+#{invalid-set('textarea.p-textarea', ':hover#{$input-enabled}')} {
+  @include input-state(1.5px solid var(--input-border-error));
+}
+
+#{invalid-set('textarea.p-textarea', ':focus#{$input-enabled}')} {
+  @include input-state(
+    1.5px solid var(--input-border-error),
+    var(--input-shadow-error)
+  );
+  outline: none !important;
+}
+
+/* ── Textarea — Warning state ──────────────────────────────────────────── */
+textarea.p-textarea.p-inputtext-warning {
+  @include input-state(
+    1.5px solid var(--input-border-warning),
+    var(--input-shadow-warning)
+  );
+}
+
+textarea.p-textarea.p-inputtext-warning:focus#{$input-enabled} {
+  @include input-state(
+    1.5px solid var(--input-border-warning),
+    var(--input-shadow-warning)
+  );
+  outline: none !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   P-SELECT — Pill shape to match input field appearance
+   ══════════════════════════════════════════════════════════════════════ */
+
+.p-select {
+  display: inline-flex !important;
+  align-items: center !important;
+  border-radius: 9999px !important;
+  height: 2.25rem !important;
+  font-size: 0.875rem !important;
+
+  border-color: var(--input-border-default) !important;
+  box-sizing: border-box !important;
+
+  &.p-disabled {
+    background: var(--input-bg-disabled) !important;
+    color: var(--input-text-disabled) !important;
+    cursor: not-allowed !important;
+    opacity: 1 !important;
+  }
+}

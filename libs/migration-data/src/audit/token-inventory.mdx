@@ -1,0 +1,41 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Foundations/Audit/Token Inventory" />
+
+# Token Inventory & Reconciliation
+
+Every semantic/component token in `libs/tokens/src/source/*.tokens.json` carries a `legacyMapping` field recording which events-ui CSS variable and/or spm-ui CSS variable it reconciles. This page explains the mechanism and gives a representative sample — the full machine-readable table is `libs/tokens/build/json/tokens.flat.json`, regenerated on every token build.
+
+## How to read a reconciled token
+
+```json
+"text": {
+  "muted": {
+    "value": "{color.mybky.mono.500}",
+    "legacyMapping": { "eventsUi": "--text-color-muted" }
+  }
+}
+```
+
+This means: the BAPS token `color.mybky.text.muted` replaces events-ui's `--text-color-muted`. Tokens with both `eventsUi` and `spmUi` keys are cases where a semantic *concept* exists in both products (e.g. "muted text color") even though the two brands' actual hex values differ — those are kept as separate `mybky.*` / `sampark.*` branches, not merged into one value, per the brand-scoping decision in `inconsistency-findings.mdx`.
+
+## Representative sample (not exhaustive — see build output for the full set)
+
+| BAPS token | Value | events-ui | spm-ui |
+| --- | --- | --- | --- |
+| `color.mybky.text.primary` | `#181b1d` | `--high-contrast-text-color` | — |
+| `color.sampark.text.primary` | `#151414` | — | `--mono-100` |
+| `color.mybky.border.default` | `#e4ecf1` | `--border-color` | — |
+| `color.sampark.border.default` | `#e1e0e0` | — | `--mono-borders` |
+| `color.sampark.border.error` | `#ea151a` | — | `--input-border-error` |
+| `color.mybky.state.error` | `#e05255` | `--error-color` | — |
+| `radius.mybky.pill` | `99px` | `noir.theme.ts formField.borderRadius` | — |
+| `radius.sampark.default` | `4px` | — | `$borderRadius` / `--table-border-radius` |
+| `button.mybky.height.m` | `2.25rem` (36px) | `--btn-height-m` | — |
+| `button.sampark.height.default` | `2rem` (32px) | — | button default height |
+| `shadow.sampark.inputFocus` | `0 0 0 3px #f2f1f0` | — | `--input-shadow-focused` |
+| `motion.duration.base` | `150ms` | button/badge/avatar transition | button transition |
+
+## What's NOT yet reconciled
+
+This inventory currently covers color primitives/semantics, typography, spacing, radius, shadow, motion, and component tokens for **Button, FormField, Badge, Avatar, ToggleSwitch** only — matching the Tier 1/2 priority components identified for both products. Still outstanding for Phase A: Checkbox/Radio, Select/Dropdown, Table/DataTable, Tabs, Tooltip, Overlay/Dialog z-index tiers (Sampark only, events-ui doesn't define an equivalent scale explicitly), and the full 900+ line events-ui `_light.scss` / 6800-line spm-ui SCSS set beyond what's captured here.

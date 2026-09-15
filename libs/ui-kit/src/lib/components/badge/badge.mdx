@@ -1,0 +1,64 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as BadgeStories from './badge.stories';
+
+<Meta of={BadgeStories} />
+
+# Badge
+
+A small count or status chip, typically overlaid on an icon/avatar or inline next to a label. The BAPS wrapper components (`baps-badge` and `baps-overlaybadge`) wrap PrimeNG's `p-badge` and `p-overlaybadge` and theme them globally — this page documents that usage against the `MyBky` preset (`libs/ui-kit/src/lib/theme/baps.theme.ts`). MyBKY applies the pill radius (`99px`) to every badge; Sampark uses a `4px` radius and its own 20/22/28px size scale, live per-instance via `brand="sampark"` (scoped `dt`, same pattern as `baps-button`/`baps-avatar`) or page-wide via the Storybook "Design system" toolbar. `baps-overlaybadge` does not yet expose the same per-instance `brand` input — PrimeNG's `OverlayBadge` has no `dt` passthrough to forward it to the inner badge, so it currently only follows the page-wide toggle.
+
+## Usage
+
+```html
+<!-- Inline count -->
+<baps-badge [value]="unread" severity="danger" />
+
+<!-- Status dot -->
+<baps-badge severity="success" />
+
+<!-- Anchored to an icon button -->
+<baps-overlaybadge [value]="unread" severity="danger">
+  <baps-button icon="pi pi-bell" [rounded]="true" [text]="true" ariaLabel="Notifications" />
+</baps-overlaybadge>
+```
+
+## Examples
+
+### Playground
+
+<Canvas of={BadgeStories.Playground} />
+
+### Severities
+
+<Canvas of={BadgeStories.Severities} />
+
+### Sizes
+
+<Canvas of={BadgeStories.Sizes} />
+
+### Sampark
+
+<Canvas of={BadgeStories.Sampark} />
+
+### Sampark Types
+
+<Canvas of={BadgeStories.SamparkTypes} />
+
+### Dot And Overlay
+
+<Canvas of={BadgeStories.DotAndOverlay} />
+
+## When Not to Use
+
+| Need | Use | Not this |
+| --- | --- | --- |
+| A word-length status label ("Active", "Pending approval") | `baps-tag` | Badge — fixed height, no wrap or truncation handling (see below) |
+| A message the user must read or dismiss | `baps-alert`, or `baps-message` inline in a form | Badge |
+| Progress or an in-flight operation | `baps-progressbar` | Badge |
+| A per-instance Sampark skin on the anchored form | `baps-badge` positioned yourself | `baps-overlaybadge` — it exposes no `brand` input, because PrimeNG's `OverlayBadge` has no `dt` passthrough to the inner badge |
+| An interactive chip the user can click or remove | `baps-button` (or `baps-tag` beside one) | Badge — it is never a target |
+
+## Accessibility
+
+- A badge value is decorative markup — screen readers do not reliably announce it in context. For counts that carry meaning (unread messages, errors), pair the anchor element with an `ariaLabel` that includes the count (e.g. `ariaLabel="Notifications, 4 unread"`).
+- Do not rely on a dot badge's color alone to convey status — colorblind users can't distinguish success-green from danger-red. Back it with text or an icon.

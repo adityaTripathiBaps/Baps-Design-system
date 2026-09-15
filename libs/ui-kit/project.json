@@ -1,0 +1,51 @@
+{
+  "name": "ui-kit",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/ui-kit/src",
+  "prefix": "baps",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "compile": {
+      "executor": "@nx/angular:ng-packagr-lite",
+      "outputs": [
+        "{workspaceRoot}/dist/libs/ui-kit-stage"
+      ],
+      "defaultConfiguration": "production",
+      "options": {
+        "project": "libs/ui-kit/ng-package.json",
+        "tsConfig": "libs/ui-kit/tsconfig.lib.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/ui-kit/tsconfig.lib.prod.json"
+        },
+        "development": {}
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "dependsOn": [
+        "compile"
+      ],
+      "outputs": [],
+      "cache": false,
+      "options": {
+        "command": "node libs/ui-kit/scripts/fix-dist-package-json.mjs"
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": [
+        "{projectRoot}/test-output/jest/coverage"
+      ],
+      "options": {
+        "jestConfig": "libs/ui-kit/jest.config.cts",
+        "tsConfig": "libs/ui-kit/tsconfig.spec.json"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

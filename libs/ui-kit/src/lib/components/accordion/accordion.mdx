@@ -1,0 +1,93 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as AccordionStories from './accordion.stories';
+
+<Meta of={AccordionStories} />
+
+# Accordion
+
+Collapsible sections, over PrimeNG v21 Accordion.
+
+Two ways in, and the first is the one to reach for:
+
+- **`baps-accordion` / `baps-accordion-panel`** — the house shape. The header badge, the label, the body wrapper and the divider are inputs, so a section is one element with four attributes rather than fifteen lines of repeated markup. No `p-` element at the call site.
+- **`bapsAccordion`** — the directive, applied to a raw `p-accordion`. Use it when a consumer needs PrimeNG's own panel API, such as a custom header template.
+
+Built from the Sampark filter panel, Figma node [17512:84215](https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/%F0%9F%9F%A2-Sampark-Portal?node-id=17512-84215) — 20 variants: ten sections across `State=Default` and `State=Open`.
+
+## Usage
+
+```ts
+import { Accordion, AccordionPanel, AccordionHeader, AccordionContent } from 'primeng/accordion';
+import { BapsAccordion, BapsCheckbox } from '@org/ui-kit';
+import { FormsModule } from '@angular/forms';
+
+@Component({
+  imports: [
+    Accordion, AccordionPanel, AccordionHeader, AccordionContent,
+    BapsAccordion, BapsCheckbox, FormsModule,
+  ],
+  template: `
+    <p-accordion bapsAccordion brand="sampark" [multiple]="true" [(value)]="open">
+      <p-accordion-panel value="status">
+        <p-accordion-header>
+          <span class="baps-accordion-count" aria-hidden="true">{{ matches }}</span>
+          <span class="baps-accordion-label">Status</span>
+        </p-accordion-header>
+        <p-accordion-content>
+          <div class="baps-accordion-body">
+            <span class="baps-accordion-divider"></span>
+            <baps-checkbox brand="sampark" label="Complete" [(ngModel)]="complete" />
+            <baps-checkbox brand="sampark" label="Pending" [(ngModel)]="pending" />
+          </div>
+        </p-accordion-content>
+      </p-accordion-panel>
+    </p-accordion>
+  `,
+})
+export class EventFilters {
+  open: string[] = ['status'];
+  matches = 4;
+  complete = true;
+  pending = true;
+}
+```
+
+## Examples
+
+### Filter Panel
+
+<Canvas of={AccordionStories.FilterPanel} />
+
+### Default
+
+<Canvas of={AccordionStories.Default} />
+
+### Multiple
+
+<Canvas of={AccordionStories.Multiple} />
+
+### Without Count
+
+<Canvas of={AccordionStories.WithoutCount} />
+
+### Disabled
+
+<Canvas of={AccordionStories.Disabled} />
+
+### Brands
+
+<Canvas of={AccordionStories.Brands} />
+
+## When Not to Use
+
+- **Content the reader needs side by side.** Collapsing hides it; use a two-column layout.
+- **A single section.** One collapsible block is a disclosure, not an accordion — `<details>` or a plain toggle is less machinery.
+- **Switching between peer views.** That is tabs; see [`bapsTabs`](/docs/components-tabs--docs).
+- **Nesting more than one level.** A tree of collapsibles is a tree — use [`baps-tree-select`](/docs/components-treeselect--docs) for picking, or a real tree for browsing.
+
+## Accessibility
+
+- Keyboard navigation, `aria-expanded`, the header button semantics and the chevron rotation are all PrimeNG's. None of it is reimplemented — which is most of the reason to use the real component rather than hand-rolling a disclosure.
+- The count badge carries `aria-hidden="true"` in every example. The tally duplicates what the section content already says, and the header button's accessible name should be the label alone.
+- The label truncates with an ellipsis rather than wrapping, because the header height is pinned at 32px. Keep labels short enough to read; the full text is not exposed on hover.
+- Touch targets follow the shared `@media (pointer: coarse)` rule in `_touch-targets.scss`.

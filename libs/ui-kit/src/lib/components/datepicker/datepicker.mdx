@@ -1,0 +1,87 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as DatePickerStories from './datepicker.stories';
+
+<Meta of={DatePickerStories} />
+
+# DatePicker
+
+A date or date-range picker. `baps-datepicker` wraps PrimeNG’s `p-datepicker` and implements `ControlValueAccessor`.
+
+## Usage
+
+```html
+<baps-datepicker ariaLabel="Start date" [(ngModel)]="start" />
+```
+
+MyBKY is the unscoped default, so no `brand` is needed for it. Add
+`brand="sampark"` only to opt a single instance into Sampark on an otherwise
+MyBKY page — a page-wide Sampark app sets `.baps-ds-sampark` on `<body>` and
+needs no per-instance attribute at all.
+
+## Examples
+
+### Default
+
+<Canvas of={DatePickerStories.Default} />
+
+### Range
+
+<Canvas of={DatePickerStories.Range} />
+
+### Range My BKY
+
+<Canvas of={DatePickerStories.RangeMyBKY} />
+
+### Overlay
+
+<Canvas of={DatePickerStories.Overlay} />
+
+### Constrained
+
+<Canvas of={DatePickerStories.Constrained} />
+
+## Forms
+
+A full `ControlValueAccessor`, including `setDisabledState`, so it behaves like a
+native control in either forms API.
+
+### Template Driven
+
+```html
+<baps-datepicker ariaLabel="Start date" [(ngModel)]="value" />
+```
+
+### Reactive Forms
+
+```html
+<baps-datepicker ariaLabel="Start date" formControlName="value" />
+```
+
+```ts
+form = new FormGroup({ value: new FormControl(null) });
+```
+
+## When Not to Use
+
+| Need | Use | Not this |
+| --- | --- | --- |
+| A month or year only | `baps-datepicker` with `view="month"` / `view="year"` | A full day grid the user must ignore |
+| A relative period — last week, last quarter | Radios plus a range picker, as in the filter panel | A calendar for something that is not a calendar date |
+| A time without a date | *(nothing here yet)* | This component — it is date-first |
+
+## Accessibility
+
+### Screen Reader
+
+- The trigger is a real input; pair it with a visible label via `inputId`, or pass `ariaLabel` when there is no visible label.
+- `selectionMode="range"` announces a start and an end; the two are one model value, an array of two dates.
+- An `[inline]` calendar is always in the document — it raises no overlay and no page backdrop.
+
+### Keyboard Support
+
+| Key | Function |
+| --- | --- |
+| <kbd>Tab</kbd> | Moves focus to the input. |
+| <kbd>Space / Enter</kbd> | Opens the calendar; picks the focused day when open. |
+| <kbd>Arrow keys</kbd> | Moves a day or a week at a time. |
+| <kbd>Esc</kbd> | Closes the calendar. |

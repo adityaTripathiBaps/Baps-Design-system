@@ -1,0 +1,46 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Foundations/Audit/Inconsistency Findings" />
+
+# Inconsistency Findings
+
+Real contradictions found between events-ui (MyBKY, PrimeNG v21) and spm-ui (Sampark Portal, PrimeNG v17), verified against both codebases and the MyBKY / Sampark Portal Figma files. These are documented, not silently resolved — each needs a design decision before the unified system picks a winner (or keeps both as brand-scoped variants).
+
+## 1. Two genuinely different brands, not just two implementations
+
+MyBKY's brand color is blue (`#5f78b8` → `#384871` gradient). Sampark's brand color is maroon (`#c96868`, hover `#b44141`). This is not an inconsistency to "fix" — they are different products with different brand identities. **Decision made**: the token system keeps brand-scoped primitive namespaces (`color.mybky.*`, `color.sampark.*`) rather than forcing one brand color, with shared *structure* (semantic/component token shape) across both.
+
+## 2. Radius philosophy is fundamentally different, not just a different number
+
+- **MyBKY**: pill shape (`99px`/`9999px`) is the *universal* shape — buttons, form fields, badges, avatars, toggle switches all use it.
+- **Sampark**: `4px` is the *default* radius for buttons, inputs, badges, avatars. Pill (`100px`) is reserved for badges/notification-count/switch-tracks only — it is not the universal language.
+
+This is a design-language-level decision, not a token value to reconcile. Recommend keeping both as named radius scales (`radius.mybky.pill` vs `radius.sampark.default`) rather than picking one for "the" design system.
+
+## 3. Dark mode: MyBKY has it, Sampark does not
+
+events-ui ships a full dark-mode token set (`_dark.scss`, `.app-dark` selector). spm-ui has no dark-mode tokens at all — confirmed light-theme-only. Any shared component built for "the" design system needs to either (a) support dark mode optionally per-brand, or (b) explicitly scope dark-mode support to MyBKY components only. Do not assume dark mode is available when documenting Sampark-side components.
+
+## 4. Figma vs. code drift — Sampark primary-100
+
+The spm-ui codebase's `--primary-100` is `#9e3636`. The Sampark Portal Figma file's "Colors" page primary swatch (darkest stop) is `#873030`. These don't match. Likely code has drifted from an earlier Figma revision, or Figma was updated after implementation. Flagged for design sign-off — the token pipeline currently uses the Figma-verified `#873030` as `color.sampark.primary.100`, with the code value noted here for reference.
+
+## 5. Figma defines a Tertiary blue palette not implemented in spm-ui code
+
+The Sampark Portal Figma "Colors" page has a full 7-stop "Tertiary" scale (`#002d4d` → `#f7fcff`, core `#1270b2`) alongside Mono/Primary/Secondary/Info/Warning/Success/Error. No corresponding `--tertiary-*` CSS variable or usage was found anywhere in the spm-ui codebase. Either this is a planned-but-unbuilt palette, or it's used somewhere not yet located. Captured in `color.sampark.tertiary.*` pending confirmation from design/spm-ui team on intended usage.
+
+## 6. Avatar shape differs — circle vs. square
+
+MyBKY avatars are full circles (`radius: 99px`). Sampark avatars are squares with a small radius (`4px` default, up to `8px` at the 2xl size). This is consistent with finding #2 (radius philosophy) but called out separately since avatars are a highly visible, frequently-reused component.
+
+## 7. PrimeNG major version gap (v17 vs v21) means real behavioral differences, not just theming
+
+Confirmed via `git log -- primeng` in spm-ui: the vendored PrimeNG v17 fork has genuine behavioral patches (table sorting, dialog/select refinements, treetable/badge styling) — not just CSS. A component-by-component behavioral diff against stock PrimeNG 17.18.15 is still needed before assuming "v17 works like v21 minus some props" (see `spm-ui-fork-patches.mdx`, not yet written).
+
+## 8. i18n libraries differ
+
+events-ui uses `@jsverse/transloco`. spm-ui uses `@ngx-translate/core`. Both use key-based translation (no hardcoded strings in either codebase), but any shared component that renders text needs a translation abstraction that works with either, or the Storybook preview needs two separate mock-translation decorators per brand.
+
+## 9. Component library structure differs
+
+events-ui centralizes shared UI in `libs/ui-lib` (`@bkyms/ui-lib`) as an Nx library. spm-ui has no shared library — everything lives under `src/app/@shared/` inside the single app. This affects how each product would eventually consume a published `@baps/ui-kit` package (events-ui could swap `noir.theme.ts` for the shared preset relatively cleanly; spm-ui's PrimeNG v17 constraint means it can't consume the same package at all until it migrates majors).

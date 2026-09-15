@@ -1,0 +1,181 @@
+/* =====================================================================
+   libs/ui-kit/src/lib/styles/components/tag/_tag-sampark.scss
+   PrimeNG v21 Tag — Sampark "Badge" Figma Design Token Overrides
+
+   Ported from: spm-ui src/styles/_badge.scss (PrimeNG v17)
+   Figma: Inter/H3 Medium · BG = {Variant}/10-20 · border = base @ 20% ·
+   hover/text = {Variant}/80-100 · disabled text = Mono/40 (#BCB9B9)
+
+   CRITICAL: PrimeNG v21 changes from the v17 source file:
+   - .p-tag now sits on the p-tag HOST element (v17 nested an inner span)
+   - .p-tag-value            → .p-tag-label
+   - badgevariant="..."      → severity input (p-tag-{severity} classes)
+   - badgesize="xs|s|lg"     → baps-tag size input (xs|s|m|l host classes)
+   - .sp-badge-disabled      → baps-tag [disabled] (baps-tag-disabled class)
+
+   VARIANT CROSSOVER (same as the MyBKY wrapper / events-ui):
+   grey → (no severity) · primary → severity="contrast" · warning → "warn"
+   · error → "danger" · secondary/info/success map 1:1
+
+   SIZE CROSSOVER — Sampark boxes differ from MyBKY:
+   xs 20px/12px · s (default) 22px/14px · m = s (spm-ui md is the same
+   box) · l 28px/14px, radius 6px, icon 16px. NOT pill — [rounded] is
+   deliberately neutralised under this scope.
+
+   SCOPE: every rule accepts either opt-in (same :is() pattern as the
+   avatar wrapper):
+   - baps-tag.baps-sampark  — single instance via brand="sampark"
+   - .baps-ds-sampark        — page-wide body class the Storybook
+     "Design system" toolbar toggles (.storybook/preview.ts)
+   The MyBKY skin (tag.component.ts styles + Baps preset) stays the
+   default; !important on every property outranks both the preset's
+   severity fills and the component styles regardless of Angular's
+   style-injection order. Import AFTER input-sampark (styles.scss).
+
+   USAGE IN TEMPLATES (API unchanged from MyBKY):
+   <baps-tag value="Registered" severity="success" size="l" brand="sampark" />
+   ===================================================================== */
+
+/* ── Base container — S geometry + grey (no severity) colors ──────────
+   The !important geometry also pins baps-tag-m to the S box: spm-ui's
+   md badge is the same 22px box, so the MyBKY 26px m rule must lose. */
+:is(baps-tag.baps-sampark, .baps-ds-sampark baps-tag) .p-tag {
+  height: var(--tag-sampark-height-s, 1.375rem) !important;
+  /* Feeds the wrapper's icon-only square (Text=False); the Sampark boxes are
+     20/22/28, not the MyBKY 18/22/32. */
+  --baps-tag-height: var(--tag-sampark-height-s, 1.375rem) !important;
+  /* Sampark is never pill — the trailing action plate follows the chip. */
+  --baps-tag-action-radius: var(--radius-sampark-sm, 0.1875rem) !important;
+  border-radius: var(--tag-sampark-radius, 0.25rem) !important;
+  padding: var(--tag-sampark-padding-s, 0 0.25rem) !important;
+  gap: var(--tag-sampark-gap, 0.125rem) !important;
+  font-size: var(--tag-sampark-font-size-s, 0.875rem) !important;
+  font-weight: var(--tag-sampark-font-weight, 500) !important;
+  border: 1px solid var(--tag-sampark-grey-border, #e1e0e0) !important;
+  background: var(--tag-sampark-grey-background, #1514140a) !important;
+  color: var(--tag-sampark-grey-text, #595656) !important;
+  --baps-tag-border-hover: var(
+    --tag-sampark-grey-border-hover,
+    #9f9c9c
+  ) !important;
+}
+
+/* Sampark's container padding IS the full inset — kill the +4px the
+   MyBKY wrapper gives the label. */
+:is(baps-tag.baps-sampark, .baps-ds-sampark baps-tag) .p-tag .p-tag-label {
+  padding: 0 !important;
+}
+
+/* ── Severity variants — bg/text/border + hover ring re-pointed ─────── */
+:is(baps-tag.baps-sampark, .baps-ds-sampark baps-tag) .p-tag-contrast {
+  background: var(--tag-sampark-primary-background, rgba(135, 48, 48, 0.1)) !important;
+  border-color: var(--tag-sampark-primary-border, #87303033) !important;
+  color: var(--tag-sampark-primary-text, #b44141) !important;
+  --baps-tag-border-hover: var(
+    --tag-sampark-primary-border-hover,
+    #b44141
+  ) !important;
+}
+
+:is(baps-tag.baps-sampark, .baps-ds-sampark baps-tag) .p-tag-secondary {
+  background: var(--tag-sampark-secondary-background, #e6e6e5) !important;
+  border-color: var(--tag-sampark-secondary-border, #4a494733) !important;
+  color: var(--tag-sampark-secondary-text, #2c2c2a) !important;
+  --baps-tag-border-hover: var(
+    --tag-sampark-secondary-border-hover,
+    #2c2c2a
+  ) !important;
+}
+
+:is(baps-tag.baps-sampark, .baps-ds-sampark baps-tag) .p-tag-info {
+  background: var(--tag-sampark-info-background, #e6f0fe) !important;
+  border-color: var(--tag-sampark-info-border, #3889fa33) !important;
+  color: var(--tag-sampark-info-text, #0661e0) !important;
+  --baps-tag-border-hover: var(
+    --tag-sampark-info-border-hover,
+    #0661e0
+  ) !important;
+}
+
+:is(baps-tag.baps-sampark, .baps-ds-sampark baps-tag) .p-tag-warn {
+  background: var(--tag-sampark-warning-background, #fef4e6) !important;
+  border-color: var(--tag-sampark-warning-border, #faab3833) !important;
+  color: var(--tag-sampark-warning-text, #e08705) !important;
+  --baps-tag-border-hover: var(
+    --tag-sampark-warning-border-hover,
+    #e08705
+  ) !important;
+}
+
+:is(baps-tag.baps-sampark, .baps-ds-sampark baps-tag) .p-tag-danger {
+  background: var(--tag-sampark-error-background, #fde8e8) !important;
+  border-color: var(--tag-sampark-error-border, #ea151a33) !important;
+  color: var(--tag-sampark-error-text, #cc0005) !important;
+  --baps-tag-border-hover: var(
+    --tag-sampark-error-border-hover,
+    #cc0005
+  ) !important;
+}
+
+:is(baps-tag.baps-sampark, .baps-ds-sampark baps-tag) .p-tag-success {
+  background: var(--tag-sampark-success-background, #e8fcf0) !important;
+  border-color: var(--tag-sampark-success-border, #17b56c33) !important;
+  color: var(--tag-sampark-success-text, #089152) !important;
+  --baps-tag-border-hover: var(
+    --tag-sampark-success-border-hover,
+    #089152
+  ) !important;
+}
+
+/* ── Hover — only the border darkens; bg and text never change ────────
+   Restated because the base rule's !important border would otherwise
+   beat the MyBKY wrapper's non-important hover rule. */
+:is(baps-tag.baps-sampark, .baps-ds-sampark baps-tag):not(.baps-tag-disabled) .p-tag:hover {
+  border-color: var(--baps-tag-border-hover) !important;
+}
+
+/* ── Trailing action plate ────────────────────────────────────────────
+   Figma's "Badge Hover Action" frame (13197:90737) is Mono/20 #f3f2f2 held
+   at opacity 0 until hover — i.e. a hover-only plate behind the trailing
+   glyph. No --tag-sampark-action-* token exists yet; the var name below is
+   the promotion target, the mono-20 reference is the real Figma value. */
+:is(baps-tag.baps-sampark, .baps-ds-sampark baps-tag):not(.baps-tag-disabled)
+  .baps-tag-action:hover {
+  background: var(
+    --tag-sampark-action-hover-background,
+    var(--color-sampark-mono-20, #f3f2f2)
+  ) !important;
+}
+
+/* ── Sizes — xs and l; s is the base, m deliberately = s ────────────── */
+:is(baps-tag.baps-sampark, .baps-ds-sampark baps-tag).baps-tag-xs .p-tag {
+  height: var(--tag-sampark-height-xs, 1.25rem) !important;
+  --baps-tag-height: var(--tag-sampark-height-xs, 1.25rem) !important;
+  padding: var(--tag-sampark-padding-xs, 0 0.25rem) !important;
+  font-size: var(--tag-sampark-font-size-xs, 0.75rem) !important;
+}
+
+:is(baps-tag.baps-sampark, .baps-ds-sampark baps-tag).baps-tag-l .p-tag {
+  height: var(--tag-sampark-height-l, 1.75rem) !important;
+  --baps-tag-height: var(--tag-sampark-height-l, 1.75rem) !important;
+  border-radius: var(--tag-sampark-radius-l, 0.375rem) !important;
+  padding: var(--tag-sampark-padding-l, 0.25rem 0.375rem) !important;
+  gap: var(--tag-sampark-gap-l, 0.25rem) !important;
+  font-size: var(--tag-sampark-font-size-l, 0.875rem) !important;
+}
+
+/* l is the one size where the icon outgrows the label (16px vs 14px);
+   xs/s keep the wrapper's font-size:inherit. */
+:is(baps-tag.baps-sampark, .baps-ds-sampark baps-tag).baps-tag-l .p-tag .p-tag-icon {
+  font-size: var(--tag-sampark-icon-size-l, 1rem) !important;
+}
+
+/* ── Disabled — distinct fill, muted text, hover suppressed by the
+   :not() guard on the hover rule above ──────────────────────────────── */
+:is(baps-tag.baps-sampark, .baps-ds-sampark baps-tag).baps-tag-disabled .p-tag {
+  background: var(--tag-sampark-disabled-background, #1514140a) !important;
+  border-color: var(--tag-sampark-disabled-border, #e1e0e0) !important;
+  color: var(--tag-sampark-disabled-text, #bcb9b9) !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+}

@@ -1,0 +1,244 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Patterns/Single-brand project setup" />
+
+# Setting up a single-brand project
+
+This library ships **one component tree with two skins** — MyBKY (the default)
+and Sampark. Storybook flips between them with the "Design system" toolbar, but
+a real product app picks one and stays there.
+
+Picking one is not a single setting. There are **four** independent mechanisms
+that decide what a given component renders, and they can disagree. A project
+that sets three of the four looks almost right — maroon buttons and square
+corners, but pill-shaped blue-bordered inputs — which reads as a styling bug
+rather than a configuration gap, and is genuinely hard to trace.
+
+This page is the checklist. Work through all four.
+
+## Why there are four
+
+Different parts of a component's appearance live in different systems:
+
+| # | Mechanism | Controls | Set it in |
+|---|---|---|---|
+| 1 | PrimeNG preset | Colours, radii, sizes that the token system can express | `app.config.ts` |
+| 2 | `.baps-ds-sampark` ancestor class | CSS the token system *cannot* express — explicit heights, hover rings, the bordered-square avatar, the dark rail | `index.html` |
+| 3 | `brand="sampark"` per instance | The same CSS as #2, opted in one component at a time | Every template |
+| 4 | `*-sampark` SCSS partials | The three form controls with a fully separate hand-written file per skin | `styles.scss` |
+
+#4 is the one that bites. Most components have a single stylesheet that
+*branches* on scope. Input, select and toggle-switch instead have **two whole
+files** — `_input.scss` and `_input-sampark.scss` — and you load one or the
+other. Load the wrong one and no amount of `brand="sampark"` will fix it,
+because the Sampark rules were never in the bundle.
+
+## 1. Global preset
+
+```ts
+// src/app/app.config.ts
+import { providePrimeNG } from 'primeng/config';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { Sampark } from '@org/ui-kit'; // not `MyBky`
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideRouter(routes),
+    provideAnimationsAsync(),
+    providePrimeNG({
+      theme: {
+        preset: Sampark,
+        options: { darkModeSelector: '.baps-dark' },
+      },
+      ripple: true,
+    }),
+  ],
+};
+```
+
+`Sampark` and `MyBky` are both `definePreset()` outputs and both are **named**
+exports. Each theme file also has a `default` export bundling the preset with
+its options — but `index.ts` re-exports with `export *`, which does not
+forward default exports. Import the named one.
+
+## 2. Page-wide scope class
+
+```html
+<!-- src/index.html -->
+<body class="baps-ds-sampark">
+  <app-root></app-root>
+</body>
+```
+
+This is the same class Storybook's toolbar toggles. It activates every rule
+written as `:is(component.baps-sampark, .baps-ds-sampark component) { … }`.
+
+## 3. `brand="sampark"` on each instance
+
+Strictly speaking #2 already covers the page. Setting `brand` as well is
+belt-and-braces: it keeps a component correct if it is ever reused outside
+this shell, and it makes the intent visible at the call site.
+
+```html
+<baps-button label="Save changes" brand="sampark" />
+<baps-avatar label="AT" size="s" brand="sampark" />
+<baps-table [value]="rows" brand="sampark">…</baps-table>
+```
+
+Components with a `brand` input: button, avatar, navbar, internal-navbar,
+breadcrumb, tag, divider, progress bar, table, select, checkbox,
+toggle-switch, card, and the `bapsTabs` directive.
+
+Components with **no** brand switch — they render identically under either
+skin, so there is nothing to set: `baps-alert`, `baps-badge`,
+`baps-avatargroup`, `baps-message`, `baps-floatlabel`.
+
+## 4. The right SCSS partials
+
+This is the step that is easy to get wrong.
+
+```scss
+/* src/styles.scss */
+@use '@org/ui-kit/src/lib/styles/layout/fonts';
+@use '@org/ui-kit/src/lib/styles/layout/common';
+
+/* Load the BASE files first — the -sampark partials override them and
+   several rules win on source order alone. */
+@use '@org/ui-kit/src/lib/styles/components/input/input';
+@use '@org/ui-kit/src/lib/styles/components/select/select';
+@use '@org/ui-kit/src/lib/styles/components/toggle-switch/switch';
+
+/* …then the Sampark overrides. THESE are the ones a Sampark project needs. */
+@use '@org/ui-kit/src/lib/styles/components/input/input-sampark';
+@use '@org/ui-kit/src/lib/styles/components/select/select-sampark';
+@use '@org/ui-kit/src/lib/styles/components/toggle-switch/switch-sampark';
+
+/* Standalone — no base file exists for these, so there is nothing to get
+   wrong; load them whenever you use the component. */
+@use '@org/ui-kit/src/lib/styles/components/tag/tag-sampark';
+@use '@org/ui-kit/src/lib/styles/components/table/table-sampark';
+@use '@org/ui-kit/src/lib/styles/components/tabs/tabs-sampark';
+@use '@org/ui-kit/src/lib/styles/components/tooltip/tooltip-sampark';
+```
+
+Order matters, and so does loading **both** files for the first three. Each
+`*-sampark` partial `@use`s its base counterpart internally for shared Sass
+helpers, then adds higher-specificity rules under `.baps-ds-sampark` — it
+layers on top of the base rather than replacing it.
+
+Also import the generated tokens, which every rule above reads from:
+
+```scss
+@use '@org/tokens/build/css/tokens.css';
+```
+
+## Verifying you got all four
+
+The fastest check is a page with an input, a button and an avatar on it:
+
+| Symptom | Which step is missing |
+|---|---|
+| Buttons are blue and pill-shaped | 1 — still on the `MyBky` preset |
+| Buttons are maroon but the wrong height; avatars are circles | 2 and 3 — no scope class anywhere |
+| Everything is Sampark **except** inputs / selects / switches, which stay pill-shaped with blue focus rings | 4 — the base partial is loaded instead of `-sampark` |
+| One stray component is off-brand | 3 — that instance is missing `brand="sampark"` |
+
+## Hard-coded fallbacks are a trap
+
+Component CSS carries literal fallbacks — `var(--color-sampark-border-default, #e1e0e0)`.
+Those exist so a component still renders if tokens.css failed to load. If you
+copy that pattern into **your own** styles, copy the right family: a
+`var(--color-mybky-mono-900, …)` fallback in an app stylesheet is a MyBKY
+value that will quietly survive every one of the four steps above.
+
+## Giving the project its own theme seam
+
+Separate from the four above. Those decide *which brand* a project renders;
+this decides where that project puts anything the brand does not cover.
+
+The four steps above make a project *look* like Sampark. They do not give it
+anywhere to be **itself**. The moment a project needs one colour, radius or
+control height that Sampark does not have, the only places to put it are the
+design system — which changes Sampark for every consumer — or scattered local
+overrides, which is exactly how an app drifts away from its design system.
+
+So pass the preset through a project file rather than using the shipped one
+directly. `baps-app-shell` does this; copy the shape.
+
+```ts
+// src/app/theme/<project>.theme.ts
+import { definePreset } from '@primeuix/themes';
+import { Sampark } from '@org/ui-kit';
+
+/** Pass-through today. This file is where divergence goes when it arrives. */
+export const AppSell = definePreset(Sampark, {});
+```
+
+```ts
+// app.config.ts
+providePrimeNG({ theme: { preset: AppSell, options: { darkModeSelector: '.baps-dark' } } })
+```
+
+`definePreset` deep-merges, so a real divergence writes only the branch that
+differs and inherits everything else:
+
+```ts
+export const AppSell = definePreset(Sampark, {
+  semantic: {
+    primary: { 500: '#1d6f5c', 600: '#17594a' },
+    formField: { borderRadius: '8px' },
+  },
+});
+```
+
+This is the same mechanism `withAccent()` / `withSurface()` use in
+`accent.theme.ts` and the same one Storybook's toolbar drives — nothing new.
+
+### The CSS half
+
+PrimeNG has no token for plenty of what this design system styles, which is
+why the `-sampark` partials exist at all. Those gaps, plus anything the **app
+itself** picks rather than a component, belong in a project theme block in
+`styles.scss`:
+
+```scss
+/* Project theme layer — resolves to the design-system values today. */
+:root {
+  --app-surface-page: var(--color-sampark-surface-ground, #f3f2f2);
+  --app-text-primary: var(--color-sampark-text-primary, #151414);
+}
+
+body {
+  background: var(--app-surface-page);
+  color: var(--app-text-primary);
+}
+```
+
+The distinction that matters: a design-system **component** picks its colours
+from its own tokens, and an app must not reach in and override those. But the
+page ground behind the shell, or the default text colour, are the *app's*
+choices. Those were reading `--color-sampark-*` directly, which is correct
+while the project is Sampark and has nowhere to go the moment it is not.
+
+### What not to do
+
+Do not add project-specific styling to a design-system component. A component
+that has to look different for one project either has the wrong API or the
+difference belongs in a token — both are fixes in `@org/ui-kit` that every
+project benefits from, not a local patch.
+
+### A note on how far this scales
+
+The seam above is real and works today, but it sits on top of tokens that are
+still **brand-named** — `--color-sampark-*`, not `--color-primary`. A project
+whose theme is genuinely its own still ends up aliasing Sampark's names, and
+each new brand still needs its own `-sampark`-style partial per component.
+Closing that properly is a design-system refactor, not something a consumer can
+do. Until it lands, this seam is what keeps project-specific changes out of the
+design system.
+
+## Doing the same for MyBKY
+
+The mirror image: preset `MyBky`, no `.baps-ds-sampark` class, no `brand`
+inputs, and load `input` / `select` / `switch` **without** their `-sampark`
+counterparts.

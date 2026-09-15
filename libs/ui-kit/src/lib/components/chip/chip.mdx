@@ -1,0 +1,196 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as ChipStories from './chip.stories';
+
+<Meta of={ChipStories} />
+
+# Chip
+
+A compact label for a selected value, a filter, or an entity. `baps-chip`
+wraps PrimeNG's `p-chip`.
+
+Figma calls this component **Badge** — MyBKY
+[22465:95582](https://www.figma.com/design/yY5bmcEifXbcCwhauoiy6Y/%F0%9F%9F%A2-MyBKY--Phase-1-?node-id=22465-95582),
+Sampark
+[13197:90701](https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/%F0%9F%9F%A2-Sampark-Portal?node-id=13197-90701).
+"Badge" in this design system is a different, smaller object (a count on a
+corner) — see [`baps-badge`](/docs/components-badge--docs). Same drawing, two
+names; the component keeps the code-side one.
+
+This is the **same visual object a multiselect renders for each selection**, so
+both read from the grey tag tokens rather than a second near-identical set of
+greys. The multiselect's own chips are styled under `.p-multiselect` in
+`styles/components/select`, so nothing here reaches them and nothing there
+reaches a standalone chip — but if one moves, the other should.
+
+## Usage
+
+```html
+<baps-chip label="Robbinsvile" />
+```
+
+```html
+<baps-chip
+  label="Satsang Network"
+  severity="primary"
+  size="m"
+  [count]="8"
+  [removable]="true"
+  (remove)="drop('satsang')"
+/>
+```
+
+MyBKY is the unscoped default; add `brand="sampark"` only to opt one instance
+in on an otherwise-MyBKY page.
+
+### A design-system icon inside a chip
+
+`icon` takes a **CSS class**, not a glyph name — it is passed straight to
+PrimeNG, which renders `<span [class]="icon">`. So `icon="pi pi-clock"` works
+and `icon="add-circle"` silently renders an empty span: the class matches no
+stylesheet, nothing draws, and there is no error to read.
+
+For a `baps-icon` glyph, use the content slot:
+
+```html
+<baps-chip severity="success" label="Badge Text" [count]="8" [chevron]="true">
+  <baps-icon name="add-circle" [size]="14" />
+</baps-chip>
+```
+
+Import both — `BapsChip, BapsIcon` — and pass `[size]` explicitly: the icon
+defaults to the `lg` step (24px), which overflows every chip height below L.
+Match the size ramp: 12 for xs, 14 for s and m, 20 for l.
+
+Projected content lands in the leading slot, left of the label, and the chip's
+own `order` rules keep the count and chevron to the right of it — so the
+rendered row is icon, label, count, chevron regardless of what the DOM order
+looks like in devtools.
+
+Why the slot rather than teaching `icon` to accept glyph names: the chip would
+then have to import the icon component, which pulls the whole 545-glyph registry
+into every chip on the page. The same reasoning is why the chevron is inline SVG
+here rather than a `baps-icon`.
+
+## The six axes
+
+Figma's frame is a matrix. Each axis maps to one input:
+
+| Figma property | Input | Values |
+| --- | --- | --- |
+| Badge | `severity` | `grey` (default), `primary`, `secondary`, `info`, `warning`, `error`, `success` |
+| Size | `size` | `xs` 18px, `s` 22px, `m` 26px, `l` 32px (mobile) |
+| Text | `label` | any string; omit for an icon-only chip |
+| Count Badge | `count` | number or string; `0` renders, `undefined` does not |
+| Chevron | `chevron` | `true` for a chip that opens a menu |
+| Trailing Action | `removable` | `true`; the control is revealed on hover |
+| Status | `disabled` | `true`; hover is the CSS state, not an input |
+
+### `size` is deliberately unset by default
+
+Leave `size` off and the chip keeps the geometry it has always had — 22px in
+MyBKY, 24px in Sampark. It does **not** snap to one of the four Figma sizes.
+
+That is not an oversight. The multiselect's chips and every page already using
+`baps-chip` were authored against those values, and defaulting to a Figma size
+here would silently resize all of them. Pass `size` when a design calls for a
+specific step; omit it to inherit the historical one.
+
+`severity="grey"` is the default for the same reason: it renders exactly what
+this component rendered before the ramps existed.
+
+## Anatomy
+
+The count grows the chip; the remove does not.
+
+- **Count** sits in normal flow, as its own disc on the panel surface rather
+  than a tint of the chip's fill — it has to read as a separate object sitting
+  *on* the chip.
+- **Remove** is taken out of flow and hidden until hover, so a read-only list
+  of chips is not littered with crosses and no chip resizes when one appears.
+
+That asymmetry is the design's: the count is content, the remove is an
+affordance.
+
+## Examples
+
+### Default
+
+<Canvas of={ChipStories.Default} />
+
+### Severities
+
+<Canvas of={ChipStories.Severities} />
+
+### Sizes
+
+<Canvas of={ChipStories.Sizes} />
+
+### States
+
+<Canvas of={ChipStories.States} />
+
+### With Icon
+
+<Canvas of={ChipStories.WithIcon} />
+
+### With Chevron
+
+<Canvas of={ChipStories.WithChevron} />
+
+### Icon Only
+
+<Canvas of={ChipStories.IconOnly} />
+
+### With Count
+
+<Canvas of={ChipStories.WithCount} />
+
+### Removable
+
+<Canvas of={ChipStories.Removable} />
+
+### Group
+
+<Canvas of={ChipStories.Group} />
+
+### Brands
+
+<Canvas of={ChipStories.Brands} />
+
+### Matrix
+
+<Canvas of={ChipStories.Matrix} />
+
+## When Not to Use
+
+- **A status that the row already states.** A chip repeating the row's own
+  words is noise; use [`baps-tag`](/docs/components-tag--docs) when the point
+  is the status itself.
+- **A count with no label.** A bare number on a corner is
+  [`baps-badge`](/docs/components-badge--docs), not a chip.
+- **Something clickable that navigates.** A chip is a label, not a control —
+  use a [link](/docs/components-link--docs) or a
+  [button](/docs/components-button--docs). `chevron` is for a chip that opens
+  a menu, which is the one exception.
+- **More than a line of them.** A long wrap of chips is a list; show a few and
+  a "+N more", the way the multiselect's `maxSelectedLabels` does.
+
+## Accessibility
+
+- The remove control is PrimeNG's own button and keeps its keyboard behaviour.
+  It is only *visually* hidden at rest — `visibility` plus `opacity`, not
+  `display: none` — so it stays in the tab order and a keyboard user can reach
+  it without hovering.
+- `disabled` suppresses the remove on hover as well as dimming the chip. A
+  control that appears but cannot run is worse than one that never appears.
+- `disabled` mutes the label and chevron but deliberately leaves the `count`
+  disc at full contrast — both Figma disabled nodes keep it on Mono/0 over
+  Mono/100. The number is data, not an affordance, and a greyed-out `8` beside
+  greyed-out text stops reading as a number at all.
+- The chevron is `aria-hidden`: it says the chip opens something, which the
+  chip's own accessible name should already say.
+- `count` is read as part of the chip's text. Give the label enough context
+  that "Satsang Network 8" makes sense on its own; if it does not, put the
+  count in the label.
+- Colour is never the only channel — every severity keeps its label, and the
+  ramps are fill plus ink plus edge, not fill alone.

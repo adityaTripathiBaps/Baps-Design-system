@@ -1,0 +1,53 @@
+{
+  "name": "tokens",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/tokens/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "generate": {
+      "executor": "nx:run-commands",
+      "outputs": [
+        "{projectRoot}/build",
+        "{projectRoot}/src/generated"
+      ],
+      "inputs": [
+        "{projectRoot}/src/source/**/*.tokens.json",
+        "{projectRoot}/style-dictionary.config.js"
+      ],
+      "options": {
+        "command": "style-dictionary build --config style-dictionary.config.js",
+        "cwd": "libs/tokens"
+      }
+    },
+    "compile": {
+      "executor": "@nx/js:tsc",
+      "dependsOn": [
+        "generate"
+      ],
+      "outputs": [
+        "{workspaceRoot}/dist/libs/tokens-stage"
+      ],
+      "options": {
+        "outputPath": "dist/libs/tokens-stage",
+        "main": "libs/tokens/src/index.ts",
+        "tsConfig": "libs/tokens/tsconfig.lib.prod.json",
+        "assets": [
+          "libs/tokens/*.md",
+          "libs/tokens/build/css/tokens.css"
+        ]
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "dependsOn": [
+        "compile"
+      ],
+      "outputs": [],
+      "options": {
+        "command": "node libs/tokens/scripts/fix-dist-package-json.mjs"
+      },
+      "cache": false
+    }
+  }
+}

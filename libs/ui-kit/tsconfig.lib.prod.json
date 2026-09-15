@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.lib.json",
+  "compilerOptions": {
+    "declarationMap": false
+  },
+  "angularCompilerOptions": {
+    "compilationMode": "partial"
+  },
+  "references": [
+    {
+      "path": "../tokens/tsconfig.lib.json"
+    }
+  ]
+}

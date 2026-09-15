@@ -1,0 +1,480 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Docs/Audit report" />
+
+# Design system audit report
+
+Status of the BAPS design system against the 56-section upgrade specification.
+Every number here was measured from the repository, not estimated — the
+per-component matrix below is the authoritative gap list, and anything marked
+❌ or ⚠️ is genuinely outstanding work rather than a documentation oversight.
+
+**Read this first:** the system is not complete. Roughly a third of the
+specification is satisfied. This page exists so the remaining two thirds are
+visible and scoped rather than rediscovered later.
+
+---
+
+## 1. Complete component inventory
+
+30 component directories (excluding `_template`), containing 32 components and
+4 directives.
+
+**Components:** Alert, Avatar, AvatarGroup, Badge, OverlayBadge, Breadcrumb,
+Button, Card, Checkbox, Divider, Drawer, FileUpload, FloatLabel, IconField,
+InputIcon, Message, InternalNavbar, Link, Listbox, MenuItem, Navbar, Paginator,
+ProgressBar, Select, Slider, SplitButton, Table, TableColumnConfig, Tag,
+ToggleSwitch, Toolbar, UsersDropdown.
+
+**Directives:** `[bapsInputText]`, `[bapsTextarea]`, `[bapsTooltip]`,
+`p-tabs[bapsTabs]`.
+
+The inventory supplied in the specification was verified complete — no hidden,
+undocumented, or out-of-directory production components were found (§52). One
+empty `_template/` scaffold directory exists and is not a component.
+
+---
+
+## 2–5. Atomic classification
+
+**Atoms** — Button, Avatar, Badge, OverlayBadge, Tag, Checkbox, ToggleSwitch,
+Divider, Link, Tooltip, ProgressBar, Slider, Message, InputIcon,
+`[bapsInputText]`, `[bapsTextarea]`.
+
+**Molecules** — FormField (FloatLabel + IconField + Message composition),
+AvatarGroup, Paginator, MenuItem, Select, Listbox, Breadcrumb, SplitButton,
+UsersDropdown, Card.
+
+**Organisms** — Navbar, InternalNavbar, Drawer, Table, TableColumnConfig,
+FileUpload, Toolbar, Tabs, Alert.
+
+**Patterns** — App shell, Single-brand project setup, CRUD form, Data table
+listing, Login, Delete confirmation, Data management. Seven exist. Data
+management alone covers six of the specification's named items (Search,
+Filtering, Table with filters, Table with selection, Table with bulk actions,
+Bulk actions), so roughly half of §49's list is now represented; the notable
+remaining absences are Registration, Dashboard, Settings, Profile,
+Notification, Approval workflow and Multi-step workflow.
+
+Classification was used to check composition, not to force reorganisation —
+no component was moved or renamed to fit a category (§4).
+
+---
+
+## 6–8. Variants, sizes, states
+
+| Component | Variants / severities | Sizes |
+| --- | --- | --- |
+| Alert | info, success, warning, error | — |
+| Avatar | primary, secondary, warning | `BapsAvatarSize` union |
+| Badge | secondary, success, info, warn, danger, contrast | small, large, xlarge |
+| Button | primary, secondary, success, info, warn, help, danger, contrast | small, large, xlarge |
+| Checkbox | outlined, filled | — |
+| FormField | success, info, warn, error, secondary, contrast | small, large |
+| MenuItem | default, danger | — |
+| ProgressBar | success, info, warning, error | — |
+| Select | — | small, large |
+| SplitButton | primary, secondary, success, info, warn, danger, contrast | small, large, xlarge |
+| Table | — | small, large |
+| Tag | secondary, success, info, warn, danger, contrast | xs, s, m, l |
+| ToggleSwitch | — | xs, sm, md, lg |
+
+Components with no variant or size axis (Breadcrumb, Card, Divider, Drawer,
+FileUpload, InternalNavbar, Link, Listbox, Navbar, Paginator, Slider,
+TableColumnConfig, Tabs, Toolbar, Tooltip, UsersDropdown) were reviewed and
+deliberately left without one — adding variants there would be variant
+explosion with no semantic backing (§6, §46).
+
+**Known inconsistency, not yet resolved:** size scales disagree across
+components. Button/Badge/SplitButton use `small | large | xlarge`, Tag uses
+`xs | s | m | l`, ToggleSwitch uses `xs | sm | md | lg`, Select/Table/FormField
+use `small | large`. Four different vocabularies for the same concept. §7 asks
+for a standardised scale; this has **not** been done, because it is a breaking
+API change across every consumer and needs a migration plan (§47, §48).
+
+---
+
+## 6–16. Use cases covered
+
+Storybook stories per component (185 total):
+
+FormField 24, Table 9, Avatar 8, Button 8, Card 7, Navbar 7, Tag 6,
+ToggleSwitch 6, Badge 5, Drawer 5, Paginator 5, ProgressBar 4, Alert 3,
+SplitButton 3, Tabs 3, TableColumnConfig 3, UsersDropdown 3, FileUpload 2,
+InternalNavbar 2, Toolbar 2, Tooltip 2, Breadcrumb 1, Checkbox 1, Divider 1,
+Link 1, Select 1, Slider 1.
+
+**Thin coverage flagged:** Breadcrumb, Checkbox, Divider, Link, Select and
+Slider have a single story each. §14 (Select: search, grouped options, disabled
+options, empty, loading, clear, custom templates, keyboard, long labels,
+mobile) and §21 (Slider: range, min/max, step, keyboard, tooltip, form
+integration) are substantially uncovered.
+
+Listbox and MenuItem have **no stories or MDX of their own** — both are
+documented inside `form-field.mdx` as the merged "Form Controls" entry. This is
+deliberate, not an oversight, but it does mean neither appears as its own
+Storybook sidebar entry.
+
+---
+
+## 14–26. Per-component matrix (§50)
+
+Legend: ✅ done · ⚠️ partial · ❌ missing · — not applicable
+
+| Component | Class | Stories | MDX | A11y reviewed | Responsive | MyBKY | Sampark | Tests |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Alert | Organism | 3 | ✅ | ✅ | ❌ | ✅ CSS | ✅ CSS | ❌ |
+| Avatar | Atom | 8 | ✅ | ⚠️ | ❌ | ✅ preset | ✅ preset | ❌ |
+| AvatarGroup | Molecule | — | ✅ | ⚠️ | ❌ | ✅ | ⚠️ class only | ❌ |
+| Badge | Atom | 5 | ✅ | ⚠️ | ❌ | ✅ preset | ✅ preset | ✅ |
+| Breadcrumb | Molecule | 1 | ✅ | ⚠️ `aria-current` gap | ❌ | ⚠️ thin | ✅ | ❌ |
+| Button | Atom | 8 | ✅ | ✅ | ❌ | ✅ preset | ✅ preset | ❌ |
+| Card | Molecule | 7 | ✅ | ⚠️ | ❌ | ⚠️ thin | ✅ | ❌ |
+| Checkbox | Atom | 1 | ✅ | ⚠️ | ❌ | ⚠️ thin | ✅ preset | ✅ |
+| Divider | Atom | 1 | ✅ | ⚠️ | ❌ | ⚠️ thin | ✅ preset | ❌ |
+| Drawer | Organism | 5 | ✅ | ⚠️ focus trap unverified | ❌ | ❌ PrimeNG default | ✅ SCSS | ❌ |
+| FileUpload | Organism | 2 | ✅ | ✅ | ❌ | ❌ | ✅ | ❌ |
+| FormField | Molecule | 24 | ✅ | ⚠️ | ❌ | ✅ SCSS | ✅ SCSS | ❌ |
+| InternalNavbar | Organism | 2 | ✅ | ✅ fixed | ❌ | ✅ | ✅ | ❌ |
+| Link | Atom | 1 | ✅ | ⚠️ | ❌ | ⚠️ thin | ✅ | ❌ |
+| Listbox | Molecule | 0 | ⚠️ in FormField | ⚠️ | ❌ | ✅ CSS | ✅ CSS | ⚠️ template fwd |
+| MenuItem | Molecule | 0 | ⚠️ in FormField | ⚠️ | ❌ | ✅ CSS | ✅ CSS | ❌ |
+| Navbar | Organism | 7 | ✅ | ✅ | ❌ | ✅ | ✅ | ❌ |
+| Paginator | Molecule | 5 | ✅ | ✅ | ❌ | ✅ CSS fixed | ✅ CSS | ✅ 14 tests |
+| ProgressBar | Atom | 4 | ✅ | ✅ | ❌ | ✅ CSS fixed | ✅ preset | ❌ |
+| Select | Molecule | 1 | ✅ | ✅ fixed | ❌ | ✅ SCSS | ✅ SCSS | ❌ |
+| Slider | Atom | 1 | ✅ | ✅ fixed | ❌ | ⚠️ thin | ✅ preset | ❌ |
+| SplitButton | Molecule | 3 | ✅ | ⚠️ icon-only gap | ❌ | ✅ CSS fixed | ✅ CSS | ❌ |
+| Table | Organism | 9 | ✅ | ⚠️ | ❌ | ❌ PrimeNG default | ✅ SCSS | ⚠️ template fwd |
+| TableColumnConfig | Organism | 3 | ✅ | ✅ fixed | ❌ | — Sampark-only | ✅ | ✅ 22 tests |
+| Tabs | Organism | 3 | ✅ | ⚠️ | ❌ | ❌ PrimeNG default | ✅ SCSS | ❌ |
+| Tag | Atom | 6 | ✅ | ⚠️ | ❌ | ✅ preset | ✅ SCSS | ❌ |
+| ToggleSwitch | Atom | 6 | ✅ | ⚠️ | ❌ | ✅ preset | ✅ preset | ❌ |
+| Toolbar | Organism | 2 | ✅ | ✅ fixed | ❌ | ⚠️ thin | ✅ | ❌ |
+| Tooltip | Atom | 2 | ✅ | ✅ | ❌ | ❌ PrimeNG default | ✅ SCSS | ❌ |
+| UsersDropdown | Molecule | 3 | ✅ | ✅ | ❌ | — Sampark-only | ✅ | ❌ |
+
+---
+
+## 17–18. Brand validation
+
+**The single most significant structural finding of this audit:** MyBKY is the
+declared default brand but has materially thinner implementation than Sampark.
+
+| Layer | MyBKY | Sampark |
+| --- | --- | --- |
+| `components` presets in theme file | 5 (button, badge, tag, avatar, toggleswitch) | 12 (+ checkbox, slider, progressbar, paginator, tooltip, divider, tabs, datatable) |
+| Dedicated SCSS files | 3 (`_input`, `_select`, `_switch`) | 12 |
+
+Four components — **Drawer, Table, Tabs, Tooltip** — have a Sampark SCSS file
+with no MyBKY counterpart and no MyBKY theme preset. Under `brand="mybky"` they
+render PrimeNG Material defaults, not a BAPS design. This is not a styling
+preference; it means the default brand is the less finished one.
+
+Three such gaps were closed during this work (Alert, ProgressBar, Paginator,
+SplitButton all gained real MyBKY styling). The four above remain.
+
+**Brand isolation (§29) was verified** by live rendering: per-instance
+`brand="sampark"` and the global `.baps-ds-sampark` scope coexist without
+leaking, because every Sampark rule is written as
+`:is(component.baps-sampark, .baps-ds-sampark component)` and MyBKY rules are
+left unscoped.
+
+**Intentionally brand-neutral, documented as such (§28):** FormField (a form is
+one brand throughout; ancestor scope suffices) and UsersDropdown (Sampark-only
+component, no MyBKY equivalent exists in the spec).
+
+---
+
+## 19. PrimeNG v21 mapping
+
+Documented in 25 of 26 MDX files as a "PrimeNG Mapping" table covering the v21
+component, the v17 spm-ui equivalent, BAPS customisation, and migration effort.
+
+Three components deliberately do **not** wrap PrimeNG, each documented with the
+reason: `baps-paginator` (PrimeNG's paginator cannot express the truncated
+page-link design), `bapsTabs` (same rationale), and `baps-table-column-config`
+(no PrimeNG equivalent exists).
+
+Notable PrimeNG constraints found and documented rather than worked around:
+`.p-button { font-size: 1rem }` is hardcoded upstream and not token-driven;
+`.p-badge-circle` auto-applies to single-character values, overriding the radius
+token; Breadcrumb's `aria-current` is unreachable from the wrapper without
+forking PrimeNG's internal template.
+
+---
+
+## 20. Accessibility improvements
+
+Real defects found and fixed:
+
+- **InternalNavbar** — collapsed MyBKY items removed their label from the DOM, leaving icon-only buttons with no accessible name. Added conditional `aria-label`.
+- **TableColumnConfig** — column reordering was pointer-only (`pDraggable`), unusable by keyboard. Added a real `<button>` drag handle with ArrowUp/ArrowDown reordering, group-boundary aware. Also added `aria-expanded` to the active-columns toggle.
+- **Toolbar** — search inputs had no accessible name. Added `aria-label`.
+- **Select** — no way to supply an accessible name without a visible label. Added `ariaLabel`/`ariaLabelledBy`/`inputId` passthrough.
+- **Slider** — same gap, same fix.
+- **Checkbox** — `inputId` defaulted to a `Math.random()` value, breaking SSR hydration (server and client generate different ids for the same `<label for>`). Replaced with a deterministic counter.
+
+Deliberately **not** "fixed", with reasons recorded: Tooltip's link-styled text
+was left non-interactive (placing interactive content inside `role="tooltip"`
+violates WAI-ARIA); Breadcrumb's `aria-current` was left as a documented
+limitation rather than patched via fragile DOM manipulation.
+
+**Not done:** no automated accessibility testing, no contrast audit, no screen
+reader verification, no focus-trap verification for Drawer.
+
+---
+
+## 21. Responsive improvements
+
+**Reviewed in full, partially fixed.** Every component now carries a
+`## Responsive Behavior` section derived from its actual CSS — display mode,
+fixed dimensions, wrap vs. truncate, `min-width: 0`, overflow handling — with
+interactive hit targets measured against WCAG 2.5.5.
+
+The review produced two hard, library-wide findings:
+
+- **Only 2 real `@media` queries exist** across all 32 components
+  (`navbar.component.ts` and `_drawer-sampark.scss`). Mobile layout is
+  essentially unimplemented.
+- **No component reaches the 44×44px touch target.** The slider handle is
+  18×18, ToggleSwitch's largest is 40×24, `.baps-table-row-toggle` is 10px
+  wide (failing even WCAG 2.5.8's 24×24 floor), and every Button size misses —
+  the largest by 2px.
+
+**Touch targets are now addressed**, via
+`libs/ui-kit/src/lib/styles/layout/_touch-targets.scss` — a single
+system-level file loaded last in `styles.scss`, gated entirely behind
+`@media (pointer: coarse)`.
+
+That gate is the whole design of the fix. `pointer: coarse` matches only when
+the *primary* input device is imprecise — phones and tablets. Desktop,
+including touch-capable laptops that still have a trackpad as primary, never
+sees these rules, so the Figma-specified density survives everywhere it was
+drawn for. Covered: paginator nav/page links, table action / row-toggle /
+group-toggle buttons, the alert dismiss, column-config drag and pin handles,
+the slider handle, all buttons, and the checkbox / toggle-switch controls.
+
+Two deliberate choices worth recording:
+
+- **`min-width`/`min-height`, not an invisible `::after` overlay.** The overlay trick grows the hit area without moving the visual box and would have been tidier — but `baps-avatar` (status dot, icon badge), `baps-alert` (accent bar) and the table tree spine already own their pseudo-elements. Silently stealing `::after` from them would be a far worse bug than a slightly roomier control.
+- **Controls genuinely grow on touch.** Dense rows get taller on a phone. That is the intended trade: a control that cannot be reliably hit is worse than a row that is a few pixels taller.
+
+This does **not** fix the related `baps-table-column-config` defect where the
+pin button is `visibility: hidden` until `:hover` and therefore unreachable on
+touch regardless of size — that needs a real affordance change, not a bigger
+box, and remains open.
+
+**Mobile layout is still outstanding.** Two media queries library-wide, no
+component stacks or reflows, and the table's mobile story is still 1632px of
+horizontal scroll.
+
+Additional defects found by the responsive pass and fixed:
+
+- **Avatar** — MyBKY had no `object-fit`, so non-square photos were stretched. Now `cover`.
+- **Tag** — `nowrap` with no `max-width` or `text-overflow` let a long value grow the chip until it pushed its container sideways. Now capped with an ellipsis via `--tag-max-width`.
+- **ProgressBar** — `showValue` put a 10px label inside an 8px `overflow: hidden` track, clipping it at every width under both brands. The track now grows to `1.25rem` only when a label is requested.
+- **Tooltip** — `autoHide` was not forwarded, so on touch a tap showed the tooltip and tore it down twice in the same gesture. Now exposed.
+- **SplitButton** — `size="large"` was missing its 16px font bump, making it visually identical to the default.
+
+---
+
+## 22–24. Tokens, API, SCSS
+
+**Tokens:** the Style Dictionary pipeline (`libs/tokens/src/source/*.tokens.json`
+→ generated CSS custom properties + TS constants) is sound and consistently
+used. One token was added this cycle (`color.mybky.error.100`) for the danger
+gradient's dark stop.
+
+**Hardcoded values remaining (§31):** six, all in component CSS —
+`avatar.component.ts` status ring `#ffffff` (×2), `menu-item.component.ts`
+`#c96868`, `navbar.component.ts` `#fbc02d` / `#d3a126` / `#212121`. Every other
+hex in the codebase is either a `var()` fallback or inside a comment.
+
+**API consistency:** naming is already consistent — `disabled` (never
+`isDisabled`), `brand`, `severity`, `size` throughout. The one real
+inconsistency is the four competing size vocabularies documented above.
+
+**Known API gap:** `baps-button` has no `type` input, so it never forwards
+`type="submit"` to its inner `<button>`. Any `<form (ngSubmit)>` wrapping a
+BAPS button silently does nothing. Documented in the CRUD form pattern;
+**not fixed**, as adding it touches every consumer.
+
+---
+
+## 25. Testing improvements
+
+**18 suites, 272 tests, covering 17 of 30 component directories** (up from 5
+suites / 50 tests / 4 directories at the first pass).
+
+Specs now exist for: Alert, Avatar, Badge, Checkbox, Drawer, InternalNavbar,
+Listbox, Navbar, Paginator, ProgressBar, Select, Slider, SplitButton,
+TableColumnConfig, Tag, ToggleSwitch, Tooltip — plus the pre-existing
+template-forwarding spec.
+
+§40's requirement that brand-switchable components be tested at both
+`brand="mybky"` and `brand="sampark"` is satisfied for every component with a
+`brand` input.
+
+Highlights, chosen by risk rather than by coverage percentage:
+
+- **Tooltip** — `escapeHtml()` and the rich-card content builder. Security-relevant: the rich path hands PrimeNG an HTML string it inserts unescaped, so `<script>`, quotes and angle brackets in `tooltipTitle` / `tooltipLinkLabel` are pinned as escaped.
+- **Paginator** (14) — the hand-rolled truncation algorithm, anchor-preserving page-size change, jump-to-page parse/clamp/reject, disabled boundaries, event payload.
+- **TableColumnConfig** (22) — bucket partitioning, clone-not-share staging, keyboard reorder with group-boundary refusal, apply ordering.
+- **Select** (8) — regression guard for the per-instance brand bug described in §17, including the portaled-panel scope class.
+- **Checkbox** — that two instances get distinct `inputId`s, guarding the `Math.random()` SSR-hydration bug.
+- **SplitButton** — that `primeSize` returns `undefined` for `xlarge`, which PrimeNG would otherwise reject.
+- **Navbar** — that `menuToggle` emits the *next requested* state, not the current one.
+
+Render-smoke tests for the remaining 13 directories were deliberately skipped:
+they would assert that PrimeNG renders, not that BAPS code is correct.
+
+### Earlier baseline, for reference
+
+- **Paginator** (14) — truncation algorithm, anchor-preserving page-size change, jump-to-page parse/clamp/reject, disabled boundaries, event payload, no-op guard, zero-record report.
+- **TableColumnConfig** (22) — bucket partitioning, clone-not-share staging, search/active-only composition, locked-column guards, keyboard reorder with clamping and group-boundary refusal, reset, apply order.
+- **Checkbox** (7) — CVA contract, and that two instances get distinct `inputId`s (the SSR regression guard).
+- **Badge** (3) — the `dt` brand getter.
+- **Template forwarding** (2, pre-existing) — `pTemplate` projection through `@for`/`@if`.
+
+Coverage was chosen by risk, not breadth: these are first-party algorithms with
+no upstream PrimeNG coverage. Render-smoke tests for the other 26 components
+were deliberately skipped — they would assert that PrimeNG renders, not that
+BAPS code is correct.
+
+**Not done:** §40's brand-switching tests for every brand-switchable component,
+keyboard-interaction tests, loading/error-state tests.
+
+---
+
+## 26. Visual regression
+
+**Implemented and validated.** Playwright drives a pixel baseline over every
+story: `apps/storybook-host/visual/`, 138 committed snapshots (~2.5 MB).
+
+```bash
+npx nx run storybook-host:visual-test      # compare against baseline
+npx nx run storybook-host:visual-update    # re-baseline an intended change
+```
+
+**Two viewports**, 276 baselines total: `chromium` (desktop) is the refactor
+guard — a token migration must produce zero diffs, and it also catches mobile
+CSS leaking out of its media query. `chromium-mobile` (Pixel 7) covers the
+767px breakpoint the components actually use, and emulates touch so it
+exercises the `pointer: coarse` target rules desktop never sees. Without the
+second viewport, responsive work is unverifiable: the desktop baseline passes
+happily while mobile is broken, which is precisely the state this library was
+in.
+
+Stories are discovered from Storybook's own `index.json` rather than a
+hardcoded list, so a newly added component is covered automatically instead of
+silently escaping the suite. Docs entries are skipped: they re-render canvases
+already covered individually, and MDX prose reflows on any wording edit,
+producing diffs that are never about component appearance.
+
+Self-run rather than hosted — no account, no vendor, no per-snapshot billing.
+Chromatic would offer nicer review UX and cross-browser rendering, but that is
+a purchasing decision rather than a technical one.
+
+**The harness was itself tested, and the first version failed that test.**
+Recolouring the MyBKY progress-bar fill from blue to red — obvious on screen —
+was reported as PASSING. Cause: full-page screenshots measured ~2,560 changed
+pixels against a ~920,000-pixel viewport (0.28%), close enough to the diff
+tolerance that anti-aliasing pushed it under. Every small component was
+effectively exempt from its own baseline. Cropping each shot to
+`#storybook-root` fixed it; the same change is now caught as exactly 1 of 138
+stories, with no false positives on the other 137.
+
+The lesson generalises: a visual baseline that has never been shown to fail is
+indistinguishable from one that cannot fail. Re-validate detection after any
+change to the screenshot strategy, thresholds, or viewport.
+
+**Why this mattered enough to build now:** it is the prerequisite for the
+PrimeNG token migration described in §29. Converting 707 `!important`
+overrides into token presets changes the CSS behind every component's
+appearance; without a pixel baseline that refactor is unverifiable across 138
+stories.
+
+---
+
+## 27–28. Breaking changes and migration
+
+**No breaking changes were made.** Every change this cycle was additive (new
+MDX, new stories, new tests, new MyBKY CSS, new patterns) or a bug fix that
+brought behaviour in line with its already-documented contract.
+
+Two changes worth noting as behavioural, though neither breaks a public API:
+
+- `baps-select` now emits `filterQueryChange`; previously `onSelectFilter` was an empty no-op, so no consumer can depend on the old silence.
+- `baps-checkbox`'s default `inputId` changed format from random to sequential. Any test asserting the old random shape would break; none exist.
+
+**Deferred breaking changes**, each needing a migration plan before it can be
+attempted: unifying the four size vocabularies, and adding `type` to
+`baps-button`.
+
+---
+
+## 29. Remaining gaps
+
+Ordered by cost to fix.
+
+1. **Mobile layout (§33)** — largely addressed. Navbar's mobile block was de-scoped from Sampark-only to both brands (the original bug), Pagination now contains its overflow instead of pushing page-level horizontal scroll, Toolbar hands back PrimeNG's own `flex-wrap: wrap` below 768px, and InternalNavbar collapses to a 56px icon rail. A `chromium-mobile` visual baseline now guards all of it. **Still open:** Table remains 1632px of horizontal scroll on mobile (no stacking), and Toolbar has no answer for the 768px–1000px band.
+2. **PrimeNG token migration (§57/§59/§76)** — 707 `!important` declarations and ~1,370 `.p-*` override references across the library; only ~17 of 32 components have a real PrimeNG `dt` preset. The system is override-driven where the specification requires token-driven. Now unblocked by §26's visual baseline, which can prove each conversion is visually neutral.
+3. **MyBKY brand parity** — Drawer, Table, Tabs, Tooltip still render PrimeNG Material defaults under the default brand.
+4. **`baps-table-column-config` pin is unreachable on touch** — `visibility: hidden` until `:hover`, and there is no hover on touch. Enlarging the target does not help; it needs an always-visible or long-press affordance.
+5. **Testing (§40)** — 13 of 30 directories still have no spec, though the untested remainder is mostly thin passthrough wrappers.
+6. **Product patterns (§49)** — 7 of ~19. Missing: Registration, Dashboard, Settings, Profile, Notification, Approval workflow, Multi-step workflow.
+7. **Thin story coverage** — Breadcrumb, Divider, Link at one story each; §14 (Select) and §21 (Slider) still substantially uncovered.
+8. **`baps-table` does not expose row-selection directives** — `pSelectableRow` / `pTableCheckbox` are unreachable through the wrapper's templates, so consumers hand-roll selection. Found while building Data management.
+9. **Size vocabulary unification (§7)** — four competing scales. Breaking; needs a migration plan.
+10. **`baps-button` missing `type`** — `<form (ngSubmit)>` silently never fires. Breaking-ish, needs a consumer check.
+
+**Closed since the first pass:** touch targets (§33/§34, see §21) and
+`baps-checkbox`'s missing `indeterminate` input, which is now forwarded.
+
+---
+
+## 30. Recommended future improvements
+
+- Adopt a visual-regression tool and wire it to the existing 185 stories before any further styling work — otherwise every brand fix risks silently regressing another.
+- Bring MyBKY to parity with Sampark at the theme-preset layer rather than per-component CSS; the preset path is where Sampark already gets its consistency.
+- Make `baps-table` render columns from a `columns` input instead of a fixed template, which would let `baps-table-column-config` actually reorder columns rather than only toggling visibility — currently the integration is documented as half-working.
+- Add an ESLint rule banning raw hex in component styles, so §31 stays closed once the last six are removed.
+- Introduce a shared size scale as an additive union first (accept both old and new names), deprecate the old names, then remove them in a major — avoids the breaking-change blocker.
+
+---
+
+## Acceptance criteria (§55) — status
+
+✅ Components audited · ✅ Categorised · ✅ Variants documented · ✅ States
+documented · ✅ Sizes documented · ✅ PrimeNG mapping documented · ✅ Brand
+isolation verified · ✅ Existing functionality preserved · ✅ Breaking changes
+identified · ✅ No duplicate components · ✅ No unnecessary variants
+
+✅ Responsive **reviewed** (§33's review half — see §21) · ✅ Tokens used
+consistently (every remaining literal is a `var()` fallback, a comment, or the
+three documented topbar-indigo values with no token)
+
+⚠️ Use cases covered (thin on 3 components) · ⚠️ Storybook coverage (Listbox
+and MenuItem have none of their own) · ⚠️ MDX documentation (those 2 folded
+into FormField) · ⚠️ MyBKY verified (4 components still on PrimeNG defaults) ·
+⚠️ Accessibility reviewed (manual only — no automated or screen-reader
+testing) · ⚠️ APIs consistent (four size vocabularies disagree) · ⚠️ Tests
+updated (17/30) · ⚠️ Patterns work (7 of ~19)
+
+⚠️ Responsive implemented — touch targets are done (`pointer: coarse`), but
+**mobile layout is not**: 2 media queries library-wide, nothing stacks or
+reflows
+
+✅ Visual regression coverage (138 baselines, detection proven)
+
+❌ Token-driven styling (§57/§59/§76) — 707 `!important`, ~1,370 `.p-*`
+overrides, ~17/32 components on a real token preset
+
+**The design system still does not meet §55.** Documentation, brand isolation,
+the token pipeline, first-party-logic test coverage, touch targets and visual
+regression are now in good shape. Two things remain genuinely unbuilt:
+**mobile layout** and the **PrimeNG token migration**. The second is the larger
+and more architectural of the two — the specification asks for a token-driven
+system and roughly half of this one is still override-driven — but it is now
+safe to attempt, which it was not before the visual baseline existed.

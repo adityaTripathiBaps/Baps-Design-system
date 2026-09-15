@@ -1,0 +1,64 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as SegmentedStories from './segmented.stories';
+
+<Meta of={SegmentedStories} />
+
+# Segmented
+
+Two to five mutually exclusive options, all visible at once. `baps-segmented` wraps PrimeNG’s `p-selectbutton`.
+
+## Usage
+
+```html
+<baps-segmented [options]="views" optionLabel="label" optionValue="value" [(ngModel)]="view" ariaLabel="View" />
+```
+
+## Examples
+
+### Default
+
+<Canvas of={SegmentedStories.Default} />
+
+### Two Up
+
+<Canvas of={SegmentedStories.TwoUp} />
+
+### Multiple
+
+<Canvas of={SegmentedStories.Multiple} />
+
+### Object Options
+
+<Canvas of={SegmentedStories.ObjectOptions} />
+
+### Brands
+
+<Canvas of={SegmentedStories.Brands} />
+
+### Disabled
+
+<Canvas of={SegmentedStories.Disabled} />
+
+## When Not to Use
+
+| Need | Use | Not this |
+| --- | --- | --- |
+| More than about five options | `baps-select` | A segmented control that wraps |
+| Switching between panels of content | `bapsTabs` | Segments that behave like tabs |
+| A single on/off | `baps-toggleswitch` | A two-segment control standing in for a switch |
+
+## Accessibility
+
+### Screen Reader
+
+- The group needs a name: pass `ariaLabel`, or point `ariaLabelledBy` at visible text.
+- `multiple` turns it into a toggle group — each segment then announces its own pressed state.
+- `allowEmpty="false"` keeps one segment always selected, which is what makes it a view switcher rather than a filter.
+
+### Keyboard Support
+
+| Key | Function |
+| --- | --- |
+| <kbd>Tab</kbd> | Moves focus into the group. |
+| <kbd>Arrow keys</kbd> | Moves between segments. |
+| <kbd>Space / Enter</kbd> | Selects the focused segment. |

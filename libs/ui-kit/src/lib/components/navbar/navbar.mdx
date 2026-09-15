@@ -1,0 +1,84 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as NavbarStories from './navbar.stories';
+
+<Meta of={NavbarStories} />
+
+# Navbar
+
+Top application navigation bar. `baps-navbar` is a fully custom component — PrimeNG has no toolbar with this layout — built around one PrimeNG dependency, the `pRipple` directive on its two buttons.
+
+Anatomy: `[ logo | title | version ] [ menu button ] ─ stretch ─ [ actions ] [ mobile button ]`
+
+The two brands render genuinely different bars, not two tints of one component:
+
+- **MyBKY** (default) — white, **56px**, hairline bottom border, no menu/mobile chevrons.
+- **Sampark** — reproduces spm-ui's live `app-topbar` (`_topbar_main.scss`): dark (`#1d1c1b`), **50px** — not 56px.
+
+## Usage
+
+```html
+<baps-navbar
+  brand="sampark"
+  topbarTheme="indigo"
+  title="Sampark"
+  version="v1.1.0"
+  [menuButton]="true"
+  [menuOpen]="sidebarOpen"
+  (menuToggle)="sidebarOpen = $event"
+  [mobileMenuOpen]="mobileOpen"
+  (mobileMenuToggle)="mobileOpen = $event"
+>
+  <button navbar-end type="button" aria-label="Notifications">
+    <i class="pi pi-bell"></i>
+  </button>
+  <baps-avatar navbar-end brand="sampark" size="m" label="HP"></baps-avatar>
+</baps-navbar>
+```
+
+## Examples
+
+### Playground
+
+<Canvas of={NavbarStories.Playground} />
+
+### Sampark
+
+<Canvas of={NavbarStories.Sampark} />
+
+### Sampark Light Topbar
+
+<Canvas of={NavbarStories.SamparkLightTopbar} />
+
+### Sampark Topbar Themes
+
+<Canvas of={NavbarStories.SamparkTopbarThemes} />
+
+### Sampark Menu States
+
+<Canvas of={NavbarStories.SamparkMenuStates} />
+
+### Sampark Mobile
+
+<Canvas of={NavbarStories.SamparkMobile} />
+
+### My Bky
+
+<Canvas of={NavbarStories.MyBky} />
+
+## When Not to Use
+
+| Need | Use | Not this |
+| --- | --- | --- |
+| Section navigation down the side of the app | `baps-internal-navbar` | `baps-navbar` — it is a horizontal bar with no item list |
+| A page- or table-level action strip (title, filters, buttons) | `baps-toolbar` | `baps-navbar` — it is app chrome and belongs once per page, not once per section |
+| The user's location in a hierarchy | `baps-breadcrumb`, placed below the bar | Cramming the path into `title` |
+| An account / user menu | `baps-users-dropdown` projected into `[navbar-end]` | Building the menu into the bar itself |
+| A site-wide announcement or status strip | `baps-alert` above the page content | The `[navbar-center]` slot |
+| A bar that stays put while the page scrolls | A `position: fixed` wrapper at the app-shell level | This component — it deliberately does not self-position (see Brand Behavior) |
+
+## Accessibility
+
+- Renders as a `<nav>` landmark with `aria-label` (defaults to `"Main navigation"`, overridable via `ariaLabel`).
+- Both the menu-toggle and mobile-toggle buttons are native `<button>`s with `aria-label` (reflecting open/closed: "Expand/Collapse menu", "Open/Close menu") and `aria-expanded` bound to their respective open state — correctly announced by assistive tech.
+- Decorative SVG icons (chevron, hamburger dots, logo wrapper) carry `aria-hidden="true"`.
+- The logo `<img>` uses `title` (or the literal string `'Logo'` if no title is set) as its `alt` text — if a real product name isn't passed via `title`, screen readers will announce the generic word "Logo" rather than anything meaningful.

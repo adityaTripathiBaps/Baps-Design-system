@@ -1,0 +1,44 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as BreadcrumbStories from './breadcrumb.stories';
+
+<Meta of={BreadcrumbStories} />
+
+# Breadcrumb
+
+A navigation trail showing the user's location in a hierarchy. `baps-breadcrumb` wraps PrimeNG's `p-breadcrumb` directly — no template changes, no custom slots — and adds a Sampark visual skin scoped to `brand="sampark"` or the page-wide `.baps-ds-sampark` class.
+
+## Usage
+
+```html
+<baps-breadcrumb
+  [home]="{ icon: 'pi pi-home', routerLink: '/' }"
+  [model]="[
+    { label: 'Events', routerLink: '/events' },
+    { label: 'Yuva Sabha' }
+  ]"
+  brand="sampark"
+/>
+```
+
+## Examples
+
+### Default
+
+<Canvas of={BreadcrumbStories.Default} />
+
+## When Not to Use
+
+| Need | Use | Not this |
+| --- | --- | --- |
+| Primary application navigation | `baps-navbar` / `baps-internal-navbar` | Breadcrumb — it reports location, it isn't a nav menu |
+| Switching between sibling views of the same record | `bapsTabs` | Breadcrumb |
+| A single "back to list" affordance | `baps-link` | A one-item trail |
+| Moving through pages of a result set | `baps-paginator` | Breadcrumb |
+| A menu of actions on the current record | `baps-menu-item` in a menu, or `baps-split-button` | Breadcrumb items carrying `command` |
+
+## Accessibility
+
+- PrimeNG's `p-breadcrumb` renders a `<nav>` with a list of links — no custom ARIA added by this wrapper.
+- Items without a `url`/`command` render as inert text, not a `<button>` or empty anchor — they won't appear in the tab order, which is correct since they're not actionable.
+- The active (last) item is visually distinct but is **not** marked `aria-current="page"` by this wrapper or by PrimeNG — if that matters for your flow, set it via a custom item template.
+- Focus-visible ring is only defined for the Sampark skin; MyBKY relies on the global preset's default focus styling.

@@ -1,0 +1,11 @@
+# Build output. Without this, a successful `nx build-storybook storybook-host`
+# writes dist/storybook/storybook-host/project.json, which Nx then picks up as
+# a SECOND project named "storybook-host" — every subsequent nx command dies
+# with "The following projects are defined in multiple locations". Same story
+# for dist/libs/ui-kit, whose ng-packagr manifest Nx reads as a project too.
+#
+# Nothing under dist/ is ever a source project; ignore the whole tree.
+dist
+
+# Nx's own scratch space for generated tsconfigs during ng-packagr builds.
+tmp

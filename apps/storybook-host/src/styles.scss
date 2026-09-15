@@ -1,0 +1,142 @@
+/* Module loads (sass @use) — CSS is emitted once per module, in this order. */
+@use '../../../libs/ui-kit/src/lib/styles/layout/fonts';
+@use '../../../libs/ui-kit/src/lib/styles/layout/common';
+@use '../../../libs/ui-kit/src/lib/styles/components/input/input';
+/* Checkbox/radio border geometry for the ones PrimeNG renders itself (overlay
+   options, table select-all, tree nodes) — see the partial for why it cannot
+   live in the component. */
+@use '../../../libs/ui-kit/src/lib/styles/components/checkbox/checkbox';
+/* Select family (p-select, p-multiselect, p-datepicker, …) shares the input
+   silhouette and consumes the same --input-* variables — load after input. */
+@use '../../../libs/ui-kit/src/lib/styles/components/select/select';
+/* Sampark skin re-points the --input-* variables under .baps-ds-sampark —
+   must come AFTER input + select; several overrides win on source order. */
+@use '../../../libs/ui-kit/src/lib/styles/components/input/input-sampark';
+@use '../../../libs/ui-kit/src/lib/styles/components/select/select-sampark';
+/* Range + multi-month calendar rules, additive on top of the single-date
+   calendar skin that lives inside select/select-sampark. Must load after
+   BOTH: it re-points --datepicker-* properties they declare. */
+@use '../../../libs/ui-kit/src/lib/styles/components/datepicker/datepicker-range';
+/* Sampark tag/badge skin — colors + geometry for baps-tag under the same
+   .baps-ds-sampark scope; standalone (no base file to outrank). */
+@use '../../../libs/ui-kit/src/lib/styles/components/tag/tag-sampark';
+/* Sampark count-pill skin for baps-badge. Separate from tag-sampark on
+   purpose: p-tag is the status label, p-badge is the count, and the two
+   had been sharing one scale. */
+@use '../../../libs/ui-kit/src/lib/styles/components/badge/badge-sampark';
+/* MyBKY switch sm/lg sizes — the md default ships via the Baps preset;
+   this only re-points --p-toggleswitch-* geometry for the size input. */
+@use '../../../libs/ui-kit/src/lib/styles/components/toggle-switch/switch';
+/* Sampark switch skin — re-points --p-toggleswitch-* geometry/color vars
+   under the same dual scope (brand="sampark" or .baps-ds-sampark); must
+   come AFTER switch so its higher-specificity size table stays in charge. */
+@use '../../../libs/ui-kit/src/lib/styles/components/toggle-switch/switch-sampark';
+/* MyBKY table skin — wires the table.mybky.* tokens that had no consumer
+   (baps.theme.ts has no datatable section, so MyBKY tables were rendering
+   Material's density). Unscoped: MyBKY is the default brand and has no page
+   class. MUST come before table-sampark, which outranks it on source order. */
+@use '../../../libs/ui-kit/src/lib/styles/components/table/table';
+/* Sampark table skin — colors + geometry for p-datatable under the same
+   .baps-ds-sampark scope; standalone (no base file to outrank). */
+@use '../../../libs/ui-kit/src/lib/styles/components/table/table-sampark';
+/* Sampark tab-strip skin — targets p-tabs directly (there is no baps-tabs
+   wrapper: it threw NG0201, see tabs.directive.ts). Same dual scope as the
+   tag/table skins; standalone (no base file to outrank). */
+@use '../../../libs/ui-kit/src/lib/styles/components/tabs/tabs-sampark';
+/* MyBKY drawer skin — wires the drawer.mybky.* tokens, which had no
+   consumer at all (baps.theme.ts has no drawer section). Keyed off the
+   .baps-drawer-mybky panel class because the panel is portalled; see the
+   partial. */
+@use '../../../libs/ui-kit/src/lib/styles/components/drawer/drawer';
+/* Sampark drawer skin — targets the .p-drawer panel itself, not the
+   baps-drawer host, because appendTo="body" portals the panel out of the
+   component entirely (same reason as the tooltip skin below). */
+@use '../../../libs/ui-kit/src/lib/styles/components/drawer/drawer-sampark';
+/* Sampark rich tooltip card — targets the CDK-appended .p-tooltip overlay
+   directly (no .baps-ds-sampark scope: bapsTooltip opts in per-instance via
+   the .baps-tooltip-sampark class it adds itself). */
+@use '../../../libs/ui-kit/src/lib/styles/components/tooltip/tooltip-sampark';
+/* Stepper — MyBKY base + Sampark accent. Global rather than component-scoped
+   because bapsStepper is a DIRECTIVE on p-stepper (a wrapper threw NG0201, see
+   stepper.directive.ts) and a directive cannot carry styles. */
+@use '../../../libs/ui-kit/src/lib/styles/components/stepper/stepper';
+/* Accordion — filter-panel geometry (32px header, count badge, chevron box)
+   plus the Sampark colour scope. Standalone: no base PrimeNG rule to outrank,
+   and it must come after nothing in particular. */
+@use '../../../libs/ui-kit/src/lib/styles/components/accordion/accordion';
+/* Event dashboard primitives (.hero-tile/.chart-card/.region-card). Wires the
+   dashboard.mybky.* tokens, which had no consumer at all. */
+@use '../../../libs/ui-kit/src/lib/styles/layout/dashboard';
+/* Wizard step-page primitives (.step-page/.step-card/.step-field/...). Layout,
+   not components: eight wizard tabs share them and no wrapper owns them. */
+@use '../../../libs/ui-kit/src/lib/styles/layout/step-page';
+/* WCAG 2.5.5 touch targets, gated to @media (pointer: coarse) so desktop
+   density is untouched. Deliberately LAST: it overrides the per-component
+   geometry loaded above, and only wins by source order. */
+@use '../../../libs/ui-kit/src/lib/styles/layout/touch-targets';
+/* Panel list-item hover. LAST on purpose: it overrides the per-component
+   select/listbox/tree skins above, the same way the source's _list_hover.scss
+   overrides _dropdown.scss and _multiselect.scss. */
+@use '../../../libs/ui-kit/src/lib/styles/components/overlay-list/overlay-list';
+/* Storybook docs chrome. Last of the @use block on purpose: several of its
+   rules intentionally outrank the component skins above on source order. */
+@use './docs-shell';
+
+html {
+  font-size: 16px;                     /* Figma standard: 1rem = 16px */
+  font-family: var(--font-family);
+  font-feature-settings: var(--font-feature-settings);
+  line-height: normal;
+}
+
+@layer app-styles {
+  html {
+    font-size: 14px;                   /* scales ALL PrimeNG components 16px -> 14px */
+  }
+}
+
+body {
+  margin: 0;
+  color: var(--text-color);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Inherit OpenType feature settings for form controls */
+button, input, textarea, select {
+  font-feature-settings: inherit;
+}
+
+/* Docs "On this page" nav — match PrimeNG's single rail.
+   PrimeNG draws ONE 1px rail (rgb(226,232,240)) down the left edge of the whole
+   nav and marks the active item on that same line. Storybook instead gives EVERY
+   .toc-list its own 2px border, so the nested h3 list draws a second, indented
+   line — that was the "2 borders".
+
+   Keep the outer rail, drop the nested one, and re-aim the active indicator at
+   it. Storybook offsets the indicator with translateX(-22px), which only lands
+   on the rail while that border is its original 2px and the item is top level.
+   Measured against the rendered boxes (outer ul border 1px, plus the 20px
+   .toc-list-item margin at each level): -21px at depth 1, -41px at depth 2.
+   Only h2/h3 are collected (preview.ts headingSelector) so depth stops at 2.
+
+   !important throughout: Storybook's rules are scoped by a generated emotion
+   hash (.css-q7khkg > .toc-wrapper > .toc-list) that changes between builds. */
+.toc-wrapper {
+  > .toc-list {
+    border-left: 1px solid rgb(226 232 240) !important;
+  }
+
+  .toc-list .toc-list {
+    border-left: none !important;
+  }
+
+  .toc-list-item::before {
+    border-left-width: 1px !important;
+    transform: translateX(-21px) !important;
+  }
+
+  .toc-list .toc-list > .toc-list-item::before {
+    transform: translateX(-41px) !important;
+  }
+}

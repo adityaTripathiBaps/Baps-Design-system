@@ -1,0 +1,103 @@
+import { Meta, Canvas, Controls } from '@storybook/blocks';
+import * as ToastStories from './toast.stories';
+
+<Meta of={ToastStories} />
+
+# Toast
+
+Transient notifications, rendered once near the app root. `baps-toast` wraps
+PrimeNG's `p-toast`.
+
+<Canvas of={ToastStories.Default} />
+
+<Controls of={ToastStories.Default} />
+
+## Usage
+
+**This wrapper takes no content.** Messages arrive through PrimeNG's
+`MessageService`, and the component renders whatever is pushed to it.
+
+Place it once, near the app root:
+
+```html
+<!-- app.component.html -->
+<baps-toast />
+<router-outlet />
+```
+
+```ts
+import { MessageService } from 'primeng/api';
+
+// app.config.ts — ROOT providers
+providers: [MessageService];
+```
+
+```ts
+// anywhere
+private readonly messages = inject(MessageService);
+
+save() {
+  this.messages.add({ severity: 'success', summary: 'Saved', detail: 'Project updated.' });
+}
+```
+
+### The failure mode worth knowing
+
+**Providing `MessageService` on a component rather than the root** makes this
+silently do nothing. The instance the caller injects is then a different one
+from the instance the toast subscribed to: the message goes nowhere, and
+**nothing errors**. If `add()` appears to do nothing, check where the service is
+provided before anything else.
+
+The stories provide it through `applicationConfig` — the same place a real app
+would — which is why they need a host component that injects it. That host is
+not story scaffolding for its own sake; it mirrors the only way the component is
+usable at all.
+
+## Severity is a leading bar, not a tinted panel
+
+Severity shows as a **4px leading bar**. A fully coloured toast over live
+content is hard to read and harder to ignore, so the panel stays neutral and
+the colour does the signalling at the edge.
+
+## When to use
+
+- Confirming something that succeeded and needs no response: saved, sent,
+  copied.
+- A background failure the user did not trigger and cannot act on right now.
+
+## When not to use
+
+- **Anything the user must read** — a toast disappears. Use an
+  [alert](/docs/components-alert--docs) in the page.
+- **Anything the user must answer** — use a
+  [dialog](/docs/components-dialog--docs).
+- **Field validation** — that belongs beside the field, not floating.
+- **More than one at a time from the same action.** See No duplicates below.
+
+## Examples
+
+### Bottom centre
+
+<Canvas of={ToastStories.BottomCenter} />
+
+### No duplicates
+
+Repeated identical messages collapse rather than stacking. A user who clicks
+Save three times should see one confirmation, not three.
+
+<Canvas of={ToastStories.NoDuplicates} />
+
+## Accessibility
+
+- PrimeNG renders the container as a live region, so a pushed message is
+  announced without stealing focus — correct for a notification, which must not
+  interrupt what the user is typing.
+- **A toast is not a substitute for an accessible result.** It vanishes, and a
+  screen-reader user who was elsewhere in the page misses it. If the outcome
+  matters, also reflect it in the page.
+- Keep `summary` short and put the detail in `detail`: the summary is what gets
+  announced first and is often all that is heard.
+- There is no interaction story here, deliberately. Driving a toast means
+  driving `MessageService`, which is the application's object rather than the
+  component's — what would be under test is the story's own host.

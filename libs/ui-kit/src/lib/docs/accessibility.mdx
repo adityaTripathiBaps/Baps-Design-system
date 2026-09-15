@@ -1,0 +1,168 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Guidelines/Accessibility" />
+
+# Accessibility
+
+`@storybook/addon-a11y` runs [axe-core](https://github.com/dequelabs/axe-core) on
+every story and every docs page. The **Accessibility** tab reports what it found.
+
+Target: **WCAG 2.2 AA**, treated as a property of the system rather than a
+per-component checkbox.
+
+> **The tab's badge is not a violation count.** It mixes violations with
+> *incomplete* results — checks axe could not decide unaided. `Button/Playground`
+> shows `Accessibility1` while reporting **0 violations, 5 passes, 1 incomplete**.
+> Open the tab and read the three numbers; do not gate on the badge.
+
+## Current state
+
+Measured by running axe over one story per component — 51 stories. Components
+share markup and tokens across their own stories, so a rule that fires on one
+fires on all of them; scanning all 309 adds runtime, not information.
+
+Reproduce it:
+
+```bash
+node tools/a11y-audit.mjs            # one story per component
+node tools/a11y-audit.mjs <story-id> # or a specific set
+```
+
+| Rule | Impact | Nodes | Components | Status |
+| --- | --- | --- | --- | --- |
+| `color-contrast` | serious | 107 | 19 | **Known exception** — rule disabled, see below |
+| `label` | critical | 6 | MultiSelect, Accordion, Form Controls | **Fixed** in stories |
+| `aria-input-field-name` | serious | 1 | Slider | **Fixed** in stories |
+| `button-name` | critical | 1 | SplitButton | **Open** — component-level |
+| `aria-required-children` | critical | 1 | Stepper | **Open** — component-level |
+| `aria-allowed-attr` | critical | 1 | ProgressBar | **Open** — PrimeNG |
+| `aria-progressbar-name` | serious | 1 | ProgressBar | **Open** — component-level |
+| `aria-valid-attr-value` | critical | 1 | ProgressBar | **Open** — PrimeNG |
+| `aria-dialog-name` | serious | 1 | Patterns/Delete confirmation | **Open** — pattern page |
+
+## The one disabled rule
+
+`color-contrast` is turned off globally in `.storybook/preview.ts`.
+
+It is not nineteen separate mistakes. Every failing node — placeholders, muted
+helper text, disabled controls — resolves to the same handful of neutral tokens
+in the Sampark and MyBKY ramps. So it is **one decision about the palette**,
+which belongs to design, and no story can fix it.
+
+It is disabled globally rather than story by story on purpose: a per-story
+override would imply each case is a local exception under review, when none of
+them can be resolved without changing tokens.
+
+**Decision, 2026-09-10 — accepted as a documented exception. No token change.**
+Confirmed after the Phase 0 audit put the numbers on it: 107 nodes, 19
+components, all resolving to the same neutral tokens. The alternative — moving
+the neutral ramp — changes the appearance of every brand and both modes, and is
+a design decision that has not been asked for. So the rule stays off and the
+finding stays written down, rather than being quietly cleared by loosening a
+token.
+
+Revisit this when the palette is next opened for its own reasons. It should not
+be the tail wagging that dog.
+
+**The violations have not gone away — they are just not gating.** Re-enable the
+rule the day the neutral ramp is revisited:
+
+```ts
+// .storybook/preview.ts
+a11y: { config: { rules: [{ id: 'color-contrast', enabled: false }] } },
+```
+
+## What was fixed, and where
+
+Every fix was in a **story file**, not a component — the wrappers already
+forward the input, or the markup simply never wired the label; the stories were
+what was wrong.
+
+- **`baps-multi-select`** and **`baps-slider`** expose `ariaLabel` /
+  `ariaLabelledBy` and forward them to PrimeNG. PrimeNG renders a visually
+  hidden `role="combobox"` input (multiselect) and a `role="slider"` span
+  (slider); with no name passed, both are nameless to a screen reader while
+  looking perfectly labelled on screen. Every story instance now passes one.
+- **Accordion** reported `label` twice, but the failing nodes were the
+  `p-select` and `baps-multi-select` it *hosts* inside the filter-panel story,
+  not the accordion. Those controls got names too.
+- **Form Controls** had sixteen `<label>Default</label>` elements sitting beside
+  inputs with no `id` — nothing associated them, so every field looked labelled
+  and announced as an unnamed edit box. Each pair is now wired with `for`/`id`.
+  This one mattered twice over: it is the snippet people copy out of the docs,
+  so the example was teaching the mistake as well as failing the check.
+
+The lesson generalises: if a control takes `ariaLabel`, a story that omits it is
+publishing an example that fails axe. Pass it.
+
+## Open findings — component-level, deliberately not patched
+
+These need a change inside a component template or in PrimeNG. Changing
+components was out of scope for the Storybook work, so they are recorded here
+rather than silently fixed.
+
+### SplitButton — `button-name`
+
+PrimeNG's dropdown half renders as an icon-only `<button>` with no accessible
+name, and `baps-split-button` does not expose an input to give it one. A
+screen-reader user hears "button" with no indication that it opens a menu.
+
+*Fix:* add an `ariaLabel` input to the wrapper and forward it to PrimeNG's
+`SplitButton`, defaulting to something like "More actions".
+
+### Stepper — `aria-required-children`
+
+`p-stepper` carries `role="tablist"`, and axe requires a tablist's children to
+be `role="tab"`. The wrapper's rail markup sits between them, so the tabs are
+not direct children.
+
+*Fix:* either drop the `tablist` role, or restructure so the step buttons are
+its immediate children.
+
+### ProgressBar — three rules on one element
+
+`p-progressbar` renders `role="progressbar"` together with
+`aria-level="75%"`. Three separate problems from that one attribute:
+
+- `aria-allowed-attr` — `aria-level` is not permitted on `progressbar`
+- `aria-valid-attr-value` — `aria-level` takes an integer, not `"75%"`
+- `aria-progressbar-name` — the element has no accessible name at all
+
+The first two look like a PrimeNG bug rather than a design choice.
+
+*Fix:* pass `ariaLabel` from the wrapper for the name; the stray `aria-level`
+needs either a PrimeNG upstream fix or an attribute override in the wrapper.
+
+### Patterns/Delete confirmation — `aria-dialog-name`
+
+A pattern page, not a component: the dialog in that example has no accessible
+name. Fixable in the pattern's own markup.
+
+## What to check when adding a component
+
+Behavioural checks live in the `Interaction — keyboard` stories, which are
+replayed in the **Interactions** tab and verified by
+`node tools/check-interactions.mjs`. They already cover, per component:
+
+- reachable by <kbd>Tab</kbd>, and focus lands where expected
+- one tab stop per composite widget — a radio group and a tablist are
+  **one** stop each, with arrows moving inside
+- activation by <kbd>Enter</kbd> / <kbd>Space</kbd>
+- `aria-expanded`, `aria-selected`, `aria-checked`, `aria-current` move with
+  the state, because that is what assistive tech reads
+- disabled controls are genuinely inert, not merely dimmed — asserted against
+  the actual blocking mechanism, which differs by component: a native
+  `disabled` attribute on `baps-button`, `pointer-events: none` on
+  `baps-checkbox` because its real control is a hidden input
+- <kbd>Esc</kbd> closes overlays
+
+Two things worth knowing before writing one:
+
+- **`baps-dialog` does not close on Escape**, even with `closeOnEscape` (its
+  default). Measured in a real browser; the same test on `baps-drawer` closes
+  correctly. A keyboard user has no way out except finding the close button.
+  `Dialog / Interaction — Escape does not close (known gap)` pins the current
+  behaviour, so it will start failing the day it is fixed.
+- **`baps-drawer`'s panel is `role="complementary"` with no `aria-modal`.** It
+  traps focus and dims the page, but reads to assistive tech as a sidebar
+  rather than a modal. That is PrimeNG's markup, not the wrapper's.

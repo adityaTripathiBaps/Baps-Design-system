@@ -1,0 +1,52 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as IndicatorStories from './indicator.stories';
+
+<Meta of={IndicatorStories} />
+
+# Indicator
+
+A small status mark — a dot, a count, or an icon badge. `baps-indicator` renders the status vocabulary shared by the navbar, avatars and table rows.
+
+## Usage
+
+```html
+<baps-indicator severity="success" text="12" ariaLabel="12 unread" />
+```
+
+## Examples
+
+### Playground
+
+<Canvas of={IndicatorStories.Playground} />
+
+### Status Dot
+
+<Canvas of={IndicatorStories.StatusDot} />
+
+### Notification Counts
+
+<Canvas of={IndicatorStories.NotificationCounts} />
+
+### Icon Badge
+
+<Canvas of={IndicatorStories.IconBadge} />
+
+### With Ring
+
+<Canvas of={IndicatorStories.WithRing} />
+
+## When Not to Use
+
+| Need | Use | Not this |
+| --- | --- | --- |
+| A status word the user reads | `baps-tag` | A dot the reader has to decode |
+| A count on a nav item or avatar | `baps-indicator` | A hand-positioned span |
+| Progress toward a total | `baps-progressbar` | A count that only goes up |
+
+## Accessibility
+
+### Screen Reader
+
+- An indicator is not interactive and takes no focus — it decorates the control it sits on.
+- Always pass `ariaLabel` when the mark carries meaning; a bare coloured dot announces nothing.
+- A count with no label is read as a number with no context — say what it counts.

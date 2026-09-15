@@ -1,0 +1,66 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as DrawerStories from './drawer.stories';
+
+<Meta of={DrawerStories} />
+
+# Drawer
+
+A slide-in panel anchored to an edge of the screen. `baps-drawer` wraps PrimeNG v21's `p-drawer`, so positioning and behavior (mask, focus trap, Esc to close, scroll blocking) are PrimeNG's own. What this wrapper adds is the Sampark Portal skin (Figma node 17512:72588): 16px radius on the two inner corners, a deep float shadow, a fluid width, and a header reordered to `title · actions · close`.
+
+## Usage
+
+```html
+<baps-button label="Open filters" icon="pi pi-filter" brand="sampark" (click)="visible = true" />
+
+<baps-drawer [(visible)]="visible" header="Filters" position="right" appendTo="body" brand="sampark">
+  <div drawer-actions>
+    <baps-button label="Clear All" severity="secondary" [outlined]="true" size="small" brand="sampark" />
+    <baps-button label="Apply" size="small" brand="sampark" />
+  </div>
+
+  <baps-checkbox [(ngModel)]="filters.family" label="Family" brand="sampark" />
+
+  <div drawer-footer>Showing 24 of 180 results</div>
+</baps-drawer>
+```
+
+## Examples
+
+### Playground
+
+<Canvas of={DrawerStories.Playground} />
+
+### Open
+
+<Canvas of={DrawerStories.Open} />
+
+### Filter Panel
+
+<Canvas of={DrawerStories.FilterPanel} />
+
+### Positions
+
+<Canvas of={DrawerStories.Positions} />
+
+### Non Dismissible
+
+<Canvas of={DrawerStories.NonDismissible} />
+
+## When Not to Use
+
+| Need | Use | Not this |
+| --- | --- | --- |
+| A decision that must be resolved before continuing ("Discard changes?") | PrimeNG `p-dialog` directly | Drawer — `dismissible` and `modal` default to true, so a stray mask click discards the task |
+| Persistent section navigation | `baps-internal-navbar` | Drawer — it is an overlay, not in-flow chrome |
+| A short menu anchored to a trigger | `baps-select`, or `baps-menu-item` rows inside `baps-listbox` | Drawer — a 500px panel plus a full-page mask for five options |
+| Choosing which table columns are visible | `baps-table-column-config` | A hand-built drawer of checkboxes |
+| Telling the user something about the current page | `baps-alert` | Drawer — it hides the thing being described |
+
+Also avoid it on `brand="mybky"`: there is no MyBKY skin, so the panel renders as an unstyled PrimeNG `p-drawer` and none of the responsive rules below apply.
+
+## Accessibility
+
+- Focus trap, Esc-to-close (`closeOnEscape`) and scroll blocking (`blockScroll`) are all PrimeNG's own `p-drawer` behavior — this wrapper changes none of it.
+- `ariaCloseLabel` (default `'Close'`) is forwarded to PrimeNG's close button.
+- `appendTo="body"` (used in these stories) escapes any clipping `overflow`/`transform` ancestor so the fixed-position panel actually docks to the viewport edge — the realistic setting for production use, versus PrimeNG's own `'self'` default.
+- When `closable="false"` and `dismissible="false"`, the panel can only be closed by an action you provide in `drawer-footer` — make sure that action is always reachable by keyboard.

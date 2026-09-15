@@ -1,0 +1,50 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as TableColumnConfigStories from './table-column-config.stories';
+
+<Meta of={TableColumnConfigStories} />
+
+# Table Column Config
+
+The "Fields" panel for `baps-table`: search, an active-column count, and a reorderable/pinnable column list, built on top of `baps-drawer`. Mirrors Sampark's `app-common-table-column` (Figma node 17512:83441). Edits are staged locally and only reach the consumer when **Apply** is pressed — dismissing the drawer (mask click, Esc, the close button) discards them.
+
+## Usage
+
+```html
+<baps-table-column-config
+  [(visible)]="showColumnConfig"
+  [columns]="columns"
+  [defaultColumns]="defaultColumns"
+  (columnsChange)="columns = $event"
+/>
+```
+
+## Examples
+
+### Playground
+
+<Canvas of={TableColumnConfigStories.Playground} />
+
+### Open
+
+<Canvas of={TableColumnConfigStories.Open} />
+
+### Without Pinning
+
+<Canvas of={TableColumnConfigStories.WithoutPinning} />
+
+## When Not to Use
+
+| Need | Use | Why not `baps-table-column-config` |
+| --- | --- | --- |
+| Filtering table **rows** by a field value | `baps-select` / `baps-listbox` inside a `baps-drawer` | This panel edits column metadata, never row data |
+| A general-purpose slide-in panel | `baps-drawer` directly | This is a drawer with a fixed Fields payload; you cannot project your own content into it |
+| Reordering anything that isn't table columns | `baps-listbox` (or `Draggable`/`Droppable` directly) | The bucket logic is hardwired to `locked`/`frozen`/`end` on `BapsTableColumnConfigColumn` |
+| A MyBKY table | *(nothing yet)* | Sampark-only by design — there is no MyBKY equivalent in the spec |
+| Toggling two or three columns | inline `baps-toggleswitch`es or a `baps-select` | A full-screen drawer for three switches is more chrome than choice |
+| Fewer columns than the table shows by default | *(omit it)* | The panel earns its place only when columns genuinely need hiding |
+
+## Accessibility
+
+- Visibility is toggled with `baps-toggleswitch`, which carries its own accessible semantics; locked/pinned toggles are rendered `[disabled]="true"` rather than hidden, so their state is still announced.
+- The drag handle in the regular (reorderable) bucket is a real `<button>` with `aria-label="Reorder {label}. Use arrow up or down to move."` and `ArrowUp`/`ArrowDown` keydown handlers (`moveRegular()`) — `pDraggable`/`pDroppable` stays pointer-only, but keyboard users can reorder within the same `group` via the handle. Locked/pinned rows are non-reorderable `<span>`s, unchanged.
+- The active-columns toggle carries `aria-expanded` synced to `showActiveOnly`, since it behaves as a disclosure control (the chevron rotates with the same state).

@@ -1,0 +1,42 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    // main.ts resolves the docs-blocks alias with path/__dirname.
+    "types": ["node"],
+    // preview.ts imports the generated documentation.json for the API tables.
+    "resolveJsonModule": true,
+    // The docs blocks are React TSX and the PREVIEW bundle compiles TS through
+    // @ngtools/webpack, so the Angular compiler needs to know how to emit JSX.
+    // (manager.tsx needs no such setting - the manager bundle uses esbuild.)
+    "jsx": "react-jsx",
+    "allowJs": true,
+    "checkJs": false,
+    "composite": false,
+    "declaration": true,
+    "declarationMap": false,
+    "emitDeclarationOnly": false,
+    // noEmit must stay false: @storybook/angular's webpack plugin honors it and
+    // emits every .ts as an empty module (docs pages then fail with of={undefined}).
+    // outDir keeps the typecheck target's --emitDeclarationOnly out of the source tree.
+    "noEmit": false,
+    "rootDir": "../../..",
+    "outDir": "../../../dist/out-tsc/storybook-host-storybook"
+  },
+  "exclude": ["../**/*.spec.ts"],
+  "include": [
+    "../src/**/*.stories.ts",
+    "../src/**/*.stories.js",
+    "../src/**/*.stories.jsx",
+    "../src/**/*.stories.tsx",
+    "../src/**/*.stories.mdx",
+    "../../../libs/tokens/src/generated/tokens.ts",
+    "../../../libs/ui-kit/src/**/*.stories.ts",
+    "../../../libs/ui-kit/src/**/*.mdx",
+    "../../../libs/migration-data/src/**/*.mdx",
+    "blocks/**/*.tsx",
+    "*.js",
+    "*.ts",
+    "*.d.ts"
+    ]
+}

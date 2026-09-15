@@ -1,0 +1,180 @@
+/* =====================================================================
+   libs/ui-kit/src/lib/styles/components/toggle-switch/_switch-sampark.scss
+   PrimeNG v21 ToggleSwitch — Sampark Figma Design Token Overrides
+
+   Ported from: spm-ui src/styles/_switch.scss (PrimeNG v17)
+
+   CRITICAL: PrimeNG v17 → v21 changes from the source file:
+   - p-inputswitch / .p-inputswitch  → p-toggleswitch / .p-toggleswitch
+   - .p-inputswitch-slider::before   → .p-toggleswitch-handle (real element)
+   - switchsize="sm|md|lg" attribute → baps-toggleswitch size input
+   - .p-inputswitch-checked          → .p-toggleswitch-checked
+
+   STRATEGY — variables, not rules: v21 drives ALL geometry through
+   --p-toggleswitch-* tokens, including the checked handle position
+   calc(width - handle - gap). The v17 file's per-size translateX table
+   (36-18-2=16 …) is exactly that formula, so re-pointing the variables
+   under this scope reproduces every size with no positional rules.
+
+   SIZE SUMMARY (spm-ui switchsize → size input; xs/s → xs, lg/l → lg):
+   xs → 28×16 track | 12px thumb | radius 3px
+   sm → 32×20 track | 16px thumb | radius 3px
+   md → 36×22 track | 18px thumb | radius 4px  (default)
+   lg → 40×24 track | 20px thumb | radius 4px
+   Thumb radius 2px, gap 2px — all sizes. SQUARE, not Material's pill.
+
+   COLORS: track on/off + disabled-off and the white thumb match the
+   Sampark preset (sampark.theme.ts toggleswitch section) — restated
+   here so per-instance brand="sampark" works while the page runs the
+   MyBKY preset. Checked+disabled (#E9C3C3) has no PrimeNG token slot,
+   so it is the one explicit rule below.
+
+   NOT PORTED from spm-ui _switch.scss — and why:
+   · Focus ring removal (.p-focus box-shadow none) — this workspace's
+     a11y rule is "focus always visible on keyboard focus"; PrimeNG's
+     default focus outline is kept deliberately.
+   · Hover-suppression rules — the hover-background variables are simply
+     pointed at the resting colors instead.
+
+   SCOPE: same dual opt-in as tag/avatar —
+   - baps-toggleswitch.baps-sampark — single instance via brand="sampark"
+   - .baps-ds-sampark               — page-wide Design-system toolbar class
+   Import AFTER tag-sampark (styles.scss).
+
+   USAGE IN TEMPLATES:
+   <baps-toggleswitch [(ngModel)]="on" brand="sampark" size="sm" />
+   ===================================================================== */
+
+/* ── Base (md) — geometry + colors via PrimeNG token re-point ───────── */
+:is(baps-toggleswitch.baps-sampark, .baps-ds-sampark baps-toggleswitch)
+  .p-toggleswitch {
+  --p-toggleswitch-width: var(--toggle-switch-sampark-track-md-width, 2.25rem);
+  --p-toggleswitch-height: var(
+    --toggle-switch-sampark-track-md-height,
+    1.375rem
+  );
+  --p-toggleswitch-border-radius: var(--toggle-switch-sampark-radius, 0.25rem);
+  --p-toggleswitch-gap: var(--toggle-switch-sampark-gap, 2px);
+  --p-toggleswitch-handle-size: var(--toggle-switch-sampark-thumb-md, 1.125rem);
+  --p-toggleswitch-handle-border-radius: var(
+    --toggle-switch-sampark-thumb-radius,
+    0.125rem
+  );
+  --p-toggleswitch-shadow: var(
+    --toggle-switch-sampark-shadow-track,
+    inset 0 0 4px 0 #00000026
+  );
+
+  /* Track + thumb colors — no hover change in the Sampark spec */
+  --p-toggleswitch-background: var(
+    --toggle-switch-sampark-track-off,
+    #bcb9b9
+  );
+  --p-toggleswitch-hover-background: var(
+    --toggle-switch-sampark-track-off,
+    #bcb9b9
+  );
+  --p-toggleswitch-checked-background: var(
+    --toggle-switch-sampark-track-on,
+    #c96868
+  );
+  --p-toggleswitch-checked-hover-background: var(
+    --toggle-switch-sampark-track-on,
+    #c96868
+  );
+  --p-toggleswitch-disabled-background: var(
+    --toggle-switch-sampark-track-off-disabled,
+    #f3f2f2
+  );
+  --p-toggleswitch-handle-background: var(
+    --toggle-switch-sampark-thumb-bg,
+    #ffffff
+  );
+  --p-toggleswitch-handle-hover-background: var(
+    --toggle-switch-sampark-thumb-bg,
+    #ffffff
+  );
+  --p-toggleswitch-handle-checked-background: var(
+    --toggle-switch-sampark-thumb-bg,
+    #ffffff
+  );
+  --p-toggleswitch-handle-checked-hover-background: var(
+    --toggle-switch-sampark-thumb-bg,
+    #ffffff
+  );
+  --p-toggleswitch-handle-disabled-background: var(
+    --toggle-switch-sampark-thumb-bg,
+    #ffffff
+  );
+
+  /* The track shadow is inset — no border on top of it */
+  --p-toggleswitch-border-width: 0;
+}
+
+/* ── Sizes — same variables, different boxes; the checked position
+   calc(width - handle - gap) tracks automatically ────────────────────── */
+:is(baps-toggleswitch.baps-sampark, .baps-ds-sampark baps-toggleswitch).baps-switch-xs
+  .p-toggleswitch {
+  --p-toggleswitch-width: var(--toggle-switch-sampark-track-xs-width, 1.75rem);
+  --p-toggleswitch-height: var(--toggle-switch-sampark-track-xs-height, 1rem);
+  --p-toggleswitch-handle-size: var(--toggle-switch-sampark-thumb-xs, 0.75rem);
+  --p-toggleswitch-border-radius: var(
+    --toggle-switch-sampark-radius-sm,
+    0.1875rem
+  );
+}
+
+:is(baps-toggleswitch.baps-sampark, .baps-ds-sampark baps-toggleswitch).baps-switch-sm
+  .p-toggleswitch {
+  --p-toggleswitch-width: var(--toggle-switch-sampark-track-sm-width, 2rem);
+  --p-toggleswitch-height: var(
+    --toggle-switch-sampark-track-sm-height,
+    1.25rem
+  );
+  --p-toggleswitch-handle-size: var(--toggle-switch-sampark-thumb-sm, 1rem);
+  --p-toggleswitch-border-radius: var(
+    --toggle-switch-sampark-radius-sm,
+    0.1875rem
+  );
+}
+
+:is(baps-toggleswitch.baps-sampark, .baps-ds-sampark baps-toggleswitch).baps-switch-lg
+  .p-toggleswitch {
+  --p-toggleswitch-width: var(--toggle-switch-sampark-track-lg-width, 2.5rem);
+  --p-toggleswitch-height: var(
+    --toggle-switch-sampark-track-lg-height,
+    1.5rem
+  );
+  --p-toggleswitch-handle-size: var(--toggle-switch-sampark-thumb-lg, 1.25rem);
+}
+
+/* ── Thumb shadow — flatter than MyBKY's dual-layer (the Baps preset css
+   block sets that globally on .p-toggleswitch-handle) ─────────────────── */
+:is(baps-toggleswitch.baps-sampark, .baps-ds-sampark baps-toggleswitch)
+  .p-toggleswitch
+  .p-toggleswitch-handle {
+  box-shadow: var(--shadow-sampark-switch-thumb, 0 1px 2px #0000001a) !important;
+}
+
+/* ── Checked + disabled — Primary/20 track; no PrimeNG token slot ────── */
+:is(baps-toggleswitch.baps-sampark, .baps-ds-sampark baps-toggleswitch)
+  .p-toggleswitch.p-toggleswitch-checked.p-disabled
+  .p-toggleswitch-slider {
+  background: var(--toggle-switch-sampark-track-on-disabled, #e9c3c3) !important;
+}
+
+/* ── Disabled — softer inset shadow (black @ 10%), full opacity; the
+   pale track colors carry the disabled look, as in spm-ui ─────────────── */
+:is(baps-toggleswitch.baps-sampark, .baps-ds-sampark baps-toggleswitch)
+  .p-toggleswitch.p-disabled {
+  opacity: 1 !important;
+}
+:is(baps-toggleswitch.baps-sampark, .baps-ds-sampark baps-toggleswitch)
+  .p-toggleswitch.p-disabled
+  .p-toggleswitch-slider {
+  box-shadow: var(
+    --toggle-switch-sampark-shadow-track-disabled,
+    inset 0 0 4px 0 #0000001a
+  ) !important;
+  cursor: not-allowed !important;
+}

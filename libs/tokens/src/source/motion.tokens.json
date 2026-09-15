@@ -1,0 +1,23 @@
+{
+  "motion": {
+    "duration": {
+      "fast": { "value": "120ms", "legacyMapping": { "spmUi": "checkbox transition" } },
+      "base": { "value": "150ms", "legacyMapping": { "eventsUi": "button/badge/avatar transition", "spmUi": "button transition" } },
+      "moderate": { "value": "200ms", "legacyMapping": { "eventsUi": "switch/formfield transition", "spmUi": "switch/form element transition" } },
+      "uiTransition": { "value": "220ms", "comment": "target — CLAUDE.md Motion: UI transitions (panels, drawers, tab switches)" },
+      "viewChange": { "value": "420ms", "comment": "target — CLAUDE.md Motion: full view/route changes" }
+    },
+    "easing": {
+      "standard": { "value": "ease" },
+      "overlay": { "value": "cubic-bezier(0, 0, 0.2, 1)", "legacyMapping": { "spmUi": "overlay animation easing" } },
+      "calm": { "value": "cubic-bezier(0.16, 1, 0.3, 1)", "comment": "target — CLAUDE.md Motion: calm, decelerating; never bounce/overshoot. Pair with duration.uiTransition/viewChange, not the legacy fast/base/moderate trio." }
+    }
+  },
+  "zIndex": {
+    "sampark": {
+      "overlayBackdrop": { "value": "3000" },
+      "overlayHost": { "value": "3001" },
+      "overlayPanel": { "value": "3200" }
+    }
+  }
+}

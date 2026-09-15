@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Foundations/Audit/Button Mapping (v17 vs v21)" />
+
+# Button — PrimeNG v17 (Sampark) vs v21 (MyBKY)
+
+| | MyBKY — PrimeNG v21 | Sampark — PrimeNG v17 |
+| --- | --- | --- |
+| Import | `Button` class from `primeng/button` | `p-button` directive-based on native `<button>` (v17 API) |
+| Theming | Token-driven `definePreset` (`noir.theme.ts` / `baps.theme.ts`) | CSS custom properties + `!important` overrides (`_button.scss`) |
+| Shape | Pill, `99px` radius, all variants | `4px` radius (default), all variants |
+| Default height | `36px` (M) | `32px` (default) |
+| Sizes | S 32 · M 36 (default) · L 36 (larger font) · XL 42 | sm 28 · default 32 · lg 36 · xl 40 |
+| Primary variant | Gradient `#5f78b8 → #384871`, white text | Flat fill `#c96868`, white text |
+| Secondary variant | White bg, `#e4ecf1` border, `#181b1d` text | White bg, `#e1e0e0` border, `#151414` text (`p-button-outlined p-button-secondary`) |
+| Ghost/text variant | Ghost Primary: transparent, `#5f78b8` text, border `#e4ecf1` | Primary Ghost (`p-button-text`): transparent, `#c96868` text, no border |
+| Danger | Gradient `#e05255 → #c32226` | Not in the same shape — spm-ui has no button-level danger gradient documented; uses badge/text error colors instead |
+| Disabled | Primary bg `#5f78b8@10%`, text `#8d9ba5` | bg `#f3eaea`, border `#e1e0e0`, text `#bcb9b9` |
+| Icon-only | Not separately specced | Dedicated `.p-button-icon-only` variant with its own size scale (28/32/36/40) |
+| Link style | Not present | Dedicated `p-button-link` variant (underline on hover) |
+
+## Migration effort: **Medium**
+
+Template usage (`<p-button label="..." severity="...">`) is stable across both majors — the v17→v21 API surface for basic props (`label`, `icon`, `severity`, `disabled`, `loading`) did not break. The real migration cost is:
+
+1. **Visual language change**: pill → flat radius is a full redesign of every button touchpoint, not a token swap.
+2. **Theming mechanism**: moving from SCSS `!important` overrides to a `definePreset` token object is a rewrite of the styling layer, not a search-and-replace.
+3. **New variants to design**: Sampark has `p-button-link` and a dedicated icon-only size scale that MyBKY's current implementation doesn't formally define — these need explicit design decisions if Sampark migrates to v21 rather than being silently dropped.

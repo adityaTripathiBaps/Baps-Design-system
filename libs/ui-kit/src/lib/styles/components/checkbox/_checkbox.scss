@@ -1,0 +1,49 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   Checkbox and radio GEOMETRY, for every one on the page — not just the ones
+   that came through baps-checkbox / baps-radio.
+
+   PrimeNG renders plenty of its own: the options inside a multiselect overlay,
+   a table's select-all and row checkboxes, tree nodes, listbox rows. Those are
+   bare `p-checkbox` elements, so rules anchored to `baps-checkbox` never reach
+   them and they fall through to PrimeNG's own `.p-checkbox-box`, which is
+   2px — visibly chunkier than the 1px the frames draw. That is exactly how it
+   showed up: form checkboxes correct, the ones inside a filter panel's
+   multiselect noticeably heavier.
+
+   Colour is NOT here and does not need to be: it comes from the preset tokens,
+   which are global already, so those states were right all along. Border width
+   is the one thing the token surface does not expose, which is why it was
+   stranded in component CSS.
+
+   1px at rest, 1.5px once hovered, focused or checked — both brands.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.p-checkbox-box,
+.p-radiobutton-box {
+  border-width: 1px;
+}
+
+.p-checkbox:not(.p-disabled):hover .p-checkbox-box,
+.p-checkbox-checked .p-checkbox-box,
+.p-checkbox-input:focus-visible + .p-checkbox-box,
+.p-radiobutton:not(.p-disabled):hover .p-radiobutton-box,
+.p-radiobutton-checked .p-radiobutton-box,
+.p-radiobutton-input:focus-visible + .p-radiobutton-box {
+  border-width: 1.5px;
+}
+
+/* A disabled control drops back to the resting weight — it is not a target, so
+   it should not carry the emphasised border its checked state would give it. */
+.p-checkbox.p-disabled .p-checkbox-box,
+.p-radiobutton.p-disabled .p-radiobutton-box {
+  border-width: 1px;
+}
+
+/* Material draws its OWN checkmark as a ::before on the box, on top of the SVG
+   icon PrimeNG renders separately, so a checked box shows two ticks stacked.
+   baps-checkbox suppresses this for its own instances; the same has to happen
+   for the ones PrimeNG renders inside overlays and tables. */
+.p-checkbox-box::before {
+  content: none;
+  display: none;
+}

@@ -1,0 +1,85 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as RadioStories from './radio.stories';
+
+<Meta of={RadioStories} />
+
+# Radio
+
+A single choice from a small set. `baps-radio` wraps PrimeNG’s `p-radiobutton` and implements `ControlValueAccessor`, so a group of them binds to one model value.
+
+## Usage
+
+```html
+<baps-radio name="plan" radioValue="monthly" label="Monthly" [(ngModel)]="plan" />
+<baps-radio name="plan" radioValue="yearly" label="Yearly" [(ngModel)]="plan" />
+```
+
+## Examples
+
+### Default
+
+<Canvas of={RadioStories.Default} />
+
+### Sizes
+
+<Canvas of={RadioStories.Sizes} />
+
+### States
+
+<Canvas of={RadioStories.States} />
+
+### Brands
+
+The stories above carry no `brand`, so they follow the toolbar's **Design
+System** switch — flip it to see MyBKY or Sampark.
+
+This last one pins `brand="sampark"` instead, which is the per-instance
+override: a Sampark control sitting on a MyBKY page. There is no mirror of it,
+because MyBKY is the global preset and so has no `dt` to pin.
+
+<Canvas of={RadioStories.Sampark} />
+
+## Forms
+
+A full `ControlValueAccessor`, including `setDisabledState`, so it behaves like a
+native control in either forms API.
+
+### Template Driven
+
+```html
+<baps-radio name="plan" radioValue="monthly" label="Monthly" [(ngModel)]="value" />
+```
+
+### Reactive Forms
+
+```html
+<baps-radio name="plan" radioValue="monthly" label="Monthly" formControlName="value" />
+```
+
+```ts
+form = new FormGroup({ value: new FormControl('monthly') });
+```
+
+## When Not to Use
+
+| Need | Use | Not this |
+| --- | --- | --- |
+| One choice from a long list | `baps-select` | A column of radios |
+| Independent on/off values | `baps-checkbox` | Radios — they are mutually exclusive by definition |
+| Two or three mutually exclusive views | `baps-segmented` | Radios styled as buttons |
+
+## Accessibility
+
+### Screen Reader
+
+- Each radio is a native radio input with a real label bound to its generated `inputId`, so clicking the label selects it.
+- `name` is what groups them — radios sharing a `name` form one tab stop and one arrow-key ring.
+- `disabled` propagates to the label, so the dimmed visual and the non-interactive state stay in sync.
+
+### Keyboard Support
+
+| Key | Function |
+| --- | --- |
+| <kbd>Tab</kbd> | Moves focus into the group, landing on the checked radio. |
+| <kbd>Arrow keys</kbd> | Moves between radios in the group and selects as it goes. |
+| <kbd>Space</kbd> | Selects the focused radio. |

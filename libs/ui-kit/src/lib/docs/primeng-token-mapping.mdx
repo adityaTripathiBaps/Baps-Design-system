@@ -1,0 +1,353 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Docs/PrimeNG token mapping" />
+
+# PrimeNG v21 token mapping
+
+The styling hierarchy says: reach for a PrimeNG design token before writing
+CSS. This page records, per component, whether that is actually **possible** —
+because for several components it is not, and knowing which is the difference
+between a migration plan and a wild goose chase.
+
+Every number here was read from `@primeuix/themes/types/<component>/index.d.ts`
+in the installed PrimeNG v21, not from documentation or memory.
+
+---
+
+## The headline finding
+
+**A large share of this library's CSS is not avoidable.** Two structural
+reasons, both measured:
+
+**1. Eleven of thirty-two components have no PrimeNG component underneath.**
+
+Alert, Card, FileUpload, InternalNavbar, Link, MenuItem, Tabs, UsersDropdown,
+Navbar, Paginator, TableColumnConfig.
+
+For these there is no token surface to reach for — their CSS *is* their
+implementation, not an override of somebody else's. Several already carry a
+"why we don't wrap" rationale in their own docs (Paginator's truncated
+page-link row and Tabs' `NG0201` both have written justifications). Counting
+their CSS as "overrides to be migrated" is a category error.
+
+**2. PrimeNG's token surface has real gaps, and they land exactly where BAPS
+needs them most.**
+
+| Component | Tokens | `height` | `disabled` |
+| --- | ---: | ---: | ---: |
+| **button** | **217** | **0** | **0** |
+| datatable | 144 | 0 | 0 |
+| select | 70 | 0 | 4 |
+| badge | 42 | 8 | 0 |
+| checkbox | 41 | 8 | 6 |
+| listbox | 37 | 0 | 4 |
+| toggleswitch | 37 | 2 | 4 |
+| tag | 30 | 0 | 0 |
+| avatar | 28 | 6 | 0 |
+| slider | 27 | 5 | 0 |
+| floatlabel | 26 | 0 | 0 |
+| breadcrumb | 21 | 0 | 0 |
+| divider | 15 | 0 | 0 |
+| drawer | 14 | 0 | 0 |
+| progressbar | 10 | 2 | 0 |
+| tooltip | 8 | 0 | 0 |
+| toolbar | 7 | 0 | 0 |
+| **splitbutton** | **4** | 0 | 0 |
+
+Button is the sharpest case: **217 tokens and not one of them is a height or a
+disabled state.** PrimeNG derives button height from `paddingY` plus
+line-height, while the BAPS Figma specifies explicit heights (28/32/36/40px),
+and BAPS renders disabled as a distinct fill rather than PrimeNG's opacity dim.
+Neither is expressible as a Button token. The CSS in `button.component.ts` is
+compensating for a genuine gap, not skipping a step.
+
+SplitButton is worse for a different reason: **4 tokens total**, and its two
+inner `p-button` instances are nested beyond the reach of a scoped `dt` on the
+host — already documented in its own MDX.
+
+Only **checkbox** and **toggleswitch** expose `disabled` tokens at all.
+
+---
+
+## Classification
+
+**Fully convertible** — PrimeNG exposes everything the component overrides.
+
+| Component | Status |
+| --- | --- |
+| ProgressBar | ✅ **Migrated.** See below. |
+| Avatar | Already `dt`-driven for both brands |
+| Badge | Already `dt`-driven for both brands |
+
+**Partially convertible** — geometry/colour tokens exist, but some state or
+variant styling has no token equivalent.
+
+| Component | Status |
+| --- | --- |
+| Checkbox | ✅ **Migrated.** See below. |
+| Slider | ✅ **Migrated.** See below. |
+| ToggleSwitch, Select | Nothing to migrate — no component CSS at all (see below) |
+| Tag | Already at the ceiling — every existing tag token is in the preset (see below) |
+| Listbox | ⛔ **Recommended against.** Specificity interlock, see below. |
+
+Their base skin can move to tokens; severity/variant styling driven by BAPS
+host classes cannot, because PrimeNG tokens are per-component, not per-variant.
+
+**Genuinely requires CSS** — no token path exists.
+
+Button (no height, no disabled), SplitButton (4 tokens, unreachable nested
+buttons), Table/datatable (no height), Toolbar (7 tokens), Tooltip (8 tokens),
+Drawer (14 tokens), Divider, Breadcrumb.
+
+**Out of scope** — the eleven custom components listed above.
+
+---
+
+## Worked example: ProgressBar
+
+The one component where the token surface covered the full override set, so it
+serves as the migration pattern.
+
+PrimeNG exposes `root.height`, `root.background`, `root.borderRadius`,
+`value.background` and `label.*` — precisely what `progress-bar.component.ts`
+was hand-writing for both brands.
+
+**Moved to tokens:** track height, track background, border radius, fill
+colour, label colour/size/weight — for MyBKY via `components.progressbar` in
+`baps.theme.ts`, for Sampark via `SAMPARK_PROGRESSBAR_TOKENS` bound through the
+per-instance `dt` input (same convention as Button/Badge/Avatar).
+
+**Deliberately left as CSS**, with reasons:
+
+- **Severity variants** (success/info/warning/error, both brands — 8 rules). Driven by host classes; PrimeNG has no severity concept for progressbar and tokens are per-component, not per-variant.
+- **`showValue` height bump.** Conditional on a host class.
+- **`border-radius: inherit` on the fill.** PrimeNG applies `borderRadius` to the track root only, so a partially-filled bar would otherwise show a square-ended fill inside a pill track.
+
+**Result:** CSS declarations 30 → 17, and the visual baseline showed **0 diffs
+across all 138 stories** — confirming the refactor was genuinely appearance-neutral
+rather than merely close.
+
+That last check is the point. A token migration that "looks fine" is not
+verifiable by eye across 138 stories; the baseline is what makes it safe.
+
+---
+
+## Worked example: Checkbox (the partial case)
+
+More instructive than ProgressBar, because coverage here is **partial** — and
+the gaps are arbitrary rather than principled.
+
+**Moved to tokens** (`SAMPARK_CHECKBOX_TOKENS`): box width/height, border
+radius, resting border colour, hover border colour, checked background and
+border, checked-hover background and border, check-icon colour, disabled
+background.
+
+**Could not move**, each left in CSS with the reason beside it:
+
+| Stayed as CSS | Why |
+| --- | --- |
+| `border-width: 1.5px` | `borderColor` exists; **`borderWidth` does not** |
+| disabled border colour | `disabledBackground` exists; **`disabledBorderColor` does not** |
+| checked-disabled fill | `checkedDisabledBorderColor` exists; **`checkedDisabledBackground` does not** |
+| `opacity: 1` on disabled | PrimeNG dims disabled with opacity; BAPS uses a distinct fill |
+| `.p-checkbox-label` | BAPS's own markup — no PrimeNG checkbox token addresses it |
+
+Note the shape of those gaps: for one state PrimeNG gives you the background
+but not the border, for another the border but not the background. There is no
+rule to predict it from — the surface has to be read per component, per state.
+
+**Result:** visual baseline **0 diffs across 138 stories**.
+
+This is why "remove all CSS overrides" is the wrong goal. The achievable goal
+is **no CSS that a token could have replaced**, with every survivor carrying
+its justification — otherwise the next reader re-runs this same analysis and
+reaches the same conclusion.
+
+---
+
+## Worked example: Slider (and the cascade-layer rule it exposed)
+
+**Moved to tokens** (`SAMPARK_SLIDER_TOKENS`): `track.borderRadius`,
+`range.background`, `handle.background`, `handle.hoverBackground`, and the
+dark track fill via `colorScheme.dark.track.background`.
+
+`range` and `handle` are pinned at the **top level**, not under
+`colorScheme.light`. The CSS they replaced was not scheme-scoped, so
+per-scheme tokens would have handed the dark handle back to Material's own
+primary the moment the CSS went away.
+
+**Could not move:**
+
+| Stayed as CSS | Why |
+| --- | --- |
+| handle `border-color` | `handle.background` exists; **`handle.borderColor` does not** |
+| handle focus ring | `handle.focusRing.shadow` exists but **cannot win** — see below |
+| `.p-disabled { opacity }` | all 27 tokens sit on root/track/range/handle; **none are state-qualified** |
+
+The focus ring is the interesting one, and it generalises. Storybook configures
+`cssLayer: { name: 'primeng', … }`, so *every* PrimeNG stylesheet — base styles
+**and** generated token variables **and** the preset's own `css` block — lands
+inside `@layer primeng`. Two consequences:
+
+1. Unlayered component `styles:` always beat tokens, whatever the specificity.
+   That is why moving a declaration into the token layer is safe only when no
+   other unlayered rule targets the same property.
+2. Inside the layer, ordinary cascade rules apply. Material's slider `css`
+   re-declares `.p-slider-handle:focus-visible` with a hard-coded `color-mix`
+   halo at the same specificity as the base rule that reads
+   `handle.focusRing.shadow`, and later. **A token that the preset's own `css`
+   block overrides is not a usable token.** Check the preset's `css` string,
+   not just the token list.
+
+---
+
+## The four that were examined and left alone
+
+**ToggleSwitch** and **Select** have no component CSS to migrate — one has no
+`styles:` block at all, the other has `baps-select { display: block }`. Both
+skins live in `libs/ui-kit/src/lib/styles/`, which is out of scope for the
+reasons in the next section. ToggleSwitch's SCSS is already token-driven in
+substance: it re-points `--p-toggleswitch-*` custom properties per scope, which
+*is* the token layer, just written as scoped CSS variables.
+
+**Tag** is already at its ceiling. The surface is 30 tokens — `root.fontSize`,
+`fontWeight`, `padding`, `gap`, `borderRadius`, `roundedBorderRadius`,
+`icon.size`, and `{background, color}` for seven severities — and
+`baps.theme.ts` already sets every one of them except `icon.size`, which the
+component deliberately renders as `font-size: inherit` so icons track the
+label. Everything left in `tag.component.ts` is height, border, hover ring,
+per-size padding/font-size and the disabled fill. Tag has **no height token, no
+border token, no hover token, no disabled token and no size sections** (no
+`sm`/`lg`), so none of it is expressible. Nothing to do.
+
+**Listbox** is the one active recommendation *against*. Its 37-token surface
+would cover a useful slice — `root.background`/`borderColor`/`borderRadius`/
+`shadow`, `list.padding`, `list.header.padding`, `option.padding`/`color`/
+`borderRadius`, the selected and focus colours, and `optionGroup.*` — but the
+component routes all of it through a hand-rolled `--listbox-*` variable layer
+with three competing scope blocks, and those blocks are cascade-coupled exactly
+like `_input.scss`:
+
+- `baps-listbox:not(.baps-sampark):not(.baps-ds-sampark baps-listbox)` computes
+  to **(0,2,2)** — `:not()` takes the specificity of its most specific argument.
+- `baps-listbox.baps-sampark` and `.baps-ds-sampark baps-listbox` are **(0,1,1)**
+  and come later in source order.
+- `.baps-dark baps-listbox` is also **(0,1,1)** but comes *first*, so it is
+  outranked by both brand blocks and currently has **no effect at all**.
+
+Lifting the brand colours into the token layer removes those two competitors
+and silently brings the dark block to life — turning dark mode on for listbox
+for the first time, which is a visual change across every dark story, not a
+refactor. The alternative, deleting the dead dark block as part of the
+migration, trades a working migration for a lost (if currently broken) intent.
+
+On top of that the untokenizable remainder is the majority of the file: the
+`::before` accent bar, `min-height`, the intra-option `gap`, `font-size`,
+`font-weight`, `line-height`, the header's `border-bottom` and `background`
+(`list.header` exposes **only** `padding`), the list container's `max-height`,
+and the **per-option** disabled colour — `root.disabledColor` disables the whole
+listbox, and there is no `option.disabledColor`.
+
+**Recommendation: revisit listbox only together with a decision about its dark
+mode**, which is a design question, not a token question.
+
+---
+
+## The shared SCSS layer: a recommendation NOT to migrate
+
+707 `!important` declarations live in `libs/ui-kit/src/lib/styles`, and the
+distribution is top-heavy:
+
+| File | `!important` |
+| --- | ---: |
+| `_input.scss` (MyBKY base) | 215 |
+| `_select.scss` (MyBKY base) | 202 |
+| `_table-sampark.scss` | 103 |
+| `_select-sampark.scss` | 55 |
+| `_tag-sampark.scss` | 53 |
+| `_input-sampark.scss` | 48 |
+| everything else | 31 |
+
+The top two are 59% of the total and are both MyBKY base skins, which exist
+*because* `baps.theme.ts` has no `inputtext` or `select` entry. On the surface
+that looks like the ideal migration target. It is not, for three measured
+reasons.
+
+**1. Most of it has no token.** Categorising all 215 `!important` in
+`_input.scss` by property:
+
+| Has a token | | No token | |
+| --- | ---: | --- | ---: |
+| color | 22 | height | 10 |
+| font-size | 12 | display | 9 |
+| border-radius | 11 | opacity | 8 |
+| background | 10 | font-weight | 8 |
+| padding | 6 | cursor | 8 |
+| | | border (width) | 8 |
+| | | line-height | 6 |
+
+Roughly **61 of 215 (28%)** are theoretically convertible. `inputtext` exposes
+33 tokens but has **no `height`, no `fontWeight`, no `lineHeight` and no
+`borderWidth`**.
+
+**2. The MyBKY design needs the one thing that is missing.** Its Figma spec
+changes border *width* per state — 1px at rest, 1.5px on hover and focus. With
+no `borderWidth` token that behaviour cannot move to the token layer at all,
+and it is not incidental styling; it is how the field signals interaction.
+
+**3. There is a documented specificity interlock.** `_input.scss` states it
+outright:
+
+> The `:not()` chains double as specificity ballast — the Sampark skin wins
+> cascade ties only because it mirrors them 1:1, so never shorten a chain.
+
+`_input.scss`, `_select.scss` and `_input-sampark.scss` are cascade-coupled by
+design. Converting one to tokens lowers its specificity and silently changes
+which rules win in the other two — across every form control in the system.
+
+**Recommendation: leave this layer alone.** The achievable gain is ~28% of one
+file, the blast radius is every input, select, datepicker and multiselect in
+every consuming application, and the cost is breaking a deliberate,
+documented cascade contract. That is a poor trade.
+
+The `!important` here is not carelessness — it is a considered response to
+PrimeNG's compiled theme specificity, and the file says so in its header. It
+should be revisited only if PrimeNG adds `borderWidth`/`height` tokens to the
+input surface, at which point the interlock can be retired as a unit rather
+than piecemeal.
+
+---
+
+## How to migrate a component
+
+1. Read `@primeuix/themes/types/<component>/index.d.ts` and list the real token names. Do not assume from the component's appearance.
+2. Compare against the CSS properties the component currently overrides.
+3. Move only what has a token. Leave the rest **with a comment explaining which token was missing** — otherwise the next reader assumes it was an oversight and repeats this analysis.
+4. Put brand tokens in the theme layer, not the component, so one block drives both the whole-preview preset and the per-instance `dt`.
+5. Run `npx nx run storybook-host:visual-test`. A pure refactor must produce **zero** diffs. Any diff is a real behavioural change to explain, not a baseline to update.
+
+---
+
+## Honest status
+
+The specification's premise — that overrides are usually avoidable via tokens —
+holds for **some** components and demonstrably does not for others. The correct
+target is not "zero CSS". It is: **no CSS that a token could have replaced**,
+with every remaining rule carrying its reason.
+
+Of the 21 PrimeNG-wrapping components, **6 are now token-driven** (Button,
+Avatar, Badge, ProgressBar, Checkbox, Slider); ToggleSwitch, Select and Tag
+were examined and had nothing left to move; Listbox is a documented
+recommendation against; and the rest are constrained by PrimeNG's own token
+surface.
+
+Both migrations so far produced **zero visual diffs**, which is the bar: a
+token migration is only correct if it changes nothing on screen.
+
+### Pitfall for whoever continues this
+
+Component `styles:` blocks are TypeScript **template literals**. A backtick
+inside a CSS comment — e.g. writing a token name as `` `borderWidth` `` —
+silently terminates the string and produces a confusing `TS1005 ',' expected`
+several lines away. That is why no CSS comment in this repo quotes with
+backticks. It has caught this migration twice.

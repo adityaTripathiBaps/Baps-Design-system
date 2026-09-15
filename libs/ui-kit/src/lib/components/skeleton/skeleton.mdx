@@ -1,0 +1,91 @@
+import { Meta, Canvas, Controls } from '@storybook/blocks';
+import * as SkeletonStories from './skeleton.stories';
+
+<Meta of={SkeletonStories} />
+
+# Skeleton
+
+A placeholder block shown while real content loads. `baps-skeleton` wraps
+PrimeNG's `p-skeleton`.
+
+<Canvas of={SkeletonStories.Default} />
+
+<Controls of={SkeletonStories.Default} />
+
+## Usage
+
+```html
+<baps-skeleton width="12rem" height="1rem" />
+<baps-skeleton shape="circle" size="2.5rem" />
+```
+
+Size it to the content it stands in for. A skeleton that is visibly the wrong
+shape is worse than a spinner, because it promises a layout that then jumps.
+
+## Colours are shared between brands, on purpose
+
+A skeleton is a neutral surface, not a branded one. Tinting it makes a loading
+state read as content — the user waits for something that is already "there".
+
+Only the corner differs: **MyBKY 6px, Sampark 4px**. A circle ignores both.
+
+## When to use
+
+- The shape of the incoming content is known — a table row, a card, an avatar
+  beside two lines of text. The placeholder then holds the layout still.
+- The wait is long enough to notice but short enough not to need a message.
+
+## When not to use
+
+- **The shape is unknown** — use a [spinner](/docs/components-spinner--docs).
+  A skeleton guessing at a layout it cannot know causes a jump on arrival.
+- **A whole page** — a screenful of grey boxes reads as a broken page. Skeleton
+  the region that is loading, and leave the chrome alone.
+- **An action in progress** — a button that is saving wants
+  `[loading]="true"`, not a skeleton in its place.
+- **Something that may fail** — a skeleton promises arrival. An error state
+  needs an [alert](/docs/components-alert--docs).
+
+## Examples
+
+### Circle
+
+<Canvas of={SkeletonStories.Circle} />
+
+### Static
+
+<Canvas of={SkeletonStories.Static} />
+
+### List item
+
+<Canvas of={SkeletonStories.ListItem} />
+
+### Card
+
+<Canvas of={SkeletonStories.Card} />
+
+## Accessibility
+
+**The component is `aria-hidden`.** Announcing a dozen empty boxes tells a
+screen-reader user nothing.
+
+Do the announcing at the region level instead:
+
+```html
+<section [attr.aria-busy]="loading" aria-live="polite">
+  @if (loading) {
+    <baps-skeleton width="100%" height="1rem" />
+  } @else {
+    <p>{{ content }}</p>
+  }
+</section>
+```
+
+`aria-busy` says the region is working; `aria-live` announces the real content
+when it replaces the placeholder. Without this pair, a screen-reader user gets
+silence during the wait and no notification at the end.
+
+There is **no interaction story** for this component, deliberately: a skeleton
+has no behaviour to exercise. Its coverage is visual — see the
+[visual baseline](/docs/guidelines-accessibility--docs) note on which suite
+owns which question.

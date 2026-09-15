@@ -1,0 +1,124 @@
+/* =====================================================================
+   libs/ui-kit/src/lib/styles/layout/_touch-targets.scss
+
+   WCAG 2.5.5 (Target Size, AAA) asks for 44x44 CSS px; 2.5.8 (AA) sets a
+   24x24 floor. A responsive audit of this library found that NOT ONE
+   component met 44x44 — the slider handle is 18x18, ToggleSwitch's largest
+   step is 40x24, .baps-table-row-toggle is 10px wide (missing even the AA
+   floor), and every Button size falls short, the largest by 2px.
+
+   Those sizes come from Figma and are correct for a mouse. The problem is
+   only touch, so the fix is only applied on touch:
+
+       @media (pointer: coarse)
+
+   fires when the PRIMARY input device cannot point precisely — phones and
+   tablets. Desktop, including touch-capable laptops that still have a
+   trackpad as primary, is completely unaffected, so the Figma density
+   survives everywhere it was designed for.
+
+   Technique: min-width / min-height only. The obvious alternative — an
+   invisible ::after overlay that grows the hit area without moving the
+   visual box — was rejected because several components already own their
+   pseudo-elements (baps-avatar's status dot and icon badge, baps-alert's
+   accent bar, the table tree spine), and silently stealing ::after from
+   them would be a much worse bug than a slightly roomier control.
+
+   Consequence, stated plainly: on touch these controls physically grow, so
+   dense rows get taller. That is the intended trade — a control that cannot
+   be hit reliably is worse than a row that is 8px taller.
+
+   Loaded LAST in styles.scss so it outranks the per-component geometry it
+   is deliberately overriding.
+
+   Why !important, given the house rule against it: source order alone is not
+   enough here. Several components already declare their own min-width — e.g.
+   baps-paginator sets min-width: 1.875rem at (0,1,1) specificity, and its
+   Sampark scope reaches (0,2,1) via :is(). A bare .baps-paginator__nav is
+   (0,1,0) and loses, which is exactly what happened on the first attempt:
+   min-height applied (no competing declaration) while min-width did not, so
+   the control came out 30x44 instead of 44x44 — half-fixed, and silently so.
+   Matching specificity per component per brand would mean tracking every
+   selector in the library from a file that has no business knowing them.
+   This is a single, media-gated accessibility override layer; !important is
+   the correct tool for it, and the same pattern the Sampark SCSS layers
+   already use.
+   ===================================================================== */
+
+@media (pointer: coarse) {
+  /* ── Pagination ──
+     30x30 (MyBKY) / 32x32 (Sampark), separated by only a 2px gap, which
+     compounds the problem: adjacent small targets are the classic mis-tap. */
+  .baps-paginator__nav,
+  .baps-paginator__page {
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+
+  /* ── Table row controls ──
+     .baps-table-row-toggle is 10px wide and .baps-table-action 28x28. The
+     toggle is the worst target in the library. */
+  .baps-table-action,
+  .baps-table-row-toggle,
+  .baps-table-group-toggle {
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+
+  /* ── Alert dismiss ── 24x24. */
+  .baps-alert__close {
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+
+  /* ── Column-config rows ──
+     Three sub-30px targets (drag handle 17x18, pin 26x26, xs switch 28x16)
+     stacked 8px apart in a scrolling list. Note this does NOT solve the
+     related bug that the pin button is visibility:hidden until :hover and
+     so is unreachable on touch entirely — that needs a real affordance
+     change, tracked separately. */
+  .ct-cfg-drag-handle,
+  .ct-cfg-pin-btn {
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+
+  /* ── Slider handle ──
+     18x18 against a 2px track, and .p-slider-handle IS the target with no
+     padded parent to grow instead — the hardest control here to hit. */
+  .p-slider .p-slider-handle {
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+
+  /* ── Buttons ──
+     Every step misses; the largest misses by 2px. Width is left alone: a
+     labelled button is already wide enough, and forcing min-width would
+     stretch short labels oddly. Icon-only buttons get both. */
+  .p-button {
+    min-height: 44px !important;
+  }
+  .p-button.p-button-icon-only {
+    min-width: 44px !important;
+  }
+
+  /* ── Form controls ──
+     The checkbox box is 18px and its input overlay is only ~20px. The
+     switch tops out at 40x24. Neither can grow its own visual box without
+     breaking the design, so the surrounding control grows instead. */
+  .p-checkbox,
+  .p-checkbox-input,
+  .p-toggleswitch {
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+
+  /* Keep the drawn box centred inside the enlarged hit area rather than
+     letting it sit top-left of a 44px void. */
+  .p-checkbox,
+  .p-toggleswitch {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

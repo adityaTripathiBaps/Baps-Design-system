@@ -1,0 +1,103 @@
+import { Meta, Canvas, Controls } from '@storybook/blocks';
+import * as TreeTableStories from './tree-table.stories';
+
+<Meta of={TreeTableStories} />
+
+# TreeTable
+
+A table whose rows nest, for data that is a hierarchy rather than a list.
+`baps-tree-table` wraps PrimeNG's `p-treetable`.
+
+<Canvas of={TreeTableStories.Default} />
+
+<Controls of={TreeTableStories.Default} />
+
+## It is a sibling of Table, not a variant
+
+`baps-tree-table` and [`baps-table`](/docs/components-table--docs) are separate
+components on purpose. They take **different data** — `TreeNode[]` against a
+flat array — and PrimeNG ships them separately. One wrapper cannot serve both
+without pretending the two shapes match.
+
+Pick by the data, not by the look:
+
+| Your data | Component |
+| --- | --- |
+| A flat array, possibly grouped for display | `baps-table` |
+| Nodes with `children`, expandable to any depth | `baps-tree-table` |
+
+## Usage
+
+Templates are declared in the **consumer's** component, so they are collected
+with `ContentChildren` and re-emitted rather than projected — the same mechanism
+`baps-table` uses, and the reason `SharedModule` has to be imported alongside
+the wrapper.
+
+```ts
+import { SharedModule } from 'primeng/api';
+import { BapsTreeTable } from '@org/ui-kit';
+
+// imports: [BapsTreeTable, SharedModule]
+```
+
+```html
+<baps-tree-table [value]="nodes" brand="sampark">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Region</th>
+      <th>Provider</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+    <tr>
+      <td>
+        <p-treeTableToggler [rowNode]="rowNode" />
+        {{ rowData.name }}
+      </td>
+      <td>{{ rowData.provider }}</td>
+    </tr>
+  </ng-template>
+</baps-tree-table>
+```
+
+`p-treeTableToggler` is what makes a row expandable — without it the hierarchy
+renders flat with no way to open it.
+
+## When to use
+
+- The rows genuinely nest: regions containing centres, accounts containing
+  sub-accounts, a chart of accounts.
+- A user needs to see a parent and its children in the same columns.
+
+## When not to use
+
+- **Flat data you want grouped** — `baps-table` has a grouped mode, and it
+  keeps sorting and paging behaving as a reader expects.
+- **A hierarchy with no columns** — that is a tree, and
+  [`baps-tree-select`](/docs/components-treeselect--docs) hosts one.
+- **Two levels that never change** — a table with a subtitle line in the lead
+  cell is simpler and needs no toggling.
+
+## Examples
+
+### Empty
+
+<Canvas of={TreeTableStories.Empty} />
+
+### Loading
+
+<Canvas of={TreeTableStories.Loading} />
+
+## Accessibility
+
+- PrimeNG renders the toggler as a button with `aria-expanded`, so expansion
+  state is announced. Keep the toggler in the **lead** cell — a toggle in the
+  middle of a row is hard to find by keyboard.
+- Column headers must be real `<th>`. The skin styles them, but the semantics
+  are what let a screen reader read "Provider: Stripe" instead of just
+  "Stripe".
+- **A deep hierarchy is a real burden with a screen reader.** Where nesting can
+  go past three levels, offer a filter or a flat view as well.
+- Loading state: put `aria-busy` on the region rather than announcing the
+  placeholder rows — see
+  [Guidelines/Accessibility](/docs/guidelines-accessibility--docs).

@@ -1,0 +1,79 @@
+/* =====================================================================
+   libs/ui-kit/src/lib/styles/components/tooltip/_tooltip-sampark.scss
+   Sampark Portal rich tooltip card — Figma "Tooltips" (node 13197:90046).
+
+   PrimeNG's Tooltip directive renders its overlay via the CDK, appended
+   to <body> — outside any component's view, so ViewEncapsulation can't
+   reach it (same reason select/table Sampark skins are global files, not
+   component `styles:`). Targets the overlay's own class names:
+     .p-tooltip        → root (position modifier: .p-tooltip-top, etc.)
+     .p-tooltip-text   → content container (this is where our markup lands)
+     .p-tooltip-arrow  → CSS-triangle pointer
+
+   bapsTooltip only applies the .baps-tooltip-sampark modifier when BOTH
+   tooltipTitle is set AND brand="sampark" (tooltip.directive.ts) — plain
+   single-line tooltips keep PrimeNG's default dark bubble untouched.
+   ===================================================================== */
+
+.p-tooltip.baps-tooltip-sampark {
+  .p-tooltip-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    max-width: 15rem;
+    padding: 0.75rem;
+    background: var(--color-sampark-surface-card, #ffffff);
+    color: var(--color-sampark-mono-100, #151414);
+    border-radius: var(--radius-sampark-default, 0.25rem);
+    /* Figma "L Drop Shadow" — two stacked soft shadows. */
+    box-shadow:
+      0 4px 6px -2px rgba(16, 24, 40, 0.16),
+      0 12px 16px -4px rgba(16, 24, 40, 0.08);
+  }
+
+  .baps-tooltip-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--color-sampark-mono-100, #151414);
+  }
+
+  .baps-tooltip-text {
+    font-size: 0.75rem;
+    font-weight: 400;
+    line-height: 1.3;
+    color: var(--color-sampark-mono-80, #595656);
+  }
+
+  .baps-tooltip-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-top: 0.125rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.3;
+    color: var(--color-sampark-primary-default, #c96868);
+  }
+
+  /* Arrow — CSS triangle, colored to match the white card per side. */
+  .p-tooltip-arrow {
+    border-color: transparent;
+  }
+
+  &.p-tooltip-top .p-tooltip-arrow {
+    border-top-color: var(--color-sampark-surface-card, #ffffff);
+  }
+
+  &.p-tooltip-bottom .p-tooltip-arrow {
+    border-bottom-color: var(--color-sampark-surface-card, #ffffff);
+  }
+
+  &.p-tooltip-left .p-tooltip-arrow {
+    border-left-color: var(--color-sampark-surface-card, #ffffff);
+  }
+
+  &.p-tooltip-right .p-tooltip-arrow {
+    border-right-color: var(--color-sampark-surface-card, #ffffff);
+  }
+}

@@ -1,0 +1,69 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as TableStories from '../components/table/table.stories';
+
+<Meta title="Patterns/Data table listing" />
+
+# Data table listing
+
+The full "listing screen" shape: a table with a per-user column-visibility
+panel, bounded to a fixed height so a `baps-paginator` sits fixed underneath
+it instead of getting pushed down the page. `Components → Table` already
+covers each half of this separately — `WithColumnConfig` (column toggling)
+and `WithPagination` (paged rows in a bounded surface) — but neither shows
+both together, which is what every real listing screen actually needs.
+
+## Playground
+
+<Canvas of={TableStories.FullListingPage} />
+
+## What you get
+
+- Column visibility via `baps-table-column-config`, same wiring as
+  `WithColumnConfig`: search, "N Active Columns" toggle, drag-reorder/pin
+  within the regular bucket, Reset Default / Apply.
+- Real pagination via an external `baps-paginator` (not PrimeNG's built-in
+  `[paginator]`, which renders inside the table frame under the last row —
+  not where this design puts it), same wiring as `WithPagination`.
+- Both driven off the same 250-row dataset, sliced by page and filtered by
+  column visibility independently — paging doesn't reset column state and
+  toggling a column doesn't reset the page.
+
+## The one thing this doesn't do
+
+**Columns don't physically reorder.** `BapsTable` is template-driven — every
+`<th>`/`<td>` pair in this story is hardcoded to a fixed column key, so
+dragging a column in the config panel updates its `visible`/`pinned` state
+but not its position in the rendered table. This is inherited directly from
+`WithColumnConfig`'s own doc comment, not something this pattern adds or
+fixes — a real drag-to-reorder table would need `BapsTable` itself to render
+columns from a `columns` input rather than a fixed template, which is a
+component-level change, out of scope here.
+
+## Gotchas
+
+**The paginator lives outside `.baps-table-surface`.** It's a sibling in the
+flex column below the surface div, not a child — putting it inside the
+scrollable surface would scroll it out of view with the rows.
+
+**`scrollHeight="flex"` needs the surface's own flex chain to work.** The
+outer wrapper sets an explicit `height`, `.baps-table-surface` is a flex
+child of it, and PrimeNG's `flex` scroll height fills whatever's left. Drop
+any one of those three and the table either collapses to 0 height or grows
+past its frame.
+
+**Frozen-column offsets are a plain sum, not a DOM measurement.** Every
+column here has a fixed `style="width: …rem"`, so `frozenLeftOffset()`
+sums `COLUMN_WIDTH_PX` for the frozen columns to its left rather than
+asking PrimeNG to measure rendered widths — see the pinning note in
+`_table-sampark.scss`'s `.dt-frozen-left` doc comment. This only holds
+because none of these columns have a variable width; a table with
+resizable columns would need real measurement instead.
+
+## Related
+
+- **Components → Table** — `WithColumnConfig`, `WithPagination`,
+  `SortableStickyPaginated`, `GroupedProjects` for the other table shapes
+- **Components → TableColumnConfig** — the panel's own full input/output
+  reference
+- **Components → Pagination** — `baps-paginator`'s own states and both
+  brands

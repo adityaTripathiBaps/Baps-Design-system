@@ -1,0 +1,54 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as ProgressBarStories from './progress-bar.stories';
+
+<Meta of={ProgressBarStories} />
+
+# ProgressBar
+
+A determinate or indeterminate progress indicator. `baps-progressbar` (`BapsProgressBar`) wraps PrimeNG's `p-progressbar` and adds a `severity` input for semantic fill colors.
+
+## Usage
+
+```html
+<baps-progressbar [value]="uploadPercent" brand="sampark"></baps-progressbar>
+
+<baps-progressbar mode="indeterminate" brand="sampark"></baps-progressbar>
+
+<baps-progressbar [value]="score" severity="success" brand="sampark"></baps-progressbar>
+```
+
+## Examples
+
+### Default
+
+<Canvas of={ProgressBarStories.Default} />
+
+### Severities My BKY
+
+<Canvas of={ProgressBarStories.SeveritiesMyBKY} />
+
+### Severities
+
+<Canvas of={ProgressBarStories.Severities} />
+
+### Table Cell Progress
+
+<Canvas of={ProgressBarStories.TableCellProgress} />
+
+## When Not to Use
+
+| Need | Use | Not this |
+| --- | --- | --- |
+| Report that the operation finished, succeeded, or failed | `baps-alert` | ProgressBar — it has no terminal state and no text |
+| Let the user *set* a value on a 0–100 track | `baps-slider` | ProgressBar — it is output-only, no `ControlValueAccessor`, no handle |
+| A static status word ("Processing", "Complete") | `baps-tag` | ProgressBar — a bar with no label communicates nothing on its own |
+| A count of pending items | `baps-badge` | ProgressBar — a count is not a fraction of a whole |
+
+Also avoid `showValue` at the shipped track height — see Responsive Behavior; the label does not fit.
+
+## Accessibility
+
+- PrimeNG renders the host with `role="progressbar"` and `aria-valuemin="0"` / `aria-valuemax="100"` / `aria-valuenow` bound to `value`.
+- In `indeterminate` mode, PrimeNG still binds `aria-valuenow` to `value` unconditionally (there's no mode-based omission in the underlying component) — screen readers may announce a numeric value (typically `0`, the input's default) for a bar that has no actual numeric progress. This is a PrimeNG-level quirk, not something this wrapper corrects.
+- `showValue` renders a visible percentage but doesn't substitute for the ARIA value — both are wired to the same `value` input, so they stay in sync automatically.
+- Don't rely on `severity` color alone to convey status (see Do's and Don'ts) — colorblind users can't reliably distinguish the four fills.

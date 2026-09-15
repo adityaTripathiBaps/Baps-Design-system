@@ -1,0 +1,104 @@
+{
+  "shadow": {
+    "mybky": {
+      "card": {
+        "value": "0 12px 16px -4px rgba(16,24,40,.08), 0 4px 6px -2px rgba(16,24,40,.16)"
+      },
+      "tooltip": {
+        "value": "0 6px 12px rgba(16,24,40,.12), 0 2px 4px rgba(16,24,40,.06)",
+        "comment": "dual-layer, MyBKY 1.6"
+      },
+      "switchThumb": {
+        "value": "0 2px 4px rgba(16,24,40,.06), 0 1px 4px rgba(16,24,40,.12)"
+      },
+      "switchTrack": {
+        "value": "inset 0 0 4px 0 #00000026",
+        "comment": "black @ 15% — same recess as sampark's",
+        "legacyMapping": {
+          "eventsUi": "--switch-shadow-default"
+        }
+      },
+      "switchTrackDisabled": {
+        "value": "inset 0 0 4px 0 #0000001a",
+        "comment": "black @ 10%",
+        "legacyMapping": {
+          "eventsUi": "--switch-shadow-disabled"
+        }
+      },
+      "drawer": {
+        "value": "0 4px 6px rgba(16,24,40,.06), 0 12px 16px rgba(16,24,40,.12)",
+        "comment": "Deeper and softer than card — a drawer floats over the page, a card sits in it. From events-ui .app-drawer."
+      },
+      "cardHover": {
+        "value": "0 2px 12px rgba(0,0,0,0.08)",
+        "comment": "ONLY the dashboard region mini-cards lift on hover. Hero and chart cards deliberately do not — see dashboard.mybky."
+      },
+      "xs": {
+        "value": "0 2px 4px rgba(16,24,40,.12)",
+        "comment": "Figma \"XS Drop Shadow\". Resting elevation for a 40px stepper slot."
+      },
+      "xl": {
+        "value": "0 8px 8px rgba(16,24,40,.06), 0 20px 24px rgba(16,24,40,.12)",
+        "comment": "Figma \"XL Drop Shadow\". The lifted stepper slot — active, and inactive-on-hover."
+      }
+    },
+    "sampark": {
+      "xs": {
+        "value": "0 1px 2px rgba(16,24,40,.15)",
+        "comment": "Figma \"XS Drop Shadow\" (#10182826, y1, blur2, spread0). The lift under a listing table's outer frame — Sampark Portal 17512:73144."
+      },
+      "s": {
+        "value": "0 2px 4px rgba(16,24,40,.06), 0 1px 4px rgba(16,24,40,.12)",
+        "comment": "Figma \"S Drop Shadow\" — the lift under the slider value bubble (node 13197:89384). Promoted out of slider.component.ts, which had it inlined because no sampark shadow token matched. Note this is the same pair as shadow.mybky.switchThumb; the value was already in the file under a name that gave no hint it was a general S-level drop shadow."
+      },
+      "xl": {
+        "value": "0 8px 12px -4px rgba(16,24,40,.16), 0 20px 24px -4px rgba(16,24,40,.08)",
+        "comment": "Figma \"XL Drop Shadow\" — the lift under the Alert notification card (node 13197:89157). Promoted out of alert.component.ts."
+      },
+      "l1": {
+        "value": "0 4px 6px -2px rgba(16,24,40,.16)"
+      },
+      "l2": {
+        "value": "0 12px 16px -4px rgba(16,24,40,.08)"
+      },
+      "toast": {
+        "value": "0 4px 6px -2px rgba(16,24,40,.16), 0 12px 16px -4px rgba(16,24,40,.08)"
+      },
+      "inputFocus": {
+        "value": "0 0 0 3px #f2f1f0",
+        "legacyMapping": {
+          "spmUi": "--input-shadow-focused"
+        }
+      },
+      "inputError": {
+        "value": "0 0 0 3px #ffe5e5",
+        "legacyMapping": {
+          "spmUi": "--input-shadow-error"
+        }
+      },
+      "switchThumb": {
+        "value": "0px 1px 2px #0000001a"
+      },
+      "switchTrack": {
+        "value": "inset 0px 0px 4px 0px #00000026",
+        "legacyMapping": {
+          "spmUi": "--switch-shadow-default"
+        }
+      },
+      "overlay": {
+        "value": "0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12)"
+      },
+      "dropdown": {
+        "value": "0 12px 40px rgba(0,0,0,0.15)",
+        "comment": "Every floating panel in the Sampark Portal — select/multiselect overlays, popovers, column-config panels — carries this one shadow. Sharing it is what makes them read as one surface family; sampark.overlay (PrimeNG's three-layer stock value) does not appear in the design.",
+        "legacyMapping": {
+          "spmUi": "box-shadow on .p-dropdown-panel / .p-multiselect-panel"
+        }
+      },
+      "drawer": {
+        "value": "0 0 40px rgba(0,0,0,0.25)",
+        "comment": "Sampark Portal filter drawer (Figma 17512:72588). Deeper/softer than l1+l2 — a drawer floats over the whole page, not a card."
+      }
+    }
+  }
+}

@@ -1,0 +1,135 @@
+/* =====================================================================
+   libs/ui-kit/src/lib/styles/layout/_step-page.scss
+   Wizard step-page primitives — MyBKY
+
+   These are the classes every tab of the event configuration wizard is built
+   from (Basic Info, Eligibility, Payment, Promo Code, Rooming, Daycare,
+   Forms, Features). They are LAYOUT, not components: no wrapper owns them,
+   they carry no behaviour, and each one is a handful of declarations shared
+   across eight screens. Shipping them as a partial is what keeps the eight
+   tabs from each re-deriving the same measurements.
+
+   They live under layout/ rather than components/ for that reason — the same
+   place _common.scss and _touch-targets.scss sit.
+
+   BRAND — MyBKY only, deliberately. This is the wizard's shape, and Sampark
+   has no wizard. If one arrives, add a .baps-ds-sampark block here rather
+   than widening these rules.
+
+   The clamp() pairs are not decoration: the wizard is reachable on tablets,
+   where a fixed 2rem page gutter and a 2.5rem title both overflow.
+   ===================================================================== */
+
+/* Outer wrapper for a single step. Centred and capped — a form column wider
+   than ~56rem stops scanning as one field per line. */
+.step-page {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.25rem, 3vw, 1.5rem);
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: clamp(0.75rem, 3vw, 2rem) clamp(0.75rem, 3vw, 1.5rem) 1.5rem;
+}
+
+.step-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.step-header__icon {
+  font-size: clamp(2rem, 5vw, 2.75rem);
+  color: var(--step-header-icon-color, var(--color-mybky-primary-default, #5f78b8));
+}
+
+/* Weight 400, not a heading weight. The size already carries the hierarchy,
+   and bolding it as well makes the step title compete with the rail above. */
+.step-header__title {
+  font-size: clamp(1.75rem, 4.5vw, 2.5rem);
+  font-weight: 400;
+  color: var(--color-mybky-text-primary, #181b1d);
+  margin: 0;
+}
+
+/* Uppercase eyebrow above a group of fields ("MEMBER ELIGIBILITY"). */
+.step-section-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-mybky-text-muted, #6f777d);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* The tinted card fields sit in. Same fill as the stepper rail, which is what
+   ties the wizard's two surfaces together. */
+.step-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  background: var(--color-mybky-blue-50, #eef0f8);
+  border: 1px solid var(--color-mybky-border-default, #e4ecf1);
+  border-radius: 1rem;
+  padding: 1rem 1.25rem;
+  box-shadow: var(--shadow-mybky-card, 0 12px 16px -4px rgba(16, 24, 40, 0.08), 0 4px 6px -2px rgba(16, 24, 40, 0.16));
+}
+
+.step-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3125rem;
+}
+
+.step-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-mybky-text-primary, #181b1d);
+}
+
+/* The asterisk. Its own class rather than a ::after on .step-label so it can
+   be omitted per field without a modifier, and so screen readers get the real
+   character from the markup instead of generated content. */
+.step-required {
+  color: var(--color-mybky-error-100, #c32226);
+  margin-left: 0.125rem;
+}
+
+.step-error {
+  font-size: 0.75rem;
+  color: var(--color-mybky-error-100, #c32226);
+}
+
+/* A row holding one control and its explanation — the "Invite SDC Karyakars"
+   / "Apply to sibling events" shape. Horizontal, unlike .step-card, because
+   the control is the subject and the label trails it. */
+.apply-cluster-card {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.875rem 1.25rem;
+  background: var(--color-mybky-surface-card, #ffffff);
+  border: 1px solid var(--color-mybky-border-default, #e4ecf1);
+  border-radius: 0.75rem;
+}
+
+/* ── Dark ── */
+.baps-dark {
+  .step-header__title,
+  .step-label {
+    color: var(--color-mybky-dark-text-primary, #f8fafb);
+  }
+
+  .step-section-label {
+    color: var(--color-mybky-dark-text-muted, #b6b6af);
+  }
+
+  .step-card,
+  .apply-cluster-card {
+    background: var(--color-mybky-dark-surface-card, #2b2f32);
+    border-color: var(--color-mybky-dark-border-divider, #3d4144);
+  }
+
+  .step-required,
+  .step-error {
+    color: var(--color-mybky-error-80, #e05255);
+  }
+}

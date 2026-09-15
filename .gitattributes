@@ -1,0 +1,62 @@
+# Normalise line endings.
+#
+# Without this, `git status` on Windows reports ~84 files as fully modified
+# (286 insertions / 286 deletions on a 286-line file = every line changed)
+# purely because they were checked out or rewritten with CRLF while the index
+# holds LF. That churn buries real edits and makes diffs and code review
+# useless. `core.autocrlf` only fixes it per-clone; this fixes it per-repo, for
+# everyone.
+#
+# `text=auto` stores text as LF in the index and converts on checkout per the
+# platform. The explicit entries below pin the formats that must not be
+# guessed.
+* text=auto
+
+# Source and config — always LF in the working tree too, so tooling that reads
+# them byte-for-byte (Style Dictionary, ng-packagr manifests, Sass) behaves
+# identically on Windows and CI.
+*.ts        text eol=lf
+*.js        text eol=lf
+*.mjs       text eol=lf
+*.cjs       text eol=lf
+*.mts       text eol=lf
+*.cts       text eol=lf
+*.tsx       text eol=lf
+*.json      text eol=lf
+*.jsonc     text eol=lf
+*.md        text eol=lf
+*.mdx       text eol=lf
+*.scss      text eol=lf
+*.css       text eol=lf
+*.html      text eol=lf
+*.yml       text eol=lf
+*.yaml      text eol=lf
+*.toml      text eol=lf
+.gitignore  text eol=lf
+.nxignore   text eol=lf
+
+# Windows-only scripts genuinely need CRLF.
+*.bat       text eol=crlf
+*.cmd       text eol=crlf
+*.ps1       text eol=crlf
+
+# Binary — never touch, never diff.
+*.ttf       binary
+*.woff      binary
+*.woff2     binary
+*.eot       binary
+*.png       binary
+*.jpg       binary
+*.jpeg      binary
+*.gif       binary
+*.ico       binary
+*.pdf       binary
+*.tgz       binary
+
+# Generated. Keeping them out of diffs makes a token change reviewable: you
+# read the *.tokens.json edit, not 500 lines of regenerated CSS alongside it.
+# `linguist-generated` collapses them in GitHub PRs; they are still versioned,
+# because libs/tokens/build/css/tokens.css is a real build input for consumers.
+libs/tokens/build/**        linguist-generated=true
+libs/tokens/src/generated/** linguist-generated=true
+pnpm-lock.yaml              linguist-generated=true

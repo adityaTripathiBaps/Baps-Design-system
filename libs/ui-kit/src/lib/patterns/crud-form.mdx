@@ -1,0 +1,71 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as CrudFormStories from './crud-form.stories';
+
+<Meta of={CrudFormStories} />
+
+# CRUD form
+
+Every "create/edit record" screen in this system reduces to the same shape:
+labelled fields, a `FormGroup`, inline per-field errors, and a Save/Cancel
+row. No component's own docs page can show that — `bapsInputText`,
+`baps-select`, `baps-checkbox` are each documented one field at a time. This
+page is the multi-field, validated, submit-wired version.
+
+## Playground
+
+<Canvas of={CrudFormStories.Default} />
+
+## What you get
+
+- `FormBuilder` + `Validators.required`/`Validators.email` — nothing
+  component-specific, plain `@angular/forms`.
+- Every field control here (`bapsInputText`, `baps-select`, `baps-checkbox`)
+  already implements `ControlValueAccessor`, so `formControlName` works with
+  zero adapter code — this pattern is only the composition, not new plumbing.
+- Inline errors follow the same `<small class="input-hint p-error">` markup
+  as `form-field.mdx`'s own States story — this pattern doesn't invent a
+  second error convention.
+- A top-of-form `baps-message` banner for the submit-level outcome
+  (validation failure or success), separate from the per-field errors below
+  it — nothing else in this library currently composes `baps-message` with a
+  form.
+
+## The submit gotcha
+
+**`baps-button` does not forward `type="submit"` to its inner `<button>`**
+(see `button.component.ts`'s template — no `type` input exists at all, and
+PrimeNG's `p-button` defaults to `type="button"`). Wrapping it in a
+`<form (ngSubmit)="...">` and expecting Enter-to-submit or a real submit
+event will silently do nothing.
+
+This pattern's `<form>` element only groups the fields semantically (labels,
+`formGroup`) — the Save button is wired via `(click)="onSave()"`, which
+checks `form.invalid` and calls `form.markAllAsTouched()` itself so every
+field's error becomes visible on a blocked save, exactly as `ngSubmit` would
+have done. If your screen needs real Enter-key submission, that's a gap in
+`baps-button` itself (no `type` input), not something this pattern can work
+around — file it against the component, don't hand-roll a keydown handler
+here.
+
+## Validation timing
+
+`errorFor(control)` only shows a field's error once it is `dirty`,
+`touched`, **or** the form has been submitted once — so a required field
+doesn't show red before the user has touched it, but clicking Save with
+empty fields does light all of them up at once (`markAllAsTouched()`).
+
+## Do's and Don'ts
+
+| Do | Don't |
+| --- | --- |
+| Reuse `errorFor`'s three-way check (`dirty \|\| touched \|\| submitted`) | Show validation errors on every field before the user interacts with the form |
+| Group the submit-level outcome in one `baps-message`, per-field errors inline | Put a full-form error banner AND repeat the same message per field |
+| Wire Save via `(click)` and check `form.invalid` yourself | Rely on `(ngSubmit)` with `baps-button` — it never fires, see the gotcha above |
+
+## Related
+
+- **Components → Form Controls** — the single-field reference for every
+  control used here (states, sizes, both brands)
+- **Components → Button** — `severity="secondary"` for Cancel
+- **Components → Checkbox**, **Components → Select** — `ControlValueAccessor`
+  details for each

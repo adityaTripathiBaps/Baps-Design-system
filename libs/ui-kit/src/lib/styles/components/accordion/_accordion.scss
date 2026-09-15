@@ -1,0 +1,340 @@
+/* =====================================================================
+   libs/ui-kit/src/lib/styles/components/accordion/_accordion.scss
+   PrimeNG v21 Accordion — BAPS filter-panel geometry + brand colours.
+
+   FIGMA SOURCE: Sampark Portal node 17512:84215 ("Component 132"), 20
+   variants — ten sections across State=Default and State=Open. The Open
+   variant's 89px height decomposes exactly as:
+
+       32px header + 8px gap + 1px divider + 32px row + 16px bottom padding
+
+   which is what the rules below reproduce.
+
+   ANATOMY (State=Open, node 17512:84432)
+
+     [ 32px count ][ 8px ][ label .......... ][ 8px ][ 28px chevron ]  <- 32px, r4
+     ---------------------------------------------------------------  <- 1px hairline
+     projected content                                                <- 16px pad
+
+   WHY THIS IS CSS AND NOT PRIMENG TOKENS
+   Three parts of this design have no token at all and could only ever be
+   CSS:
+
+     · the header's fixed 32px HEIGHT (PrimeNG derives header height from its
+       padding token, which this design zeroes so the count badge can sit
+       flush to the left edge)
+     · the count badge and its full-height 32px cell, which is not part of
+       PrimeNG's accordion anatomy
+     · the 28px chevron hit box around a 10px glyph
+
+   The colours COULD be tokens, but there is deliberately no `accordion`
+   entry on the Sampark preset. Per-instance brand
+   (`bapsAccordion brand="sampark"` on an otherwise-MyBKY page) cannot reach
+   PrimeNG's `dt` input — v21 declares it as a signal input, which is
+   read-only from outside, so a directive has no way to set it. Since this
+   file has to exist regardless, a partial token layer covering only the
+   colours would just be a second place to edit them. Everything below
+   re-points custom properties that resolve to the same `--color-*` token
+   values, so there is one source of truth and nothing to drift. Same call
+   the tag, table, tabs, drawer and tooltip skins make.
+
+   CLASS NAMES: v21 spells these WITHOUT hyphens — `p-accordionheader`,
+   `p-accordionpanel`, `p-accordioncontent-content`. The hyphenated forms are
+   element selectors only. Verified against primeng 21.1.3.
+   ===================================================================== */
+
+p-accordion {
+  /* Defaults are MyBKY. Sampark re-points them in the scope block below. */
+  --baps-accordion-gap: 0.5rem;
+  --baps-accordion-header-height: 2rem;
+  --baps-accordion-radius: 0.25rem;
+  --baps-accordion-header-bg: var(--color-mybky-mono-50, #f8fafb);
+  --baps-accordion-text: var(--color-mybky-text-primary, #181b1d);
+  --baps-accordion-border: var(--color-mybky-border-default, #e4ecf1);
+  /* Figma's Sampark badge is Primary/100 at 10% alpha. MyBKY's stand-in is
+     Primary/0, the same tint the avatar and breadcrumb badges already use. */
+  --baps-accordion-count-bg: var(--color-mybky-blue-50, #eef0f8);
+}
+
+/* Sections are separate rounded plates on an 8px rhythm, not one stitched
+   block. PrimeNG stacks its panels flush and joins them with a shared
+   hairline; the gap lives on the root instead.
+
+   NOTE the compound selector: v21 stamps `p-accordion p-component` onto the
+   <p-accordion> ELEMENT, so this is the same node, not a descendant. Written as
+   a descendant selector it matches nothing and the element keeps its initial
+   display:inline — no gap, and the panels do not stack. */
+p-accordion.p-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--baps-accordion-gap);
+}
+
+/* No panel border — the divider inside the open content does the separating,
+   and it belongs to the content rather than the panel.
+
+   box-shadow is zeroed for the same reason: the preset this theme extends is
+   Material, whose accordion panel carries a three-layer elevation shadow
+   (`0 3px 1px -2px`, `0 2px 2px 0`, `0 1px 5px 0`). Figma draws a flat plate,
+   and CLAUDE.md reserves shadows for elements that genuinely float. Setting
+   only `border: 0` left that shadow visible. */
+p-accordion .p-accordionpanel {
+  border: 0;
+  box-shadow: none;
+  /* PrimeNG's stock 1rem block margin. The rhythm between panels is the root's
+     8px flex gap (--baps-accordion-gap); leaving the margin in place stacked
+     32px of collapsed-free flex margin on top of it, measured 691px against
+     Figma's 563px for the same five sections. */
+  margin: 0;
+}
+
+/* ── Header row ──
+   Height is explicit. The header's PrimeNG padding token is zeroed so the
+   count badge can reach the rounded corner, which means without this the row
+   would collapse to its text height. */
+p-accordion .p-accordionheader {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  height: var(--baps-accordion-header-height);
+  padding: 0;
+  border: 0;
+  border-radius: var(--baps-accordion-radius);
+  overflow: hidden;
+  background: var(--baps-accordion-header-bg);
+  color: var(--baps-accordion-text);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+/* Count badge — a full-height 32px cell with its own fill, flush left. */
+p-accordion .baps-accordion-count {
+  display: flex;
+  flex: none;
+  align-self: stretch;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  background: var(--baps-accordion-count-bg);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.3;
+  color: inherit;
+}
+
+p-accordion .baps-accordion-label {
+  flex: 1 1 auto;
+  min-width: 0;
+  text-align: start;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Without a badge the label would start hard against the rounded corner, so
+   it takes the badge's inset instead. */
+p-accordion .p-accordionheader > .baps-accordion-label:first-child {
+  padding-inline-start: 0.5rem;
+}
+
+/* Chevron — a 10px glyph centred in a 28px hit box, per Figma.
+
+   v21 puts .p-accordionheader-toggle-icon on the <svg> ELEMENT itself, not on a
+   wrapper, so width/height here size the glyph rather than the box. The 28px
+   box is reached with content-box sizing plus 9px of padding
+   (9 + 10 + 9 = 28); setting 1.75rem directly would blow the chevron up to
+   28px, which is nearly three times the drawn size.
+
+   PrimeNG owns the rotation and the aria-expanded wiring — only the box is
+   ours. */
+/* MATCH ON .p-icon, NOT .p-accordionheader-toggle-icon.
+
+   PrimeNG swaps the icon COMPONENT between states rather than rotating one
+   glyph — chevron-up when expanded, chevron-down when collapsed — and it only
+   stamps .p-accordionheader-toggle-icon on the EXPANDED one. The collapsed
+   svg carries just .p-icon. Keying the rule on the toggle-icon class therefore
+   styled the open chevron only: measured 28x28 open against 16x16 closed, so
+   the glyph visibly changed size on every toggle.
+
+   .p-accordionheader .p-icon matches both, because the expanded icon carries
+   both classes. The header's own children are the count badge and label spans,
+   so this cannot catch anything else a consumer projects unless they project a
+   PrimeNG icon into the header themselves. */
+p-accordion .p-accordionheader .p-icon {
+  flex: none;
+  box-sizing: content-box;
+  width: 0.625rem;
+  height: 0.625rem;
+  padding: 0.5625rem;
+  color: var(--baps-accordion-text);
+}
+
+/* ── Forcing the open state ──
+   Workaround for a PrimeNG 21.1.3 defect: an accordion panel never visually
+   expands.
+
+   The logical state is always correct — `data-p-active` on the content and
+   `aria-expanded` on the header both flip — but the
+   `<p-motion name="p-collapsible">` element inside keeps the inline
+   `visibility: hidden; max-height: 0px` that PrimeNG writes for the collapsed
+   state. Only the enter transition lifts those, and it never runs:
+   `primeng-motion.mjs` computes `resolveDuration(options.duration, phase)` and
+   bails on `if (ms == null) return` before applying anything. Accordion does
+   pass `[options]="computedMotionOptions()"` down, and supplying
+   `[motionOptions]="{ duration: 200, type: 'transition' }"` on `p-accordion`
+   was tried and did NOT help, so this is not a missing input on our side.
+   Measured in a browser: 32px, header only, on load and after every reopen.
+
+   Keying off `[data-p-active='true']` is what makes this safe. The rule only
+   fires while a panel is open, so the collapsed state is untouched and closing
+   still works — PrimeNG's own inline styles do the hiding, unopposed. The
+   `!important` is required because inline styles otherwise win.
+
+   Two approaches were tried first and rejected. Clearing the inline styles from
+   the directive with a MutationObserver fought PrimeNG's state machine: watching
+   `style` stripped the values mid-close so the panel could never shut, and
+   watching only `data-p-active` left the second close stuck open. Fixing it
+   through `motionOptions` does not work, per above.
+
+   The cost is that expand and collapse are instant rather than animated. The
+   animation is already broken, so instant is the honest behaviour, not a
+   regression. Remove this block once PrimeNG fixes the collapsible transition;
+   the spec asserting a reopened panel is visible will fail loudly if it is
+   removed too early. */
+p-accordion .p-accordioncontent[data-p-active='true'] .p-motion {
+  visibility: visible !important;
+  max-height: none !important;
+}
+
+/* ── Content ──
+   The 8px gap between header and divider is the accordion's rhythm restated
+   inside the panel, because the content element is what expands; putting it
+   on the root would also space collapsed panels. */
+p-accordion .p-accordioncontent-content {
+  padding: 0;
+  background: transparent;
+  color: var(--baps-accordion-text);
+}
+
+p-accordion .baps-accordion-body {
+  display: flex;
+  flex-direction: column;
+  padding-block: 0.5rem 1rem;
+}
+
+/* No margin below: Figma's single 8px gap sits between the header and the
+   divider (it is the outer container's flex gap), and the divider then sits
+   directly on the first content row. An 8px margin here as well measured 97px
+   open against the frame's 89px. */
+p-accordion .baps-accordion-divider {
+  display: block;
+  height: 1px;
+  background: var(--baps-accordion-border);
+}
+
+/* Content rows. Figma (17512:84364) draws each option as a 32px row with 8px
+   of side padding, and pairs them two-per-line with `flex: 1 0 0` so the two
+   columns stay equal regardless of label length. A row holding a single option
+   still leaves the second column empty rather than stretching it. */
+p-accordion .baps-accordion-row {
+  display: flex;
+  align-items: center;
+  min-height: 2rem;
+  padding-inline: 0.5rem;
+}
+
+p-accordion .baps-accordion-cell {
+  flex: 1 0 0;
+  min-width: 0;
+}
+
+/* Custom date range - two date inputs with a literal hyphen between them. */
+p-accordion .baps-accordion-daterange {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding-inline: 0.25rem;
+}
+
+p-accordion .baps-accordion-daterange > baps-datepicker {
+  flex: 1 0 0;
+  min-width: 0;
+}
+
+/* Numeric range — a two-handle slider over a pair of suffixed inputs joined by
+   a literal "To". Same shape as the date range above; it takes its own class
+   because the two ends are input GROUPS (the value plus its unit share one
+   ring) rather than single controls, and because the slider above them needs
+   room for its value tooltips. */
+p-accordion .baps-accordion-range {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-inline: 0.25rem;
+}
+
+p-accordion .baps-accordion-range > baps-input-group {
+  flex: 1 0 0;
+  min-width: 0;
+}
+
+/* The tooltips sit above the track and would otherwise be clipped by the
+   panel's own padding on the first section. */
+p-accordion .baps-accordion-slider {
+  padding: 1.75rem 0.75rem 0.5rem;
+}
+
+/* ═══ Sampark scope — one instance via `bapsAccordion brand="sampark"`, or
+   page-wide via the .baps-ds-sampark body class. Only the token family
+   changes; every rule above still describes the geometry. ═══ */
+:is(p-accordion.baps-sampark, .baps-ds-sampark p-accordion) {
+  --baps-accordion-header-bg: var(--color-sampark-mono-10, #f8f7f7);
+  --baps-accordion-text: var(--color-sampark-mono-100, #151414);
+  --baps-accordion-border: var(--color-sampark-mono-borders, #e1e0e0);
+  --baps-accordion-count-bg: var(--color-sampark-primary-alpha10, rgba(135, 48, 48, 0.1));
+}
+
+/* ── Dark mode (PrimeNG darkModeSelector). Surfaces follow the preset's own
+   content tokens so a panel sits on the dark canvas correctly. ── */
+.baps-dark p-accordion {
+  --baps-accordion-header-bg: var(--p-content-background, #1b1b1b);
+  --baps-accordion-text: var(--p-text-color, #e6e6e6);
+  --baps-accordion-border: var(--p-content-border-color, rgba(255, 255, 255, 0.12));
+}
+
+/* Header clear control (baps-accordion-panel [clearable]).
+   The label already takes `flex: 1 1 auto`, so this lands hard against the
+   chevron without any margin of its own. Sized to the count badge rather than
+   to the chevron: it belongs to the badge as its undo, not to the toggle. */
+p-accordion .baps-accordion-clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-inline-end: 0.5rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--baps-accordion-muted, var(--color-mybky-mono-500, #6f777d));
+  cursor: pointer;
+  font-size: 0.8125rem;
+  line-height: 1;
+  transition: color 120ms ease, background 120ms ease;
+}
+
+p-accordion .baps-accordion-clear:hover {
+  color: var(--baps-accordion-text, inherit);
+  background: var(--baps-accordion-count-bg);
+}
+
+p-accordion .baps-accordion-clear:focus-visible {
+  outline: 2px solid var(--baps-accordion-bar, currentColor);
+  outline-offset: 1px;
+}

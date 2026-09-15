@@ -1,0 +1,22 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/jest",
+    "module": "commonjs",
+    "target": "es2016",
+    "types": [
+      "jest",
+      "node"
+    ],
+    "lib": ["es2022", "dom"],
+    "moduleResolution": "bundler"
+  },
+  "files": [
+    "src/test-setup.ts"
+  ],
+  "include": [
+    "jest.config.ts",
+    "src/**/*.ts",
+    "src/**/*.d.ts"
+  ]
+}

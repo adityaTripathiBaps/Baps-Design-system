@@ -1,0 +1,338 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Docs/PrimeNG-first audit" />
+
+# PrimeNG-first audit
+
+Every component in `libs/ui-kit` checked against the installed
+**primeng 21.1.3**, answering one question each: is this built on the PrimeNG
+component that already exists for it, or does it hand-roll UI PrimeNG already
+provides?
+
+**Method.** Every claim below was checked against `node_modules/primeng/fesm2022`
+and `node_modules/@primeuix/themes/dist` rather than from memory. Where a
+component already carried a written "why not PrimeNG" justification, that
+justification was tested rather than repeated — three were confirmed, three were
+found to be wrong or weaker than stated. Class names were read from each
+module's `classes` map (`root: 'p-…'`), which is what PrimeNG actually stamps on
+the element; that is how the dead-CSS findings in the last section were found.
+
+**Headline.** The library is in better shape than a "custom component" count
+suggests: 34 of 46 wrap their PrimeNG counterpart, 9 are verified-valid custom, and
+inline styling is effectively clean. The real problems are not custom components — they are
+**stale PrimeNG class names in the shared SCSS layer** and **adoption**: the
+design system has one consumer, and both feature apps bypass it.
+
+## Verdict summary
+
+| Verdict | Count |
+| --- | --- |
+| Uses PrimeNG v21 correctly | 34 |
+| Valid custom — verified no v21 equivalent | 9 |
+| Should migrate / justification does not hold | 3 |
+
+## Component-by-component
+
+| BAPS component | PrimeNG equivalent | Using PrimeNG? | Custom? | Action | Reason |
+| --- | --- | --- | --- | --- | --- |
+| `baps-avatar` | `p-avatar` | Yes | No | None | Wraps correctly |
+| `baps-avatar-group` | `p-avatargroup` | Yes | No | None | Wraps correctly |
+| `baps-badge` | `p-badge` | Yes | No | None | Wraps correctly |
+| `baps-overlay-badge` | `p-overlaybadge` | Yes | No | None | Wraps correctly |
+| `baps-breadcrumb` | `p-breadcrumb` | Yes | No | None | Wraps correctly |
+| `baps-button` | `p-button` | Yes | No | None | Wraps correctly |
+| `baps-checkbox` | `p-checkbox` | Yes | No | None | Wraps correctly |
+| `baps-datepicker` | `p-datepicker` | Yes | No | None | Wraps correctly |
+| `baps-dialog` | `p-dialog` | Yes | No | None | Wraps correctly |
+| `baps-divider` | `p-divider` | Yes | No | None | Wraps correctly |
+| `baps-drawer` | `p-drawer` | Yes | No | None | Wraps correctly |
+| `bapsInputText` | `pInputText` | Yes | No | None | Directive over the real PrimeNG directive |
+| `bapsTextarea` | `pTextarea` | Yes | No | None | Directive over the real PrimeNG directive |
+| `baps-float-label` | `p-floatlabel` | Yes | No | None | Wraps correctly |
+| `baps-icon-field` | `p-iconfield` | Yes | No | None | Wraps correctly |
+| `baps-input-icon` | `p-inputicon` | Yes | No | None | Wraps correctly |
+| `baps-message` | `p-message` | Yes | No | None | Wraps correctly |
+| `baps-listbox` | `p-listbox` | Yes | No | None | Wraps correctly |
+| `baps-input-group` | `p-inputgroup` + `p-inputgroup-addon` | Yes | No | None | Wraps correctly; uses the correct v21 `.p-inputgroupaddon` class |
+| `baps-progress-bar` | `p-progressbar` | Yes | No | None | Wraps correctly |
+| `baps-radio` | `p-radiobutton` | Yes | No | None | Wraps correctly |
+| `baps-segmented` | `p-selectbutton` | Yes | No | None | Wraps correctly |
+| `baps-select` | `p-select` | Yes | No | None | Wraps correctly |
+| `baps-multi-select` | `p-multiselect` | Yes | No | None | Added by this audit — see coverage gaps |
+| `baps-tree-select` | `p-treeselect` | Yes | No | None | Added by this audit — see coverage gaps |
+| `bapsAccordion` | `p-accordion` | Yes | No | None | Added by this audit — directive, not a wrapper (`NG0201`) |
+| `baps-slider` | `p-slider` | Yes | No | None | Wraps correctly |
+| `baps-split-button` | `p-splitbutton` | Yes | No | None | Wraps correctly |
+| `baps-table` | `p-table` | Yes | No | None | Wraps correctly |
+| `bapsTabs` | `p-tabs` | Yes | No | None | Directive on genuine `p-tabs` markup — see below |
+| `baps-tag` | `p-tag` | Yes | No | None | Wraps correctly |
+| `baps-toggle-switch` | `p-toggleswitch` | Yes | No | None | Wraps correctly |
+| `baps-toolbar` | `p-toolbar` | Yes | No | None | Wraps correctly |
+| `bapsTooltip` | `pTooltip` | Yes | No | None | Wraps correctly |
+| `baps-pagination` | `p-paginator` | Partly (`p-select`) | Yes | **Keep custom** | Verified: v21 Paginator has no ellipsis and no page-link template |
+| `baps-spinner` | `p-progressspinner` | No | Yes | **Keep custom** | Verified: 4 colour tokens only, no `value`/`mode`, no track |
+| `baps-link` | — | No | Yes | **Keep custom** | PrimeNG ships no link component |
+| `baps-menu-item` | `MenuItem` (model) | No | Yes | **Keep custom** | PrimeNG's MenuItem is a data model, not a component |
+| `baps-navbar` | — | Ripple only | Yes | **Keep custom** | Organism; no v21 equivalent for this layout |
+| `baps-internal-navbar` | — | No | Yes | **Keep custom** | Organism (264px sidebar); no v21 equivalent |
+| `baps-indicator` | `p-badge` (partial) | No | Yes | **Keep custom** | A bare status dot has no v21 equivalent; see overlap note |
+| `baps-table-column-config` | `p-orderlist` / `p-picklist` | Partly (`p-dragdrop`) | Yes | **Spike** | Composition over `baps-drawer`; reorder list may map to OrderList |
+| `baps-card` | `p-card` | No | Yes | **Keep custom** | Stated reason was wrong, but wrapping is still a net loss — no border tokens, no actions slot |
+| `baps-users-dropdown` | `p-select` (via `baps-select`) | No | Yes | **Migrate** | v21 Select has `optionGroupLabel`, `filter`, `itemTemplate`, `groupTemplate` |
+| `baps-file-upload` | `p-fileupload` | No | Yes | **Spike** | `headerTemplate`/`contentTemplate`/`emptyTemplate` replace the toolbar UI |
+| `baps-alert` | `p-message` | No | Yes | **Spike** | v21 Message exposes `borderWidth` + `borderColor` per severity |
+
+## Custom components that should be migrated
+
+### `baps-users-dropdown` → `baps-select`
+
+This is the clearest case in the library, and the only custom component with
+**no documented justification at all**. It hand-rolls a dropdown: a
+click-outside `HostListener`, its own overlay, and its own filter input.
+
+Every capability it hand-rolls exists on v21 Select, confirmed present in
+`primeng-select.mjs`: `optionGroupLabel` and `optionGroupChildren` for the
+Figma "Base User Item Group" sections, `filter` and `filterBy` for the search
+row, and `itemTemplate` / `groupTemplate` / `filterTemplate` for the avatar +
+title + subtitle item markup.
+
+It should route through the existing `baps-select` wrapper, which already
+carries the design system's select skin and brand scoping.
+
+## Spikes — justification weaker than stated, migration not certain
+
+**`baps-file-upload`.** Header says p-fileupload "ships a toolbar/list UI that
+would need more CSS to erase than this component costs". v21 FileUpload exposes
+`headerTemplate`, `contentTemplate`, `fileTemplate`, `emptyTemplate` and
+`toolbarTemplate` — the toolbar and list are replaceable outright, not erased
+with CSS. Against that, the 193-line component re-implements drag-over/drop
+handling and Enter/Space activation that PrimeNG already ships, which is exactly
+what the "don't recreate PrimeNG interaction behaviour" rule warns about. Worth
+a spike; the counter-argument (PrimeNG's value is its upload pipeline, which this
+design deliberately does not want) is real but not decisive.
+
+**`baps-alert`.** Header says the Sampark left-accent-bar pattern "differs
+significantly from PrimeNG's message layout". v21 Message's token surface
+includes `borderColor`, `borderWidth`, `shadow` and per-severity groups
+(`success`, `error`, `warn`, `secondary`, `contrast`) plus `outlined` and
+`simple` variants. Since `border-width` accepts four values, `0 0 0 4px` with a
+per-severity `borderColor` expresses the accent bar directly. Not proven, but
+the stated reason does not survive contact with the v21 token set.
+
+## Valid custom components — verified
+
+**`baps-pagination`.** Endorsed, and the strongest justification in the
+library. Checked directly: `primeng-paginator.mjs` contains **zero** occurrences
+of "ellipsis", and its only template slots are
+`firstPageLinkIcon`, `lastPageLinkIcon`, `nextPageLinkIcon`,
+`previousPageLinkIcon`, `dropdownIcon`, `currentPageReport`, `dropdownItem` and
+`jumpToPageItem`. There is no template that reaches the page-link row, so the
+Figma truncated list ("1 2 … 24 25") cannot be produced by any configuration of
+`p-paginator`. The rows-per-page control is still `p-select`, which is the right
+split.
+
+**`baps-spinner`.** Endorsed. The entire v21 ProgressSpinner token set is
+`colorOne`, `colorTwo`, `colorThree`, `colorFour` — four colours and nothing
+else. Its inputs are `strokeWidth`, `fill` and `animationDuration`: there is no
+`value` and no `mode`, so no determinate concept, and no track element to style.
+The design needs a determinate arc and a track, so this cannot be a wrapper.
+
+**`bapsTabs`.** Not a custom component at all — a directive applied to genuine
+`p-tabs` markup. This is the correct pattern for PrimeNG components that use
+provider-based parent lookup: wrapping them in a component throws
+`NG0201: No provider found for Tabs`, because the wrapper breaks the injector
+chain the child panels walk. Endorsed as written.
+
+**`baps-card`.** Kept — but its written reason was wrong and has been
+corrected in the source. The old note claimed p-card "hard-codes a
+`box-shadow` at rest"; `shadow` is in fact a settable token in v21. Three
+structural reasons hold up in its place, all checked against 21.1.3:
+
+- The v21 card token set is `background`, `borderRadius`, `color`, `shadow`,
+  `body.padding`, `body.gap` and the title/subtitle text tokens. There is **no
+  `borderColor` and no `borderWidth`** — and a 1px hairline is the card's
+  defining feature under CLAUDE.md's borders-and-shadows rule. The border is CSS
+  either way.
+- `.p-card-caption` carries title and subtitle only. There is no actions slot,
+  and `card-actions` must sit opposite the title spanning both its rows, so the
+  header grid is custom either way.
+- `divided` draws full-bleed rules with negative inline margins keyed to the
+  card's own padding value, so that value has to stay a CSS custom property.
+  Routing padding through `body.padding` would put it where CSS cannot read it.
+
+On top of all that retained CSS, wrapping would add two elements between host
+and content (`.p-card` > `.p-card-body`) and split the focusable element — this
+host, which carries `role="button"` and the focus ring when `interactive` —
+from the element painting the visible border. Same CSS, more DOM, worse
+focus/border coupling.
+
+This is a correction to this audit's own first pass: the `shadow` finding was
+right, the conclusion drawn from it was not. A false stated reason is worth
+fixing on its own; it does not by itself make a migration correct.
+
+**`baps-link`**, **`baps-menu-item`**, **`baps-navbar`**, **`baps-internal-navbar`**.
+No v21 equivalent. PrimeNG has no link component; its `MenuItem` is a data
+model rather than a renderable component, so a shared item primitive used
+across Menu/Select/MultiSelect surfaces is a legitimate design-system
+primitive; the two navigation bars are organisms.
+
+**`baps-indicator`.** Kept, with a caveat: a bare status dot has no v21
+equivalent, but the notification-count variant overlaps `p-badge`, which
+`baps-badge` already wraps. Worth documenting which of the two a consumer
+should reach for rather than leaving it to guesswork.
+
+## PrimeNG API issues — stale class names in the shared SCSS layer
+
+This is where the real defects were, not in the components. `_input.scss`
+carried a block of rules ported from an app on PrimeNG 17 and never migrated.
+Class names were verified against each module's `classes` map.
+
+| Selector used | v21 reality | Effect |
+| --- | --- | --- |
+| `.p-inputgroup-addon` (12 rules) | v21 stamps `p-inputgroupaddon`; the hyphenated form is only the *element selector* | ~25 `!important` declarations matched nothing |
+| `.p-sidebar` (5 rules) | v21 renders `.p-drawer` | Drawer z-index raise and content dimming never fired |
+| `.p-overlaypanel` | v21 renders `.p-popover` | An open popover raised no backdrop at all |
+| `.p-multiselect-panel` | `p-multiselect-overlay` | Masked by the trigger class, so no visible effect |
+| `.p-autocomplete-panel` | `p-autocomplete-overlay` | Masked by the trigger class, so no visible effect |
+| `.p-overlay-open` (5 entries) | Does not exist anywhere in v21 | Redundant duplicates of the live `-open` classes |
+| `.p-datepicker-open` | Does not exist in v21 | Covered by the live `.p-datepicker-panel` probe |
+| `.p-dropdown*` (4 entries) | v17 name for `.p-select` | Labelled "backward compat"; inert |
+
+The two with user-visible consequences were the drawer and the popover. A
+`p-select` opened inside `baps-drawer` sat **below** the z-500 body backdrop,
+and the drawer never dimmed behind it, because both rules were keyed to the
+pre-v19 `.p-sidebar` name. All are corrected; see *Changes implemented*.
+
+Also worth noting for the "don't recreate PrimeNG behaviour" rule: the
+`.p-inputgroup` block declared `border-color` on `:hover` and `:focus-within`
+but never declared a `border`, so `border-style` stayed at `none` and the
+colour was never painted. Inside `baps-input-group` — which does declare its own
+border — the `!important` colour *did* land, but always in MyBKY blue, because
+`--input-border-hover` is only re-pointed under `.baps-ds-sampark` while a
+per-instance `brand="sampark"` emits `.baps-sampark`. A Sampark input group went
+blue on hover.
+
+## Inline style issues
+
+Effectively clean — a genuine strength. Across all 46 components there are
+exactly three inline style bindings, and all three are legitimately driven by
+runtime data:
+
+| Location | Binding | Verdict |
+| --- | --- | --- |
+| `alert.component.ts:92` | `[style.width.%]="clampedProgress"` | Runtime progress value |
+| `slider.component.ts:34` | `[style.left.%]="percent(v)"` | Handle position from value |
+| `users-dropdown.component.ts:90` | `[style.max-height]="maxHeight"` | Consumer-supplied `@Input` |
+
+No `[ngStyle]` anywhere. No `style="…"` attribute used for colour, typography,
+spacing, border or state. The 17 components exposing a `[style]` **input** are
+forwarding a consumer value to PrimeNG — that is API passthrough, not inline
+styling.
+
+The `users-dropdown` case would read better as a CSS custom property, but it is
+a nit, not a violation.
+
+## Custom CSS issues
+
+688 `!important` declarations remain in the shared SCSS layer (down from 707).
+The prior recommendation not to migrate this layer to PrimeNG tokens still
+holds — roughly 28% is convertible, and the cascade interlock between
+`_input.scss`, `_select.scss` and the two Sampark skins is load-order dependent
+by design.
+
+What the audit did change is the dead weight: the removed addon block alone was
+~25 `!important` declarations matching nothing.
+
+Two structural notes:
+
+- The `:not()` guard chains in `_input.scss` double as specificity ballast, and
+  the Sampark skin wins cascade ties only by mirroring them 1:1. This is
+  documented in the file and should not be "simplified".
+- `.p-disabled` appears 59 times across the styles layer. Much of this is
+  legitimate brand theming of a PrimeNG-provided state, but it is the largest
+  remaining candidate for token migration if that work is ever taken up.
+
+## Architecture issues — the biggest finding
+
+The library is architecturally sound. **Adoption is not.**
+
+| Repo | PrimeNG | Consumes `@org/ui-kit`? |
+| --- | --- | --- |
+| `baps-app-shell` | ^21.1.3 | Yes — 10 usages |
+| `events-ui` | ^21.1.3 | **No** |
+| `spm-ui` | **17.18.15** | **No** |
+
+`events-ui` runs the same PrimeNG major as the design system and maintains its
+own parallel component library at `libs/ui-lib` (13 components). Six duplicate
+components that already exist here:
+
+| `events-ui/libs/ui-lib` | Design system equivalent |
+| --- | --- |
+| `paginator` | `baps-pagination` |
+| `status-dot` | `baps-indicator` |
+| `notification-count` | `baps-indicator` |
+| `datepicker-icon` | `baps-datepicker` |
+| `search-field` | `baps-icon-field` + `bapsInputText` |
+| `filter-panel` | *(planned — Figma 17512:84215)* |
+
+`status-dot` and `notification-count` are the sharpest case: `baps-indicator`
+was built specifically to cover those two Figma nodes plus the icon badge, and
+`events-ui` maintains two separate components for them.
+
+`spm-ui` cannot consume the design system at all without a PrimeNG 17 → 21
+major upgrade. Its `p-inputgroup-addon` usage is *correct* for v17 — which is
+also where this library's stale addon CSS came from.
+
+## Coverage gaps — where new components should go next
+
+The design system wraps 34 PrimeNG components. These are unwrapped and worth
+prioritising, ordered by demonstrated need:
+
+1. ~~**`multiselect`**~~ — **done, see below.** This was the cheapest win
+   available and has been built: 88 SCSS rules across `_input.scss`,
+   `_select.scss` and `_select-sampark.scss` already skinned `.p-multiselect`
+   with no component to reach them, so consumers had to drop to raw
+   `p-multiselect` — precisely what the abstraction rule forbids.
+2. **`toast`** — `events-ui` already ships its own; there is no BAPS equivalent.
+3. **`popover`** — used twice in `events-ui`; now has backdrop support here but
+   no wrapper.
+4. ~~**`accordion`**~~ — **done.** Built from the pending filter-panel design
+   (Figma 17512:84215, 20 variants) — the only one of these gaps that had a real
+   Figma spec rather than an invented one. Landed as a **directive**, not a
+   wrapper: `baps-accordion` / `baps-accordion-panel` components threw
+   `NG0201: No provider found for _Accordion`, the same element-injector problem
+   already documented on `bapsTabs`.
+5. ~~**`treeselect`**~~ — **done.** Same skin-without-component gap as
+   MultiSelect, at smaller scale: 23 rules across the select files already
+   covered `.p-treeselect`, its overlay, label and dropdown, plus
+   `.p-tree-node-content` and `.p-tree-node-selected`. Plain **`tree`** — a
+   browsable tree that is not a form control — is still unwrapped.
+6. **`inputnumber`**, **`password`**, **`autocomplete`** — common form controls
+   that currently have no wrapper.
+7. **`skeleton`** — loading states; pairs with `baps-spinner`.
+8. **`confirmdialog`** — the delete-confirmation pattern is currently composed
+   by hand.
+
+## Changes implemented
+
+| File | Change |
+| --- | --- |
+| `styles/components/input/_input.scss` | Removed the dead `.p-inputgroup-addon` skin (12 rules, ~25 `!important`) with the intent recorded for the two unbuilt patterns it covered |
+| `styles/components/input/_input.scss` | Removed the inert `.p-inputgroup` hover/focus rules that set `border-color` with no `border` declared |
+| `styles/components/input/_input.scss` | Rebuilt `$overlay-open-signals` against v21: dropped 8 dead entries, renamed 3, added `.p-popover`, `.p-treeselect-overlay`, `.p-cascadeselect-overlay` |
+| `styles/components/input/_input.scss` | `.p-sidebar` → `.p-drawer` in the z-index raise and local dimming rules — a real fix, these never fired |
+| `styles/components/input/_input.scss` | Removed the v17 `.p-dropdown` compatibility selectors |
+| `components/input-group/input-group.component.ts` | Added brand-correct `:hover` / `:focus-within` against new `--baps-ig-border-hover` / `--baps-ig-ring`, replacing the MyBKY-blue leak from the shared sheet |
+| `components/datepicker/datepicker.component.ts` | Renamed output `onClose` → `panelClose` (Angular forbids `on`-prefixed outputs; was the only lint error) |
+| `components/multi-select/` | **New component** — `baps-multi-select` over `p-multiselect`, closing the 88-rule skin gap. Normalises PrimeNG's `filterPlaceHolder` spelling, replicates the portaled-overlay brand fix, 17 unit tests |
+| `components/accordion/` | **New directive** — `bapsAccordion` over `p-accordion` from Figma 17512:84215, plus `_accordion.scss` and a new `primary.alpha10` token. Verified pixel-exact in a browser: 32px header, 89px open, 32px badge, 28px chevron box. Carries a documented CSS workaround for a PrimeNG 21.1.3 defect where a panel never visually expands. 12 unit tests |
+| `components/tree-select/` | **New component** — `baps-tree-select` over `p-treeselect`, closing the 23-rule skin gap. Value goes through `ngModelChange` because TreeSelect has no `onChange` output, and the panel scope rides `panelStyleClass` (the only one of its two panel-class inputs that reaches the overlay), 18 unit tests |
+| `components/card/card.component.ts` | Corrected the "why not p-card" justification — the old `box-shadow` claim was false; replaced with the three structural reasons that do hold |
+
+**Verification.** Typecheck clean · 402 unit tests passing · 0 lint errors ·
+SCSS compiles · visual regression clean across both Playwright projects after
+baselining the newly added components.
+
+**No component public API was broken.** The one rename (`onClose` → `panelClose`)
+was on a component added in this same unreleased cycle with zero consumers in
+any repo.

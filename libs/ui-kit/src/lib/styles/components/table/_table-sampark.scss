@@ -1,0 +1,770 @@
+/* =====================================================================
+   libs/ui-kit/src/lib/styles/components/table/_table-sampark.scss
+   PrimeNG v21 Table — Sampark Portal Figma Overrides
+   Source: Figma 🟢 Sampark Portal, node 17512:73144 (Templates table)
+
+   Scope mirrors the pagination/switch skins: the component's own
+   brand="sampark" host class OR a page-wide .baps-ds-sampark ancestor.
+
+   COLOR TOKENS (Figma):
+   Header bg     : #F8F7F7 (Mono/10 Light Background)
+   Header text   : #9F9C9C (Mono/60 Labels & Placeholder)
+   Body text     : #151414 (Mono/100 Header & Primary Text)
+   Border        : #E1E0E0 (Mono/Borders) — all four sides, gridlines
+   Hover row     : #F3F2F2 (Mono/20)
+   Selected row  : #FBF4F4 (Primary/0)
+
+   TYPE (Figma, all line-height 1.3):
+   Header        : Inter 14 / 600, sentence case, no tracking
+   Cell primary  : Inter 14 / 400 (500 on the lead cell)
+   Cell secondary: Inter 12 / 400, Mono/60
+   ===================================================================== */
+
+/* Both entry points into the skin. Kept in one variable so every selector
+   below stays a single flat chain (no nesting, no specificity drift). */
+$s: ':is(baps-table.baps-sampark, .baps-ds-sampark)';
+
+/* ══════════════════════════════════════════════════════════════════════
+   DESIGN TOKENS — CSS Custom Properties
+   ══════════════════════════════════════════════════════════════════════ */
+#{$s} {
+  --table-border: var(--color-sampark-border-default, #e1e0e0);
+  --table-header-bg: var(--color-sampark-mono-10, #f8f7f7);
+  --table-header-text: var(--color-sampark-mono-60, #9f9c9c);
+  --table-body-text: var(--color-sampark-text-primary, #151414);
+  --table-secondary-text: var(--color-sampark-mono-60, #9f9c9c);
+  --table-row-bg: var(--color-sampark-mono-0, #ffffff);
+  --table-row-hover: var(--color-sampark-mono-20, #f3f2f2);
+  --table-row-striped: var(--color-sampark-mono-5, #fafafa);
+  --table-row-selected: var(--color-sampark-primary-0, #fbf4f4);
+  --table-row-selected-text: var(--color-sampark-text-primary, #151414);
+  --table-disabled-text: var(--color-sampark-text-muted, #9f9c9c);
+  --table-sort-icon: var(--color-sampark-text-muted, #9f9c9c);
+  /* Primary/80, not Primary/default. The sort affordance is the one place the
+     table uses the deeper accent — spm-ui writes it as --accent-80 (#b44141)
+     on both the sorted column icon and the multi-sort pill's arrow. */
+  --table-sort-icon-active: var(--color-sampark-primary-80, #b44141);
+  --table-sort-icon-size: 0.75rem; /* 12px */
+  --table-sort-pill-bg: var(--color-sampark-mono-0, #ffffff);
+  --table-sort-pill-border: var(--color-sampark-border-default, #e1e0e0);
+  --table-sort-pill-index: var(--color-sampark-mono-80, #595656);
+  --table-paginator-active: var(--color-sampark-primary-default, #c96868);
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   DARK MODE
+   ══════════════════════════════════════════════════════════════════════ */
+.baps-dark #{$s},
+.baps-dark#{$s} {
+  --table-border: var(--color-mybky-mono-700, #3d4144);
+  --table-header-bg: var(--color-mybky-mono-800, #2b2f32);
+  --table-header-text: var(--color-mybky-mono-400, #b6b6af);
+  --table-body-text: var(--color-mybky-mono-50, #f8fafb);
+  --table-secondary-text: var(--color-mybky-mono-400, #b6b6af);
+  --table-row-bg: var(--color-mybky-mono-900, #1f2225);
+  --table-row-hover: var(--color-mybky-mono-800, #2b2f32);
+  --table-row-striped: rgba(255, 255, 255, 0.02);
+  --table-row-selected: rgba(201, 104, 104, 0.1);
+  --table-row-selected-text: var(--color-mybky-mono-50, #f8fafb);
+  --table-disabled-text: var(--color-mybky-mono-500, #6f777d);
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   BASE TABLE
+   ══════════════════════════════════════════════════════════════════════ */
+#{$s} .p-datatable {
+  font-size: 0.875rem !important;
+}
+
+/* `separate`, not `collapse`: collapsed borders are painted by the TABLE's
+   own border-resolution model, not by the individual cell, and a
+   `position: sticky` cell moving independently of normal table flow breaks
+   that resolution across browsers — the divider silently disappears the
+   moment a frozen column actually stickies during a scroll. `separate` +
+   `border-spacing: 0` keeps each cell responsible for its own border, which
+   sticky positioning has no quarrel with. Each cell then only needs its
+   right/bottom edge (":last-child" drops the now-redundant one on the last
+   column) — the outer top/left/right/bottom comes from the container below,
+   matching Sampark's own `.custom-table` split between per-cell dividers
+   and the container's outer frame. */
+#{$s} .p-datatable .p-datatable-table {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}
+
+/* THE table's outer frame — the "main box" in Figma 17512:73144. It lives
+   here, on the scroll container, and nowhere else. A consumer must NOT put a
+   second border on a wrapper around the table: the two sit flush against
+   each other and the edge renders as a 2px double line. (That is exactly
+   what `.baps-table-surface` used to do; it now contributes layout only.)
+
+   `overflow` is already `auto` on this element (PrimeNG sets it inline for
+   scrolling), and a non-visible overflow makes `border-radius` clip
+   descendants — which is what rounds off the sticky header's grey fill at
+   the top corners instead of letting it square over the frame. */
+#{$s} .p-datatable .p-datatable-table-container {
+  background: var(--table-row-bg);
+  border: 1px solid var(--table-border) !important;
+  /* Figma inspect on the frame: radius 4, 1px #E1E0E0, #FFF fill, XS Drop
+     Shadow. `overflow` is already `auto` here (PrimeNG sets it inline for
+     scrolling) and a non-visible overflow makes the radius clip descendants
+     — which is what rounds off the sticky header's grey fill at the top
+     corners instead of letting it square over the frame. */
+  border-radius: var(--radius-sampark-default, 0.25rem) !important;
+  box-shadow: var(--shadow-sampark-xs, 0 1px 2px rgba(16, 24, 40, 0.15));
+}
+
+/* ── HEADER ──
+   Figma: 40px tall, 12px horizontal padding, 1px border on all four sides,
+   Inter 14/600 at Mono/60, sentence case, ellipsis on overflow. */
+#{$s} .p-datatable .p-datatable-thead > tr > th {
+  height: 2.5rem;
+  background: var(--table-header-bg) !important;
+  color: var(--table-header-text) !important;
+  border-right: 1px solid var(--table-border) !important;
+  border-bottom: 1px solid var(--table-border) !important;
+  padding: 0 0.75rem !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  line-height: 1.3 !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+#{$s} .p-datatable .p-datatable-thead > tr > th:last-child {
+  border-right: none !important;
+}
+
+/* Header cell inner flex row — Figma gap 8px between title and sort affordance. */
+#{$s} .p-datatable .p-datatable-column-header-content {
+  gap: 0.5rem !important;
+}
+
+#{$s} .p-datatable .p-datatable-column-title {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* ── SORT AFFORDANCE ──────────────────────────────────────────────────
+   The icon is REVEALED, not permanently shown: at rest an unsorted column
+   carries no glyph at all, so a wide header row is not a row of grey arrows.
+   It appears on hover of its own column, and stays put once that column is
+   actually sorted.
+
+   Reserving the space with opacity rather than `display: none` is the point —
+   the header title must not shift sideways by the icon's width the moment the
+   pointer enters the cell.
+
+   spm-ui dulls the hovered-but-unsorted icon with a
+   `filter: brightness(0) saturate(100%) invert(79%) …` chain. That is a
+   workaround for an <img> whose fill it could not reach; PrimeNG's sort glyphs
+   are inline <svg> painted with currentColor, so plain `color` does the same
+   job exactly, survives a token change, and does not have to be undone on the
+   multi-sort pill the way the filter does. */
+#{$s} .p-datatable .p-datatable-sort-icon {
+  color: var(--table-sort-icon) !important;
+  font-size: var(--table-sort-icon-size) !important;
+  width: var(--table-sort-icon-size) !important;
+  height: var(--table-sort-icon-size) !important;
+  opacity: 0;
+  transition: opacity 120ms ease;
+}
+
+#{$s} .p-datatable .p-datatable-thead > tr > th:hover .p-datatable-sort-icon,
+#{$s} .p-datatable .p-datatable-thead > tr > th:focus-within .p-datatable-sort-icon,
+#{$s} .p-datatable .p-datatable-thead > tr > th.p-datatable-column-sorted .p-datatable-sort-icon {
+  opacity: 1;
+}
+
+#{$s} .p-datatable .p-datatable-thead > tr > th.p-datatable-column-sorted,
+#{$s} .p-datatable .p-datatable-thead > tr > th.p-datatable-column-sorted .p-datatable-sort-icon {
+  color: var(--table-sort-icon-active) !important;
+}
+
+/* ── MULTI-SORT PILL ──
+   PrimeNG stamps the order badge inside `p-sortIcon` itself, and only when
+   sortMode is "multiple" AND more than one column is sorted — exactly the
+   condition spm-ui gates its pill on. So the pill is that element, reached
+   with :has(): one sorted column renders a bare arrow, two or more render the
+   arrow and its order number together inside one bordered capsule.
+
+   Deliberately NOT a wrapper element in the consumer's template: the markup
+   already exists and already appears at the right moment. */
+#{$s} .p-datatable :is(p-sorticon, baps-sort-icon):has(.p-datatable-sort-badge) {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.125rem !important;
+  height: 1rem !important; /* 16px */
+  padding: 0.125rem 0.3125rem 0.125rem 0.25rem !important; /* 2px 5px 2px 4px */
+  border: 1px solid var(--table-sort-pill-border) !important;
+  border-radius: 0.625rem !important; /* 10px */
+  background: var(--table-sort-pill-bg) !important;
+}
+
+/* Inside the pill the arrow keeps the accent even on an unsorted-looking
+   hover, and the badge is just the number — the capsule around it belongs to
+   the pill now, so the badge must not draw a second one. */
+#{$s} .p-datatable :is(p-sorticon, baps-sort-icon):has(.p-datatable-sort-badge) .p-datatable-sort-icon {
+  color: var(--table-sort-icon-active) !important;
+  opacity: 1;
+}
+
+#{$s} .p-datatable .p-datatable-sort-badge {
+  min-width: 0 !important;
+  height: auto !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  /* Mono/80, NOT the accent: the arrow carries the colour, the order number is
+     ordinary text. Both red reads as two separate emphases in one 16px pill. */
+  color: var(--table-sort-pill-index) !important;
+  font-size: 0.75rem !important; /* 12px */
+  font-weight: 500 !important;
+  line-height: 1.3 !important;
+}
+
+/* ── BODY ──
+   Figma: 12px padding all round, 1px border all sides, Inter 14/400. */
+#{$s} .p-datatable .p-datatable-tbody > tr {
+  background: var(--table-row-bg) !important;
+}
+
+#{$s} .p-datatable .p-datatable-tbody > tr > td {
+  color: var(--table-body-text) !important;
+  border-right: 1px solid var(--table-border) !important;
+  border-bottom: 1px solid var(--table-border) !important;
+  padding: 0.75rem !important;
+  font-size: 0.875rem !important;
+  font-weight: 400 !important;
+  line-height: 1.3 !important;
+  vertical-align: middle !important;
+}
+
+#{$s} .p-datatable .p-datatable-tbody > tr > td:last-child {
+  border-right: none !important;
+}
+
+/* Hover */
+#{$s} .p-datatable .p-datatable-tbody > tr:not(.p-datatable-row-selected):hover {
+  background: var(--table-row-hover) !important;
+}
+
+/* Striped rows — off in the Figma spec, kept for opt-in via [stripedRows] */
+#{$s} .p-datatable.p-datatable-striped .p-datatable-tbody > tr:nth-child(even) {
+  background: var(--table-row-striped) !important;
+}
+
+/* Selected row */
+#{$s} .p-datatable .p-datatable-tbody > tr.p-datatable-row-selected {
+  background: var(--table-row-selected) !important;
+  color: var(--table-row-selected-text) !important;
+}
+
+/* ── CELL CONTENT ──
+   Figma "Table Cell Text Container": primary line over an optional
+   secondary line, 8px apart. Secondary line is plain <small>. */
+#{$s} .p-datatable .baps-table-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: center;
+  min-width: 0;
+}
+
+#{$s} .p-datatable .baps-table-cell > small {
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--table-secondary-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Figma "Table Cell Avatar" is the standard Sampark avatar — use
+   <baps-avatar brand="sampark" variant="secondary"> (size m = 36px box,
+   4px radius, Mono/10 fill, Mono/40 hairline, 24px icon slot, all from
+   SAMPARK_AVATAR_TOKENS). No table-specific avatar CSS: the component
+   already carries the spec, mirrored from spm-ui's _avatar.scss. */
+
+/* Figma "Action Icon" — 28px hit area, 4px radius, 18px glyph. */
+#{$s} .p-datatable .baps-table-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0.25rem;
+  color: var(--table-header-text);
+  font-size: 1.125rem;
+  cursor: pointer;
+  transition: background-color 120ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#{$s} .p-datatable .baps-table-action:hover:not(:disabled) {
+  background: var(--table-row-hover);
+}
+
+#{$s} .p-datatable .baps-table-action:focus-visible {
+  outline: 2px solid var(--table-sort-icon-active);
+  outline-offset: 2px;
+}
+
+#{$s} .p-datatable .baps-table-action:disabled {
+  opacity: 0.4;
+  cursor: default;
+  pointer-events: none;
+}
+
+/* Lead cell — Figma pairs a 36px avatar box with the text container and
+   tightens vertical padding to 10px. */
+#{$s} .p-datatable .p-datatable-tbody > tr > td.baps-table-cell-lead {
+  padding: 0.625rem 0.75rem !important;
+}
+
+#{$s} .p-datatable .baps-table-cell-lead .baps-table-cell {
+  font-weight: 500;
+}
+
+/* ── FROZEN (STICKY) COLUMNS ──
+   Opaque fill so scrolled rows never bleed through; hover/selection fills
+   are re-applied on the cell because the row background sits behind it. */
+#{$s} .p-datatable .p-datatable-frozen-column {
+  background: var(--table-row-bg) !important;
+  z-index: 1 !important;
+}
+
+#{$s} .p-datatable .p-datatable-tbody > tr:not(.p-datatable-row-selected):hover > .p-datatable-frozen-column {
+  background: var(--table-row-hover) !important;
+}
+
+#{$s} .p-datatable .p-datatable-tbody > tr.p-datatable-row-selected > .p-datatable-frozen-column {
+  background: var(--table-row-selected) !important;
+}
+
+#{$s} .p-datatable .p-datatable-thead > tr > th.p-datatable-frozen-column {
+  background: var(--table-header-bg) !important;
+  z-index: 2 !important;
+}
+
+/* ── FROZEN (STICKY) COLUMNS — fixed-width variant ──
+   `pFrozenColumn`'s own offset math (`updateStickyPosition()`) sums the
+   width of every preceding sibling, frozen or not, measured live off the
+   DOM — built for tables whose column widths move at runtime. When widths
+   are already fixed at author time (as here — every column has its own
+   `style="width: …rem"`), that DOM measurement is unnecessary machinery,
+   and dynamically toggling a column between frozen and not (e.g. from a
+   `baps-table-column-config` pin/unpin) is simpler to get right computing
+   the offset directly than relying on the directive noticing the change.
+   `.dt-frozen-left` mirrors Sampark's own `common-table.component` naming:
+   the consumer computes `left` in TS (cumulative width of only the OTHER
+   frozen columns to its left, in order) and binds it via `[style.left]`;
+   this class only supplies the position/z-index/background. */
+#{$s} .p-datatable .dt-frozen-left {
+  position: sticky !important;
+  z-index: 1 !important;
+  background: var(--table-row-bg) !important;
+}
+
+#{$s} .p-datatable .p-datatable-tbody > tr:not(.p-datatable-row-selected):hover > .dt-frozen-left {
+  background: var(--table-row-hover) !important;
+}
+
+#{$s} .p-datatable .p-datatable-tbody > tr.p-datatable-row-selected > .dt-frozen-left {
+  background: var(--table-row-selected) !important;
+}
+
+/* `.p-datatable-scrollable` repeats the scrollable-header rule's own class
+   so this ties, then wins, on specificity instead of depending on which
+   block happens to sit later in the file — see the doc comment on the
+   scrollable-header rule below. */
+#{$s} .p-datatable.p-datatable-scrollable .p-datatable-thead > tr > th.dt-frozen-left {
+  z-index: 2 !important;
+  background: var(--table-header-bg) !important;
+}
+
+/* Divider is an inset box-shadow, not a border — a real border here would
+   double up with the next cell's own border-right once both are visible at
+   once (e.g. every middle column hidden via column-config, leaving this
+   frozen column directly adjacent to a `.dt-frozen-right` cell). The shadow
+   paints inside this cell's own box, so it never stacks with a neighbor's
+   border the way two independently-drawn borders do under this table's
+   `border-collapse: separate` model (see that rule's own doc comment). */
+#{$s} .p-datatable .p-datatable-tbody > tr > td.dt-frozen-left,
+#{$s} .p-datatable .p-datatable-thead > tr > th.dt-frozen-left {
+  border-right: none !important;
+  box-shadow: inset -1px 0 0 var(--table-border) !important;
+}
+
+/* `.dt-frozen-right` is `.dt-frozen-left`'s mirror for a trailing sticky
+   column (e.g. a row-actions cell) — anchored to `right: 0` instead of a
+   computed `left`, since only one column pins to the right edge here, no
+   cumulative-offset math needed. */
+#{$s} .p-datatable .dt-frozen-right {
+  position: sticky !important;
+  right: 0 !important;
+  z-index: 1 !important;
+  background: var(--table-row-bg) !important;
+}
+
+#{$s} .p-datatable .p-datatable-tbody > tr:not(.p-datatable-row-selected):hover > .dt-frozen-right {
+  background: var(--table-row-hover) !important;
+}
+
+#{$s} .p-datatable .p-datatable-tbody > tr.p-datatable-row-selected > .dt-frozen-right {
+  background: var(--table-row-selected) !important;
+}
+
+#{$s} .p-datatable.p-datatable-scrollable .p-datatable-thead > tr > th.dt-frozen-right {
+  z-index: 2 !important;
+  background: var(--table-header-bg) !important;
+}
+
+/* Same box-shadow-not-border reasoning as `.dt-frozen-left`'s divider above,
+   mirrored to the left edge. */
+#{$s} .p-datatable .p-datatable-tbody > tr > td.dt-frozen-right,
+#{$s} .p-datatable .p-datatable-thead > tr > th.dt-frozen-right {
+  border-left: none !important;
+  box-shadow: inset 1px 0 0 var(--table-border) !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   GROUPED / TREE TABLE
+   Figma nodes 18845:92903 (Dashboard → Projects) and 18708:93907
+   (Karyakar assignments).
+
+   This is p-table with rowGroupMode="subheader" — NOT p-treetable. The
+   tree appearance is drawn entirely by CSS pseudo-elements on the name
+   column; there is no extra column, no SVG and no DOM tree node.
+
+   Figma reads Info/20 #e6f0fe for the group row and Info/10 #f3f8ff for
+   its child rows. Those hexes sit one step down the code-side scale
+   (info-10 / info-5) — a known Figma-vs-code drift, same as the tag skin.
+   ══════════════════════════════════════════════════════════════════════ */
+#{$s} {
+  --table-group-bg: var(--color-sampark-info-10, #e6f0fe);
+  --table-group-row-bg: var(--color-sampark-info-5, #f3f8ff);
+  --table-tree-line: var(--color-sampark-mono-40, #bcb9b9);
+  --table-badge-bg: rgba(21, 20, 20, 0.04);
+  --table-badge-text: var(--color-sampark-text-secondary, #595656);
+}
+
+.baps-dark #{$s},
+.baps-dark#{$s} {
+  --table-group-bg: rgba(56, 137, 250, 0.16);
+  --table-group-row-bg: rgba(56, 137, 250, 0.06);
+  --table-tree-line: var(--color-mybky-mono-600, #545a5e);
+  --table-badge-bg: rgba(255, 255, 255, 0.06);
+  --table-badge-text: var(--color-mybky-mono-400, #b6b6af);
+}
+
+/* ── GROUP SUBHEADER ROW ── */
+#{$s} .p-datatable .p-datatable-tbody > tr.baps-table-group-row > td {
+  height: 3.5rem;
+  background: var(--table-group-bg) !important;
+  padding: 0.75rem !important;
+  font-weight: 600 !important;
+}
+
+/* Collapsed groups drop the tint and the heavier weight (Figma Variant2). */
+#{$s} .p-datatable .p-datatable-tbody > tr.baps-table-group-row.baps-table-group-collapsed > td {
+  background: var(--table-row-bg) !important;
+  font-weight: 500 !important;
+}
+
+/* Group toggle — Figma 10px chevron, right when collapsed, down when open. */
+#{$s} .p-datatable .baps-table-group-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+#{$s} .p-datatable .baps-table-group-toggle > .pi {
+  flex-shrink: 0;
+  font-size: 0.625rem;
+  transition: transform 120ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#{$s} .p-datatable .baps-table-group-toggle[aria-expanded='true'] > .pi {
+  transform: rotate(90deg);
+}
+
+#{$s} .p-datatable .baps-table-group-toggle:focus-visible {
+  outline: 2px solid var(--table-sort-icon-active);
+  outline-offset: 2px;
+}
+
+/* ── CHILD ROWS OF A GROUP ──
+   The tint has to sit on the cell, not the row, so the group reads as one
+   block. A cell background paints over the row's, so hover and selection
+   must be re-applied at cell level too — same reason the frozen-column
+   rules above repeat them. */
+#{$s} .p-datatable .p-datatable-tbody > tr.baps-table-child-row > td {
+  background: var(--table-group-row-bg) !important;
+}
+
+#{$s} .p-datatable .p-datatable-tbody > tr.baps-table-child-row:not(.p-datatable-row-selected):hover > td {
+  background: var(--table-row-hover) !important;
+}
+
+#{$s} .p-datatable .p-datatable-tbody > tr.baps-table-child-row.p-datatable-row-selected > td {
+  background: var(--table-row-selected) !important;
+}
+
+/* ── TREE SPINE ──
+   Drawn on the name column only. `spm-name-col` and `spm-last-in-group`
+   are the hook names the Sampark portal already uses — do not rename
+   them, the app's markup targets these exact strings.
+
+   Geometry from Figma: vertical rule centred at 17px (12px cell padding
+   + half of the 10px level box), horizontal stub 10px wide starting at
+   30px, both at Mono/40. Content therefore starts at 48px.
+
+   DEPTH — Figma "♻️ Base Table Levels" (13197:89904) measures the level box
+   at 22 / 40 / 58 / 76px for levels 1–4: a flat 18px per extra level. That
+   is `--baps-table-level` (1-based, default 1), a plain number the consumer
+   sets on the cell; `--table-level-indent` turns it into the pixel offset
+   that every one of the three rules below adds to its level-1 position.
+   At level 1 the multiplier is 0, so all three resolve to exactly their
+   original values — level-1 rendering is unchanged. Arbitrary depths work
+   because it is arithmetic, not a class lookup; `.spm-level-2/3/4` below
+   exist only so markup can pick a depth without an inline style. */
+#{$s} .p-datatable .p-datatable-tbody > tr > td.spm-name-col {
+  --table-level-indent: calc((var(--baps-table-level, 1) - 1) * 1.125rem);
+  position: relative;
+  padding: 0.625rem 0.75rem 0.625rem calc(3rem + var(--table-level-indent)) !important;
+}
+
+#{$s} .p-datatable .p-datatable-tbody > tr > td.spm-level-2 {
+  --baps-table-level: 2;
+}
+
+#{$s} .p-datatable .p-datatable-tbody > tr > td.spm-level-3 {
+  --baps-table-level: 3;
+}
+
+#{$s} .p-datatable .p-datatable-tbody > tr > td.spm-level-4 {
+  --baps-table-level: 4;
+}
+
+#{$s} .p-datatable .p-datatable-tbody > tr > td.spm-name-col::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(1.0625rem + var(--table-level-indent));
+  width: 1px;
+  background: var(--table-tree-line);
+}
+
+#{$s} .p-datatable .p-datatable-tbody > tr > td.spm-name-col::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: calc(1.875rem + var(--table-level-indent));
+  width: 0.625rem;
+  height: 1px;
+  background: var(--table-tree-line);
+}
+
+/* Last child in a group: the spine stops at the connector instead of
+   running into the next group. */
+#{$s} .p-datatable .p-datatable-tbody > tr > td.spm-name-col.spm-last-in-group::before {
+  bottom: 50%;
+}
+
+/* ── TABLE BADGE ──
+   Figma "Table Badge 1" / "Table Cell Primary Text Badge": 4% ink fill on
+   a Mono/Borders hairline. Distinct from baps-tag's grey chip, which is a
+   solid Secondary/10 fill. */
+#{$s} .p-datatable .baps-table-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.125rem;
+  height: 1.375rem;
+  padding: 0.25rem;
+  background: var(--table-badge-bg);
+  border: 1px solid var(--table-border);
+  border-radius: 0.25rem;
+  color: var(--table-badge-text);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+#{$s} .p-datatable .baps-table-badge > .pi {
+  font-size: 1rem;
+}
+
+/* 20px variant — sits inline beside a primary cell label. */
+#{$s} .p-datatable .baps-table-badge-sm {
+  height: 1.25rem;
+  font-size: 0.75rem;
+}
+
+#{$s} .p-datatable .baps-table-badge-sm > .pi {
+  font-size: 0.875rem;
+}
+
+/* ── PROGRESS CELL ──
+   Reuses baps-progressbar (severity="success" already resolves to the
+   Figma fill); only the track height and colour are table-specific.
+
+   Not scoped to .p-datatable — the "4px bar over a label/percent line"
+   pattern is the same wherever it appears, and the ProgressBar docs page
+   renders it outside a table. Still inside the Sampark scope. */
+#{$s} .baps-table-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+#{$s} .baps-table-progress .p-progressbar {
+  height: 0.25rem;
+  background: var(--table-badge-bg);
+}
+
+#{$s} .baps-table-progress-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--table-badge-text);
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.3;
+}
+
+#{$s} .baps-table-progress-meta > :last-child {
+  margin-left: auto;
+  text-align: right;
+}
+
+/* ── ROW EXPAND TOGGLE ── */
+#{$s} .p-datatable .baps-table-row-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 0.625rem;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: var(--table-body-text);
+  font-size: 0.625rem;
+  cursor: pointer;
+  transition: transform 120ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#{$s} .p-datatable .baps-table-row-toggle[aria-expanded='true'] {
+  transform: rotate(90deg);
+}
+
+/* ── ACTION CELL ──
+   Figma right-aligns the action column and pads it 12px/8px. */
+#{$s} .p-datatable .p-datatable-tbody > tr > td.baps-table-action-cell {
+  padding: 0.5rem 0.75rem !important;
+  text-align: right !important;
+}
+
+/* ── FOOTER ── */
+#{$s} .p-datatable .p-datatable-tfoot > tr > td {
+  background: var(--table-header-bg) !important;
+  color: var(--table-header-text) !important;
+  border: 1px solid var(--table-border) !important;
+  padding: 0.625rem 0.75rem !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+}
+
+/* ── LOADING ── */
+#{$s} .p-datatable .p-datatable-mask {
+  background: rgba(255, 255, 255, 0.7) !important;
+}
+
+#{$s} .p-datatable .p-datatable-loading-icon {
+  color: var(--table-sort-icon-active) !important;
+}
+
+/* ── EMPTY MESSAGE ── */
+#{$s} .p-datatable .p-datatable-empty-message > td {
+  text-align: center !important;
+  color: var(--table-disabled-text) !important;
+  padding: 2rem !important;
+}
+
+/* ── PAGINATOR (inline) ── */
+#{$s} .p-datatable .p-paginator {
+  border: none !important;
+  padding: 0.75rem 0 !important;
+}
+
+/* ── SCROLLABLE TABLE ──
+   This rule's z-index:1 ties in specificity with th.dt-frozen-left/-right's
+   z-index:2 (both resolve to 4 classes + 2 type selectors — `:is()` counts
+   as its most specific branch). A tie falls back to source order, not
+   !important weight, so those two rules repeat this selector's own
+   `.p-datatable-scrollable` class to out-specify this one regardless of
+   where either block sits in the file. */
+#{$s} .p-datatable.p-datatable-scrollable .p-datatable-thead > tr > th {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1 !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   COMPACT ROWS — [size]="small"
+   Figma nodes 13197:89532 (Secondary Table Cell) and 13197:89633 (Lead
+   Table Cell) carry a `Compact` axis: false = 56px row, true = 44px.
+
+   The whole 12px difference is vertical padding, measured off the Figma
+   frames rather than derived — the cell's content box is 31px tall in
+   both variants (two-line primary + secondary), and it sits at y=12.5 in
+   the 56px cell versus y=6.5 in the 44px one. Horizontal padding is 12px
+   either way, and the lead cell's own tighter 10px reads as 6px compact
+   (its avatar sits at y=10 in the 56px variant, y=6 in the 44px one).
+   Rounded to the 6px/0.375rem the token scale already uses.
+
+   These live at the end of the file and add `.p-datatable-sm` — PrimeNG's
+   own class for `[size]="small"`, which `baps-table` forwards straight to
+   `p-table`. Without this branch the base rules' `!important` padding wins
+   and `size` is silently inert under Sampark.
+
+   Not compact-specific and therefore absent here: the 40px header (Figma's
+   Compact axis is on the cell components only, the header keeps its
+   height), and the action cell, whose 8px padding around a 28px icon
+   already lands on 44px. The lead avatar does shrink 36px → 32px in Figma;
+   that is the avatar component's own size input, not table CSS.
+   ══════════════════════════════════════════════════════════════════════ */
+#{$s} .p-datatable.p-datatable-sm .p-datatable-tbody > tr > td {
+  padding: 0.375rem 0.75rem !important;
+}
+
+#{$s} .p-datatable.p-datatable-sm .p-datatable-tbody > tr > td.baps-table-cell-lead {
+  padding: 0.375rem 0.75rem !important;
+}
+
+#{$s} .p-datatable.p-datatable-sm .p-datatable-tbody > tr > td.spm-name-col {
+  padding: 0.375rem 0.75rem 0.375rem calc(3rem + var(--table-level-indent)) !important;
+}
+
+/* The group subheader pins its own height, so it has to be told too or it
+   stays 56px in an otherwise 44px table. */
+#{$s} .p-datatable.p-datatable-sm .p-datatable-tbody > tr.baps-table-group-row > td {
+  height: 2.75rem;
+  padding: 0.375rem 0.75rem !important;
+}

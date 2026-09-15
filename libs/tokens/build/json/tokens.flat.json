@@ -1,0 +1,8733 @@
+[
+  {
+    "name": "ColorMybkyBlue50",
+    "path": [
+      "color",
+      "mybky",
+      "blue",
+      "50"
+    ],
+    "value": "#eef0f8",
+    "original": "#eef0f8",
+    "legacyMapping": {},
+    "comment": "Figma Primary/0 — avatar bg, breadcrumb badge"
+  },
+  {
+    "name": "ColorMybkyBlue100",
+    "path": [
+      "color",
+      "mybky",
+      "blue",
+      "100"
+    ],
+    "value": "#d5dbee",
+    "original": "#d5dbee",
+    "legacyMapping": {},
+    "comment": "interpolated"
+  },
+  {
+    "name": "ColorMybkyBlue200",
+    "path": [
+      "color",
+      "mybky",
+      "blue",
+      "200"
+    ],
+    "value": "#bdc6e4",
+    "original": "#bdc6e4",
+    "legacyMapping": {},
+    "comment": "Figma Primary/20 — avatar ring, hover border"
+  },
+  {
+    "name": "ColorMybkyBlue300",
+    "path": [
+      "color",
+      "mybky",
+      "blue",
+      "300"
+    ],
+    "value": "#aebade",
+    "original": "#aebade",
+    "legacyMapping": {},
+    "comment": "interpolated"
+  },
+  {
+    "name": "ColorMybkyBlue400",
+    "path": [
+      "color",
+      "mybky",
+      "blue",
+      "400"
+    ],
+    "value": "#9fadd9",
+    "original": "#9fadd9",
+    "legacyMapping": {},
+    "comment": "Figma Primary/40"
+  },
+  {
+    "name": "ColorMybkyBlue500",
+    "path": [
+      "color",
+      "mybky",
+      "blue",
+      "500"
+    ],
+    "value": "#7f93c8",
+    "original": "#7f93c8",
+    "legacyMapping": {},
+    "comment": "interpolated"
+  },
+  {
+    "name": "ColorMybkyBlue600",
+    "path": [
+      "color",
+      "mybky",
+      "blue",
+      "600"
+    ],
+    "value": "#5f78b8",
+    "original": "#5f78b8",
+    "legacyMapping": {},
+    "comment": "Figma Primary/60 — core brand blue, gradient light stop"
+  },
+  {
+    "name": "ColorMybkyBlue700",
+    "path": [
+      "color",
+      "mybky",
+      "blue",
+      "700"
+    ],
+    "value": "#4c6095",
+    "original": "#4c6095",
+    "legacyMapping": {},
+    "comment": "interpolated"
+  },
+  {
+    "name": "ColorMybkyBlue800",
+    "path": [
+      "color",
+      "mybky",
+      "blue",
+      "800"
+    ],
+    "value": "#384871",
+    "original": "#384871",
+    "legacyMapping": {},
+    "comment": "Figma Primary/80 — dark navy, gradient dark stop"
+  },
+  {
+    "name": "ColorMybkyBlue900",
+    "path": [
+      "color",
+      "mybky",
+      "blue",
+      "900"
+    ],
+    "value": "#252f4a",
+    "original": "#252f4a",
+    "legacyMapping": {},
+    "comment": "interpolated — dark mode avatar bg"
+  },
+  {
+    "name": "ColorMybkyBlue950",
+    "path": [
+      "color",
+      "mybky",
+      "blue",
+      "950"
+    ],
+    "value": "#141925",
+    "original": "#141925",
+    "legacyMapping": {},
+    "comment": "interpolated"
+  },
+  {
+    "name": "ColorMybkyBlueAlpha10",
+    "path": [
+      "color",
+      "mybky",
+      "blue",
+      "alpha10"
+    ],
+    "value": "rgb(from #5f78b8 r g b / 0.1)",
+    "original": "rgb(from {color.mybky.blue.600} r g b / 0.1)",
+    "legacyMapping": {},
+    "comment": "Primary/60 at 10% alpha. Relative colour, not a literal: the channels are READ OFF the reference, so a runtime change to blue.600 carries through. Same value as the rgba(95,120,184,0.1) it replaces. Consumed by button.mybky.primary.disabled and primaryGhost.hover."
+  },
+  {
+    "name": "ColorMybkyBlueAlpha20",
+    "path": [
+      "color",
+      "mybky",
+      "blue",
+      "alpha20"
+    ],
+    "value": "rgb(from #9fadd9 r g b / 0.2)",
+    "original": "rgb(from {color.mybky.blue.400} r g b / 0.2)",
+    "legacyMapping": {},
+    "comment": "Primary/40 at 20% alpha — the tinted ring on a primary tag. Base is 400, NOT 600: the border is a lighter step than the fill. Same value as the #9fadd933 it replaces."
+  },
+  {
+    "name": "ColorMybkyMono0",
+    "path": [
+      "color",
+      "mybky",
+      "mono",
+      "0"
+    ],
+    "value": "#ffffff",
+    "original": "#ffffff",
+    "legacyMapping": {},
+    "comment": "Figma Mono/0 — card background"
+  },
+  {
+    "name": "ColorMybkyMono50",
+    "path": [
+      "color",
+      "mybky",
+      "mono",
+      "50"
+    ],
+    "value": "#f8fafb",
+    "original": "#f8fafb",
+    "legacyMapping": {},
+    "comment": "Figma Mono/10 — light background, table header, striped rows"
+  },
+  {
+    "name": "ColorMybkyMono100",
+    "path": [
+      "color",
+      "mybky",
+      "mono",
+      "100"
+    ],
+    "value": "#eff1f3",
+    "original": "#eff1f3",
+    "legacyMapping": {},
+    "comment": "interpolated"
+  },
+  {
+    "name": "ColorMybkyMono200",
+    "path": [
+      "color",
+      "mybky",
+      "mono",
+      "200"
+    ],
+    "value": "#eaeff3",
+    "original": "#eaeff3",
+    "legacyMapping": {},
+    "comment": "interpolated"
+  },
+  {
+    "name": "ColorMybkyMono300",
+    "path": [
+      "color",
+      "mybky",
+      "mono",
+      "300"
+    ],
+    "value": "#e4ecf1",
+    "original": "#e4ecf1",
+    "legacyMapping": {},
+    "comment": "Figma Mono/20 — universal border color"
+  },
+  {
+    "name": "ColorMybkyMono400",
+    "path": [
+      "color",
+      "mybky",
+      "mono",
+      "400"
+    ],
+    "value": "#b6b6af",
+    "original": "#b6b6af",
+    "legacyMapping": {},
+    "comment": "Figma Mono/40 — disabled items"
+  },
+  {
+    "name": "ColorMybkyMono450",
+    "path": [
+      "color",
+      "mybky",
+      "mono",
+      "450"
+    ],
+    "value": "#8d9ba5",
+    "original": "#8d9ba5",
+    "legacyMapping": {},
+    "comment": "Figma \"Mono/40 (Disable Item)\" on the avatar sheet (22465:97983) — sits between the existing 400 (#b6b6af) and 500 (#6f777d), which is why it is 450 rather than either"
+  },
+  {
+    "name": "ColorMybkyMono500",
+    "path": [
+      "color",
+      "mybky",
+      "mono",
+      "500"
+    ],
+    "value": "#6f777d",
+    "original": "#6f777d",
+    "legacyMapping": {},
+    "comment": "Figma Mono/60 — labels & placeholder"
+  },
+  {
+    "name": "ColorMybkyMono600",
+    "path": [
+      "color",
+      "mybky",
+      "mono",
+      "600"
+    ],
+    "value": "#565652",
+    "original": "#565652",
+    "legacyMapping": {},
+    "comment": "interpolated"
+  },
+  {
+    "name": "ColorMybkyMono700",
+    "path": [
+      "color",
+      "mybky",
+      "mono",
+      "700"
+    ],
+    "value": "#3d4144",
+    "original": "#3d4144",
+    "legacyMapping": {},
+    "comment": "interpolated"
+  },
+  {
+    "name": "ColorMybkyMono800",
+    "path": [
+      "color",
+      "mybky",
+      "mono",
+      "800"
+    ],
+    "value": "#2b2f32",
+    "original": "#2b2f32",
+    "legacyMapping": {},
+    "comment": "Figma Mono/80 — secondary text"
+  },
+  {
+    "name": "ColorMybkyMono900",
+    "path": [
+      "color",
+      "mybky",
+      "mono",
+      "900"
+    ],
+    "value": "#181b1d",
+    "original": "#181b1d",
+    "legacyMapping": {},
+    "comment": "Figma Mono/100 — primary text / dark-mode surface"
+  },
+  {
+    "name": "ColorMybkyMono950",
+    "path": [
+      "color",
+      "mybky",
+      "mono",
+      "950"
+    ],
+    "value": "#0f0f0e",
+    "original": "#0f0f0e",
+    "legacyMapping": {},
+    "comment": "interpolated — near black"
+  },
+  {
+    "name": "ColorMybkyError80",
+    "path": [
+      "color",
+      "mybky",
+      "error",
+      "80"
+    ],
+    "value": "#e05255",
+    "original": "#e05255",
+    "legacyMapping": {},
+    "comment": "invalid / destructive states, gradient light stop"
+  },
+  {
+    "name": "ColorMybkyError100",
+    "path": [
+      "color",
+      "mybky",
+      "error",
+      "100"
+    ],
+    "value": "#c32226",
+    "original": "#c32226",
+    "legacyMapping": {},
+    "comment": "danger button gradient dark stop, Figma node 22465:93605"
+  },
+  {
+    "name": "ColorMybkyErrorSurface",
+    "path": [
+      "color",
+      "mybky",
+      "error",
+      "surface"
+    ],
+    "value": "#ffebeb",
+    "original": "#ffebeb",
+    "legacyMapping": {},
+    "comment": "Avatar status fill — Figma \"error/10\" on node 22465:97983"
+  },
+  {
+    "name": "ColorMybkyErrorTint",
+    "path": [
+      "color",
+      "mybky",
+      "error",
+      "tint"
+    ],
+    "value": "#ec9394",
+    "original": "#ec9394",
+    "legacyMapping": {},
+    "comment": "Avatar status border — Figma \"error/60\" on node 22465:97983"
+  },
+  {
+    "name": "ColorMybkySuccess50",
+    "path": [
+      "color",
+      "mybky",
+      "success",
+      "50"
+    ],
+    "value": "#d8fdeb",
+    "original": "#d8fdeb",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorMybkySuccess400",
+    "path": [
+      "color",
+      "mybky",
+      "success",
+      "400"
+    ],
+    "value": "#40bf84",
+    "original": "#40bf84",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorMybkySuccess600",
+    "path": [
+      "color",
+      "mybky",
+      "success",
+      "600"
+    ],
+    "value": "#2a9c68",
+    "original": "#2a9c68",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorMybkySuccessSurface",
+    "path": [
+      "color",
+      "mybky",
+      "success",
+      "surface"
+    ],
+    "value": "#ebfff5",
+    "original": "#ebfff5",
+    "legacyMapping": {},
+    "comment": "Avatar status fill — Figma \"success/10\" on node 22465:97983"
+  },
+  {
+    "name": "ColorMybkySuccessTint",
+    "path": [
+      "color",
+      "mybky",
+      "success",
+      "tint"
+    ],
+    "value": "#93ecbb",
+    "original": "#93ecbb",
+    "legacyMapping": {},
+    "comment": "Avatar status border — Figma \"success/60\" on node 22465:97983"
+  },
+  {
+    "name": "ColorMybkyInfo20",
+    "path": [
+      "color",
+      "mybky",
+      "info",
+      "20"
+    ],
+    "value": "#d8e7fd",
+    "original": "#d8e7fd",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorMybkyInfo60",
+    "path": [
+      "color",
+      "mybky",
+      "info",
+      "60"
+    ],
+    "value": "#528de0",
+    "original": "#528de0",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorMybkyInfo80",
+    "path": [
+      "color",
+      "mybky",
+      "info",
+      "80"
+    ],
+    "value": "#2265c3",
+    "original": "#2265c3",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorMybkyInfoSurface",
+    "path": [
+      "color",
+      "mybky",
+      "info",
+      "surface"
+    ],
+    "value": "#ebf3ff",
+    "original": "#ebf3ff",
+    "legacyMapping": {},
+    "comment": "Avatar status fill — Figma \"info/10\" on node 22465:97983"
+  },
+  {
+    "name": "ColorMybkyInfoTint",
+    "path": [
+      "color",
+      "mybky",
+      "info",
+      "tint"
+    ],
+    "value": "#93b7ec",
+    "original": "#93b7ec",
+    "legacyMapping": {},
+    "comment": "Avatar status border — Figma \"info/60\" on node 22465:97983"
+  },
+  {
+    "name": "ColorMybkyWarning20",
+    "path": [
+      "color",
+      "mybky",
+      "warning",
+      "20"
+    ],
+    "value": "#fdedd8",
+    "original": "#fdedd8",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorMybkyWarning60",
+    "path": [
+      "color",
+      "mybky",
+      "warning",
+      "60"
+    ],
+    "value": "#e0a652",
+    "original": "#e0a652",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorMybkyWarning80",
+    "path": [
+      "color",
+      "mybky",
+      "warning",
+      "80"
+    ],
+    "value": "#c38222",
+    "original": "#c38222",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorMybkyWarningSurface",
+    "path": [
+      "color",
+      "mybky",
+      "warning",
+      "surface"
+    ],
+    "value": "#fff6eb",
+    "original": "#fff6eb",
+    "legacyMapping": {},
+    "comment": "Avatar status fill — Figma \"warning/10\" on node 22465:97983"
+  },
+  {
+    "name": "ColorMybkyWarningTint",
+    "path": [
+      "color",
+      "mybky",
+      "warning",
+      "tint"
+    ],
+    "value": "#ecc893",
+    "original": "#ecc893",
+    "legacyMapping": {},
+    "comment": "Avatar status border — Figma \"warning/60\" on node 22465:97983"
+  },
+  {
+    "name": "ColorMybkyTextPrimary",
+    "path": [
+      "color",
+      "mybky",
+      "text",
+      "primary"
+    ],
+    "value": "#181b1d",
+    "original": "{color.mybky.mono.900}",
+    "legacyMapping": {
+      "eventsUi": "--high-contrast-text-color"
+    }
+  },
+  {
+    "name": "ColorMybkyTextSecondary",
+    "path": [
+      "color",
+      "mybky",
+      "text",
+      "secondary"
+    ],
+    "value": "#2b2f32",
+    "original": "{color.mybky.mono.800}",
+    "legacyMapping": {
+      "eventsUi": "--text-color-secondary"
+    }
+  },
+  {
+    "name": "ColorMybkyTextMuted",
+    "path": [
+      "color",
+      "mybky",
+      "text",
+      "muted"
+    ],
+    "value": "#6f777d",
+    "original": "{color.mybky.mono.500}",
+    "legacyMapping": {
+      "eventsUi": "--text-color-muted"
+    }
+  },
+  {
+    "name": "ColorMybkyTextDisabled",
+    "path": [
+      "color",
+      "mybky",
+      "text",
+      "disabled"
+    ],
+    "value": "#869097",
+    "original": "#869097",
+    "legacyMapping": {
+      "eventsUi": "--text-color-disabled"
+    }
+  },
+  {
+    "name": "ColorMybkyTextInverse",
+    "path": [
+      "color",
+      "mybky",
+      "text",
+      "inverse"
+    ],
+    "value": "#ffffff",
+    "original": "{color.mybky.mono.0}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorMybkyBorderDefault",
+    "path": [
+      "color",
+      "mybky",
+      "border",
+      "default"
+    ],
+    "value": "#e4ecf1",
+    "original": "{color.mybky.mono.300}",
+    "legacyMapping": {
+      "eventsUi": "--border-color"
+    }
+  },
+  {
+    "name": "ColorMybkySurfaceCard",
+    "path": [
+      "color",
+      "mybky",
+      "surface",
+      "card"
+    ],
+    "value": "#ffffff",
+    "original": "{color.mybky.mono.0}",
+    "legacyMapping": {
+      "eventsUi": "--card-background"
+    }
+  },
+  {
+    "name": "ColorMybkySurfaceGround",
+    "path": [
+      "color",
+      "mybky",
+      "surface",
+      "ground"
+    ],
+    "value": "#f8fafb",
+    "original": "{color.mybky.mono.50}",
+    "legacyMapping": {
+      "eventsUi": "--ground-background (post-login shell)"
+    }
+  },
+  {
+    "name": "ColorMybkySurfaceAuth",
+    "path": [
+      "color",
+      "mybky",
+      "surface",
+      "auth"
+    ],
+    "value": "#e4ecf1",
+    "original": "{color.mybky.mono.300}",
+    "legacyMapping": {
+      "eventsUi": "--auth-background (sign-in pages)"
+    }
+  },
+  {
+    "name": "ColorMybkyPrimaryDefault",
+    "path": [
+      "color",
+      "mybky",
+      "primary",
+      "default"
+    ],
+    "value": "#5f78b8",
+    "original": "{color.mybky.blue.600}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorMybkyPrimaryHover",
+    "path": [
+      "color",
+      "mybky",
+      "primary",
+      "hover"
+    ],
+    "value": "#4c6095",
+    "original": "{color.mybky.blue.700}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorMybkyPrimaryActive",
+    "path": [
+      "color",
+      "mybky",
+      "primary",
+      "active"
+    ],
+    "value": "#384871",
+    "original": "{color.mybky.blue.800}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorMybkyStateError",
+    "path": [
+      "color",
+      "mybky",
+      "state",
+      "error"
+    ],
+    "value": "#e05255",
+    "original": "{color.mybky.error.80}",
+    "legacyMapping": {
+      "eventsUi": "--error-color"
+    }
+  },
+  {
+    "name": "ColorMybkyStateSuccess",
+    "path": [
+      "color",
+      "mybky",
+      "state",
+      "success"
+    ],
+    "value": "#40bf84",
+    "original": "{color.mybky.success.400}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorMybkyStateInfo",
+    "path": [
+      "color",
+      "mybky",
+      "state",
+      "info"
+    ],
+    "value": "#528de0",
+    "original": "{color.mybky.info.60}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorMybkyStateWarning",
+    "path": [
+      "color",
+      "mybky",
+      "state",
+      "warning"
+    ],
+    "value": "#e0a652",
+    "original": "{color.mybky.warning.60}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorMybkyDarkTextPrimary",
+    "path": [
+      "color",
+      "mybky",
+      "dark",
+      "text",
+      "primary"
+    ],
+    "value": "#f8fafb",
+    "original": "{color.mybky.mono.50}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorMybkyDarkTextSecondary",
+    "path": [
+      "color",
+      "mybky",
+      "dark",
+      "text",
+      "secondary"
+    ],
+    "value": "#e4ecf1",
+    "original": "{color.mybky.mono.300}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorMybkyDarkTextMuted",
+    "path": [
+      "color",
+      "mybky",
+      "dark",
+      "text",
+      "muted"
+    ],
+    "value": "#b6b6af",
+    "original": "{color.mybky.mono.400}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorMybkyDarkTextDisabled",
+    "path": [
+      "color",
+      "mybky",
+      "dark",
+      "text",
+      "disabled"
+    ],
+    "value": "#6f777d",
+    "original": "{color.mybky.mono.500}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorMybkyDarkTextInverse",
+    "path": [
+      "color",
+      "mybky",
+      "dark",
+      "text",
+      "inverse"
+    ],
+    "value": "#181b1d",
+    "original": "{color.mybky.mono.900}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorMybkyDarkBorderDivider",
+    "path": [
+      "color",
+      "mybky",
+      "dark",
+      "border",
+      "divider"
+    ],
+    "value": "#3d4144",
+    "original": "{color.mybky.mono.700}",
+    "legacyMapping": {},
+    "comment": "Decorative separators only - 1.68:1 on the dark ground"
+  },
+  {
+    "name": "ColorMybkyDarkBorderControl",
+    "path": [
+      "color",
+      "mybky",
+      "dark",
+      "border",
+      "control"
+    ],
+    "value": "#6f777d",
+    "original": "{color.mybky.mono.500}",
+    "legacyMapping": {},
+    "comment": "Control boundaries - 3.80:1, clears WCAG 1.4.11"
+  },
+  {
+    "name": "ColorMybkyDarkSurfaceGround",
+    "path": [
+      "color",
+      "mybky",
+      "dark",
+      "surface",
+      "ground"
+    ],
+    "value": "#181b1d",
+    "original": "{color.mybky.mono.900}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorMybkyDarkSurfaceCard",
+    "path": [
+      "color",
+      "mybky",
+      "dark",
+      "surface",
+      "card"
+    ],
+    "value": "#2b2f32",
+    "original": "{color.mybky.mono.800}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorMybkyDarkSurfaceHover",
+    "path": [
+      "color",
+      "mybky",
+      "dark",
+      "surface",
+      "hover"
+    ],
+    "value": "#3d4144",
+    "original": "{color.mybky.mono.700}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorMybkyDarkPrimaryDefault",
+    "path": [
+      "color",
+      "mybky",
+      "dark",
+      "primary",
+      "default"
+    ],
+    "value": "#9fadd9",
+    "original": "{color.mybky.blue.400}",
+    "legacyMapping": {},
+    "comment": "One step lighter than light mode - 7.79:1 on the dark ground"
+  },
+  {
+    "name": "ColorMybkyDarkPrimaryHover",
+    "path": [
+      "color",
+      "mybky",
+      "dark",
+      "primary",
+      "hover"
+    ],
+    "value": "#bdc6e4",
+    "original": "{color.mybky.blue.200}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkPrimary0",
+    "path": [
+      "color",
+      "sampark",
+      "primary",
+      "0"
+    ],
+    "value": "#fbf4f4",
+    "original": "#fbf4f4",
+    "legacyMapping": {},
+    "comment": "light tint"
+  },
+  {
+    "name": "ColorSamparkPrimary10",
+    "path": [
+      "color",
+      "sampark",
+      "primary",
+      "10"
+    ],
+    "value": "#f8ecec",
+    "original": "#f8ecec",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkPrimary20",
+    "path": [
+      "color",
+      "sampark",
+      "primary",
+      "20"
+    ],
+    "value": "#e9c3c3",
+    "original": "#e9c3c3",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkPrimary40",
+    "path": [
+      "color",
+      "sampark",
+      "primary",
+      "40"
+    ],
+    "value": "#d48787",
+    "original": "#d48787",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkPrimary60",
+    "path": [
+      "color",
+      "sampark",
+      "primary",
+      "60"
+    ],
+    "value": "#c96868",
+    "original": "#c96868",
+    "legacyMapping": {},
+    "comment": "CORE BRAND MAROON — primary button bg"
+  },
+  {
+    "name": "ColorSamparkPrimary80",
+    "path": [
+      "color",
+      "sampark",
+      "primary",
+      "80"
+    ],
+    "value": "#b44141",
+    "original": "#b44141",
+    "legacyMapping": {},
+    "comment": "hover state"
+  },
+  {
+    "name": "ColorSamparkPrimary100",
+    "path": [
+      "color",
+      "sampark",
+      "primary",
+      "100"
+    ],
+    "value": "#873030",
+    "original": "#873030",
+    "legacyMapping": {},
+    "comment": "Figma Colors/Primary swatch 1 of 7 — code has drifted to #9e3636, see inconsistency-findings"
+  },
+  {
+    "name": "ColorSamparkPrimaryAlpha10",
+    "path": [
+      "color",
+      "sampark",
+      "primary",
+      "alpha10"
+    ],
+    "value": "rgba(135, 48, 48, 0.1)",
+    "original": "rgba(135, 48, 48, 0.1)",
+    "legacyMapping": {},
+    "comment": "Figma \"Primary/10% Primary\" #8730301A — Primary/100 at 10% alpha. NOT the same as primary.10 (#f8ecec), which is an opaque tint: this one is transparent and so keeps whatever sits behind it. The count badge on baps-accordion's filter-panel header (node 17512:84432) needs the transparent version because it overlays the mono.10 header fill."
+  },
+  {
+    "name": "ColorSamparkPrimaryAlpha20",
+    "path": [
+      "color",
+      "sampark",
+      "primary",
+      "alpha20"
+    ],
+    "value": "rgb(from #873030 r g b / 0.2)",
+    "original": "rgb(from {color.sampark.primary.100} r g b / 0.2)",
+    "legacyMapping": {},
+    "comment": "Primary/100 at 20% alpha. Relative colour rather than the rgba(135,48,48,0.2) literal it replaces — the channels are read off primary.100, so a runtime primary change carries through. Same rendered value. The 10% companion, primary.alpha10, is still a literal: it was outside the group-A scope, and it is the obvious next one to convert."
+  },
+  {
+    "name": "ColorSamparkPrimaryDefault",
+    "path": [
+      "color",
+      "sampark",
+      "primary",
+      "default"
+    ],
+    "value": "#c96868",
+    "original": "{color.sampark.primary.60}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkPrimaryHover",
+    "path": [
+      "color",
+      "sampark",
+      "primary",
+      "hover"
+    ],
+    "value": "#b44141",
+    "original": "{color.sampark.primary.80}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkPrimaryTint",
+    "path": [
+      "color",
+      "sampark",
+      "primary",
+      "tint"
+    ],
+    "value": "#fbf4f4",
+    "original": "{color.sampark.primary.0}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkMono0",
+    "path": [
+      "color",
+      "sampark",
+      "mono",
+      "0"
+    ],
+    "value": "#ffffff",
+    "original": "#ffffff",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkMono5",
+    "path": [
+      "color",
+      "sampark",
+      "mono",
+      "5"
+    ],
+    "value": "#fafafa",
+    "original": "#fafafa",
+    "legacyMapping": {},
+    "comment": "very light backgrounds"
+  },
+  {
+    "name": "ColorSamparkMono10",
+    "path": [
+      "color",
+      "sampark",
+      "mono",
+      "10"
+    ],
+    "value": "#f8f7f7",
+    "original": "#f8f7f7",
+    "legacyMapping": {},
+    "comment": "Figma Mono/10 'Light Background' — table header fill"
+  },
+  {
+    "name": "ColorSamparkMono20",
+    "path": [
+      "color",
+      "sampark",
+      "mono",
+      "20"
+    ],
+    "value": "#f3f2f2",
+    "original": "#f3f2f2",
+    "legacyMapping": {},
+    "comment": "light backgrounds"
+  },
+  {
+    "name": "ColorSamparkMono40",
+    "path": [
+      "color",
+      "sampark",
+      "mono",
+      "40"
+    ],
+    "value": "#bcb9b9",
+    "original": "#bcb9b9",
+    "legacyMapping": {},
+    "comment": "disabled text, borders"
+  },
+  {
+    "name": "ColorSamparkMono60",
+    "path": [
+      "color",
+      "sampark",
+      "mono",
+      "60"
+    ],
+    "value": "#9f9c9c",
+    "original": "#9f9c9c",
+    "legacyMapping": {},
+    "comment": "tertiary text, hints"
+  },
+  {
+    "name": "ColorSamparkMono80",
+    "path": [
+      "color",
+      "sampark",
+      "mono",
+      "80"
+    ],
+    "value": "#595656",
+    "original": "#595656",
+    "legacyMapping": {},
+    "comment": "secondary text"
+  },
+  {
+    "name": "ColorSamparkMono100",
+    "path": [
+      "color",
+      "sampark",
+      "mono",
+      "100"
+    ],
+    "value": "#151414",
+    "original": "#151414",
+    "legacyMapping": {},
+    "comment": "primary text, headers"
+  },
+  {
+    "name": "ColorSamparkMonoBorders",
+    "path": [
+      "color",
+      "sampark",
+      "mono",
+      "borders"
+    ],
+    "value": "#e1e0e0",
+    "original": "#e1e0e0",
+    "legacyMapping": {},
+    "comment": "universal border color"
+  },
+  {
+    "name": "ColorSamparkMonoAlpha4",
+    "path": [
+      "color",
+      "sampark",
+      "mono",
+      "alpha4"
+    ],
+    "value": "rgba(21, 20, 20, 0.04)",
+    "original": "rgba(21, 20, 20, 0.04)",
+    "legacyMapping": {},
+    "comment": "Figma \"Mono/20% Black\" #1514140A — a tint that sits on ANY surface, unlike mono.20 which is an opaque fill. Used for the paginator's active page and the table count badge."
+  },
+  {
+    "name": "ColorSamparkMonoAlpha2",
+    "path": [
+      "color",
+      "sampark",
+      "mono",
+      "alpha2"
+    ],
+    "value": "rgba(21, 20, 20, 0.02)",
+    "original": "rgba(21, 20, 20, 0.02)",
+    "legacyMapping": {},
+    "comment": "Figma \"Mono/10% Black\" — the NAME says 10% but the value is #15141405, i.e. 2%. Read the value, not the name. The half-step below alpha4: baps-segmented's unselected-pill hover (node 17512:78179) and baps-input-group's TRAILING addon fill (node 17512:82916), where the LEADING addon uses alpha4."
+  },
+  {
+    "name": "ColorSamparkMonoAlphaBlack50",
+    "path": [
+      "color",
+      "sampark",
+      "mono",
+      "alphaBlack50"
+    ],
+    "value": "rgba(21, 20, 20, 0.5)",
+    "original": "rgba(21, 20, 20, 0.5)",
+    "legacyMapping": {},
+    "comment": "Figma \"Mono/50% Black\" — scrim over imagery"
+  },
+  {
+    "name": "ColorSamparkMonoAlphaWhite75",
+    "path": [
+      "color",
+      "sampark",
+      "mono",
+      "alphaWhite75"
+    ],
+    "value": "rgba(255, 255, 255, 0.75)",
+    "original": "rgba(255, 255, 255, 0.75)",
+    "legacyMapping": {},
+    "comment": "Figma \"Mono/50% White\" — the NAME says 50%, the value #FFFFFFBF is 75%"
+  },
+  {
+    "name": "ColorSamparkMonoAlphaWhite50",
+    "path": [
+      "color",
+      "sampark",
+      "mono",
+      "alphaWhite50"
+    ],
+    "value": "rgba(255, 255, 255, 0.5)",
+    "original": "rgba(255, 255, 255, 0.5)",
+    "legacyMapping": {},
+    "comment": "Figma \"Mono/20% White\" — the NAME says 20%, the value #FFFFFF80 is 50%"
+  },
+  {
+    "name": "ColorSamparkMonoAlphaWhite25",
+    "path": [
+      "color",
+      "sampark",
+      "mono",
+      "alphaWhite25"
+    ],
+    "value": "rgba(255, 255, 255, 0.25)",
+    "original": "rgba(255, 255, 255, 0.25)",
+    "legacyMapping": {},
+    "comment": "Figma \"Mono/10 White\" — the NAME says 10%, the value #FFFFFF40 is 25%"
+  },
+  {
+    "name": "ColorSamparkSecondary0",
+    "path": [
+      "color",
+      "sampark",
+      "secondary",
+      "0"
+    ],
+    "value": "#f8f7f7",
+    "original": "#f8f7f7",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkSecondary10",
+    "path": [
+      "color",
+      "sampark",
+      "secondary",
+      "10"
+    ],
+    "value": "#e6e6e5",
+    "original": "#e6e6e5",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkSecondary20",
+    "path": [
+      "color",
+      "sampark",
+      "secondary",
+      "20"
+    ],
+    "value": "#b7b6b3",
+    "original": "#b7b6b3",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkSecondary40",
+    "path": [
+      "color",
+      "sampark",
+      "secondary",
+      "40"
+    ],
+    "value": "#94928f",
+    "original": "#94928f",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkSecondary60",
+    "path": [
+      "color",
+      "sampark",
+      "secondary",
+      "60"
+    ],
+    "value": "#4a4947",
+    "original": "#4a4947",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkSecondary80",
+    "path": [
+      "color",
+      "sampark",
+      "secondary",
+      "80"
+    ],
+    "value": "#2c2c2a",
+    "original": "#2c2c2a",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkSecondary100",
+    "path": [
+      "color",
+      "sampark",
+      "secondary",
+      "100"
+    ],
+    "value": "#1d1c1b",
+    "original": "#1d1c1b",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkSecondaryAlpha20",
+    "path": [
+      "color",
+      "sampark",
+      "secondary",
+      "alpha20"
+    ],
+    "value": "rgba(74, 73, 71, 0.2)",
+    "original": "rgba(74, 73, 71, 0.2)",
+    "legacyMapping": {},
+    "comment": "Secondary/60 at 20% alpha — transparent overlay, not the opaque .20 tint"
+  },
+  {
+    "name": "ColorSamparkSecondaryAlpha10",
+    "path": [
+      "color",
+      "sampark",
+      "secondary",
+      "alpha10"
+    ],
+    "value": "rgba(74, 73, 71, 0.1)",
+    "original": "rgba(74, 73, 71, 0.1)",
+    "legacyMapping": {},
+    "comment": "Secondary/60 at 10% alpha — transparent overlay, not the opaque .10 tint"
+  },
+  {
+    "name": "ColorSamparkTertiary0",
+    "path": [
+      "color",
+      "sampark",
+      "tertiary",
+      "0"
+    ],
+    "value": "#f7fcff",
+    "original": "#f7fcff",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkTertiary10",
+    "path": [
+      "color",
+      "sampark",
+      "tertiary",
+      "10"
+    ],
+    "value": "#e5f4ff",
+    "original": "#e5f4ff",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkTertiary20",
+    "path": [
+      "color",
+      "sampark",
+      "tertiary",
+      "20"
+    ],
+    "value": "#91caf2",
+    "original": "#91caf2",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkTertiary40",
+    "path": [
+      "color",
+      "sampark",
+      "tertiary",
+      "40"
+    ],
+    "value": "#50a8e5",
+    "original": "#50a8e5",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkTertiary60",
+    "path": [
+      "color",
+      "sampark",
+      "tertiary",
+      "60"
+    ],
+    "value": "#1270b2",
+    "original": "#1270b2",
+    "legacyMapping": {},
+    "comment": "core tertiary blue"
+  },
+  {
+    "name": "ColorSamparkTertiary80",
+    "path": [
+      "color",
+      "sampark",
+      "tertiary",
+      "80"
+    ],
+    "value": "#004b80",
+    "original": "#004b80",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkTertiary100",
+    "path": [
+      "color",
+      "sampark",
+      "tertiary",
+      "100"
+    ],
+    "value": "#002d4d",
+    "original": "#002d4d",
+    "legacyMapping": {},
+    "comment": "Figma-only — no matching usage found in spm-ui code; see inconsistency-findings"
+  },
+  {
+    "name": "ColorSamparkTertiaryAlpha20",
+    "path": [
+      "color",
+      "sampark",
+      "tertiary",
+      "alpha20"
+    ],
+    "value": "rgba(18, 112, 178, 0.2)",
+    "original": "rgba(18, 112, 178, 0.2)",
+    "legacyMapping": {},
+    "comment": "Tertiary/60 at 20% alpha — transparent overlay, not the opaque .20 tint"
+  },
+  {
+    "name": "ColorSamparkTertiaryAlpha10",
+    "path": [
+      "color",
+      "sampark",
+      "tertiary",
+      "alpha10"
+    ],
+    "value": "rgba(18, 112, 178, 0.1)",
+    "original": "rgba(18, 112, 178, 0.1)",
+    "legacyMapping": {},
+    "comment": "Tertiary/60 at 10% alpha — transparent overlay, not the opaque .10 tint"
+  },
+  {
+    "name": "ColorSamparkError10",
+    "path": [
+      "color",
+      "sampark",
+      "error",
+      "10"
+    ],
+    "value": "#ffefef",
+    "original": "#ffefef",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkError20",
+    "path": [
+      "color",
+      "sampark",
+      "error",
+      "20"
+    ],
+    "value": "#fde8e8",
+    "original": "#fde8e8",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkError40",
+    "path": [
+      "color",
+      "sampark",
+      "error",
+      "40"
+    ],
+    "value": "#f9b9ba",
+    "original": "#f9b9ba",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkError60",
+    "path": [
+      "color",
+      "sampark",
+      "error",
+      "60"
+    ],
+    "value": "#f27376",
+    "original": "#f27376",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkError80",
+    "path": [
+      "color",
+      "sampark",
+      "error",
+      "80"
+    ],
+    "value": "#ea151a",
+    "original": "#ea151a",
+    "legacyMapping": {},
+    "comment": "core error — input border error, notification badge"
+  },
+  {
+    "name": "ColorSamparkError100",
+    "path": [
+      "color",
+      "sampark",
+      "error",
+      "100"
+    ],
+    "value": "#cc0005",
+    "original": "#cc0005",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkErrorAlpha20",
+    "path": [
+      "color",
+      "sampark",
+      "error",
+      "alpha20"
+    ],
+    "value": "rgba(234, 21, 26, 0.2)",
+    "original": "rgba(234, 21, 26, 0.2)",
+    "legacyMapping": {},
+    "comment": "Error/80 at 20% alpha — transparent overlay, not the opaque .20 tint"
+  },
+  {
+    "name": "ColorSamparkErrorAlpha10",
+    "path": [
+      "color",
+      "sampark",
+      "error",
+      "alpha10"
+    ],
+    "value": "rgba(234, 21, 26, 0.1)",
+    "original": "rgba(234, 21, 26, 0.1)",
+    "legacyMapping": {},
+    "comment": "Error/80 at 10% alpha — transparent overlay, not the opaque .10 tint"
+  },
+  {
+    "name": "ColorSamparkInfo5",
+    "path": [
+      "color",
+      "sampark",
+      "info",
+      "5"
+    ],
+    "value": "#f3f8ff",
+    "original": "#f3f8ff",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkInfo10",
+    "path": [
+      "color",
+      "sampark",
+      "info",
+      "10"
+    ],
+    "value": "#e6f0fe",
+    "original": "#e6f0fe",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkInfo20",
+    "path": [
+      "color",
+      "sampark",
+      "info",
+      "20"
+    ],
+    "value": "#b4d3fd",
+    "original": "#b4d3fd",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkInfo40",
+    "path": [
+      "color",
+      "sampark",
+      "info",
+      "40"
+    ],
+    "value": "#83b5fc",
+    "original": "#83b5fc",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkInfo60",
+    "path": [
+      "color",
+      "sampark",
+      "info",
+      "60"
+    ],
+    "value": "#3889fa",
+    "original": "#3889fa",
+    "legacyMapping": {},
+    "comment": "core info"
+  },
+  {
+    "name": "ColorSamparkInfo80",
+    "path": [
+      "color",
+      "sampark",
+      "info",
+      "80"
+    ],
+    "value": "#0661e0",
+    "original": "#0661e0",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkInfoAlpha20",
+    "path": [
+      "color",
+      "sampark",
+      "info",
+      "alpha20"
+    ],
+    "value": "rgba(56, 137, 250, 0.2)",
+    "original": "rgba(56, 137, 250, 0.2)",
+    "legacyMapping": {},
+    "comment": "Info/80 on the Figma scale (info.60 here) at 20% alpha — transparent overlay, not the opaque .20 tint"
+  },
+  {
+    "name": "ColorSamparkInfoAlpha10",
+    "path": [
+      "color",
+      "sampark",
+      "info",
+      "alpha10"
+    ],
+    "value": "rgba(56, 137, 250, 0.1)",
+    "original": "rgba(56, 137, 250, 0.1)",
+    "legacyMapping": {},
+    "comment": "Info/80 on the Figma scale (info.60 here) at 10% alpha — transparent overlay, not the opaque .10 tint"
+  },
+  {
+    "name": "ColorSamparkSuccess5",
+    "path": [
+      "color",
+      "sampark",
+      "success",
+      "5"
+    ],
+    "value": "#f0fff6",
+    "original": "#f0fff6",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkSuccess10",
+    "path": [
+      "color",
+      "sampark",
+      "success",
+      "10"
+    ],
+    "value": "#e8fcf0",
+    "original": "#e8fcf0",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkSuccess20",
+    "path": [
+      "color",
+      "sampark",
+      "success",
+      "20"
+    ],
+    "value": "#bcf5cf",
+    "original": "#bcf5cf",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkSuccess40",
+    "path": [
+      "color",
+      "sampark",
+      "success",
+      "40"
+    ],
+    "value": "#82e3af",
+    "original": "#82e3af",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkSuccess60",
+    "path": [
+      "color",
+      "sampark",
+      "success",
+      "60"
+    ],
+    "value": "#17b56c",
+    "original": "#17b56c",
+    "legacyMapping": {},
+    "comment": "core success — progress fill"
+  },
+  {
+    "name": "ColorSamparkSuccess80",
+    "path": [
+      "color",
+      "sampark",
+      "success",
+      "80"
+    ],
+    "value": "#089152",
+    "original": "#089152",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkSuccessAlpha20",
+    "path": [
+      "color",
+      "sampark",
+      "success",
+      "alpha20"
+    ],
+    "value": "rgba(23, 181, 108, 0.2)",
+    "original": "rgba(23, 181, 108, 0.2)",
+    "legacyMapping": {},
+    "comment": "Success/80 on the Figma scale (success.60 here) at 20% alpha — transparent overlay, not the opaque .20 tint"
+  },
+  {
+    "name": "ColorSamparkSuccessAlpha10",
+    "path": [
+      "color",
+      "sampark",
+      "success",
+      "alpha10"
+    ],
+    "value": "rgba(23, 181, 108, 0.1)",
+    "original": "rgba(23, 181, 108, 0.1)",
+    "legacyMapping": {},
+    "comment": "Success/80 on the Figma scale (success.60 here) at 10% alpha — transparent overlay, not the opaque .10 tint"
+  },
+  {
+    "name": "ColorSamparkWarning5",
+    "path": [
+      "color",
+      "sampark",
+      "warning",
+      "5"
+    ],
+    "value": "#fff9ef",
+    "original": "#fff9ef",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkWarning10",
+    "path": [
+      "color",
+      "sampark",
+      "warning",
+      "10"
+    ],
+    "value": "#fef4e6",
+    "original": "#fef4e6",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkWarning20",
+    "path": [
+      "color",
+      "sampark",
+      "warning",
+      "20"
+    ],
+    "value": "#fddfb4",
+    "original": "#fddfb4",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkWarning40",
+    "path": [
+      "color",
+      "sampark",
+      "warning",
+      "40"
+    ],
+    "value": "#fcca83",
+    "original": "#fcca83",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkWarning60",
+    "path": [
+      "color",
+      "sampark",
+      "warning",
+      "60"
+    ],
+    "value": "#faab38",
+    "original": "#faab38",
+    "legacyMapping": {},
+    "comment": "core warning"
+  },
+  {
+    "name": "ColorSamparkWarning80",
+    "path": [
+      "color",
+      "sampark",
+      "warning",
+      "80"
+    ],
+    "value": "#e08705",
+    "original": "#e08705",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkWarningAlpha20",
+    "path": [
+      "color",
+      "sampark",
+      "warning",
+      "alpha20"
+    ],
+    "value": "rgba(250, 171, 56, 0.2)",
+    "original": "rgba(250, 171, 56, 0.2)",
+    "legacyMapping": {},
+    "comment": "Warning/80 on the Figma scale (warning.60 here) at 20% alpha — transparent overlay, not the opaque .20 tint"
+  },
+  {
+    "name": "ColorSamparkWarningAlpha10",
+    "path": [
+      "color",
+      "sampark",
+      "warning",
+      "alpha10"
+    ],
+    "value": "rgba(250, 171, 56, 0.1)",
+    "original": "rgba(250, 171, 56, 0.1)",
+    "legacyMapping": {},
+    "comment": "Warning/80 on the Figma scale (warning.60 here) at 10% alpha — transparent overlay, not the opaque .10 tint"
+  },
+  {
+    "name": "ColorSamparkTextPrimary",
+    "path": [
+      "color",
+      "sampark",
+      "text",
+      "primary"
+    ],
+    "value": "#151414",
+    "original": "{color.sampark.mono.100}",
+    "legacyMapping": {
+      "spmUi": "--mono-100"
+    }
+  },
+  {
+    "name": "ColorSamparkTextSecondary",
+    "path": [
+      "color",
+      "sampark",
+      "text",
+      "secondary"
+    ],
+    "value": "#595656",
+    "original": "{color.sampark.mono.80}",
+    "legacyMapping": {
+      "spmUi": "--mono-80"
+    }
+  },
+  {
+    "name": "ColorSamparkTextMuted",
+    "path": [
+      "color",
+      "sampark",
+      "text",
+      "muted"
+    ],
+    "value": "#9f9c9c",
+    "original": "{color.sampark.mono.60}",
+    "legacyMapping": {
+      "spmUi": "--mono-60"
+    }
+  },
+  {
+    "name": "ColorSamparkTextDisabled",
+    "path": [
+      "color",
+      "sampark",
+      "text",
+      "disabled"
+    ],
+    "value": "#bcb9b9",
+    "original": "{color.sampark.mono.40}",
+    "legacyMapping": {
+      "spmUi": "--mono-40"
+    }
+  },
+  {
+    "name": "ColorSamparkTextPlaceholder",
+    "path": [
+      "color",
+      "sampark",
+      "text",
+      "placeholder"
+    ],
+    "value": "#979493",
+    "original": "#979493",
+    "legacyMapping": {
+      "spmUi": "--input-text-placeholder"
+    }
+  },
+  {
+    "name": "ColorSamparkTextInverse",
+    "path": [
+      "color",
+      "sampark",
+      "text",
+      "inverse"
+    ],
+    "value": "#ffffff",
+    "original": "{color.sampark.mono.0}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkBorderDefault",
+    "path": [
+      "color",
+      "sampark",
+      "border",
+      "default"
+    ],
+    "value": "#e1e0e0",
+    "original": "{color.sampark.mono.borders}",
+    "legacyMapping": {
+      "spmUi": "--mono-borders"
+    }
+  },
+  {
+    "name": "ColorSamparkBorderHover",
+    "path": [
+      "color",
+      "sampark",
+      "border",
+      "hover"
+    ],
+    "value": "#94928f",
+    "original": "#94928f",
+    "legacyMapping": {
+      "spmUi": "--input-border-hover"
+    }
+  },
+  {
+    "name": "ColorSamparkBorderError",
+    "path": [
+      "color",
+      "sampark",
+      "border",
+      "error"
+    ],
+    "value": "#ea151a",
+    "original": "{color.sampark.error.80}",
+    "legacyMapping": {
+      "spmUi": "--input-border-error"
+    }
+  },
+  {
+    "name": "ColorSamparkSurfaceCard",
+    "path": [
+      "color",
+      "sampark",
+      "surface",
+      "card"
+    ],
+    "value": "#ffffff",
+    "original": "{color.sampark.mono.0}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkSurfaceGround",
+    "path": [
+      "color",
+      "sampark",
+      "surface",
+      "ground"
+    ],
+    "value": "#f3f2f2",
+    "original": "{color.sampark.mono.20}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkSurfaceDisabled",
+    "path": [
+      "color",
+      "sampark",
+      "surface",
+      "disabled"
+    ],
+    "value": "#fafafa",
+    "original": "{color.sampark.mono.5}",
+    "legacyMapping": {
+      "spmUi": "--input-bg-disabled"
+    }
+  },
+  {
+    "name": "ColorSamparkStateError",
+    "path": [
+      "color",
+      "sampark",
+      "state",
+      "error"
+    ],
+    "value": "#ea151a",
+    "original": "{color.sampark.error.80}",
+    "legacyMapping": {
+      "spmUi": "--red-600 / input-border-error"
+    }
+  },
+  {
+    "name": "ColorSamparkStateSuccess",
+    "path": [
+      "color",
+      "sampark",
+      "state",
+      "success"
+    ],
+    "value": "#17b56c",
+    "original": "{color.sampark.success.60}",
+    "legacyMapping": {
+      "spmUi": "--progress-fill-bg"
+    }
+  },
+  {
+    "name": "ColorSamparkStateInfo",
+    "path": [
+      "color",
+      "sampark",
+      "state",
+      "info"
+    ],
+    "value": "#3889fa",
+    "original": "{color.sampark.info.60}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkStateWarning",
+    "path": [
+      "color",
+      "sampark",
+      "state",
+      "warning"
+    ],
+    "value": "#e08705",
+    "original": "{color.sampark.warning.80}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkDarkTextPrimary",
+    "path": [
+      "color",
+      "sampark",
+      "dark",
+      "text",
+      "primary"
+    ],
+    "value": "#f8f7f7",
+    "original": "{color.sampark.secondary.0}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkDarkTextSecondary",
+    "path": [
+      "color",
+      "sampark",
+      "dark",
+      "text",
+      "secondary"
+    ],
+    "value": "#e6e6e5",
+    "original": "{color.sampark.secondary.10}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkDarkTextMuted",
+    "path": [
+      "color",
+      "sampark",
+      "dark",
+      "text",
+      "muted"
+    ],
+    "value": "#b7b6b3",
+    "original": "{color.sampark.secondary.20}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkDarkTextDisabled",
+    "path": [
+      "color",
+      "sampark",
+      "dark",
+      "text",
+      "disabled"
+    ],
+    "value": "#94928f",
+    "original": "{color.sampark.secondary.40}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkDarkTextInverse",
+    "path": [
+      "color",
+      "sampark",
+      "dark",
+      "text",
+      "inverse"
+    ],
+    "value": "#1d1c1b",
+    "original": "{color.sampark.secondary.100}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkDarkBorderDivider",
+    "path": [
+      "color",
+      "sampark",
+      "dark",
+      "border",
+      "divider"
+    ],
+    "value": "#4a4947",
+    "original": "{color.sampark.secondary.60}",
+    "legacyMapping": {},
+    "comment": "Decorative separators only - 1.89:1 on the dark ground"
+  },
+  {
+    "name": "ColorSamparkDarkBorderControl",
+    "path": [
+      "color",
+      "sampark",
+      "dark",
+      "border",
+      "control"
+    ],
+    "value": "#94928f",
+    "original": "{color.sampark.secondary.40}",
+    "legacyMapping": {},
+    "comment": "Control boundaries - 5.48:1, clears WCAG 1.4.11"
+  },
+  {
+    "name": "ColorSamparkDarkSurfaceGround",
+    "path": [
+      "color",
+      "sampark",
+      "dark",
+      "surface",
+      "ground"
+    ],
+    "value": "#1d1c1b",
+    "original": "{color.sampark.secondary.100}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkDarkSurfaceCard",
+    "path": [
+      "color",
+      "sampark",
+      "dark",
+      "surface",
+      "card"
+    ],
+    "value": "#2c2c2a",
+    "original": "{color.sampark.secondary.80}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkDarkSurfaceHover",
+    "path": [
+      "color",
+      "sampark",
+      "dark",
+      "surface",
+      "hover"
+    ],
+    "value": "#4a4947",
+    "original": "{color.sampark.secondary.60}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorSamparkDarkPrimaryDefault",
+    "path": [
+      "color",
+      "sampark",
+      "dark",
+      "primary",
+      "default"
+    ],
+    "value": "#d48787",
+    "original": "{color.sampark.primary.40}",
+    "legacyMapping": {},
+    "comment": "One step lighter than light mode - 6.17:1 on the dark ground"
+  },
+  {
+    "name": "ColorSamparkDarkPrimaryHover",
+    "path": [
+      "color",
+      "sampark",
+      "dark",
+      "primary",
+      "hover"
+    ],
+    "value": "#e9c3c3",
+    "original": "{color.sampark.primary.20}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentSlate50",
+    "path": [
+      "color",
+      "accent",
+      "slate",
+      "50"
+    ],
+    "value": "#edf1f2",
+    "original": "#edf1f2",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentSlate100",
+    "path": [
+      "color",
+      "accent",
+      "slate",
+      "100"
+    ],
+    "value": "#d7dee2",
+    "original": "#d7dee2",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentSlate200",
+    "path": [
+      "color",
+      "accent",
+      "slate",
+      "200"
+    ],
+    "value": "#b7c5cb",
+    "original": "#b7c5cb",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentSlate300",
+    "path": [
+      "color",
+      "accent",
+      "slate",
+      "300"
+    ],
+    "value": "#9aaeb6",
+    "original": "#9aaeb6",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentSlate400",
+    "path": [
+      "color",
+      "accent",
+      "slate",
+      "400"
+    ],
+    "value": "#79929d",
+    "original": "#79929d",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentSlate500",
+    "path": [
+      "color",
+      "accent",
+      "slate",
+      "500"
+    ],
+    "value": "#4c6e7d",
+    "original": "#4c6e7d",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentSlate600",
+    "path": [
+      "color",
+      "accent",
+      "slate",
+      "600"
+    ],
+    "value": "#1f4a5c",
+    "original": "#1f4a5c",
+    "legacyMapping": {},
+    "comment": "Slate teal — Admin, utility, target default primary (CLAUDE.md)"
+  },
+  {
+    "name": "ColorAccentSlate700",
+    "path": [
+      "color",
+      "accent",
+      "slate",
+      "700"
+    ],
+    "value": "#193d4b",
+    "original": "#193d4b",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentSlate800",
+    "path": [
+      "color",
+      "accent",
+      "slate",
+      "800"
+    ],
+    "value": "#14313d",
+    "original": "#14313d",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentSlate900",
+    "path": [
+      "color",
+      "accent",
+      "slate",
+      "900"
+    ],
+    "value": "#0e2129",
+    "original": "#0e2129",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentSlate950",
+    "path": [
+      "color",
+      "accent",
+      "slate",
+      "950"
+    ],
+    "value": "#09151a",
+    "original": "#09151a",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentClay50",
+    "path": [
+      "color",
+      "accent",
+      "clay",
+      "50"
+    ],
+    "value": "#f7f1ef",
+    "original": "#f7f1ef",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentClay100",
+    "path": [
+      "color",
+      "accent",
+      "clay",
+      "100"
+    ],
+    "value": "#eddfdb",
+    "original": "#eddfdb",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentClay200",
+    "path": [
+      "color",
+      "accent",
+      "clay",
+      "200"
+    ],
+    "value": "#dfc6bf",
+    "original": "#dfc6bf",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentClay300",
+    "path": [
+      "color",
+      "accent",
+      "clay",
+      "300"
+    ],
+    "value": "#d2afa5",
+    "original": "#d2afa5",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentClay400",
+    "path": [
+      "color",
+      "accent",
+      "clay",
+      "400"
+    ],
+    "value": "#c29487",
+    "original": "#c29487",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentClay500",
+    "path": [
+      "color",
+      "accent",
+      "clay",
+      "500"
+    ],
+    "value": "#ae715f",
+    "original": "#ae715f",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentClay600",
+    "path": [
+      "color",
+      "accent",
+      "clay",
+      "600"
+    ],
+    "value": "#9a4d37",
+    "original": "#9a4d37",
+    "legacyMapping": {},
+    "comment": "Clay — Donations"
+  },
+  {
+    "name": "ColorAccentClay700",
+    "path": [
+      "color",
+      "accent",
+      "clay",
+      "700"
+    ],
+    "value": "#7e3f2d",
+    "original": "#7e3f2d",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentClay800",
+    "path": [
+      "color",
+      "accent",
+      "clay",
+      "800"
+    ],
+    "value": "#663324",
+    "original": "#663324",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentClay900",
+    "path": [
+      "color",
+      "accent",
+      "clay",
+      "900"
+    ],
+    "value": "#452319",
+    "original": "#452319",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentClay950",
+    "path": [
+      "color",
+      "accent",
+      "clay",
+      "950"
+    ],
+    "value": "#2b160f",
+    "original": "#2b160f",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentIndigo50",
+    "path": [
+      "color",
+      "accent",
+      "indigo",
+      "50"
+    ],
+    "value": "#eff0f4",
+    "original": "#eff0f4",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentIndigo100",
+    "path": [
+      "color",
+      "accent",
+      "indigo",
+      "100"
+    ],
+    "value": "#dcdde5",
+    "original": "#dcdde5",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentIndigo200",
+    "path": [
+      "color",
+      "accent",
+      "indigo",
+      "200"
+    ],
+    "value": "#c0c3d1",
+    "original": "#c0c3d1",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentIndigo300",
+    "path": [
+      "color",
+      "accent",
+      "indigo",
+      "300"
+    ],
+    "value": "#a6abbf",
+    "original": "#a6abbf",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentIndigo400",
+    "path": [
+      "color",
+      "accent",
+      "indigo",
+      "400"
+    ],
+    "value": "#898fa9",
+    "original": "#898fa9",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentIndigo500",
+    "path": [
+      "color",
+      "accent",
+      "indigo",
+      "500"
+    ],
+    "value": "#61698d",
+    "original": "#61698d",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentIndigo600",
+    "path": [
+      "color",
+      "accent",
+      "indigo",
+      "600"
+    ],
+    "value": "#3a4470",
+    "original": "#3a4470",
+    "legacyMapping": {},
+    "comment": "Indigo — Satsang"
+  },
+  {
+    "name": "ColorAccentIndigo700",
+    "path": [
+      "color",
+      "accent",
+      "indigo",
+      "700"
+    ],
+    "value": "#30385c",
+    "original": "#30385c",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentIndigo800",
+    "path": [
+      "color",
+      "accent",
+      "indigo",
+      "800"
+    ],
+    "value": "#262d4a",
+    "original": "#262d4a",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentIndigo900",
+    "path": [
+      "color",
+      "accent",
+      "indigo",
+      "900"
+    ],
+    "value": "#1a1f32",
+    "original": "#1a1f32",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentIndigo950",
+    "path": [
+      "color",
+      "accent",
+      "indigo",
+      "950"
+    ],
+    "value": "#10131f",
+    "original": "#10131f",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentSage50",
+    "path": [
+      "color",
+      "accent",
+      "sage",
+      "50"
+    ],
+    "value": "#f0f3f1",
+    "original": "#f0f3f1",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentSage100",
+    "path": [
+      "color",
+      "accent",
+      "sage",
+      "100"
+    ],
+    "value": "#dee4e0",
+    "original": "#dee4e0",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentSage200",
+    "path": [
+      "color",
+      "accent",
+      "sage",
+      "200"
+    ],
+    "value": "#c4cfc8",
+    "original": "#c4cfc8",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentSage300",
+    "path": [
+      "color",
+      "accent",
+      "sage",
+      "300"
+    ],
+    "value": "#adbbb1",
+    "original": "#adbbb1",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentSage400",
+    "path": [
+      "color",
+      "accent",
+      "sage",
+      "400"
+    ],
+    "value": "#91a497",
+    "original": "#91a497",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentSage500",
+    "path": [
+      "color",
+      "accent",
+      "sage",
+      "500"
+    ],
+    "value": "#6d8675",
+    "original": "#6d8675",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentSage600",
+    "path": [
+      "color",
+      "accent",
+      "sage",
+      "600"
+    ],
+    "value": "#486852",
+    "original": "#486852",
+    "legacyMapping": {},
+    "comment": "Sage — Events, seva"
+  },
+  {
+    "name": "ColorAccentSage700",
+    "path": [
+      "color",
+      "accent",
+      "sage",
+      "700"
+    ],
+    "value": "#3b5543",
+    "original": "#3b5543",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentSage800",
+    "path": [
+      "color",
+      "accent",
+      "sage",
+      "800"
+    ],
+    "value": "#304536",
+    "original": "#304536",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentSage900",
+    "path": [
+      "color",
+      "accent",
+      "sage",
+      "900"
+    ],
+    "value": "#202f25",
+    "original": "#202f25",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ColorAccentSage950",
+    "path": [
+      "color",
+      "accent",
+      "sage",
+      "950"
+    ],
+    "value": "#141d17",
+    "original": "#141d17",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ButtonMybkyHeightS",
+    "path": [
+      "button",
+      "mybky",
+      "height",
+      "s"
+    ],
+    "value": "2rem",
+    "original": "2rem",
+    "legacyMapping": {},
+    "comment": "32px, font 14px — Figma node 22465:93605"
+  },
+  {
+    "name": "ButtonMybkyHeightM",
+    "path": [
+      "button",
+      "mybky",
+      "height",
+      "m"
+    ],
+    "value": "2.25rem",
+    "original": "2.25rem",
+    "legacyMapping": {
+      "eventsUi": "--btn-height-m"
+    },
+    "comment": "36px — default, font 14px"
+  },
+  {
+    "name": "ButtonMybkyHeightL",
+    "path": [
+      "button",
+      "mybky",
+      "height",
+      "l"
+    ],
+    "value": "2.25rem",
+    "original": "2.25rem",
+    "legacyMapping": {},
+    "comment": "36px (mobile variant, same height as M but font bumped to 16px)"
+  },
+  {
+    "name": "ButtonMybkyHeightXl",
+    "path": [
+      "button",
+      "mybky",
+      "height",
+      "xl"
+    ],
+    "value": "2.625rem",
+    "original": "2.625rem",
+    "legacyMapping": {},
+    "comment": "42px (mobile variant), font 16px"
+  },
+  {
+    "name": "ButtonMybkyPaddingX",
+    "path": [
+      "button",
+      "mybky",
+      "paddingX"
+    ],
+    "value": "1rem",
+    "original": "1rem",
+    "legacyMapping": {},
+    "comment": "16px, all sizes"
+  },
+  {
+    "name": "ButtonMybkyPaddingY",
+    "path": [
+      "button",
+      "mybky",
+      "paddingY"
+    ],
+    "value": "0.5rem",
+    "original": "0.5rem",
+    "legacyMapping": {},
+    "comment": "8px, all sizes"
+  },
+  {
+    "name": "ButtonMybkyGap",
+    "path": [
+      "button",
+      "mybky",
+      "gap"
+    ],
+    "value": "0.25rem",
+    "original": "0.25rem",
+    "legacyMapping": {
+      "eventsUi": "noir.theme.ts button.root.gap was hand-set to 6px; Figma spec is 4px"
+    },
+    "comment": "4px icon-label gap — corrects noir.theme.ts's 6px, verified against Figma node 22465:93605"
+  },
+  {
+    "name": "ButtonMybkyRadius",
+    "path": [
+      "button",
+      "mybky",
+      "radius"
+    ],
+    "value": "99px",
+    "original": "{radius.mybky.pill}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ButtonMybkyFontWeight",
+    "path": [
+      "button",
+      "mybky",
+      "fontWeight"
+    ],
+    "value": "600",
+    "original": "{font.weight.semibold}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ButtonMybkyDisabledTextColor",
+    "path": [
+      "button",
+      "mybky",
+      "disabledTextColor"
+    ],
+    "value": "#8d9ba5",
+    "original": "#8d9ba5",
+    "legacyMapping": {},
+    "comment": "button-specific disabled text — distinct from semantic text.disabled (#869097)"
+  },
+  {
+    "name": "ButtonMybkyPrimaryDefault",
+    "path": [
+      "button",
+      "mybky",
+      "primary",
+      "default"
+    ],
+    "value": "linear-gradient(135deg, #5f78b8 0%, #384871 100%)",
+    "original": "linear-gradient(135deg, {color.mybky.blue.600} 0%, {color.mybky.blue.800} 100%)",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ButtonMybkyPrimaryHover",
+    "path": [
+      "button",
+      "mybky",
+      "primary",
+      "hover"
+    ],
+    "value": "linear-gradient(135deg, #384871 0%, #5f78b8 100%)",
+    "original": "linear-gradient(135deg, {color.mybky.blue.800} 0%, {color.mybky.blue.600} 100%)",
+    "legacyMapping": {},
+    "comment": "gradient reversed on hover"
+  },
+  {
+    "name": "ButtonMybkyPrimaryDisabled",
+    "path": [
+      "button",
+      "mybky",
+      "primary",
+      "disabled"
+    ],
+    "value": "rgb(from #5f78b8 r g b / 0.1)",
+    "original": "{color.mybky.blue.alpha10}",
+    "legacyMapping": {},
+    "comment": "blue.600 @ 10% opacity fill, 1px border #e4ecf1"
+  },
+  {
+    "name": "ButtonMybkyPrimaryText",
+    "path": [
+      "button",
+      "mybky",
+      "primary",
+      "text"
+    ],
+    "value": "#ffffff",
+    "original": "{color.mybky.mono.0}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ButtonMybkySecondaryDefault",
+    "path": [
+      "button",
+      "mybky",
+      "secondary",
+      "default"
+    ],
+    "value": "#ffffff",
+    "original": "{color.mybky.mono.0}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ButtonMybkySecondaryHover",
+    "path": [
+      "button",
+      "mybky",
+      "secondary",
+      "hover"
+    ],
+    "value": "#e4ecf1",
+    "original": "{color.mybky.mono.300}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ButtonMybkySecondaryDisabled",
+    "path": [
+      "button",
+      "mybky",
+      "secondary",
+      "disabled"
+    ],
+    "value": "#f8fafb",
+    "original": "{color.mybky.mono.50}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ButtonMybkySecondaryBorder",
+    "path": [
+      "button",
+      "mybky",
+      "secondary",
+      "border"
+    ],
+    "value": "#e4ecf1",
+    "original": "{color.mybky.mono.300}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ButtonMybkySecondaryText",
+    "path": [
+      "button",
+      "mybky",
+      "secondary",
+      "text"
+    ],
+    "value": "#181b1d",
+    "original": "{color.mybky.mono.900}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ButtonMybkyDangerDefault",
+    "path": [
+      "button",
+      "mybky",
+      "danger",
+      "default"
+    ],
+    "value": "linear-gradient(135deg, #e05255 0%, #c32226 100%)",
+    "original": "linear-gradient(135deg, {color.mybky.error.80} 0%, {color.mybky.error.100} 100%)",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ButtonMybkyDangerHover",
+    "path": [
+      "button",
+      "mybky",
+      "danger",
+      "hover"
+    ],
+    "value": "linear-gradient(135deg, #c32226 0%, #e05255 100%)",
+    "original": "linear-gradient(135deg, {color.mybky.error.100} 0%, {color.mybky.error.80} 100%)",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ButtonMybkyDangerText",
+    "path": [
+      "button",
+      "mybky",
+      "danger",
+      "text"
+    ],
+    "value": "#ffffff",
+    "original": "{color.mybky.mono.0}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ButtonMybkyWarningDefault",
+    "path": [
+      "button",
+      "mybky",
+      "warning",
+      "default"
+    ],
+    "value": "linear-gradient(135deg, #e0a652 0%, #c38222 100%)",
+    "original": "linear-gradient(135deg, {color.mybky.warning.60} 0%, {color.mybky.warning.80} 100%)",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ButtonMybkyWarningHover",
+    "path": [
+      "button",
+      "mybky",
+      "warning",
+      "hover"
+    ],
+    "value": "linear-gradient(135deg, #c38222 0%, #e0a652 100%)",
+    "original": "linear-gradient(135deg, {color.mybky.warning.80} 0%, {color.mybky.warning.60} 100%)",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ButtonMybkyWarningText",
+    "path": [
+      "button",
+      "mybky",
+      "warning",
+      "text"
+    ],
+    "value": "#ffffff",
+    "original": "{color.mybky.mono.0}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ButtonMybkyPrimaryGhostDefault",
+    "path": [
+      "button",
+      "mybky",
+      "primaryGhost",
+      "default"
+    ],
+    "value": "transparent",
+    "original": "transparent",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ButtonMybkyPrimaryGhostHover",
+    "path": [
+      "button",
+      "mybky",
+      "primaryGhost",
+      "hover"
+    ],
+    "value": "rgb(from #5f78b8 r g b / 0.1)",
+    "original": "{color.mybky.blue.alpha10}",
+    "legacyMapping": {},
+    "comment": "blue.600 @ 10% opacity tint on hover"
+  },
+  {
+    "name": "ButtonMybkyPrimaryGhostText",
+    "path": [
+      "button",
+      "mybky",
+      "primaryGhost",
+      "text"
+    ],
+    "value": "#5f78b8",
+    "original": "{color.mybky.blue.600}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ButtonMybkySecondaryGhostDefault",
+    "path": [
+      "button",
+      "mybky",
+      "secondaryGhost",
+      "default"
+    ],
+    "value": "transparent",
+    "original": "transparent",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ButtonMybkySecondaryGhostHover",
+    "path": [
+      "button",
+      "mybky",
+      "secondaryGhost",
+      "hover"
+    ],
+    "value": "rgba(43, 47, 50, 0.04)",
+    "original": "rgba(43, 47, 50, 0.04)",
+    "legacyMapping": {},
+    "comment": "mono.800 @ 4% opacity tint on hover"
+  },
+  {
+    "name": "ButtonMybkySecondaryGhostText",
+    "path": [
+      "button",
+      "mybky",
+      "secondaryGhost",
+      "text"
+    ],
+    "value": "#181b1d",
+    "original": "{color.mybky.mono.900}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ButtonSamparkHeightSm",
+    "path": [
+      "button",
+      "sampark",
+      "height",
+      "sm"
+    ],
+    "value": "1.75rem",
+    "original": "1.75rem",
+    "legacyMapping": {},
+    "comment": "28px"
+  },
+  {
+    "name": "ButtonSamparkHeightDefault",
+    "path": [
+      "button",
+      "sampark",
+      "height",
+      "default"
+    ],
+    "value": "2rem",
+    "original": "2rem",
+    "legacyMapping": {},
+    "comment": "32px"
+  },
+  {
+    "name": "ButtonSamparkHeightLg",
+    "path": [
+      "button",
+      "sampark",
+      "height",
+      "lg"
+    ],
+    "value": "2.25rem",
+    "original": "2.25rem",
+    "legacyMapping": {},
+    "comment": "36px"
+  },
+  {
+    "name": "ButtonSamparkHeightXl",
+    "path": [
+      "button",
+      "sampark",
+      "height",
+      "xl"
+    ],
+    "value": "2.625rem",
+    "original": "2.625rem",
+    "legacyMapping": {},
+    "comment": "42px — Figma node 13197:91897; every 'Size=XL (42) (Mob)' symbol measures height=42. Was 2.5rem/40px, a value no Figma variant specifies, and button.component.ts cited this same node as authority for 40px. Now matches button.mybky.height.xl, which was already 42px."
+  },
+  {
+    "name": "ButtonSamparkGap",
+    "path": [
+      "button",
+      "sampark",
+      "gap"
+    ],
+    "value": "0.25rem",
+    "original": "0.25rem",
+    "legacyMapping": {},
+    "comment": "4px icon-label gap"
+  },
+  {
+    "name": "ButtonSamparkRadius",
+    "path": [
+      "button",
+      "sampark",
+      "radius"
+    ],
+    "value": "0.25rem",
+    "original": "{radius.sampark.default}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ButtonSamparkFontWeight",
+    "path": [
+      "button",
+      "sampark",
+      "fontWeight"
+    ],
+    "value": "500",
+    "original": "{font.weight.medium}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ButtonSamparkPrimaryDefault",
+    "path": [
+      "button",
+      "sampark",
+      "primary",
+      "default"
+    ],
+    "value": "#c96868",
+    "original": "{color.sampark.primary.60}",
+    "legacyMapping": {},
+    "comment": "flat fill — no gradient, unlike mybky. Sampark Portal Figma node 13197:91897"
+  },
+  {
+    "name": "ButtonSamparkPrimaryHover",
+    "path": [
+      "button",
+      "sampark",
+      "primary",
+      "hover"
+    ],
+    "value": "#b44141",
+    "original": "{color.sampark.primary.80}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ButtonSamparkPrimaryActive",
+    "path": [
+      "button",
+      "sampark",
+      "primary",
+      "active"
+    ],
+    "value": "#873030",
+    "original": "{color.sampark.primary.100}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ButtonSamparkPrimaryText",
+    "path": [
+      "button",
+      "sampark",
+      "primary",
+      "text"
+    ],
+    "value": "#ffffff",
+    "original": "{color.sampark.mono.0}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ButtonSamparkSecondaryDefault",
+    "path": [
+      "button",
+      "sampark",
+      "secondary",
+      "default"
+    ],
+    "value": "#ffffff",
+    "original": "{color.sampark.mono.0}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ButtonSamparkSecondaryHover",
+    "path": [
+      "button",
+      "sampark",
+      "secondary",
+      "hover"
+    ],
+    "value": "#f3f2f2",
+    "original": "{color.sampark.mono.20}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ButtonSamparkSecondaryBorder",
+    "path": [
+      "button",
+      "sampark",
+      "secondary",
+      "border"
+    ],
+    "value": "#e1e0e0",
+    "original": "{color.sampark.mono.borders}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ButtonSamparkSecondaryText",
+    "path": [
+      "button",
+      "sampark",
+      "secondary",
+      "text"
+    ],
+    "value": "#151414",
+    "original": "{color.sampark.mono.100}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ButtonSamparkPrimaryGhostDefault",
+    "path": [
+      "button",
+      "sampark",
+      "primaryGhost",
+      "default"
+    ],
+    "value": "transparent",
+    "original": "transparent",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ButtonSamparkPrimaryGhostHover",
+    "path": [
+      "button",
+      "sampark",
+      "primaryGhost",
+      "hover"
+    ],
+    "value": "#fbf4f4",
+    "original": "{color.sampark.primary.0}",
+    "legacyMapping": {},
+    "comment": "light maroon tint on hover — spm-ui p-button-text"
+  },
+  {
+    "name": "ButtonSamparkPrimaryGhostText",
+    "path": [
+      "button",
+      "sampark",
+      "primaryGhost",
+      "text"
+    ],
+    "value": "#c96868",
+    "original": "{color.sampark.primary.60}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ButtonSamparkSecondaryGhostDefault",
+    "path": [
+      "button",
+      "sampark",
+      "secondaryGhost",
+      "default"
+    ],
+    "value": "transparent",
+    "original": "transparent",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ButtonSamparkSecondaryGhostHover",
+    "path": [
+      "button",
+      "sampark",
+      "secondaryGhost",
+      "hover"
+    ],
+    "value": "rgba(21, 20, 20, 0.04)",
+    "original": "{color.sampark.mono.alpha4}",
+    "legacyMapping": {},
+    "comment": "Figma node 13197:92094 (Secondary Ghost / Hover) references Mono/20% Black #1514140A — exactly color.sampark.mono.alpha4. Mirrors button.mybky.secondaryGhost.hover, which is the same 4% ink tint on the mybky mono ramp."
+  },
+  {
+    "name": "ButtonSamparkSecondaryGhostText",
+    "path": [
+      "button",
+      "sampark",
+      "secondaryGhost",
+      "text"
+    ],
+    "value": "#151414",
+    "original": "{color.sampark.mono.100}",
+    "legacyMapping": {},
+    "comment": "Figma node 13197:92066 (Secondary Ghost / Default) — Mono/100 #151414. Sampark had no secondaryGhost block at all, so 8 of the 44 Button cells fell through to PrimeNG's stock text-secondary colours."
+  },
+  {
+    "name": "ButtonSamparkLinkText",
+    "path": [
+      "button",
+      "sampark",
+      "link",
+      "text"
+    ],
+    "value": "#c96868",
+    "original": "{color.sampark.primary.60}",
+    "legacyMapping": {},
+    "comment": "p-button-link — underline on hover, spm-ui only variant"
+  },
+  {
+    "name": "ButtonSamparkDisabledBackground",
+    "path": [
+      "button",
+      "sampark",
+      "disabled",
+      "background"
+    ],
+    "value": "#f3eaea",
+    "original": "#f3eaea",
+    "legacyMapping": {},
+    "comment": "distinct disabled fill — not an opacity dim, see button.mapping.mdx"
+  },
+  {
+    "name": "ButtonSamparkDisabledBorder",
+    "path": [
+      "button",
+      "sampark",
+      "disabled",
+      "border"
+    ],
+    "value": "#e1e0e0",
+    "original": "{color.sampark.mono.borders}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ButtonSamparkDisabledText",
+    "path": [
+      "button",
+      "sampark",
+      "disabled",
+      "text"
+    ],
+    "value": "#bcb9b9",
+    "original": "{color.sampark.mono.40}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "FormFieldMybkyPaddingX",
+    "path": [
+      "formField",
+      "mybky",
+      "paddingX"
+    ],
+    "value": "1rem",
+    "original": "1rem",
+    "legacyMapping": {
+      "eventsUi": "noir.theme.ts formField.paddingX"
+    }
+  },
+  {
+    "name": "FormFieldMybkyPaddingY",
+    "path": [
+      "formField",
+      "mybky",
+      "paddingY"
+    ],
+    "value": "0.5625rem",
+    "original": "0.5625rem",
+    "legacyMapping": {
+      "eventsUi": "noir.theme.ts formField.paddingY"
+    }
+  },
+  {
+    "name": "FormFieldMybkyBorderRadius",
+    "path": [
+      "formField",
+      "mybky",
+      "borderRadius"
+    ],
+    "value": "99px",
+    "original": "{radius.mybky.pill}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "FormFieldMybkyHeight",
+    "path": [
+      "formField",
+      "mybky",
+      "height"
+    ],
+    "value": "2.25rem",
+    "original": "2.25rem",
+    "legacyMapping": {},
+    "comment": "36px"
+  },
+  {
+    "name": "FormFieldSamparkHeightSm",
+    "path": [
+      "formField",
+      "sampark",
+      "heightSm"
+    ],
+    "value": "1.75rem",
+    "original": "1.75rem",
+    "legacyMapping": {},
+    "comment": "28px"
+  },
+  {
+    "name": "FormFieldSamparkHeightDefault",
+    "path": [
+      "formField",
+      "sampark",
+      "heightDefault"
+    ],
+    "value": "2rem",
+    "original": "2rem",
+    "legacyMapping": {},
+    "comment": "32px"
+  },
+  {
+    "name": "FormFieldSamparkHeightLg",
+    "path": [
+      "formField",
+      "sampark",
+      "heightLg"
+    ],
+    "value": "2.5rem",
+    "original": "2.5rem",
+    "legacyMapping": {},
+    "comment": "40px"
+  },
+  {
+    "name": "FormFieldSamparkBorderRadius",
+    "path": [
+      "formField",
+      "sampark",
+      "borderRadius"
+    ],
+    "value": "0.25rem",
+    "original": "{radius.sampark.default}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "CardMybkyBackground",
+    "path": [
+      "card",
+      "mybky",
+      "background"
+    ],
+    "value": "#ffffff",
+    "original": "{color.mybky.surface.card}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "CardMybkyBorder",
+    "path": [
+      "card",
+      "mybky",
+      "border"
+    ],
+    "value": "#e4ecf1",
+    "original": "{color.mybky.border.default}",
+    "legacyMapping": {},
+    "comment": "hairline — structural separation, per CLAUDE.md 'Borders & shadows'"
+  },
+  {
+    "name": "CardMybkyBorderWidth",
+    "path": [
+      "card",
+      "mybky",
+      "borderWidth"
+    ],
+    "value": "1px",
+    "original": "1px",
+    "legacyMapping": {}
+  },
+  {
+    "name": "CardMybkyRadius",
+    "path": [
+      "card",
+      "mybky",
+      "radius"
+    ],
+    "value": "0.5rem",
+    "original": "{radius.mybky.md}",
+    "legacyMapping": {},
+    "comment": "8px. NOT radius.mybky.pill — the pill shape is for controls (buttons/inputs/badges), never containers"
+  },
+  {
+    "name": "CardMybkyPadding",
+    "path": [
+      "card",
+      "mybky",
+      "padding"
+    ],
+    "value": "1.5rem",
+    "original": "{space.6}",
+    "legacyMapping": {},
+    "comment": "24px — CLAUDE.md 'Spacing & Layout': space-5..space-6 inside a card"
+  },
+  {
+    "name": "CardMybkyPaddingCompact",
+    "path": [
+      "card",
+      "mybky",
+      "paddingCompact"
+    ],
+    "value": "1rem",
+    "original": "{space.4}",
+    "legacyMapping": {},
+    "comment": "16px — dense/table-adjacent cards"
+  },
+  {
+    "name": "CardMybkyGap",
+    "path": [
+      "card",
+      "mybky",
+      "gap"
+    ],
+    "value": "1rem",
+    "original": "{space.4}",
+    "legacyMapping": {},
+    "comment": "16px — between header, body and footer (CLAUDE.md: space-4 within a block)"
+  },
+  {
+    "name": "CardMybkyTitleColor",
+    "path": [
+      "card",
+      "mybky",
+      "titleColor"
+    ],
+    "value": "#181b1d",
+    "original": "{color.mybky.text.primary}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "CardMybkySubtitleColor",
+    "path": [
+      "card",
+      "mybky",
+      "subtitleColor"
+    ],
+    "value": "#6f777d",
+    "original": "{color.mybky.text.muted}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "CardMybkyShadow",
+    "path": [
+      "card",
+      "mybky",
+      "shadow"
+    ],
+    "value": "0 12px 16px -4px rgba(16,24,40,.08), 0 4px 6px -2px rgba(16,24,40,.16)",
+    "original": "{shadow.mybky.card}",
+    "legacyMapping": {},
+    "comment": "raised variant ONLY. A card at rest has no shadow — see CLAUDE.md"
+  },
+  {
+    "name": "CardSamparkBackground",
+    "path": [
+      "card",
+      "sampark",
+      "background"
+    ],
+    "value": "#ffffff",
+    "original": "{color.sampark.surface.card}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "CardSamparkBorder",
+    "path": [
+      "card",
+      "sampark",
+      "border"
+    ],
+    "value": "#e1e0e0",
+    "original": "{color.sampark.border.default}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "CardSamparkBorderWidth",
+    "path": [
+      "card",
+      "sampark",
+      "borderWidth"
+    ],
+    "value": "1px",
+    "original": "1px",
+    "legacyMapping": {}
+  },
+  {
+    "name": "CardSamparkRadius",
+    "path": [
+      "card",
+      "sampark",
+      "radius"
+    ],
+    "value": "0.5rem",
+    "original": "{radius.sampark.md}",
+    "legacyMapping": {},
+    "comment": "8px — radius.sampark.md's own comment already names cards/dialogs/toast"
+  },
+  {
+    "name": "CardSamparkPadding",
+    "path": [
+      "card",
+      "sampark",
+      "padding"
+    ],
+    "value": "1.5rem",
+    "original": "{space.6}",
+    "legacyMapping": {},
+    "comment": "24px"
+  },
+  {
+    "name": "CardSamparkPaddingCompact",
+    "path": [
+      "card",
+      "sampark",
+      "paddingCompact"
+    ],
+    "value": "1rem",
+    "original": "{space.4}",
+    "legacyMapping": {},
+    "comment": "16px"
+  },
+  {
+    "name": "CardSamparkGap",
+    "path": [
+      "card",
+      "sampark",
+      "gap"
+    ],
+    "value": "1rem",
+    "original": "{space.4}",
+    "legacyMapping": {},
+    "comment": "16px"
+  },
+  {
+    "name": "CardSamparkTitleColor",
+    "path": [
+      "card",
+      "sampark",
+      "titleColor"
+    ],
+    "value": "#151414",
+    "original": "{color.sampark.text.primary}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "CardSamparkSubtitleColor",
+    "path": [
+      "card",
+      "sampark",
+      "subtitleColor"
+    ],
+    "value": "#9f9c9c",
+    "original": "{color.sampark.text.muted}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "CardSamparkShadow",
+    "path": [
+      "card",
+      "sampark",
+      "shadow"
+    ],
+    "value": "0 12px 16px -4px rgba(16,24,40,.08)",
+    "original": "{shadow.sampark.l2}",
+    "legacyMapping": {},
+    "comment": "raised variant ONLY"
+  },
+  {
+    "name": "DrawerSamparkBackground",
+    "path": [
+      "drawer",
+      "sampark",
+      "background"
+    ],
+    "value": "#ffffff",
+    "original": "{color.sampark.surface.card}",
+    "legacyMapping": {},
+    "comment": "Mono/0 (White)"
+  },
+  {
+    "name": "DrawerSamparkRadius",
+    "path": [
+      "drawer",
+      "sampark",
+      "radius"
+    ],
+    "value": "1rem",
+    "original": "1rem",
+    "legacyMapping": {},
+    "comment": "16px on the two INNER corners only — no radius.sampark.* step is this large; the scale tops out at md (8px) for cards/dialogs"
+  },
+  {
+    "name": "DrawerSamparkShadow",
+    "path": [
+      "drawer",
+      "sampark",
+      "shadow"
+    ],
+    "value": "0 0 40px rgba(0,0,0,0.25)",
+    "original": "{shadow.sampark.drawer}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "DrawerSamparkWidth",
+    "path": [
+      "drawer",
+      "sampark",
+      "width"
+    ],
+    "value": "max(31.25rem, 26.042vw)",
+    "original": "max(31.25rem, 26.042vw)",
+    "legacyMapping": {},
+    "comment": "fluid — min 500px, scales with viewport above that; source config-sidebar spec"
+  },
+  {
+    "name": "DrawerSamparkPaddingX",
+    "path": [
+      "drawer",
+      "sampark",
+      "paddingX"
+    ],
+    "value": "1.5rem",
+    "original": "{space.6}",
+    "legacyMapping": {},
+    "comment": "24px"
+  },
+  {
+    "name": "DrawerSamparkPaddingY",
+    "path": [
+      "drawer",
+      "sampark",
+      "paddingY"
+    ],
+    "value": "2rem",
+    "original": "{space.8}",
+    "legacyMapping": {},
+    "comment": "32px"
+  },
+  {
+    "name": "DrawerSamparkGap",
+    "path": [
+      "drawer",
+      "sampark",
+      "gap"
+    ],
+    "value": "1.5rem",
+    "original": "{space.6}",
+    "legacyMapping": {},
+    "comment": "24px between header, content and footer"
+  },
+  {
+    "name": "DrawerSamparkHeaderPaddingX",
+    "path": [
+      "drawer",
+      "sampark",
+      "headerPaddingX"
+    ],
+    "value": "0.5rem",
+    "original": "{space.2}",
+    "legacyMapping": {},
+    "comment": "8px — the header row is inset inside the panel padding"
+  },
+  {
+    "name": "DrawerSamparkHeaderGap",
+    "path": [
+      "drawer",
+      "sampark",
+      "headerGap"
+    ],
+    "value": "0.5rem",
+    "original": "{space.2}",
+    "legacyMapping": {},
+    "comment": "8px between title, actions and close"
+  },
+  {
+    "name": "DrawerSamparkTitleColor",
+    "path": [
+      "drawer",
+      "sampark",
+      "titleColor"
+    ],
+    "value": "#151414",
+    "original": "{color.sampark.text.primary}",
+    "legacyMapping": {},
+    "comment": "Mono/100 (Header & Primary Text)"
+  },
+  {
+    "name": "DrawerSamparkTitleSize",
+    "path": [
+      "drawer",
+      "sampark",
+      "titleSize"
+    ],
+    "value": "1.25rem",
+    "original": "1.25rem",
+    "legacyMapping": {},
+    "comment": "20px — Inter/H2/(20)/Semi Bold"
+  },
+  {
+    "name": "DrawerSamparkTitleWeight",
+    "path": [
+      "drawer",
+      "sampark",
+      "titleWeight"
+    ],
+    "value": "600",
+    "original": "600",
+    "legacyMapping": {}
+  },
+  {
+    "name": "DrawerSamparkTitleLineHeight",
+    "path": [
+      "drawer",
+      "sampark",
+      "titleLineHeight"
+    ],
+    "value": "1.3",
+    "original": "1.3",
+    "legacyMapping": {}
+  },
+  {
+    "name": "DrawerSamparkBorderColor",
+    "path": [
+      "drawer",
+      "sampark",
+      "borderColor"
+    ],
+    "value": "#e1e0e0",
+    "original": "{color.sampark.border.default}",
+    "legacyMapping": {},
+    "comment": "Mono/Borders — header/footer separators"
+  },
+  {
+    "name": "DrawerSamparkMaskBackground",
+    "path": [
+      "drawer",
+      "sampark",
+      "maskBackground"
+    ],
+    "value": "rgba(14,13,13,0.45)",
+    "original": "rgba(14,13,13,0.45)",
+    "legacyMapping": {},
+    "comment": "scrim behind the panel; Mono/100 at 45%"
+  },
+  {
+    "name": "DrawerMybkyBackground",
+    "path": [
+      "drawer",
+      "mybky",
+      "background"
+    ],
+    "value": "#ffffff",
+    "original": "{color.mybky.surface.card}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "DrawerMybkyRadius",
+    "path": [
+      "drawer",
+      "mybky",
+      "radius"
+    ],
+    "value": "2rem",
+    "original": "2rem",
+    "legacyMapping": {
+      "eventsUi": ".app-drawer.p-drawer border-radius"
+    },
+    "comment": "32px. Far beyond radius.mybky.md (8px) — a drawer is its own surface tier, not a big card."
+  },
+  {
+    "name": "DrawerMybkyShadow",
+    "path": [
+      "drawer",
+      "mybky",
+      "shadow"
+    ],
+    "value": "0 4px 6px rgba(16,24,40,.06), 0 12px 16px rgba(16,24,40,.12)",
+    "original": "{shadow.mybky.drawer}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "DrawerMybkyPadding",
+    "path": [
+      "drawer",
+      "mybky",
+      "padding"
+    ],
+    "value": "2rem",
+    "original": "{space.8}",
+    "legacyMapping": {},
+    "comment": "32px, and it wraps header + body + footer together"
+  },
+  {
+    "name": "DrawerMybkyGap",
+    "path": [
+      "drawer",
+      "mybky",
+      "gap"
+    ],
+    "value": "1.5rem",
+    "original": "{space.6}",
+    "legacyMapping": {},
+    "comment": "24px between header, content and footer"
+  },
+  {
+    "name": "DrawerMybkyHeaderGap",
+    "path": [
+      "drawer",
+      "mybky",
+      "headerGap"
+    ],
+    "value": "0.5rem",
+    "original": "{space.2}",
+    "legacyMapping": {},
+    "comment": "8px between title, actions and close — the same step the sampark half uses; the header row is identical geometry in both brands"
+  },
+  {
+    "name": "DrawerMybkyBackdropBlur",
+    "path": [
+      "drawer",
+      "mybky",
+      "backdropBlur"
+    ],
+    "value": "25px",
+    "original": "25px",
+    "legacyMapping": {},
+    "comment": "backdrop-filter on the mask"
+  },
+  {
+    "name": "DrawerMybkyHeaderBackground",
+    "path": [
+      "drawer",
+      "mybky",
+      "headerBackground"
+    ],
+    "value": "transparent",
+    "original": "transparent",
+    "legacyMapping": {},
+    "comment": "FLAT panel — header and footer have no bar of their own, they inherit the panel white. Recorded so nobody re-adds one."
+  },
+  {
+    "name": "BadgeMybkyRadius",
+    "path": [
+      "badge",
+      "mybky",
+      "radius"
+    ],
+    "value": "99px",
+    "original": "{radius.mybky.pill}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "BadgeMybkyGap",
+    "path": [
+      "badge",
+      "mybky",
+      "gap"
+    ],
+    "value": "0.125rem",
+    "original": "0.125rem",
+    "legacyMapping": {},
+    "comment": "2px"
+  },
+  {
+    "name": "BadgeMybkySizeXs",
+    "path": [
+      "badge",
+      "mybky",
+      "size",
+      "xs"
+    ],
+    "value": "1.125rem",
+    "original": "1.125rem",
+    "legacyMapping": {},
+    "comment": "18px"
+  },
+  {
+    "name": "BadgeMybkySizeS",
+    "path": [
+      "badge",
+      "mybky",
+      "size",
+      "s"
+    ],
+    "value": "1.375rem",
+    "original": "1.375rem",
+    "legacyMapping": {},
+    "comment": "22px — default"
+  },
+  {
+    "name": "BadgeMybkySizeM",
+    "path": [
+      "badge",
+      "mybky",
+      "size",
+      "m"
+    ],
+    "value": "1.625rem",
+    "original": "1.625rem",
+    "legacyMapping": {},
+    "comment": "26px"
+  },
+  {
+    "name": "BadgeMybkySizeL",
+    "path": [
+      "badge",
+      "mybky",
+      "size",
+      "l"
+    ],
+    "value": "2rem",
+    "original": "2rem",
+    "legacyMapping": {},
+    "comment": "32px"
+  },
+  {
+    "name": "BadgeSamparkRadius",
+    "path": [
+      "badge",
+      "sampark",
+      "radius"
+    ],
+    "value": "100px",
+    "original": "100px",
+    "legacyMapping": {},
+    "comment": "Pill. The Sampark count badge is a circle/stadium, NOT the 4px chip — that shape belongs to tag.sampark, which this block previously duplicated (20/22/28 at 4px). p-tag is the colour/status label; p-badge is the count."
+  },
+  {
+    "name": "BadgeSamparkBorderWidth",
+    "path": [
+      "badge",
+      "sampark",
+      "borderWidth"
+    ],
+    "value": "1px",
+    "original": "1px",
+    "legacyMapping": {}
+  },
+  {
+    "name": "BadgeSamparkGap",
+    "path": [
+      "badge",
+      "sampark",
+      "gap"
+    ],
+    "value": "0.25rem",
+    "original": "0.25rem",
+    "legacyMapping": {},
+    "comment": "4px"
+  },
+  {
+    "name": "BadgeSamparkSizeS",
+    "path": [
+      "badge",
+      "sampark",
+      "size",
+      "s"
+    ],
+    "value": "0.75rem",
+    "original": "0.75rem",
+    "legacyMapping": {},
+    "comment": "12px — badgeSize=\"small\""
+  },
+  {
+    "name": "BadgeSamparkSizeM",
+    "path": [
+      "badge",
+      "sampark",
+      "size",
+      "m"
+    ],
+    "value": "1rem",
+    "original": "1rem",
+    "legacyMapping": {},
+    "comment": "16px — default"
+  },
+  {
+    "name": "BadgeSamparkSizeL",
+    "path": [
+      "badge",
+      "sampark",
+      "size",
+      "l"
+    ],
+    "value": "1.25rem",
+    "original": "1.25rem",
+    "legacyMapping": {},
+    "comment": "20px — badgeSize=\"large\""
+  },
+  {
+    "name": "BadgeSamparkSizeXl",
+    "path": [
+      "badge",
+      "sampark",
+      "size",
+      "xl"
+    ],
+    "value": "1.5rem",
+    "original": "1.5rem",
+    "legacyMapping": {},
+    "comment": "24px — badgeSize=\"xlarge\""
+  },
+  {
+    "name": "BadgeSamparkFontSizeS",
+    "path": [
+      "badge",
+      "sampark",
+      "fontSize",
+      "s"
+    ],
+    "value": "0.625rem",
+    "original": "0.625rem",
+    "legacyMapping": {},
+    "comment": "10px"
+  },
+  {
+    "name": "BadgeSamparkFontSizeM",
+    "path": [
+      "badge",
+      "sampark",
+      "fontSize",
+      "m"
+    ],
+    "value": "0.6875rem",
+    "original": "0.6875rem",
+    "legacyMapping": {},
+    "comment": "11px"
+  },
+  {
+    "name": "BadgeSamparkFontSizeL",
+    "path": [
+      "badge",
+      "sampark",
+      "fontSize",
+      "l"
+    ],
+    "value": "0.75rem",
+    "original": "0.75rem",
+    "legacyMapping": {},
+    "comment": "12px"
+  },
+  {
+    "name": "BadgeSamparkFontSizeXl",
+    "path": [
+      "badge",
+      "sampark",
+      "fontSize",
+      "xl"
+    ],
+    "value": "0.875rem",
+    "original": "0.875rem",
+    "legacyMapping": {},
+    "comment": "14px"
+  },
+  {
+    "name": "BadgeSamparkPaddingS",
+    "path": [
+      "badge",
+      "sampark",
+      "padding",
+      "s"
+    ],
+    "value": "0 0.125rem",
+    "original": "0 0.125rem",
+    "legacyMapping": {},
+    "comment": "0 2px"
+  },
+  {
+    "name": "BadgeSamparkPaddingM",
+    "path": [
+      "badge",
+      "sampark",
+      "padding",
+      "m"
+    ],
+    "value": "0 0.25rem",
+    "original": "0 0.25rem",
+    "legacyMapping": {},
+    "comment": "0 4px"
+  },
+  {
+    "name": "BadgeSamparkPaddingL",
+    "path": [
+      "badge",
+      "sampark",
+      "padding",
+      "l"
+    ],
+    "value": "0 0.375rem",
+    "original": "0 0.375rem",
+    "legacyMapping": {},
+    "comment": "0 6px"
+  },
+  {
+    "name": "BadgeSamparkPaddingXl",
+    "path": [
+      "badge",
+      "sampark",
+      "padding",
+      "xl"
+    ],
+    "value": "0 0.5rem",
+    "original": "0 0.5rem",
+    "legacyMapping": {},
+    "comment": "0 8px"
+  },
+  {
+    "name": "BadgeSamparkNotificationBackground",
+    "path": [
+      "badge",
+      "sampark",
+      "notification",
+      "background"
+    ],
+    "value": "#ea151a",
+    "original": "{color.sampark.error.80}",
+    "legacyMapping": {},
+    "comment": "alert count — the only filled-red element in the family"
+  },
+  {
+    "name": "BadgeSamparkNotificationText",
+    "path": [
+      "badge",
+      "sampark",
+      "notification",
+      "text"
+    ],
+    "value": "#ffffff",
+    "original": "{color.sampark.mono.0}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "BadgeSamparkNotificationBorder",
+    "path": [
+      "badge",
+      "sampark",
+      "notification",
+      "border"
+    ],
+    "value": "#ffffff",
+    "original": "{color.sampark.mono.0}",
+    "legacyMapping": {},
+    "comment": "white ring, so the badge still separates from whatever it overlaps"
+  },
+  {
+    "name": "BadgeSamparkCountsBackground",
+    "path": [
+      "badge",
+      "sampark",
+      "counts",
+      "background"
+    ],
+    "value": "#ffffff",
+    "original": "{color.sampark.mono.0}",
+    "legacyMapping": {},
+    "comment": "plain count — no alert semantics"
+  },
+  {
+    "name": "BadgeSamparkCountsText",
+    "path": [
+      "badge",
+      "sampark",
+      "counts",
+      "text"
+    ],
+    "value": "#151414",
+    "original": "{color.sampark.mono.100}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "BadgeSamparkCountsBorder",
+    "path": [
+      "badge",
+      "sampark",
+      "counts",
+      "border"
+    ],
+    "value": "#e1e0e0",
+    "original": "{color.sampark.mono.borders}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "BadgeSamparkDisableBackground",
+    "path": [
+      "badge",
+      "sampark",
+      "disable",
+      "background"
+    ],
+    "value": "rgba(21, 20, 20, 0.04)",
+    "original": "{color.sampark.mono.alpha4}",
+    "legacyMapping": {},
+    "comment": "a tint rather than an opaque fill, so it works on any surface"
+  },
+  {
+    "name": "BadgeSamparkDisableText",
+    "path": [
+      "badge",
+      "sampark",
+      "disable",
+      "text"
+    ],
+    "value": "#151414",
+    "original": "{color.sampark.mono.100}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "BadgeSamparkDisableBorder",
+    "path": [
+      "badge",
+      "sampark",
+      "disable",
+      "border"
+    ],
+    "value": "#e1e0e0",
+    "original": "{color.sampark.mono.borders}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "TagMybkyRadius",
+    "path": [
+      "tag",
+      "mybky",
+      "radius"
+    ],
+    "value": "99px",
+    "original": "{radius.mybky.pill}",
+    "legacyMapping": {},
+    "comment": "99px pill — all sizes, Figma MyBKY Badge/Tag set (node 22465:95582)"
+  },
+  {
+    "name": "TagMybkyFontWeight",
+    "path": [
+      "tag",
+      "mybky",
+      "fontWeight"
+    ],
+    "value": "500",
+    "original": "{font.weight.medium}",
+    "legacyMapping": {},
+    "comment": "Inter 500 — all sizes"
+  },
+  {
+    "name": "TagMybkyGap",
+    "path": [
+      "tag",
+      "mybky",
+      "gap"
+    ],
+    "value": "0.125rem",
+    "original": "0.125rem",
+    "legacyMapping": {
+      "eventsUi": "_badge.scss gap"
+    },
+    "comment": "2px icon-label gap, all sizes"
+  },
+  {
+    "name": "TagMybkyHeightXs",
+    "path": [
+      "tag",
+      "mybky",
+      "height",
+      "xs"
+    ],
+    "value": "1.125rem",
+    "original": "1.125rem",
+    "legacyMapping": {},
+    "comment": "18px, font 12px"
+  },
+  {
+    "name": "TagMybkyHeightS",
+    "path": [
+      "tag",
+      "mybky",
+      "height",
+      "s"
+    ],
+    "value": "1.375rem",
+    "original": "1.375rem",
+    "legacyMapping": {},
+    "comment": "22px — default, font 12px"
+  },
+  {
+    "name": "TagMybkyHeightM",
+    "path": [
+      "tag",
+      "mybky",
+      "height",
+      "m"
+    ],
+    "value": "1.625rem",
+    "original": "1.625rem",
+    "legacyMapping": {},
+    "comment": "26px, font 14px"
+  },
+  {
+    "name": "TagMybkyHeightL",
+    "path": [
+      "tag",
+      "mybky",
+      "height",
+      "l"
+    ],
+    "value": "2rem",
+    "original": "2rem",
+    "legacyMapping": {},
+    "comment": "32px, font 16px — Figma l and l-mob share the same box"
+  },
+  {
+    "name": "TagMybkyFontSizeXs",
+    "path": [
+      "tag",
+      "mybky",
+      "fontSize",
+      "xs"
+    ],
+    "value": "0.75rem",
+    "original": "0.75rem",
+    "legacyMapping": {},
+    "comment": "12px"
+  },
+  {
+    "name": "TagMybkyFontSizeS",
+    "path": [
+      "tag",
+      "mybky",
+      "fontSize",
+      "s"
+    ],
+    "value": "0.75rem",
+    "original": "0.75rem",
+    "legacyMapping": {},
+    "comment": "12px — default"
+  },
+  {
+    "name": "TagMybkyFontSizeM",
+    "path": [
+      "tag",
+      "mybky",
+      "fontSize",
+      "m"
+    ],
+    "value": "0.875rem",
+    "original": "0.875rem",
+    "legacyMapping": {},
+    "comment": "14px"
+  },
+  {
+    "name": "TagMybkyFontSizeL",
+    "path": [
+      "tag",
+      "mybky",
+      "fontSize",
+      "l"
+    ],
+    "value": "1rem",
+    "original": "1rem",
+    "legacyMapping": {},
+    "comment": "16px"
+  },
+  {
+    "name": "TagMybkyPaddingXs",
+    "path": [
+      "tag",
+      "mybky",
+      "padding",
+      "xs"
+    ],
+    "value": "0.25rem 0.25rem",
+    "original": "0.25rem 0.25rem",
+    "legacyMapping": {},
+    "comment": "4px 4px — label adds 4px per side, so visual inset is 8px"
+  },
+  {
+    "name": "TagMybkyPaddingS",
+    "path": [
+      "tag",
+      "mybky",
+      "padding",
+      "s"
+    ],
+    "value": "0.25rem 0.375rem",
+    "original": "0.25rem 0.375rem",
+    "legacyMapping": {},
+    "comment": "4px 6px — default; label's 4px brings the visual inset to Figma's 10px"
+  },
+  {
+    "name": "TagMybkyPaddingM",
+    "path": [
+      "tag",
+      "mybky",
+      "padding",
+      "m"
+    ],
+    "value": "0.25rem 0.375rem",
+    "original": "0.25rem 0.375rem",
+    "legacyMapping": {},
+    "comment": "4px 6px"
+  },
+  {
+    "name": "TagMybkyPaddingL",
+    "path": [
+      "tag",
+      "mybky",
+      "padding",
+      "l"
+    ],
+    "value": "0.25rem 0.5rem",
+    "original": "0.25rem 0.5rem",
+    "legacyMapping": {},
+    "comment": "4px 8px"
+  },
+  {
+    "name": "TagMybkyGreyBackground",
+    "path": [
+      "tag",
+      "mybky",
+      "grey",
+      "background"
+    ],
+    "value": "#2b2f3205",
+    "original": "#2b2f3205",
+    "legacyMapping": {
+      "eventsUi": "--badge-grey-bg"
+    },
+    "comment": "Mono/80 @ 2% — default (no severity) fill"
+  },
+  {
+    "name": "TagMybkyGreyBorder",
+    "path": [
+      "tag",
+      "mybky",
+      "grey",
+      "border"
+    ],
+    "value": "#e4ecf1",
+    "original": "{color.mybky.mono.300}",
+    "legacyMapping": {
+      "eventsUi": "--badge-grey-border"
+    }
+  },
+  {
+    "name": "TagMybkyGreyBorderHover",
+    "path": [
+      "tag",
+      "mybky",
+      "grey",
+      "borderHover"
+    ],
+    "value": "#9f9c9c",
+    "original": "#9f9c9c",
+    "legacyMapping": {
+      "eventsUi": "--badge-grey-border-hover"
+    },
+    "comment": "Figma Mono/60 hover ring — events-ui value predates the mybky mono scale (mono.500 is #6f777d); kept verbatim"
+  },
+  {
+    "name": "TagMybkyGreyText",
+    "path": [
+      "tag",
+      "mybky",
+      "grey",
+      "text"
+    ],
+    "value": "#2b2f32",
+    "original": "{color.mybky.mono.800}",
+    "legacyMapping": {
+      "eventsUi": "--badge-grey-color"
+    }
+  },
+  {
+    "name": "TagMybkyPrimaryBackground",
+    "path": [
+      "tag",
+      "mybky",
+      "primary",
+      "background"
+    ],
+    "value": "#eef0f8",
+    "original": "{color.mybky.blue.50}",
+    "legacyMapping": {
+      "eventsUi": "--badge-primary-bg"
+    },
+    "comment": "Figma 'Primary' variant — reached via severity=\"contrast\" (the unqualified PrimeNG tag renders grey)"
+  },
+  {
+    "name": "TagMybkyPrimaryBorder",
+    "path": [
+      "tag",
+      "mybky",
+      "primary",
+      "border"
+    ],
+    "value": "rgb(from #9fadd9 r g b / 0.2)",
+    "original": "{color.mybky.blue.alpha20}",
+    "legacyMapping": {},
+    "comment": "Primary/40 @ 20%"
+  },
+  {
+    "name": "TagMybkyPrimaryBorderHover",
+    "path": [
+      "tag",
+      "mybky",
+      "primary",
+      "borderHover"
+    ],
+    "value": "#384871",
+    "original": "{color.mybky.blue.800}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "TagMybkyPrimaryText",
+    "path": [
+      "tag",
+      "mybky",
+      "primary",
+      "text"
+    ],
+    "value": "#384871",
+    "original": "{color.mybky.blue.800}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "TagMybkySecondaryBackground",
+    "path": [
+      "tag",
+      "mybky",
+      "secondary",
+      "background"
+    ],
+    "value": "#f8fafb",
+    "original": "{color.mybky.mono.50}",
+    "legacyMapping": {
+      "eventsUi": "--badge-secondary-bg"
+    }
+  },
+  {
+    "name": "TagMybkySecondaryBorder",
+    "path": [
+      "tag",
+      "mybky",
+      "secondary",
+      "border"
+    ],
+    "value": "#6f777d33",
+    "original": "#6f777d33",
+    "legacyMapping": {},
+    "comment": "Mono/60 @ 20%"
+  },
+  {
+    "name": "TagMybkySecondaryBorderHover",
+    "path": [
+      "tag",
+      "mybky",
+      "secondary",
+      "borderHover"
+    ],
+    "value": "#2b2f32",
+    "original": "{color.mybky.mono.800}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "TagMybkySecondaryText",
+    "path": [
+      "tag",
+      "mybky",
+      "secondary",
+      "text"
+    ],
+    "value": "#2b2f32",
+    "original": "{color.mybky.mono.800}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "TagMybkyInfoBackground",
+    "path": [
+      "tag",
+      "mybky",
+      "info",
+      "background"
+    ],
+    "value": "#d8e7fd",
+    "original": "{color.mybky.info.20}",
+    "legacyMapping": {
+      "eventsUi": "--badge-info-bg"
+    }
+  },
+  {
+    "name": "TagMybkyInfoBorder",
+    "path": [
+      "tag",
+      "mybky",
+      "info",
+      "border"
+    ],
+    "value": "#528de033",
+    "original": "#528de033",
+    "legacyMapping": {},
+    "comment": "Info/60 @ 20%"
+  },
+  {
+    "name": "TagMybkyInfoBorderHover",
+    "path": [
+      "tag",
+      "mybky",
+      "info",
+      "borderHover"
+    ],
+    "value": "#2265c3",
+    "original": "{color.mybky.info.80}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "TagMybkyInfoText",
+    "path": [
+      "tag",
+      "mybky",
+      "info",
+      "text"
+    ],
+    "value": "#2265c3",
+    "original": "{color.mybky.info.80}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "TagMybkyWarningBackground",
+    "path": [
+      "tag",
+      "mybky",
+      "warning",
+      "background"
+    ],
+    "value": "#fdedd8",
+    "original": "{color.mybky.warning.20}",
+    "legacyMapping": {
+      "eventsUi": "--badge-warning-bg"
+    }
+  },
+  {
+    "name": "TagMybkyWarningBorder",
+    "path": [
+      "tag",
+      "mybky",
+      "warning",
+      "border"
+    ],
+    "value": "#e0a65233",
+    "original": "#e0a65233",
+    "legacyMapping": {},
+    "comment": "Warning/60 @ 20%"
+  },
+  {
+    "name": "TagMybkyWarningBorderHover",
+    "path": [
+      "tag",
+      "mybky",
+      "warning",
+      "borderHover"
+    ],
+    "value": "#c38222",
+    "original": "{color.mybky.warning.80}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "TagMybkyWarningText",
+    "path": [
+      "tag",
+      "mybky",
+      "warning",
+      "text"
+    ],
+    "value": "#c38222",
+    "original": "{color.mybky.warning.80}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "TagMybkyErrorBackground",
+    "path": [
+      "tag",
+      "mybky",
+      "error",
+      "background"
+    ],
+    "value": "#fdd8d8",
+    "original": "#fdd8d8",
+    "legacyMapping": {
+      "eventsUi": "--badge-error-bg"
+    },
+    "comment": "Error/20 — no matching step in color.mybky.error (80/100 only)"
+  },
+  {
+    "name": "TagMybkyErrorBorder",
+    "path": [
+      "tag",
+      "mybky",
+      "error",
+      "border"
+    ],
+    "value": "#b8474a33",
+    "original": "#b8474a33",
+    "legacyMapping": {},
+    "comment": "Error/60 @ 20%"
+  },
+  {
+    "name": "TagMybkyErrorBorderHover",
+    "path": [
+      "tag",
+      "mybky",
+      "error",
+      "borderHover"
+    ],
+    "value": "#c32226",
+    "original": "{color.mybky.error.100}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "TagMybkyErrorText",
+    "path": [
+      "tag",
+      "mybky",
+      "error",
+      "text"
+    ],
+    "value": "#c32226",
+    "original": "{color.mybky.error.100}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "TagMybkySuccessBackground",
+    "path": [
+      "tag",
+      "mybky",
+      "success",
+      "background"
+    ],
+    "value": "#d8fdeb",
+    "original": "{color.mybky.success.50}",
+    "legacyMapping": {
+      "eventsUi": "--badge-success-bg"
+    }
+  },
+  {
+    "name": "TagMybkySuccessBorder",
+    "path": [
+      "tag",
+      "mybky",
+      "success",
+      "border"
+    ],
+    "value": "#40bf8433",
+    "original": "#40bf8433",
+    "legacyMapping": {},
+    "comment": "Success/400 @ 20%"
+  },
+  {
+    "name": "TagMybkySuccessBorderHover",
+    "path": [
+      "tag",
+      "mybky",
+      "success",
+      "borderHover"
+    ],
+    "value": "#178251",
+    "original": "#178251",
+    "legacyMapping": {},
+    "comment": "Success/100 — no matching step in color.mybky.success (50/400/600 only)"
+  },
+  {
+    "name": "TagMybkySuccessText",
+    "path": [
+      "tag",
+      "mybky",
+      "success",
+      "text"
+    ],
+    "value": "#178251",
+    "original": "#178251",
+    "legacyMapping": {}
+  },
+  {
+    "name": "TagMybkyDisabledBackground",
+    "path": [
+      "tag",
+      "mybky",
+      "disabled",
+      "background"
+    ],
+    "value": "#2b2f320a",
+    "original": "#2b2f320a",
+    "legacyMapping": {},
+    "comment": "Mono/80 @ 4%"
+  },
+  {
+    "name": "TagMybkyDisabledBorder",
+    "path": [
+      "tag",
+      "mybky",
+      "disabled",
+      "border"
+    ],
+    "value": "#e4ecf1",
+    "original": "{color.mybky.mono.300}",
+    "legacyMapping": {},
+    "comment": "no hover change on disabled"
+  },
+  {
+    "name": "TagMybkyDisabledText",
+    "path": [
+      "tag",
+      "mybky",
+      "disabled",
+      "text"
+    ],
+    "value": "#8d9ba5",
+    "original": "{color.mybky.mono.450}",
+    "legacyMapping": {},
+    "comment": "Mono/40 'Disable Item' #8d9ba5. Was #bd9ba5, carried verbatim from events-ui and repeated in both badge style guides. The Figma disabled badge (22465:95659) binds this text to Mono/40 (Disable Item) = #8d9ba5, and Sampark's disabled badge (13197:90751) binds ITS text to its own Mono/40 — so both brands read the same token and #bd9ba5 was a one-character slip (b for 8) that the guides inherited"
+  },
+  {
+    "name": "TagSamparkRadius",
+    "path": [
+      "tag",
+      "sampark",
+      "radius"
+    ],
+    "value": "0.25rem",
+    "original": "{radius.sampark.default}",
+    "legacyMapping": {},
+    "comment": "4px — xs/s; l rounds to radiusL. Sampark's 'Badge' IS p-tag (spm-ui _badge.scss); NOT pill like mybky"
+  },
+  {
+    "name": "TagSamparkRadiusL",
+    "path": [
+      "tag",
+      "sampark",
+      "radiusL"
+    ],
+    "value": "0.375rem",
+    "original": "0.375rem",
+    "legacyMapping": {},
+    "comment": "6px — l only"
+  },
+  {
+    "name": "TagSamparkFontWeight",
+    "path": [
+      "tag",
+      "sampark",
+      "fontWeight"
+    ],
+    "value": "500",
+    "original": "{font.weight.medium}",
+    "legacyMapping": {},
+    "comment": "Inter 500 — all sizes, same as mybky"
+  },
+  {
+    "name": "TagSamparkGap",
+    "path": [
+      "tag",
+      "sampark",
+      "gap"
+    ],
+    "value": "0.125rem",
+    "original": "0.125rem",
+    "legacyMapping": {
+      "spmUi": "_badge.scss gap"
+    },
+    "comment": "2px icon-label gap, xs/s"
+  },
+  {
+    "name": "TagSamparkGapL",
+    "path": [
+      "tag",
+      "sampark",
+      "gapL"
+    ],
+    "value": "0.25rem",
+    "original": "0.25rem",
+    "legacyMapping": {},
+    "comment": "4px — l"
+  },
+  {
+    "name": "TagSamparkHeightXs",
+    "path": [
+      "tag",
+      "sampark",
+      "height",
+      "xs"
+    ],
+    "value": "1.25rem",
+    "original": "1.25rem",
+    "legacyMapping": {},
+    "comment": "20px, font 12px — mybky xs is 18px"
+  },
+  {
+    "name": "TagSamparkHeightS",
+    "path": [
+      "tag",
+      "sampark",
+      "height",
+      "s"
+    ],
+    "value": "1.375rem",
+    "original": "1.375rem",
+    "legacyMapping": {},
+    "comment": "22px — default; spm-ui md is the same box, so baps-tag m also renders this"
+  },
+  {
+    "name": "TagSamparkHeightL",
+    "path": [
+      "tag",
+      "sampark",
+      "height",
+      "l"
+    ],
+    "value": "1.75rem",
+    "original": "1.75rem",
+    "legacyMapping": {},
+    "comment": "28px — mybky l is 32px"
+  },
+  {
+    "name": "TagSamparkFontSizeXs",
+    "path": [
+      "tag",
+      "sampark",
+      "fontSize",
+      "xs"
+    ],
+    "value": "0.75rem",
+    "original": "0.75rem",
+    "legacyMapping": {},
+    "comment": "12px"
+  },
+  {
+    "name": "TagSamparkFontSizeS",
+    "path": [
+      "tag",
+      "sampark",
+      "fontSize",
+      "s"
+    ],
+    "value": "0.875rem",
+    "original": "0.875rem",
+    "legacyMapping": {},
+    "comment": "14px — mybky s is 12px"
+  },
+  {
+    "name": "TagSamparkFontSizeL",
+    "path": [
+      "tag",
+      "sampark",
+      "fontSize",
+      "l"
+    ],
+    "value": "0.875rem",
+    "original": "0.875rem",
+    "legacyMapping": {},
+    "comment": "14px — only the icon grows to 16px (iconSize.l)"
+  },
+  {
+    "name": "TagSamparkIconSizeXs",
+    "path": [
+      "tag",
+      "sampark",
+      "iconSize",
+      "xs"
+    ],
+    "value": "0.75rem",
+    "original": "0.75rem",
+    "legacyMapping": {},
+    "comment": "12px"
+  },
+  {
+    "name": "TagSamparkIconSizeS",
+    "path": [
+      "tag",
+      "sampark",
+      "iconSize",
+      "s"
+    ],
+    "value": "0.875rem",
+    "original": "0.875rem",
+    "legacyMapping": {},
+    "comment": "14px"
+  },
+  {
+    "name": "TagSamparkIconSizeL",
+    "path": [
+      "tag",
+      "sampark",
+      "iconSize",
+      "l"
+    ],
+    "value": "1rem",
+    "original": "1rem",
+    "legacyMapping": {},
+    "comment": "16px — outgrows the 14px label"
+  },
+  {
+    "name": "TagSamparkPaddingXs",
+    "path": [
+      "tag",
+      "sampark",
+      "padding",
+      "xs"
+    ],
+    "value": "0 0.25rem",
+    "original": "0 0.25rem",
+    "legacyMapping": {},
+    "comment": "0 4px — label carries no extra inset, unlike mybky's +4px label padding"
+  },
+  {
+    "name": "TagSamparkPaddingS",
+    "path": [
+      "tag",
+      "sampark",
+      "padding",
+      "s"
+    ],
+    "value": "0 0.25rem",
+    "original": "0 0.25rem",
+    "legacyMapping": {},
+    "comment": "0 4px"
+  },
+  {
+    "name": "TagSamparkPaddingL",
+    "path": [
+      "tag",
+      "sampark",
+      "padding",
+      "l"
+    ],
+    "value": "0.25rem 0.375rem",
+    "original": "0.25rem 0.375rem",
+    "legacyMapping": {},
+    "comment": "4px 6px"
+  },
+  {
+    "name": "TagSamparkGreyBackground",
+    "path": [
+      "tag",
+      "sampark",
+      "grey",
+      "background"
+    ],
+    "value": "#1514140a",
+    "original": "#1514140a",
+    "legacyMapping": {
+      "spmUi": "--badge-grey-bg"
+    },
+    "comment": "Mono/100 @ 4% — default (no severity) fill"
+  },
+  {
+    "name": "TagSamparkGreyBorder",
+    "path": [
+      "tag",
+      "sampark",
+      "grey",
+      "border"
+    ],
+    "value": "#e1e0e0",
+    "original": "{color.sampark.mono.borders}",
+    "legacyMapping": {
+      "spmUi": "--badge-grey-border"
+    }
+  },
+  {
+    "name": "TagSamparkGreyBorderHover",
+    "path": [
+      "tag",
+      "sampark",
+      "grey",
+      "borderHover"
+    ],
+    "value": "#9f9c9c",
+    "original": "{color.sampark.mono.60}",
+    "legacyMapping": {
+      "spmUi": "--badge-grey-border-hover"
+    }
+  },
+  {
+    "name": "TagSamparkGreyText",
+    "path": [
+      "tag",
+      "sampark",
+      "grey",
+      "text"
+    ],
+    "value": "#595656",
+    "original": "{color.sampark.mono.80}",
+    "legacyMapping": {
+      "spmUi": "--badge-grey-color"
+    }
+  },
+  {
+    "name": "TagSamparkPrimaryBackground",
+    "path": [
+      "tag",
+      "sampark",
+      "primary",
+      "background"
+    ],
+    "value": "rgba(135, 48, 48, 0.1)",
+    "original": "{color.sampark.primary.alpha10}",
+    "legacyMapping": {
+      "spmUi": "--badge-primary-bg"
+    },
+    "comment": "Figma 'Primary' maroon chip — reached via severity=\"contrast\", same crossover as mybky. ALPHA, not the opaque primary.10 tint: the spm-ui badge spec writes this fill as rgba(135,48,48,.1), and a tag dropped on a tinted row has to keep what sits behind it. The two differ by roughly 5/255 on a white page, which is why the opaque one went unnoticed."
+  },
+  {
+    "name": "TagSamparkPrimaryBorder",
+    "path": [
+      "tag",
+      "sampark",
+      "primary",
+      "border"
+    ],
+    "value": "rgb(from #873030 r g b / 0.2)",
+    "original": "{color.sampark.primary.alpha20}",
+    "legacyMapping": {},
+    "comment": "Primary/100 @ 20%"
+  },
+  {
+    "name": "TagSamparkPrimaryBorderHover",
+    "path": [
+      "tag",
+      "sampark",
+      "primary",
+      "borderHover"
+    ],
+    "value": "#b44141",
+    "original": "{color.sampark.primary.80}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "TagSamparkPrimaryText",
+    "path": [
+      "tag",
+      "sampark",
+      "primary",
+      "text"
+    ],
+    "value": "#b44141",
+    "original": "{color.sampark.primary.80}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "TagSamparkSecondaryBackground",
+    "path": [
+      "tag",
+      "sampark",
+      "secondary",
+      "background"
+    ],
+    "value": "#e6e6e5",
+    "original": "{color.sampark.secondary.10}",
+    "legacyMapping": {
+      "spmUi": "--badge-secondary-bg"
+    }
+  },
+  {
+    "name": "TagSamparkSecondaryBorder",
+    "path": [
+      "tag",
+      "sampark",
+      "secondary",
+      "border"
+    ],
+    "value": "#4a494733",
+    "original": "#4a494733",
+    "legacyMapping": {},
+    "comment": "Secondary/60 @ 20%"
+  },
+  {
+    "name": "TagSamparkSecondaryBorderHover",
+    "path": [
+      "tag",
+      "sampark",
+      "secondary",
+      "borderHover"
+    ],
+    "value": "#2c2c2a",
+    "original": "{color.sampark.secondary.80}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "TagSamparkSecondaryText",
+    "path": [
+      "tag",
+      "sampark",
+      "secondary",
+      "text"
+    ],
+    "value": "#2c2c2a",
+    "original": "{color.sampark.secondary.80}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "TagSamparkInfoBackground",
+    "path": [
+      "tag",
+      "sampark",
+      "info",
+      "background"
+    ],
+    "value": "#e6f0fe",
+    "original": "{color.sampark.info.10}",
+    "legacyMapping": {
+      "spmUi": "--badge-info-bg"
+    }
+  },
+  {
+    "name": "TagSamparkInfoBorder",
+    "path": [
+      "tag",
+      "sampark",
+      "info",
+      "border"
+    ],
+    "value": "#3889fa33",
+    "original": "#3889fa33",
+    "legacyMapping": {},
+    "comment": "Info/60 @ 20%"
+  },
+  {
+    "name": "TagSamparkInfoBorderHover",
+    "path": [
+      "tag",
+      "sampark",
+      "info",
+      "borderHover"
+    ],
+    "value": "#0661e0",
+    "original": "{color.sampark.info.80}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "TagSamparkInfoText",
+    "path": [
+      "tag",
+      "sampark",
+      "info",
+      "text"
+    ],
+    "value": "#0661e0",
+    "original": "{color.sampark.info.80}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "TagSamparkWarningBackground",
+    "path": [
+      "tag",
+      "sampark",
+      "warning",
+      "background"
+    ],
+    "value": "#fef4e6",
+    "original": "{color.sampark.warning.10}",
+    "legacyMapping": {
+      "spmUi": "--badge-warning-bg"
+    }
+  },
+  {
+    "name": "TagSamparkWarningBorder",
+    "path": [
+      "tag",
+      "sampark",
+      "warning",
+      "border"
+    ],
+    "value": "#faab3833",
+    "original": "#faab3833",
+    "legacyMapping": {},
+    "comment": "Warning/60 @ 20%"
+  },
+  {
+    "name": "TagSamparkWarningBorderHover",
+    "path": [
+      "tag",
+      "sampark",
+      "warning",
+      "borderHover"
+    ],
+    "value": "#e08705",
+    "original": "{color.sampark.warning.80}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "TagSamparkWarningText",
+    "path": [
+      "tag",
+      "sampark",
+      "warning",
+      "text"
+    ],
+    "value": "#e08705",
+    "original": "{color.sampark.warning.80}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "TagSamparkErrorBackground",
+    "path": [
+      "tag",
+      "sampark",
+      "error",
+      "background"
+    ],
+    "value": "#fde8e8",
+    "original": "{color.sampark.error.20}",
+    "legacyMapping": {
+      "spmUi": "--badge-error-bg"
+    }
+  },
+  {
+    "name": "TagSamparkErrorBorder",
+    "path": [
+      "tag",
+      "sampark",
+      "error",
+      "border"
+    ],
+    "value": "#ea151a33",
+    "original": "#ea151a33",
+    "legacyMapping": {},
+    "comment": "Error/80 @ 20%"
+  },
+  {
+    "name": "TagSamparkErrorBorderHover",
+    "path": [
+      "tag",
+      "sampark",
+      "error",
+      "borderHover"
+    ],
+    "value": "#cc0005",
+    "original": "{color.sampark.error.100}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "TagSamparkErrorText",
+    "path": [
+      "tag",
+      "sampark",
+      "error",
+      "text"
+    ],
+    "value": "#cc0005",
+    "original": "{color.sampark.error.100}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "TagSamparkSuccessBackground",
+    "path": [
+      "tag",
+      "sampark",
+      "success",
+      "background"
+    ],
+    "value": "#e8fcf0",
+    "original": "{color.sampark.success.10}",
+    "legacyMapping": {
+      "spmUi": "--badge-success-bg"
+    }
+  },
+  {
+    "name": "TagSamparkSuccessBorder",
+    "path": [
+      "tag",
+      "sampark",
+      "success",
+      "border"
+    ],
+    "value": "#17b56c33",
+    "original": "#17b56c33",
+    "legacyMapping": {},
+    "comment": "Success/60 @ 20%"
+  },
+  {
+    "name": "TagSamparkSuccessBorderHover",
+    "path": [
+      "tag",
+      "sampark",
+      "success",
+      "borderHover"
+    ],
+    "value": "#089152",
+    "original": "{color.sampark.success.80}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "TagSamparkSuccessText",
+    "path": [
+      "tag",
+      "sampark",
+      "success",
+      "text"
+    ],
+    "value": "#089152",
+    "original": "{color.sampark.success.80}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "TagSamparkDisabledBackground",
+    "path": [
+      "tag",
+      "sampark",
+      "disabled",
+      "background"
+    ],
+    "value": "#1514140a",
+    "original": "#1514140a",
+    "legacyMapping": {},
+    "comment": "same fill as grey — color tokens mute it, opacity stays 1"
+  },
+  {
+    "name": "TagSamparkDisabledBorder",
+    "path": [
+      "tag",
+      "sampark",
+      "disabled",
+      "border"
+    ],
+    "value": "#e1e0e0",
+    "original": "{color.sampark.mono.borders}",
+    "legacyMapping": {},
+    "comment": "no hover change on disabled"
+  },
+  {
+    "name": "TagSamparkDisabledText",
+    "path": [
+      "tag",
+      "sampark",
+      "disabled",
+      "text"
+    ],
+    "value": "#bcb9b9",
+    "original": "{color.sampark.mono.40}",
+    "legacyMapping": {},
+    "comment": "#bcb9b9 Mono/40 'Disable Item'"
+  },
+  {
+    "name": "AvatarMybkyRadius",
+    "path": [
+      "avatar",
+      "mybky",
+      "radius"
+    ],
+    "value": "99px",
+    "original": "{radius.mybky.pill}",
+    "legacyMapping": {},
+    "comment": "full circle — differs from sampark's square avatars"
+  },
+  {
+    "name": "AvatarMybkyBackground",
+    "path": [
+      "avatar",
+      "mybky",
+      "background"
+    ],
+    "value": "#eef0f8",
+    "original": "{color.mybky.blue.50}",
+    "legacyMapping": {},
+    "comment": "initials chip fill — not PrimeNG's grey default"
+  },
+  {
+    "name": "AvatarMybkyText",
+    "path": [
+      "avatar",
+      "mybky",
+      "text"
+    ],
+    "value": "#384871",
+    "original": "{color.mybky.blue.800}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "AvatarMybkySizeXs",
+    "path": [
+      "avatar",
+      "mybky",
+      "size",
+      "xs"
+    ],
+    "value": "1.5rem",
+    "original": "1.5rem",
+    "legacyMapping": {},
+    "comment": "24px"
+  },
+  {
+    "name": "AvatarMybkySizeS",
+    "path": [
+      "avatar",
+      "mybky",
+      "size",
+      "s"
+    ],
+    "value": "2rem",
+    "original": "2rem",
+    "legacyMapping": {},
+    "comment": "32px"
+  },
+  {
+    "name": "AvatarMybkySizeM",
+    "path": [
+      "avatar",
+      "mybky",
+      "size",
+      "m"
+    ],
+    "value": "2.25rem",
+    "original": "2.25rem",
+    "legacyMapping": {},
+    "comment": "36px — default"
+  },
+  {
+    "name": "AvatarMybkySizeL",
+    "path": [
+      "avatar",
+      "mybky",
+      "size",
+      "l"
+    ],
+    "value": "3rem",
+    "original": "3rem",
+    "legacyMapping": {},
+    "comment": "48px"
+  },
+  {
+    "name": "AvatarMybkySizeXl",
+    "path": [
+      "avatar",
+      "mybky",
+      "size",
+      "xl"
+    ],
+    "value": "3.75rem",
+    "original": "3.75rem",
+    "legacyMapping": {},
+    "comment": "60px"
+  },
+  {
+    "name": "AvatarMybkySize2xl",
+    "path": [
+      "avatar",
+      "mybky",
+      "size",
+      "2xl"
+    ],
+    "value": "5rem",
+    "original": "5rem",
+    "legacyMapping": {},
+    "comment": "80px"
+  },
+  {
+    "name": "AvatarMybkyFontSizeXs",
+    "path": [
+      "avatar",
+      "mybky",
+      "fontSize",
+      "xs"
+    ],
+    "value": "0.625rem",
+    "original": "0.625rem",
+    "legacyMapping": {},
+    "comment": "10px initials"
+  },
+  {
+    "name": "AvatarMybkyFontSizeS",
+    "path": [
+      "avatar",
+      "mybky",
+      "fontSize",
+      "s"
+    ],
+    "value": "0.75rem",
+    "original": "0.75rem",
+    "legacyMapping": {},
+    "comment": "12px"
+  },
+  {
+    "name": "AvatarMybkyFontSizeM",
+    "path": [
+      "avatar",
+      "mybky",
+      "fontSize",
+      "m"
+    ],
+    "value": "0.875rem",
+    "original": "0.875rem",
+    "legacyMapping": {},
+    "comment": "14px — default"
+  },
+  {
+    "name": "AvatarMybkyFontSizeL",
+    "path": [
+      "avatar",
+      "mybky",
+      "fontSize",
+      "l"
+    ],
+    "value": "1.125rem",
+    "original": "1.125rem",
+    "legacyMapping": {},
+    "comment": "18px"
+  },
+  {
+    "name": "AvatarMybkyFontSizeXl",
+    "path": [
+      "avatar",
+      "mybky",
+      "fontSize",
+      "xl"
+    ],
+    "value": "1.5rem",
+    "original": "1.5rem",
+    "legacyMapping": {},
+    "comment": "24px"
+  },
+  {
+    "name": "AvatarMybkyFontSize2xl",
+    "path": [
+      "avatar",
+      "mybky",
+      "fontSize",
+      "2xl"
+    ],
+    "value": "1.75rem",
+    "original": "1.75rem",
+    "legacyMapping": {},
+    "comment": "28px"
+  },
+  {
+    "name": "AvatarSamparkRadius",
+    "path": [
+      "avatar",
+      "sampark",
+      "radius"
+    ],
+    "value": "4px",
+    "original": "4px",
+    "legacyMapping": {},
+    "comment": "xs–l squares — differs from mybky's full circle; xl/2xl round more, see radiusXl/radius2xl. Source: spm-ui _avatar.scss (Figma node 13197:90187)"
+  },
+  {
+    "name": "AvatarSamparkRadiusXl",
+    "path": [
+      "avatar",
+      "sampark",
+      "radiusXl"
+    ],
+    "value": "0.375rem",
+    "original": "0.375rem",
+    "legacyMapping": {},
+    "comment": "6px — the 60px xl step"
+  },
+  {
+    "name": "AvatarSamparkRadius2xl",
+    "path": [
+      "avatar",
+      "sampark",
+      "radius2xl"
+    ],
+    "value": "0.5rem",
+    "original": "0.5rem",
+    "legacyMapping": {},
+    "comment": "8px — the 80px 2xl step"
+  },
+  {
+    "name": "AvatarSamparkFontWeight",
+    "path": [
+      "avatar",
+      "sampark",
+      "fontWeight"
+    ],
+    "value": "500",
+    "original": "{font.weight.medium}",
+    "legacyMapping": {},
+    "comment": "Inter 500 initials — every size except 2xl"
+  },
+  {
+    "name": "AvatarSamparkFontWeight2xl",
+    "path": [
+      "avatar",
+      "sampark",
+      "fontWeight2xl"
+    ],
+    "value": "400",
+    "original": "{font.weight.regular}",
+    "legacyMapping": {},
+    "comment": "2xl initials drop to 400 (Figma H1/Regular)"
+  },
+  {
+    "name": "AvatarSamparkBackground",
+    "path": [
+      "avatar",
+      "sampark",
+      "background"
+    ],
+    "value": "#fbf4f4",
+    "original": "{color.sampark.primary.0}",
+    "legacyMapping": {
+      "spmUi": "--avatar-primary-bg (styles/variables.css)"
+    },
+    "comment": "#fbf4f4 — the live variables.css value; the older theme-light $avatar-bg (#fbf3f3) predates the Figma-matched set"
+  },
+  {
+    "name": "AvatarSamparkBorder",
+    "path": [
+      "avatar",
+      "sampark",
+      "border"
+    ],
+    "value": "#e9c3c3",
+    "original": "{color.sampark.primary.20}",
+    "legacyMapping": {
+      "spmUi": "--avatar-primary-border"
+    },
+    "comment": "1px border xs–m, 1.5px l–2xl (borderWidth tokens)"
+  },
+  {
+    "name": "AvatarSamparkBorderHover",
+    "path": [
+      "avatar",
+      "sampark",
+      "borderHover"
+    ],
+    "value": "#d48787",
+    "original": "{color.sampark.primary.40}",
+    "legacyMapping": {
+      "spmUi": "--avatar-primary-border-hover"
+    },
+    "comment": "border darkens on hover; bg and text never change"
+  },
+  {
+    "name": "AvatarSamparkText",
+    "path": [
+      "avatar",
+      "sampark",
+      "text"
+    ],
+    "value": "#595656",
+    "original": "{color.sampark.mono.80}",
+    "legacyMapping": {
+      "spmUi": "--avatar-text-color"
+    },
+    "comment": "#595656 — one text color across all three types; the topbar's mono-100 initials are a spm-ui one-off override"
+  },
+  {
+    "name": "AvatarSamparkBorderWidth",
+    "path": [
+      "avatar",
+      "sampark",
+      "borderWidth"
+    ],
+    "value": "1px",
+    "original": "1px",
+    "legacyMapping": {},
+    "comment": "xs / s / m"
+  },
+  {
+    "name": "AvatarSamparkBorderWidthL",
+    "path": [
+      "avatar",
+      "sampark",
+      "borderWidthL"
+    ],
+    "value": "1.5px",
+    "original": "1.5px",
+    "legacyMapping": {},
+    "comment": "l / xl / 2xl"
+  },
+  {
+    "name": "AvatarSamparkSecondaryBackground",
+    "path": [
+      "avatar",
+      "sampark",
+      "secondary",
+      "background"
+    ],
+    "value": "#f8f7f7",
+    "original": "{color.sampark.secondary.0}",
+    "legacyMapping": {
+      "spmUi": "--avatar-secondary-bg"
+    },
+    "comment": "#f8f7f7 grey chip — replaces the older user-panel #f6f7f8 reading"
+  },
+  {
+    "name": "AvatarSamparkSecondaryBorder",
+    "path": [
+      "avatar",
+      "sampark",
+      "secondary",
+      "border"
+    ],
+    "value": "#bcb9b9",
+    "original": "{color.sampark.mono.40}",
+    "legacyMapping": {
+      "spmUi": "--avatar-secondary-border"
+    }
+  },
+  {
+    "name": "AvatarSamparkSecondaryBorderHover",
+    "path": [
+      "avatar",
+      "sampark",
+      "secondary",
+      "borderHover"
+    ],
+    "value": "#9f9c9c",
+    "original": "{color.sampark.mono.60}",
+    "legacyMapping": {
+      "spmUi": "--avatar-secondary-border-hover"
+    }
+  },
+  {
+    "name": "AvatarSamparkWarningBackground",
+    "path": [
+      "avatar",
+      "sampark",
+      "warning",
+      "background"
+    ],
+    "value": "#fef4e6",
+    "original": "{color.sampark.warning.10}",
+    "legacyMapping": {
+      "spmUi": "--avatar-warning-bg"
+    },
+    "comment": "#fef4e6"
+  },
+  {
+    "name": "AvatarSamparkWarningBorder",
+    "path": [
+      "avatar",
+      "sampark",
+      "warning",
+      "border"
+    ],
+    "value": "#fcca83",
+    "original": "{color.sampark.warning.40}",
+    "legacyMapping": {
+      "spmUi": "--avatar-warning-border"
+    }
+  },
+  {
+    "name": "AvatarSamparkWarningBorderHover",
+    "path": [
+      "avatar",
+      "sampark",
+      "warning",
+      "borderHover"
+    ],
+    "value": "#e08705",
+    "original": "{color.sampark.warning.80}",
+    "legacyMapping": {
+      "spmUi": "--avatar-warning-border-hover"
+    }
+  },
+  {
+    "name": "AvatarSamparkSuccessBackground",
+    "path": [
+      "avatar",
+      "sampark",
+      "success",
+      "background"
+    ],
+    "value": "#e8fcf0",
+    "original": "{color.sampark.success.10}",
+    "legacyMapping": {},
+    "comment": "#e8fcf0 — Figma node 13197:90388 (Icon Success / Default) labels this 'Success/20', but its VALUE is our success.10. Matched by value, not by name: Figma's success ramp labels sit one step above ours (its 'Success/80' #17b56c is our success.60)."
+  },
+  {
+    "name": "AvatarSamparkSuccessBorder",
+    "path": [
+      "avatar",
+      "sampark",
+      "success",
+      "border"
+    ],
+    "value": "#82e3af",
+    "original": "{color.sampark.success.40}",
+    "legacyMapping": {},
+    "comment": "#82e3af — Figma 'Success/60'."
+  },
+  {
+    "name": "AvatarSamparkSuccessBorderHover",
+    "path": [
+      "avatar",
+      "sampark",
+      "success",
+      "borderHover"
+    ],
+    "value": "#17b56c",
+    "original": "{color.sampark.success.60}",
+    "legacyMapping": {},
+    "comment": "#17b56c — node 13197:90412 (Icon Success / Hover) drops the mid step and uses Figma 'Success/80'."
+  },
+  {
+    "name": "AvatarSamparkErrorBackground",
+    "path": [
+      "avatar",
+      "sampark",
+      "error",
+      "background"
+    ],
+    "value": "#fde8e8",
+    "original": "{color.sampark.error.20}",
+    "legacyMapping": {},
+    "comment": "#fde8e8 — Figma node 13197:90436 (Icon Error / Default). NOTE the error ramp does NOT share the success skew: Figma's error labels line up with ours exactly."
+  },
+  {
+    "name": "AvatarSamparkErrorBorder",
+    "path": [
+      "avatar",
+      "sampark",
+      "error",
+      "border"
+    ],
+    "value": "#f27376",
+    "original": "{color.sampark.error.60}",
+    "legacyMapping": {},
+    "comment": "#f27376"
+  },
+  {
+    "name": "AvatarSamparkErrorBorderHover",
+    "path": [
+      "avatar",
+      "sampark",
+      "error",
+      "borderHover"
+    ],
+    "value": "#ea151a",
+    "original": "{color.sampark.error.80}",
+    "legacyMapping": {},
+    "comment": "#ea151a — node 13197:90460 (Icon Error / Hover)."
+  },
+  {
+    "name": "AvatarSamparkStatusDotColor",
+    "path": [
+      "avatar",
+      "sampark",
+      "statusDot",
+      "color"
+    ],
+    "value": "#22c55e",
+    "original": "#22c55e",
+    "legacyMapping": {
+      "spmUi": "--avatar-status-dot-color"
+    },
+    "comment": "green presence dot, top-right, 1.5–2px white ring — not on the sampark palette; kept verbatim"
+  },
+  {
+    "name": "AvatarSamparkStatusDotSize",
+    "path": [
+      "avatar",
+      "sampark",
+      "statusDot",
+      "size"
+    ],
+    "value": "0.5rem",
+    "original": "0.5rem",
+    "legacyMapping": {},
+    "comment": "8px — s/m/l"
+  },
+  {
+    "name": "AvatarSamparkStatusDotSizeXs",
+    "path": [
+      "avatar",
+      "sampark",
+      "statusDot",
+      "sizeXs"
+    ],
+    "value": "0.375rem",
+    "original": "0.375rem",
+    "legacyMapping": {},
+    "comment": "6px"
+  },
+  {
+    "name": "AvatarSamparkStatusDotSizeXl",
+    "path": [
+      "avatar",
+      "sampark",
+      "statusDot",
+      "sizeXl"
+    ],
+    "value": "0.625rem",
+    "original": "0.625rem",
+    "legacyMapping": {},
+    "comment": "10px — xl/2xl"
+  },
+  {
+    "name": "AvatarSamparkIconBadgeBackground",
+    "path": [
+      "avatar",
+      "sampark",
+      "iconBadge",
+      "background"
+    ],
+    "value": "#3b82f6",
+    "original": "#3b82f6",
+    "legacyMapping": {
+      "spmUi": "--avatar-badge-bg"
+    },
+    "comment": "blue icon badge, bottom-right, white ring — not on the sampark palette; kept verbatim"
+  },
+  {
+    "name": "AvatarSamparkIconBadgeSize",
+    "path": [
+      "avatar",
+      "sampark",
+      "iconBadge",
+      "size"
+    ],
+    "value": "0.875rem",
+    "original": "0.875rem",
+    "legacyMapping": {},
+    "comment": "14px — s/m/l"
+  },
+  {
+    "name": "AvatarSamparkIconBadgeSizeXs",
+    "path": [
+      "avatar",
+      "sampark",
+      "iconBadge",
+      "sizeXs"
+    ],
+    "value": "0.625rem",
+    "original": "0.625rem",
+    "legacyMapping": {},
+    "comment": "10px"
+  },
+  {
+    "name": "AvatarSamparkIconBadgeSizeXl",
+    "path": [
+      "avatar",
+      "sampark",
+      "iconBadge",
+      "sizeXl"
+    ],
+    "value": "1.125rem",
+    "original": "1.125rem",
+    "legacyMapping": {},
+    "comment": "18px — xl/2xl"
+  },
+  {
+    "name": "AvatarSamparkSizeXs",
+    "path": [
+      "avatar",
+      "sampark",
+      "size",
+      "xs"
+    ],
+    "value": "1.5rem",
+    "original": "1.5rem",
+    "legacyMapping": {},
+    "comment": "24px"
+  },
+  {
+    "name": "AvatarSamparkSizeS",
+    "path": [
+      "avatar",
+      "sampark",
+      "size",
+      "s"
+    ],
+    "value": "2rem",
+    "original": "2rem",
+    "legacyMapping": {},
+    "comment": "32px"
+  },
+  {
+    "name": "AvatarSamparkSizeM",
+    "path": [
+      "avatar",
+      "sampark",
+      "size",
+      "m"
+    ],
+    "value": "2.25rem",
+    "original": "2.25rem",
+    "legacyMapping": {},
+    "comment": "36px — default"
+  },
+  {
+    "name": "AvatarSamparkSizeL",
+    "path": [
+      "avatar",
+      "sampark",
+      "size",
+      "l"
+    ],
+    "value": "3rem",
+    "original": "3rem",
+    "legacyMapping": {},
+    "comment": "48px"
+  },
+  {
+    "name": "AvatarSamparkSizeXl",
+    "path": [
+      "avatar",
+      "sampark",
+      "size",
+      "xl"
+    ],
+    "value": "3.75rem",
+    "original": "3.75rem",
+    "legacyMapping": {},
+    "comment": "60px"
+  },
+  {
+    "name": "AvatarSamparkSize2xl",
+    "path": [
+      "avatar",
+      "sampark",
+      "size",
+      "2xl"
+    ],
+    "value": "5rem",
+    "original": "5rem",
+    "legacyMapping": {},
+    "comment": "80px"
+  },
+  {
+    "name": "AvatarSamparkFontSizeXs",
+    "path": [
+      "avatar",
+      "sampark",
+      "fontSize",
+      "xs"
+    ],
+    "value": "0.75rem",
+    "original": "0.75rem",
+    "legacyMapping": {},
+    "comment": "12px initials"
+  },
+  {
+    "name": "AvatarSamparkFontSizeS",
+    "path": [
+      "avatar",
+      "sampark",
+      "fontSize",
+      "s"
+    ],
+    "value": "0.875rem",
+    "original": "0.875rem",
+    "legacyMapping": {},
+    "comment": "14px"
+  },
+  {
+    "name": "AvatarSamparkFontSizeM",
+    "path": [
+      "avatar",
+      "sampark",
+      "fontSize",
+      "m"
+    ],
+    "value": "0.875rem",
+    "original": "0.875rem",
+    "legacyMapping": {},
+    "comment": "14px — default"
+  },
+  {
+    "name": "AvatarSamparkFontSizeL",
+    "path": [
+      "avatar",
+      "sampark",
+      "fontSize",
+      "l"
+    ],
+    "value": "1rem",
+    "original": "1rem",
+    "legacyMapping": {},
+    "comment": "16px"
+  },
+  {
+    "name": "AvatarSamparkFontSizeXl",
+    "path": [
+      "avatar",
+      "sampark",
+      "fontSize",
+      "xl"
+    ],
+    "value": "1.25rem",
+    "original": "1.25rem",
+    "legacyMapping": {},
+    "comment": "20px"
+  },
+  {
+    "name": "AvatarSamparkFontSize2xl",
+    "path": [
+      "avatar",
+      "sampark",
+      "fontSize",
+      "2xl"
+    ],
+    "value": "2.25rem",
+    "original": "2.25rem",
+    "legacyMapping": {},
+    "comment": "36px, weight 400"
+  },
+  {
+    "name": "AvatarSamparkIconSizeXs",
+    "path": [
+      "avatar",
+      "sampark",
+      "iconSize",
+      "xs"
+    ],
+    "value": "1.125rem",
+    "original": "1.125rem",
+    "legacyMapping": {},
+    "comment": "18px icon/image slot"
+  },
+  {
+    "name": "AvatarSamparkIconSizeS",
+    "path": [
+      "avatar",
+      "sampark",
+      "iconSize",
+      "s"
+    ],
+    "value": "1.25rem",
+    "original": "1.25rem",
+    "legacyMapping": {},
+    "comment": "20px"
+  },
+  {
+    "name": "AvatarSamparkIconSizeM",
+    "path": [
+      "avatar",
+      "sampark",
+      "iconSize",
+      "m"
+    ],
+    "value": "1.5rem",
+    "original": "1.5rem",
+    "legacyMapping": {},
+    "comment": "24px — default"
+  },
+  {
+    "name": "AvatarSamparkIconSizeL",
+    "path": [
+      "avatar",
+      "sampark",
+      "iconSize",
+      "l"
+    ],
+    "value": "2rem",
+    "original": "2rem",
+    "legacyMapping": {},
+    "comment": "32px"
+  },
+  {
+    "name": "AvatarSamparkIconSizeXl",
+    "path": [
+      "avatar",
+      "sampark",
+      "iconSize",
+      "xl"
+    ],
+    "value": "2.25rem",
+    "original": "2.25rem",
+    "legacyMapping": {},
+    "comment": "36px"
+  },
+  {
+    "name": "AvatarSamparkIconSize2xl",
+    "path": [
+      "avatar",
+      "sampark",
+      "iconSize",
+      "2xl"
+    ],
+    "value": "3rem",
+    "original": "3rem",
+    "legacyMapping": {},
+    "comment": "48px"
+  },
+  {
+    "name": "ToggleSwitchMybkyTrackOff",
+    "path": [
+      "toggleSwitch",
+      "mybky",
+      "trackOff"
+    ],
+    "value": "#8d9ba5",
+    "original": "#8d9ba5",
+    "legacyMapping": {
+      "eventsUi": "--switch-track-unchecked"
+    },
+    "comment": "cool grey — not on the mybky mono scale; kept verbatim from events-ui (Figma MyBKY 1.5 switch, node 22465:108921)"
+  },
+  {
+    "name": "ToggleSwitchMybkyTrackOn",
+    "path": [
+      "toggleSwitch",
+      "mybky",
+      "trackOn"
+    ],
+    "value": "#5f78b8",
+    "original": "{color.mybky.blue.600}",
+    "legacyMapping": {
+      "eventsUi": "--switch-track-checked"
+    },
+    "comment": "full-strength brand blue track; thumb stays WHITE when on (events-ui _switch.scss) — the earlier blue.200 track + blue.600 knob reading was wrong"
+  },
+  {
+    "name": "ToggleSwitchMybkyTrackOffDisabled",
+    "path": [
+      "toggleSwitch",
+      "mybky",
+      "trackOffDisabled"
+    ],
+    "value": "#e4ecf1",
+    "original": "{color.mybky.mono.300}",
+    "legacyMapping": {
+      "eventsUi": "--switch-track-unchecked-disabled"
+    },
+    "comment": "#e4ecf1"
+  },
+  {
+    "name": "ToggleSwitchMybkyTrackOnDisabled",
+    "path": [
+      "toggleSwitch",
+      "mybky",
+      "trackOnDisabled"
+    ],
+    "value": "#bdc6e4",
+    "original": "{color.mybky.blue.200}",
+    "legacyMapping": {
+      "eventsUi": "--switch-track-checked-disabled"
+    },
+    "comment": "#bdc6e4"
+  },
+  {
+    "name": "ToggleSwitchMybkyThumbBg",
+    "path": [
+      "toggleSwitch",
+      "mybky",
+      "thumbBg"
+    ],
+    "value": "#ffffff",
+    "original": "{color.mybky.mono.0}",
+    "legacyMapping": {
+      "eventsUi": "--switch-thumb-bg"
+    },
+    "comment": "white in every state — on/off is carried by the track alone"
+  },
+  {
+    "name": "ToggleSwitchMybkyTrackWidth",
+    "path": [
+      "toggleSwitch",
+      "mybky",
+      "trackWidth"
+    ],
+    "value": "2.25rem",
+    "original": "2.25rem",
+    "legacyMapping": {
+      "eventsUi": "--switch-width-m"
+    },
+    "comment": "36px — default (md)"
+  },
+  {
+    "name": "ToggleSwitchMybkyTrackHeight",
+    "path": [
+      "toggleSwitch",
+      "mybky",
+      "trackHeight"
+    ],
+    "value": "1.25rem",
+    "original": "1.25rem",
+    "legacyMapping": {
+      "eventsUi": "--switch-height-m"
+    },
+    "comment": "20px"
+  },
+  {
+    "name": "ToggleSwitchMybkyThumbSize",
+    "path": [
+      "toggleSwitch",
+      "mybky",
+      "thumbSize"
+    ],
+    "value": "1.0625rem",
+    "original": "1.0625rem",
+    "legacyMapping": {
+      "eventsUi": "--switch-thumb-size-m"
+    },
+    "comment": "17px — thumb sits fully inside the track (vs Material's overhanging 24px)"
+  },
+  {
+    "name": "ToggleSwitchMybkyTrackWidthSm",
+    "path": [
+      "toggleSwitch",
+      "mybky",
+      "trackWidthSm"
+    ],
+    "value": "1.75rem",
+    "original": "1.75rem",
+    "legacyMapping": {
+      "eventsUi": "--switch-width-s"
+    },
+    "comment": "28px — events-ui size=\"small\""
+  },
+  {
+    "name": "ToggleSwitchMybkyTrackHeightSm",
+    "path": [
+      "toggleSwitch",
+      "mybky",
+      "trackHeightSm"
+    ],
+    "value": "1rem",
+    "original": "1rem",
+    "legacyMapping": {},
+    "comment": "16px"
+  },
+  {
+    "name": "ToggleSwitchMybkyThumbSizeSm",
+    "path": [
+      "toggleSwitch",
+      "mybky",
+      "thumbSizeSm"
+    ],
+    "value": "0.8125rem",
+    "original": "0.8125rem",
+    "legacyMapping": {},
+    "comment": "13px"
+  },
+  {
+    "name": "ToggleSwitchMybkyTrackWidthLg",
+    "path": [
+      "toggleSwitch",
+      "mybky",
+      "trackWidthLg"
+    ],
+    "value": "2.5rem",
+    "original": "2.5rem",
+    "legacyMapping": {
+      "eventsUi": "--switch-width-l"
+    },
+    "comment": "40px — events-ui size=\"large\""
+  },
+  {
+    "name": "ToggleSwitchMybkyTrackHeightLg",
+    "path": [
+      "toggleSwitch",
+      "mybky",
+      "trackHeightLg"
+    ],
+    "value": "1.5rem",
+    "original": "1.5rem",
+    "legacyMapping": {},
+    "comment": "24px"
+  },
+  {
+    "name": "ToggleSwitchMybkyThumbSizeLg",
+    "path": [
+      "toggleSwitch",
+      "mybky",
+      "thumbSizeLg"
+    ],
+    "value": "1.3125rem",
+    "original": "1.3125rem",
+    "legacyMapping": {},
+    "comment": "21px"
+  },
+  {
+    "name": "ToggleSwitchMybkyGap",
+    "path": [
+      "toggleSwitch",
+      "mybky",
+      "gap"
+    ],
+    "value": "0.09375rem",
+    "original": "0.09375rem",
+    "legacyMapping": {
+      "eventsUi": "--switch-padding"
+    },
+    "comment": "1.5px thumb inset — PrimeNG's checked-position term reproduces events-ui's translate table exactly: md 36-17-1.5 = 17.5px, sm 13.5px, lg 17.5px"
+  },
+  {
+    "name": "ToggleSwitchSamparkTrackOff",
+    "path": [
+      "toggleSwitch",
+      "sampark",
+      "trackOff"
+    ],
+    "value": "#bcb9b9",
+    "original": "{color.sampark.mono.40}",
+    "legacyMapping": {
+      "spmUi": "--switch-track-unchecked"
+    }
+  },
+  {
+    "name": "ToggleSwitchSamparkTrackOn",
+    "path": [
+      "toggleSwitch",
+      "sampark",
+      "trackOn"
+    ],
+    "value": "#c96868",
+    "original": "{color.sampark.primary.60}",
+    "legacyMapping": {
+      "spmUi": "--switch-track-checked"
+    }
+  },
+  {
+    "name": "ToggleSwitchSamparkTrackOffDisabled",
+    "path": [
+      "toggleSwitch",
+      "sampark",
+      "trackOffDisabled"
+    ],
+    "value": "#f3f2f2",
+    "original": "{color.sampark.mono.20}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ToggleSwitchSamparkTrackOnDisabled",
+    "path": [
+      "toggleSwitch",
+      "sampark",
+      "trackOnDisabled"
+    ],
+    "value": "#e9c3c3",
+    "original": "{color.sampark.primary.20}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ToggleSwitchSamparkThumbBg",
+    "path": [
+      "toggleSwitch",
+      "sampark",
+      "thumbBg"
+    ],
+    "value": "#ffffff",
+    "original": "{color.sampark.mono.0}",
+    "legacyMapping": {
+      "spmUi": "--switch-thumb-bg"
+    }
+  },
+  {
+    "name": "ToggleSwitchSamparkGap",
+    "path": [
+      "toggleSwitch",
+      "sampark",
+      "gap"
+    ],
+    "value": "2px",
+    "original": "2px",
+    "legacyMapping": {},
+    "comment": "thumb inset from track edge, all sizes — also PrimeNG's checked-position term (width - thumb - gap)"
+  },
+  {
+    "name": "ToggleSwitchSamparkRadius",
+    "path": [
+      "toggleSwitch",
+      "sampark",
+      "radius"
+    ],
+    "value": "0.25rem",
+    "original": "0.25rem",
+    "legacyMapping": {
+      "spmUi": "_switch.scss border-radius"
+    },
+    "comment": "4px — md/lg track; SQUARE, not Material's pill. xs/sm round to radiusSm"
+  },
+  {
+    "name": "ToggleSwitchSamparkRadiusSm",
+    "path": [
+      "toggleSwitch",
+      "sampark",
+      "radiusSm"
+    ],
+    "value": "0.1875rem",
+    "original": "0.1875rem",
+    "legacyMapping": {},
+    "comment": "3px — xs/sm track"
+  },
+  {
+    "name": "ToggleSwitchSamparkThumbRadius",
+    "path": [
+      "toggleSwitch",
+      "sampark",
+      "thumbRadius"
+    ],
+    "value": "0.125rem",
+    "original": "0.125rem",
+    "legacyMapping": {},
+    "comment": "2px — thumb, all sizes"
+  },
+  {
+    "name": "ToggleSwitchSamparkShadowTrack",
+    "path": [
+      "toggleSwitch",
+      "sampark",
+      "shadowTrack"
+    ],
+    "value": "inset 0 0 4px 0 #00000026",
+    "original": "inset 0 0 4px 0 #00000026",
+    "legacyMapping": {
+      "spmUi": "--switch-shadow-default"
+    },
+    "comment": "black @ 15%"
+  },
+  {
+    "name": "ToggleSwitchSamparkShadowTrackDisabled",
+    "path": [
+      "toggleSwitch",
+      "sampark",
+      "shadowTrackDisabled"
+    ],
+    "value": "inset 0 0 4px 0 #0000001a",
+    "original": "inset 0 0 4px 0 #0000001a",
+    "legacyMapping": {
+      "spmUi": "--switch-shadow-disabled"
+    },
+    "comment": "black @ 10%"
+  },
+  {
+    "name": "ToggleSwitchSamparkTrackXsWidth",
+    "path": [
+      "toggleSwitch",
+      "sampark",
+      "track",
+      "xs",
+      "width"
+    ],
+    "value": "1.75rem",
+    "original": "1.75rem",
+    "legacyMapping": {},
+    "comment": "28px — spm-ui switchsize xs/s, radius 3px, thumb 12px"
+  },
+  {
+    "name": "ToggleSwitchSamparkTrackXsHeight",
+    "path": [
+      "toggleSwitch",
+      "sampark",
+      "track",
+      "xs",
+      "height"
+    ],
+    "value": "1rem",
+    "original": "1rem",
+    "legacyMapping": {},
+    "comment": "16px"
+  },
+  {
+    "name": "ToggleSwitchSamparkTrackSmWidth",
+    "path": [
+      "toggleSwitch",
+      "sampark",
+      "track",
+      "sm",
+      "width"
+    ],
+    "value": "2rem",
+    "original": "2rem",
+    "legacyMapping": {},
+    "comment": "32px, radius 3px, thumb 16px"
+  },
+  {
+    "name": "ToggleSwitchSamparkTrackSmHeight",
+    "path": [
+      "toggleSwitch",
+      "sampark",
+      "track",
+      "sm",
+      "height"
+    ],
+    "value": "1.25rem",
+    "original": "1.25rem",
+    "legacyMapping": {},
+    "comment": "20px"
+  },
+  {
+    "name": "ToggleSwitchSamparkTrackMdWidth",
+    "path": [
+      "toggleSwitch",
+      "sampark",
+      "track",
+      "md",
+      "width"
+    ],
+    "value": "2.25rem",
+    "original": "2.25rem",
+    "legacyMapping": {},
+    "comment": "36px — default, thumb 18px"
+  },
+  {
+    "name": "ToggleSwitchSamparkTrackMdHeight",
+    "path": [
+      "toggleSwitch",
+      "sampark",
+      "track",
+      "md",
+      "height"
+    ],
+    "value": "1.375rem",
+    "original": "1.375rem",
+    "legacyMapping": {},
+    "comment": "22px"
+  },
+  {
+    "name": "ToggleSwitchSamparkTrackLgWidth",
+    "path": [
+      "toggleSwitch",
+      "sampark",
+      "track",
+      "lg",
+      "width"
+    ],
+    "value": "2.5rem",
+    "original": "2.5rem",
+    "legacyMapping": {},
+    "comment": "40px, thumb 20px — spm-ui switchsize lg/l"
+  },
+  {
+    "name": "ToggleSwitchSamparkTrackLgHeight",
+    "path": [
+      "toggleSwitch",
+      "sampark",
+      "track",
+      "lg",
+      "height"
+    ],
+    "value": "1.5rem",
+    "original": "1.5rem",
+    "legacyMapping": {},
+    "comment": "24px"
+  },
+  {
+    "name": "ToggleSwitchSamparkThumbXs",
+    "path": [
+      "toggleSwitch",
+      "sampark",
+      "thumb",
+      "xs"
+    ],
+    "value": "0.75rem",
+    "original": "0.75rem",
+    "legacyMapping": {},
+    "comment": "12px"
+  },
+  {
+    "name": "ToggleSwitchSamparkThumbSm",
+    "path": [
+      "toggleSwitch",
+      "sampark",
+      "thumb",
+      "sm"
+    ],
+    "value": "1rem",
+    "original": "1rem",
+    "legacyMapping": {},
+    "comment": "16px"
+  },
+  {
+    "name": "ToggleSwitchSamparkThumbMd",
+    "path": [
+      "toggleSwitch",
+      "sampark",
+      "thumb",
+      "md"
+    ],
+    "value": "1.125rem",
+    "original": "1.125rem",
+    "legacyMapping": {},
+    "comment": "18px"
+  },
+  {
+    "name": "ToggleSwitchSamparkThumbLg",
+    "path": [
+      "toggleSwitch",
+      "sampark",
+      "thumb",
+      "lg"
+    ],
+    "value": "1.25rem",
+    "original": "1.25rem",
+    "legacyMapping": {},
+    "comment": "20px"
+  },
+  {
+    "name": "ToolbarSamparkPadding",
+    "path": [
+      "toolbar",
+      "sampark",
+      "padding"
+    ],
+    "value": "0.5rem",
+    "original": "{space.2}",
+    "legacyMapping": {},
+    "comment": "8px, all sides"
+  },
+  {
+    "name": "ToolbarSamparkGap",
+    "path": [
+      "toolbar",
+      "sampark",
+      "gap"
+    ],
+    "value": "0.5rem",
+    "original": "{space.2}",
+    "legacyMapping": {},
+    "comment": "8px, between stacked toolbar rows"
+  },
+  {
+    "name": "ToolbarSamparkSectionGap",
+    "path": [
+      "toolbar",
+      "sampark",
+      "sectionGap"
+    ],
+    "value": "0.25rem",
+    "original": "{space.1}",
+    "legacyMapping": {},
+    "comment": "4px, gap within .left"
+  },
+  {
+    "name": "ToolbarSamparkBackground",
+    "path": [
+      "toolbar",
+      "sampark",
+      "background"
+    ],
+    "value": "#ffffff",
+    "original": "{color.sampark.mono.0}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ToolbarSamparkBorder",
+    "path": [
+      "toolbar",
+      "sampark",
+      "border"
+    ],
+    "value": "#e1e0e0",
+    "original": "{color.sampark.mono.borders}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ToolbarSamparkTitleFontSize",
+    "path": [
+      "toolbar",
+      "sampark",
+      "titleFontSize"
+    ],
+    "value": "1.25rem",
+    "original": "{font.size.xl}",
+    "legacyMapping": {},
+    "comment": "20px"
+  },
+  {
+    "name": "ToolbarSamparkTitleFontWeight",
+    "path": [
+      "toolbar",
+      "sampark",
+      "titleFontWeight"
+    ],
+    "value": "600",
+    "original": "{font.weight.semibold}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ToolbarSamparkTitleLineHeight",
+    "path": [
+      "toolbar",
+      "sampark",
+      "titleLineHeight"
+    ],
+    "value": "1.5",
+    "original": "{font.lineHeight.normal}",
+    "legacyMapping": {},
+    "comment": "1.5 — 30px at 20px font"
+  },
+  {
+    "name": "ToolbarSamparkTitleColor",
+    "path": [
+      "toolbar",
+      "sampark",
+      "titleColor"
+    ],
+    "value": "#151414",
+    "original": "{color.sampark.mono.100}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ToolbarSamparkSearchWidth",
+    "path": [
+      "toolbar",
+      "sampark",
+      "searchWidth"
+    ],
+    "value": "16rem",
+    "original": "16rem",
+    "legacyMapping": {},
+    "comment": "256px — compact, matches the reference toolbar (title left / search+action right, single line, no wrap)"
+  },
+  {
+    "name": "DashboardMybkyPageBackground",
+    "path": [
+      "dashboard",
+      "mybky",
+      "pageBackground"
+    ],
+    "value": "#f8fafb",
+    "original": "{color.mybky.mono.50}",
+    "legacyMapping": {},
+    "comment": "#F8FAFB. The dashboard repaints itself grey ON TOP of the white layout shell, so cards read as floating. Settings/config do NOT — they inherit the shell white."
+  },
+  {
+    "name": "DashboardMybkyHeroRadius",
+    "path": [
+      "dashboard",
+      "mybky",
+      "heroRadius"
+    ],
+    "value": "1rem",
+    "original": "1rem",
+    "legacyMapping": {},
+    "comment": "16px"
+  },
+  {
+    "name": "DashboardMybkyHeroPadding",
+    "path": [
+      "dashboard",
+      "mybky",
+      "heroPadding"
+    ],
+    "value": "1.5rem",
+    "original": "{space.6}",
+    "legacyMapping": {},
+    "comment": "24px"
+  },
+  {
+    "name": "DashboardMybkyHeroMinHeight",
+    "path": [
+      "dashboard",
+      "mybky",
+      "heroMinHeight"
+    ],
+    "value": "5.75rem",
+    "original": "5.75rem",
+    "legacyMapping": {}
+  },
+  {
+    "name": "DashboardMybkyHeroInvitedGradient",
+    "path": [
+      "dashboard",
+      "mybky",
+      "heroInvitedGradient"
+    ],
+    "value": "linear-gradient(90deg, #4B536C 0%, #1F2945 100%)",
+    "original": "linear-gradient(90deg, #4B536C 0%, #1F2945 100%)",
+    "legacyMapping": {},
+    "comment": "Was hardcoded in event-dashboard.ts with no token behind it — the one screen that broke the token pattern."
+  },
+  {
+    "name": "DashboardMybkyHeroInvitedLabel",
+    "path": [
+      "dashboard",
+      "mybky",
+      "heroInvitedLabel"
+    ],
+    "value": "#BDC6E4",
+    "original": "#BDC6E4",
+    "legacyMapping": {}
+  },
+  {
+    "name": "DashboardMybkyHeroRegisteredGradient",
+    "path": [
+      "dashboard",
+      "mybky",
+      "heroRegisteredGradient"
+    ],
+    "value": "linear-gradient(90deg, #4AA16C 0%, #1E7A4D 100%)",
+    "original": "linear-gradient(90deg, #4AA16C 0%, #1E7A4D 100%)",
+    "legacyMapping": {}
+  },
+  {
+    "name": "DashboardMybkyHeroRegisteredLabel",
+    "path": [
+      "dashboard",
+      "mybky",
+      "heroRegisteredLabel"
+    ],
+    "value": "#D8FDEB",
+    "original": "#D8FDEB",
+    "legacyMapping": {}
+  },
+  {
+    "name": "DashboardMybkyHeroPendingGradient",
+    "path": [
+      "dashboard",
+      "mybky",
+      "heroPendingGradient"
+    ],
+    "value": "linear-gradient(90deg, #5C8FE3 0%, #2D5FB5 100%)",
+    "original": "linear-gradient(90deg, #5C8FE3 0%, #2D5FB5 100%)",
+    "legacyMapping": {}
+  },
+  {
+    "name": "DashboardMybkyHeroPendingLabel",
+    "path": [
+      "dashboard",
+      "mybky",
+      "heroPendingLabel"
+    ],
+    "value": "#D8E7FD",
+    "original": "#D8E7FD",
+    "legacyMapping": {}
+  },
+  {
+    "name": "DashboardMybkyHeroDeclinedGradient",
+    "path": [
+      "dashboard",
+      "mybky",
+      "heroDeclinedGradient"
+    ],
+    "value": "linear-gradient(90deg, #D3A04B 0%, #B57A23 100%)",
+    "original": "linear-gradient(90deg, #D3A04B 0%, #B57A23 100%)",
+    "legacyMapping": {}
+  },
+  {
+    "name": "DashboardMybkyHeroDeclinedLabel",
+    "path": [
+      "dashboard",
+      "mybky",
+      "heroDeclinedLabel"
+    ],
+    "value": "#FDEDD8",
+    "original": "#FDEDD8",
+    "legacyMapping": {}
+  },
+  {
+    "name": "DashboardMybkyChartCardBackground",
+    "path": [
+      "dashboard",
+      "mybky",
+      "chartCardBackground"
+    ],
+    "value": "#ffffff",
+    "original": "{color.mybky.mono.0}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "DashboardMybkyChartCardBorder",
+    "path": [
+      "dashboard",
+      "mybky",
+      "chartCardBorder"
+    ],
+    "value": "#e4ecf1",
+    "original": "{color.mybky.border.default}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "DashboardMybkyChartCardRadius",
+    "path": [
+      "dashboard",
+      "mybky",
+      "chartCardRadius"
+    ],
+    "value": "0.75rem",
+    "original": "0.75rem",
+    "legacyMapping": {},
+    "comment": "12px — smaller than the hero tile 16px"
+  },
+  {
+    "name": "DashboardMybkyChartCardPadding",
+    "path": [
+      "dashboard",
+      "mybky",
+      "chartCardPadding"
+    ],
+    "value": "1.5rem",
+    "original": "{space.6}",
+    "legacyMapping": {},
+    "comment": "24px, shrinks at breakpoints"
+  },
+  {
+    "name": "DashboardMybkyChartCardShadow",
+    "path": [
+      "dashboard",
+      "mybky",
+      "chartCardShadow"
+    ],
+    "value": "none",
+    "original": "none",
+    "legacyMapping": {},
+    "comment": "NO shadow, and no hover either. Only the region mini-cards lift."
+  },
+  {
+    "name": "DashboardMybkyRegionCardHoverShadow",
+    "path": [
+      "dashboard",
+      "mybky",
+      "regionCardHoverShadow"
+    ],
+    "value": "0 2px 12px rgba(0,0,0,0.08)",
+    "original": "{shadow.mybky.cardHover}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "DashboardMybkyGridGap",
+    "path": [
+      "dashboard",
+      "mybky",
+      "gridGap"
+    ],
+    "value": "1rem",
+    "original": "{space.4}",
+    "legacyMapping": {},
+    "comment": "16px between dashboard rows"
+  },
+  {
+    "name": "DashboardMybkyRegionGridGap",
+    "path": [
+      "dashboard",
+      "mybky",
+      "regionGridGap"
+    ],
+    "value": "0.875rem",
+    "original": "0.875rem",
+    "legacyMapping": {},
+    "comment": "14px — OFF the 4px grid. Kept because it is what ships; flagged rather than silently rounded to 12 or 16."
+  },
+  {
+    "name": "TableMybkyRowBackground",
+    "path": [
+      "table",
+      "mybky",
+      "rowBackground"
+    ],
+    "value": "#ffffff",
+    "original": "{color.mybky.mono.0}",
+    "legacyMapping": {},
+    "comment": "Every row. NO zebra striping anywhere in events-ui — confirmed, not an oversight."
+  },
+  {
+    "name": "TableMybkyRowHoverBackground",
+    "path": [
+      "table",
+      "mybky",
+      "rowHoverBackground"
+    ],
+    "value": "#FBFCFD",
+    "original": "#FBFCFD",
+    "legacyMapping": {},
+    "comment": "Barely-there wash, lighter than mono.50. No token existed for it."
+  },
+  {
+    "name": "TableMybkyRowErrorBackground",
+    "path": [
+      "table",
+      "mybky",
+      "rowErrorBackground"
+    ],
+    "value": "#FFF5F5",
+    "original": "#FFF5F5",
+    "legacyMapping": {},
+    "comment": "Live in payment-config error rows. events-ui also declares --comm-unavailable-row-bg with this value and never uses it — that one is dead, this is not."
+  },
+  {
+    "name": "TableMybkyEmbeddedRowHover",
+    "path": [
+      "table",
+      "mybky",
+      "embeddedRowHover"
+    ],
+    "value": "rgba(0,0,0,0.02)",
+    "original": "rgba(0,0,0,0.02)",
+    "legacyMapping": {},
+    "comment": "Tables sitting INSIDE a dashboard card hover darker than standalone ones."
+  },
+  {
+    "name": "TableMybkyBorderColor",
+    "path": [
+      "table",
+      "mybky",
+      "borderColor"
+    ],
+    "value": "#e4ecf1",
+    "original": "{color.mybky.border.default}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "TableMybkyCellPaddingY",
+    "path": [
+      "table",
+      "mybky",
+      "cellPaddingY"
+    ],
+    "value": "1.125rem",
+    "original": "1.125rem",
+    "legacyMapping": {}
+  },
+  {
+    "name": "TableMybkyCellPaddingX",
+    "path": [
+      "table",
+      "mybky",
+      "cellPaddingX"
+    ],
+    "value": "1rem",
+    "original": "{space.4}",
+    "legacyMapping": {},
+    "comment": "16px"
+  },
+  {
+    "name": "TableMybkyHeaderPaddingY",
+    "path": [
+      "table",
+      "mybky",
+      "headerPaddingY"
+    ],
+    "value": "0.625rem",
+    "original": "0.625rem",
+    "legacyMapping": {}
+  },
+  {
+    "name": "TableMybkyRowWarningBackground",
+    "path": [
+      "table",
+      "mybky",
+      "rowWarningBackground"
+    ],
+    "value": "#FFF6EB",
+    "original": "#FFF6EB",
+    "legacyMapping": {},
+    "comment": "Warning/10. Refund rows in the Payment transactions table (Figma 25317:120737). Hover still overrides it — the Refund Hover variant paints Primary/0, not this."
+  },
+  {
+    "name": "TreeTableMybkyRowHeight",
+    "path": [
+      "treeTable",
+      "mybky",
+      "rowHeight"
+    ],
+    "value": "3.75rem",
+    "original": "3.75rem",
+    "legacyMapping": {},
+    "comment": "60px fixed"
+  },
+  {
+    "name": "TreeTableMybkyHeaderHeight",
+    "path": [
+      "treeTable",
+      "mybky",
+      "headerHeight"
+    ],
+    "value": "2.5rem",
+    "original": "2.5rem",
+    "legacyMapping": {},
+    "comment": "40px"
+  },
+  {
+    "name": "TreeTableMybkyHeaderBackground",
+    "path": [
+      "treeTable",
+      "mybky",
+      "headerBackground"
+    ],
+    "value": "#f8fafb",
+    "original": "{color.mybky.mono.50}",
+    "legacyMapping": {},
+    "comment": "#F8FAFB"
+  },
+  {
+    "name": "TreeTableMybkyRowBackground",
+    "path": [
+      "treeTable",
+      "mybky",
+      "rowBackground"
+    ],
+    "value": "#ffffff",
+    "original": "{color.mybky.mono.0}",
+    "legacyMapping": {},
+    "comment": "Every row — no striping"
+  },
+  {
+    "name": "TreeTableMybkyRowHoverBackground",
+    "path": [
+      "treeTable",
+      "mybky",
+      "rowHoverBackground"
+    ],
+    "value": "#eef0f8",
+    "original": "{color.mybky.blue.50}",
+    "legacyMapping": {},
+    "comment": "#EEF0F8. Note this differs from the flat tables above, which hover #FBFCFD."
+  },
+  {
+    "name": "TreeTableMybkyRowErrorBackground",
+    "path": [
+      "treeTable",
+      "mybky",
+      "rowErrorBackground"
+    ],
+    "value": "#FFF5F5",
+    "original": "#FFF5F5",
+    "legacyMapping": {}
+  },
+  {
+    "name": "TreeTableMybkyBorderColor",
+    "path": [
+      "treeTable",
+      "mybky",
+      "borderColor"
+    ],
+    "value": "#e4ecf1",
+    "original": "{color.mybky.border.default}",
+    "legacyMapping": {},
+    "comment": "Bottom border only"
+  },
+  {
+    "name": "TreeTableMybkyConnectorColor",
+    "path": [
+      "treeTable",
+      "mybky",
+      "connectorColor"
+    ],
+    "value": "#8d9ba5",
+    "original": "{color.mybky.mono.450}",
+    "legacyMapping": {},
+    "comment": "#8D9BA5. The ONE place a darker line than border.default is used — the hierarchy trunk needs to read against the row borders it crosses."
+  },
+  {
+    "name": "TreeTableMybkyExpandedFontWeight",
+    "path": [
+      "treeTable",
+      "mybky",
+      "expandedFontWeight"
+    ],
+    "value": "600",
+    "original": "{font.weight.semibold}",
+    "legacyMapping": {},
+    "comment": "An expanded parent gets weight only — no background change."
+  },
+  {
+    "name": "StepperMybkyRailBackground",
+    "path": [
+      "stepper",
+      "mybky",
+      "railBackground"
+    ],
+    "value": "#eef0f8",
+    "original": "{color.mybky.blue.50}",
+    "legacyMapping": {},
+    "comment": "Primary/0. The pill behind the whole rail."
+  },
+  {
+    "name": "StepperMybkyRailRadius",
+    "path": [
+      "stepper",
+      "mybky",
+      "railRadius"
+    ],
+    "value": "1rem",
+    "original": "1rem",
+    "legacyMapping": {}
+  },
+  {
+    "name": "StepperMybkyRailPaddingY",
+    "path": [
+      "stepper",
+      "mybky",
+      "railPaddingY"
+    ],
+    "value": "0.9rem",
+    "original": "0.9rem",
+    "legacyMapping": {},
+    "comment": "Per spec. Pill height then follows the 40px slot rather than being pinned."
+  },
+  {
+    "name": "StepperMybkyRailPaddingX",
+    "path": [
+      "stepper",
+      "mybky",
+      "railPaddingX"
+    ],
+    "value": "2.5rem",
+    "original": "2.5rem",
+    "legacyMapping": {}
+  },
+  {
+    "name": "StepperMybkyRailMaxWidth",
+    "path": [
+      "stepper",
+      "mybky",
+      "railMaxWidth"
+    ],
+    "value": "55rem",
+    "original": "55rem",
+    "legacyMapping": {}
+  },
+  {
+    "name": "StepperMybkySlotSize",
+    "path": [
+      "stepper",
+      "mybky",
+      "slotSize"
+    ],
+    "value": "2.5rem",
+    "original": "2.5rem",
+    "legacyMapping": {},
+    "comment": "40px. Per the source spec (_event-shared.scss). The Figma frame 25317:104987 renders these circles at 32px; the spec is treated as authoritative because it is the shipping stylesheet."
+  },
+  {
+    "name": "StepperMybkySlotSizeActive",
+    "path": [
+      "stepper",
+      "mybky",
+      "slotSizeActive"
+    ],
+    "value": "3.5rem",
+    "original": "3.5rem",
+    "legacyMapping": {},
+    "comment": "56px. Size, not just colour, is what marks the current step on a rail whose labels are hidden."
+  },
+  {
+    "name": "StepperMybkyIconSize",
+    "path": [
+      "stepper",
+      "mybky",
+      "iconSize"
+    ],
+    "value": "1.5rem",
+    "original": "1.5rem",
+    "legacyMapping": {},
+    "comment": "24px on a 40px slot."
+  },
+  {
+    "name": "StepperMybkyIconSizeActive",
+    "path": [
+      "stepper",
+      "mybky",
+      "iconSizeActive"
+    ],
+    "value": "2rem",
+    "original": "2rem",
+    "legacyMapping": {}
+  },
+  {
+    "name": "StepperMybkyActiveGradient",
+    "path": [
+      "stepper",
+      "mybky",
+      "activeGradient"
+    ],
+    "value": "linear-gradient(135deg, #5f78b8, #384871)",
+    "original": "linear-gradient(135deg, {color.mybky.blue.600}, {color.mybky.blue.800})",
+    "legacyMapping": {},
+    "comment": "Primary/60 to Primary/80. Also the hover preview on an unlocked inactive slot, and the in-progress fill."
+  },
+  {
+    "name": "StepperMybkyCompletedGradient",
+    "path": [
+      "stepper",
+      "mybky",
+      "completedGradient"
+    ],
+    "value": "linear-gradient(135deg, #40BF84, #178251)",
+    "original": "linear-gradient(135deg, #40BF84, #178251)",
+    "legacyMapping": {},
+    "comment": "Success/80 to Success/100. A finished step is the one place a green fill appears in the wizard."
+  },
+  {
+    "name": "StepperMybkyConnectorColor",
+    "path": [
+      "stepper",
+      "mybky",
+      "connectorColor"
+    ],
+    "value": "#8d9ba5",
+    "original": "{color.mybky.mono.450}",
+    "legacyMapping": {},
+    "comment": "Mono/40. Solid, NOT dashed — measured from the shipping stylesheet."
+  },
+  {
+    "name": "StepperMybkyLockedOpacity",
+    "path": [
+      "stepper",
+      "mybky",
+      "lockedOpacity"
+    ],
+    "value": "0.3",
+    "original": "0.3",
+    "legacyMapping": {}
+  },
+  {
+    "name": "StepperMybkyActiveLift",
+    "path": [
+      "stepper",
+      "mybky",
+      "activeLift"
+    ],
+    "value": "2.6rem",
+    "original": "2.6rem",
+    "legacyMapping": {},
+    "comment": "41.6px. translateY on the icon WRAP, not the button — the button already spends its transform on scale() during hover, so the lift needs its own element. Same amount for the real active step and for a hovered one."
+  },
+  {
+    "name": "StepperMybkyHoverScale",
+    "path": [
+      "stepper",
+      "mybky",
+      "hoverScale"
+    ],
+    "value": "1.4",
+    "original": "1.4",
+    "legacyMapping": {},
+    "comment": "40px x 1.4 = 56px VISUAL. Deliberately a scale, not a width change: the active step is genuinely 56px, a hovered one only looks it, so neighbours never reflow."
+  },
+  {
+    "name": "MotionDurationFast",
+    "path": [
+      "motion",
+      "duration",
+      "fast"
+    ],
+    "value": "120ms",
+    "original": "120ms",
+    "legacyMapping": {
+      "spmUi": "checkbox transition"
+    }
+  },
+  {
+    "name": "MotionDurationBase",
+    "path": [
+      "motion",
+      "duration",
+      "base"
+    ],
+    "value": "150ms",
+    "original": "150ms",
+    "legacyMapping": {
+      "eventsUi": "button/badge/avatar transition",
+      "spmUi": "button transition"
+    }
+  },
+  {
+    "name": "MotionDurationModerate",
+    "path": [
+      "motion",
+      "duration",
+      "moderate"
+    ],
+    "value": "200ms",
+    "original": "200ms",
+    "legacyMapping": {
+      "eventsUi": "switch/formfield transition",
+      "spmUi": "switch/form element transition"
+    }
+  },
+  {
+    "name": "MotionDurationUiTransition",
+    "path": [
+      "motion",
+      "duration",
+      "uiTransition"
+    ],
+    "value": "220ms",
+    "original": "220ms",
+    "legacyMapping": {},
+    "comment": "target — CLAUDE.md Motion: UI transitions (panels, drawers, tab switches)"
+  },
+  {
+    "name": "MotionDurationViewChange",
+    "path": [
+      "motion",
+      "duration",
+      "viewChange"
+    ],
+    "value": "420ms",
+    "original": "420ms",
+    "legacyMapping": {},
+    "comment": "target — CLAUDE.md Motion: full view/route changes"
+  },
+  {
+    "name": "MotionEasingStandard",
+    "path": [
+      "motion",
+      "easing",
+      "standard"
+    ],
+    "value": "ease",
+    "original": "ease",
+    "legacyMapping": {}
+  },
+  {
+    "name": "MotionEasingOverlay",
+    "path": [
+      "motion",
+      "easing",
+      "overlay"
+    ],
+    "value": "cubic-bezier(0, 0, 0.2, 1)",
+    "original": "cubic-bezier(0, 0, 0.2, 1)",
+    "legacyMapping": {
+      "spmUi": "overlay animation easing"
+    }
+  },
+  {
+    "name": "MotionEasingCalm",
+    "path": [
+      "motion",
+      "easing",
+      "calm"
+    ],
+    "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+    "original": "cubic-bezier(0.16, 1, 0.3, 1)",
+    "legacyMapping": {},
+    "comment": "target — CLAUDE.md Motion: calm, decelerating; never bounce/overshoot. Pair with duration.uiTransition/viewChange, not the legacy fast/base/moderate trio."
+  },
+  {
+    "name": "ZIndexSamparkOverlayBackdrop",
+    "path": [
+      "zIndex",
+      "sampark",
+      "overlayBackdrop"
+    ],
+    "value": "3000",
+    "original": "3000",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ZIndexSamparkOverlayHost",
+    "path": [
+      "zIndex",
+      "sampark",
+      "overlayHost"
+    ],
+    "value": "3001",
+    "original": "3001",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ZIndexSamparkOverlayPanel",
+    "path": [
+      "zIndex",
+      "sampark",
+      "overlayPanel"
+    ],
+    "value": "3200",
+    "original": "3200",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ShadowMybkyCard",
+    "path": [
+      "shadow",
+      "mybky",
+      "card"
+    ],
+    "value": "0 12px 16px -4px rgba(16,24,40,.08), 0 4px 6px -2px rgba(16,24,40,.16)",
+    "original": "0 12px 16px -4px rgba(16,24,40,.08), 0 4px 6px -2px rgba(16,24,40,.16)",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ShadowMybkyTooltip",
+    "path": [
+      "shadow",
+      "mybky",
+      "tooltip"
+    ],
+    "value": "0 6px 12px rgba(16,24,40,.12), 0 2px 4px rgba(16,24,40,.06)",
+    "original": "0 6px 12px rgba(16,24,40,.12), 0 2px 4px rgba(16,24,40,.06)",
+    "legacyMapping": {},
+    "comment": "dual-layer, MyBKY 1.6"
+  },
+  {
+    "name": "ShadowMybkySwitchThumb",
+    "path": [
+      "shadow",
+      "mybky",
+      "switchThumb"
+    ],
+    "value": "0 2px 4px rgba(16,24,40,.06), 0 1px 4px rgba(16,24,40,.12)",
+    "original": "0 2px 4px rgba(16,24,40,.06), 0 1px 4px rgba(16,24,40,.12)",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ShadowMybkySwitchTrack",
+    "path": [
+      "shadow",
+      "mybky",
+      "switchTrack"
+    ],
+    "value": "inset 0 0 4px 0 #00000026",
+    "original": "inset 0 0 4px 0 #00000026",
+    "legacyMapping": {
+      "eventsUi": "--switch-shadow-default"
+    },
+    "comment": "black @ 15% — same recess as sampark's"
+  },
+  {
+    "name": "ShadowMybkySwitchTrackDisabled",
+    "path": [
+      "shadow",
+      "mybky",
+      "switchTrackDisabled"
+    ],
+    "value": "inset 0 0 4px 0 #0000001a",
+    "original": "inset 0 0 4px 0 #0000001a",
+    "legacyMapping": {
+      "eventsUi": "--switch-shadow-disabled"
+    },
+    "comment": "black @ 10%"
+  },
+  {
+    "name": "ShadowMybkyDrawer",
+    "path": [
+      "shadow",
+      "mybky",
+      "drawer"
+    ],
+    "value": "0 4px 6px rgba(16,24,40,.06), 0 12px 16px rgba(16,24,40,.12)",
+    "original": "0 4px 6px rgba(16,24,40,.06), 0 12px 16px rgba(16,24,40,.12)",
+    "legacyMapping": {},
+    "comment": "Deeper and softer than card — a drawer floats over the page, a card sits in it. From events-ui .app-drawer."
+  },
+  {
+    "name": "ShadowMybkyCardHover",
+    "path": [
+      "shadow",
+      "mybky",
+      "cardHover"
+    ],
+    "value": "0 2px 12px rgba(0,0,0,0.08)",
+    "original": "0 2px 12px rgba(0,0,0,0.08)",
+    "legacyMapping": {},
+    "comment": "ONLY the dashboard region mini-cards lift on hover. Hero and chart cards deliberately do not — see dashboard.mybky."
+  },
+  {
+    "name": "ShadowMybkyXs",
+    "path": [
+      "shadow",
+      "mybky",
+      "xs"
+    ],
+    "value": "0 2px 4px rgba(16,24,40,.12)",
+    "original": "0 2px 4px rgba(16,24,40,.12)",
+    "legacyMapping": {},
+    "comment": "Figma \"XS Drop Shadow\". Resting elevation for a 40px stepper slot."
+  },
+  {
+    "name": "ShadowMybkyXl",
+    "path": [
+      "shadow",
+      "mybky",
+      "xl"
+    ],
+    "value": "0 8px 8px rgba(16,24,40,.06), 0 20px 24px rgba(16,24,40,.12)",
+    "original": "0 8px 8px rgba(16,24,40,.06), 0 20px 24px rgba(16,24,40,.12)",
+    "legacyMapping": {},
+    "comment": "Figma \"XL Drop Shadow\". The lifted stepper slot — active, and inactive-on-hover."
+  },
+  {
+    "name": "ShadowSamparkXs",
+    "path": [
+      "shadow",
+      "sampark",
+      "xs"
+    ],
+    "value": "0 1px 2px rgba(16,24,40,.15)",
+    "original": "0 1px 2px rgba(16,24,40,.15)",
+    "legacyMapping": {},
+    "comment": "Figma \"XS Drop Shadow\" (#10182826, y1, blur2, spread0). The lift under a listing table's outer frame — Sampark Portal 17512:73144."
+  },
+  {
+    "name": "ShadowSamparkS",
+    "path": [
+      "shadow",
+      "sampark",
+      "s"
+    ],
+    "value": "0 2px 4px rgba(16,24,40,.06), 0 1px 4px rgba(16,24,40,.12)",
+    "original": "0 2px 4px rgba(16,24,40,.06), 0 1px 4px rgba(16,24,40,.12)",
+    "legacyMapping": {},
+    "comment": "Figma \"S Drop Shadow\" — the lift under the slider value bubble (node 13197:89384). Promoted out of slider.component.ts, which had it inlined because no sampark shadow token matched. Note this is the same pair as shadow.mybky.switchThumb; the value was already in the file under a name that gave no hint it was a general S-level drop shadow."
+  },
+  {
+    "name": "ShadowSamparkXl",
+    "path": [
+      "shadow",
+      "sampark",
+      "xl"
+    ],
+    "value": "0 8px 12px -4px rgba(16,24,40,.16), 0 20px 24px -4px rgba(16,24,40,.08)",
+    "original": "0 8px 12px -4px rgba(16,24,40,.16), 0 20px 24px -4px rgba(16,24,40,.08)",
+    "legacyMapping": {},
+    "comment": "Figma \"XL Drop Shadow\" — the lift under the Alert notification card (node 13197:89157). Promoted out of alert.component.ts."
+  },
+  {
+    "name": "ShadowSamparkL1",
+    "path": [
+      "shadow",
+      "sampark",
+      "l1"
+    ],
+    "value": "0 4px 6px -2px rgba(16,24,40,.16)",
+    "original": "0 4px 6px -2px rgba(16,24,40,.16)",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ShadowSamparkL2",
+    "path": [
+      "shadow",
+      "sampark",
+      "l2"
+    ],
+    "value": "0 12px 16px -4px rgba(16,24,40,.08)",
+    "original": "0 12px 16px -4px rgba(16,24,40,.08)",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ShadowSamparkToast",
+    "path": [
+      "shadow",
+      "sampark",
+      "toast"
+    ],
+    "value": "0 4px 6px -2px rgba(16,24,40,.16), 0 12px 16px -4px rgba(16,24,40,.08)",
+    "original": "0 4px 6px -2px rgba(16,24,40,.16), 0 12px 16px -4px rgba(16,24,40,.08)",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ShadowSamparkInputFocus",
+    "path": [
+      "shadow",
+      "sampark",
+      "inputFocus"
+    ],
+    "value": "0 0 0 3px #f2f1f0",
+    "original": "0 0 0 3px #f2f1f0",
+    "legacyMapping": {
+      "spmUi": "--input-shadow-focused"
+    }
+  },
+  {
+    "name": "ShadowSamparkInputError",
+    "path": [
+      "shadow",
+      "sampark",
+      "inputError"
+    ],
+    "value": "0 0 0 3px #ffe5e5",
+    "original": "0 0 0 3px #ffe5e5",
+    "legacyMapping": {
+      "spmUi": "--input-shadow-error"
+    }
+  },
+  {
+    "name": "ShadowSamparkSwitchThumb",
+    "path": [
+      "shadow",
+      "sampark",
+      "switchThumb"
+    ],
+    "value": "0px 1px 2px #0000001a",
+    "original": "0px 1px 2px #0000001a",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ShadowSamparkSwitchTrack",
+    "path": [
+      "shadow",
+      "sampark",
+      "switchTrack"
+    ],
+    "value": "inset 0px 0px 4px 0px #00000026",
+    "original": "inset 0px 0px 4px 0px #00000026",
+    "legacyMapping": {
+      "spmUi": "--switch-shadow-default"
+    }
+  },
+  {
+    "name": "ShadowSamparkOverlay",
+    "path": [
+      "shadow",
+      "sampark",
+      "overlay"
+    ],
+    "value": "0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12)",
+    "original": "0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12)",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ShadowSamparkDropdown",
+    "path": [
+      "shadow",
+      "sampark",
+      "dropdown"
+    ],
+    "value": "0 12px 40px rgba(0,0,0,0.15)",
+    "original": "0 12px 40px rgba(0,0,0,0.15)",
+    "legacyMapping": {
+      "spmUi": "box-shadow on .p-dropdown-panel / .p-multiselect-panel"
+    },
+    "comment": "Every floating panel in the Sampark Portal — select/multiselect overlays, popovers, column-config panels — carries this one shadow. Sharing it is what makes them read as one surface family; sampark.overlay (PrimeNG's three-layer stock value) does not appear in the design."
+  },
+  {
+    "name": "ShadowSamparkDrawer",
+    "path": [
+      "shadow",
+      "sampark",
+      "drawer"
+    ],
+    "value": "0 0 40px rgba(0,0,0,0.25)",
+    "original": "0 0 40px rgba(0,0,0,0.25)",
+    "legacyMapping": {},
+    "comment": "Sampark Portal filter drawer (Figma 17512:72588). Deeper/softer than l1+l2 — a drawer floats over the whole page, not a card."
+  },
+  {
+    "name": "Space1",
+    "path": [
+      "space",
+      "1"
+    ],
+    "value": "0.25rem",
+    "original": "0.25rem",
+    "legacyMapping": {},
+    "comment": "4px"
+  },
+  {
+    "name": "Space2",
+    "path": [
+      "space",
+      "2"
+    ],
+    "value": "0.5rem",
+    "original": "0.5rem",
+    "legacyMapping": {},
+    "comment": "8px"
+  },
+  {
+    "name": "Space3",
+    "path": [
+      "space",
+      "3"
+    ],
+    "value": "0.75rem",
+    "original": "0.75rem",
+    "legacyMapping": {},
+    "comment": "12px"
+  },
+  {
+    "name": "Space4",
+    "path": [
+      "space",
+      "4"
+    ],
+    "value": "1rem",
+    "original": "1rem",
+    "legacyMapping": {},
+    "comment": "16px"
+  },
+  {
+    "name": "Space5",
+    "path": [
+      "space",
+      "5"
+    ],
+    "value": "1.25rem",
+    "original": "1.25rem",
+    "legacyMapping": {},
+    "comment": "20px"
+  },
+  {
+    "name": "Space6",
+    "path": [
+      "space",
+      "6"
+    ],
+    "value": "1.5rem",
+    "original": "1.5rem",
+    "legacyMapping": {},
+    "comment": "24px"
+  },
+  {
+    "name": "Space7",
+    "path": [
+      "space",
+      "7"
+    ],
+    "value": "1.75rem",
+    "original": "1.75rem",
+    "legacyMapping": {},
+    "comment": "28px"
+  },
+  {
+    "name": "Space8",
+    "path": [
+      "space",
+      "8"
+    ],
+    "value": "2rem",
+    "original": "2rem",
+    "legacyMapping": {},
+    "comment": "32px"
+  },
+  {
+    "name": "Space9",
+    "path": [
+      "space",
+      "9"
+    ],
+    "value": "2.25rem",
+    "original": "2.25rem",
+    "legacyMapping": {},
+    "comment": "36px"
+  },
+  {
+    "name": "Space10",
+    "path": [
+      "space",
+      "10"
+    ],
+    "value": "2.5rem",
+    "original": "2.5rem",
+    "legacyMapping": {},
+    "comment": "40px"
+  },
+  {
+    "name": "Space05",
+    "path": [
+      "space",
+      "0",
+      "5"
+    ],
+    "value": "0.125rem",
+    "original": "0.125rem",
+    "legacyMapping": {},
+    "comment": "2px"
+  },
+  {
+    "name": "Space15",
+    "path": [
+      "space",
+      "1",
+      "5"
+    ],
+    "value": "0.375rem",
+    "original": "0.375rem",
+    "legacyMapping": {},
+    "comment": "6px"
+  },
+  {
+    "name": "Space25",
+    "path": [
+      "space",
+      "2",
+      "5"
+    ],
+    "value": "0.625rem",
+    "original": "0.625rem",
+    "legacyMapping": {},
+    "comment": "10px"
+  },
+  {
+    "name": "Space35",
+    "path": [
+      "space",
+      "3",
+      "5"
+    ],
+    "value": "0.875rem",
+    "original": "0.875rem",
+    "legacyMapping": {},
+    "comment": "14px"
+  },
+  {
+    "name": "Space55",
+    "path": [
+      "space",
+      "5",
+      "5"
+    ],
+    "value": "1.375rem",
+    "original": "1.375rem",
+    "legacyMapping": {},
+    "comment": "22px"
+  },
+  {
+    "name": "RadiusMybkySm",
+    "path": [
+      "radius",
+      "mybky",
+      "sm"
+    ],
+    "value": "0.375rem",
+    "original": "0.375rem",
+    "legacyMapping": {},
+    "comment": "6px — checkbox small"
+  },
+  {
+    "name": "RadiusMybkyMd",
+    "path": [
+      "radius",
+      "mybky",
+      "md"
+    ],
+    "value": "0.5rem",
+    "original": "0.5rem",
+    "legacyMapping": {},
+    "comment": "8px — checkbox large, tooltip"
+  },
+  {
+    "name": "RadiusMybkyPill",
+    "path": [
+      "radius",
+      "mybky",
+      "pill"
+    ],
+    "value": "99px",
+    "original": "99px",
+    "legacyMapping": {
+      "eventsUi": "noir.theme.ts formField.borderRadius = 99px"
+    },
+    "comment": "universal shape for buttons, form fields, badges, avatars, switches"
+  },
+  {
+    "name": "RadiusMybkyCircle",
+    "path": [
+      "radius",
+      "mybky",
+      "circle"
+    ],
+    "value": "100px",
+    "original": "100px",
+    "legacyMapping": {},
+    "comment": "notification count badge"
+  },
+  {
+    "name": "RadiusSamparkSm",
+    "path": [
+      "radius",
+      "sampark",
+      "sm"
+    ],
+    "value": "0.1875rem",
+    "original": "0.1875rem",
+    "legacyMapping": {},
+    "comment": "3px — small elements"
+  },
+  {
+    "name": "RadiusSamparkDefault",
+    "path": [
+      "radius",
+      "sampark",
+      "default"
+    ],
+    "value": "0.25rem",
+    "original": "0.25rem",
+    "legacyMapping": {
+      "spmUi": "$borderRadius / --table-border-radius = 4px"
+    },
+    "comment": "4px — DEFAULT radius for buttons, inputs, badges, avatars — fundamentally different philosophy from mybky's pill shape, see inconsistency-findings"
+  },
+  {
+    "name": "RadiusSamparkMd",
+    "path": [
+      "radius",
+      "sampark",
+      "md"
+    ],
+    "value": "0.5rem",
+    "original": "0.5rem",
+    "legacyMapping": {},
+    "comment": "8px — cards, dialogs, toast"
+  },
+  {
+    "name": "RadiusSamparkLg",
+    "path": [
+      "radius",
+      "sampark",
+      "lg"
+    ],
+    "value": "6px",
+    "original": "6px",
+    "legacyMapping": {},
+    "comment": "large avatars (2xl)"
+  },
+  {
+    "name": "RadiusSamparkPill",
+    "path": [
+      "radius",
+      "sampark",
+      "pill"
+    ],
+    "value": "100px",
+    "original": "100px",
+    "legacyMapping": {},
+    "comment": "badges/notification/switch tracks only, not the universal shape it is in mybky"
+  },
+  {
+    "name": "RadiusSamparkCircle",
+    "path": [
+      "radius",
+      "sampark",
+      "circle"
+    ],
+    "value": "50%",
+    "original": "50%",
+    "legacyMapping": {}
+  },
+  {
+    "name": "FontFamilyMybky",
+    "path": [
+      "font",
+      "family",
+      "mybky"
+    ],
+    "value": "'Inter Variable', 'Inter', sans-serif",
+    "original": "'Inter Variable', 'Inter', sans-serif",
+    "legacyMapping": {
+      "eventsUi": "--font-family (+ Roboto 400/500/700 base weight)"
+    }
+  },
+  {
+    "name": "FontFamilySampark",
+    "path": [
+      "font",
+      "family",
+      "sampark"
+    ],
+    "value": "'Inter', 'Roboto', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif",
+    "original": "'Inter', 'Roboto', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif",
+    "legacyMapping": {}
+  },
+  {
+    "name": "FontSizeXs",
+    "path": [
+      "font",
+      "size",
+      "xs"
+    ],
+    "value": "0.75rem",
+    "original": "0.75rem",
+    "legacyMapping": {},
+    "comment": "12px"
+  },
+  {
+    "name": "FontSizeSm",
+    "path": [
+      "font",
+      "size",
+      "sm"
+    ],
+    "value": "0.875rem",
+    "original": "0.875rem",
+    "legacyMapping": {},
+    "comment": "14px — default body text for both brands"
+  },
+  {
+    "name": "FontSizeMd",
+    "path": [
+      "font",
+      "size",
+      "md"
+    ],
+    "value": "1rem",
+    "original": "1rem",
+    "legacyMapping": {},
+    "comment": "16px"
+  },
+  {
+    "name": "FontSizeLg",
+    "path": [
+      "font",
+      "size",
+      "lg"
+    ],
+    "value": "1.125rem",
+    "original": "1.125rem",
+    "legacyMapping": {},
+    "comment": "18px"
+  },
+  {
+    "name": "FontSizeXl",
+    "path": [
+      "font",
+      "size",
+      "xl"
+    ],
+    "value": "1.25rem",
+    "original": "1.25rem",
+    "legacyMapping": {},
+    "comment": "20px"
+  },
+  {
+    "name": "FontSize2xl",
+    "path": [
+      "font",
+      "size",
+      "2xl"
+    ],
+    "value": "1.5rem",
+    "original": "1.5rem",
+    "legacyMapping": {},
+    "comment": "24px"
+  },
+  {
+    "name": "FontSize3xl",
+    "path": [
+      "font",
+      "size",
+      "3xl"
+    ],
+    "value": "1.75rem",
+    "original": "1.75rem",
+    "legacyMapping": {},
+    "comment": "28px — mybky h1 only"
+  },
+  {
+    "name": "FontSize2xs",
+    "path": [
+      "font",
+      "size",
+      "2xs"
+    ],
+    "value": "0.625rem",
+    "original": "0.625rem",
+    "legacyMapping": {},
+    "comment": "10px — the smallest step on the Figma type sheet (H3/10 and Caps/10)"
+  },
+  {
+    "name": "FontSize4xl",
+    "path": [
+      "font",
+      "size",
+      "4xl"
+    ],
+    "value": "2.25rem",
+    "original": "2.25rem",
+    "legacyMapping": {},
+    "comment": "36px — Figma H1 tier"
+  },
+  {
+    "name": "FontSize5xl",
+    "path": [
+      "font",
+      "size",
+      "5xl"
+    ],
+    "value": "2.5rem",
+    "original": "2.5rem",
+    "legacyMapping": {},
+    "comment": "40px — Figma H1 tier, the largest step"
+  },
+  {
+    "name": "FontWeightRegular",
+    "path": [
+      "font",
+      "weight",
+      "regular"
+    ],
+    "value": "400",
+    "original": "400",
+    "legacyMapping": {}
+  },
+  {
+    "name": "FontWeightMedium",
+    "path": [
+      "font",
+      "weight",
+      "medium"
+    ],
+    "value": "500",
+    "original": "500",
+    "legacyMapping": {}
+  },
+  {
+    "name": "FontWeightSemibold",
+    "path": [
+      "font",
+      "weight",
+      "semibold"
+    ],
+    "value": "600",
+    "original": "600",
+    "legacyMapping": {}
+  },
+  {
+    "name": "FontWeightBold",
+    "path": [
+      "font",
+      "weight",
+      "bold"
+    ],
+    "value": "700",
+    "original": "700",
+    "legacyMapping": {}
+  },
+  {
+    "name": "FontLineHeightTight",
+    "path": [
+      "font",
+      "lineHeight",
+      "tight"
+    ],
+    "value": "1.2",
+    "original": "1.2",
+    "legacyMapping": {
+      "eventsUi": "heading scale line-height"
+    }
+  },
+  {
+    "name": "FontLineHeightSnug",
+    "path": [
+      "font",
+      "lineHeight",
+      "snug"
+    ],
+    "value": "1.3",
+    "original": "1.3",
+    "legacyMapping": {
+      "eventsUi": "--bkyms-h2-title-font-size line-height",
+      "spmUi": "label-line-height 130%"
+    }
+  },
+  {
+    "name": "FontLineHeightNormal",
+    "path": [
+      "font",
+      "lineHeight",
+      "normal"
+    ],
+    "value": "1.5",
+    "original": "1.5",
+    "legacyMapping": {}
+  },
+  {
+    "name": "FontLineHeightRelaxed",
+    "path": [
+      "font",
+      "lineHeight",
+      "relaxed"
+    ],
+    "value": "1.6",
+    "original": "1.6",
+    "legacyMapping": {
+      "spmUi": "input field line-height"
+    }
+  },
+  {
+    "name": "FontLetterSpacingNone",
+    "path": [
+      "font",
+      "letterSpacing",
+      "none"
+    ],
+    "value": "0",
+    "original": "0",
+    "legacyMapping": {},
+    "comment": "Every style on the Figma sheet except Caps"
+  },
+  {
+    "name": "FontLetterSpacingCaps",
+    "path": [
+      "font",
+      "letterSpacing",
+      "caps"
+    ],
+    "value": "0.05em",
+    "original": "0.05em",
+    "legacyMapping": {},
+    "comment": "Figma \"Tracking 5%\" — the Caps styles only (Caps/10, /12, /14, /16), which are Semi Bold or Bold"
+  }
+]

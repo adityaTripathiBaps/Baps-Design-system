@@ -1,0 +1,49 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as InputGroupStories from './input-group.stories';
+
+<Meta of={InputGroupStories} />
+
+# InputGroup
+
+A control with a fixed prefix or suffix — a unit, a currency, a bounded range. `baps-input-group` owns the border and the focus ring; the control inside is chromeless.
+
+## Usage
+
+```html
+<baps-input-group prefix="min" suffix="day/s" brand="sampark">
+  <input bapsInputText type="number" [(ngModel)]="minDays" aria-label="Minimum days" />
+</baps-input-group>
+```
+
+## Examples
+
+### Default
+
+<Canvas of={InputGroupStories.Default} />
+
+### Suffix Only
+
+<Canvas of={InputGroupStories.SuffixOnly} />
+
+### Min Max Row
+
+<Canvas of={InputGroupStories.MinMaxRow} />
+
+### Brands
+
+<Canvas of={InputGroupStories.Brands} />
+
+## When Not to Use
+
+| Need | Use | Not this |
+| --- | --- | --- |
+| An icon inside the field | `baps-iconfield` + `baps-inputicon` | An addon holding an icon |
+| A label above the field | `baps-floatlabel`, or a plain label | A prefix addon used as a label |
+| An action button beside the field | `baps-split-button`, or a button outside the group | An addon the user tries to click |
+
+## Accessibility
+
+### Screen Reader
+
+- The addons are decoration — they carry no role and are not focusable. The control inside keeps its own label.
+- An addon is not a label. Give the inner control an `aria-label` or a visible label; "min" alone does not say what is being measured.

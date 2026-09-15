@@ -1,0 +1,73 @@
+/* =====================================================================
+   libs/ui-kit/src/lib/styles/components/badge/_badge-sampark.scss
+   PrimeNG v21 Badge — Sampark count-pill skin
+
+   Ported from: spm-ui's p-badge block (badgetype / badgesize attributes).
+
+   WHY THIS FILE EXISTS ALONGSIDE _tag-sampark.scss
+   The two are different objects that had drifted into the same shape.
+   p-tag is the colour/status LABEL — 4px radius, 20/22/28px, seven
+   variants. p-badge is the COUNT pill — 100px radius, 12/16/20/24px,
+   three types. badge.sampark used to carry tag's numbers (20/22/28 at
+   4px), so a Sampark count badge rendered as a small status chip.
+
+   WHAT LIVES HERE VS IN TOKENS
+   PrimeNG's badge token surface (@primeuix/themes/types/badge) exposes
+   borderRadius, padding, fontSize, minWidth, height and per-severity
+   background/color — and nothing else. So:
+   - geometry (radius, per-size height/minWidth/fontSize, root padding)
+     ships as tokens via SAMPARK_BADGE_TOKENS
+   - the border, the per-size padding, and the three TYPE skins have no
+     token and ship as CSS here
+   Types are a separate axis from PrimeNG's severities, which is why
+   they are host classes rather than a severity crossover: "disable" in
+   particular cannot map onto `badgeDisabled`, because that input HIDES
+   the badge rather than recolouring it.
+
+   SCOPE: baps-badge.baps-sampark (per instance, via brand="sampark") or
+   .baps-ds-sampark (page-wide toolbar class) — same dual scope as the
+   tag and table skins.
+   ===================================================================== */
+
+/* ── Border + per-size padding — the two geometry properties PrimeNG has
+      no token for. Sizes map: small -> s (12px), default -> m (16px),
+      large -> l (20px), xlarge -> xl (24px). ───────────────────────── */
+:is(baps-badge.baps-sampark, .baps-ds-sampark baps-badge) .p-badge {
+  border: var(--badge-sampark-border-width, 1px) solid transparent !important;
+  gap: var(--badge-sampark-gap, 0.25rem) !important;
+  padding: var(--badge-sampark-padding-m, 0 0.25rem) !important;
+}
+
+:is(baps-badge.baps-sampark, .baps-ds-sampark baps-badge) .p-badge-sm {
+  padding: var(--badge-sampark-padding-s, 0 0.125rem) !important;
+}
+
+:is(baps-badge.baps-sampark, .baps-ds-sampark baps-badge) .p-badge-lg {
+  padding: var(--badge-sampark-padding-l, 0 0.375rem) !important;
+}
+
+:is(baps-badge.baps-sampark, .baps-ds-sampark baps-badge) .p-badge-xl {
+  padding: var(--badge-sampark-padding-xl, 0 0.5rem) !important;
+}
+
+/* ── Types ────────────────────────────────────────────────────────────
+   notification = alert count, counts = plain count, disable = inert.
+   Set via the `type` input; leaving it unset keeps PrimeNG's severity
+   colours, so this file adds a vocabulary rather than replacing one. */
+:is(baps-badge.baps-sampark, .baps-ds-sampark baps-badge).baps-badge-notification .p-badge {
+  background: var(--badge-sampark-notification-background, #ea151a) !important;
+  color: var(--badge-sampark-notification-text, #ffffff) !important;
+  border-color: var(--badge-sampark-notification-border, #ffffff) !important;
+}
+
+:is(baps-badge.baps-sampark, .baps-ds-sampark baps-badge).baps-badge-counts .p-badge {
+  background: var(--badge-sampark-counts-background, #ffffff) !important;
+  color: var(--badge-sampark-counts-text, #151414) !important;
+  border-color: var(--badge-sampark-counts-border, #e1e0e0) !important;
+}
+
+:is(baps-badge.baps-sampark, .baps-ds-sampark baps-badge).baps-badge-disable .p-badge {
+  background: var(--badge-sampark-disable-background, rgba(21, 20, 20, 0.04)) !important;
+  color: var(--badge-sampark-disable-text, #151414) !important;
+  border-color: var(--badge-sampark-disable-border, #e1e0e0) !important;
+}

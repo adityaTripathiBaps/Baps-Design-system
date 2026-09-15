@@ -1,0 +1,72 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as CardStories from './card.stories';
+
+<Meta of={CardStories} />
+
+# Card
+
+A bordered content container — the generic block dashboard tiles, form sections, list panels and empty states are built from. **Not** a PrimeNG wrap: PrimeNG's own `p-card` hard-codes a resting box-shadow and has no borderless/hairline mode, which conflicts with the design system's "hairlines do the structural work; shadows are for floating elements only" rule. `baps-card` is a from-scratch component built directly on design tokens.
+
+## Usage
+
+```html
+<baps-card padding="compact" [divided]="true" brand="sampark">
+  <span card-title>Registrations this week</span>
+  <span card-subtitle>Yuva Sabha — 3 May</span>
+  <div card-actions>
+    <baps-button label="Export" severity="secondary" [text]="true" brand="sampark" />
+  </div>
+
+  <p style="margin: 0">128 members have registered so far.</p>
+
+  <div card-footer>Updated 12 April 2026</div>
+</baps-card>
+```
+
+## Examples
+
+### Playground
+
+<Canvas of={CardStories.Playground} />
+
+### Body Only
+
+<Canvas of={CardStories.BodyOnly} />
+
+### Divided
+
+<Canvas of={CardStories.Divided} />
+
+### Padding Steps
+
+<Canvas of={CardStories.PaddingSteps} />
+
+### Rest Vs Raised
+
+<Canvas of={CardStories.RestVsRaised} />
+
+### Interactive
+
+<Canvas of={CardStories.Interactive} />
+
+### Dashboard Tiles
+
+<Canvas of={CardStories.DashboardTiles} />
+
+## When Not to Use
+
+| Need | Use | Not this |
+| --- | --- | --- |
+| A panel that overlays the page | `baps-drawer` (or a dialog) | A `raised` card positioned by hand |
+| Tabular data with sorting/paging | `baps-table` — wrap it in a `padding="none"` card if you want the frame | A card filled with row divs |
+| A single rule between two sections | `baps-divider` | An empty card used as a separator |
+| Status or feedback messaging | `baps-alert`, or `baps-message` for field-level | A card styled to look like an alert |
+| A row of page-level actions | `baps-toolbar` | A card containing only buttons |
+
+For internal hairlines use `[divided]="true"` rather than dropping a `baps-divider` between the slots — the card already draws them at the correct full-bleed width.
+
+## Accessibility
+
+- `interactive` adds `role="button"` and `tabindex="0"` to the host, plus a `focus-visible` outline ring — but does **not** add a click handler; bind your own `(click)` on the host.
+- With `interactive`, the whole card becomes one target for both mouse and keyboard (Enter/Space activate a native `role="button"` element per the browser's own handling) — don't also nest an unrelated interactive element (a button, a link) inside an interactive card, since that creates overlapping targets.
+- Projected slot elements (`<h2 card-title>`, `<span card-title>`) keep whatever semantic tag you give them — the slot only adds styling, so use a real heading level if the card title is structurally a heading.

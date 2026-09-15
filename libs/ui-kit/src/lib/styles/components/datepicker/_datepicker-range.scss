@@ -1,0 +1,186 @@
+/* ══════════════════════════════════════════════════════════════════════
+   DATEPICKER — RANGE & MULTI-MONTH
+   ══════════════════════════════════════════════════════════════════════
+   Additive layer on top of the calendar skin that already lives in
+   components/select/_select.scss (+ _select-sampark.scss). That skin
+   covers panel / header / weekday / day / month-year-grid for SINGLE
+   selection only — it has no range rules and no multi-month rules at
+   all. This file adds exactly those, and nothing the base skin
+   already owns, so the two never overlap.
+
+   It reuses the base skin's `--datepicker-*` custom-property contract
+   rather than inventing a second mechanism: new properties follow the
+   same naming, and the Sampark block re-points them at the same two
+   scope roots the base skin uses.
+
+   ── Scope roots ──────────────────────────────────────────────────────
+   Base rules are unscoped (MyBKY is the global preset). Sampark rules
+   use `:is(.baps-ds-sampark, baps-datepicker.baps-sampark)`, mirroring
+   _select-sampark.scss's `:is(.baps-ds-sampark, baps-select.baps-sampark)`.
+
+   The panel is portaled to <body>, so it escapes BOTH of those. The
+   component stamps `baps-ds-sampark` onto the panel via
+   `resolvedPanelStyleClass` (see datepicker.component.ts) — the panel
+   element then IS the scope root and every descendant rule below
+   reaches it. This is also what makes the pre-existing `.baps-ds-sampark`
+   calendar rules in _select-sampark.scss work for the first time when a
+   single `baps-datepicker brand="sampark"` sits on a MyBKY page.
+
+   ── Figma ────────────────────────────────────────────────────────────
+   File xc0L2xnREMgjyb5XcKyLIz, nodes 17512:78298 / 17512:78300
+   (dual-month range, 500x282) and 17512:78299 (single month, 250x250).
+
+   Sampark range palette read off those frames (values, not variable
+   names — Figma's names are skewed against this repo's ramp):
+     in-range band   #8730301a  Figma "Primary/10% Primary"
+                                = --color-sampark-primary-100 at 10%
+     range start/end #c96868    Figma "Primary/60"
+                                = --color-sampark-primary-default
+     today fill      #f8ecec    Figma "Primary/10"
+                                = --color-sampark-primary-10
+     today text      #c96868    Figma "Primary/60"
+     weekday row     #9f9c9c    Figma "Mono/60"
+                                = --color-sampark-mono-60
+     other-month day #bcb9b9    Figma "Mono/40 (Disable Item)"
+                                = --color-sampark-mono-40
+
+   Geometry: date cells are 31.14 x 30 laid out with ZERO horizontal
+   gap, rows on a 32px pitch. The in-range band is therefore continuous
+   across a row — which is why the band is painted on the <td>
+   (.p-datepicker-day-cell) and not on the inner day <span>: the span
+   carries PrimeNG's 0.25rem cell padding, so painting it leaves white
+   gutters between consecutive in-range dates.
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* ── Token contract (MyBKY / default) ─────────────────────────────────
+   There is no MyBKY range frame; these are the MyBKY ramp's analogues
+   of the Sampark values above — the lightest blue tint for the band,
+   primary text on top. */
+:root {
+  --datepicker-range-bg: var(--color-mybky-blue-50, #eef0f8);
+  --datepicker-range-text: var(--color-mybky-mono-900, #181b1d);
+  /* MyBKY keeps the base skin's outlined today marker — no fill. */
+  --datepicker-today-bg: transparent;
+  --datepicker-today-text: var(--color-mybky-mono-900, #181b1d);
+  /* Gap between month panels in a multi-month calendar. */
+  --datepicker-group-gap: 0.75rem;
+  --datepicker-group-border: transparent;
+}
+
+body.baps-dark {
+  --datepicker-range-bg: var(--color-mybky-blue-900, #252f4a);
+  --datepicker-range-text: var(--color-mybky-blue-200, #bdc6e4);
+  --datepicker-today-text: var(--color-mybky-mono-50, #f8fafb);
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   1. IN-RANGE BAND
+   ══════════════════════════════════════════════════════════════════════
+   PrimeNG marks the days BETWEEN the two endpoints with
+   .p-datepicker-day-selected-range; both endpoints get the plain
+   .p-datepicker-day-selected the base skin already fills with the
+   brand colour, so the caps need no rule here.
+
+   The `--p-datepicker-date-range-selected-background` design token
+   exists and is set from the `dt` input, but it only reaches the inner
+   span. The td rule below is what closes the gutters. Both resolve to
+   the SAME custom property so there is no seam between them.
+   ══════════════════════════════════════════════════════════════════════ */
+
+.p-datepicker-day-cell:has(> .p-datepicker-day-selected-range) {
+  background: var(--datepicker-range-bg);
+}
+
+/* Square the middle of the band so consecutive cells read as one bar;
+   the base skin's --datepicker-cell-radius still rounds the endpoints. */
+.p-datepicker-day.p-datepicker-day-selected-range {
+  border-radius: 0;
+  color: var(--datepicker-range-text);
+}
+
+/* Round only where a row's band meets the grid edge. */
+.p-datepicker-day-cell:has(> .p-datepicker-day-selected-range):first-child {
+  border-start-start-radius: var(--datepicker-cell-radius);
+  border-end-start-radius: var(--datepicker-cell-radius);
+}
+
+.p-datepicker-day-cell:has(> .p-datepicker-day-selected-range):last-child {
+  border-start-end-radius: var(--datepicker-cell-radius);
+  border-end-end-radius: var(--datepicker-cell-radius);
+}
+
+/* An in-range day that is also today must not show the today outline —
+   it would cut the band. Base skin sets that border with !important. */
+.p-datepicker-day.p-datepicker-day-selected-range.p-datepicker-today {
+  border-color: transparent !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   2. MULTI-MONTH (numberOfMonths > 1)
+   ══════════════════════════════════════════════════════════════════════
+   Aura draws a 1px divider between month panels via the `group`
+   token section. Figma 17512:78298 has none — two 250px panels sitting
+   in one card with a gap. Both values come from the `dt` input where
+   the tokens cover them; these rules only strip the padding the
+   divider left behind.
+   ══════════════════════════════════════════════════════════════════════ */
+
+.p-datepicker-panel .p-datepicker-calendar-container {
+  gap: var(--datepicker-group-gap);
+}
+
+.p-datepicker-panel .p-datepicker-group + .p-datepicker-group {
+  border-left: 0;
+  padding-left: 0;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   3. SAMPARK
+   ══════════════════════════════════════════════════════════════════════ */
+
+:is(.baps-ds-sampark, baps-datepicker.baps-sampark) {
+  /* No 10%-alpha step exists on the Sampark primary ramp in
+     libs/tokens (only --tag-sampark-primary-border, the 20% step), so
+     the Figma value sits in the var() fallback slot. */
+  --datepicker-range-bg: var(--color-sampark-primary-alpha10, #8730301a);
+  --datepicker-range-text: var(--color-sampark-mono-100, #151414);
+
+  /* Figma 17512:78298 fills today rather than outlining it. */
+  --datepicker-today-bg: var(--color-sampark-primary-10, #f8ecec);
+  --datepicker-today-text: var(--color-sampark-primary-default, #c96868);
+
+  /* Panels are 250px wide inside a 500px card — 12px panel padding on
+     each side already supplies the visual gutter. */
+  --datepicker-group-gap: 0.5rem;
+
+  /* CORRECTION to the base skin, which points the selected fill at
+     --color-sampark-primary-100 (#873030). Every Sampark calendar frame
+     (17512:78298 / :78299 / :78300) fills the selected day and the
+     range endpoints with Primary/60 #c96868 — the same core brand
+     maroon the primary button uses. Re-pointed here rather than in
+     _select-sampark.scss so that file stays untouched. */
+  --datepicker-day-selected-bg: var(--color-sampark-primary-default, #c96868);
+
+  /* Weekday row is Mono/60 in Figma; the base skin uses
+     --datepicker-muted-text, which Sampark points at Mono/80. */
+  .p-datepicker-weekday {
+    color: var(--color-sampark-mono-60, #9f9c9c) !important;
+    /* Figma renders "Su Mo Tu ..." in mixed case with no tracking; the
+       base skin's eyebrow treatment turns that into "SU MO TU". */
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+  }
+
+  /* Figma greys previous/next-month dates one step lighter than the
+     Mono/80 the base skin's --datepicker-muted-text resolves to. */
+  .p-datepicker-day.p-datepicker-other-month {
+    color: var(--color-sampark-mono-40, #bcb9b9) !important;
+  }
+
+  /* Filled today marker, no ring. */
+  .p-datepicker-day.p-datepicker-today:not(.p-datepicker-day-selected):not(.p-datepicker-day-selected-range) {
+    background: var(--datepicker-today-bg) !important;
+    border-color: transparent !important;
+    color: var(--datepicker-today-text) !important;
+  }
+}

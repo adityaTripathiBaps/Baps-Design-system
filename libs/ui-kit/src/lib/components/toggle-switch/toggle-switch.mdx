@@ -1,0 +1,99 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as ToggleSwitchStories from './toggle-switch.stories';
+
+<Meta of={ToggleSwitchStories} />
+
+# ToggleSwitch
+
+An instant on/off control — the change takes effect immediately, with no separate Save step. The BAPS wrapper component (`baps-toggleswitch`) wraps PrimeNG's `p-toggleswitch` and themes it globally against the `MyBky` preset (`libs/ui-kit/src/lib/theme/baps.theme.ts`).
+
+> **Naming:** this wraps PrimeNG **v21's** `ToggleSwitch`. In **v17** (spm-ui) the same control is still called `InputSwitch` (`p-inputSwitch`) — a straight rename in the v18 → v21 line, see the mapping table below.
+
+## Usage
+
+```html
+<label class="flex items-center gap-3">
+  <baps-toggleswitch [(ngModel)]="emailNotifications" inputId="notif" />
+  <span>Email notifications</span>
+</label>
+```
+
+```ts
+// v17 → v21 migration
+// - import { InputSwitchModule } from 'primeng/inputswitch';   // v17
+// + import { BapsToggleSwitch } from '@org/ui-kit';            // v21
+// - <p-inputSwitch [(ngModel)]="x" />                          // v17
+// + <baps-toggleswitch [(ngModel)]="x" />                       // v21
+```
+
+## Examples
+
+### Playground
+
+<Canvas of={ToggleSwitchStories.Playground} />
+
+### States
+
+<Canvas of={ToggleSwitchStories.States} />
+
+### Sizes
+
+<Canvas of={ToggleSwitchStories.Sizes} />
+
+### Sampark States
+
+<Canvas of={ToggleSwitchStories.SamparkStates} />
+
+### Sampark Sizes
+
+<Canvas of={ToggleSwitchStories.SamparkSizes} />
+
+### With Label
+
+<Canvas of={ToggleSwitchStories.WithLabel} />
+
+## Forms
+
+A full `ControlValueAccessor`, including `setDisabledState`, so it behaves like a
+native control in either forms API.
+
+### Template Driven
+
+```html
+<baps-toggleswitch ariaLabel="Email notifications" [(ngModel)]="value" />
+```
+
+### Reactive Forms
+
+```html
+<baps-toggleswitch ariaLabel="Email notifications" formControlName="value" />
+```
+
+```ts
+form = new FormGroup({ value: new FormControl(false) });
+```
+## When Not to Use
+
+| Need | Use instead | Why not a switch |
+| --- | --- | --- |
+| A value staged now and committed later by Save/Submit | `baps-checkbox` | See [Toggle vs. Checkbox](#toggle-vs-checkbox) below — the distinction is immediacy, and it is the mistake this control invites most often |
+| One choice out of three or more | `baps-select`, or `baps-listbox` when the options should stay visible | A switch only has two positions |
+| A value on a continuum | `baps-slider` | |
+| State the user cannot change | `baps-tag`, or `baps-badge` for a count | A switch that does nothing when tapped is a broken affordance, and `disabled` still reads as "temporarily unavailable" rather than "read-only display" |
+| Firing an action rather than storing a state | `baps-button` / `baps-split-button` | A switch implies a persisted setting you can return to |
+
+## Accessibility
+
+### Screen Reader
+
+- Renders a native checkbox-role input under the hood — keyboard-focusable and togglable with Space.
+- Set `inputId` and point a `<label for>` (or wrap in `<label>`) at it so the control has an accessible name.
+- `readonly` keeps the control focusable but non-editable; `disabled` removes it from the tab order. Prefer `disabled` when the option genuinely isn't available.
+- Never rely on knob position alone — the adjacent label must state what "on" means.
+
+### Keyboard Support
+
+| Key | Function |
+| --- | --- |
+| <kbd>Tab</kbd> | Moves focus to the switch. |
+| <kbd>Space / Enter</kbd> | Toggles it. |

@@ -1,0 +1,695 @@
+@use '../input/input';
+
+/* =====================================================================
+   libs/ui-kit/src/lib/styles/components/select/_select-sampark.scss
+   PrimeNG v21 Select Family — Sampark Portal Figma Overrides
+   Targets .p-select / .p-multiselect / .p-datepicker / .p-autocomplete /
+   .p-cascadeselect / .p-treeselect directly.
+   Uses !important to override PrimeNG compiled theme specificity.
+   ===================================================================== */
+
+/* ══════════════════════════════════════════════════════════════════════
+   DESIGN TOKENS — CSS Custom Properties
+   Re-points the --select-* and --datepicker-* variables.
+
+   Page-wide toggle plus one root per wrapper element. `.baps-ds-sampark`
+   is the page-wide class; the rest are the per-instance host classes each
+   wrapper binds from its `brand` input.
+
+   Every wrapper has to be named explicitly, because an element selector
+   matches one tag: `baps-select.baps-sampark` does NOT match
+   `<baps-multi-select class="baps-sampark">`. While only `baps-select`
+   was listed, `brand="sampark"` on MultiSelect, TreeSelect and DatePicker
+   set the host class and matched nothing — those triggers rendered with
+   the MyBKY tokens (measured: a 99px pill trigger where Sampark's is 4px).
+
+   Overlays are a separate case again: they are portalled to <body> and
+   carry `baps-ds-sampark` on themselves via `panelStyleClass`, so rules
+   aimed at overlay internals need the compound `&.p-…-overlay` form as
+   well as the descendant one. See section 12.
+
+   The raw `.p-cascadeselect` control has no BAPS wrapper to carry a host
+   class, so it remains page-scope-only by necessity.
+   ══════════════════════════════════════════════════════════════════════ */
+:is(
+    .baps-ds-sampark,
+    baps-select.baps-sampark,
+    baps-multi-select.baps-sampark,
+    baps-tree-select.baps-sampark,
+    baps-datepicker.baps-sampark
+  ) {
+  /* ── Overlay container ───────────────────────────────────────────── */
+  --select-overlay-bg: var(--color-sampark-surface-card, #ffffff);
+  /* Mono/40, NOT Mono/Borders. A floating panel sits on top of content that
+     already uses the #e1e0e0 hairline, so the panel's own edge is a step
+     darker or it disappears into whatever it covers. */
+  --select-overlay-border: var(--color-sampark-mono-40, #bcb9b9);
+  --select-overlay-radius: var(--radius-sampark-default, 0.25rem); /* 4px — matches trigger */
+  /* One shadow for every floating surface in the Sampark portal — panels,
+     dropdowns and popovers all use this exact value, which is what makes them
+     read as one system. Deliberately much longer than a card's. */
+  --select-overlay-shadow: var(--shadow-sampark-dropdown, 0 12px 40px rgba(0, 0, 0, 0.15));
+  --select-overlay-offset: 0.25rem;
+  --select-overlay-padding: 0.25rem;
+  /* Rows run edge to edge; only the list's top and bottom are inset. */
+  --select-list-padding: 0.25rem 0;
+  --select-list-max-height: 15rem;
+
+  /* ── Overlay header (search area) ────────────────────────────────── */
+  /* 8px block, 16px inline. The block value is the guide's; the inline one
+     has to match the option rows' 16px inset, because the header carries the
+     "select all" checkbox and the rows below carry their own — at the guide's
+     flat 8px the toggle sat 8px left of every checkbox under it (measured 316
+     against 324). The guide's header holds a filter and nothing else, so it
+     never had a column to line up with. */
+  --select-header-padding: 0.5rem 1rem;
+  --select-header-bg: var(--color-sampark-mono-20, #f3f2f2);
+  --select-header-border: var(--color-sampark-border-default, #e1e0e0);
+
+  /* ── Option rows ─────────────────────────────────────────────────── */
+  --select-option-height: var(--form-field-sampark-height-default, 2rem); /* 32px */
+  --select-option-padding-x: 0.75rem; /* 12px */
+  --select-option-padding-y: 0.5rem; /* 8px */
+  /* Square. The rows run edge to edge (see --select-list-padding), and a 4px
+     radius on an edge-to-edge fill leaves a notch against the panel's own
+     corner rather than reading as a rounded row. */
+  --select-option-radius: 0;
+  --select-option-text: var(--color-sampark-text-primary, #151414); /* Mono/100 */
+  --select-option-hover-bg: var(--color-sampark-mono-10, #f8f7f7); /* Mono/10 */
+  /* Selection is signalled by the CHECKBOX, not by the row. A multiselect row
+     already carries a checked box, so tinting it maroon and bolding the label
+     says the same thing three times — and in a long list it turns the panel
+     into a block of colour. Selected is Mono/10, one step of hover darker on
+     top; the text colour and weight never change.
+
+     This replaces a Primary/10 fill with Primary/100 text at weight 500, which
+     came from the generic dropdown-panel guide; the multiselect-specific spec
+     is explicit that there is no colour or weight bump. */
+  --select-option-selected-bg: var(--color-sampark-mono-10, #f8f7f7); /* Mono/10 */
+  --select-option-selected-text: var(--color-sampark-text-primary, #151414);
+  --select-option-selected-hover-bg: var(--color-sampark-mono-20, #f3f2f2); /* Mono/20 */
+  /* 400, not "inherit". As a custom-property VALUE, inherit is the CSS-wide
+     keyword: it takes the PARENT element’s value of this same property, which
+     is unset, so var() fell through to its 500 fallback and the weight bump
+     survived anyway. Measured 500 on a selected row before this. */
+  --select-option-selected-weight: 400;
+  --select-option-disabled-text: var(--color-sampark-text-muted, #bcb9b9); /* Mono/40 */
+  --select-option-group-text: var(--color-sampark-text-secondary, #595656); /* Mono/80 */
+
+  /* ── Trigger internals ───────────────────────────────────────────── */
+  --select-trigger-icon: var(--color-sampark-text-secondary, #595656);
+  /* 10px, not the 14px inherited from the MyBKY defaults. Figma draws the
+     trailing chevron of a Sampark field as a 10x10 "Input Text Chevron"
+     (node I17512:84423;6333:71081;6333:66500), the same size as the
+     accordion's own chevron — which is what makes a select sitting inside a
+     filter panel line up with the panel headers above it instead of reading
+     as a slightly bigger arrow in the same column. */
+  --select-trigger-icon-size: 0.625rem; /* 10px */
+
+  /* ── Filter (search inside overlay) ──────────────────────────────── */
+  --select-filter-bg: var(--color-sampark-secondary-0, #f8f7f7);
+  --select-filter-radius: var(--radius-sampark-default, 0.25rem);
+  --select-filter-height: 2.25rem; /* 36px */
+
+  /* No left bar: Sampark rows carry a checkbox, which already says which are
+     on. The base file draws one for MyBKY off this width. */
+  --select-option-bar-width: 0;
+
+  /* No select-all band either — the base file gives MyBKY a 48px white row with
+     an injected "Select All" label; Sampark keeps PrimeNG.s own header. */
+  --select-selectall-height: auto;
+  --select-selectall-padding-x: 1rem;
+  --select-selectall-bg: var(--select-header-bg);
+  --select-selectall-label: "";
+
+  /* ── MultiSelect chips ───────────────────────────────────────────── */
+  --select-chip-bg: var(--color-sampark-mono-20, #f3f2f2); /* Mono/20 */
+  --select-chip-text: var(--color-sampark-text-primary, #151414); /* filled text, not muted */
+  --select-chip-border: var(--tag-sampark-grey-border, #e1e0e0);
+  --select-chip-border-hover: var(--tag-sampark-grey-border-hover, #9f9c9c);
+  /* Symmetric 8px: the remove glyph is revealed on hover rather than sitting
+     there permanently, so there is no trailing control to tighten the right
+     side for — which is what the old 6px right / 8px left asymmetry did. */
+  --select-chip-padding: 0.0625rem 0.5rem;
+  /* 4px, NOT MyBKY's 99px pill. The token file calls this out as a different
+     shape philosophy rather than a different number. */
+  --select-chip-radius: var(--radius-sampark-default, 0.25rem);
+  --select-chip-height: 1.5rem;
+  /* 13px and regular weight, per the shipping portal — MyBKY's chip is 12px
+     at 500. The events-ui chip guide describes the MyBKY pair; these two lines
+     are where the brands part company. */
+  --select-chip-font-size: 0.8125rem;
+  --select-chip-font-weight: 400;
+  /* Placeholder grey — the portal draws the remove cross at #979493. */
+  --select-chip-remove-color: var(--color-sampark-text-placeholder, #979493);
+
+  /* ── DatePicker calendar ─────────────────────────────────────────── */
+  --datepicker-cell-size: 2rem; /* 32px day cells */
+  --datepicker-cell-radius: var(--radius-sampark-default, 0.25rem); /* square/rect cells, NOT circular */
+  --datepicker-day-hover-bg: var(--color-sampark-secondary-0, #f8f7f7);
+  --datepicker-day-selected-bg: var(--color-sampark-primary-100, #873030);
+  --datepicker-day-selected-text: var(--color-sampark-mono-0, #ffffff);
+  --datepicker-today-border: var(--color-sampark-primary-40, #d48787);
+  --datepicker-muted-text: var(--color-sampark-text-secondary, #595656);
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   GEOMETRY & INTERACTIVE STATES OVERRIDES
+   Same two scope roots as the token block above — see the note there.
+   ══════════════════════════════════════════════════════════════════════ */
+:is(
+    .baps-ds-sampark,
+    baps-select.baps-sampark,
+    baps-multi-select.baps-sampark,
+    baps-tree-select.baps-sampark,
+    baps-datepicker.baps-sampark
+  ) {
+  /* ── 1. Trigger container defaults (32px, 4px radius, 1px border) ── */
+  .p-select,
+  .p-multiselect,
+  .p-cascadeselect,
+  .p-treeselect {
+    border-radius: var(--form-field-sampark-border-radius, 0.25rem) !important;
+    height: var(--form-field-sampark-height-default, 2rem) !important; /* 32px */
+    min-height: var(--form-field-sampark-height-default, 2rem) !important;
+    border: 1px solid var(--input-border-default) !important;
+    background: var(--input-bg-default) !important;
+    box-shadow: none !important;
+    /* Fills its container, same as the base rule and every other form control.
+       This was `fit-content`, which made a Sampark select re-flow its own
+       width as the user picked options and left it narrower than the field it
+       sits in — Figma draws the filter panel's select full-bleed at 452px
+       (node 17512:84416, "Web Input Text" x=0 w=452). The bug was only
+       reachable page-wide until brand="sampark" started matching per-instance
+       hosts, so no story had shown it. */
+    width: 100% !important;
+  }
+
+  /* ── 2. Label alignments (6px 8px padding matching text inputs) ── */
+  .p-select .p-select-label,
+  .p-multiselect .p-multiselect-label,
+  .p-cascadeselect .p-cascadeselect-label,
+  .p-treeselect .p-treeselect-label {
+    padding: 0.375rem 0.5rem !important; /* 6px 8px */
+    color: var(--input-text-filled) !important;
+  }
+
+  .p-select .p-select-label.p-placeholder,
+  .p-multiselect .p-multiselect-label.p-placeholder {
+    color: var(--input-text-placeholder) !important;
+  }
+
+  /* ── 3. Touch target for dropdown chevron inside container ── */
+  .p-select .p-select-dropdown,
+  .p-multiselect .p-multiselect-dropdown,
+  .p-cascadeselect .p-cascadeselect-dropdown,
+  .p-treeselect .p-treeselect-dropdown {
+    width: 2rem !important; /* matches 32px height touch target */
+  }
+
+  /* ── 4. Interactive States (1px border width ALWAYS) ── */
+  .p-select:hover:not(.p-disabled),
+  .p-multiselect:hover:not(.p-disabled),
+  .p-cascadeselect:hover:not(.p-disabled),
+  .p-treeselect:hover:not(.p-disabled) {
+    border: 1px solid var(--input-border-hover) !important;
+  }
+
+  .p-select.p-select-open:not(.p-disabled),
+  .p-select.p-focus:not(.p-disabled),
+  .p-select:focus-visible:not(.p-disabled),
+  .p-multiselect.p-multiselect-open:not(.p-disabled),
+  .p-multiselect.p-focus:not(.p-disabled),
+  .p-multiselect:focus-visible:not(.p-disabled),
+  .p-cascadeselect.p-focus:not(.p-disabled),
+  .p-treeselect.p-focus:not(.p-disabled) {
+    border: 1px solid var(--input-border-hover) !important;
+    box-shadow: 0 0 0 3px var(--input-shadow-focused) !important;
+  }
+
+  /* ── 5. Warning state ── */
+  .p-select.p-inputtext-warning,
+  .p-multiselect.p-inputtext-warning {
+    border: 1px solid var(--input-border-warning) !important;
+    box-shadow: 0 0 0 3px var(--input-shadow-warning) !important;
+  }
+
+  /* ── 6. Error state (dirty invalid or explicitly invalid) ── */
+  .p-select.ng-invalid.ng-dirty,
+  .p-select.p-invalid,
+  .p-multiselect.ng-invalid.ng-dirty,
+  .p-multiselect.p-invalid {
+    border: 1px solid var(--input-border-error) !important;
+  }
+
+  .p-select.ng-invalid.ng-dirty:hover,
+  .p-select.p-invalid:hover,
+  .p-multiselect.ng-invalid.ng-dirty:hover,
+  .p-multiselect.p-invalid:hover {
+    border: 1px solid var(--input-border-error) !important;
+    box-shadow: none !important;
+  }
+
+  .p-select.ng-invalid.ng-dirty.p-select-open,
+  .p-select.ng-invalid.ng-dirty.p-focus,
+  .p-select.p-invalid.p-select-open,
+  .p-select.p-invalid.p-focus,
+  .p-multiselect.ng-invalid.ng-dirty.p-multiselect-open,
+  .p-multiselect.ng-invalid.ng-dirty.p-focus,
+  .p-multiselect.p-invalid.p-multiselect-open,
+  .p-multiselect.p-invalid.p-focus {
+    border: 1px solid var(--input-border-error) !important;
+    box-shadow: 0 0 0 3px var(--input-shadow-error) !important;
+  }
+
+  /* ── 7. Disabled state ── */
+  .p-select.p-disabled,
+  .p-multiselect.p-disabled,
+  .p-cascadeselect.p-disabled,
+  .p-treeselect.p-disabled {
+    border: 1px solid var(--input-border-default) !important;
+    background: var(--input-bg-disabled) !important;
+    box-shadow: none !important;
+    opacity: 1 !important;
+  }
+
+  .p-select.p-disabled .p-select-label,
+  .p-multiselect.p-disabled .p-multiselect-label {
+    color: var(--input-text-disabled) !important;
+  }
+
+  /* ── 8. Size Modifiers ── */
+  /* Small Size (28px height, 12px font) */
+  .p-select.p-select-sm,
+  .p-multiselect.p-multiselect-sm {
+    height: var(--form-field-sampark-height-sm, 1.75rem) !important; /* 28px */
+    min-height: var(--form-field-sampark-height-sm, 1.75rem) !important;
+    font-size: 0.75rem !important; /* 12px */
+  }
+
+  .p-select.p-select-sm .p-select-label,
+  .p-multiselect.p-multiselect-sm .p-multiselect-label {
+    padding: 0.25rem 0.5rem !important; /* 4px 8px */
+    font-size: 0.75rem !important;
+  }
+
+  .p-select.p-select-sm .p-select-dropdown,
+  .p-multiselect.p-multiselect-sm .p-multiselect-dropdown {
+    width: 1.75rem !important;
+  }
+
+  /* Large Size (40px height, 16px font) */
+  .p-select.p-select-lg,
+  .p-multiselect.p-multiselect-lg {
+    height: var(--form-field-sampark-height-lg, 2.5rem) !important; /* 40px */
+    min-height: var(--form-field-sampark-height-lg, 2.5rem) !important;
+    font-size: 1rem !important; /* 16px */
+  }
+
+  .p-select.p-select-lg .p-select-label,
+  .p-multiselect.p-multiselect-lg .p-multiselect-label {
+    padding: 0.5rem 0.75rem !important; /* 8px 12px */
+    font-size: 1rem !important;
+  }
+
+  .p-select.p-select-lg .p-select-dropdown,
+  .p-multiselect.p-multiselect-lg .p-multiselect-dropdown {
+    width: 2.5rem !important;
+  }
+
+  /* ── 9. AutoComplete / InputNumber / DatePicker trigger alignment ── */
+  .p-autocomplete .p-autocomplete-dropdown,
+  p-datepicker .p-datepicker-dropdown {
+    border: 1px solid var(--input-border-default) !important;
+    border-left: none !important;
+    border-radius: 0 var(--form-field-sampark-border-radius, 0.25rem) var(--form-field-sampark-border-radius, 0.25rem) 0 !important;
+    height: 100% !important;
+    width: 2rem !important;
+  }
+
+  p-datepicker.p-datepicker:has(.p-datepicker-dropdown) .p-datepicker-input {
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+  }
+
+  /* .p-datepicker is the host element in v21 — must mirror base selector form.
+     Excludes inline mode: there the root is the calendar's container, not a
+     trigger, and a 32px height cropped a 294px calendar to the input's height.
+     The base sheet frees the height for that case, but this rule is inside the
+     .baps-ds-sampark scope and loads later, so it would win without the
+     :not() here. */
+  p-datepicker.p-datepicker:not(:has(.p-datepicker-panel-inline)) {
+    height: var(--form-field-sampark-height-default, 2rem) !important; /* 32px */
+    border-radius: var(--form-field-sampark-border-radius, 0.25rem) !important;
+  }
+
+  /* ── 10. MultiSelect Chip styling (4px radius, tighter margin) ── */
+  /* The wrap and the min-width are repeated from _select.scss on purpose.
+     A Sampark consumer loads ONLY this partial — App Sell's styles.scss takes
+     `select-sampark` and not `select`, by design — so a fix that lives solely
+     in the base file never reaches it. Measured: the Projects filter drawer
+     still had a 437px panel scrolling to 762px after the base file was fixed,
+     because the only chip-label rule in that page was this one.
+
+     min-width is the flexbox trap: the label is a flex ITEM, so its automatic
+     minimum size is its content width, and overflow:hidden does not defeat
+     that. Without it the field drags every ancestor wider than the drawer. */
+  .p-multiselect .p-multiselect-label:has(.p-multiselect-chip-item) {
+    padding: 0.25rem 0.375rem !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    gap: 0.25rem !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  /* A chip field grows with its content; everything else keeps the fixed box. */
+  .p-multiselect:has(.p-multiselect-chip-item) {
+    height: auto !important;
+    min-height: var(--form-field-sampark-height-default, 2rem) !important;
+    align-items: flex-start !important;
+  }
+
+  /* `align-items: flex-start` above applies to every flex child, the chevron
+     trigger included. The trigger has a width but no height of its own, so
+     top-aligned it collapsed to the glyph (measured 10px in a 34px field) and
+     the arrow read as unaligned. Stretching it back gives the same placement a
+     non-chip select already has. Repeated here rather than left to the base
+     file for the reason spelled out above: App Sell loads `select-sampark`
+     only. */
+  .p-multiselect:has(.p-multiselect-chip-item) .p-multiselect-dropdown {
+    align-self: stretch !important;
+  }
+
+  .p-multiselect .p-multiselect-chip-item .p-chip {
+    border-radius: var(--select-chip-radius) !important;
+    height: var(--select-chip-height) !important;
+  }
+
+  /* ── 11. DatePicker Calendar items overrides ── */
+  .p-datepicker-prev-button,
+  .p-datepicker-next-button {
+    border-radius: var(--radius-sampark-default, 0.25rem) !important;
+  }
+
+  /* Outlined unselected today cell */
+  .p-datepicker-day.p-datepicker-today:not(.p-datepicker-day-selected) {
+    border-color: var(--datepicker-today-border) !important;
+  }
+
+  /* ── 11b. Panel filter box ──
+     Restated here rather than left to the shared rule, purely for load order:
+     _input-sampark.scss pins every .p-inputtext to the 32px form-field height
+     at the same specificity and loads AFTER _select.scss, so the shared
+     var(--select-filter-height) never won. This file loads last. */
+  .p-select-filter.p-inputtext,
+  .p-multiselect-filter.p-inputtext {
+    height: var(--select-filter-height, 2.25rem) !important;
+  }
+
+  /* ══════════════════════════════════════════════════════════════════
+     TREE IN AN OVERLAY  (TreeSelect panel, and any p-tree in a drawer)
+
+     Scoped to .p-tree rather than to the treeselect overlay, because the
+     source spec is explicit that one ruleset governs every tree-in-overlay
+     and tree-in-sidebar in the app — a tree does not change shape because of
+     what is holding it.
+     ══════════════════════════════════════════════════════════════════ */
+
+  /* The panel needs a floor: a tree of short labels would otherwise render a
+     190px-wide overlay under a 52px trigger. */
+  &.p-treeselect-overlay,
+  .p-treeselect-overlay {
+    min-width: 17.5rem; /* 280px */
+  }
+
+  /* Deeper than the multiselect list (240px): a tree spends rows on its
+     parents, so the same number of LEAVES needs more height to reach. */
+  &.p-treeselect-overlay .p-treeselect-tree-container,
+  .p-treeselect-overlay .p-treeselect-tree-container {
+    max-height: 17.5rem !important; /* 280px */
+  }
+
+  /* The tree filter sits at the panel inset, not the multiselect header inset —
+     there is no checkbox column here for it to line up with. */
+  &.p-treeselect-overlay .p-select-header,
+  .p-treeselect-overlay .p-select-header,
+  &.p-treeselect-overlay .p-tree-filter-input,
+  .p-treeselect-overlay .p-tree-filter-input {
+    padding: 0.5rem !important;
+  }
+
+  &.p-treeselect-overlay .p-tree-filter-input .p-inputtext,
+  .p-treeselect-overlay .p-tree-filter-input .p-inputtext {
+    height: 2.25rem !important; /* 36px */
+    border: 1px solid var(--input-border-default) !important;
+    border-radius: 0.375rem !important; /* 6px — softer than the 4px field */
+    font-size: 0.875rem !important;
+  }
+
+  /* ── Node rows ── */
+  .p-tree .p-tree-node-content {
+    padding: 0.5rem 0.75rem !important; /* 8px 12px */
+    gap: 0.375rem !important; /* 6px */
+    border-radius: 0 !important; /* full-bleed rows, like the select list */
+    cursor: pointer;
+    transition: background 100ms ease;
+  }
+
+  .p-tree .p-tree-node-label {
+    font-size: 0.875rem !important;
+    color: var(--color-sampark-text-primary, #151414) !important;
+  }
+
+  .p-tree .p-tree-node-content:hover:not(.p-tree-node-selected) {
+    background: var(--color-sampark-mono-10, #f8f7f7) !important;
+  }
+
+  /* Selection IS tinted here, unlike the multiselect list. That list carries a
+     checkbox per row, which already says what is chosen; a single-select tree
+     has nothing else to say it with. Held on hover so the row does not flicker
+     back to hover-grey under the pointer. */
+  .p-tree .p-tree-node-content.p-tree-node-selected,
+  .p-tree .p-tree-node-content.p-tree-node-selected:hover {
+    background: var(--color-sampark-primary-10, #f8ecec) !important;
+    color: var(--color-sampark-text-primary, #151414) !important;
+  }
+
+  /* First-level children of the root are the group headings of the tree. */
+  .p-tree .p-tree-root-children > p-treenode > .p-tree-node > .p-tree-node-content .p-tree-node-label {
+    font-weight: 500 !important;
+  }
+
+  /* Two levels in, the label steps back to secondary — depth reads as
+     recession rather than as more of the same. */
+  .p-tree .p-tree-node-children .p-tree-node-children .p-tree-node-content .p-tree-node-label {
+    color: var(--color-sampark-text-secondary, #595656) !important;
+  }
+
+  /* ── Hierarchy guideline ──
+     One border per nesting LEVEL, not per row, so it draws as a single
+     continuous line down the branch instead of a dashed run of stubs. Same
+     idea as the tree-grid trunk, but a real border rather than a
+     pseudo-element, because here there is a container that actually spans the
+     whole branch. */
+  .p-tree .p-tree-node-children {
+    margin-left: 1.1875rem !important; /* 19px */
+    border-left: 2px solid var(--input-border-default) !important;
+    /* PrimeNG indents this container with its own 32px padding-left. Left in
+       place it stacks on the 19px margin and the 2px rule, so every level
+       stepped ~53px instead of the design's ~23px and a three-deep tree ran
+       out of panel. The margin IS the indent here, because the guideline has
+       to sit at its left edge. */
+    padding-left: 0 !important;
+  }
+
+  /* Nested content indents INSIDE the guideline. */
+  .p-tree .p-tree-node-children .p-tree-node-content {
+    padding: 0.5rem 0.75rem 0.5rem 0.875rem !important; /* 8px 12px 8px 14px */
+  }
+
+  /* ── Toggler ── */
+  .p-tree .p-tree-node-toggle-button {
+    width: 1rem !important;
+    height: 1rem !important;
+    min-width: 1rem !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0.125rem !important; /* 2px */
+    background: transparent !important;
+    color: var(--color-sampark-mono-60, #9f9c9c) !important;
+    font-size: 0.75rem !important;
+  }
+
+  .p-tree .p-tree-node-toggle-button:hover {
+    color: var(--color-sampark-text-secondary, #595656) !important;
+  }
+
+  /* A leaf has nothing to expand, so its chevron goes — but the 16px column
+     stays, filled with a dash. Collapsing the column instead would let leaf
+     labels slide left and break the vertical run of text down the branch. */
+  .p-tree .p-tree-node-leaf > .p-tree-node-content .p-tree-node-toggle-button svg,
+  .p-tree .p-tree-node-leaf > .p-tree-node-content .p-tree-node-toggle-icon {
+    display: none !important;
+  }
+
+  /* PrimeNG hides a leaf's toggle button with visibility: hidden. That
+     inherits into ::before, so the dash was in the box and painted nothing —
+     computed content was right and nothing showed. Un-hide the button; the
+     chevron inside it is already display:none. */
+  .p-tree .p-tree-node-leaf > .p-tree-node-content .p-tree-node-toggle-button {
+    visibility: visible !important;
+  }
+
+  .p-tree .p-tree-node-leaf > .p-tree-node-content .p-tree-node-toggle-button::before {
+    /* Literal en dash. A CSS escape sequence did not survive the write path
+       this rule was generated through and became U+0081 followed by "3". */
+    content: "–";
+    color: var(--color-sampark-mono-60, #9f9c9c);
+  }
+
+  /* ── Checkbox (selectionMode="checkbox") ── */
+  .p-tree .p-tree-node-checkbox {
+    width: 1rem !important;
+    height: 1rem !important;
+    border-radius: 0.25rem !important;
+  }
+  /* ── 12. Scroll height ──
+     PrimeNG writes its `scrollHeight` input as an inline style on this
+     element (200px by default), so only !important reaches it — and being a
+     per-call input makes it the wrong home for a brand constant. Kept brand
+     scoped rather than shared: a shared rule needs a default, and any default
+     would override that inline value for brands that never opted in. */
+  /* COMPOUND `&.`, not descendant. The overlay is portalled to <body> and
+     carries `baps-ds-sampark` on ITSELF (BapsMultiSelect copies the brand class
+     onto panelStyleClass), so `.baps-ds-sampark .p-multiselect-overlay` matches
+     nothing in the per-instance case. The descendant form is still needed for
+     the page-wide case, where the class sits on an ancestor instead — hence
+     both. Token declarations above are unaffected: they land on the overlay and
+     inherit down. */
+  &.p-select-overlay .p-select-list-container,
+  &.p-multiselect-overlay .p-multiselect-list-container,
+  &.p-autocomplete-overlay .p-autocomplete-list-container,
+  .p-select-overlay .p-select-list-container,
+  .p-multiselect-overlay .p-multiselect-list-container,
+  .p-autocomplete-overlay .p-autocomplete-list-container {
+    max-height: var(--select-list-max-height) !important;
+  }
+
+  /* ── 13. Scrollbar customization for list containers ── */
+  &.p-select-overlay .p-select-list-container,
+  &.p-multiselect-overlay .p-multiselect-list-container,
+  &.p-autocomplete-overlay .p-autocomplete-list-container,
+  .p-select-overlay .p-select-list-container,
+  .p-multiselect-overlay .p-multiselect-list-container,
+  .p-autocomplete-overlay .p-autocomplete-list-container {
+    scrollbar-color: var(--color-sampark-border-default, #e1e0e0) transparent !important;
+  }
+
+  &.p-select-overlay .p-select-list-container::-webkit-scrollbar-thumb,
+  &.p-multiselect-overlay .p-multiselect-list-container::-webkit-scrollbar-thumb,
+  .p-select-overlay .p-select-list-container::-webkit-scrollbar-thumb,
+  .p-multiselect-overlay .p-multiselect-list-container::-webkit-scrollbar-thumb {
+    background: var(--color-sampark-border-default, #e1e0e0) !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   MULTISELECT PANEL HEADER — two stacked zones
+
+   The panel is three zones top to bottom: a grey search bar, a white
+   "Select All" row, then the scrolling option list. PrimeNG v21 puts the
+   first two inside one .p-multiselect-header and renders them in DOM order
+   checkbox-then-filter, with no styling of its own on either and no visible
+   label on the select-all checkbox.
+
+   So three things are done here and nothing else:
+     1. the header becomes a column and the filter is ordered ABOVE the
+        select-all row (order, not DOM surgery — the markup is PrimeNG's);
+     2. each zone gets its own fill, padding and rule;
+     3. the select-all row gets a label, injected because v21 renders none.
+
+   Class names are the v21 ones (.p-multiselect-overlay / -header /
+   -option), NOT the v17 names the spm-ui source uses (.p-multiselect-panel /
+   -filter-area / -select-all-row / -item). Same design, renamed upstream.
+   ══════════════════════════════════════════════════════════════════════ */
+:is(
+    .baps-ds-sampark,
+    baps-multi-select.baps-sampark
+  ) {
+  .p-multiselect-overlay .p-multiselect-header {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0 !important;
+    /* The zones own their padding and fill; the header is only the column. */
+    padding: 0 !important;
+    background: var(--color-sampark-mono-0, #ffffff) !important;
+    border-bottom: 0 !important;
+  }
+
+  /* Zone 1 — search. */
+  .p-multiselect-overlay .p-multiselect-header > p-iconfield,
+  .p-multiselect-overlay .p-multiselect-header > .p-multiselect-filter-container {
+    order: -1;
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    padding: 0.5rem !important;
+    background: var(--color-sampark-mono-20, #f3f2f2) !important;
+    border-bottom: 1px solid var(--color-sampark-border-default, #e1e0e0) !important;
+  }
+
+  .p-multiselect-overlay .p-multiselect-filter.p-inputtext {
+    flex: 1 1 auto !important;
+    width: 100% !important;
+    border-radius: 0.375rem !important;
+    border: 1px solid var(--color-sampark-border-default, #e1e0e0) !important;
+    background: var(--color-sampark-mono-0, #ffffff) !important;
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.875rem !important;
+  }
+
+  /* The magnifier is dropped: the placeholder already says "Search", and the
+     icon inside a 36px field in an 8px zone crowds it. Matches the source. */
+  .p-multiselect-overlay .p-multiselect-header p-inputicon,
+  .p-multiselect-overlay .p-multiselect-filter-icon {
+    display: none !important;
+  }
+
+  /* Zone 2 — Select All. */
+  .p-multiselect-overlay .p-multiselect-header > p-checkbox,
+  .p-multiselect-overlay .p-multiselect-header > .p-multiselect-select-all {
+    order: 0;
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    /* height:auto is load-bearing. Something upstream pins the p-checkbox host
+       to 25px, and with border-box that swallowed the 12px padding whole — the
+       row rendered 25px tall with a 1px content box instead of 12+16+12=40. */
+    height: auto !important;
+    padding: 0.75rem !important;
+    gap: 0.75rem !important;
+    background: var(--color-sampark-mono-0, #ffffff) !important;
+    border-bottom: 1px solid var(--color-sampark-border-default, #e1e0e0) !important;
+    cursor: pointer !important;
+    /* The p-checkbox host carries border-radius: 50% — harmless while it is
+       only a 16px box, but this rule turns it into a full-width row, and a
+       50% radius on a 318x40 element bows the bottom rule into a visible
+       arc. */
+    border-radius: 0 !important;
+  }
+
+  /* PrimeNG v21 renders no visible label for this checkbox, so the text is
+     injected. ::after rather than a real element because the markup is
+     PrimeNG's and there is nothing to project into. */
+  .p-multiselect-overlay .p-multiselect-header > p-checkbox::after,
+  .p-multiselect-overlay .p-multiselect-header > .p-multiselect-select-all::after {
+    content: 'Select All';
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.3;
+    color: var(--color-sampark-text-primary, #151414);
+  }
+}

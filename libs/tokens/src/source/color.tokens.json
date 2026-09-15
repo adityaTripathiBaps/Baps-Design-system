@@ -1,0 +1,613 @@
+{
+  "color": {
+    "mybky": {
+      "blue": {
+        "50": {
+          "value": "#eef0f8",
+          "comment": "Figma Primary/0 — avatar bg, breadcrumb badge"
+        },
+        "100": {
+          "value": "#d5dbee",
+          "comment": "interpolated"
+        },
+        "200": {
+          "value": "#bdc6e4",
+          "comment": "Figma Primary/20 — avatar ring, hover border"
+        },
+        "300": {
+          "value": "#aebade",
+          "comment": "interpolated"
+        },
+        "400": {
+          "value": "#9fadd9",
+          "comment": "Figma Primary/40"
+        },
+        "500": {
+          "value": "#7f93c8",
+          "comment": "interpolated"
+        },
+        "600": {
+          "value": "#5f78b8",
+          "comment": "Figma Primary/60 — core brand blue, gradient light stop"
+        },
+        "700": {
+          "value": "#4c6095",
+          "comment": "interpolated"
+        },
+        "800": {
+          "value": "#384871",
+          "comment": "Figma Primary/80 — dark navy, gradient dark stop"
+        },
+        "900": {
+          "value": "#252f4a",
+          "comment": "interpolated — dark mode avatar bg"
+        },
+        "950": {
+          "value": "#141925",
+          "comment": "interpolated"
+        },
+        "alpha10": {
+          "value": "rgb(from {color.mybky.blue.600} r g b / 0.1)",
+          "comment": "Primary/60 at 10% alpha. Relative colour, not a literal: the channels are READ OFF the reference, so a runtime change to blue.600 carries through. Same value as the rgba(95,120,184,0.1) it replaces. Consumed by button.mybky.primary.disabled and primaryGhost.hover."
+        },
+        "alpha20": {
+          "value": "rgb(from {color.mybky.blue.400} r g b / 0.2)",
+          "comment": "Primary/40 at 20% alpha — the tinted ring on a primary tag. Base is 400, NOT 600: the border is a lighter step than the fill. Same value as the #9fadd933 it replaces."
+        }
+      },
+      "mono": {
+        "0": {
+          "value": "#ffffff",
+          "comment": "Figma Mono/0 — card background"
+        },
+        "50": {
+          "value": "#f8fafb",
+          "comment": "Figma Mono/10 — light background, table header, striped rows"
+        },
+        "100": {
+          "value": "#eff1f3",
+          "comment": "interpolated"
+        },
+        "200": {
+          "value": "#eaeff3",
+          "comment": "interpolated"
+        },
+        "300": {
+          "value": "#e4ecf1",
+          "comment": "Figma Mono/20 — universal border color"
+        },
+        "400": {
+          "value": "#b6b6af",
+          "comment": "Figma Mono/40 — disabled items"
+        },
+        "450": {
+          "value": "#8d9ba5",
+          "comment": "Figma \"Mono/40 (Disable Item)\" on the avatar sheet (22465:97983) — sits between the existing 400 (#b6b6af) and 500 (#6f777d), which is why it is 450 rather than either"
+        },
+        "500": {
+          "value": "#6f777d",
+          "comment": "Figma Mono/60 — labels & placeholder"
+        },
+        "600": {
+          "value": "#565652",
+          "comment": "interpolated"
+        },
+        "700": {
+          "value": "#3d4144",
+          "comment": "interpolated"
+        },
+        "800": {
+          "value": "#2b2f32",
+          "comment": "Figma Mono/80 — secondary text"
+        },
+        "900": {
+          "value": "#181b1d",
+          "comment": "Figma Mono/100 — primary text / dark-mode surface"
+        },
+        "950": {
+          "value": "#0f0f0e",
+          "comment": "interpolated — near black"
+        }
+      },
+      "error": {
+        "80": {
+          "value": "#e05255",
+          "comment": "invalid / destructive states, gradient light stop"
+        },
+        "100": {
+          "value": "#c32226",
+          "comment": "danger button gradient dark stop, Figma node 22465:93605"
+        },
+        "surface": {
+          "value": "#ffebeb",
+          "comment": "Avatar status fill — Figma \"error/10\" on node 22465:97983"
+        },
+        "tint": {
+          "value": "#ec9394",
+          "comment": "Avatar status border — Figma \"error/60\" on node 22465:97983"
+        }
+      },
+      "success": {
+        "50": {
+          "value": "#d8fdeb"
+        },
+        "400": {
+          "value": "#40bf84"
+        },
+        "600": {
+          "value": "#2a9c68"
+        },
+        "surface": {
+          "value": "#ebfff5",
+          "comment": "Avatar status fill — Figma \"success/10\" on node 22465:97983"
+        },
+        "tint": {
+          "value": "#93ecbb",
+          "comment": "Avatar status border — Figma \"success/60\" on node 22465:97983"
+        }
+      },
+      "info": {
+        "20": {
+          "value": "#d8e7fd"
+        },
+        "60": {
+          "value": "#528de0"
+        },
+        "80": {
+          "value": "#2265c3"
+        },
+        "surface": {
+          "value": "#ebf3ff",
+          "comment": "Avatar status fill — Figma \"info/10\" on node 22465:97983"
+        },
+        "tint": {
+          "value": "#93b7ec",
+          "comment": "Avatar status border — Figma \"info/60\" on node 22465:97983"
+        }
+      },
+      "warning": {
+        "20": {
+          "value": "#fdedd8"
+        },
+        "60": {
+          "value": "#e0a652"
+        },
+        "80": {
+          "value": "#c38222"
+        },
+        "surface": {
+          "value": "#fff6eb",
+          "comment": "Avatar status fill — Figma \"warning/10\" on node 22465:97983"
+        },
+        "tint": {
+          "value": "#ecc893",
+          "comment": "Avatar status border — Figma \"warning/60\" on node 22465:97983"
+        }
+      }
+    },
+    "sampark": {
+      "primary": {
+        "0": {
+          "value": "#fbf4f4",
+          "comment": "light tint"
+        },
+        "10": {
+          "value": "#f8ecec"
+        },
+        "20": {
+          "value": "#e9c3c3"
+        },
+        "40": {
+          "value": "#d48787"
+        },
+        "60": {
+          "value": "#c96868",
+          "comment": "CORE BRAND MAROON — primary button bg"
+        },
+        "80": {
+          "value": "#b44141",
+          "comment": "hover state"
+        },
+        "100": {
+          "value": "#873030",
+          "comment": "Figma Colors/Primary swatch 1 of 7 — code has drifted to #9e3636, see inconsistency-findings"
+        },
+        "alpha10": {
+          "value": "rgba(135, 48, 48, 0.1)",
+          "comment": "Figma \"Primary/10% Primary\" #8730301A — Primary/100 at 10% alpha. NOT the same as primary.10 (#f8ecec), which is an opaque tint: this one is transparent and so keeps whatever sits behind it. The count badge on baps-accordion's filter-panel header (node 17512:84432) needs the transparent version because it overlays the mono.10 header fill."
+        },
+        "alpha20": {
+          "value": "rgb(from {color.sampark.primary.100} r g b / 0.2)",
+          "comment": "Primary/100 at 20% alpha. Relative colour rather than the rgba(135,48,48,0.2) literal it replaces — the channels are read off primary.100, so a runtime primary change carries through. Same rendered value. The 10% companion, primary.alpha10, is still a literal: it was outside the group-A scope, and it is the obvious next one to convert."
+        }
+      },
+      "mono": {
+        "0": {
+          "value": "#ffffff"
+        },
+        "5": {
+          "value": "#fafafa",
+          "comment": "very light backgrounds"
+        },
+        "10": {
+          "value": "#f8f7f7",
+          "comment": "Figma Mono/10 'Light Background' — table header fill"
+        },
+        "20": {
+          "value": "#f3f2f2",
+          "comment": "light backgrounds"
+        },
+        "40": {
+          "value": "#bcb9b9",
+          "comment": "disabled text, borders"
+        },
+        "60": {
+          "value": "#9f9c9c",
+          "comment": "tertiary text, hints"
+        },
+        "80": {
+          "value": "#595656",
+          "comment": "secondary text"
+        },
+        "100": {
+          "value": "#151414",
+          "comment": "primary text, headers"
+        },
+        "borders": {
+          "value": "#e1e0e0",
+          "comment": "universal border color"
+        },
+        "alpha4": {
+          "value": "rgba(21, 20, 20, 0.04)",
+          "comment": "Figma \"Mono/20% Black\" #1514140A — a tint that sits on ANY surface, unlike mono.20 which is an opaque fill. Used for the paginator's active page and the table count badge."
+        },
+        "alpha2": {
+          "value": "rgba(21, 20, 20, 0.02)",
+          "comment": "Figma \"Mono/10% Black\" — the NAME says 10% but the value is #15141405, i.e. 2%. Read the value, not the name. The half-step below alpha4: baps-segmented's unselected-pill hover (node 17512:78179) and baps-input-group's TRAILING addon fill (node 17512:82916), where the LEADING addon uses alpha4."
+        },
+        "alphaBlack50": {
+          "value": "rgba(21, 20, 20, 0.5)",
+          "comment": "Figma \"Mono/50% Black\" — scrim over imagery"
+        },
+        "alphaWhite75": {
+          "value": "rgba(255, 255, 255, 0.75)",
+          "comment": "Figma \"Mono/50% White\" — the NAME says 50%, the value #FFFFFFBF is 75%"
+        },
+        "alphaWhite50": {
+          "value": "rgba(255, 255, 255, 0.5)",
+          "comment": "Figma \"Mono/20% White\" — the NAME says 20%, the value #FFFFFF80 is 50%"
+        },
+        "alphaWhite25": {
+          "value": "rgba(255, 255, 255, 0.25)",
+          "comment": "Figma \"Mono/10 White\" — the NAME says 10%, the value #FFFFFF40 is 25%"
+        }
+      },
+      "secondary": {
+        "0": {
+          "value": "#f8f7f7"
+        },
+        "10": {
+          "value": "#e6e6e5"
+        },
+        "20": {
+          "value": "#b7b6b3"
+        },
+        "40": {
+          "value": "#94928f"
+        },
+        "60": {
+          "value": "#4a4947"
+        },
+        "80": {
+          "value": "#2c2c2a"
+        },
+        "100": {
+          "value": "#1d1c1b"
+        },
+        "alpha20": {
+          "value": "rgba(74, 73, 71, 0.2)",
+          "comment": "Secondary/60 at 20% alpha — transparent overlay, not the opaque .20 tint"
+        },
+        "alpha10": {
+          "value": "rgba(74, 73, 71, 0.1)",
+          "comment": "Secondary/60 at 10% alpha — transparent overlay, not the opaque .10 tint"
+        }
+      },
+      "tertiary": {
+        "0": {
+          "value": "#f7fcff"
+        },
+        "10": {
+          "value": "#e5f4ff"
+        },
+        "20": {
+          "value": "#91caf2"
+        },
+        "40": {
+          "value": "#50a8e5"
+        },
+        "60": {
+          "value": "#1270b2",
+          "comment": "core tertiary blue"
+        },
+        "80": {
+          "value": "#004b80"
+        },
+        "100": {
+          "value": "#002d4d",
+          "comment": "Figma-only — no matching usage found in spm-ui code; see inconsistency-findings"
+        },
+        "alpha20": {
+          "value": "rgba(18, 112, 178, 0.2)",
+          "comment": "Tertiary/60 at 20% alpha — transparent overlay, not the opaque .20 tint"
+        },
+        "alpha10": {
+          "value": "rgba(18, 112, 178, 0.1)",
+          "comment": "Tertiary/60 at 10% alpha — transparent overlay, not the opaque .10 tint"
+        }
+      },
+      "error": {
+        "10": {
+          "value": "#ffefef"
+        },
+        "20": {
+          "value": "#fde8e8"
+        },
+        "40": {
+          "value": "#f9b9ba"
+        },
+        "60": {
+          "value": "#f27376"
+        },
+        "80": {
+          "value": "#ea151a",
+          "comment": "core error — input border error, notification badge"
+        },
+        "100": {
+          "value": "#cc0005"
+        },
+        "alpha20": {
+          "value": "rgba(234, 21, 26, 0.2)",
+          "comment": "Error/80 at 20% alpha — transparent overlay, not the opaque .20 tint"
+        },
+        "alpha10": {
+          "value": "rgba(234, 21, 26, 0.1)",
+          "comment": "Error/80 at 10% alpha — transparent overlay, not the opaque .10 tint"
+        }
+      },
+      "info": {
+        "5": {
+          "value": "#f3f8ff"
+        },
+        "10": {
+          "value": "#e6f0fe"
+        },
+        "20": {
+          "value": "#b4d3fd"
+        },
+        "40": {
+          "value": "#83b5fc"
+        },
+        "60": {
+          "value": "#3889fa",
+          "comment": "core info"
+        },
+        "80": {
+          "value": "#0661e0"
+        },
+        "alpha20": {
+          "value": "rgba(56, 137, 250, 0.2)",
+          "comment": "Info/80 on the Figma scale (info.60 here) at 20% alpha — transparent overlay, not the opaque .20 tint"
+        },
+        "alpha10": {
+          "value": "rgba(56, 137, 250, 0.1)",
+          "comment": "Info/80 on the Figma scale (info.60 here) at 10% alpha — transparent overlay, not the opaque .10 tint"
+        }
+      },
+      "success": {
+        "5": {
+          "value": "#f0fff6"
+        },
+        "10": {
+          "value": "#e8fcf0"
+        },
+        "20": {
+          "value": "#bcf5cf"
+        },
+        "40": {
+          "value": "#82e3af"
+        },
+        "60": {
+          "value": "#17b56c",
+          "comment": "core success — progress fill"
+        },
+        "80": {
+          "value": "#089152"
+        },
+        "alpha20": {
+          "value": "rgba(23, 181, 108, 0.2)",
+          "comment": "Success/80 on the Figma scale (success.60 here) at 20% alpha — transparent overlay, not the opaque .20 tint"
+        },
+        "alpha10": {
+          "value": "rgba(23, 181, 108, 0.1)",
+          "comment": "Success/80 on the Figma scale (success.60 here) at 10% alpha — transparent overlay, not the opaque .10 tint"
+        }
+      },
+      "warning": {
+        "5": {
+          "value": "#fff9ef"
+        },
+        "10": {
+          "value": "#fef4e6"
+        },
+        "20": {
+          "value": "#fddfb4"
+        },
+        "40": {
+          "value": "#fcca83"
+        },
+        "60": {
+          "value": "#faab38",
+          "comment": "core warning"
+        },
+        "80": {
+          "value": "#e08705"
+        },
+        "alpha20": {
+          "value": "rgba(250, 171, 56, 0.2)",
+          "comment": "Warning/80 on the Figma scale (warning.60 here) at 20% alpha — transparent overlay, not the opaque .20 tint"
+        },
+        "alpha10": {
+          "value": "rgba(250, 171, 56, 0.1)",
+          "comment": "Warning/80 on the Figma scale (warning.60 here) at 10% alpha — transparent overlay, not the opaque .10 tint"
+        }
+      }
+    },
+    "accent": {
+      "slate": {
+        "50": {
+          "value": "#edf1f2"
+        },
+        "100": {
+          "value": "#d7dee2"
+        },
+        "200": {
+          "value": "#b7c5cb"
+        },
+        "300": {
+          "value": "#9aaeb6"
+        },
+        "400": {
+          "value": "#79929d"
+        },
+        "500": {
+          "value": "#4c6e7d"
+        },
+        "600": {
+          "value": "#1f4a5c",
+          "comment": "Slate teal — Admin, utility, target default primary (CLAUDE.md)"
+        },
+        "700": {
+          "value": "#193d4b"
+        },
+        "800": {
+          "value": "#14313d"
+        },
+        "900": {
+          "value": "#0e2129"
+        },
+        "950": {
+          "value": "#09151a"
+        }
+      },
+      "clay": {
+        "50": {
+          "value": "#f7f1ef"
+        },
+        "100": {
+          "value": "#eddfdb"
+        },
+        "200": {
+          "value": "#dfc6bf"
+        },
+        "300": {
+          "value": "#d2afa5"
+        },
+        "400": {
+          "value": "#c29487"
+        },
+        "500": {
+          "value": "#ae715f"
+        },
+        "600": {
+          "value": "#9a4d37",
+          "comment": "Clay — Donations"
+        },
+        "700": {
+          "value": "#7e3f2d"
+        },
+        "800": {
+          "value": "#663324"
+        },
+        "900": {
+          "value": "#452319"
+        },
+        "950": {
+          "value": "#2b160f"
+        }
+      },
+      "indigo": {
+        "50": {
+          "value": "#eff0f4"
+        },
+        "100": {
+          "value": "#dcdde5"
+        },
+        "200": {
+          "value": "#c0c3d1"
+        },
+        "300": {
+          "value": "#a6abbf"
+        },
+        "400": {
+          "value": "#898fa9"
+        },
+        "500": {
+          "value": "#61698d"
+        },
+        "600": {
+          "value": "#3a4470",
+          "comment": "Indigo — Satsang"
+        },
+        "700": {
+          "value": "#30385c"
+        },
+        "800": {
+          "value": "#262d4a"
+        },
+        "900": {
+          "value": "#1a1f32"
+        },
+        "950": {
+          "value": "#10131f"
+        }
+      },
+      "sage": {
+        "50": {
+          "value": "#f0f3f1"
+        },
+        "100": {
+          "value": "#dee4e0"
+        },
+        "200": {
+          "value": "#c4cfc8"
+        },
+        "300": {
+          "value": "#adbbb1"
+        },
+        "400": {
+          "value": "#91a497"
+        },
+        "500": {
+          "value": "#6d8675"
+        },
+        "600": {
+          "value": "#486852",
+          "comment": "Sage — Events, seva"
+        },
+        "700": {
+          "value": "#3b5543"
+        },
+        "800": {
+          "value": "#304536"
+        },
+        "900": {
+          "value": "#202f25"
+        },
+        "950": {
+          "value": "#141d17"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,525 @@
+@use 'input';
+
+/* =====================================================================
+   libs/ui-kit/src/lib/styles/components/input/_input-sampark.scss
+   PrimeNG v21 InputText — Sampark Figma Design Token Overrides
+   Targets PrimeNG v21 .p-inputtext CSS class directly.
+   Uses !important to override PrimeNG compiled theme specificity.
+   NO custom directives. NO JS. NO extra wrappers.
+
+   Figma color source: Sampark Portal "Web Input Text" component spec (LIGHT)
+   Ported from: spm-ui src/styles/_input.scss (PrimeNG v17)
+
+   CRITICAL: PrimeNG v21 changes from the v17 source file:
+   - Icon wrapper:   .p-input-icon-left  → p-iconfield + p-inputicon
+   - Dropdown:       .p-dropdown         → .p-select
+   - Dropdown panel: .p-dropdown-panel   → .p-select-overlay
+   - Filled class:   .p-filled added directly on the input element
+   - Sizes:          class="p-inputtext-sm" applied via pSize="small"
+
+   SCOPE: every rule sits under :is(.baps-ds-sampark, .baps-sampark).
+   `.baps-ds-sampark` is the page-wide class the Storybook "Design system"
+   toolbar toggles (.storybook/preview.ts); `.baps-sampark` is the
+   per-instance host class every brand-switchable wrapper emits from its
+   `brand` input. Only the first was listed until now, so `brand="sampark"`
+   on a single field matched NOTHING here and the control rendered with the
+   MyBKY tokens — measured on baps-multi-select: a #e4ecf1 border where
+   Sampark's is #e1e0e0. Both roots are one class deep, so the specificity
+   tie-break against _input.scss described below is unchanged.
+   The MyBKY skin (_input.scss) stays the unscoped default; these rules
+   outrank it by the one extra ancestor class. Selector :not() chains
+   mirror _input.scss exactly — shortening them would LOSE the
+   specificity tie-break, so they are built from the SAME shared SCSS
+   helpers ($input-guard, invalid-set(), …) _input.scss defines.
+   Import AFTER _input.scss (styles.scss).
+
+   USAGE IN TEMPLATES:
+   <input type="text" pInputText [(ngModel)]="value" />
+   <input type="text" pInputText class="p-inputtext-sm" [(ngModel)]="value" />
+   <input type="text" pInputText class="p-inputtext-lg" [(ngModel)]="value" />
+   <input type="text" pInputText [disabled]="true" [(ngModel)]="value" />
+   <input type="text" pInputText class="p-inputtext-ghost" [(ngModel)]="value" />
+   (error state applied automatically via ng-invalid ng-dirty)
+
+   STATE SUMMARY:
+   Default     → .p-inputtext
+   Filled      → .p-inputtext.p-filled / :not(:placeholder-shown)
+   Hover       → .p-inputtext:hover
+   Focus       → .p-inputtext:focus
+   Error       → .p-inputtext.ng-invalid.ng-dirty / .p-invalid
+   Disabled    → .p-inputtext:disabled
+   Ghost       → .p-inputtext.p-inputtext-ghost
+
+   SIZE SUMMARY:
+   class="p-inputtext-sm"  → small   28px · font 12px · padding 4px 8px
+   (default)               → medium  32px · font 14px · padding 6px 8px
+   class="p-inputtext-lg"  → large   40px · font 16px · padding 8px 12px
+
+   COLOR TOKENS (Figma Web Input Text — LIGHT):
+   --input-border-default  : #E1E0E0  Placeholder/Filled default stroke
+   --input-border-hover    : #94928F  Filled Hover/Focused stroke
+   --input-border-error    : #EA151A  Error state stroke
+   --input-bg-default      : #FFFFFF  Default background
+   --input-bg-disabled     : #F8F7F7  Disabled background
+   --input-bg-ghost-hover  : #FFFFFF  Ghost hover background
+   --input-text-placeholder: #979493  Placeholder text (Mono/60)
+   --input-text-filled     : #151414  Filled/active text (Mono/100)
+   --input-text-ghost      : #595656  Ghost filled text (Mono/80)
+   --input-text-disabled   : #9F9C9C  Disabled text (Mono/40)
+   --input-shadow-focused  : #F2F1F0  Default focused ring (SOLID, spread 3)
+   --input-shadow-error    : #FFE5E5  Error focused ring (SOLID, spread 3)
+   --input-label-color     : #595656  Label text (Mono/80) — same value as
+                                      MyBKY; inherited from :root, no override
+===================================================================== */
+
+/* ══════════════════════════════════════════════════════════════════════
+   DESIGN TOKENS — CSS Custom Properties
+   Re-points the --input-* tokens the base _input.scss drives every rule
+   through. Values resolve from the Style Dictionary pipeline
+   (libs/tokens build/css/tokens.css); fallbacks are the Figma hex.
+   ══════════════════════════════════════════════════════════════════════ */
+:is(.baps-ds-sampark, .baps-sampark) {
+  /* ── Border ──────────────────────────────────────────────────────── */
+  --input-border-default: var(
+    --color-sampark-border-default,
+    #e1e0e0
+  ); /* Mono/Borders */
+  --input-border-hover: var(
+    --color-sampark-border-hover,
+    #94928f
+  ); /* warm grey-brown */
+  --input-border-error: var(
+    --color-sampark-border-error,
+    #ea151a
+  ); /* Error stroke */
+
+  /* Warning is NOT in the Figma input spec — mapped from the sampark
+     warning palette so the opt-in .p-inputtext-warning variant stays
+     coherent when the whole preview runs Sampark. */
+  --input-border-warning: var(--color-sampark-warning-80, #e08705);
+
+  /* ── Background ──────────────────────────────────────────────────── */
+  --input-bg-default: var(--color-sampark-surface-card, #ffffff);
+  --input-bg-ghost: transparent;
+  --input-bg-ghost-hover: var(--color-sampark-surface-card, #ffffff);
+
+  /* Figma pins disabled at #F8F7F7 (= secondary.0) — deliberately NOT
+     semantic surface.disabled (mono.5 #fafafa), which predates the
+     "Web Input Text" spec. */
+  --input-bg-disabled: var(--color-sampark-secondary-0, #f8f7f7);
+
+  /* ── Text ────────────────────────────────────────────────────────── */
+  --input-text-placeholder: var(
+    --color-sampark-text-placeholder,
+    #979493
+  ); /* Mono/60 */
+  --input-text-filled: var(
+    --color-sampark-text-primary,
+    #151414
+  ); /* Mono/100 */
+  --input-text-ghost: var(
+    --color-sampark-text-secondary,
+    #595656
+  ); /* Mono/80 */
+
+  /* Figma labels this "Mono/40" but the hex (#9F9C9C) is this
+     workspace's mono.60 — hex fidelity wins over the palette name. */
+  --input-text-disabled: var(--color-sampark-text-muted, #9f9c9c);
+
+  /* ── Focus Rings / Shadows — SOLID pale fills, not alpha tints ────────
+     Neither hex exists on the sampark palette (mono.20 #f3f2f2 is close
+     but distinct) — kept verbatim from the Figma spec. */
+  --input-shadow-focused: #f2f1f0;
+  --input-shadow-error: #ffe5e5;
+  --input-shadow-warning: var(
+    --color-sampark-warning-10,
+    #fef4e6
+  ); /* pale tint matching the solid-ring style; not in spec */
+
+  /* ── Hint Text — follows the state color ─────────────────────────── */
+  --input-hint-color-error: var(--color-sampark-border-error, #ea151a);
+  --input-hint-color-warning: var(--color-sampark-warning-80, #e08705);
+
+  /* ── Input Group Addon ───────────────────────────────────────────────
+     spm-ui pins no dedicated addon fill in the input spec; the grey
+     surface matches --input-bg-disabled. Addon text (#595656) is the
+     same in both design systems — inherited from :root. */
+  --input-addon-bg: var(--color-sampark-secondary-0, #f8f7f7);
+  --input-addon-border: var(--color-sampark-border-default, #e1e0e0);
+
+  /* Labels, hints (default), char count, shortcut, trailing icon and
+     overlay backdrop tokens are IDENTICAL across both design systems —
+     inherited from the :root set in _input.scss. */
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   DARK MODE (Sampark)
+   The light --input-* block above is scoped to the two sampark roots. Storybook
+   applies that scope on a wrapper INSIDE the preview, so its light values sit
+   nearer the input than _input.scss's `body.baps-dark` override and win — the
+   Sampark fields stayed white on a dark page. Re-point the same tokens here,
+   scoped to a dark context AND the sampark class, so they outrank (extra class,
+   same/nearer element) the light values in both layouts:
+     .baps-dark :is(.baps-ds-sampark, .baps-sampark)   → sampark scope nested under the dark body
+     .baps-dark:is(.baps-ds-sampark, .baps-sampark)    → both classes on the same element (body)
+   Values mirror _input.scss's dark block (mybky mono scale) so Sampark fields
+   read identically to MyBKY in dark mode — Sampark has no dark palette of its
+   own yet. Drop in sampark.* darks here when that set lands.
+   ══════════════════════════════════════════════════════════════════════ */
+.baps-dark :is(.baps-ds-sampark, .baps-sampark),
+.baps-dark:is(.baps-ds-sampark, .baps-sampark) {
+  --input-border-default: var(--color-mybky-mono-700, #3d4144);
+  --input-border-hover: var(--color-mybky-mono-500, #6f777d);
+
+  --input-bg-default: var(--color-mybky-mono-800, #2b2f32);
+  --input-bg-ghost-hover: var(--color-mybky-mono-800, #2b2f32);
+  --input-bg-disabled: var(--color-mybky-mono-900, #181b1d);
+
+  --input-text-placeholder: var(--color-mybky-mono-400, #b6b6af);
+  --input-text-filled: var(--color-mybky-mono-50, #f8fafb);
+  --input-text-ghost: var(--color-mybky-mono-300, #e4ecf1);
+  --input-text-disabled: var(--color-mybky-mono-500, #6f777d);
+
+  /* Sampark's rings are SOLID pale fills (#f2f1f0/#ffe5e5) — a bright halo on
+     a dark field. Re-point to a subtle dark hairline ring / muted error tint. */
+  --input-shadow-focused: var(--color-mybky-mono-700, #3d4144);
+  --input-shadow-error: rgba(234, 21, 26, 0.28);
+
+  --input-addon-bg: var(--color-mybky-mono-900, #181b1d);
+  --input-addon-border: var(--color-mybky-mono-700, #3d4144);
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   BASE — SHAPE, DIMENSIONS & TYPOGRAPHY
+   Radius 4px (NOT pill) · height 32px · padding 6px 8px · font 14px
+   Border stays 1px in EVERY state — spm-ui signals hover/focus/error
+   with border-color and the ring only, never width (MyBKY jumps to
+   1.5px; each state below re-pins 1px).
+   ══════════════════════════════════════════════════════════════════════ */
+
+:is(.baps-ds-sampark, .baps-sampark) .p-inputtext {
+  border-radius: var(--form-field-sampark-border-radius, 0.25rem) !important;
+  height: var(--form-field-sampark-height-default, 2rem) !important; /* 32px */
+  min-height: var(--form-field-sampark-height-default, 2rem) !important;
+  padding: 0.375rem 0.5rem !important; /* 6px 8px */
+  font-size: 0.875rem !important; /* 14px */
+  font-weight: 400 !important;
+  line-height: 1.3 !important;
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease,
+    background 150ms ease,
+    color 150ms ease !important;
+
+  /* STATE: Default */
+  border: 1px solid var(--input-border-default) !important;
+  background: var(--input-bg-default) !important;
+  color: var(--input-text-filled) !important;
+}
+
+/* ── Placeholder — #979493 (Mono/60) ─────────────────────────────────── */
+:is(.baps-ds-sampark, .baps-sampark) .p-inputtext::placeholder {
+  color: var(--input-text-placeholder) !important;
+  opacity: 1 !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   SIZES
+   ══════════════════════════════════════════════════════════════════════ */
+
+:is(.baps-ds-sampark, .baps-sampark) .p-inputtext.p-inputtext-sm {
+  height: var(--form-field-sampark-height-sm, 1.75rem) !important; /* 28px */
+  min-height: var(--form-field-sampark-height-sm, 1.75rem) !important;
+  padding: 0.25rem 0.5rem !important; /* 4px 8px */
+  font-size: 0.75rem !important; /* 12px */
+}
+
+:is(.baps-ds-sampark, .baps-sampark) .p-inputtext.p-inputtext-lg {
+  height: var(--form-field-sampark-height-lg, 2.5rem) !important; /* 40px */
+  min-height: var(--form-field-sampark-height-lg, 2.5rem) !important;
+  padding: 0.5rem 0.75rem !important; /* 8px 12px */
+  font-size: 1rem !important; /* 16px */
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   STATE: Filled — input has a value
+   ┌────────────┬─────────┬─────────┐
+   │ Border     │ BG      │ Text    │
+   ├────────────┼─────────┼─────────┤
+   │ #E1E0E0    │ #FFFFFF │ #151414 │
+   └────────────┴─────────┴─────────┘
+   ══════════════════════════════════════════════════════════════════════ */
+:is(.baps-ds-sampark, .baps-sampark) .p-inputtext.p-filled,
+:is(.baps-ds-sampark, .baps-sampark) .p-inputtext:not(:placeholder-shown) {
+  border: 1px solid var(--input-border-default) !important;
+  background: var(--input-bg-default) !important;
+  color: var(--input-text-filled) !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   STATE: Hover (non-error, non-disabled)
+   ┌────────────┬─────────┬───────────┐
+   │ Border     │ BG      │ Text      │
+   ├────────────┼─────────┼───────────┤
+   │ #94928F    │ #FFFFFF │ unchanged │
+   └────────────┴─────────┴───────────┘
+   Border stays 1px — width never changes in Sampark.
+   ══════════════════════════════════════════════════════════════════════ */
+:is(.baps-ds-sampark, .baps-sampark) .p-inputtext:hover#{input.$input-guard}:not(.p-inputtext-ghost),
+:is(.baps-ds-sampark, .baps-sampark) .p-inputtext.p-filled:hover#{input.$input-enabled}#{input.$input-valid},
+:is(.baps-ds-sampark, .baps-sampark)
+  .p-inputtext:not(:placeholder-shown):hover#{input.$input-enabled}#{input.$input-valid} {
+  @include input.input-state(1px solid var(--input-border-hover));
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   STATE: Focus (non-error)
+   ┌────────────┬─────────┬─────────┬──────────────────────────────────┐
+   │ Border     │ BG      │ Text    │ Shadow                           │
+   ├────────────┼─────────┼─────────┼──────────────────────────────────┤
+   │ #94928F    │ #FFFFFF │ #151414 │ 0 0 0 3px #F2F1F0                │
+   └────────────┴─────────┴─────────┴──────────────────────────────────┘
+   ══════════════════════════════════════════════════════════════════════ */
+:is(.baps-ds-sampark, .baps-sampark) .p-inputtext:focus#{input.$input-guard},
+:is(.baps-ds-sampark, .baps-sampark) .p-inputtext:focus-visible#{input.$input-guard} {
+  @include input.input-state(
+    1px solid var(--input-border-hover),
+    var(--input-shadow-focused)
+  );
+  outline: none !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   STATE: Warning — opt-in via class="p-inputtext-warning"
+   Not in the Figma input spec — colors mapped from the sampark warning
+   palette (border Warning/80, ring Warning/10) to keep the variant
+   coherent. Ring always visible, matching the base file's contract.
+   ══════════════════════════════════════════════════════════════════════ */
+:is(.baps-ds-sampark, .baps-sampark) .p-inputtext.p-inputtext-warning,
+:is(.baps-ds-sampark, .baps-sampark) .p-inputtext.p-inputtext-warning:focus#{input.$input-enabled},
+:is(.baps-ds-sampark, .baps-sampark)
+  .p-inputtext.p-inputtext-warning:focus-visible#{input.$input-enabled} {
+  @include input.input-state(
+    1px solid var(--input-border-warning),
+    var(--input-shadow-warning)
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   STATE: Error — Angular adds ng-invalid ng-dirty on failed validation
+   ┌────────────┬─────────┬───────────┐
+   │ Border     │ BG      │ Text      │
+   ├────────────┼─────────┼───────────┤
+   │ #EA151A    │ #FFFFFF │ unchanged │
+   └────────────┴─────────┴───────────┘
+   ══════════════════════════════════════════════════════════════════════ */
+#{input.invalid-set(':is(.baps-ds-sampark, .baps-sampark) .p-inputtext')} {
+  @include input.input-state(1px solid var(--input-border-error));
+}
+
+/* ── Error — Hover (border color unchanged, still 1px) ── */
+#{input.invalid-set(':is(.baps-ds-sampark, .baps-sampark) .p-inputtext', ':hover#{input.$input-enabled}')} {
+  @include input.input-state(1px solid var(--input-border-error));
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   STATE: Error focused
+   ┌────────────┬─────────┬─────────┬──────────────────────────────────┐
+   │ Border     │ BG      │ Text    │ Shadow                           │
+   ├────────────┼─────────┼─────────┼──────────────────────────────────┤
+   │ #EA151A    │ #FFFFFF │ #151414 │ 0 0 0 3px #FFE5E5                │
+   └────────────┴─────────┴─────────┴──────────────────────────────────┘
+   ══════════════════════════════════════════════════════════════════════ */
+#{input.invalid-set(':is(.baps-ds-sampark, .baps-sampark) .p-inputtext', ':focus#{input.$input-enabled}')},
+#{input.invalid-set(':is(.baps-ds-sampark, .baps-sampark) .p-inputtext', ':focus-visible#{input.$input-enabled}')} {
+  @include input.input-state(
+    1px solid var(--input-border-error),
+    var(--input-shadow-error)
+  );
+  outline: none !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   STATE: Ghost (.p-inputtext-ghost)
+   Borderless + transparent at rest; hover gains the #94928F border and
+   white background. Filled ghost text is Mono/80 (#595656), not
+   Mono/100 — the one place ghost differs from the standard input.
+   ══════════════════════════════════════════════════════════════════════ */
+:is(.baps-ds-sampark, .baps-sampark) .p-inputtext.p-inputtext-ghost {
+  /* transparent (not none) — the box keeps its 1px so hover adds no shift */
+  @include input.input-state(1px solid transparent, $bg: var(--input-bg-ghost));
+  color: var(--input-text-ghost) !important;
+}
+
+:is(.baps-ds-sampark, .baps-sampark) .p-inputtext.p-inputtext-ghost:hover#{input.$input-enabled},
+:is(.baps-ds-sampark, .baps-sampark) .p-inputtext.p-inputtext-ghost.p-filled:hover#{input.$input-enabled},
+:is(.baps-ds-sampark, .baps-sampark)
+  .p-inputtext.p-inputtext-ghost:not(
+    :placeholder-shown
+  ):hover#{input.$input-enabled} {
+  @include input.input-state(
+    1px solid var(--input-border-hover),
+    $bg: var(--input-bg-ghost-hover)
+  );
+}
+
+:is(.baps-ds-sampark, .baps-sampark) .p-inputtext.p-inputtext-ghost.p-filled,
+:is(.baps-ds-sampark, .baps-sampark) .p-inputtext.p-inputtext-ghost:not(:placeholder-shown) {
+  color: var(--input-text-ghost) !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   STATE: Disabled
+   ┌────────────┬─────────┬─────────┐
+   │ Border     │ BG      │ Text    │
+   ├────────────┼─────────┼─────────┤
+   │ #E1E0E0    │ #F8F7F7 │ #9F9C9C │
+   └────────────┴─────────┴─────────┘
+   opacity stays 1 — the BG color carries the disabled look. cursor
+   not-allowed must remain visible, so pointer-events is NOT disabled
+   (same deliberate deviation from spm-ui as the base file).
+   ══════════════════════════════════════════════════════════════════════ */
+:is(.baps-ds-sampark, .baps-sampark) .p-inputtext:disabled,
+:is(.baps-ds-sampark, .baps-sampark) .p-inputtext.p-disabled,
+:is(.baps-ds-sampark, .baps-sampark) .p-inputtext[disabled] {
+  @include input.input-state(
+    1px solid var(--input-border-default),
+    $bg: var(--input-bg-disabled)
+  );
+  color: var(--input-text-disabled) !important;
+  -webkit-text-fill-color: var(--input-text-disabled) !important;
+  cursor: not-allowed !important;
+  opacity: 1 !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   GHOST + DISABLED — must come after the generic disabled rule above.
+
+   Figma node 13197:87531 has a distinct "⚫️ Ghost Disabled" state: still
+   transparent and borderless, just faded. The base file implements exactly
+   that (_input.scss STEP 6), but under Sampark it lost the cascade:
+
+     _input.scss        .p-inputtext.p-inputtext-ghost:disabled   (0,3,0) !important
+     _input-sampark.scss :is(.baps-ds-sampark, .baps-sampark) .p-inputtext:disabled   (0,3,0) !important
+
+   Identical specificity, and this file is imported last — so the generic
+   disabled rule won and a Sampark ghost-disabled input rendered with an
+   opaque #F8F7F7 fill and a visible #E1E0E0 border instead of staying
+   transparent.
+
+   The extra .p-inputtext-ghost class here takes it to (0,4,0), which beats
+   both and restores the intended treatment. Not a new design — it is the
+   base file's own ghost-disabled state, made reachable again.
+   ══════════════════════════════════════════════════════════════════════ */
+:is(.baps-ds-sampark, .baps-sampark) .p-inputtext.p-inputtext-ghost:disabled,
+:is(.baps-ds-sampark, .baps-sampark) .p-inputtext.p-inputtext-ghost.p-disabled,
+:is(.baps-ds-sampark, .baps-sampark) .p-inputtext.p-inputtext-ghost[disabled] {
+  @include input.input-state(
+    1px solid transparent,
+    $bg: var(--input-bg-ghost)
+  );
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   FIX: Icon field padding — PrimeNG v21 p-iconfield
+   The base file restores padding around the icon at higher specificity
+   than this file's shorthand; only the non-icon side needs re-pointing
+   to Sampark's 8px (base restores MyBKY's 14px).
+   ══════════════════════════════════════════════════════════════════════ */
+:is(.baps-ds-sampark, .baps-sampark) p-iconfield.p-iconfield-right .p-inputtext {
+  padding-left: 0.5rem !important; /* 8px */
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   INPUT GROUPS (.p-inputgroup)
+   Group container owns the visible border; the inner input is
+   transparent in every state (the base file's group guards). Restated
+   under this scope because the BASE geometry rules above would
+   otherwise win the cascade tie and re-border the inner input.
+   Group corners use the same 4px radii as the base file.
+   ══════════════════════════════════════════════════════════════════════ */
+:is(.baps-ds-sampark, .baps-sampark) .p-inputgroup {
+  height: var(--form-field-sampark-height-default, 2rem) !important; /* 32px */
+}
+
+/* Compact modifier for sidebars/narrow fields */
+:is(.baps-ds-sampark, .baps-sampark) .p-inputgroup.ig-sm {
+  height: var(--form-field-sampark-height-sm, 1.75rem) !important; /* 28px */
+}
+
+:is(.baps-ds-sampark, .baps-sampark) .p-inputgroup .p-inputtext {
+  @include input.chromeless;
+  border-radius: 0 !important;
+  background: transparent !important;
+  height: 100% !important;
+  min-height: 0 !important; /* the 32px min above would overflow ig-sm's 28px box */
+}
+
+:is(.baps-ds-sampark, .baps-sampark) .p-inputgroup .p-inputtext:first-child,
+:is(.baps-ds-sampark, .baps-sampark) .p-inputgroup > *:first-child .p-inputtext {
+  border-radius: 0.25rem 0 0 0.25rem !important;
+}
+
+:is(.baps-ds-sampark, .baps-sampark) .p-inputgroup .p-inputtext:last-child,
+:is(.baps-ds-sampark, .baps-sampark) .p-inputgroup > *:last-child .p-inputtext {
+  border-radius: 0 0.25rem 0.25rem 0 !important;
+}
+
+:is(.baps-ds-sampark, .baps-sampark) .p-inputgroup .p-inputtext:only-child {
+  border-radius: 0.25rem !important;
+}
+
+/* Addon colors flow through the --input-addon-* tokens re-pointed in
+   the token block — no geometry differences from the base file. */
+
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   TEXTAREA
+   spm-ui has no dedicated textarea spec — it takes the universal 4px
+   radius (radius.sampark.default; MyBKY's editorial r:16 is a
+   MyBKY-ism). Box geometry restated because the input rules above
+   outrank the base file's textarea rules on specificity.
+   ══════════════════════════════════════════════════════════════════════ */
+:is(.baps-ds-sampark, .baps-sampark) textarea.p-inputtext,
+:is(.baps-ds-sampark, .baps-sampark) textarea.p-textarea {
+  border-radius: var(--radius-sampark-default, 0.25rem) !important;
+  height: auto !important;
+  min-height: 5rem !important;
+  padding: 0.75rem 1rem !important;
+}
+
+/* Textarea state rules stay 1px like the input (base thickens to 1.5px) */
+:is(.baps-ds-sampark, .baps-sampark)
+  textarea.p-textarea:hover#{input.$input-enabled}#{input.$input-valid}:not(
+    .p-inputtext-warning
+  ),
+:is(.baps-ds-sampark, .baps-sampark)
+  textarea.p-inputtext:focus#{input.$input-enabled}#{input.$input-valid}:not(
+    .p-inputtext-warning
+  ),
+:is(.baps-ds-sampark, .baps-sampark)
+  textarea.p-textarea:focus#{input.$input-enabled}#{input.$input-valid}:not(
+    .p-inputtext-warning
+  ),
+#{input.invalid-set(':is(.baps-ds-sampark, .baps-sampark) textarea.p-textarea', ':hover#{input.$input-enabled}')},
+#{input.invalid-set(':is(.baps-ds-sampark, .baps-sampark) textarea.p-textarea', ':focus#{input.$input-enabled}')},
+:is(.baps-ds-sampark, .baps-sampark) textarea.p-textarea.p-inputtext-warning,
+:is(.baps-ds-sampark, .baps-sampark)
+  textarea.p-textarea.p-inputtext-warning:focus#{input.$input-enabled} {
+  border-width: 1px !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   NOT PORTED from spm-ui src/styles/_input.scss — and why:
+   · Overlay backdrop (body::before + :has() z-index tiers) — the base
+     _input.scss ships the identical mechanic globally; DS-agnostic.
+   · Form label / hint / required-asterisk rules — spm-ui's values
+     (#595656 label, 12px/400, #9F9C9C disabled) equal the :root
+     --label-* set in _input.scss; nothing to override.
+   · div.p-inputgroup host-vs-inner radius workaround, dropdown-as-addon
+     compound selectors, datepicker-compact — PrimeNG v17-only quirks or
+     components not yet wrapped in this ui-kit.
+   ══════════════════════════════════════════════════════════════════════ */

@@ -1,0 +1,121 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as TreeSelectStories from './tree-select.stories';
+
+<Meta of={TreeSelectStories} />
+
+# TreeSelect
+
+A hierarchy dropdown — a select whose options are a tree rather than a flat list. `baps-tree-select` (`BapsTreeSelect`) wraps PrimeNG's `p-treeselect`, implements `ControlValueAccessor`, and adds per-instance brand scoping. The skin lives in `_select.scss` / `_select-sampark.scss`; the wrapper's own `styles` block only sets `display: block`.
+
+## Usage
+
+```ts
+import { BapsTreeSelect } from '@org/ui-kit';
+import { FormsModule } from '@angular/forms';
+import type { TreeNode } from 'primeng/api';
+
+@Component({
+  imports: [BapsTreeSelect, FormsModule],
+  template: `
+    <label for="locations">Locations</label>
+    <baps-tree-select
+      inputId="locations"
+      brand="sampark"
+      selectionMode="checkbox"
+      display="chip"
+      placeholder="Select locations"
+      scrollHeight="18rem"
+      [options]="regions"
+      [filter]="true"
+      filterPlaceholder="Search locations"
+      [(ngModel)]="selected"
+      (nodeExpand)="loadChildren($event)"
+    />
+  `,
+})
+export class LocationPicker {
+  regions: TreeNode[] = [
+    {
+      key: 'uk',
+      label: 'United Kingdom',
+      children: [{ key: 'uk-lon', label: 'London' }],
+    },
+  ];
+  selected: TreeNode[] = [];
+
+  loadChildren(event: { node: TreeNode }): void {
+    // Fetch and assign event.node.children for a lazy hierarchy.
+  }
+}
+```
+
+## Examples
+
+### Default
+
+<Canvas of={TreeSelectStories.Default} />
+
+### Checkbox
+
+<Canvas of={TreeSelectStories.Checkbox} />
+
+### Filter
+
+<Canvas of={TreeSelectStories.Filter} />
+
+### Sizes
+
+<Canvas of={TreeSelectStories.Sizes} />
+
+### Brands
+
+<Canvas of={TreeSelectStories.Brands} />
+
+### Disabled
+
+<Canvas of={TreeSelectStories.Disabled} />
+
+## Forms
+
+A full `ControlValueAccessor`, including `setDisabledState`, so it behaves like a
+native control in either forms API.
+
+### Template Driven
+
+```html
+<baps-tree-select [options]="regions" placeholder="Select a location" [(ngModel)]="value" />
+```
+
+### Reactive Forms
+
+```html
+<baps-tree-select [options]="regions" placeholder="Select a location" formControlName="value" />
+```
+
+```ts
+form = new FormGroup({ value: new FormControl(null) });
+```
+## When Not to Use
+
+- **A flat list** — use [`baps-select`](/docs/components-select--docs) or [`baps-multi-select`](/docs/components-multiselect--docs). Indent styling on a flat list is not a tree, and modelling it as one buys nothing but complexity.
+- **Only two levels, and the parents are not selectable** — grouped options on `baps-multi-select` (`optionGroupLabel`) are simpler and read better.
+- **Browsing rather than picking** — a tree the reader explores rather than selects from is not a form control.
+
+## Accessibility
+
+### Screen Reader
+
+- Name the field: a visible `<label for>` matched to `inputId`, or `ariaLabel` / `ariaLabelledBy`.
+- Tree keyboard navigation, expand/collapse, `aria-expanded`, checkbox roles and active-node tracking are all PrimeNG's. None of it is reimplemented here — which is the reason to wrap rather than hand-roll a tree.
+- In `checkbox` mode with propagation on, a parent's mixed state is announced as indeterminate by PrimeNG. Do not defeat it with a custom node template that drops the checkbox.
+- Touch targets follow the shared `@media (pointer: coarse)` rule in `_touch-targets.scss`.
+
+### Keyboard Support
+
+| Key | Function |
+| --- | --- |
+| <kbd>Tab</kbd> | Moves focus to the trigger. |
+| <kbd>Space / Enter</kbd> | Opens the panel; selects the highlighted node when open. |
+| <kbd>Arrow Up / Down</kbd> | Moves between visible nodes. |
+| <kbd>Arrow Right / Left</kbd> | Expands and collapses the focused node. |
+| <kbd>Esc</kbd> | Closes the panel. |

@@ -1,0 +1,83 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as SelectStories from './select.stories';
+
+<Meta of={SelectStories} />
+
+# Select
+
+A dropdown / single-select form field. `baps-select` (`BapsSelect`) wraps PrimeNG's `p-select`, implements `ControlValueAccessor` so it drops straight into template-driven or reactive forms, and adds per-instance brand scoping via a host class. The visual skin itself lives in `_select-sampark.scss`, not in this component's inline styles — this wrapper's own `styles` block only sets `display: block` on the host.
+
+## Usage
+
+```html
+<baps-select
+  [(ngModel)]="selectedCity"
+  [options]="cities"
+  optionLabel="name"
+  placeholder="Select a City"
+  [filter]="true"
+  filterBy="name"
+  [showClear]="true"
+  brand="sampark"
+></baps-select>
+```
+
+## Examples
+
+### Default
+
+<Canvas of={SelectStories.Default} />
+
+## Forms
+
+A full `ControlValueAccessor`, including `setDisabledState`, so it behaves like a
+native control in either forms API.
+
+### Template Driven
+
+```html
+<baps-select [options]="cities" optionLabel="name" placeholder="Select a city" [(ngModel)]="value" />
+```
+
+### Reactive Forms
+
+```html
+<baps-select [options]="cities" optionLabel="name" placeholder="Select a city" formControlName="value" />
+```
+
+```ts
+form = new FormGroup({ value: new FormControl(null) });
+```
+## When Not to Use
+
+This is one of three selection surfaces in the kit and they are easy to confuse:
+
+| Need | Use | Why not `baps-select` |
+| --- | --- | --- |
+| The whole option list must stay visible, no overlay | `baps-listbox` | Select's options only exist while the panel is open |
+| Selecting **more than one** value | `baps-listbox` (`[multiple]`, `[checkbox]`) | `BapsSelect` exposes no `multiple` input at all — it is single-value only, and `p-select` has no multi mode |
+| Picking a **person**, with avatar, name and role in each row | `baps-users-dropdown` | It ships that row layout (`BapsUserOption`: `title`/`subtitle`/`avatarLabel`) and its own search; reproducing it here means a custom `<ng-template #item>` |
+| Rows that are **actions**, not values | `baps-split-button` (`model`) or `baps-menu-item` | Select emits a form value and closes; it has no per-item `command` |
+| A binary on/off | `baps-toggleswitch` or `baps-checkbox` | Two options in an overlay is two clicks for one bit |
+| Fewer than ~4 mutually exclusive options that all fit on screen | radio group / `baps-checkbox` | Hiding three options behind a click costs more than it saves |
+
+`baps-listbox` and `baps-users-dropdown` are the two to reach for first — Select is the plain single-value form field, nothing more.
+
+## Accessibility
+
+### Screen Reader
+
+- PrimeNG's underlying `Select` renders the closed trigger with `role="combobox"`, `aria-haspopup="listbox"`, and `aria-expanded` bound to the panel's open state; the panel itself is `role="listbox"`.
+- **`ariaLabel`, `ariaLabelledBy` and `inputId` are exposed and forwarded** to the inner `p-select`. Use `ariaLabel` when there is no visible label, `ariaLabelledBy` to point at existing visible text, and `inputId` to pair the trigger with an external `<label for>`. These were previously missing — a select with no visible label had no reachable accessible name at all — and were added specifically to close that gap.
+- Typeahead and arrow-key navigation of the option list are handled natively by PrimeNG's listbox implementation.
+- `filter` mode's search input is fully keyboard-operable (typing filters the list without closing the panel).
+
+### Keyboard Support
+
+| Key | Function |
+| --- | --- |
+| <kbd>Tab</kbd> | Moves focus to the trigger. |
+| <kbd>Space / Enter</kbd> | Opens the panel; selects the highlighted option when open. |
+| <kbd>Arrow Up / Down</kbd> | Moves through the options. |
+| <kbd>Esc</kbd> | Closes the panel without changing the value. |
+| <kbd>Any character</kbd> | Typeahead — jumps to the first option starting with it. |

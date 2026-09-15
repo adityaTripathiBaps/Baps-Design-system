@@ -1,0 +1,51 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as LinkStories from './link.stories';
+
+<Meta of={LinkStories} />
+
+# Link
+
+Styled anchor / navigation link. `baps-link` is a pure HTML component — it has **no PrimeNG dependency** — and renders a native `<a>` with brand-appropriate styling: MyBKY uses blue text, Sampark uses maroon with an underline on hover.
+
+## Usage
+
+```html
+<baps-link href="/settings" brand="sampark">Settings</baps-link>
+<baps-link href="/docs" target="_blank">Documentation</baps-link>
+<baps-link href="/billing" [disabled]="!hasAccess">Billing</baps-link>
+```
+
+## Examples
+
+### Default
+
+<Canvas of={LinkStories.Default} />
+
+### Variants
+
+<Canvas of={LinkStories.Variants} />
+
+### Disabled
+
+<Canvas of={LinkStories.Disabled} />
+
+### Sizes
+
+<Canvas of={LinkStories.Sizes} />
+
+## When Not to Use
+
+| Need | Use | Not this |
+| --- | --- | --- |
+| An action that does not change location (open a dialog, save, delete) | `baps-button` with `[link]="true"` or `[text]="true"` | `baps-link` — it announces as a link and offers no button semantics |
+| One primary action plus a menu of related ones | `baps-split-button` | A link beside a separate menu trigger |
+| A list of app destinations in the chrome | `baps-internal-navbar`, or the `[navbar-end]` slot of `baps-navbar` | A hand-rolled row of `baps-link` elements — no active state, no landmark |
+| The path back up a hierarchy | `baps-breadcrumb` | A sequence of links with separators between them |
+| Non-navigational status text that happens to look emphasised | `baps-tag` | A disabled link |
+
+## Accessibility
+
+- Renders a real `<a>` — keyboard-focusable and activatable by default, and correctly announced as a link by assistive tech.
+- `target="_blank"` automatically gets `rel="noopener noreferrer"` — callers don't need to set it themselves.
+- When `disabled`, `href` is removed (set to `null`) rather than just visually dimmed, so the element stops being a functional link; `tabindex="-1"` also removes it from the tab order — belt-and-braces, since a disabled anchor without an `href` is not focusable by default anyway.
+- The projected content is the accessible name — always project real text (or an `aria-label` on a wrapping element if the content is icon-only); there's no `ariaLabel` input on this component.

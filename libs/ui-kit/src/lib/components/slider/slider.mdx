@@ -1,0 +1,82 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as SliderStories from './slider.stories';
+
+<Meta of={SliderStories} />
+
+# Slider
+
+A range slider input. `baps-slider` (`BapsSlider`) wraps PrimeNG's `p-slider`, implements `ControlValueAccessor`, and adds per-instance brand scoping.
+
+## Usage
+
+```html
+<baps-slider [(ngModel)]="volume" [min]="0" [max]="100" brand="sampark"></baps-slider>
+
+<baps-slider [(ngModel)]="priceRange" [range]="true" [min]="0" [max]="1000" [step]="10" brand="sampark"></baps-slider>
+```
+
+## Examples
+
+### Default
+
+<Canvas of={SliderStories.Default} />
+
+### Range
+
+<Canvas of={SliderStories.Range} />
+
+### Value Tooltip
+
+<Canvas of={SliderStories.ValueTooltip} />
+
+### Disabled
+
+<Canvas of={SliderStories.Disabled} />
+
+## Forms
+
+A full `ControlValueAccessor`, including `setDisabledState`, so it behaves like a
+native control in either forms API.
+
+### Template Driven
+
+```html
+<baps-slider [min]="0" [max]="100" ariaLabel="Volume" [(ngModel)]="value" />
+```
+
+### Reactive Forms
+
+```html
+<baps-slider [min]="0" [max]="100" ariaLabel="Volume" formControlName="value" />
+```
+
+```ts
+form = new FormGroup({ value: new FormControl(40) });
+```
+## When Not to Use
+
+| Need | Use | Why not `baps-slider` |
+| --- | --- | --- |
+| An exact number the user knows (age, quantity, price) | `bapsInputText` on a numeric field | Hitting an exact value by dragging an 18px handle is a precision task the control is bad at |
+| Showing progress the system owns | `baps-progressbar` | Slider is an input; it has no indeterminate mode and invites a drag that will do nothing |
+| An on/off choice | `baps-toggleswitch` | A two-stop slider is a switch with worse affordance |
+| Fewer than ~5 discrete named steps | `baps-select` or a radio group | `step` gives positions, not labels — nothing on the track says what a stop means |
+| A read-only ratio in a table cell | `baps-progressbar` + `.baps-table-progress` | Slider stays focusable and draggable even when it shouldn't be |
+
+## Accessibility
+
+### Screen Reader
+
+- PrimeNG renders each handle with `role="slider"`, `tabindex`, and `aria-valuemin`/`aria-valuenow`/`aria-valuemax` bound to `min`/`value`/`max` (per-handle in `range` mode).
+- Keyboard control is native to PrimeNG: `ArrowLeft`/`ArrowRight` (and `ArrowUp`/`ArrowDown` on vertical) step the focused handle by `step`; `Home`/`End` jump to `min`/`max`.
+- **`ariaLabel` and `ariaLabelledBy` are exposed and forwarded** to `p-slider`, so the handle can be named beyond its numeric value. Always set one of them: a slider announcing only "40" tells a screen-reader user nothing about what it controls. These were previously missing and were added to close that gap, alongside the same fix on `baps-select`.
+- In `range` mode, make sure surrounding text (or a visually-hidden label) distinguishes the low vs. high handle, since neither gets a distinct default label.
+
+### Keyboard Support
+
+| Key | Function |
+| --- | --- |
+| <kbd>Tab</kbd> | Moves focus to the handle. |
+| <kbd>Arrow Up / Right</kbd> | Increases the value by one step. |
+| <kbd>Arrow Down / Left</kbd> | Decreases it by one step. |
+| <kbd>Home / End</kbd> | Jumps to the minimum or maximum. |

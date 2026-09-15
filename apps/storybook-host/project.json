@@ -1,0 +1,137 @@
+{
+  "name": "storybook-host",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "baps",
+  "sourceRoot": "apps/storybook-host/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@angular/build:application",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/apps/storybook-host",
+        "browser": "apps/storybook-host/src/main.ts",
+        "tsConfig": "apps/storybook-host/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "apps/storybook-host/public"
+          }
+        ]
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "4kb",
+              "maximumError": "8kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true
+        }
+      }
+    },
+    "serve": {
+      "continuous": true,
+      "executor": "@angular/build:dev-server",
+      "defaultConfiguration": "development",
+      "configurations": {
+        "production": {
+          "buildTarget": "storybook-host:build:production"
+        },
+        "development": {
+          "buildTarget": "storybook-host:build:development"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": [
+        "{projectRoot}/test-output/jest/coverage"
+      ],
+      "options": {
+        "jestConfig": "apps/storybook-host/jest.config.cts",
+        "tsConfig": "apps/storybook-host/tsconfig.spec.json"
+      }
+    },
+    "serve-static": {
+      "continuous": true,
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "storybook-host:build",
+        "staticFilePath": "dist/apps/storybook-host/browser",
+        "spa": true
+      }
+    },
+    "storybook": {
+      "continuous": true,
+      "executor": "@storybook/angular:start-storybook",
+      "options": {
+        "configDir": "apps/storybook-host/.storybook",
+        "port": 4400,
+        "compodoc": true,
+        "ci": false,
+        "compodocArgs": [
+          "-e",
+          "json",
+          "-d",
+          ".",
+          "-p",
+          "libs/ui-kit/tsconfig.lib.json"
+        ]
+      }
+    },
+    "build-storybook": {
+      "executor": "@storybook/angular:build-storybook",
+      "outputs": [
+        "{options.outputDir}"
+      ],
+      "options": {
+        "configDir": "apps/storybook-host/.storybook",
+        "outputDir": "dist/storybook/storybook-host",
+        "compodoc": true,
+        "compodocArgs": [
+          "-e",
+          "json",
+          "-d",
+          ".",
+          "-p",
+          "libs/ui-kit/tsconfig.lib.json"
+        ]
+      }
+    },
+    "visual-test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/storybook-host/visual",
+        "command": "npx playwright test --config=playwright.config.ts"
+      }
+    },
+    "visual-update": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/storybook-host/visual",
+        "command": "npx playwright test --config=playwright.config.ts --update-snapshots"
+      }
+    }
+  }
+}

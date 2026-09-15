@@ -1,0 +1,409 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   Docs shell — the chrome addon-docs paints around our stories.
+
+   This file replaces two <style> blocks that used to be injected from a
+   template literal in .storybook/preview.ts: a ~90-line dark-mode block that
+   hard-coded hexes (including a hand-written Prism palette) behind
+   `body.baps-dark … !important`, and a layout/rhythm block whose borders were
+   pinned to MyBKY's ramp regardless of the selected brand.
+
+   Two things change, and only these two:
+
+   1. Values come from a token tier instead of literals. The `--baps-docs-*`
+      properties below are NEW names — nothing existing is renamed, so the
+      `--color-<brand>-*` and `--p-*` contracts every component consumes are
+      untouched. They are defined four times: two brands x two modes.
+
+   2. The component rules no longer mention the mode. A rule says
+      `color: var(--baps-docs-text)`; which mode and which brand it resolves to
+      is settled once, in the token blocks. That is what makes light/dark parity
+      structural rather than a second set of overrides to keep in sync.
+
+   `!important` survives only where addon-docs applies an inline emotion theme
+   that a normal rule cannot outrank. It is not decoration — remove one and the
+   surface reverts to Storybook's light default mid-page.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* ── Token tier ─────────────────────────────────────────────────────────────
+   MyBKY is the default brand (see initialGlobals in preview.ts); Sampark is
+   selected by the `designSystem` toolbar, which toggles .baps-ds-sampark on the
+   body. Dark is .baps-dark, PrimeNG's darkModeSelector, mirrored onto the
+   preview iframe from the manager's toggle.
+
+   The dark values resolve through color.<brand>.dark.* — the semantic group
+   added for this pass, whose contrast against its own ground was measured
+   rather than eyeballed. Note the two border tiers: `divider` is deliberately
+   quiet and below the 3:1 of WCAG 1.4.11, `control` clears it. Separators use
+   the first; anything whose outline is the only cue a control exists uses the
+   second. */
+
+body {
+  --baps-docs-ground: var(--color-mybky-mono-0, #ffffff);
+  --baps-docs-raised: var(--color-mybky-mono-50, #f8fafb);
+  --baps-docs-heading: var(--color-mybky-mono-900, #181b1d);
+  --baps-docs-text: var(--color-mybky-mono-800, #2b2f32);
+  --baps-docs-muted: var(--color-mybky-mono-500, #6f777d);
+  --baps-docs-divider: var(--color-mybky-mono-300, #e4ecf1);
+  --baps-docs-control: var(--color-mybky-mono-400, #b6b6af);
+  --baps-docs-accent: var(--color-mybky-primary-default, #5f78b8);
+  --baps-docs-code-ground: var(--color-mybky-mono-50, #f8fafb);
+}
+
+body.baps-ds-sampark {
+  --baps-docs-ground: var(--color-sampark-mono-0, #ffffff);
+  --baps-docs-raised: var(--color-sampark-mono-10, #f8f7f7);
+  --baps-docs-heading: var(--color-sampark-text-primary, #151414);
+  --baps-docs-text: var(--color-sampark-text-secondary, #595656);
+  --baps-docs-muted: var(--color-sampark-text-muted, #9f9c9c);
+  --baps-docs-divider: var(--color-sampark-border-default, #e6e6e5);
+  --baps-docs-control: var(--color-sampark-border-hover, #94928f);
+  --baps-docs-accent: var(--color-sampark-primary-default, #c96868);
+  --baps-docs-code-ground: var(--color-sampark-mono-10, #f8f7f7);
+}
+
+body.baps-dark {
+  --baps-docs-ground: var(--color-mybky-dark-surface-ground, #181b1d);
+  --baps-docs-raised: var(--color-mybky-dark-surface-card, #2b2f32);
+  --baps-docs-heading: var(--color-mybky-dark-text-primary, #f8fafb);
+  --baps-docs-text: var(--color-mybky-dark-text-secondary, #e4ecf1);
+  --baps-docs-muted: var(--color-mybky-dark-text-muted, #b6b6af);
+  --baps-docs-divider: var(--color-mybky-dark-border-divider, #3d4144);
+  --baps-docs-control: var(--color-mybky-dark-border-control, #6f777d);
+  --baps-docs-accent: var(--color-mybky-dark-primary-default, #9fadd9);
+  --baps-docs-code-ground: var(--color-mybky-dark-surface-card, #2b2f32);
+}
+
+body.baps-dark.baps-ds-sampark {
+  --baps-docs-ground: var(--color-sampark-dark-surface-ground, #1d1c1b);
+  --baps-docs-raised: var(--color-sampark-dark-surface-card, #2c2c2a);
+  --baps-docs-heading: var(--color-sampark-dark-text-primary, #f8f7f7);
+  --baps-docs-text: var(--color-sampark-dark-text-secondary, #e6e6e5);
+  --baps-docs-muted: var(--color-sampark-dark-text-muted, #b7b6b3);
+  --baps-docs-divider: var(--color-sampark-dark-border-divider, #4a4947);
+  --baps-docs-control: var(--color-sampark-dark-border-control, #94928f);
+  --baps-docs-accent: var(--color-sampark-dark-primary-default, #d48787);
+  --baps-docs-code-ground: var(--color-sampark-dark-surface-card, #2c2c2a);
+}
+
+/* ── Canvas ─────────────────────────────────────────────────────────────────
+   Without this the components darken but the page behind them stays white.
+   Covers Storybook's own canvas wrappers so no light gap shows through. */
+
+body.baps-dark {
+  color-scheme: dark;
+}
+
+body.baps-dark,
+body.baps-dark .sb-show-main,
+body.baps-dark #storybook-root,
+body.baps-dark #storybook-docs {
+  background: var(--baps-docs-ground);
+  color: var(--baps-docs-text);
+}
+
+/* ── Docs page surfaces ─────────────────────────────────────────────────────
+   addon-docs paints its own surfaces on top of the canvas, so a docs page would
+   otherwise stay light while only the demos flip. Targets the stable
+   .sbdocs-* / .docblock-* / .docs-story classes — the emotion hashes beside
+   them change between builds and cannot be hooked. */
+
+.sbdocs-wrapper {
+  background: var(--baps-docs-ground) !important;
+  max-width: 900px;
+  margin-inline: auto;
+}
+
+/* Prose. Matched on the real rendered elements rather than addon-docs' own
+   .sbdocs-p / .sbdocs-li utility classes, which are emitted inconsistently
+   across Storybook versions. <code> and <a> are excluded so chips and links
+   keep the colours set for them further down. */
+.sbdocs-wrapper :where(p, li, td, dd, dt, blockquote) {
+  color: var(--baps-docs-text) !important;
+  line-height: var(--font-line-height-relaxed, 1.6);
+}
+
+.sbdocs-wrapper :where(h1, h2, h3, h4, h5, h6, th, strong, b) {
+  color: var(--baps-docs-heading) !important;
+}
+
+.sbdocs-h1,
+.sbdocs-h2,
+hr,
+.sbdocs-divider {
+  border-color: var(--baps-docs-divider) !important;
+}
+
+.sbdocs a {
+  color: var(--baps-docs-accent) !important;
+}
+
+/* Story frame, code block and arg table share one card treatment: hairline
+   border, no shadow at rest. */
+.docs-story,
+.sbdocs-preview,
+.docblock-source,
+.docblock-source pre,
+.docblock-code-toggle,
+.docblock-argstable-body,
+.docblock-argstable td,
+.docblock-argstable th {
+  background: var(--baps-docs-ground) !important;
+  border-color: var(--baps-docs-divider) !important;
+  color: var(--baps-docs-text) !important;
+}
+
+/* ── Example card ───────────────────────────────────────────────────────────
+   One card per example, in the shape the PrimeNG docs use: a hairline plate
+   whose LAST row is a strip carrying a "Preview" label and the code toggle,
+   and whose code opens INSIDE the same plate rather than as a second card
+   floating below it.
+
+   Storybook renders this as:
+
+     .sbdocs-preview
+       .docs-story
+         div                              <- the story itself
+         div:has(> .docblock-code-toggle) <- the toggle's row
+       div                                <- code region, only when expanded
+
+   Every selector below is STRUCTURAL. This build emits emotion hashes
+   (`css-s230ta`, `css-1xrl4hz`) for all of those inner elements and no
+   `.docblock-source` class at all — verified against the rendered tree, which
+   is also why the `.docblock-source` rules above match nothing here and are
+   left only for older builds. Hashes change between Storybook releases, so
+   `:has()` and child position are the only stable handles.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.sbdocs-wrapper .sbdocs-preview {
+  border: 1px solid var(--baps-docs-divider);
+  border-radius: var(--radius-mybky-md, 0.5rem);
+  /* Clips the strip and the code region to the card's corners, so neither
+     needs a radius of its own. */
+  overflow: hidden;
+  background: var(--baps-docs-ground);
+  box-shadow: none !important;
+}
+
+/* The preview region is now INSIDE the card, so it drops its own plate. */
+.sbdocs-wrapper .sbdocs-preview .docs-story {
+  border: 0 !important;
+  border-radius: 0 !important;
+  padding: 0;
+  background: var(--baps-docs-ground) !important;
+}
+
+/* Padding moves onto the story itself rather than staying on .docs-story.
+   Left where it was, the toggle strip below would inherit that inset and could
+   only be pulled full-bleed with negative margins matching it — two values to
+   keep in sync for no gain. */
+.sbdocs-wrapper .sbdocs-preview .docs-story > div:first-child {
+  padding: var(--space-8, 2rem) var(--space-6, 1.5rem);
+}
+
+/* ── The strip ── */
+.sbdocs-wrapper .sbdocs-preview .docs-story > div:has(> .docblock-code-toggle) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3, 0.75rem);
+  min-height: 2.25rem;
+  padding: 0 var(--space-3, 0.75rem);
+  border-top: 1px solid var(--baps-docs-divider);
+  background: var(--baps-docs-code-ground);
+}
+
+.sbdocs-wrapper .sbdocs-preview .docs-story > div:has(> .docblock-code-toggle)::before {
+  content: 'Preview';
+  font-family: var(--font-family-mono, ui-monospace, monospace);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--baps-docs-muted);
+}
+
+/* The toggle sits in the strip as a quiet control, not a floating pill.
+   position is reset because Storybook absolutely-positions it to the card's
+   bottom-right corner. */
+.sbdocs-wrapper .docblock-code-toggle {
+  position: static !important;
+  margin: 0 !important;
+  padding: 0.125rem var(--space-2, 0.5rem) !important;
+  border: 0 !important;
+  border-radius: var(--radius-mybky-sm, 0.375rem) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--baps-docs-muted) !important;
+  font-family: var(--font-family-mono, ui-monospace, monospace) !important;
+  font-size: 0.6875rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.sbdocs-wrapper .docblock-code-toggle:hover {
+  background: var(--baps-docs-raised) !important;
+  color: var(--baps-docs-heading) !important;
+}
+
+.sbdocs-wrapper .docblock-code-toggle:focus-visible {
+  outline: 2px solid var(--baps-docs-accent);
+  outline-offset: 1px;
+}
+
+/* ── Code region, when expanded ──
+   The only direct child of the card that is not .docs-story. It becomes part
+   of the plate: a top hairline, no border or radius of its own. */
+.sbdocs-wrapper .sbdocs-preview > div:not(.docs-story) {
+  border-top: 1px solid var(--baps-docs-divider);
+}
+
+.sbdocs-wrapper .sbdocs-preview > div:not(.docs-story) pre {
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+}
+
+.sbdocs-wrapper .docblock-source,
+.sbdocs-wrapper pre.prismjs {
+  border-radius: var(--radius-mybky-md, 0.5rem);
+  border: 1px solid var(--baps-docs-divider);
+}
+
+.sbdocs-wrapper table.docblock-argstable {
+  border-radius: var(--radius-mybky-sm, 0.375rem);
+  overflow: hidden;
+}
+
+/* Inline code chips — distinct ground so they read as chips, not prose. */
+.sbdocs-wrapper :not(pre) > code {
+  background: var(--baps-docs-code-ground) !important;
+  border-color: var(--baps-docs-divider) !important;
+  color: var(--baps-docs-heading) !important;
+}
+
+/* ── Rhythm ─────────────────────────────────────────────────────────────────
+   Structural only, and mode-agnostic — every value is a --space-* / --radius-*
+   / --font-* property the components already consume, so no new numbers enter
+   the system here. */
+
+.sbdocs-wrapper :where(h1, h2, h3) {
+  font-weight: var(--font-weight-bold, 700);
+  letter-spacing: -0.02em;
+}
+
+.sbdocs-wrapper :where(h1) {
+  font-size: var(--font-size-3xl, 1.75rem);
+  margin-bottom: var(--space-2, 0.5rem);
+}
+
+.sbdocs-wrapper :where(h2) {
+  font-size: var(--font-size-xl, 1.25rem);
+  margin-top: var(--space-9, 2.25rem);
+  margin-bottom: var(--space-3, 0.75rem);
+}
+
+.sbdocs-wrapper :where(h3) {
+  font-size: var(--font-size-lg, 1.125rem);
+  font-weight: var(--font-weight-semibold, 600);
+  margin-top: var(--space-6, 1.5rem);
+  margin-bottom: var(--space-2, 0.5rem);
+}
+
+.sbdocs-wrapper :where(p) {
+  margin-bottom: var(--space-4, 1rem);
+}
+
+/* ── Syntax highlighting ────────────────────────────────────────────────────
+   Dark only, deliberately. Storybook's light Prism theme is already legible, so
+   restating it here would be a visual change with no benefit and a regression
+   to review. The values live in the token block below rather than inline, so
+   the two brands can diverge later without touching these rules. */
+
+body.baps-dark {
+  --baps-docs-syn-comment: var(--color-mybky-mono-500, #6f777d);
+  --baps-docs-syn-punct: #9aa4ac;
+  --baps-docs-syn-keyword: #8fb0c9;
+  --baps-docs-syn-string: #9cc5a1;
+  --baps-docs-syn-name: #d8b892;
+  --baps-docs-syn-number: #c3a6d6;
+}
+
+body.baps-dark .sbdocs-wrapper pre,
+body.baps-dark pre.prismjs,
+body.baps-dark .docblock-source {
+  background: var(--baps-docs-code-ground) !important;
+}
+
+body.baps-dark .sbdocs-wrapper pre code,
+body.baps-dark pre.prismjs code {
+  color: var(--baps-docs-text) !important;
+}
+
+body.baps-dark .sbdocs-wrapper {
+  .token.comment,
+  .token.prolog,
+  .token.doctype,
+  .token.cdata {
+    color: var(--baps-docs-syn-comment) !important;
+  }
+
+  .token.punctuation,
+  .token.operator {
+    color: var(--baps-docs-syn-punct) !important;
+  }
+
+  .token.tag,
+  .token.keyword,
+  .token.selector,
+  .token.boolean {
+    color: var(--baps-docs-syn-keyword) !important;
+  }
+
+  .token.string,
+  .token.attr-value,
+  .token.char,
+  .token.inserted {
+    color: var(--baps-docs-syn-string) !important;
+  }
+
+  .token.attr-name,
+  .token.property,
+  .token.function,
+  .token.class-name {
+    color: var(--baps-docs-syn-name) !important;
+  }
+
+  .token.number,
+  .token.constant {
+    color: var(--baps-docs-syn-number) !important;
+  }
+}
+
+/* The copy-to-clipboard button carries nothing but an emotion hash, so it is
+   reached through its container instead. Safe to match every button in there:
+   a demo's own buttons live under .docs-story, which is never a descendant of
+   .docblock-source (verified against the rendered tree, not assumed).
+   Takes the page ground rather than the code ground so it reads as a control
+   sitting ON the code block in dark, and stays white-on-near-white in light,
+   exactly as before. */
+.docblock-source button {
+  background: var(--baps-docs-ground) !important;
+  color: var(--baps-docs-text) !important;
+  border-color: var(--baps-docs-divider) !important;
+}
+
+/* Markdown-table zebra striping.
+   addon-docs stripes every other row with a hardcoded light grey, which in dark
+   mode paints near-white bands across an otherwise dark table — the row text
+   stays light, so those rows become unreadable. It applies to every table on
+   every docs page (the When Not to Use tables, the keyboard tables, the token
+   tables), so this is one rule rather than a per-block fix.
+   Striping is kept, not removed — only re-pointed at the token tier. */
+.sbdocs-wrapper table tbody tr:nth-of-type(2n) {
+  background: var(--baps-docs-raised) !important;
+}
+
+.sbdocs-wrapper table tbody tr:nth-of-type(2n + 1) {
+  background: var(--baps-docs-ground) !important;
+}

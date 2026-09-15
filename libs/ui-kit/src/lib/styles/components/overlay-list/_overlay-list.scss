@@ -1,0 +1,228 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   Panel list-item hover — the one idiom, everywhere a list-style overlay exists.
+
+   Source: spm-ui `_list_hover.scss`. Left accent bar plus a tint fill, never
+   the browser or PrimeNG default.
+
+     hover fill   #F6F5F5   (--panel-list-item-hover-bg)
+     accent bar   #C96868   (--btn-primary-bg), 4px, an absolutely positioned
+                            pseudo-element rather than a border
+     transition   background-color 150ms ease
+
+   Selected keeps the same fill — it does not fight the hover.
+
+   IMPORTANT about the source, because it is easy to copy the wrong values:
+   spm-ui's own `_dropdown.scss` and `_multiselect.scss` still declare an
+   item hover of #f8f7f7 (and a #fbeeee highlight). Those are DEAD —
+   `_list_hover.scss` loads after them and overrides both. Their comments are
+   stale, and this file follows the one that actually renders.
+
+   Same reason this partial must be @use'd LAST: it is deliberately overriding
+   the per-component select/listbox/tree skins, exactly as the source does.
+
+   A pseudo-element, not `border-left`: a border would shift the row's content
+   by its own width on hover, so every row would jump. The same reason
+   baps-menu-item draws its bar this way.
+
+   ── WHERE THIS DIFFERS FROM THE events-ui AUDIT, AND WHY ──────────────
+
+   The audit of the shipping app records three things this file deliberately
+   does NOT reproduce:
+
+   1. `p-listbox` selected renders transparent there — no accent at all, unlike
+      its own dropdown. The audit lists that as a cleanup candidate; the design
+      system already treats listbox like every other list.
+   2. The autocomplete panel opts out entirely and falls back to raw PrimeNG.
+      Same answer: it is in the shared idiom here.
+   3. Menus hover on a neutral surface rather than the primary tint. That one
+      is a real fork, and this file follows the DESIGN SYSTEM rather than the
+      audit on purpose — the split-button, paginator rows-per-page and panel
+      lists were explicitly aligned to one hover, so re-splitting menus off
+      would undo that. If menus should diverge again, it is a decision, not a
+      cleanup.
+
+   The audit's table-vs-treetable hover difference (#FBFCFD against #EEF0F8)
+   is NOT an inconsistency to fix — it is two different surfaces, and both
+   values live in their own component tokens.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* MyBKY is the default brand; the Sampark block re-points the two colours.
+   Geometry and timing are shared. */
+:root,
+.p-select-overlay,
+.p-multiselect-overlay,
+.p-treeselect-overlay,
+.p-tieredmenu-overlay,
+.p-menu-overlay,
+.p-autocomplete-overlay {
+  --baps-list-hover-bg: var(--color-mybky-blue-50, #eef0f8);
+  --baps-list-bar: var(--color-mybky-blue-600, #5f78b8);
+  /* 3px in MyBKY, 4px in Sampark. Not a rounding difference — each brand's
+     own guide states its width, and the bar is the loudest thing on the row. */
+  --baps-list-bar-width: 3px;
+  --baps-list-text: var(--color-mybky-text-primary, #181b1d);
+  /* A row that cannot be picked still answers the pointer, just quietly: the
+     neutral ground rather than the primary tint. Saying nothing at all reads
+     as a dead panel; saying the same thing as a selectable row is a lie. */
+  --baps-list-muted-bg: var(--color-mybky-mono-50, #f8fafb);
+}
+
+.baps-ds-sampark,
+.baps-ds-sampark .p-select-overlay,
+.baps-ds-sampark .p-multiselect-overlay,
+.baps-ds-sampark .p-treeselect-overlay,
+.baps-ds-sampark .p-tieredmenu-overlay,
+.baps-ds-sampark .p-menu-overlay,
+.baps-ds-sampark .p-autocomplete-overlay,
+.baps-ds-sampark.p-select-overlay,
+.baps-ds-sampark.p-multiselect-overlay,
+.baps-ds-sampark.p-treeselect-overlay,
+.baps-ds-sampark.p-tieredmenu-overlay,
+.baps-ds-sampark.p-menu-overlay,
+.baps-ds-sampark.p-autocomplete-overlay {
+  --baps-list-hover-bg: #f6f5f5;
+  --baps-list-bar: var(--color-sampark-primary-default, #c96868);
+  --baps-list-bar-width: 4px;
+  --baps-list-text: var(--color-sampark-text-primary, #151414);
+  --baps-list-muted-bg: var(--color-sampark-mono-10, #f8f7f7);
+}
+
+/* The rows. PrimeNG v21 names, which differ from the v17 names the source
+   uses (-option not -item, .p-tree-node-content not .p-treenode-content). */
+.p-select-option,
+.p-multiselect-option,
+.p-listbox-option,
+.p-cascadeselect-option,
+.p-autocomplete-option,
+.p-tieredmenu-item,
+.p-menu-item,
+.p-contextmenu-item,
+.p-treeselect-overlay .p-tree-node-content,
+.baps-paginator__rpp-panel .p-select-option {
+  position: relative;
+  transition: background-color 150ms ease;
+}
+
+.p-select-option::before,
+.p-multiselect-option::before,
+.p-listbox-option::before,
+.p-cascadeselect-option::before,
+.p-autocomplete-option::before,
+.p-tieredmenu-item::before,
+.p-menu-item::before,
+.p-contextmenu-item::before,
+.p-treeselect-overlay .p-tree-node-content::before,
+.baps-paginator__rpp-panel .p-select-option::before {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: var(--baps-list-bar-width);
+  background: var(--baps-list-bar);
+  opacity: 0;
+  transition: opacity 150ms ease;
+  pointer-events: none;
+}
+
+/* Hover, keyboard focus and selection share one treatment. Focus is included
+   so a keyboard user gets the same affordance a pointer user does. */
+.p-select-option:not(.p-disabled):hover,
+.p-select-option.p-focus:not(.p-disabled),
+.p-select-option.p-select-option-selected,
+.p-multiselect-option:not(.p-disabled):hover,
+.p-multiselect-option.p-focus:not(.p-disabled),
+.p-multiselect-option.p-multiselect-option-selected,
+.p-listbox-option:not(.p-disabled):hover,
+.p-listbox-option.p-listbox-option-selected,
+.p-cascadeselect-option:not(.p-disabled):hover,
+.p-autocomplete-option:not(.p-disabled):hover,
+.p-autocomplete-option.p-autocomplete-option-selected,
+.p-treeselect-overlay .p-tree-node-content:not(.p-disabled):hover,
+.p-treeselect-overlay .p-tree-node-content.p-tree-node-selected {
+  background: var(--baps-list-hover-bg) !important;
+  color: var(--baps-list-text);
+}
+
+.p-tieredmenu-item:hover > .p-tieredmenu-item-content,
+.p-tieredmenu-item.p-focus > .p-tieredmenu-item-content,
+.p-menu-item:hover > .p-menu-item-content,
+.p-menu-item.p-focus > .p-menu-item-content,
+.p-contextmenu-item:hover > .p-contextmenu-item-content {
+  background: var(--baps-list-hover-bg) !important;
+}
+
+.p-select-option:not(.p-disabled):hover::before,
+.p-select-option.p-focus:not(.p-disabled)::before,
+.p-select-option.p-select-option-selected::before,
+.p-multiselect-option:not(.p-disabled):hover::before,
+.p-multiselect-option.p-focus:not(.p-disabled)::before,
+.p-multiselect-option.p-multiselect-option-selected::before,
+.p-listbox-option:not(.p-disabled):hover::before,
+.p-listbox-option.p-listbox-option-selected::before,
+.p-cascadeselect-option:not(.p-disabled):hover::before,
+.p-autocomplete-option:not(.p-disabled):hover::before,
+.p-autocomplete-option.p-autocomplete-option-selected::before,
+.p-tieredmenu-item:hover::before,
+.p-tieredmenu-item.p-focus::before,
+.p-menu-item:hover::before,
+.p-menu-item.p-focus::before,
+.p-contextmenu-item:hover::before,
+.p-treeselect-overlay .p-tree-node-content:not(.p-disabled):hover::before,
+.p-treeselect-overlay .p-tree-node-content.p-tree-node-selected::before {
+  opacity: 1;
+}
+
+/* A disabled row gets the fill but NEVER the bar. The bar is the "this is
+   what you are picking" mark and would be a lie here; the muted fill is only
+   an acknowledgement that the pointer is over something. */
+.p-select-option.p-disabled::before,
+.p-multiselect-option.p-disabled::before,
+.p-listbox-option.p-disabled::before,
+.p-autocomplete-option.p-disabled::before,
+.p-cascadeselect-option.p-disabled::before {
+  opacity: 0;
+}
+
+.p-select-option.p-disabled:hover,
+.p-multiselect-option.p-disabled:hover,
+.p-listbox-option.p-disabled:hover,
+.p-autocomplete-option.p-disabled:hover,
+.p-cascadeselect-option.p-disabled:hover {
+  background: var(--baps-list-muted-bg) !important;
+  cursor: not-allowed;
+}
+
+/* ── Keyboard ──
+   An inset outline, so it lands ON the row rather than being clipped by the
+   overlay's own overflow. The tint alone is not enough: it is the same tint a
+   selected row already carries, so a keyboard user moving through a list with
+   a selection would have nothing telling the two apart. */
+.p-select-option:focus-visible,
+.p-multiselect-option:focus-visible,
+.p-listbox-option:focus-visible,
+.p-autocomplete-option:focus-visible,
+.p-cascadeselect-option:focus-visible,
+.p-menu-item-link:focus-visible,
+.p-tieredmenu-item-link:focus-visible {
+  outline: 2px solid var(--baps-list-bar);
+  outline-offset: -2px;
+}
+
+/* ── Destructive menu entry ──
+   The one row that does NOT take the shared idiom: a delete action reads as
+   dangerous only if hovering it says so, and the primary tint says the
+   opposite. Opt in with `.baps-menu-item--danger` on the item. */
+.p-menu-item.baps-menu-item--danger:hover > .p-menu-item-content,
+.p-menu-item.baps-menu-item--danger.p-focus > .p-menu-item-content,
+.p-tieredmenu-item.baps-menu-item--danger:hover > .p-tieredmenu-item-content,
+.p-contextmenu-item.baps-menu-item--danger:hover > .p-contextmenu-item-content {
+  background: var(--color-mybky-error-surface, #ffebeb) !important;
+  color: var(--color-mybky-error-100, #c32226) !important;
+}
+
+.p-menu-item.baps-menu-item--danger:hover::before,
+.p-menu-item.baps-menu-item--danger.p-focus::before,
+.p-tieredmenu-item.baps-menu-item--danger:hover::before,
+.p-contextmenu-item.baps-menu-item--danger:hover::before {
+  background: var(--color-mybky-error-100, #c32226);
+}

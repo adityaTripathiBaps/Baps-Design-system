@@ -1,0 +1,65 @@
+{/*
+  TEMPLATE — copy this file to components/<name>/<name>.mdx and fill in every
+  section. Keep the section order identical across all components; that
+  consistency is the point (see button/button.mdx for a filled-in example).
+  Renamed with a .txt extension here only so Storybook's story-glob doesn't
+  try to compile the placeholder itself.
+*/}
+
+import { Meta, Canvas, Story } from '@storybook/addon-docs/blocks';
+import * as ComponentStories from './component.stories';
+
+<Meta of={ComponentStories} />
+
+# ComponentName
+
+One-line description of what it is and when to reach for it.
+
+## Playground
+
+<Canvas of={ComponentStories.Playground} />
+
+## Anatomy
+
+- List each sub-part (label, icon, helper text, error text, etc.)
+
+## Variants
+
+<Canvas of={ComponentStories.AllVariants} />
+
+## Sizes
+
+<Canvas of={ComponentStories.AllSizes} />
+
+## States
+
+<Canvas of={ComponentStories.States} />
+
+## Accessibility
+
+- Keyboard interactions
+- ARIA roles/attributes
+- Contrast notes
+
+## Usage Guidelines
+
+- When to use
+- When not to use
+
+## Do's and Don'ts
+
+| Do | Don't |
+| --- | --- |
+| ... | ... |
+
+## PrimeNG Mapping
+
+| BAPS component | PrimeNG v21 (events-ui) | PrimeNG v17 (spm-ui) | Notes | Migration effort |
+| --- | --- | --- | --- | --- |
+| ... | `p-...` | `p-...` | ... | Low/Med/High |
+
+## Angular Code Example
+
+```html
+<!-- copy-pasteable usage -->
+```

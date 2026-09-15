@@ -1,0 +1,129 @@
+import { Meta } from '@storybook/blocks';
+import {
+  ResourceTabs,
+  DemoCard,
+  CodeBlock,
+  PropsTable,
+  TokensTable,
+  KeyboardTable,
+} from '@baps/docs-blocks';
+import * as IconStories from './icon.stories';
+
+<Meta of={IconStories} />
+
+# Icon
+
+A 24px stroked glyph from the BAPS Pixel Icons set.
+
+<ResourceTabs />
+
+All **541 icons** from Figma [node 13193:56731](https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/%F0%9F%9F%A2-Sampark-Portal?node-id=13193-56731), across 35 categories.
+
+The registry in `icon-set.ts` is **generated**, not hand-written. `tools/icons/extract-baps-icons.mjs` takes one whole-sheet SVG export plus the node metadata and splits it — one download instead of 541 — then rewrites each stroke to `currentColor`.
+
+Each entry carries a transform, which is not decoration. Figma caps the export at 4096px tall, so the 1210x14041 sheet comes back scaled by 4096/14041, stroke widths included; and every glyph is drawn at its position on the sheet rather than at the origin. The transform undoes both, and restores the 1px stroke for free.
+
+**Weight:** the full set is ~2.2MB of source, ~405KB gzipped, and every consumer bundles it whole. Eight `shield-*` glyphs are outlined strokes rather than stroked paths — one path with thousands of segments each — and account for 36% of that on their own. If icon weight shows up in a bundle report, the fix is per-icon lazy imports or a sprite; the component API does not change either way.
+
+## Usage
+
+<CodeBlock
+  filename="karyakar-row.component.html"
+  language="html"
+  code={`<!-- Decorative: sits beside its own visible text, so it is hidden from
+     screen readers. This is the common case. -->
+<span class="row-label">
+  <baps-icon name="user" size="md" /> Rajesh Patel
+</span>
+
+<!-- Content: the icon IS the button's name, so it carries a label. -->
+<button type="button" aria-label="Delete">
+  <baps-icon name="trash" size="md" label="Delete" />
+</button>`}
+/>
+
+## Examples
+
+<DemoCard
+  title="Playground"
+  description="Every input on one icon — use the controls panel to switch glyph, size and label."
+  of={IconStories.Playground}
+/>
+
+<DemoCard
+  title="Sizes"
+  description="The five steps. 24px (lg) is the size the artwork is drawn at; everything else is that artwork scaled, which is why the stroke thins visibly below sm."
+  of={IconStories.Sizes}
+/>
+
+<DemoCard
+  title="Inherits Colour"
+  description="No colour input, and no brand input. The stroke is currentColor, so an icon takes the colour of the text around it in either brand and either mode."
+  of={IconStories.InheritsColour}
+/>
+
+<DemoCard
+  title="Library"
+  description="All 541 glyphs. Use the browser's find to locate one by name."
+  of={IconStories.Library}
+/>
+
+<DemoCard
+  title="Labelled"
+  description="The accessibility distinction: an icon-only button announces its label, a decorative icon announces nothing."
+  of={IconStories.Labelled}
+/>
+
+## API
+
+<PropsTable of={IconStories} />
+
+## Theming
+
+Icon is the one component here with no colour tokens of its own — that is the design, not an omission. The glyph is stroked in `currentColor`, so it inherits from its container and needs no brand or mode variants.
+
+<TokensTable
+  tokens={[
+    {
+      token: '--baps-icon-size',
+      light: '24px',
+      dark: '24px',
+      description:
+        'Set by the size input on the host. Override it directly for a one-off, or pass a pixel number to size.',
+    },
+  ]}
+/>
+
+| Size | Pixels | Use |
+| --- | --- | --- |
+| `xs` | 12 | Inline with 12px caption text |
+| `sm` | 16 | Inside inputs, chips, dense table rows |
+| `md` | 20 | Buttons and list rows — the usual choice |
+| `lg` | 24 | The native artwork size; standalone icons |
+| `xl` | 32 | Empty states and feature headers |
+
+## Accessibility
+
+### Screen Reader
+
+The `label` input decides whether the icon is content or decoration, and getting it wrong is the common bug in both directions.
+
+- **No `label`** — the glyph gets `aria-hidden="true"` and is skipped. Correct when the icon sits beside its own visible text, where announcing it would just repeat the label.
+- **With `label`** — the glyph gets `role="img"` and `aria-label`, and is announced. Correct when the icon *is* the content, such as an icon-only button.
+
+The `<svg>` is also `focusable="false"`, because IE-era SVG otherwise lands in the tab order; the interactive element around it owns focus, never the glyph.
+
+An unknown `name` renders nothing rather than throwing, so a typo degrades to a blank box instead of taking the page down.
+
+### Keyboard Support
+
+<KeyboardTable rows={[{ key: 'Tab', action: 'Nothing — an icon is never focusable. Focus belongs to the button or link containing it.' }]} />
+
+## When Not to Use
+
+| Need | Use | Not this |
+| --- | --- | --- |
+| A PrimeNG component's own icon slot | The component's `icon` input (`pi pi-*`) | `baps-icon` — PrimeNG expects a class name on its own element, not a projected component |
+| A brand mark or logo | An inline SVG asset | These glyphs are a UI icon set, drawn on a 24px grid |
+| An illustration or empty-state graphic | A dedicated asset | A 24px stroked outline does not scale up to illustration weight |
+| Status conveyed by colour alone | `baps-tag` / `baps-alert` with text | An icon on its own carries no accessible meaning unless labelled |

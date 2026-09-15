@@ -1,0 +1,701 @@
+
+// Do not edit directly, this file was auto-generated.
+
+$color-mybky-blue-50: #eef0f8; // Figma Primary/0 — avatar bg, breadcrumb badge
+$color-mybky-blue-100: #d5dbee; // interpolated
+$color-mybky-blue-200: #bdc6e4; // Figma Primary/20 — avatar ring, hover border
+$color-mybky-blue-300: #aebade; // interpolated
+$color-mybky-blue-400: #9fadd9; // Figma Primary/40
+$color-mybky-blue-500: #7f93c8; // interpolated
+$color-mybky-blue-600: #5f78b8; // Figma Primary/60 — core brand blue, gradient light stop
+$color-mybky-blue-700: #4c6095; // interpolated
+$color-mybky-blue-800: #384871; // Figma Primary/80 — dark navy, gradient dark stop
+$color-mybky-blue-900: #252f4a; // interpolated — dark mode avatar bg
+$color-mybky-blue-950: #141925; // interpolated
+$color-mybky-mono-0: #ffffff; // Figma Mono/0 — card background
+$color-mybky-mono-50: #f8fafb; // Figma Mono/10 — light background, table header, striped rows
+$color-mybky-mono-100: #eff1f3; // interpolated
+$color-mybky-mono-200: #eaeff3; // interpolated
+$color-mybky-mono-300: #e4ecf1; // Figma Mono/20 — universal border color
+$color-mybky-mono-400: #b6b6af; // Figma Mono/40 — disabled items
+$color-mybky-mono-450: #8d9ba5; // Figma "Mono/40 (Disable Item)" on the avatar sheet (22465:97983) — sits between the existing 400 (#b6b6af) and 500 (#6f777d), which is why it is 450 rather than either
+$color-mybky-mono-500: #6f777d; // Figma Mono/60 — labels & placeholder
+$color-mybky-mono-600: #565652; // interpolated
+$color-mybky-mono-700: #3d4144; // interpolated
+$color-mybky-mono-800: #2b2f32; // Figma Mono/80 — secondary text
+$color-mybky-mono-900: #181b1d; // Figma Mono/100 — primary text / dark-mode surface
+$color-mybky-mono-950: #0f0f0e; // interpolated — near black
+$color-mybky-error-80: #e05255; // invalid / destructive states, gradient light stop
+$color-mybky-error-100: #c32226; // danger button gradient dark stop, Figma node 22465:93605
+$color-mybky-error-surface: #ffebeb; // Avatar status fill — Figma "error/10" on node 22465:97983
+$color-mybky-error-tint: #ec9394; // Avatar status border — Figma "error/60" on node 22465:97983
+$color-mybky-success-50: #d8fdeb;
+$color-mybky-success-400: #40bf84;
+$color-mybky-success-600: #2a9c68;
+$color-mybky-success-surface: #ebfff5; // Avatar status fill — Figma "success/10" on node 22465:97983
+$color-mybky-success-tint: #93ecbb; // Avatar status border — Figma "success/60" on node 22465:97983
+$color-mybky-info-20: #d8e7fd;
+$color-mybky-info-60: #528de0;
+$color-mybky-info-80: #2265c3;
+$color-mybky-info-surface: #ebf3ff; // Avatar status fill — Figma "info/10" on node 22465:97983
+$color-mybky-info-tint: #93b7ec; // Avatar status border — Figma "info/60" on node 22465:97983
+$color-mybky-warning-20: #fdedd8;
+$color-mybky-warning-60: #e0a652;
+$color-mybky-warning-80: #c38222;
+$color-mybky-warning-surface: #fff6eb; // Avatar status fill — Figma "warning/10" on node 22465:97983
+$color-mybky-warning-tint: #ecc893; // Avatar status border — Figma "warning/60" on node 22465:97983
+$color-mybky-text-disabled: #869097;
+$color-sampark-primary-0: #fbf4f4; // light tint
+$color-sampark-primary-10: #f8ecec;
+$color-sampark-primary-20: #e9c3c3;
+$color-sampark-primary-40: #d48787;
+$color-sampark-primary-60: #c96868; // CORE BRAND MAROON — primary button bg
+$color-sampark-primary-80: #b44141; // hover state
+$color-sampark-primary-100: #873030; // Figma Colors/Primary swatch 1 of 7 — code has drifted to #9e3636, see inconsistency-findings
+$color-sampark-primary-alpha10: rgba(135, 48, 48, 0.1); // Figma "Primary/10% Primary" #8730301A — Primary/100 at 10% alpha. NOT the same as primary.10 (#f8ecec), which is an opaque tint: this one is transparent and so keeps whatever sits behind it. The count badge on baps-accordion's filter-panel header (node 17512:84432) needs the transparent version because it overlays the mono.10 header fill.
+$color-sampark-mono-0: #ffffff;
+$color-sampark-mono-5: #fafafa; // very light backgrounds
+$color-sampark-mono-10: #f8f7f7; // Figma Mono/10 'Light Background' — table header fill
+$color-sampark-mono-20: #f3f2f2; // light backgrounds
+$color-sampark-mono-40: #bcb9b9; // disabled text, borders
+$color-sampark-mono-60: #9f9c9c; // tertiary text, hints
+$color-sampark-mono-80: #595656; // secondary text
+$color-sampark-mono-100: #151414; // primary text, headers
+$color-sampark-mono-borders: #e1e0e0; // universal border color
+$color-sampark-mono-alpha4: rgba(21, 20, 20, 0.04); // Figma "Mono/20% Black" #1514140A — a tint that sits on ANY surface, unlike mono.20 which is an opaque fill. Used for the paginator's active page and the table count badge.
+$color-sampark-mono-alpha2: rgba(21, 20, 20, 0.02); // Figma "Mono/10% Black" — the NAME says 10% but the value is #15141405, i.e. 2%. Read the value, not the name. The half-step below alpha4: baps-segmented's unselected-pill hover (node 17512:78179) and baps-input-group's TRAILING addon fill (node 17512:82916), where the LEADING addon uses alpha4.
+$color-sampark-mono-alpha-black50: rgba(21, 20, 20, 0.5); // Figma "Mono/50% Black" — scrim over imagery
+$color-sampark-mono-alpha-white75: rgba(255, 255, 255, 0.75); // Figma "Mono/50% White" — the NAME says 50%, the value #FFFFFFBF is 75%
+$color-sampark-mono-alpha-white50: rgba(255, 255, 255, 0.5); // Figma "Mono/20% White" — the NAME says 20%, the value #FFFFFF80 is 50%
+$color-sampark-mono-alpha-white25: rgba(255, 255, 255, 0.25); // Figma "Mono/10 White" — the NAME says 10%, the value #FFFFFF40 is 25%
+$color-sampark-secondary-0: #f8f7f7;
+$color-sampark-secondary-10: #e6e6e5;
+$color-sampark-secondary-20: #b7b6b3;
+$color-sampark-secondary-40: #94928f;
+$color-sampark-secondary-60: #4a4947;
+$color-sampark-secondary-80: #2c2c2a;
+$color-sampark-secondary-100: #1d1c1b;
+$color-sampark-secondary-alpha20: rgba(74, 73, 71, 0.2); // Secondary/60 at 20% alpha — transparent overlay, not the opaque .20 tint
+$color-sampark-secondary-alpha10: rgba(74, 73, 71, 0.1); // Secondary/60 at 10% alpha — transparent overlay, not the opaque .10 tint
+$color-sampark-tertiary-0: #f7fcff;
+$color-sampark-tertiary-10: #e5f4ff;
+$color-sampark-tertiary-20: #91caf2;
+$color-sampark-tertiary-40: #50a8e5;
+$color-sampark-tertiary-60: #1270b2; // core tertiary blue
+$color-sampark-tertiary-80: #004b80;
+$color-sampark-tertiary-100: #002d4d; // Figma-only — no matching usage found in spm-ui code; see inconsistency-findings
+$color-sampark-tertiary-alpha20: rgba(18, 112, 178, 0.2); // Tertiary/60 at 20% alpha — transparent overlay, not the opaque .20 tint
+$color-sampark-tertiary-alpha10: rgba(18, 112, 178, 0.1); // Tertiary/60 at 10% alpha — transparent overlay, not the opaque .10 tint
+$color-sampark-error-10: #ffefef;
+$color-sampark-error-20: #fde8e8;
+$color-sampark-error-40: #f9b9ba;
+$color-sampark-error-60: #f27376;
+$color-sampark-error-80: #ea151a; // core error — input border error, notification badge
+$color-sampark-error-100: #cc0005;
+$color-sampark-error-alpha20: rgba(234, 21, 26, 0.2); // Error/80 at 20% alpha — transparent overlay, not the opaque .20 tint
+$color-sampark-error-alpha10: rgba(234, 21, 26, 0.1); // Error/80 at 10% alpha — transparent overlay, not the opaque .10 tint
+$color-sampark-info-5: #f3f8ff;
+$color-sampark-info-10: #e6f0fe;
+$color-sampark-info-20: #b4d3fd;
+$color-sampark-info-40: #83b5fc;
+$color-sampark-info-60: #3889fa; // core info
+$color-sampark-info-80: #0661e0;
+$color-sampark-info-alpha20: rgba(56, 137, 250, 0.2); // Info/80 on the Figma scale (info.60 here) at 20% alpha — transparent overlay, not the opaque .20 tint
+$color-sampark-info-alpha10: rgba(56, 137, 250, 0.1); // Info/80 on the Figma scale (info.60 here) at 10% alpha — transparent overlay, not the opaque .10 tint
+$color-sampark-success-5: #f0fff6;
+$color-sampark-success-10: #e8fcf0;
+$color-sampark-success-20: #bcf5cf;
+$color-sampark-success-40: #82e3af;
+$color-sampark-success-60: #17b56c; // core success — progress fill
+$color-sampark-success-80: #089152;
+$color-sampark-success-alpha20: rgba(23, 181, 108, 0.2); // Success/80 on the Figma scale (success.60 here) at 20% alpha — transparent overlay, not the opaque .20 tint
+$color-sampark-success-alpha10: rgba(23, 181, 108, 0.1); // Success/80 on the Figma scale (success.60 here) at 10% alpha — transparent overlay, not the opaque .10 tint
+$color-sampark-warning-5: #fff9ef;
+$color-sampark-warning-10: #fef4e6;
+$color-sampark-warning-20: #fddfb4;
+$color-sampark-warning-40: #fcca83;
+$color-sampark-warning-60: #faab38; // core warning
+$color-sampark-warning-80: #e08705;
+$color-sampark-warning-alpha20: rgba(250, 171, 56, 0.2); // Warning/80 on the Figma scale (warning.60 here) at 20% alpha — transparent overlay, not the opaque .20 tint
+$color-sampark-warning-alpha10: rgba(250, 171, 56, 0.1); // Warning/80 on the Figma scale (warning.60 here) at 10% alpha — transparent overlay, not the opaque .10 tint
+$color-sampark-text-placeholder: #979493;
+$color-sampark-border-hover: #94928f;
+$color-accent-slate-50: #edf1f2;
+$color-accent-slate-100: #d7dee2;
+$color-accent-slate-200: #b7c5cb;
+$color-accent-slate-300: #9aaeb6;
+$color-accent-slate-400: #79929d;
+$color-accent-slate-500: #4c6e7d;
+$color-accent-slate-600: #1f4a5c; // Slate teal — Admin, utility, target default primary (CLAUDE.md)
+$color-accent-slate-700: #193d4b;
+$color-accent-slate-800: #14313d;
+$color-accent-slate-900: #0e2129;
+$color-accent-slate-950: #09151a;
+$color-accent-clay-50: #f7f1ef;
+$color-accent-clay-100: #eddfdb;
+$color-accent-clay-200: #dfc6bf;
+$color-accent-clay-300: #d2afa5;
+$color-accent-clay-400: #c29487;
+$color-accent-clay-500: #ae715f;
+$color-accent-clay-600: #9a4d37; // Clay — Donations
+$color-accent-clay-700: #7e3f2d;
+$color-accent-clay-800: #663324;
+$color-accent-clay-900: #452319;
+$color-accent-clay-950: #2b160f;
+$color-accent-indigo-50: #eff0f4;
+$color-accent-indigo-100: #dcdde5;
+$color-accent-indigo-200: #c0c3d1;
+$color-accent-indigo-300: #a6abbf;
+$color-accent-indigo-400: #898fa9;
+$color-accent-indigo-500: #61698d;
+$color-accent-indigo-600: #3a4470; // Indigo — Satsang
+$color-accent-indigo-700: #30385c;
+$color-accent-indigo-800: #262d4a;
+$color-accent-indigo-900: #1a1f32;
+$color-accent-indigo-950: #10131f;
+$color-accent-sage-50: #f0f3f1;
+$color-accent-sage-100: #dee4e0;
+$color-accent-sage-200: #c4cfc8;
+$color-accent-sage-300: #adbbb1;
+$color-accent-sage-400: #91a497;
+$color-accent-sage-500: #6d8675;
+$color-accent-sage-600: #486852; // Sage — Events, seva
+$color-accent-sage-700: #3b5543;
+$color-accent-sage-800: #304536;
+$color-accent-sage-900: #202f25;
+$color-accent-sage-950: #141d17;
+$button-mybky-height-s: 2rem; // 32px, font 14px — Figma node 22465:93605
+$button-mybky-height-m: 2.25rem; // 36px — default, font 14px
+$button-mybky-height-l: 2.25rem; // 36px (mobile variant, same height as M but font bumped to 16px)
+$button-mybky-height-xl: 2.625rem; // 42px (mobile variant), font 16px
+$button-mybky-padding-x: 1rem; // 16px, all sizes
+$button-mybky-padding-y: 0.5rem; // 8px, all sizes
+$button-mybky-gap: 0.25rem; // 4px icon-label gap — corrects noir.theme.ts's 6px, verified against Figma node 22465:93605
+$button-mybky-disabled-text-color: #8d9ba5; // button-specific disabled text — distinct from semantic text.disabled (#869097)
+$button-mybky-primary-ghost-default: transparent;
+$button-mybky-secondary-ghost-default: transparent;
+$button-mybky-secondary-ghost-hover: rgba(43, 47, 50, 0.04); // mono.800 @ 4% opacity tint on hover
+$button-sampark-height-sm: 1.75rem; // 28px
+$button-sampark-height-default: 2rem; // 32px
+$button-sampark-height-lg: 2.25rem; // 36px
+$button-sampark-height-xl: 2.625rem; // 42px — Figma node 13197:91897; every 'Size=XL (42) (Mob)' symbol measures height=42. Was 2.5rem/40px, a value no Figma variant specifies, and button.component.ts cited this same node as authority for 40px. Now matches button.mybky.height.xl, which was already 42px.
+$button-sampark-gap: 0.25rem; // 4px icon-label gap
+$button-sampark-primary-ghost-default: transparent;
+$button-sampark-secondary-ghost-default: transparent;
+$button-sampark-disabled-background: #f3eaea; // distinct disabled fill — not an opacity dim, see button.mapping.mdx
+$form-field-mybky-padding-x: 1rem;
+$form-field-mybky-padding-y: 0.5625rem;
+$form-field-mybky-height: 2.25rem; // 36px
+$form-field-sampark-height-sm: 1.75rem; // 28px
+$form-field-sampark-height-default: 2rem; // 32px
+$form-field-sampark-height-lg: 2.5rem; // 40px
+$card-mybky-border-width: 1px;
+$card-sampark-border-width: 1px;
+$drawer-sampark-radius: 1rem; // 16px on the two INNER corners only — no radius.sampark.* step is this large; the scale tops out at md (8px) for cards/dialogs
+$drawer-sampark-width: max(31.25rem, 26.042vw); // fluid — min 500px, scales with viewport above that; source config-sidebar spec
+$drawer-sampark-title-size: 1.25rem; // 20px — Inter/H2/(20)/Semi Bold
+$drawer-sampark-title-weight: 600;
+$drawer-sampark-title-line-height: 1.3;
+$drawer-sampark-mask-background: rgba(14,13,13,0.45); // scrim behind the panel; Mono/100 at 45%
+$drawer-mybky-radius: 2rem; // 32px. Far beyond radius.mybky.md (8px) — a drawer is its own surface tier, not a big card.
+$drawer-mybky-backdrop-blur: 25px; // backdrop-filter on the mask
+$drawer-mybky-header-background: transparent; // FLAT panel — header and footer have no bar of their own, they inherit the panel white. Recorded so nobody re-adds one.
+$badge-mybky-gap: 0.125rem; // 2px
+$badge-mybky-size-xs: 1.125rem; // 18px
+$badge-mybky-size-s: 1.375rem; // 22px — default
+$badge-mybky-size-m: 1.625rem; // 26px
+$badge-mybky-size-l: 2rem; // 32px
+$badge-sampark-radius: 100px; // Pill. The Sampark count badge is a circle/stadium, NOT the 4px chip — that shape belongs to tag.sampark, which this block previously duplicated (20/22/28 at 4px). p-tag is the colour/status label; p-badge is the count.
+$badge-sampark-border-width: 1px;
+$badge-sampark-gap: 0.25rem; // 4px
+$badge-sampark-size-s: 0.75rem; // 12px — badgeSize="small"
+$badge-sampark-size-m: 1rem; // 16px — default
+$badge-sampark-size-l: 1.25rem; // 20px — badgeSize="large"
+$badge-sampark-size-xl: 1.5rem; // 24px — badgeSize="xlarge"
+$badge-sampark-font-size-s: 0.625rem; // 10px
+$badge-sampark-font-size-m: 0.6875rem; // 11px
+$badge-sampark-font-size-l: 0.75rem; // 12px
+$badge-sampark-font-size-xl: 0.875rem; // 14px
+$badge-sampark-padding-s: 0 0.125rem; // 0 2px
+$badge-sampark-padding-m: 0 0.25rem; // 0 4px
+$badge-sampark-padding-l: 0 0.375rem; // 0 6px
+$badge-sampark-padding-xl: 0 0.5rem; // 0 8px
+$tag-mybky-gap: 0.125rem; // 2px icon-label gap, all sizes
+$tag-mybky-height-xs: 1.125rem; // 18px, font 12px
+$tag-mybky-height-s: 1.375rem; // 22px — default, font 12px
+$tag-mybky-height-m: 1.625rem; // 26px, font 14px
+$tag-mybky-height-l: 2rem; // 32px, font 16px — Figma l and l-mob share the same box
+$tag-mybky-font-size-xs: 0.75rem; // 12px
+$tag-mybky-font-size-s: 0.75rem; // 12px — default
+$tag-mybky-font-size-m: 0.875rem; // 14px
+$tag-mybky-font-size-l: 1rem; // 16px
+$tag-mybky-padding-xs: 0.25rem 0.25rem; // 4px 4px — label adds 4px per side, so visual inset is 8px
+$tag-mybky-padding-s: 0.25rem 0.375rem; // 4px 6px — default; label's 4px brings the visual inset to Figma's 10px
+$tag-mybky-padding-m: 0.25rem 0.375rem; // 4px 6px
+$tag-mybky-padding-l: 0.25rem 0.5rem; // 4px 8px
+$tag-mybky-grey-background: #2b2f3205; // Mono/80 @ 2% — default (no severity) fill
+$tag-mybky-grey-border-hover: #9f9c9c; // Figma Mono/60 hover ring — events-ui value predates the mybky mono scale (mono.500 is #6f777d); kept verbatim
+$tag-mybky-secondary-border: #6f777d33; // Mono/60 @ 20%
+$tag-mybky-info-border: #528de033; // Info/60 @ 20%
+$tag-mybky-warning-border: #e0a65233; // Warning/60 @ 20%
+$tag-mybky-error-background: #fdd8d8; // Error/20 — no matching step in color.mybky.error (80/100 only)
+$tag-mybky-error-border: #b8474a33; // Error/60 @ 20%
+$tag-mybky-success-border: #40bf8433; // Success/400 @ 20%
+$tag-mybky-success-border-hover: #178251; // Success/100 — no matching step in color.mybky.success (50/400/600 only)
+$tag-mybky-success-text: #178251;
+$tag-mybky-disabled-background: #2b2f320a; // Mono/80 @ 4%
+$tag-sampark-radius-l: 0.375rem; // 6px — l only
+$tag-sampark-gap: 0.125rem; // 2px icon-label gap, xs/s
+$tag-sampark-gap-l: 0.25rem; // 4px — l
+$tag-sampark-height-xs: 1.25rem; // 20px, font 12px — mybky xs is 18px
+$tag-sampark-height-s: 1.375rem; // 22px — default; spm-ui md is the same box, so baps-tag m also renders this
+$tag-sampark-height-l: 1.75rem; // 28px — mybky l is 32px
+$tag-sampark-font-size-xs: 0.75rem; // 12px
+$tag-sampark-font-size-s: 0.875rem; // 14px — mybky s is 12px
+$tag-sampark-font-size-l: 0.875rem; // 14px — only the icon grows to 16px (iconSize.l)
+$tag-sampark-icon-size-xs: 0.75rem; // 12px
+$tag-sampark-icon-size-s: 0.875rem; // 14px
+$tag-sampark-icon-size-l: 1rem; // 16px — outgrows the 14px label
+$tag-sampark-padding-xs: 0 0.25rem; // 0 4px — label carries no extra inset, unlike mybky's +4px label padding
+$tag-sampark-padding-s: 0 0.25rem; // 0 4px
+$tag-sampark-padding-l: 0.25rem 0.375rem; // 4px 6px
+$tag-sampark-grey-background: #1514140a; // Mono/100 @ 4% — default (no severity) fill
+$tag-sampark-secondary-border: #4a494733; // Secondary/60 @ 20%
+$tag-sampark-info-border: #3889fa33; // Info/60 @ 20%
+$tag-sampark-warning-border: #faab3833; // Warning/60 @ 20%
+$tag-sampark-error-border: #ea151a33; // Error/80 @ 20%
+$tag-sampark-success-border: #17b56c33; // Success/60 @ 20%
+$tag-sampark-disabled-background: #1514140a; // same fill as grey — color tokens mute it, opacity stays 1
+$avatar-mybky-size-xs: 1.5rem; // 24px
+$avatar-mybky-size-s: 2rem; // 32px
+$avatar-mybky-size-m: 2.25rem; // 36px — default
+$avatar-mybky-size-l: 3rem; // 48px
+$avatar-mybky-size-xl: 3.75rem; // 60px
+$avatar-mybky-size-2xl: 5rem; // 80px
+$avatar-mybky-font-size-xs: 0.625rem; // 10px initials
+$avatar-mybky-font-size-s: 0.75rem; // 12px
+$avatar-mybky-font-size-m: 0.875rem; // 14px — default
+$avatar-mybky-font-size-l: 1.125rem; // 18px
+$avatar-mybky-font-size-xl: 1.5rem; // 24px
+$avatar-mybky-font-size-2xl: 1.75rem; // 28px
+$avatar-sampark-radius: 4px; // xs–l squares — differs from mybky's full circle; xl/2xl round more, see radiusXl/radius2xl. Source: spm-ui _avatar.scss (Figma node 13197:90187)
+$avatar-sampark-radius-xl: 0.375rem; // 6px — the 60px xl step
+$avatar-sampark-radius2xl: 0.5rem; // 8px — the 80px 2xl step
+$avatar-sampark-border-width: 1px; // xs / s / m
+$avatar-sampark-border-width-l: 1.5px; // l / xl / 2xl
+$avatar-sampark-status-dot-color: #22c55e; // green presence dot, top-right, 1.5–2px white ring — not on the sampark palette; kept verbatim
+$avatar-sampark-status-dot-size: 0.5rem; // 8px — s/m/l
+$avatar-sampark-status-dot-size-xs: 0.375rem; // 6px
+$avatar-sampark-status-dot-size-xl: 0.625rem; // 10px — xl/2xl
+$avatar-sampark-icon-badge-background: #3b82f6; // blue icon badge, bottom-right, white ring — not on the sampark palette; kept verbatim
+$avatar-sampark-icon-badge-size: 0.875rem; // 14px — s/m/l
+$avatar-sampark-icon-badge-size-xs: 0.625rem; // 10px
+$avatar-sampark-icon-badge-size-xl: 1.125rem; // 18px — xl/2xl
+$avatar-sampark-size-xs: 1.5rem; // 24px
+$avatar-sampark-size-s: 2rem; // 32px
+$avatar-sampark-size-m: 2.25rem; // 36px — default
+$avatar-sampark-size-l: 3rem; // 48px
+$avatar-sampark-size-xl: 3.75rem; // 60px
+$avatar-sampark-size-2xl: 5rem; // 80px
+$avatar-sampark-font-size-xs: 0.75rem; // 12px initials
+$avatar-sampark-font-size-s: 0.875rem; // 14px
+$avatar-sampark-font-size-m: 0.875rem; // 14px — default
+$avatar-sampark-font-size-l: 1rem; // 16px
+$avatar-sampark-font-size-xl: 1.25rem; // 20px
+$avatar-sampark-font-size-2xl: 2.25rem; // 36px, weight 400
+$avatar-sampark-icon-size-xs: 1.125rem; // 18px icon/image slot
+$avatar-sampark-icon-size-s: 1.25rem; // 20px
+$avatar-sampark-icon-size-m: 1.5rem; // 24px — default
+$avatar-sampark-icon-size-l: 2rem; // 32px
+$avatar-sampark-icon-size-xl: 2.25rem; // 36px
+$avatar-sampark-icon-size-2xl: 3rem; // 48px
+$toggle-switch-mybky-track-off: #8d9ba5; // cool grey — not on the mybky mono scale; kept verbatim from events-ui (Figma MyBKY 1.5 switch, node 22465:108921)
+$toggle-switch-mybky-track-width: 2.25rem; // 36px — default (md)
+$toggle-switch-mybky-track-height: 1.25rem; // 20px
+$toggle-switch-mybky-thumb-size: 1.0625rem; // 17px — thumb sits fully inside the track (vs Material's overhanging 24px)
+$toggle-switch-mybky-track-width-sm: 1.75rem; // 28px — events-ui size="small"
+$toggle-switch-mybky-track-height-sm: 1rem; // 16px
+$toggle-switch-mybky-thumb-size-sm: 0.8125rem; // 13px
+$toggle-switch-mybky-track-width-lg: 2.5rem; // 40px — events-ui size="large"
+$toggle-switch-mybky-track-height-lg: 1.5rem; // 24px
+$toggle-switch-mybky-thumb-size-lg: 1.3125rem; // 21px
+$toggle-switch-mybky-gap: 0.09375rem; // 1.5px thumb inset — PrimeNG's checked-position term reproduces events-ui's translate table exactly: md 36-17-1.5 = 17.5px, sm 13.5px, lg 17.5px
+$toggle-switch-sampark-gap: 2px; // thumb inset from track edge, all sizes — also PrimeNG's checked-position term (width - thumb - gap)
+$toggle-switch-sampark-radius: 0.25rem; // 4px — md/lg track; SQUARE, not Material's pill. xs/sm round to radiusSm
+$toggle-switch-sampark-radius-sm: 0.1875rem; // 3px — xs/sm track
+$toggle-switch-sampark-thumb-radius: 0.125rem; // 2px — thumb, all sizes
+$toggle-switch-sampark-shadow-track: inset 0 0 4px 0 #00000026; // black @ 15%
+$toggle-switch-sampark-shadow-track-disabled: inset 0 0 4px 0 #0000001a; // black @ 10%
+$toggle-switch-sampark-track-xs-width: 1.75rem; // 28px — spm-ui switchsize xs/s, radius 3px, thumb 12px
+$toggle-switch-sampark-track-xs-height: 1rem; // 16px
+$toggle-switch-sampark-track-sm-width: 2rem; // 32px, radius 3px, thumb 16px
+$toggle-switch-sampark-track-sm-height: 1.25rem; // 20px
+$toggle-switch-sampark-track-md-width: 2.25rem; // 36px — default, thumb 18px
+$toggle-switch-sampark-track-md-height: 1.375rem; // 22px
+$toggle-switch-sampark-track-lg-width: 2.5rem; // 40px, thumb 20px — spm-ui switchsize lg/l
+$toggle-switch-sampark-track-lg-height: 1.5rem; // 24px
+$toggle-switch-sampark-thumb-xs: 0.75rem; // 12px
+$toggle-switch-sampark-thumb-sm: 1rem; // 16px
+$toggle-switch-sampark-thumb-md: 1.125rem; // 18px
+$toggle-switch-sampark-thumb-lg: 1.25rem; // 20px
+$toolbar-sampark-search-width: 16rem; // 256px — compact, matches the reference toolbar (title left / search+action right, single line, no wrap)
+$dashboard-mybky-hero-radius: 1rem; // 16px
+$dashboard-mybky-hero-min-height: 5.75rem;
+$dashboard-mybky-hero-invited-gradient: linear-gradient(90deg, #4B536C 0%, #1F2945 100%); // Was hardcoded in event-dashboard.ts with no token behind it — the one screen that broke the token pattern.
+$dashboard-mybky-hero-invited-label: #BDC6E4;
+$dashboard-mybky-hero-registered-gradient: linear-gradient(90deg, #4AA16C 0%, #1E7A4D 100%);
+$dashboard-mybky-hero-registered-label: #D8FDEB;
+$dashboard-mybky-hero-pending-gradient: linear-gradient(90deg, #5C8FE3 0%, #2D5FB5 100%);
+$dashboard-mybky-hero-pending-label: #D8E7FD;
+$dashboard-mybky-hero-declined-gradient: linear-gradient(90deg, #D3A04B 0%, #B57A23 100%);
+$dashboard-mybky-hero-declined-label: #FDEDD8;
+$dashboard-mybky-chart-card-radius: 0.75rem; // 12px — smaller than the hero tile 16px
+$dashboard-mybky-chart-card-shadow: none; // NO shadow, and no hover either. Only the region mini-cards lift.
+$dashboard-mybky-region-grid-gap: 0.875rem; // 14px — OFF the 4px grid. Kept because it is what ships; flagged rather than silently rounded to 12 or 16.
+$table-mybky-row-hover-background: #FBFCFD; // Barely-there wash, lighter than mono.50. No token existed for it.
+$table-mybky-row-error-background: #FFF5F5; // Live in payment-config error rows. events-ui also declares --comm-unavailable-row-bg with this value and never uses it — that one is dead, this is not.
+$table-mybky-embedded-row-hover: rgba(0,0,0,0.02); // Tables sitting INSIDE a dashboard card hover darker than standalone ones.
+$table-mybky-cell-padding-y: 1.125rem;
+$table-mybky-header-padding-y: 0.625rem;
+$table-mybky-row-warning-background: #FFF6EB; // Warning/10. Refund rows in the Payment transactions table (Figma 25317:120737). Hover still overrides it — the Refund Hover variant paints Primary/0, not this.
+$tree-table-mybky-row-height: 3.75rem; // 60px fixed
+$tree-table-mybky-header-height: 2.5rem; // 40px
+$tree-table-mybky-row-error-background: #FFF5F5;
+$stepper-mybky-rail-radius: 1rem;
+$stepper-mybky-rail-padding-y: 0.9rem; // Per spec. Pill height then follows the 40px slot rather than being pinned.
+$stepper-mybky-rail-padding-x: 2.5rem;
+$stepper-mybky-rail-max-width: 55rem;
+$stepper-mybky-slot-size: 2.5rem; // 40px. Per the source spec (_event-shared.scss). The Figma frame 25317:104987 renders these circles at 32px; the spec is treated as authoritative because it is the shipping stylesheet.
+$stepper-mybky-slot-size-active: 3.5rem; // 56px. Size, not just colour, is what marks the current step on a rail whose labels are hidden.
+$stepper-mybky-icon-size: 1.5rem; // 24px on a 40px slot.
+$stepper-mybky-icon-size-active: 2rem;
+$stepper-mybky-completed-gradient: linear-gradient(135deg, #40BF84, #178251); // Success/80 to Success/100. A finished step is the one place a green fill appears in the wizard.
+$stepper-mybky-locked-opacity: 0.3;
+$stepper-mybky-active-lift: 2.6rem; // 41.6px. translateY on the icon WRAP, not the button — the button already spends its transform on scale() during hover, so the lift needs its own element. Same amount for the real active step and for a hovered one.
+$stepper-mybky-hover-scale: 1.4; // 40px x 1.4 = 56px VISUAL. Deliberately a scale, not a width change: the active step is genuinely 56px, a hovered one only looks it, so neighbours never reflow.
+$motion-duration-fast: 120ms;
+$motion-duration-base: 150ms;
+$motion-duration-moderate: 200ms;
+$motion-duration-ui-transition: 220ms; // target — CLAUDE.md Motion: UI transitions (panels, drawers, tab switches)
+$motion-duration-view-change: 420ms; // target — CLAUDE.md Motion: full view/route changes
+$motion-easing-standard: ease;
+$motion-easing-overlay: cubic-bezier(0, 0, 0.2, 1);
+$motion-easing-calm: cubic-bezier(0.16, 1, 0.3, 1); // target — CLAUDE.md Motion: calm, decelerating; never bounce/overshoot. Pair with duration.uiTransition/viewChange, not the legacy fast/base/moderate trio.
+$z-index-sampark-overlay-backdrop: 3000;
+$z-index-sampark-overlay-host: 3001;
+$z-index-sampark-overlay-panel: 3200;
+$shadow-mybky-card: 0 12px 16px -4px rgba(16,24,40,.08), 0 4px 6px -2px rgba(16,24,40,.16);
+$shadow-mybky-tooltip: 0 6px 12px rgba(16,24,40,.12), 0 2px 4px rgba(16,24,40,.06); // dual-layer, MyBKY 1.6
+$shadow-mybky-switch-thumb: 0 2px 4px rgba(16,24,40,.06), 0 1px 4px rgba(16,24,40,.12);
+$shadow-mybky-switch-track: inset 0 0 4px 0 #00000026; // black @ 15% — same recess as sampark's
+$shadow-mybky-switch-track-disabled: inset 0 0 4px 0 #0000001a; // black @ 10%
+$shadow-mybky-drawer: 0 4px 6px rgba(16,24,40,.06), 0 12px 16px rgba(16,24,40,.12); // Deeper and softer than card — a drawer floats over the page, a card sits in it. From events-ui .app-drawer.
+$shadow-mybky-card-hover: 0 2px 12px rgba(0,0,0,0.08); // ONLY the dashboard region mini-cards lift on hover. Hero and chart cards deliberately do not — see dashboard.mybky.
+$shadow-mybky-xs: 0 2px 4px rgba(16,24,40,.12); // Figma "XS Drop Shadow". Resting elevation for a 40px stepper slot.
+$shadow-mybky-xl: 0 8px 8px rgba(16,24,40,.06), 0 20px 24px rgba(16,24,40,.12); // Figma "XL Drop Shadow". The lifted stepper slot — active, and inactive-on-hover.
+$shadow-sampark-xs: 0 1px 2px rgba(16,24,40,.15); // Figma "XS Drop Shadow" (#10182826, y1, blur2, spread0). The lift under a listing table's outer frame — Sampark Portal 17512:73144.
+$shadow-sampark-s: 0 2px 4px rgba(16,24,40,.06), 0 1px 4px rgba(16,24,40,.12); // Figma "S Drop Shadow" — the lift under the slider value bubble (node 13197:89384). Promoted out of slider.component.ts, which had it inlined because no sampark shadow token matched. Note this is the same pair as shadow.mybky.switchThumb; the value was already in the file under a name that gave no hint it was a general S-level drop shadow.
+$shadow-sampark-xl: 0 8px 12px -4px rgba(16,24,40,.16), 0 20px 24px -4px rgba(16,24,40,.08); // Figma "XL Drop Shadow" — the lift under the Alert notification card (node 13197:89157). Promoted out of alert.component.ts.
+$shadow-sampark-l1: 0 4px 6px -2px rgba(16,24,40,.16);
+$shadow-sampark-l2: 0 12px 16px -4px rgba(16,24,40,.08);
+$shadow-sampark-toast: 0 4px 6px -2px rgba(16,24,40,.16), 0 12px 16px -4px rgba(16,24,40,.08);
+$shadow-sampark-input-focus: 0 0 0 3px #f2f1f0;
+$shadow-sampark-input-error: 0 0 0 3px #ffe5e5;
+$shadow-sampark-switch-thumb: 0px 1px 2px #0000001a;
+$shadow-sampark-switch-track: inset 0px 0px 4px 0px #00000026;
+$shadow-sampark-overlay: 0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12);
+$shadow-sampark-dropdown: 0 12px 40px rgba(0,0,0,0.15); // Every floating panel in the Sampark Portal — select/multiselect overlays, popovers, column-config panels — carries this one shadow. Sharing it is what makes them read as one surface family; sampark.overlay (PrimeNG's three-layer stock value) does not appear in the design.
+$shadow-sampark-drawer: 0 0 40px rgba(0,0,0,0.25); // Sampark Portal filter drawer (Figma 17512:72588). Deeper/softer than l1+l2 — a drawer floats over the whole page, not a card.
+$space-1: 0.25rem; // 4px
+$space-2: 0.5rem; // 8px
+$space-3: 0.75rem; // 12px
+$space-4: 1rem; // 16px
+$space-5: 1.25rem; // 20px
+$space-6: 1.5rem; // 24px
+$space-7: 1.75rem; // 28px
+$space-8: 2rem; // 32px
+$space-9: 2.25rem; // 36px
+$space-10: 2.5rem; // 40px
+$space-0-5: 0.125rem; // 2px
+$space-1-5: 0.375rem; // 6px
+$space-2-5: 0.625rem; // 10px
+$space-3-5: 0.875rem; // 14px
+$space-5-5: 1.375rem; // 22px
+$radius-mybky-sm: 0.375rem; // 6px — checkbox small
+$radius-mybky-md: 0.5rem; // 8px — checkbox large, tooltip
+$radius-mybky-pill: 99px; // universal shape for buttons, form fields, badges, avatars, switches
+$radius-mybky-circle: 100px; // notification count badge
+$radius-sampark-sm: 0.1875rem; // 3px — small elements
+$radius-sampark-default: 0.25rem; // 4px — DEFAULT radius for buttons, inputs, badges, avatars — fundamentally different philosophy from mybky's pill shape, see inconsistency-findings
+$radius-sampark-md: 0.5rem; // 8px — cards, dialogs, toast
+$radius-sampark-lg: 6px; // large avatars (2xl)
+$radius-sampark-pill: 100px; // badges/notification/switch tracks only, not the universal shape it is in mybky
+$radius-sampark-circle: 50%;
+$font-family-mybky: 'Inter Variable', 'Inter', sans-serif;
+$font-family-sampark: 'Inter', 'Roboto', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
+$font-size-xs: 0.75rem; // 12px
+$font-size-sm: 0.875rem; // 14px — default body text for both brands
+$font-size-md: 1rem; // 16px
+$font-size-lg: 1.125rem; // 18px
+$font-size-xl: 1.25rem; // 20px
+$font-size-2xl: 1.5rem; // 24px
+$font-size-3xl: 1.75rem; // 28px — mybky h1 only
+$font-size-2xs: 0.625rem; // 10px — the smallest step on the Figma type sheet (H3/10 and Caps/10)
+$font-size-4xl: 2.25rem; // 36px — Figma H1 tier
+$font-size-5xl: 2.5rem; // 40px — Figma H1 tier, the largest step
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+$font-line-height-tight: 1.2;
+$font-line-height-snug: 1.3;
+$font-line-height-normal: 1.5;
+$font-line-height-relaxed: 1.6;
+$font-letter-spacing-none: 0; // Every style on the Figma sheet except Caps
+$font-letter-spacing-caps: 0.05em; // Figma "Tracking 5%" — the Caps styles only (Caps/10, /12, /14, /16), which are Semi Bold or Bold
+$color-mybky-blue-alpha10: rgb(from $color-mybky-blue-600 r g b / 0.1); // Primary/60 at 10% alpha. Relative colour, not a literal: the channels are READ OFF the reference, so a runtime change to blue.600 carries through. Same value as the rgba(95,120,184,0.1) it replaces. Consumed by button.mybky.primary.disabled and primaryGhost.hover.
+$color-mybky-blue-alpha20: rgb(from $color-mybky-blue-400 r g b / 0.2); // Primary/40 at 20% alpha — the tinted ring on a primary tag. Base is 400, NOT 600: the border is a lighter step than the fill. Same value as the #9fadd933 it replaces.
+$color-mybky-text-primary: $color-mybky-mono-900;
+$color-mybky-text-secondary: $color-mybky-mono-800;
+$color-mybky-text-muted: $color-mybky-mono-500;
+$color-mybky-text-inverse: $color-mybky-mono-0;
+$color-mybky-border-default: $color-mybky-mono-300;
+$color-mybky-surface-card: $color-mybky-mono-0;
+$color-mybky-surface-ground: $color-mybky-mono-50;
+$color-mybky-surface-auth: $color-mybky-mono-300;
+$color-mybky-primary-default: $color-mybky-blue-600;
+$color-mybky-primary-hover: $color-mybky-blue-700;
+$color-mybky-primary-active: $color-mybky-blue-800;
+$color-mybky-state-error: $color-mybky-error-80;
+$color-mybky-state-success: $color-mybky-success-400;
+$color-mybky-state-info: $color-mybky-info-60;
+$color-mybky-state-warning: $color-mybky-warning-60;
+$color-mybky-dark-text-primary: $color-mybky-mono-50;
+$color-mybky-dark-text-secondary: $color-mybky-mono-300;
+$color-mybky-dark-text-muted: $color-mybky-mono-400;
+$color-mybky-dark-text-disabled: $color-mybky-mono-500;
+$color-mybky-dark-text-inverse: $color-mybky-mono-900;
+$color-mybky-dark-border-divider: $color-mybky-mono-700; // Decorative separators only - 1.68:1 on the dark ground
+$color-mybky-dark-border-control: $color-mybky-mono-500; // Control boundaries - 3.80:1, clears WCAG 1.4.11
+$color-mybky-dark-surface-ground: $color-mybky-mono-900;
+$color-mybky-dark-surface-card: $color-mybky-mono-800;
+$color-mybky-dark-surface-hover: $color-mybky-mono-700;
+$color-mybky-dark-primary-default: $color-mybky-blue-400; // One step lighter than light mode - 7.79:1 on the dark ground
+$color-mybky-dark-primary-hover: $color-mybky-blue-200;
+$color-sampark-primary-alpha20: rgb(from $color-sampark-primary-100 r g b / 0.2); // Primary/100 at 20% alpha. Relative colour rather than the rgba(135,48,48,0.2) literal it replaces — the channels are read off primary.100, so a runtime primary change carries through. Same rendered value. The 10% companion, primary.alpha10, is still a literal: it was outside the group-A scope, and it is the obvious next one to convert.
+$color-sampark-primary-default: $color-sampark-primary-60;
+$color-sampark-primary-hover: $color-sampark-primary-80;
+$color-sampark-primary-tint: $color-sampark-primary-0;
+$color-sampark-text-primary: $color-sampark-mono-100;
+$color-sampark-text-secondary: $color-sampark-mono-80;
+$color-sampark-text-muted: $color-sampark-mono-60;
+$color-sampark-text-disabled: $color-sampark-mono-40;
+$color-sampark-text-inverse: $color-sampark-mono-0;
+$color-sampark-border-default: $color-sampark-mono-borders;
+$color-sampark-border-error: $color-sampark-error-80;
+$color-sampark-surface-card: $color-sampark-mono-0;
+$color-sampark-surface-ground: $color-sampark-mono-20;
+$color-sampark-surface-disabled: $color-sampark-mono-5;
+$color-sampark-state-error: $color-sampark-error-80;
+$color-sampark-state-success: $color-sampark-success-60;
+$color-sampark-state-info: $color-sampark-info-60;
+$color-sampark-state-warning: $color-sampark-warning-80;
+$color-sampark-dark-text-primary: $color-sampark-secondary-0;
+$color-sampark-dark-text-secondary: $color-sampark-secondary-10;
+$color-sampark-dark-text-muted: $color-sampark-secondary-20;
+$color-sampark-dark-text-disabled: $color-sampark-secondary-40;
+$color-sampark-dark-text-inverse: $color-sampark-secondary-100;
+$color-sampark-dark-border-divider: $color-sampark-secondary-60; // Decorative separators only - 1.89:1 on the dark ground
+$color-sampark-dark-border-control: $color-sampark-secondary-40; // Control boundaries - 5.48:1, clears WCAG 1.4.11
+$color-sampark-dark-surface-ground: $color-sampark-secondary-100;
+$color-sampark-dark-surface-card: $color-sampark-secondary-80;
+$color-sampark-dark-surface-hover: $color-sampark-secondary-60;
+$color-sampark-dark-primary-default: $color-sampark-primary-40; // One step lighter than light mode - 6.17:1 on the dark ground
+$color-sampark-dark-primary-hover: $color-sampark-primary-20;
+$button-mybky-radius: $radius-mybky-pill;
+$button-mybky-font-weight: $font-weight-semibold;
+$button-mybky-primary-default: linear-gradient(135deg, $color-mybky-blue-600 0%, $color-mybky-blue-800 100%);
+$button-mybky-primary-hover: linear-gradient(135deg, $color-mybky-blue-800 0%, $color-mybky-blue-600 100%); // gradient reversed on hover
+$button-mybky-primary-text: $color-mybky-mono-0;
+$button-mybky-secondary-default: $color-mybky-mono-0;
+$button-mybky-secondary-hover: $color-mybky-mono-300;
+$button-mybky-secondary-disabled: $color-mybky-mono-50;
+$button-mybky-secondary-border: $color-mybky-mono-300;
+$button-mybky-secondary-text: $color-mybky-mono-900;
+$button-mybky-danger-default: linear-gradient(135deg, $color-mybky-error-80 0%, $color-mybky-error-100 100%);
+$button-mybky-danger-hover: linear-gradient(135deg, $color-mybky-error-100 0%, $color-mybky-error-80 100%);
+$button-mybky-danger-text: $color-mybky-mono-0;
+$button-mybky-warning-default: linear-gradient(135deg, $color-mybky-warning-60 0%, $color-mybky-warning-80 100%);
+$button-mybky-warning-hover: linear-gradient(135deg, $color-mybky-warning-80 0%, $color-mybky-warning-60 100%);
+$button-mybky-warning-text: $color-mybky-mono-0;
+$button-mybky-primary-ghost-text: $color-mybky-blue-600;
+$button-mybky-secondary-ghost-text: $color-mybky-mono-900;
+$button-sampark-radius: $radius-sampark-default;
+$button-sampark-font-weight: $font-weight-medium;
+$button-sampark-primary-default: $color-sampark-primary-60; // flat fill — no gradient, unlike mybky. Sampark Portal Figma node 13197:91897
+$button-sampark-primary-hover: $color-sampark-primary-80;
+$button-sampark-primary-active: $color-sampark-primary-100;
+$button-sampark-primary-text: $color-sampark-mono-0;
+$button-sampark-secondary-default: $color-sampark-mono-0;
+$button-sampark-secondary-hover: $color-sampark-mono-20;
+$button-sampark-secondary-border: $color-sampark-mono-borders;
+$button-sampark-secondary-text: $color-sampark-mono-100;
+$button-sampark-primary-ghost-hover: $color-sampark-primary-0; // light maroon tint on hover — spm-ui p-button-text
+$button-sampark-primary-ghost-text: $color-sampark-primary-60;
+$button-sampark-secondary-ghost-hover: $color-sampark-mono-alpha4; // Figma node 13197:92094 (Secondary Ghost / Hover) references Mono/20% Black #1514140A — exactly color.sampark.mono.alpha4. Mirrors button.mybky.secondaryGhost.hover, which is the same 4% ink tint on the mybky mono ramp.
+$button-sampark-secondary-ghost-text: $color-sampark-mono-100; // Figma node 13197:92066 (Secondary Ghost / Default) — Mono/100 #151414. Sampark had no secondaryGhost block at all, so 8 of the 44 Button cells fell through to PrimeNG's stock text-secondary colours.
+$button-sampark-link-text: $color-sampark-primary-60; // p-button-link — underline on hover, spm-ui only variant
+$button-sampark-disabled-border: $color-sampark-mono-borders;
+$button-sampark-disabled-text: $color-sampark-mono-40;
+$form-field-mybky-border-radius: $radius-mybky-pill;
+$form-field-sampark-border-radius: $radius-sampark-default;
+$card-mybky-radius: $radius-mybky-md; // 8px. NOT radius.mybky.pill — the pill shape is for controls (buttons/inputs/badges), never containers
+$card-mybky-padding: $space-6; // 24px — CLAUDE.md 'Spacing & Layout': space-5..space-6 inside a card
+$card-mybky-padding-compact: $space-4; // 16px — dense/table-adjacent cards
+$card-mybky-gap: $space-4; // 16px — between header, body and footer (CLAUDE.md: space-4 within a block)
+$card-mybky-shadow: $shadow-mybky-card; // raised variant ONLY. A card at rest has no shadow — see CLAUDE.md
+$card-sampark-radius: $radius-sampark-md; // 8px — radius.sampark.md's own comment already names cards/dialogs/toast
+$card-sampark-padding: $space-6; // 24px
+$card-sampark-padding-compact: $space-4; // 16px
+$card-sampark-gap: $space-4; // 16px
+$card-sampark-shadow: $shadow-sampark-l2; // raised variant ONLY
+$drawer-sampark-shadow: $shadow-sampark-drawer;
+$drawer-sampark-padding-x: $space-6; // 24px
+$drawer-sampark-padding-y: $space-8; // 32px
+$drawer-sampark-gap: $space-6; // 24px between header, content and footer
+$drawer-sampark-header-padding-x: $space-2; // 8px — the header row is inset inside the panel padding
+$drawer-sampark-header-gap: $space-2; // 8px between title, actions and close
+$drawer-mybky-shadow: $shadow-mybky-drawer;
+$drawer-mybky-padding: $space-8; // 32px, and it wraps header + body + footer together
+$drawer-mybky-gap: $space-6; // 24px between header, content and footer
+$drawer-mybky-header-gap: $space-2; // 8px between title, actions and close — the same step the sampark half uses; the header row is identical geometry in both brands
+$badge-mybky-radius: $radius-mybky-pill;
+$badge-sampark-notification-background: $color-sampark-error-80; // alert count — the only filled-red element in the family
+$badge-sampark-notification-text: $color-sampark-mono-0;
+$badge-sampark-notification-border: $color-sampark-mono-0; // white ring, so the badge still separates from whatever it overlaps
+$badge-sampark-counts-background: $color-sampark-mono-0; // plain count — no alert semantics
+$badge-sampark-counts-text: $color-sampark-mono-100;
+$badge-sampark-counts-border: $color-sampark-mono-borders;
+$badge-sampark-disable-background: $color-sampark-mono-alpha4; // a tint rather than an opaque fill, so it works on any surface
+$badge-sampark-disable-text: $color-sampark-mono-100;
+$badge-sampark-disable-border: $color-sampark-mono-borders;
+$tag-mybky-radius: $radius-mybky-pill; // 99px pill — all sizes, Figma MyBKY Badge/Tag set (node 22465:95582)
+$tag-mybky-font-weight: $font-weight-medium; // Inter 500 — all sizes
+$tag-mybky-grey-border: $color-mybky-mono-300;
+$tag-mybky-grey-text: $color-mybky-mono-800;
+$tag-mybky-primary-background: $color-mybky-blue-50; // Figma 'Primary' variant — reached via severity="contrast" (the unqualified PrimeNG tag renders grey)
+$tag-mybky-primary-border-hover: $color-mybky-blue-800;
+$tag-mybky-primary-text: $color-mybky-blue-800;
+$tag-mybky-secondary-background: $color-mybky-mono-50;
+$tag-mybky-secondary-border-hover: $color-mybky-mono-800;
+$tag-mybky-secondary-text: $color-mybky-mono-800;
+$tag-mybky-info-background: $color-mybky-info-20;
+$tag-mybky-info-border-hover: $color-mybky-info-80;
+$tag-mybky-info-text: $color-mybky-info-80;
+$tag-mybky-warning-background: $color-mybky-warning-20;
+$tag-mybky-warning-border-hover: $color-mybky-warning-80;
+$tag-mybky-warning-text: $color-mybky-warning-80;
+$tag-mybky-error-border-hover: $color-mybky-error-100;
+$tag-mybky-error-text: $color-mybky-error-100;
+$tag-mybky-success-background: $color-mybky-success-50;
+$tag-mybky-disabled-border: $color-mybky-mono-300; // no hover change on disabled
+$tag-mybky-disabled-text: $color-mybky-mono-450; // Mono/40 'Disable Item' #8d9ba5. Was #bd9ba5, carried verbatim from events-ui and repeated in both badge style guides. The Figma disabled badge (22465:95659) binds this text to Mono/40 (Disable Item) = #8d9ba5, and Sampark's disabled badge (13197:90751) binds ITS text to its own Mono/40 — so both brands read the same token and #bd9ba5 was a one-character slip (b for 8) that the guides inherited
+$tag-sampark-radius: $radius-sampark-default; // 4px — xs/s; l rounds to radiusL. Sampark's 'Badge' IS p-tag (spm-ui _badge.scss); NOT pill like mybky
+$tag-sampark-font-weight: $font-weight-medium; // Inter 500 — all sizes, same as mybky
+$tag-sampark-grey-border: $color-sampark-mono-borders;
+$tag-sampark-grey-border-hover: $color-sampark-mono-60;
+$tag-sampark-grey-text: $color-sampark-mono-80;
+$tag-sampark-primary-background: $color-sampark-primary-alpha10; // Figma 'Primary' maroon chip — reached via severity="contrast", same crossover as mybky. ALPHA, not the opaque primary.10 tint: the spm-ui badge spec writes this fill as rgba(135,48,48,.1), and a tag dropped on a tinted row has to keep what sits behind it. The two differ by roughly 5/255 on a white page, which is why the opaque one went unnoticed.
+$tag-sampark-primary-border-hover: $color-sampark-primary-80;
+$tag-sampark-primary-text: $color-sampark-primary-80;
+$tag-sampark-secondary-background: $color-sampark-secondary-10;
+$tag-sampark-secondary-border-hover: $color-sampark-secondary-80;
+$tag-sampark-secondary-text: $color-sampark-secondary-80;
+$tag-sampark-info-background: $color-sampark-info-10;
+$tag-sampark-info-border-hover: $color-sampark-info-80;
+$tag-sampark-info-text: $color-sampark-info-80;
+$tag-sampark-warning-background: $color-sampark-warning-10;
+$tag-sampark-warning-border-hover: $color-sampark-warning-80;
+$tag-sampark-warning-text: $color-sampark-warning-80;
+$tag-sampark-error-background: $color-sampark-error-20;
+$tag-sampark-error-border-hover: $color-sampark-error-100;
+$tag-sampark-error-text: $color-sampark-error-100;
+$tag-sampark-success-background: $color-sampark-success-10;
+$tag-sampark-success-border-hover: $color-sampark-success-80;
+$tag-sampark-success-text: $color-sampark-success-80;
+$tag-sampark-disabled-border: $color-sampark-mono-borders; // no hover change on disabled
+$tag-sampark-disabled-text: $color-sampark-mono-40; // #bcb9b9 Mono/40 'Disable Item'
+$avatar-mybky-radius: $radius-mybky-pill; // full circle — differs from sampark's square avatars
+$avatar-mybky-background: $color-mybky-blue-50; // initials chip fill — not PrimeNG's grey default
+$avatar-mybky-text: $color-mybky-blue-800;
+$avatar-sampark-font-weight: $font-weight-medium; // Inter 500 initials — every size except 2xl
+$avatar-sampark-font-weight2xl: $font-weight-regular; // 2xl initials drop to 400 (Figma H1/Regular)
+$avatar-sampark-background: $color-sampark-primary-0; // #fbf4f4 — the live variables.css value; the older theme-light $avatar-bg (#fbf3f3) predates the Figma-matched set
+$avatar-sampark-border: $color-sampark-primary-20; // 1px border xs–m, 1.5px l–2xl (borderWidth tokens)
+$avatar-sampark-border-hover: $color-sampark-primary-40; // border darkens on hover; bg and text never change
+$avatar-sampark-text: $color-sampark-mono-80; // #595656 — one text color across all three types; the topbar's mono-100 initials are a spm-ui one-off override
+$avatar-sampark-secondary-background: $color-sampark-secondary-0; // #f8f7f7 grey chip — replaces the older user-panel #f6f7f8 reading
+$avatar-sampark-secondary-border: $color-sampark-mono-40;
+$avatar-sampark-secondary-border-hover: $color-sampark-mono-60;
+$avatar-sampark-warning-background: $color-sampark-warning-10; // #fef4e6
+$avatar-sampark-warning-border: $color-sampark-warning-40;
+$avatar-sampark-warning-border-hover: $color-sampark-warning-80;
+$avatar-sampark-success-background: $color-sampark-success-10; // #e8fcf0 — Figma node 13197:90388 (Icon Success / Default) labels this 'Success/20', but its VALUE is our success.10. Matched by value, not by name: Figma's success ramp labels sit one step above ours (its 'Success/80' #17b56c is our success.60).
+$avatar-sampark-success-border: $color-sampark-success-40; // #82e3af — Figma 'Success/60'.
+$avatar-sampark-success-border-hover: $color-sampark-success-60; // #17b56c — node 13197:90412 (Icon Success / Hover) drops the mid step and uses Figma 'Success/80'.
+$avatar-sampark-error-background: $color-sampark-error-20; // #fde8e8 — Figma node 13197:90436 (Icon Error / Default). NOTE the error ramp does NOT share the success skew: Figma's error labels line up with ours exactly.
+$avatar-sampark-error-border: $color-sampark-error-60; // #f27376
+$avatar-sampark-error-border-hover: $color-sampark-error-80; // #ea151a — node 13197:90460 (Icon Error / Hover).
+$toggle-switch-mybky-track-on: $color-mybky-blue-600; // full-strength brand blue track; thumb stays WHITE when on (events-ui _switch.scss) — the earlier blue.200 track + blue.600 knob reading was wrong
+$toggle-switch-mybky-track-off-disabled: $color-mybky-mono-300; // #e4ecf1
+$toggle-switch-mybky-track-on-disabled: $color-mybky-blue-200; // #bdc6e4
+$toggle-switch-mybky-thumb-bg: $color-mybky-mono-0; // white in every state — on/off is carried by the track alone
+$toggle-switch-sampark-track-off: $color-sampark-mono-40;
+$toggle-switch-sampark-track-on: $color-sampark-primary-60;
+$toggle-switch-sampark-track-off-disabled: $color-sampark-mono-20;
+$toggle-switch-sampark-track-on-disabled: $color-sampark-primary-20;
+$toggle-switch-sampark-thumb-bg: $color-sampark-mono-0;
+$toolbar-sampark-padding: $space-2; // 8px, all sides
+$toolbar-sampark-gap: $space-2; // 8px, between stacked toolbar rows
+$toolbar-sampark-section-gap: $space-1; // 4px, gap within .left
+$toolbar-sampark-background: $color-sampark-mono-0;
+$toolbar-sampark-border: $color-sampark-mono-borders;
+$toolbar-sampark-title-font-size: $font-size-xl; // 20px
+$toolbar-sampark-title-font-weight: $font-weight-semibold;
+$toolbar-sampark-title-line-height: $font-line-height-normal; // 1.5 — 30px at 20px font
+$toolbar-sampark-title-color: $color-sampark-mono-100;
+$dashboard-mybky-page-background: $color-mybky-mono-50; // #F8FAFB. The dashboard repaints itself grey ON TOP of the white layout shell, so cards read as floating. Settings/config do NOT — they inherit the shell white.
+$dashboard-mybky-hero-padding: $space-6; // 24px
+$dashboard-mybky-chart-card-background: $color-mybky-mono-0;
+$dashboard-mybky-chart-card-padding: $space-6; // 24px, shrinks at breakpoints
+$dashboard-mybky-region-card-hover-shadow: $shadow-mybky-card-hover;
+$dashboard-mybky-grid-gap: $space-4; // 16px between dashboard rows
+$table-mybky-row-background: $color-mybky-mono-0; // Every row. NO zebra striping anywhere in events-ui — confirmed, not an oversight.
+$table-mybky-cell-padding-x: $space-4; // 16px
+$tree-table-mybky-header-background: $color-mybky-mono-50; // #F8FAFB
+$tree-table-mybky-row-background: $color-mybky-mono-0; // Every row — no striping
+$tree-table-mybky-row-hover-background: $color-mybky-blue-50; // #EEF0F8. Note this differs from the flat tables above, which hover #FBFCFD.
+$tree-table-mybky-connector-color: $color-mybky-mono-450; // #8D9BA5. The ONE place a darker line than border.default is used — the hierarchy trunk needs to read against the row borders it crosses.
+$tree-table-mybky-expanded-font-weight: $font-weight-semibold; // An expanded parent gets weight only — no background change.
+$stepper-mybky-rail-background: $color-mybky-blue-50; // Primary/0. The pill behind the whole rail.
+$stepper-mybky-active-gradient: linear-gradient(135deg, $color-mybky-blue-600, $color-mybky-blue-800); // Primary/60 to Primary/80. Also the hover preview on an unlocked inactive slot, and the in-progress fill.
+$stepper-mybky-connector-color: $color-mybky-mono-450; // Mono/40. Solid, NOT dashed — measured from the shipping stylesheet.
+$button-mybky-primary-disabled: $color-mybky-blue-alpha10; // blue.600 @ 10% opacity fill, 1px border #e4ecf1
+$button-mybky-primary-ghost-hover: $color-mybky-blue-alpha10; // blue.600 @ 10% opacity tint on hover
+$card-mybky-background: $color-mybky-surface-card;
+$card-mybky-border: $color-mybky-border-default; // hairline — structural separation, per CLAUDE.md 'Borders & shadows'
+$card-mybky-title-color: $color-mybky-text-primary;
+$card-mybky-subtitle-color: $color-mybky-text-muted;
+$card-sampark-background: $color-sampark-surface-card;
+$card-sampark-border: $color-sampark-border-default;
+$card-sampark-title-color: $color-sampark-text-primary;
+$card-sampark-subtitle-color: $color-sampark-text-muted;
+$drawer-sampark-background: $color-sampark-surface-card; // Mono/0 (White)
+$drawer-sampark-title-color: $color-sampark-text-primary; // Mono/100 (Header & Primary Text)
+$drawer-sampark-border-color: $color-sampark-border-default; // Mono/Borders — header/footer separators
+$drawer-mybky-background: $color-mybky-surface-card;
+$tag-mybky-primary-border: $color-mybky-blue-alpha20; // Primary/40 @ 20%
+$tag-sampark-primary-border: $color-sampark-primary-alpha20; // Primary/100 @ 20%
+$dashboard-mybky-chart-card-border: $color-mybky-border-default;
+$table-mybky-border-color: $color-mybky-border-default;
+$tree-table-mybky-border-color: $color-mybky-border-default; // Bottom border only

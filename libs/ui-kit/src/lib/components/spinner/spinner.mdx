@@ -1,0 +1,48 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as SpinnerStories from './spinner.stories';
+
+<Meta of={SpinnerStories} />
+
+# Spinner
+
+A loading indicator, indeterminate or determinate. `baps-spinner` wraps PrimeNG’s `p-progressspinner`.
+
+## Usage
+
+```html
+<baps-spinner ariaLabel="Loading projects" />
+```
+
+## Examples
+
+### Indeterminate
+
+<Canvas of={SpinnerStories.Indeterminate} />
+
+### Determinate
+
+<Canvas of={SpinnerStories.Determinate} />
+
+### Determinate Steps
+
+<Canvas of={SpinnerStories.DeterminateSteps} />
+
+### Sizes
+
+<Canvas of={SpinnerStories.Sizes} />
+
+## When Not to Use
+
+| Need | Use | Not this |
+| --- | --- | --- |
+| A page or panel that is loading | A spinner inside that region | A spinner over the whole page |
+| Progress with a known total | `baps-progressbar` | A determinate spinner for a long task |
+| A button waiting on a request | `baps-button` with `[loading]` | A spinner beside the button |
+
+## Accessibility
+
+### Screen Reader
+
+- A spinner takes no focus. It must be announced by the region it is loading, not by itself — put `aria-busy` on that region.
+- `ariaLabel` should say what is loading, not that something is: "Loading projects", not "Loading".
+- A determinate spinner announces its `value`; an indeterminate one cannot say how long is left, so do not imply it can.

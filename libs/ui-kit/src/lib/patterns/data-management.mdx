@@ -1,0 +1,104 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as DataManagementStories from './data-management.stories';
+
+<Meta of={DataManagementStories} />
+
+# Data management
+
+The listing screen with everything on it: search, filters, row selection with
+select-all, a bulk-actions bar, pagination, and the three different ways a
+table can have no rows. This is the densest pattern in the library and the one
+closest to a real product page.
+
+Each piece is documented on its own elsewhere — `Components → Table` has
+`Loading` and `Empty`, `Components → Pagination` has the paginator,
+`Components → Toolbar` has the search field. What none of them can show is how
+the pieces *interact*. The bugs in a listing screen live in the seams between
+them, so those seams are what this pattern exists to pin down.
+
+## What you get
+
+- **Search** that resets pagination, wired to a `baps-toolbar` field.
+- **Filters** (status / center) composed from `baps-select`, sharing the same reset behaviour.
+- **Row selection** with a page-scoped header select-all, plus an explicit "select all N matching" escalation in the bulk bar.
+- **Bulk actions** that appear only once something is selected.
+- **Pagination** via an external `baps-paginator`, outside the table surface.
+- **Three distinct no-row states** — loading, genuinely empty, and filtered-to-nothing — which are not interchangeable.
+
+## Playground
+
+<Canvas of={DataManagementStories.Default} />
+
+Worth actually doing rather than reading about:
+
+- Tick two rows, page forward, page back. The selection survives, because `ui.selected` holds **ids**, not row objects. Hold row objects and the identity check breaks the moment the page slice is re-created.
+- Tick every row on page 1, then use "Select all matching" in the bulk bar. Header-checkbox select-all is deliberately page-scoped — that is what a checkbox in a column header means — so crossing the page boundary is a separate, explicit action.
+- Go to page 3 and type in the search box. The page snaps back to 1. Skip that reset and you get a blank table under a paginator insisting there are results.
+
+## The three empty states
+
+They are not one state, and shipping one message for all three is the most
+common mistake in a listing screen.
+
+| State | Cause | What it must say | Exit offered |
+| --- | --- | --- | --- |
+| Loading | Request in flight | Nothing — show the overlay, not a message | none |
+| Empty | No records exist yet | Onboarding: nothing here yet | Add the first record |
+| No results | Records exist, filters exclude them | Why it is empty | Clear filters |
+
+<Canvas of={DataManagementStories.NoResults} />
+<Canvas of={DataManagementStories.Empty} />
+<Canvas of={DataManagementStories.Loading} />
+
+Offering "Add Karyakar" in the no-results state answers a question nobody
+asked — there are 26 karyakars, the search just does not match any of them.
+
+The toolbar and paginator keep rendering in every state. Deliberate: they are
+page furniture, and a screen that grows a toolbar the moment its first row
+arrives reflows under the user.
+
+## Gaps found while building this
+
+Both were wanted by the pattern and could not be had from the current library.
+Recorded here rather than papered over with a new component (§53).
+
+**`baps-checkbox` has no `indeterminate` input.** A header select-all should
+show a third, partial state when some — not all — rows on the page are ticked.
+PrimeNG's own `Checkbox` supports `indeterminate`; `BapsCheckbox` simply does
+not forward it. So the header checkbox here is binary, and a partially selected
+page is indistinguishable from an unselected one. This is a one-line passthrough
+fix on the component, not a design problem.
+
+**`baps-table` does not expose PrimeNG's row-selection directives.** It has
+`selectionMode`, `selection` and `dataKey`, but `pSelectableRow` /
+`pTableCheckbox` / `pSelectableRowDblClick` are template-level directives that a
+consumer cannot reach through the wrapper's `ng-template`. Selection here is
+therefore hand-rolled: `ui.selected` holds ids and each row renders its own
+`baps-checkbox`. That works and is arguably clearer, but it means keyboard
+range-selection and PrimeNG's own selection semantics are unavailable.
+
+## Gotchas
+
+**Mutable state must live on one object.** Storybook copies `props` by value
+into its wrapper component, so a captured `let selected = []` reassigned in a
+handler never reaches the template. Everything mutable here lives on a single
+`ui` object read as `ui.x` in the template — the same fix as `crud-form`'s `ui`
+and `table.stories`' `pageState`. Get this wrong and the story renders
+perfectly while silently never updating.
+
+**Filtering must reset the page offset.** Any change to search or filters sets
+`first` back to 0. Without it the user sits on page 3 of a result set that now
+has one page.
+
+**Selection must be id-based to survive paging.** See the Playground note.
+
+**Loading leaves the toolbar interactive.** `[loading]` puts PrimeNG's overlay
+over the table body only. That is correct — a user can keep refining the search
+— but it means an in-flight response must not clobber a query the user has
+since changed.
+
+## Related
+
+- **Patterns → Data table listing** — the same table with column configuration instead of filters and selection
+- **Patterns → Delete confirmation** — where a bulk Delete action should lead
+- **Components → Table**, **Components → Pagination**, **Components → Toolbar** — the individual pieces

@@ -1,0 +1,201 @@
+/* =====================================================================
+   libs/ui-kit/src/lib/styles/components/table/_table.scss
+   PrimeNG v21 DataTable — MyBKY skin (the DEFAULT brand)
+
+   Why this file exists: baps.theme.ts has no `datatable` section, so MyBKY
+   tables were rendering Material's own density and greys while the
+   table.mybky.* tokens sat unused. This wires them up.
+
+   SCOPE — unscoped on purpose. MyBKY is the default brand and carries no
+   page class (there is no .baps-ds-mybky; only Sampark opts in). Loading
+   this BEFORE _table-sampark.scss is what keeps Sampark in charge on its
+   own scope, exactly as _input.scss / _input-sampark.scss are ordered.
+
+   NOT wired here: --table-mybky-embedded-row-hover. It needs a nested-table
+   markup hook that does not exist yet; inventing a class for it would ship
+   a selector nothing matches. Left in the token file for when that lands.
+   ===================================================================== */
+
+baps-table {
+  --baps-table-row-bg: var(--table-mybky-row-background, #ffffff);
+  --baps-table-row-hover: var(--table-mybky-row-hover-background, #fbfcfd);
+  --baps-table-row-error: var(--table-mybky-row-error-background, #fff5f5);
+  --baps-table-border: var(--table-mybky-border-color, #e4ecf1);
+  --baps-table-cell-py: var(--table-mybky-cell-padding-y, 1.125rem);
+  --baps-table-cell-px: var(--table-mybky-cell-padding-x, 1rem);
+  --baps-table-header-py: var(--table-mybky-header-padding-y, 0.625rem);
+  --baps-table-cell-size: 0.875rem;
+  --baps-table-cell-weight: 500;
+  --baps-table-cell-color: var(--color-mybky-text-primary, #181b1d);
+  --baps-table-cell-secondary: var(--color-mybky-text-muted, #6f777d);
+  --baps-table-cell-secondary-wrap: nowrap;
+}
+
+/* SAMPARK RE-POINTS THE VARIABLES, and this block is not optional.
+ *
+ * The rules in this file are UNSCOPED, on the reasoning that MyBKY is the
+ * default brand and _table-sampark.scss loads afterwards and outranks them.
+ * That is only true for properties Sampark actually declares. Anything it
+ * leaves alone falls through to the MyBKY value — which is how a Sampark table
+ * ended up with #181B1D cell text on #E4ECF1 top/left borders while its own
+ * right/bottom borders stayed #E1E0E0. Measured in the column-config story,
+ * not theorised.
+ *
+ * Re-pointing the variables fixes it wherever the rules land, and does not
+ * depend on which file loads last. */
+:is(baps-table.baps-sampark, .baps-ds-sampark baps-table) {
+  --baps-table-row-bg: var(--color-sampark-surface-card, #ffffff);
+  --baps-table-border: var(--color-sampark-border-default, #e1e0e0);
+  /* Sampark's own partial already wins this one with !important. Re-pointed
+     anyway so the value is right even where that rule does not reach — the
+     whole point of this block is not to depend on which file lands last. */
+  --baps-table-row-hover: var(--table-row-hover, #f3f2f2);
+  --baps-table-cell-color: var(--color-sampark-text-primary, #151414);
+  --baps-table-cell-secondary: var(--color-sampark-text-secondary, #9f9c9c);
+  /* 400, not 500. Sampark bolds only the LEAD cell, and it says so in its own
+     partial; inheriting 500 here bolded every ordinary cell in the table. */
+  --baps-table-cell-weight: 400;
+  /* Sampark WRAPS its secondary line. Its own partial declares overflow and
+     text-overflow but no white-space, so the MyBKY nowrap fell through and
+     the cell stopped being able to shrink — see the note on the rule. */
+  --baps-table-cell-secondary-wrap: normal;
+}
+
+/* Header. Both selectors are needed: PrimeNG only puts its own cell class on
+   cells it generates from [columns], and a forwarded header template is the
+   consumer's raw <th> with no class at all — the same gap that left
+   baps-tree-table's header transparent until it was measured. */
+baps-table .p-datatable-thead > tr > th {
+  padding: var(--baps-table-header-py) var(--baps-table-cell-px);
+  border-color: var(--baps-table-border);
+}
+
+/* Body. NO zebra striping — every row is the card surface, matching
+   baps-tree-table. PrimeNG offers .p-datatable-striped and it is deliberately
+   unused, so adding stripes later is a change, not a fix. */
+baps-table .p-datatable-tbody > tr {
+  background: var(--baps-table-row-bg);
+}
+
+baps-table .p-datatable-tbody > tr > td {
+  padding: var(--baps-table-cell-py) var(--baps-table-cell-px);
+  border-color: var(--baps-table-border);
+}
+
+baps-table .p-datatable-tbody > tr:hover,
+baps-table .p-datatable-tbody > tr:hover > td {
+  background: var(--baps-table-row-hover);
+}
+
+/* Row-level error state. Class mirrors baps-tree-table's .baps-tree-row-error
+   so the two tables take the same hook; set it through PrimeNG's own
+   [rowStyleClass] / the row template. */
+baps-table .p-datatable-tbody > tr.baps-table-row-error,
+baps-table .p-datatable-tbody > tr.baps-table-row-error > td {
+  background: var(--baps-table-row-error);
+}
+
+/* ── Record-row vocabulary ──────────────────────────────────────────────
+   The SAME class names the Sampark skin already ships
+   (_table-sampark.scss): .baps-table-cell with a plain <small> second line,
+   .baps-table-cell-lead on the td that pairs it with an avatar, and
+   .baps-table-action for a row icon button. MyBKY simply had no equivalent,
+   so every MyBKY list screen was rebuilding them locally.
+
+   Do NOT introduce a parallel name here. A consumer moving a screen between
+   brands should change `brand`, not its markup — that is the whole point of
+   the two skins sharing this vocabulary.
+
+   Values measured off the Figma row components (25317:120717 and siblings):
+   primary 14/500 Mono/100, secondary 12/400 Mono/60, 8px apart, lead cell
+   padding 10px/16px. */
+baps-table .p-datatable .baps-table-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: center;
+  min-width: 0;
+  font-size: var(--baps-table-cell-size);
+  font-weight: var(--baps-table-cell-weight);
+  color: var(--baps-table-cell-color);
+}
+
+/* MyBKY truncates rather than wraps — a second line would break the fixed row
+   height its record tables are built on. Sampark WRAPS, which is why the
+   white-space is a variable and not a constant.
+ *
+ * `nowrap` is not free, and it broke a real screen: a cell that cannot wrap
+ * demands the full intrinsic width of its text, and in a FROZEN column that
+ * width becomes the sticky column's width. In the column-config story the
+ * frozen column grew from 340px to 640px and sat on top of the two columns
+ * scrolling behind it, which read as a blank band in the middle of the table
+ * and as clipped headers. Measured both ways before and after.
+ *
+ * So: if a MyBKY table freezes a column whose secondary line is long, cap that
+ * column's width explicitly. Do not reach for wrapping — the row height is the
+ * thing being protected here. */
+baps-table .p-datatable .baps-table-cell > small {
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--baps-table-cell-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: var(--baps-table-cell-secondary-wrap);
+}
+
+/* Lead cell — avatar beside the text block, with the tighter vertical
+   padding the design gives that column. */
+baps-table .p-datatable .p-datatable-tbody > tr > td.baps-table-cell-lead {
+  padding: 0.625rem 1rem;
+}
+
+baps-table .p-datatable .baps-table-cell-lead-inner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+/* Row icon button. Circular in MyBKY (Sampark squares it) — a row action is
+   the same affordance as the avatar it sits across from. */
+baps-table .p-datatable .baps-table-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-mybky-text-muted, #6f777d);
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease;
+}
+
+baps-table .p-datatable .baps-table-action:hover:not(:disabled) {
+  background: var(--color-mybky-blue-50, #eef0f8);
+  color: var(--color-mybky-primary-default, #5f78b8);
+}
+
+baps-table .p-datatable .baps-table-action:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Warning row state ──────────────────────────────────────────────────
+   Joins the existing `error` hook; set through PrimeNG's [rowStyleClass] or
+   the row template.
+
+   HOVER STILL WINS over the tint — verified against the Figma variants:
+   "Refund Hover" paints Primary/0, not the warning fill. A state that
+   survived hover would make the row look unhoverable. */
+baps-table .p-datatable-tbody > tr.baps-table-row-warning,
+baps-table .p-datatable-tbody > tr.baps-table-row-warning > td {
+  background: var(--table-mybky-row-warning-background, #fff6eb);
+}
+
+baps-table .p-datatable-tbody > tr.baps-table-row-warning:hover,
+baps-table .p-datatable-tbody > tr.baps-table-row-warning:hover > td {
+  background: var(--baps-table-row-hover);
+}

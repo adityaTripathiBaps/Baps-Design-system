@@ -1,0 +1,60 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as TabsStories from './tabs.stories';
+
+<Meta of={TabsStories} />
+
+# Tabs
+
+Sampark skin opt-in for PrimeNG v21's tab strip. There is **no `baps-tabs` wrapper component** — `bapsTabs` is a directive applied straight to `p-tabs`, following the same convention as `bapsInputText`/`bapsTextarea` (a directive on the real element) rather than the `baps-*` wrapper-component pattern used by most other components in this library. That is a deliberate, load-bearing choice, not a stylistic preference — see below.
+
+## Usage
+
+```html
+<p-tabs bapsTabs brand="sampark" [(value)]="activeTab">
+  <p-tablist>
+    <p-tab value="0">General</p-tab>
+    <p-tab value="1">Members</p-tab>
+    <p-tab value="2" [disabled]="true">Receipts</p-tab>
+  </p-tablist>
+  <p-tabpanels>
+    <p-tabpanel value="0">General content</p-tabpanel>
+    <p-tabpanel value="1">Members content</p-tabpanel>
+    <p-tabpanel value="2">Receipts</p-tabpanel>
+  </p-tabpanels>
+</p-tabs>
+```
+
+## Examples
+
+### Default
+
+<Canvas of={TabsStories.Default} />
+
+### With Disabled
+
+<Canvas of={TabsStories.WithDisabled} />
+
+### Page Wide Scope Only
+
+<Canvas of={TabsStories.PageWideScopeOnly} />
+
+### Sizes
+
+<Canvas of={TabsStories.Sizes} />
+
+## When Not to Use
+
+| Need | Use instead | Why not tabs |
+| --- | --- | --- |
+| Moving between pages or routes | `baps-navbar` (app chrome) or `baps-internal-navbar` (section chrome) | Tabs swap panels inside one view; they are not navigation and produce no URL |
+| Showing where the user is in a hierarchy | `baps-breadcrumb` | Tabs express siblings, not ancestry |
+| Choosing one of many values as *data* | `baps-select`, or `baps-listbox` when the options should stay visible | A tab is a view switch, not a form control |
+| Ten or more items, or user-generated labels | `baps-select` | The strip never wraps — it turns into a horizontal scroller with a hidden scrollbar |
+| Parking secondary detail beside the main view | `baps-drawer` | Tabs hide their inactive panels entirely; a drawer keeps the primary content on screen |
+| A row of actions | `baps-button` / `baps-split-button` | Tabs read as state, so a tab that performs an action is a mis-signal |
+
+## Accessibility
+
+- `p-tabs` is raw PrimeNG markup, so its built-in ARIA (tablist/tab/tabpanel roles, roving tabindex, arrow-key navigation) applies unmodified — the directive changes no accessibility behavior, only appearance.
+- Disabled tabs (`WithDisabled`) keep their place in the strip but drop out of the tab order — don't rely on ordering alone to communicate "unavailable."
+- The focus-visible ring is a deliberate override of the preset's own tab colors (`!important` in `_tabs-sampark.scss`); don't strip it when customizing further.

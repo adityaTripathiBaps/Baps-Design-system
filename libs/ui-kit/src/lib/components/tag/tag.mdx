@@ -1,0 +1,95 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as TagStories from './tag.stories';
+
+<Meta of={TagStories} />
+
+# Tag
+
+A labelled status or category chip — event status, member group, role code. The BAPS wrapper (`baps-tag`) wraps PrimeNG's `p-tag` and applies the MyBKY "Badge" spec from Figma (node 22465:95582): pill radius, Inter 500, a 1px tinted border with a hover ring, four sizes and a disabled state. Severity fills come from the `MyBky` preset (`libs/ui-kit/src/lib/theme/baps.theme.ts`); the border, hover, size and disabled rules live in the wrapper against the `--tag-mybky-*` CSS variables.
+
+## Usage
+
+```html
+<!-- Status chip (grey default) -->
+<baps-tag value="Draft" />
+
+<!-- Event status -->
+<baps-tag value="Registered" severity="success" size="m" />
+
+<!-- Category with icon -->
+<baps-tag value="Yuva Sabha" severity="contrast" icon="pi pi-users" />
+
+<!-- Overflow count -->
+<baps-tag [value]="'+' + overflowCount" severity="secondary" size="xs" />
+
+<!-- Sampark skin (4px radius, Sampark hues) -->
+<baps-tag value="Pending" severity="warn" brand="sampark" />
+```
+
+## Examples
+
+### Playground
+
+<Canvas of={TagStories.Playground} />
+
+### Severities
+
+<Canvas of={TagStories.Severities} />
+
+### Sizes
+
+<Canvas of={TagStories.Sizes} />
+
+### Sampark Severities
+
+<Canvas of={TagStories.SamparkSeverities} />
+
+### Sampark Sizes
+
+<Canvas of={TagStories.SamparkSizes} />
+
+### Chevron
+
+<Canvas of={TagStories.Chevron} />
+
+### Trailing Action
+
+<Canvas of={TagStories.TrailingAction} />
+
+### Icon Only
+
+<Canvas of={TagStories.IconOnly} />
+
+### With Icon
+
+<Canvas of={TagStories.WithIcon} />
+
+## When Not to Use
+
+`baps-tag`, `baps-badge` and `baps-overlaybadge` all render small coloured chips and are the most-confused trio in the kit. The distinction is what the chip *is*, not how it looks:
+
+| | `baps-tag` | `baps-badge` | `baps-overlaybadge` |
+| --- | --- | --- | --- |
+| **What it is** | A **labelled chip** naming a category or status | A **count or dot indicator** annotating something else | The same badge, positioned over projected content |
+| Content | A word or short phrase (`value` + optional `icon`) | A number, or **empty for a dot** | Same as Badge |
+| Geometry | Sized to its text; fixed height only | A circle/capsule with equal `height`/`minWidth` (18/22/32px) | Absolutely positioned on the corner of its child |
+| Placement | Inline, in the flow of content | Attached to a host — a nav item, a tab, a label | Wraps a `<ng-content>` host (icon, avatar) |
+| Extras | 1px tinted border + hover ring, four sizes, `disabled` | No border, no hover, no disabled fill | No `brand` input at all — page-wide toggle only |
+| Reads as | "This record **is** Registered" | "There **are** 5 of these" | "There are 5 of these, on *that*" |
+
+**One-line rule: a badge counts, a tag names.** If you can't put a number in it, it isn't a badge; if the text isn't a label you'd read aloud as part of the row, it isn't a tag.
+
+Beyond that trio:
+
+| Need | Use | Not this |
+| --- | --- | --- |
+| A clickable filter chip or removable token | `baps-button` (`size="small"`, `[rounded]`) | Tag has no click output, no `tabindex`, no remove control |
+| A sentence explaining a state, not just naming it | `baps-alert` or `baps-message` | A chip has no room for a reason |
+| An unread/notification count on an icon or avatar | `baps-overlaybadge` | Tag can't position itself over another element |
+| The identity of a person | `baps-avatar` / `baps-avatargroup` | |
+
+## Accessibility
+
+- A tag is announced by its text — keep the value short and meaningful ("Draft", "Registered"), not decorative.
+- Don't rely on the fill color alone to convey status; the label text must carry the meaning on its own.
+- Disabled tags remain readable (distinct fill, not an opacity dim) and drop pointer events.

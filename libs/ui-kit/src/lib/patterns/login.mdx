@@ -1,0 +1,150 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as LoginStories from './login.stories';
+
+<Meta of={LoginStories} />
+
+# Login
+
+The sign-in screen — the one page every user of this system sees before any
+other. Structurally it is a short CRUD form: two fields, a checkbox, a submit.
+What makes it its own pattern is the **failure half**, and none of that can
+live on a component's own docs page.
+
+A login form has two entirely different kinds of error and they must not share
+a channel. "That is not a valid email address" is a property of a field and
+belongs under that field. "Those credentials are wrong" is a property of the
+*attempt* — both fields can be perfectly well-formed and the sign-in still
+fails — so it has no field to attach to and belongs in a banner above the
+form. Collapse the two and you either hide the server error under a field the
+user just corrected, or you red-ring a field that is not actually wrong.
+
+## Playground
+
+<Canvas of={LoginStories.Default} />
+
+Demo credentials: `karyakar@baps.dev` / `satsang123`. Anything else produces
+the auth-failure alert; empty fields produce inline field errors instead.
+
+## What you get
+
+- `FormBuilder` + `Validators.required` / `Validators.email` /
+  `Validators.minLength(8)` — plain `@angular/forms`, nothing
+  component-specific.
+- Field-level errors as `<small class="input-hint p-error">`, the same markup
+  `form-field.mdx`'s States story and `crud-form.mdx` use. This pattern does
+  not invent a third error convention.
+- Attempt-level failure as one `baps-alert severity="error"`, closable, above
+  the form.
+- `[loading]` on `baps-button` plus `form.disable()` for the in-flight state —
+  both halves, see below.
+- `baps-checkbox` for "Remember me" via `formControlName`, and a `baps-link`
+  for "Forgot password?" on the same row.
+- `baps-card` as the surface, so the pattern shows the whole screen rather
+  than a floating `<form>`.
+
+## The two error channels
+
+| Situation | Channel | Why |
+| --- | --- | --- |
+| `foo@` typed in the email field | inline `<small class="input-hint p-error">` under that field | The user can see and fix exactly what is wrong |
+| Password shorter than 8 characters | inline, under the password field | Same — it is a property of that one value |
+| Server rejected the credentials | `baps-alert severity="error"` above the form | Both fields are individually valid; there is no invalid field to hang it on |
+| Account locked / service down | `baps-alert`, same place | Not about any field at all |
+
+<Canvas of={LoginStories.AuthFailure} />
+
+Note what the failure message does **not** say: which of the two was wrong.
+"No account with that email" turns the login form into an account-enumeration
+oracle — an attacker can harvest valid addresses by watching which ones change
+the message. One message for both cases.
+
+Note also what does not happen: the typed email survives. The alert is
+separate state, so rendering it never touches the `FormGroup`. Re-creating the
+form on failure — or resetting it "to be safe" — makes the user retype their
+address every time they fat-finger a password.
+
+## The submit gotcha (same one as CRUD form)
+
+**`baps-button` does not forward `type="submit"`.** There is no `type` input
+on the component at all, and PrimeNG's `p-button` defaults to
+`type="button"` — so wrapping it in `<form (ngSubmit)="signIn()">` compiles,
+renders, and then silently never fires. On a login form that is worse than on
+most screens, because pressing Enter in a password field is how a large share
+of users submit.
+
+The pattern wires Sign in via `(click)="onSignIn()"`, and that handler does
+the two things `ngSubmit` would have done itself: check `form.invalid`, then
+`form.markAllAsTouched()` so every field's error becomes visible at once.
+
+Enter-to-submit is still missing, and this pattern does not fake it. Do **not**
+hand-roll a `(keydown.enter)` on the inputs — that is per-screen scar tissue
+for a component-level gap. `baps-button` needs a `type` input; file it there.
+
+## The loading state
+
+<Canvas of={LoginStories.Submitting} />
+
+Two things have to happen when the request goes out, and shipping only the
+first is the common bug:
+
+1. **`[loading]="ui.loading"` on the button.** PrimeNG swaps the label for a
+   spinner and disables the button, so an impatient second click cannot
+   double-submit.
+2. **`form.disable()` on the `FormGroup`.** Without it the fields stay live
+   and the user can keep typing into a request that has already been sent with
+   the old values — then the response lands and silently contradicts what is
+   on screen. `bapsInputText` has no `disabled` input of its own; it inherits
+   the state from its control, which is why this is a `FormGroup` call and not
+   a per-input flag.
+
+Remember to `form.enable()` in the failure path, or a wrong password leaves
+the form permanently frozen.
+
+## Gotchas
+
+**`autocomplete` is not optional.** `autocomplete="username"` on the email
+input and `autocomplete="current-password"` on the password input are what let
+password managers fill and, more importantly, *save* the credential. Neither
+`bapsInputText` nor PrimeNG sets them — they are plain attributes on the
+`<input>`, and they are missing by default.
+
+**`type="password"` is a raw attribute too.** `bapsInputText` is a directive on
+a native `<input>` (it host-applies PrimeNG's `InputText`, exposing only
+`pSize`, `variant`, `invalid` and `fluid`), so `type`, `id`, `name`,
+`placeholder` and `autocomplete` are all yours to set. That is a feature here,
+not a gap — but it does mean nothing reminds you.
+
+**There is no password-visibility toggle.** PrimeNG ships `p-password`; this
+library does not wrap it, and `baps-iconfield` + `baps-inputicon` will place an
+icon in the field but will not wire a show/hide behaviour. A real gap — a
+`baps-password` wrapper is the fix, not a hand-built eye button per screen.
+
+**`baps-checkbox` needs `formControlName`, not a bare `[checked]`.** It
+implements `ControlValueAccessor` and has no `checked` input; binding one does
+nothing at all.
+
+**"Remember me" is a session-length control, not a form value.** The pattern
+stores it in the `FormGroup` because that is where the checkbox lives, but do
+not send it as a credential field — it decides refresh-token lifetime on your
+auth call.
+
+## Do's and Don'ts
+
+| Do | Don't |
+| --- | --- |
+| Keep field errors inline and the auth failure in one `baps-alert` | Push "Invalid credentials" into the password field's error slot |
+| Say "Email or password is incorrect" | Say which one was wrong |
+| Disable the button *and* the form while the request is in flight | Disable only the button and let the fields keep accepting input |
+| Set `autocomplete` on both inputs | Assume password managers will guess |
+| Wire submit via `(click)` and check validity yourself | Rely on `(ngSubmit)` — it never fires, see above |
+| Preserve typed values across a failed attempt | `form.reset()` on error |
+
+## Related
+
+- **Patterns → CRUD form** — the same submit gotcha, and the multi-field
+  validation timing this page reuses
+- **Components → Alert** — severities, `closable`, and the `(closed)` output
+- **Components → Form Controls** — `bapsInputText`, `invalid`, and the
+  `input-hint p-error` markup
+- **Components → Button** — `loading`, `fluid`, and the missing `type` input
+- **Components → Card** — the `card-title` / `card-subtitle` slots used here

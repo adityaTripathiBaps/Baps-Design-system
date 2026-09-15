@@ -1,0 +1,587 @@
+/* =====================================================================
+   libs/ui-kit/src/lib/styles/components/stepper/_stepper.scss
+   PrimeNG v21 Stepper — MyBKY icon rail + Sampark numbered rail
+
+   Lives here, not in the component, because bapsStepper is a DIRECTIVE on
+   p-stepper rather than a wrapper (see stepper.directive.ts for why the
+   wrapper could not work). A directive has no `styles`, so the skin ships as
+   a global partial — the same arrangement as _tabs-sampark.scss.
+
+   ── TWO WAYS TO USE p-step, and they look nothing alike ──────────────
+
+   1. PLAIN. `<p-step [value]="1">Details</p-step>`. PrimeNG renders its own
+      header: the number in `.p-step-number`, the projected content in
+      `.p-step-title`. This is what Sampark uses and what a quick numbered
+      stepper gets for free.
+
+   2. TEMPLATE. `<p-step [value]="1"><ng-template #content let-active="active">
+      …</ng-template></p-step>`. The `#content` template replaces the ENTIRE
+      header, so the caller writes the markup and PrimeNG renders no number and
+      no title at all. This is the only way to put an ICON in the slot, which
+      is what the MyBKY event wizard needs — and the reason the `.baps-step__*`
+      classes below exist.
+
+   Both are supported. The `.p-step-number` rules and the `.baps-step__*`
+   rules never meet, because whichever route you take the other's elements are
+   not in the DOM.
+
+   ── PRECEDENCE LIVES IN THE CONSUMER, NOT IN THIS FILE ───────────────
+
+   Exactly ONE of these lands on a slot, chosen by the consumer in code:
+
+     active  >  completed  >  in-progress  >  invalid  >  default
+
+   `--locked` is separate: a wash that can accompany any of them.
+
+   The order is deliberately NOT encoded here by stylesheet position. The
+   shipping events-ui rail leaves it to source order — `--completed` happens to
+   be declared after `--active`, so the step you are standing on turns green if
+   it was finished earlier. That works until someone moves a rule.
+
+   The design system resolves it the other way and says so: **active wins**.
+   The step you are on should look like the step you are on; "you finished this
+   before" matters less than "you are here now". A consumer that wants the
+   events-ui look picks `completed` in its own precedence function — one line,
+   in code, where it can be read.
+
+   NOTE — this is the one place the design system knowingly departs from Figma
+   frame 25317:104987, which shows the open step green because it inherits that
+   quirk from the app.
+   ===================================================================== */
+
+p-stepper {
+  /* Rail. */
+  --baps-step-rail-bg: var(--stepper-mybky-rail-background, #eef0f8);
+  --baps-step-rail-radius: var(--stepper-mybky-rail-radius, 1rem);
+  --baps-step-rail-padding: var(--stepper-mybky-rail-padding-y, 0.9rem)
+    var(--stepper-mybky-rail-padding-x, 2.5rem);
+  --baps-step-rail-max-width: var(--stepper-mybky-rail-max-width, 55rem);
+
+  /* Slot geometry. The active slot is deliberately LARGER, not just
+     recoloured — size is what carries "you are here" on a rail whose labels
+     are hidden until hover. */
+  --baps-step-size: var(--stepper-mybky-slot-size, 2.5rem);
+  --baps-step-size-active: var(--stepper-mybky-slot-size-active, 3.5rem);
+  --baps-step-icon: var(--stepper-mybky-icon-size, 1.5rem);
+  --baps-step-icon-active: var(--stepper-mybky-icon-size-active, 2rem);
+
+  /* Fills. Whole `background` values rather than colour pairs, so a brand can
+     swap a gradient for a flat fill without extra rules. */
+  --baps-step-fill-idle: var(--color-mybky-mono-0, #ffffff);
+  --baps-step-fill-active: var(
+    --stepper-mybky-active-gradient,
+    linear-gradient(135deg, #5f78b8, #384871)
+  );
+  --baps-step-fill-done: var(
+    --stepper-mybky-completed-gradient,
+    linear-gradient(135deg, #40bf84, #178251)
+  );
+
+  --baps-step-ring-idle: var(--color-mybky-border-default, #e4ecf1);
+  --baps-step-icon-on: var(--color-mybky-text-inverse, #ffffff);
+  --baps-step-icon-idle: var(--color-mybky-text-muted, #6f777d);
+
+  --baps-step-shadow-idle: var(--shadow-mybky-xs, 0 2px 4px rgba(16, 24, 40, 0.12));
+  --baps-step-shadow-lifted: var(
+    --shadow-mybky-xl,
+    0 8px 8px rgba(16, 24, 40, 0.06),
+    0 20px 24px rgba(16, 24, 40, 0.12)
+  );
+
+  --baps-step-line: var(--stepper-mybky-connector-color, #8d9ba5);
+  --baps-step-text: var(--color-mybky-text-primary, #181b1d);
+  --baps-step-text-idle: var(--color-mybky-text-muted, #6f777d);
+  --baps-step-radius: 50%;
+  --baps-step-locked-opacity: var(--stepper-mybky-locked-opacity, 0.3);
+
+  /* How far a slot rides ABOVE the row — the current step always, a hovered
+     one for as long as the hover lasts. It is applied to the icon WRAP, never
+     the button, because the button spends its transform on scale(). */
+  --baps-step-active-lift: var(--stepper-mybky-active-lift, 2.6rem);
+
+  /* Hover on an inactive slot previews the active SIZE. A scale, not a
+     width/height change, so the neighbours do not reflow as the mouse moves
+     along the rail. 2.5rem x 1.4 = 3.5rem, i.e. exactly the active size — the
+     multiplier tracks the slot size and has to change with it. */
+  --baps-step-hover-scale: var(--stepper-mybky-hover-scale, 1.4);
+
+  /* Long and eased — the rail is the page's main affordance, and a snappy
+     resize on a 56px circle reads as a glitch. */
+  --baps-step-motion: 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+  --baps-step-motion-icon: 0.7s cubic-bezier(0.25, 0.1, 0.25, 1);
+
+  /* Asymmetric on purpose: slow in so a deliberate hover reveals the name,
+     fast out so sweeping across the rail does not leave a trail of labels.
+     The label also lags the icon's lift rather than racing it. */
+  --baps-step-label-fade-in: 0.6s;
+  --baps-step-label-fade-out: 0.15s;
+}
+
+/* Sampark keeps the conventional numbered rail: no pill, one slot size, flat
+   accent instead of gradients, and labels that are always legible. */
+:is(p-stepper.baps-sampark, .baps-ds-sampark p-stepper) {
+  --baps-step-rail-bg: transparent;
+  --baps-step-rail-padding: 0;
+  --baps-step-rail-max-width: none;
+  --baps-step-size: 2rem;
+  --baps-step-size-active: 2rem;
+  --baps-step-fill-done: var(--color-sampark-primary-default, #c96868);
+  --baps-step-fill-active: transparent;
+  --baps-step-fill-idle: transparent;
+  --baps-step-ring-idle: var(--color-sampark-mono-40, #bcb9b9);
+  --baps-step-icon-on: var(--color-sampark-mono-0, #ffffff);
+  --baps-step-icon-idle: var(--color-sampark-text-muted, #9f9c9c);
+  --baps-step-shadow-idle: none;
+  --baps-step-shadow-lifted: none;
+  --baps-step-line: var(--color-sampark-border-default, #e1e0e0);
+  --baps-step-text: var(--color-sampark-text-primary, #151414);
+  --baps-step-text-idle: var(--color-sampark-text-muted, #9f9c9c);
+  --baps-step-hover-scale: 1;
+  --baps-step-motion: 150ms ease;
+  --baps-step-motion-icon: 150ms ease;
+}
+
+/* ── Rail ─────────────────────────────────────────────────────────────── */
+/* overflow: visible is load-bearing. The active slot is taller than the pill's
+   content box and has to protrude above it; clipping here would shear the top
+   off the current step. */
+p-stepper .p-steplist {
+  background: var(--baps-step-rail-bg);
+  border-radius: var(--baps-step-rail-radius);
+  padding: var(--baps-step-rail-padding);
+  max-width: var(--baps-step-rail-max-width);
+  margin-inline: auto;
+  overflow: visible;
+}
+
+/* Each slot takes an equal share, so the rail stays evenly spaced no matter
+   how many steps the wizard has.
+
+   padding: 0 in the icon rail. PrimeNG gives .p-step 8px of its own, which is
+   sized for the number-and-title header it would otherwise draw; left in, it
+   adds 16px to the rail and the pill measures 88px instead of the 72px the
+   design specifies. The numbered route still wants it, hence the :has(). */
+p-stepper .p-steplist > .p-step {
+  flex: 1;
+  gap: 0.5rem;
+}
+
+p-stepper .p-steplist:has(.baps-step__btn) > .p-step {
+  padding: 0;
+}
+
+/* PrimeNG's own separator is off in the icon rail: the connector is drawn by
+   the caller between the slots so it can be hidden per-neighbour on hover,
+   which PrimeNG's has no hook for. Scoped to a steplist that actually uses
+   the template, so the plain numbered rail keeps its separators. */
+/* !important is not a preference here. PrimeNG sets the separator's display
+   from its own preset with equal-or-higher weight, so without it the rule
+   matched (5 elements, measured) and still lost — leaving PrimeNG's line
+   drawn UNDER the custom connectors. */
+p-stepper .p-steplist:has(.baps-step__btn) .p-stepper-separator {
+  display: none !important;
+}
+
+/* ═══ ROUTE 1 — plain p-step (number + title) ═════════════════════════ */
+/* Base = COMPLETED. PrimeNG v21 puts only .p-step and .p-step-active on a
+   step — there is no .p-step-completed (measured in the rendered DOM; an
+   earlier version of this file keyed off that class and the rule silently
+   never matched). CSS has no previous-sibling selector, so the cascade runs
+   the other way: the BASE state is "done", and the rules after it walk that
+   back for the active step and for everything following it. The `~` rules
+   must stay last. */
+p-stepper .p-step-number {
+  box-sizing: border-box;
+  width: var(--baps-step-size);
+  height: var(--baps-step-size);
+  border-radius: var(--baps-step-radius);
+  border: 1px solid transparent;
+  background: var(--baps-step-fill-done);
+  color: var(--baps-step-icon-on);
+  font-size: 0.875rem;
+  font-weight: 500;
+  box-shadow: var(--baps-step-shadow-idle);
+  transition: width var(--baps-step-motion), height var(--baps-step-motion),
+    transform var(--baps-step-motion), background var(--baps-step-motion),
+    border-color var(--baps-step-motion), color var(--baps-step-motion),
+    box-shadow var(--baps-step-motion);
+}
+
+p-stepper .p-step-title {
+  color: var(--baps-step-text);
+  font-size: 1rem;
+  font-weight: 500;
+  transition: opacity var(--baps-step-label-fade-out) ease,
+    color var(--baps-step-motion);
+}
+
+p-stepper .p-step-active .p-step-number {
+  width: var(--baps-step-size-active);
+  height: var(--baps-step-size-active);
+  background: var(--baps-step-fill-active);
+  /* transparent, NOT the fill: --baps-step-fill-active is a gradient and
+     border-color cannot take one, so naming it here made the declaration
+     invalid and the border fell back to currentColor — a white ring around
+     the active circle. Measured in the rendered DOM. */
+  border-color: transparent;
+  color: var(--baps-step-icon-on);
+  box-shadow: var(--baps-step-shadow-lifted);
+}
+
+:is(p-stepper.baps-sampark, .baps-ds-sampark p-stepper) .p-step-active .p-step-number {
+  border-color: var(--color-sampark-primary-default, #c96868);
+  color: var(--color-sampark-primary-default, #c96868);
+}
+
+p-stepper .p-step-active .p-step-title {
+  color: var(--baps-step-text);
+  opacity: 1;
+}
+
+p-stepper .p-step-active ~ .p-step .p-step-number {
+  background: var(--baps-step-fill-idle);
+  border-color: var(--baps-step-ring-idle);
+  color: var(--baps-step-icon-idle);
+  box-shadow: var(--baps-step-shadow-idle);
+}
+p-stepper .p-step-active ~ .p-step .p-step-title {
+  color: var(--baps-step-text-idle);
+  font-weight: 400;
+}
+
+/* ═══ ROUTE 2 — #content template (icon rail) ═════════════════════════ */
+/* Markup this expects:
+ *
+ *   <p-step [value]="i">
+ *     <ng-template #content let-activate="activateCallback">
+ *       <span class="baps-step__connector"></span>
+ *       <span class="baps-step">
+ *         <span class="baps-step__icon-wrap">
+ *           <button class="baps-step__btn baps-step__btn--completed" (click)="activate()">
+ *             <span class="baps-step__icon"><baps-icon … /></span>
+ *           </button>
+ *         </span>
+ *         <span class="baps-step__label">Basic Info</span>
+ *       </span>
+ *       <span class="baps-step__connector"></span>
+ *     </ng-template>
+ *   </p-step>
+ *
+ * THE WRAP IS NOT DECORATIVE. An element gets ONE transform. The button spends
+ * its own on `scale()` while hovered, so the lift that raises a slot above the
+ * pill has to live on a separate element — hence `.baps-step__icon-wrap`.
+ * Collapsing the two puts scale and translate in one declaration where the
+ * later wins, and the hover either stops growing or stops lifting.
+ */
+
+p-stepper .baps-step {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+/* Carries the LIFT only. Its own layout height stays the resting slot's, so
+   raising a step never changes the rail's height. */
+p-stepper .baps-step__icon-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--baps-step-motion-icon) 0s;
+}
+
+/* z-index 1: the slot always sits above its own label and above the
+   connectors, so a lifted circle is never crossed by a line. */
+p-stepper .baps-step__btn {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--baps-step-size);
+  height: var(--baps-step-size);
+  padding: 0;
+  border: 1px solid var(--baps-step-ring-idle);
+  border-radius: var(--baps-step-radius);
+  background: var(--baps-step-fill-idle);
+  color: var(--baps-step-icon-idle);
+  box-shadow: var(--baps-step-shadow-idle);
+  cursor: pointer;
+  transition: transform var(--baps-step-motion), background var(--baps-step-motion),
+    color var(--baps-step-motion), box-shadow var(--baps-step-motion),
+    border-color 0.5s ease;
+}
+
+p-stepper .baps-step__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--baps-step-icon);
+  /* The glyph lifts BEFORE the circle finishes growing — a shorter duration
+     on the same curve. Reversing this reads as the icon lagging behind. */
+  transition: transform var(--baps-step-motion-icon) 0s,
+    font-size var(--baps-step-motion-icon) 0s;
+}
+
+/* ── State: active ──
+   The current step is the only slot with a REAL 56px box. A hovered slot only
+   looks that size (scale) — the difference matters: the active one occupies
+   the space, a hovered one borrows it and its neighbours never move.
+
+   `margin-block` keeps its LAYOUT height at the resting slot's, so growing it
+   does not grow the row and therefore does not grow the pill. The lift that
+   raises it above the pill lives on the wrap, not here.
+
+   `cursor: default` — there is nothing to click on the step you are on. */
+p-stepper .baps-step__btn--active {
+  width: var(--baps-step-size-active);
+  height: var(--baps-step-size-active);
+  margin-block: calc((var(--baps-step-size) - var(--baps-step-size-active)) / 2);
+  background: var(--baps-step-fill-active);
+  border: none;
+  color: var(--baps-step-icon-on);
+  box-shadow: var(--baps-step-shadow-lifted);
+  cursor: default;
+}
+
+p-stepper .baps-step__btn--active .baps-step__icon {
+  font-size: var(--baps-step-icon-active);
+}
+
+/* The active slot rides above the row; its label takes the row line. */
+p-stepper .baps-step:has(.baps-step__btn--active) .baps-step__icon-wrap {
+  transform: translateY(calc(-1 * var(--baps-step-active-lift)));
+}
+
+/* ── State: completed ── */
+p-stepper .baps-step__btn--completed {
+  background: var(--baps-step-fill-done);
+  border: none;
+  color: var(--baps-step-icon-on);
+}
+
+/* ── State: in progress ──
+   An inactive step the user has started. It borrows the ACTIVE fill but not
+   the active size — colour says "begun", size stays reserved for "here". */
+p-stepper .baps-step__btn--in-progress {
+  background: var(--baps-step-fill-active);
+  border: none;
+  color: var(--baps-step-icon-on);
+}
+
+/* ── State: invalid ──
+   Deliberately identical to the resting slot, RING INCLUDED. The error is
+   carried by the badge on the corner, not by the circle: recolouring the
+   circle too would make an unvisited step and a failed one compete for the
+   same signal. */
+p-stepper .baps-step__btn--invalid {
+  background: var(--baps-step-fill-idle);
+  border: 1px solid var(--baps-step-ring-idle);
+  color: var(--baps-step-icon-idle);
+}
+
+/* ── State: locked ──
+   A WASH over whatever the slot already is, not a state of its own — a locked
+   step keeps its real fill (done or ahead) and simply recedes, so the rail
+   still reads as a sequence.
+
+   pointer-events is belt-and-braces: the consumer must ALSO set the real
+   `disabled` attribute, or the slot stays reachable by keyboard. It is also
+   what keeps the hover rules below from ever firing on it. */
+p-stepper .baps-step__btn--locked {
+  opacity: var(--baps-step-locked-opacity);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ── Hover ──
+   Only an inactive, unlocked slot previews the active treatment, and it does
+   so on TWO elements at once: the button scales, the wrap lifts. Same lift as
+   the real active step, so a hovered slot lands where the current one sits.
+
+   `border: none` rather than a transparent colour. The ring is 1px on a
+   border-box 40px button, so recolouring it leaves the glyph in a 38px hole
+   that visibly jumps at scale(1.4); removing it lets the fill run edge to
+   edge, which is what the spec asks for. */
+/* THE TRIGGER IS THE STEP, NOT THE BUTTON. This is the whole reason
+   `.baps-step` exists as a hover scope.
+
+   Hovering lifts the slot 41.6px. If the rule keyed off `.baps-step__btn:hover`
+   the button would move out from under the pointer the instant it fired, the
+   hover would drop, the slot would fall back — and it would oscillate for as
+   long as the cursor sat there. Measured: the lift never applied and the label
+   landed on top of a circle that had not moved.
+
+   `.baps-step` does not move, so the hover stays true while everything inside
+   it animates. `:focus-within` gives the keyboard the same treatment. */
+p-stepper .baps-step:hover .baps-step__btn:not(.baps-step__btn--active):not(.baps-step__btn--locked),
+p-stepper
+  .baps-step:focus-within
+  .baps-step__btn:not(.baps-step__btn--active):not(.baps-step__btn--locked) {
+  transform: scale(var(--baps-step-hover-scale));
+  background: var(--baps-step-fill-active);
+  border: none;
+  color: var(--baps-step-icon-on);
+  box-shadow: var(--baps-step-shadow-lifted);
+}
+
+p-stepper .baps-step:hover:has(.baps-step__btn:not(.baps-step__btn--locked)) .baps-step__icon-wrap,
+p-stepper
+  .baps-step:focus-within:has(.baps-step__btn:not(.baps-step__btn--locked))
+  .baps-step__icon-wrap {
+  transform: translateY(calc(-1 * var(--baps-step-active-lift)));
+}
+
+/* ── Label ──
+   Absolutely positioned so revealing it cannot nudge the rail's layout, and
+   z-index 0 so it passes UNDER a lifted neighbouring circle rather than over
+   it. */
+p-stepper .baps-step__label {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 0;
+  margin-top: 0.25rem;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--baps-step-text);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--baps-step-label-fade-out) ease-out;
+}
+
+/* A label takes the ROW LINE whenever its circle has lifted off it — for the
+   current step always, and for a hovered one while the hover lasts. The label
+   moves into the space the circle left, which is why the pill reads as holding
+   a word beside its icons rather than a caption hanging beneath one.
+ *
+ * A resting label keeps `top: 100%`: its circle has NOT moved, and a label on
+ * the row would land on top of it. */
+p-stepper .baps-step--active .baps-step__label,
+p-stepper .baps-step:has(.baps-step__btn--active) .baps-step__label,
+p-stepper .baps-step:hover:has(.baps-step__btn:not(.baps-step__btn--locked)) .baps-step__label,
+p-stepper
+  .baps-step:focus-within:has(.baps-step__btn:not(.baps-step__btn--locked))
+  .baps-step__label {
+  top: 50%;
+  transform: translate(-50%, -50%);
+  margin-top: 0;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Reveal is SLOWER than the hide, and slower than the icon's lift, so the name
+   arrives after the circle has settled rather than racing it. */
+p-stepper .baps-step:hover .baps-step__label,
+p-stepper .baps-step:focus-within .baps-step__label {
+  opacity: 1;
+  pointer-events: auto;
+  transition-duration: var(--baps-step-label-fade-in);
+  transition-timing-function: ease-in-out;
+}
+
+/* A locked step names nothing on hover — it is not going anywhere. */
+p-stepper .baps-step:has(.baps-step__btn--locked):hover .baps-step__label {
+  opacity: 0;
+}
+
+/* ── Connector ──
+   Drawn by the caller on each side of a slot; `flex: 1` is what spreads the
+   rail evenly. Solid, not dashed — measured from the shipping stylesheet. */
+p-stepper .baps-step__connector {
+  flex: 1;
+  min-width: 0.375rem;
+  height: 1px;
+  background: var(--baps-step-line);
+}
+
+/* No line may cross an enlarged circle, from either side. Two cases per
+   lifted slot: its own pair of connectors, and the TRAILING connector of the
+   step before it. visibility rather than display, so the rail's spacing does
+   not jump as the mouse moves along it.
+ *
+ * Three things here were each wrong once and are load-bearing now:
+ *
+ * 1. `:has()` CANNOT be nested inside `:has()`. The obvious
+ *    `:has(+ .p-step:has(.baps-step__btn--active))` is an INVALID selector,
+ *    and an invalid selector anywhere in a comma list drops the WHOLE rule —
+ *    so the valid half silently stopped working too. `:has(+ .p-step .x)`
+ *    expresses the same thing and parses.
+ * 2. The trailing connector is NOT `:last-child`. A step's children are
+ *    connector · .baps-step · connector · p-stepper-separator, so the
+ *    separator holds that slot. `.baps-step + .baps-step__connector` names it.
+ * 3. Each selector is its own rule, so one bad edit can only cost the case it
+ *    belongs to rather than all four. */
+p-stepper .p-step:has(.baps-step__btn--active) .baps-step__connector {
+  visibility: hidden;
+}
+
+p-stepper .p-step:has(+ .p-step .baps-step__btn--active) .baps-step + .baps-step__connector {
+  visibility: hidden;
+}
+
+p-stepper .p-step:has(.baps-step:hover .baps-step__btn:not(.baps-step__btn--locked)) .baps-step__connector {
+  visibility: hidden;
+}
+
+p-stepper
+  .p-step:has(+ .p-step .baps-step:hover .baps-step__btn:not(.baps-step__btn--locked))
+  .baps-step
+  + .baps-step__connector {
+  visibility: hidden;
+}
+
+/* ── Required-step badge ──
+   Every layer of the badge has to be inline-flex, INCLUDING the inner
+   `div.p-overlaybadge` PrimeNG renders. Two separate problems:
+
+   1. The host defaults to `display: inline`, which at small breakpoints
+      measures wider than the button it wraps and drags the dot off the corner.
+   2. The inner div defaults to `display: block`, and a block box around an
+      inline-flex button leaves room for a text baseline underneath it. That
+      added 4px to the slot, so the rail measured 76px against the 72px the
+      design specifies — invisible on its own, and it moved every vertical
+      number in the pill. Measured, not guessed. */
+p-stepper .baps-step p-overlaybadge,
+p-stepper .baps-step baps-overlaybadge,
+p-stepper .baps-step .p-overlaybadge {
+  display: inline-flex;
+}
+
+/* ── Reduced motion ──
+   A 0.8s scale on every slot is exactly the sweep this setting exists to
+   suppress; the state colours still change, only the animation stops. */
+@media (prefers-reduced-motion: reduce) {
+  p-stepper {
+    --baps-step-motion: 0s;
+    --baps-step-motion-icon: 0s;
+    --baps-step-label-fade-in: 0s;
+    --baps-step-label-fade-out: 0s;
+    --baps-step-hover-scale: 1;
+  }
+}
+
+/* ── Dark ── */
+.baps-dark p-stepper {
+  --baps-step-rail-bg: var(--color-mybky-dark-surface-card, #2b2f32);
+  --baps-step-fill-idle: var(--color-mybky-dark-surface-card, #2b2f32);
+  --baps-step-ring-idle: var(--color-mybky-dark-border-divider, #3d4144);
+  --baps-step-line: var(--color-mybky-dark-border-divider, #3d4144);
+  --baps-step-text: var(--color-mybky-dark-text-primary, #f8fafb);
+  --baps-step-text-idle: var(--color-mybky-dark-text-muted, #b6b6af);
+  --baps-step-icon-idle: var(--color-mybky-dark-text-muted, #b6b6af);
+}
+.baps-dark :is(p-stepper.baps-sampark, .baps-ds-sampark p-stepper) {
+  --baps-step-rail-bg: transparent;
+  --baps-step-fill-done: var(--color-sampark-dark-primary-default, #d48787);
+  --baps-step-ring-idle: var(--color-sampark-dark-border-divider, #4a4947);
+  --baps-step-line: var(--color-sampark-dark-border-divider, #4a4947);
+  --baps-step-text: var(--color-sampark-dark-text-primary, #f8f7f7);
+  --baps-step-text-idle: var(--color-sampark-dark-text-muted, #b7b6b3);
+  --baps-step-icon-idle: var(--color-sampark-dark-text-muted, #b7b6b3);
+}

@@ -48,3 +48,28 @@ Thumbs.db
 .nx/polygraph
 .nx/self-healing
 .nx/migrate-runs
+.angular
+
+test-output
+
+
+storybook-static
+# Storybook / build logs
+*.log
+
+# Playwright visual-regression run output. The BASELINES in
+# apps/storybook-host/visual/stories.spec.ts-snapshots ARE committed — they are
+# the reference the suite compares against and are useless if ignored. Only the
+# per-run diff/actual images and the HTML report are transient.
+apps/storybook-host/visual/test-results/
+apps/storybook-host/visual/visual-report/
+
+# Compodoc metadata, regenerated on every Storybook start (compodoc: true in
+# apps/storybook-host/project.json). It is build output, not source.
+documentation.json
+
+# Temporary / junk files
+nul
+nul.map
+_to_delete/
+.tmp-audit/

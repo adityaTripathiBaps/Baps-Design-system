@@ -1,0 +1,86 @@
+/* =====================================================================
+   libs/ui-kit/src/lib/styles/components/table/_table-surface-sampark.scss
+   Sampark Table — SURFACE layer.
+
+   LAYOUT ONLY. This partial deliberately draws nothing: no border, no
+   background, no radius, no sticky rules.
+
+   That is the whole point of it. `_table-sampark.scss` already owns every
+   painted pixel of the table — the outer frame on `.p-datatable-table-container`
+   (Figma 17512:73144), the per-cell dividers, and the full
+   `.dt-frozen-left` / `.dt-frozen-right` treatment including their inset
+   box-shadow seams. An earlier version of this file restated the frame and
+   the frozen rules, and both showed up twice in DevTools: a 2px double
+   border where the wrapper's edge met the container's, and two competing
+   seam shadows on a pinned column. Anything visual added here will double
+   with the skin. Put it in the skin instead.
+
+   What remains is the one thing the skin cannot do, because it is a
+   property of the wrapper element the PAGE owns rather than of the table:
+   giving a `scrollHeight="flex"` table somewhere to grow into.
+
+   Usage — `@use` it alongside the skin:
+
+     @use 'pkg:@org/ui-kit/src/lib/styles/components/table/table-sampark';
+     @use 'pkg:@org/ui-kit/src/lib/styles/components/table/table-surface-sampark';
+
+   and wrap the table in a flex column that has a bounded height:
+
+     <div class="baps-table-surface">
+       <baps-table brand="sampark" [scrollable]="true" scrollHeight="flex" …>
+     </div>
+   ===================================================================== */
+
+/* Page-wide opt-in (.baps-ds-sampark on <body>, the same switch the table
+   skin honours) or an explicit per-instance class on the wrapper itself,
+   for pages that are not wholly Sampark. */
+$s: ':is(.baps-ds-sampark, .baps-table-surface.baps-sampark)';
+
+/* ══════════════════════════════════════════════════════════════════════
+   FLEX HEIGHT CHAIN
+   `scrollHeight="flex"` asks PrimeNG to let the scroll container take
+   whatever height is left over. "Left over" only means anything if every
+   element between the bounded ancestor and the container is itself a flex
+   item that may shrink — one `display: block` in the chain and the table
+   falls back to its content height, the page grows past the viewport, and
+   the sticky header scrolls away with it.
+
+   `min-height: 0` at each level is what actually allows the shrink: a flex
+   item's default `min-height: auto` refuses to go below its content.
+   ══════════════════════════════════════════════════════════════════════ */
+#{$s} .baps-table-surface,
+.baps-table-surface#{$s} {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+#{$s} .baps-table-surface baps-table,
+#{$s} .baps-table-surface .p-datatable {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+#{$s} .baps-table-surface .p-datatable-table-container {
+  flex: 1;
+  min-height: 0;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   COLUMN-CONFIG TRIGGER CELL
+   The Figma parks the "configure fields" affordance in the trailing header
+   cell (17512:73144, mirrored at 17512:72572) rather than floating it over
+   the table, and it has to live there: a scrollable table gives its sticky
+   header its own stacking context, so an absolutely-positioned sibling is
+   painted UNDER the header whatever its z-index. The button itself is
+   `baps-table-action` from the skin — only the cell's alignment is new,
+   which is why this one rule is not a duplication of anything.
+   ══════════════════════════════════════════════════════════════════════ */
+#{$s} .p-datatable .p-datatable-thead > tr > th.baps-table-config-cell {
+  text-align: center !important;
+  overflow: visible !important;
+}

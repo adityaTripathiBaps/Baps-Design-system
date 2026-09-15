@@ -1,0 +1,85 @@
+import { Meta, Canvas, Controls } from '@storybook/blocks';
+import * as PopoverStories from './popover.stories';
+
+<Meta of={PopoverStories} />
+
+# Popover
+
+A small floating panel anchored to whatever opened it. `baps-popover` wraps
+PrimeNG's `p-popover`.
+
+<Canvas of={PopoverStories.Default} />
+
+<Controls of={PopoverStories.Default} />
+
+## Usage
+
+**This wrapper is imperative, unlike most in this library.** There is no
+`visible` input to bind — PrimeNG positions the panel against the originating
+event's target, so the trigger hands it the event:
+
+```html
+<baps-button label="Options" (click)="pop.toggle($event)" />
+<baps-popover #pop>
+  <div>Panel content</div>
+</baps-popover>
+```
+
+**Passing `$event` is not optional.** Without it there is no anchor and the
+panel lands in the corner of the viewport. That is the single most common
+mistake with this component.
+
+The panel is portalled to `<body>`, so its brand cannot ride on a host class
+the way every other wrapper's does — it goes onto the panel's own class list
+instead, which is why the styles for it are page-scoped rather than
+host-scoped.
+
+## When to use
+
+- A short aside anchored to a control: a summary, a definition, a small form.
+- A menu of actions that needs more room than a
+  [tooltip](/docs/components-tooltip--docs) and less ceremony than a
+  [dialog](/docs/components-dialog--docs).
+
+## When not to use
+
+- **A label or a hint on hover** — that is a
+  [tooltip](/docs/components-tooltip--docs). A popover needs a click.
+- **Anything requiring a decision** — a confirm/cancel pair belongs in a
+  [dialog](/docs/components-dialog--docs), which traps focus and dims the page.
+- **A list of options that sets a value** — that is a
+  [select](/docs/components-select--docs), which brings keyboard navigation
+  and the right ARIA for free.
+
+## Examples
+
+### Default
+
+<Canvas of={PopoverStories.Default} />
+
+### With actions
+
+The panel closes on click-outside and on <kbd>Esc</kbd>. **v21's Popover has no
+close-button input**, so if the content needs an explicit close affordance it
+has to be part of the content.
+
+<Canvas of={PopoverStories.WithActions} />
+
+### Anchoring
+
+<Canvas of={PopoverStories.Anchoring} />
+
+## Interaction
+
+<Canvas of={PopoverStories.OpenCloseInteraction} />
+
+## Accessibility
+
+- Click-outside and <kbd>Esc</kbd> are the only ways out, so both are asserted
+  in the interaction story. A regression in either leaves a panel a keyboard
+  user cannot close.
+- The trigger keeps its own accessible name; the panel does not supply one.
+  Give the trigger a name that says what will open.
+- Content inside the panel is ordinary DOM — a heading, a list, buttons all
+  behave normally. Focus is **not** trapped, which is deliberate: a popover is
+  an aside, not a modal.

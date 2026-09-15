@@ -1,0 +1,91 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as TableSortConfigStories from './table-sort-config.stories';
+
+<Meta of={TableSortConfigStories} />
+
+# Table Sort Config
+
+The multi-column sort panel for `baps-table`, built on `baps-drawer`. The sibling of `baps-table-column-config`: that panel decides **which** columns a table shows, this one decides **what order** it shows rows in. Like it, edits are staged locally and only reach the consumer on **Apply** — dismissing the drawer (mask, Esc, the close button) discards them.
+
+## Usage
+
+```ts
+import { BapsTableSortConfig, type BapsTableSortRow } from '@org/ui-kit';
+
+@Component({
+  imports: [BapsTableSortConfig],
+  template: `
+    <baps-table-sort-config
+      [(visible)]="sortOpen"
+      [fields]="sortFields"
+      [rows]="sortRows"
+      [defaultSort]="defaultSort"
+      (sortChange)="sortRows = $event"
+    />
+  `,
+})
+export class ProjectsComponent {
+  sortOpen = false;
+  sortFields = [
+    { key: 'name', label: 'Project Name' },
+    { key: 'location', label: 'Location' },
+  ];
+  defaultSort: BapsTableSortRow = { field: 'name', direction: 1, locked: true };
+  sortRows: BapsTableSortRow[] = [{ ...this.defaultSort }];
+}
+```
+
+## Examples
+
+### Default
+
+<Canvas of={TableSortConfigStories.Default} />
+
+### Default Only
+
+<Canvas of={TableSortConfigStories.DefaultOnly} />
+
+### Empty
+
+<Canvas of={TableSortConfigStories.Empty} />
+
+### From Trigger
+
+<Canvas of={TableSortConfigStories.FromTrigger} />
+
+## When Not to Use
+
+| Need | Use | Why not `baps-table-sort-config` |
+| --- | --- | --- |
+| Sorting by exactly one column | A plain header click on `baps-table` | A whole drawer for a one-click action |
+| Choosing which columns are shown | `baps-table-column-config` | This panel never touches column visibility or pinning |
+| Filtering rows by value | `baps-select` / `baps-listbox` in a `baps-drawer` | Sorting is an ordering, not a predicate |
+| A MyBKY table | *(nothing yet)* | Sampark-only by design — no MyBKY equivalent in the spec |
+
+## Accessibility
+
+### Screen Reader
+
+The quick-sort chips sit in a `role="group"` labelled *Add a field to sort by*; a chip whose field is already in the order is `disabled` and `aria-disabled` rather than hidden, so the group does not reshuffle under a screen reader's cursor.
+
+Each row exposes three labelled controls and one labelled `baps-select`:
+
+| Control | Announced as |
+| --- | --- |
+| Drag handle | `Reorder <field>. Use arrow up or down to move.` |
+| Field select | `Sort field for <Sort by / Then by>` |
+| Direction | `Ascending. Activate to reverse.` / `Descending. Activate to reverse.` |
+| Remove | `Remove <field> from the sort order` |
+
+All row icons are `aria-hidden`, so the label is the only thing announced. The locked default row replaces its remove button with a `<span>` carrying only a `title` — that lock state is announced weakly or not at all depending on the screen reader, and a consumer who needs it read reliably should say so in the row label.
+
+### Keyboard Support
+
+| Key | Function |
+| --- | --- |
+| `Tab` / `Shift + Tab` | Move through chips, then each row's handle, field, direction and remove controls |
+| `Enter` / `Space` | Activate the focused chip or button |
+| `Arrow Up` / `Arrow Down` | With the drag handle focused, move that row one position up or down. This is the keyboard equivalent of dragging — reordering never requires a pointer |
+| `Esc` | Close the drawer and **discard** the staged edits |
+
+Reordering by keyboard moves the row but keeps focus on the handle, so repeated presses walk a row up or down without re-finding it.

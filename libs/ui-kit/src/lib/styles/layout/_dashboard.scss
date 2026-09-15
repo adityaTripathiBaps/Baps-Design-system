@@ -1,0 +1,160 @@
+/* =====================================================================
+   libs/ui-kit/src/lib/styles/layout/_dashboard.scss
+   Event dashboard primitives — MyBKY
+
+   The hero tile row, the chart-card grid and the region grid. Layout, not
+   components: no wrapper owns them, and every dashboard screen repeats the
+   same four measurements. Same reasoning as _step-page.scss, same folder.
+
+   These wire the dashboard.mybky.* tokens, which were authored with the
+   design and then had no consumer at all — twenty variables, gradients
+   included, that no source file referenced.
+
+   BRAND — MyBKY only, deliberately. This is the event dashboard's shape and
+   Sampark has no equivalent screen.
+   ===================================================================== */
+
+/* The page ground. Grey, so the white chart cards on top of it read as cards
+   rather than as the page itself — the whole reason the cards need no heavy
+   shadow (chart-card-shadow is `none` by design, not an omission). */
+.dashboard-page {
+  background: var(--dashboard-mybky-page-background, #f8fafb);
+}
+
+/* ── Hero tiles ───────────────────────────────────────────────────────── */
+/* One row of counts. The gradient is the tile's identity — each metric has
+   its own, so a glance at colour is enough to know which number is which. */
+.dashboard-hero-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: var(--dashboard-mybky-grid-gap, 1rem);
+}
+
+.hero-tile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.25rem;
+  min-height: var(--dashboard-mybky-hero-min-height, 5.75rem);
+  padding: var(--dashboard-mybky-hero-padding, 1.5rem);
+  border-radius: var(--dashboard-mybky-hero-radius, 1rem);
+  color: var(--color-mybky-text-inverse, #ffffff);
+}
+
+/* The label sits on a saturated gradient, so it is a TINT of the tile's own
+   hue rather than a shared grey — a neutral label goes muddy on four
+   different backgrounds. */
+.hero-tile__label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.hero-tile__value {
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.hero-tile--invited {
+  background: var(--dashboard-mybky-hero-invited-gradient, linear-gradient(90deg, #4b536c 0%, #1f2945 100%));
+
+  .hero-tile__label {
+    color: var(--dashboard-mybky-hero-invited-label, #bdc6e4);
+  }
+}
+
+.hero-tile--registered {
+  background: var(--dashboard-mybky-hero-registered-gradient, linear-gradient(90deg, #4aa16c 0%, #1e7a4d 100%));
+
+  .hero-tile__label {
+    color: var(--dashboard-mybky-hero-registered-label, #d8fdeb);
+  }
+}
+
+.hero-tile--pending {
+  background: var(--dashboard-mybky-hero-pending-gradient, linear-gradient(90deg, #5c8fe3 0%, #2d5fb5 100%));
+
+  .hero-tile__label {
+    color: var(--dashboard-mybky-hero-pending-label, #d8e7fd);
+  }
+}
+
+.hero-tile--declined {
+  background: var(--dashboard-mybky-hero-declined-gradient, linear-gradient(90deg, #d3a04b 0%, #b57a23 100%));
+
+  .hero-tile__label {
+    color: var(--dashboard-mybky-hero-declined-label, #fdedd8);
+  }
+}
+
+/* ── Chart cards ──────────────────────────────────────────────────────── */
+.dashboard-chart-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: var(--dashboard-mybky-grid-gap, 1rem);
+}
+
+/* A border and no shadow. The grey page ground already separates the card, so
+   a shadow on top of that reads as two separations doing one job. */
+.chart-card {
+  background: var(--dashboard-mybky-chart-card-background, #ffffff);
+  border: 1px solid var(--dashboard-mybky-chart-card-border, #e4ecf1);
+  border-radius: var(--dashboard-mybky-chart-card-radius, 0.75rem);
+  padding: var(--dashboard-mybky-chart-card-padding, 1.5rem);
+  box-shadow: var(--dashboard-mybky-chart-card-shadow, none);
+}
+
+.chart-card__title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-mybky-text-primary, #181b1d);
+  margin: 0 0 1rem;
+}
+
+/* ── Region grid ──────────────────────────────────────────────────────── */
+/* Tighter than the chart grid: these are small paired donuts, and the chart
+   gutter leaves them adrift. */
+.dashboard-region-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: var(--dashboard-mybky-region-grid-gap, 0.875rem);
+}
+
+/* Hover is a LIFT, not a fill. These cards are usually links into a region,
+   and a background change here would collide with the table row hover the
+   same screen uses. */
+.region-card {
+  background: var(--dashboard-mybky-chart-card-background, #ffffff);
+  border: 1px solid var(--dashboard-mybky-chart-card-border, #e4ecf1);
+  border-radius: var(--dashboard-mybky-chart-card-radius, 0.75rem);
+  transition: box-shadow 150ms ease;
+}
+
+.region-card:hover {
+  box-shadow: var(--dashboard-mybky-region-card-hover-shadow, 0 2px 12px rgba(0, 0, 0, 0.08));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .region-card {
+    transition: none;
+  }
+}
+
+/* ── Dark ── */
+.baps-dark {
+  .dashboard-page {
+    background: var(--color-mybky-dark-surface-ground, #181b1d);
+  }
+
+  .chart-card,
+  .region-card {
+    background: var(--color-mybky-dark-surface-card, #2b2f32);
+    border-color: var(--color-mybky-dark-border-divider, #3d4144);
+  }
+
+  .chart-card__title {
+    color: var(--color-mybky-dark-text-primary, #f8fafb);
+  }
+}

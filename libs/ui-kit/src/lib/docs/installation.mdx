@@ -1,0 +1,164 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Getting Started/Installation" />
+
+# Installation
+
+Setting up the BAPS design system in an Angular application.
+
+## Download
+
+Inside this Nx workspace there is nothing to install — the library resolves through
+the TypeScript path alias in `tsconfig.base.json`:
+
+```json
+"paths": {
+  "@org/ui-kit": ["./libs/ui-kit/src/index.ts"],
+  "@org/tokens": ["./libs/tokens/src/index.ts"]
+}
+```
+
+The peer dependencies are already present at the workspace root:
+
+```bash
+# Already in the root package.json — for reference only
+pnpm add primeng@21.1.3 @primeuix/themes@2.0.3 primeicons@^7.0.0
+```
+
+| Dependency | Version |
+|---|---|
+| `@angular/core`, `@angular/common` | `^21.2.0` |
+| `primeng` | `21.1.3` |
+| `@primeuix/themes` | `2.0.3` |
+| `primeicons` | `^7.0.0` |
+
+## Provider
+
+Add `providePrimeNG` to the list of providers in your `app.config.ts`:
+
+```ts
+import { ApplicationConfig } from '@angular/core';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { providePrimeNG } from 'primeng/config';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideAnimationsAsync(),
+    providePrimeNG({
+      /* Configuration */
+    }),
+  ],
+};
+```
+
+Use `provideAnimationsAsync()` (from `@angular/platform-browser/animations/async`),
+not `provideAnimations()`.
+
+## Theme
+
+The design system ships its own PrimeNG preset, `MyBky`. Register it in the
+`providePrimeNG` configuration — this is the same setup Storybook uses, so components
+render identically in your app and in these docs:
+
+```ts
+import { providePrimeNG } from 'primeng/config';
+import { MyBky } from '@org/ui-kit';
+
+providePrimeNG({
+  ripple: true,
+  theme: {
+    preset: MyBky,
+    options: {
+      darkModeSelector: '.baps-dark',
+      cssLayer: {
+        name: 'primeng',
+        order: 'theme, base, components, primeng, utilities, app-styles',
+      },
+    },
+  },
+});
+```
+
+Then load the icon font and the design-token CSS:
+
+```ts
+import 'primeicons/primeicons.css';
+import '../../libs/tokens/build/css/tokens.css'; // adjust relative to your app
+```
+
+Run `pnpm nx build tokens` first if `libs/tokens/build/` doesn't exist yet — the CSS
+is generated, not checked in.
+
+Finally include the layout partials from `libs/ui-kit/src/lib/styles/layout/` —
+`_fonts.scss` (which self-hosts Inter Variable) and `_common.scss` — and set the rem
+baseline. **Both rules below are required, and the unlayered one is not optional:**
+
+```scss
+// 1rem = 16px. Every token in the library is authored against this: a Sampark
+// button is "2rem" because Figma says 32px, a tag is "1.375rem" for 22px,
+// spacing.6 is "1.5rem" for 24px.
+html {
+  font-size: 16px;
+}
+
+// Kept for the PrimeNG components that were scaled to a 14px baseline. It is
+// INERT — an unlayered rule beats a layered one whatever the order — and it is
+// the pair of rules together that is correct.
+@layer app-styles {
+  html {
+    font-size: 14px;
+  }
+}
+```
+
+Shipping only the layered rule is a real and quiet failure: with nothing unlayered to
+outrank it, the whole library renders at 14/16 = 87.5%. Measured in an app that had
+exactly that — 28px buttons where the design says 32, 19.3px tags for 22, 12.25px tag
+text for 14, 21px page padding for 24. Nothing looks broken; everything is slightly
+small. If an app genuinely wants smaller text, set a `font-size` on `body` — do not
+move the rem baseline out from under the tokens.
+
+## Verify
+
+Import a component into a standalone component and render it. If the button renders
+32px tall in the MyBKY blue (`#5f78b8` — the preset maps `primary` to the bkymsBlue
+ramp) and in Inter, the setup works. A button that comes out 28px means the rem
+baseline above is missing its unlayered half.
+
+```ts
+import { Component } from '@angular/core';
+import { BapsButton } from '@org/ui-kit';
+
+@Component({
+  selector: 'app-root',
+  imports: [BapsButton],
+  template: `<baps-button label="Register" severity="primary" />`,
+})
+export class AppComponent {}
+```
+
+If something looks off, check the troubleshooting table in
+**Getting Started → Using the components in your project**.
+
+## Examples
+
+Every component in the sidebar has live stories with controls and per-component docs:
+
+```html
+<baps-tag value="Active" severity="success" />
+<baps-button label="New member" severity="primary" />
+<baps-button label="Send receipt" icon="pi pi-envelope" [loading]="sending" />
+
+<baps-icon-field>
+  <baps-input-icon styleClass="pi pi-search" />
+  <input bapsInputText placeholder="Search members" />
+</baps-icon-field>
+```
+
+## Next steps
+
+- **Getting Started → Using the components in your project** — the full guide:
+  component reference, forms integration, design tokens, dark mode, icons, copy
+  rules, and contributing a new component.
+- **Foundations** — typography and color.
+- **Components** — live examples for every `baps-` component.

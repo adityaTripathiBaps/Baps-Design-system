@@ -1,0 +1,52 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as TooltipStories from './tooltip.stories';
+
+<Meta of={TooltipStories} />
+
+# Tooltip
+
+Informational tooltip on hover/focus. `bapsTooltip` is a host directive wrapping PrimeNG's `Tooltip` (`primeng/tooltip`) — there is no wrapper component. It renders in one of two content modes: plain text (identical to bare `pTooltip`), or a rich card (Sampark Portal "Tooltips", Figma node 13197:90046) with a title, supporting text, and an optional "Learn more →" link, entered by also setting `tooltipTitle`.
+
+## Usage
+
+```html
+<button bapsTooltip="Save changes" tooltipPosition="top">Save</button>
+
+<!-- Sampark rich card -->
+<baps-button
+  label="Info"
+  bapsTooltip="Supporting text explaining the action."
+  tooltipTitle="Tooltip title"
+  tooltipLinkLabel="Learn more"
+  brand="sampark"
+/>
+```
+
+## Examples
+
+### Default
+
+<Canvas of={TooltipStories.Default} />
+
+### Sampark Rich Card
+
+<Canvas of={TooltipStories.SamparkRichCard} />
+
+## When Not to Use
+
+**Anything with something to click, tab into, or copy.** The overlay is a `role="tooltip"` region and PrimeNG sets `pointer-events: none` on it whenever `autoHide` is on (the default), so nothing inside can be reached even by pointer — the [Accessibility](#accessibility) section already covers why `tooltipLinkLabel` is static text and not a link, and that is exactly this trap. If your content needs an action in it, you want a popover or a menu instead: compose one from `baps-menu-item` in a positioned container of your own, or use `baps-drawer` for anything substantial. There is no popover component in this library today, so this is a build, not a swap.
+
+| Need | Use instead |
+| --- | --- |
+| A field-level validation error | `baps-message` next to the input |
+| A page- or form-level status the user must re-read | `baps-alert` |
+| Persistent status or a category label | `baps-tag`, or `baps-badge` / `baps-overlaybadge` for a count |
+| A long explanation, or anything worth a destination | `baps-link` out to the real content |
+| A menu of actions off a control | `baps-split-button`, or `baps-menu-item` in your own overlay |
+| Anything a touch user must be able to read | Put it in the page — see [Responsive Behavior](#responsive-behavior) |
+
+## Accessibility
+
+- Relies entirely on PrimeNG's `Tooltip` for show/hide triggers — hover and focus by default (`tooltipEvent`), so the wrapped element must itself be focusable/keyboard-reachable (e.g. `baps-button` already is) for the tooltip to be keyboard-accessible at all.
+- `tooltipLinkLabel` renders as plain text with a Unicode arrow (`&#8594;`) — it is **not** a real `<a>`/`<button>`, so it is not keyboard-actionable or announced as a link. Treat it as decorative label text, not a functioning navigation affordance, when deciding whether a tooltip's "Learn more" needs to actually go anywhere.
+- Rich-card content is escaped before insertion (`escapeHtml()`), so title/body text is safe from markup injection even though the tooltip is built from an HTML string.

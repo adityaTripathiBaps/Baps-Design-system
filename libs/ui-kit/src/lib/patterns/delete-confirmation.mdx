@@ -1,0 +1,177 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as DeleteConfirmationStories from './delete-confirmation.stories';
+
+<Meta of={DeleteConfirmationStories} />
+
+# Delete confirmation
+
+The interstitial between "user clicked Delete" and "the row is gone". Its job
+is narrow and worth stating exactly, because most confirms fail at one of the
+four: **name what is about to be deleted**, **say what else it takes with
+it**, **require a deliberate act to proceed**, and **make Cancel the outcome
+of every accidental interaction**.
+
+## The component this pattern used not to have
+
+An earlier version of this page opened with "**There is no Dialog component in
+this library**", and built the confirm out of `baps-drawer` — the only masked,
+focus-trapping, Escape-closing surface that existed — while listing exactly
+what that cost. **`baps-dialog` now exists**, and this page uses it:
+
+```html
+<baps-dialog
+  [(visible)]="ui.open"
+  brand="sampark"
+  appendTo="body"
+  header="Delete this template?"
+  role="alertdialog"       <!-- announce the blast radius on open, not on arrival -->
+  align="start"            <!-- a named record and a <dl> read left, not centred -->
+  [dismissableMask]="false"<!-- a stray mask click must not resolve the decision -->
+  [blockScroll]="true"     <!-- the page behind must not be scrollable -->
+  [closeOnEscape]="true"   <!-- Escape closes, and closing is cancelling -->
+>
+```
+
+The prediction the old version made held: **the state handling, the gate and
+the footer transferred as written; only the outer element changed.** What the
+swap actually bought, item for item off the old objection list:
+
+| The drawer cost | What dialog does |
+| --- | --- |
+| A right-edge slide-in reads as "a side task you can come back to", so it under-signals the stakes | Centred, small, unavoidable — the affordance now matches the decision |
+| ~500px wide and **full height** (`max(31.25rem, 26.042vw)`) for two buttons and three lines; most of it empty | 500px wide and only as tall as its content (Figma 17512:84190) |
+| The close button is 32×32px, under WCAG 2.5.5's 44×44 — and on a confirm the smallest target is the *safe* one | No header close button at all (`closable = false`). Cancel is a 150px footer button; Escape still closes |
+| A stray mask click discarded the task unless you remembered `[dismissible]="false"` | `dismissableMask` defaults to **false**. The safe behaviour is the default, not an opt-in |
+| `brand="mybky"` got nothing — drawer has a Sampark-only skin, so every story here was forced to `brand="sampark"` | Both brands ship a token block. The stories stay Sampark to match the Portal screens, now by preference rather than for want of a skin |
+| Focus went to `<body>` on close | The opener gets focus back — see *What PrimeNG does not give you* below |
+
+The two pages that pointed at the missing component now resolve:
+
+| Page | What it says | Where it points |
+| --- | --- | --- |
+| `alert.mdx` → When Not to Use | "A decision that must block the workflow (\"Delete this record?\")" → use **Dialog** | **Components → Dialog** |
+| `drawer.mdx` → When Not to Use | "A decision that must be resolved before continuing" → use **PrimeNG `p-dialog` directly** | Reach for `baps-dialog`, not PrimeNG raw |
+
+## What PrimeNG does not give you
+
+PrimeNG's dialog ships `role`, `aria-modal="true"`, `aria-labelledby`, a focus
+trap, initial focus on show, Escape-to-close and scroll blocking. It does
+**not** restore focus to the element that opened the dialog: it captures no
+opener and calls no `focus()` on close, so the caret lands on `<body>` and the
+next Tab restarts from the top of the page. That matters most here — the
+element being returned to is the Delete button in a table row, and a keyboard
+user who cancels should be back where they were, not at the page header.
+`baps-dialog` captures `document.activeElement` on open and puts focus back on
+close, so the pattern gets it for free.
+
+## Playground
+
+<Canvas of={DeleteConfirmationStories.Default} />
+
+<Canvas of={DeleteConfirmationStories.Open} />
+
+## What you get
+
+- **The record named three times**: in the dialog title, inside the
+  `baps-alert`, and again in a `<dl>` summary. The title truncates on a
+  narrow panel; the summary does not.
+- **The blast radius, in numbers.** "Also removes 1842 recorded responses and
+  unassigns 128 karyakars" is the sentence that stops the wrong deletion. A
+  confirm that only says "Are you sure?" is a speed bump, not a safeguard.
+- **A `baps-alert severity="error"`**, not a warning tint — the destructive
+  colour appears before the destructive click, not after it.
+- **An explicit gate.** Delete is `[disabled]` until the user ticks the
+  acknowledgement `baps-checkbox`, so the destructive button is never one
+  stray click away from the trigger that opened the panel.
+- **Cancel first, and dominant.** `severity="secondary"` `[outlined]="true"`,
+  placed before Delete in the footer, and `[autofocus]="true"` so it holds
+  focus on open. Delete is `severity="danger"` and starts disabled.
+
+## Cancel is the default outcome of doing nothing
+
+Every way of *disengaging* from this panel must cancel:
+
+| Interaction | Result | Set by |
+| --- | --- | --- |
+| Escape | closes, nothing deleted | `[closeOnEscape]="true"` (PrimeNG's own) |
+| Header close button | not rendered | `closable` defaults to **false** — Cancel in the footer is the dismiss affordance, and it is a 150px target rather than 32px |
+| Tab-then-Enter without reading | hits Cancel | `[autofocus]` on Cancel; Delete is disabled anyway |
+| Click the mask | **nothing happens** | `dismissableMask` defaults to **false** — deliberate |
+
+That last row is the one worth arguing about. Mask-click-to-dismiss is
+normally a *safe* escape hatch, and blocking it costs the user a convenience.
+It is blocked here because on a confirm the mask sits directly under a mouse
+that just travelled to a Delete button, and "clicked slightly off target"
+should not silently resolve a decision either way. Escape still works and
+Cancel is a full-width footer button, so no one is trapped.
+
+## Grades of confirmation
+
+<Canvas of={DeleteConfirmationStories.TypeToConfirm} />
+
+| Gate | Use for | Cost |
+| --- | --- | --- |
+| Nothing (just two buttons) | Reversible actions — archive, unpublish, remove-from-list | Nearly free; also nearly useless as a safeguard |
+| Checkbox acknowledgement (`Default`) | The ordinary unrecoverable row delete | One click; becomes muscle memory after the third time |
+| Retype the exact name (`TypeToConfirm`) | Unrecoverable **and** wide-blast: a whole project, a center's data, a user account | High; spend it rarely |
+
+Do not reach for `TypeToConfirm` on ordinary row deletes. Friction spent where
+it is not warranted trains people to route around it, which costs you the
+friction *and* the attention.
+
+And prefer undo over confirmation wherever the delete can be made reversible —
+a confirm interrupts every correct deletion to catch the rare wrong one, while
+an undo toast interrupts none of them. This library still has no toast/undo
+component — that gap is real where the dialog gap no longer is.
+
+## Gotchas
+
+**Reset the gate on every open, not on close.** `openConfirm()` clears `ack`
+and `typed` before setting `visible`. Clearing on close looks equivalent and
+is not: a panel closed by Escape mid-animation, or by a `visible` change from
+somewhere else, can skip your close handler and leave the acknowledgement
+ticked for the *next* record.
+
+**`ui` must be an object.** Storybook copies `props` by value into its wrapper
+component, so a captured `let confirmed = false` mutated in a handler never
+reaches the template — the checkbox appears to tick and Delete stays disabled
+forever. The same trap `crud-form.stories.ts` documents on its own `ui`
+object. Template-side assignments like `(closed)="ui.deleted = false"` are
+fine: those evaluate against the wrapper instance.
+
+**`appendTo="body"` is not cosmetic.** A confirm is usually triggered from a
+table cell, and a table lives inside `.baps-table-surface`, which has
+`overflow` — a `'self'`-attached panel would be clipped by it.
+
+**PrimeNG focus-on-show and `[autofocus]` can disagree.** PrimeNG focuses the
+first focusable element in the panel on open, and `[autofocus]="true"` on
+Cancel claims it; with `closable` off there is no close button to lose the
+race to, but verify in your own app that Cancel is what actually holds focus,
+since the outcome depends on render order inside PrimeNG focus trap.
+
+**Do not disable the Cancel button while the delete request is in flight.**
+Disable Delete and show its `[loading]` state; a user who wants out of a slow
+request must still be able to leave.
+
+## Do's and Don'ts
+
+| Do | Don't |
+| --- | --- |
+| Name the record in the panel body, not just the header | "Are you sure you want to delete this item?" |
+| State what else is destroyed, with counts | Leave the blast radius to be discovered afterwards |
+| Keep Delete disabled until the gate is satisfied | Ship a live Delete button one click from the trigger |
+| Give Cancel focus on open | Autofocus the destructive action |
+| Leave `dismissableMask` at its default (false) | Turn it on and let a mask click resolve the decision |
+| Reset the gate when opening | Reset it when closing |
+
+## Related
+
+- **Components → Dialog** — `dismissableMask`, `closable`, `blockScroll`,
+  `align`, `actionsAlign`, and the focus restoration PrimeNG does not do
+- **Components → Drawer** — the other overlay: a side task you can come back
+  to, not a decision that blocks
+- **Components → Alert** — why an alert cannot *capture* a decision, only
+  state one
+- **Components → Button** — `severity="danger"`, `disabled`, `loading`
+- **Patterns → Data management** — where the bulk-delete action that opens
+  this panel comes from

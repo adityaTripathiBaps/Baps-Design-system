@@ -1,0 +1,36 @@
+<!--
+  Stamps the selected brand onto <html> BEFORE any story JS runs.
+
+  Why this file exists: the brand scope class is toggled in preview.ts's
+  `withDesignSystem` decorator, which is early enough for Angular but not early
+  enough for CSS. The preview iframe paints its first frame from the stylesheets
+  alone, and until the decorator runs there is no `.baps-ds-sampark` anywhere —
+  so a Sampark selection showed one frame of MyBKY surfaces before flipping.
+  That is the "it loads the other theme first" report.
+
+  The manager already solves the same problem for its own chrome by reading the
+  global out of the URL at module load (see `brandFromUrl` in manager.tsx). This
+  is that trick for the preview: the iframe URL carries the same `globals`
+  param, so the brand is knowable before a single component exists.
+
+  ON <html>, NOT <body>: at head-parse time there is no body yet. Every rule in
+  the design system uses this class as an ANCESTOR (`:is(.baps-ds-sampark, …)
+  .p-treeselect`), and <html> is an ancestor of everything, so the scope
+  resolves identically. The decorator still toggles the class on <body> for live
+  toolbar switches; having it on both elements is inert, since neither selector
+  cares which ancestor carries it.
+
+  Deliberately inline and dependency-free — it has to run before the bundle.
+-->
+<script>
+  (function () {
+    try {
+      var g = new URLSearchParams(window.location.search).get('globals') || '';
+      if (/(?:^|;)designSystem:sampark(?:;|$)/.test(g)) {
+        document.documentElement.classList.add('baps-ds-sampark');
+      }
+    } catch (e) {
+      /* No brand class is the MyBKY default, which is the correct fallback. */
+    }
+  })();
+</script>

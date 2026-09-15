@@ -1,0 +1,729 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Guidelines/Known gaps" />
+
+# Known gaps
+
+Things that are wrong, understood, and deliberately not fixed yet. A gap earns a
+place here once its cause is established — a symptom with no diagnosis belongs in
+an issue, not on this page.
+
+Accessibility findings live on their own page, [Guidelines →
+Accessibility](?path=/docs/guidelines-accessibility--docs), because they are
+checked by a different tool and read by a different audience.
+
+## Stepper rail visual baselines capture the rail as empty
+
+**Screenshot harness limitation. Runtime is fine.** The 11 `Components/Layout/Stepper`
+visual baselines pin a grey rounded bar where the icon rail should be, followed by
+the Back/Next buttons — no slots, no icons, no labels.
+
+It is not a data problem and not a regression. `stepper--default`, which has never
+been edited, captures the same empty rail, and rebuilding `stepper--states` from six
+steps to one and back produced a **byte-identical** screenshot. Step count does not
+reach the capture at all.
+
+Runtime is unaffected, and this is the evidence for that:
+`Stepper / Interaction — navigate to a step` asserts
+`getAllByRole('tab').length > 1`, that exactly one slot carries
+`aria-selected="true"`, and that a `--completed` slot exists and is enabled. It
+passes. So the tab elements are in the DOM with the right state; they have no
+rendered size at the moment Playwright screenshots them.
+
+**Consequence:** those 11 baselines are green but meaningless. They cannot catch a
+regression in the rail, which is the one thing a stepper baseline exists to catch.
+Read them as "no coverage", not as "verified".
+
+**Not investigated.** It predates the Phase 0 baseline work and sits outside it.
+Whoever picks it up starts with the two things already known — that the tabs exist
+and that the capture is blind to step data — so the question is why the slots
+measure zero in the screenshot and not whether they render.
+
+Do not "fix" it by editing the stepper's SCSS to force a size. The runtime is
+correct; the harness is what is wrong, and a size added to make a screenshot look
+right would change a component that has no bug.
+
+## `check-styles-literals` reports a false positive
+
+`node tools/check-styles-literals.mjs` exits **1** on:
+
+```
+libs/ui-kit/src/lib/components/file-upload/file-upload.stories.ts:124
+  backtick inside a template literal ends it mid-comment
+```
+
+Line 124 is the legitimate closing backtick of a `template:` literal. Every
+backtick in that file is balanced — three `template:` pairs (60/74, 87/93,
+116/124) and five inline pairs inside `//` and `/** */` comments — and both
+`npx tsc --noEmit -p libs/ui-kit/tsconfig.spec.json` and a full 309-story visual
+run pass, this story included.
+
+So the guard is wrong, not the file. **Do not edit the guard or the story to
+silence it within this scope** — the report is the record; the fix is a separate
+piece of work.
+
+## Most alpha primitives are still literals, so they do not cascade
+
+Three alpha steps now derive from their base via relative colour — see
+[Foundations → Colour](?path=/docs/foundations-colour--docs). The other **20 of
+23** are still `rgba(…)` literals, so a runtime change to their base leaves them
+on the old hue.
+
+The one that matters most is `sampark.primary.alpha10`, because
+`tag.sampark.primary.background` consumes it: switch the Sampark primary and a
+primary tag's border follows while its fill does not. It was outside the group-A
+scope only because the audit grouped it by "primary-derived **and** flattened by
+an opacity operation on a component token", and this one is flattened one tier up.
+
+Converting the rest is mechanical and value-preserving — the same
+`rgb(from var(--base) r g b / A)` shape — but each needs its base confirmed
+against Figma rather than inferred from the number in the name. Several alpha
+tokens in this file already carry comments saying the name and the value disagree
+(`mono.alpha2` is named for 10% and is 2%; three `alphaWhite*` steps are all
+mislabelled), so the name is not a safe source for the ratio either.
+
+## Empty `foundations/color/` directory
+
+`libs/ui-kit/src/lib/foundations/color/` is empty. The real pages are in
+`foundations/colour/`. Harmless leftover from the spelling settling; delete it
+when something else touches that folder.
+
+## `tokens.ts` resolves references; `tokens.css` keeps them
+
+Style Dictionary's CSS and SCSS platforms are configured with
+`outputReferences: true`, so `tokens.css` emits a `var()` chain and a runtime
+change to a base token cascades. The `js/es6` platform takes no such option, so
+the generated `tokens.ts` holds **resolved values**:
+
+```ts
+// tokens.ts — resolved
+export const ColorMybkyBlueAlpha10 = "rgb(from #5f78b8 r g b / 0.1)";
+```
+
+```css
+/* tokens.css — still a reference */
+--color-mybky-blue-alpha10: rgb(from var(--color-mybky-blue-600) r g b / 0.1);
+```
+
+This is pre-existing and true of every token, not just the alpha steps. It
+surfaced when the two new alpha primitives appeared in the Foundations → Colour
+gallery with their labels reading `#5f78b8` rather than `var(…)`.
+
+**Why it matters for the theme builder.** `libs/ui-kit/src/lib/theme/baps.theme.ts`
+builds the PrimeNG preset *from* `tokens.ts`, so the PrimeNG `dt` side of the
+system is made of resolved literals. Changing a CSS custom property at runtime
+therefore reaches the design system's own rules and **not** PrimeNG's — which is
+why `.storybook/preview.ts` has to call `usePreset()` on every toolbar change
+instead of relying on the cascade.
+
+So the system has two token planes with two different update mechanisms.
+
+**Decided: this is the design, not a defect.** Unifying them was attempted and
+reverted — see the section below. `usePreset()` already keeps the two planes in
+step on every theme change, which is PrimeNG's own intended mechanism. The one
+thing it cannot do is let a raw CSS-variable edit propagate into PrimeNG, and
+nothing requires that: a colour picker rebuilds the preset instead. Recorded
+here so the two planes are not mistaken for an inconsistency to be fixed.
+
+## The colour gallery prints raw token values, so deriving a token moves two baselines
+
+`foundations/colour/colour.stories.ts` captions each swatch with the token's
+**value**, taken straight from the generated token object. So converting a token
+from a literal to a derived one rewrites its caption even though the rendered
+colour is unchanged:
+
+```
+before   rgba(135, 48, 48, 0.2)
+after    rgb(from #873030 r g b / 0.2)
+```
+
+The new text is longer. At 1248px it fits and the desktop baseline is unaffected;
+at the mobile 380px it wraps to two lines, adds ~17px, and shifts everything
+below it — so the whole page reports as changed.
+
+**Expect this on every future alpha conversion.** 20 of the 23 alpha primitives
+are still literals, and each one converted will move
+`foundations-colour--my-bky` and/or `foundations-colour--sampark-brand`, on
+mobile more readily than on desktop. It is a caption reflow, never a colour
+change, but it has to be blessed each time and it is easy to mistake for a
+regression.
+
+Two ways out, both story changes rather than token changes, so neither is done
+here: caption the swatch with its **resolved** colour (read the computed value
+off the rendered element instead of printing the token source), or truncate the
+value and put the full text in a `title`. Worth deciding before the next batch of
+conversions rather than after.
+
+
+## PrimeNG's preset cannot take `var()` for primary — attempted and reverted
+
+The design system keeps two parallel copies of every brand colour. `tokens.css`
+holds `--color-mybky-blue-500` and PrimeNG holds `--p-bkyms-blue-500`, both
+literal, both the same value, built from the same source. Writing a new value
+into the design-system one at runtime reaches every design-system rule and none
+of PrimeNG's.
+
+The obvious fix — point PrimeNG's primitive tier at the design system's
+variables, so `--p-bkyms-blue-500: var(--color-mybky-blue-500)` — was
+implemented and **reverted**. It breaks primary.
+
+Measured: with the substitution in place, `badge--severities` lost the primary
+badge entirely — no fill, and its label fell back to black instead of the
+contrast colour. The other six severities were untouched, because they come from
+Material's own palettes; only `primary` maps to the converted primitives. Slider
+and Tabs moved for the same reason. **8 of 536 baselines on desktop, 6 on
+mobile.**
+
+The cause is in Material's base preset, which does colour arithmetic on primary:
+
+```
+color-mix(in srgb, {primary.color}, transparent 88%)
+color-mix(in srgb, {primary.400}, transparent 84%)
+```
+
+**The lesson worth keeping:** PrimeNG emitting `--p-primary-50: var(--p-bkyms-blue-50)`
+between its own tiers proves it can *pass a reference along*. It does not prove
+it can *consume* one wherever a token is used. Those are different claims, and
+the plan treated the first as evidence for the second.
+
+**Resolved: keep the current mechanism.** `preview.ts` already calls
+`usePreset()` on every theme change, which is PrimeNG's intended path, and a
+colour picker rebuilds the preset rather than writing a CSS variable. Selective
+conversion — var-ifying only the tokens Material never does arithmetic on — was
+rejected: it is fragile across PrimeNG versions and leaves consumers with a
+system where some tokens cascade and some do not.
+
+The generated `tokens.vars.ts` map built for the attempt has been removed along
+with it, rather than left as dead code. Rebuilding it is a small Style
+Dictionary format if a future route ever needs it; the one thing worth carrying
+forward is that `@org/tokens`'s `exports` map is a **closed allow-list**, so any
+new generated file is invisible to importers until its subpath is added.
+
+## Third sink — preset `components.*` overrides do not follow the theme picker
+
+**Accepted as a by-design limit.** Recorded so the boundary is known rather than
+discovered one component at a time.
+
+Changing the primary swatch updates two of the three places a colour can live:
+
+| # | Sink | Updated by | Follows the picker |
+|---|---|---|---|
+| 1 | PrimeNG `semantic.primary` | `withAccent` + `usePreset()` | yes |
+| 2 | Design-system `--color-*` | the preview's `applyThemeToDesignSystem` | yes |
+| 3 | PrimeNG `components.*` in the presets | nothing | **no** |
+
+Sink 3 is baked at build time. The presets read `tokens.*`, and `tokens.ts`
+holds **resolved literals** — even a token written as a reference arrives
+flattened:
+
+```ts
+ButtonMybkyPrimaryDefault    = "linear-gradient(135deg, #5f78b8 0%, #384871 100%)"
+ButtonMybkyPrimaryGhostHover = "rgb(from #5f78b8 r g b / 0.1)"
+TagMybkyPrimaryBackground    = "#eef0f8"
+```
+
+`withAccent` replaces `semantic.primary` and never touches `components.*`, so
+these keep their designed colour for the life of the preset.
+
+Observed: at `accent:rose` a primary tag renders a rose **border** (a
+design-system token, sink 2) around a blue **background and label** (preset
+overrides, sink 3).
+
+### The full list — 17 distinct tokens, 6 components
+
+Scanned across both presets: 182 token references under `components:` in
+`baps.theme.ts` and 52 in `sampark.theme.ts`; these are the ones that trace back
+to a brand ramp and therefore look like they should follow.
+
+**MyBKY** — `baps.theme.ts`
+
+| Component | Tokens |
+|---|---|
+| `button` | `ButtonMybkyPrimaryDefault`, `ButtonMybkyPrimaryHover`, `ButtonMybkyPrimaryGhostHover`, `ButtonMybkyPrimaryGhostText` |
+| `tag` | `TagMybkyPrimaryBackground`, `TagMybkyPrimaryText` |
+| `avatar` | `AvatarMybkyBackground`, `AvatarMybkyText` |
+| `toggleswitch` | `ToggleSwitchMybkyTrackOn`, `ToggleSwitchMybkyTrackOnDisabled` |
+| `checkbox` | `ColorMybkyPrimaryDefault`, `ColorMybkyPrimaryActive`, `ColorMybkyDarkPrimaryDefault`, `ColorMybkyDarkPrimaryHover` |
+| `radiobutton` | same four as `checkbox` |
+
+**Sampark** — `sampark.theme.ts`
+
+| Component | Tokens |
+|---|---|
+| `toggleswitch` | `ToggleSwitchSamparkTrackOn` |
+| `tabs` | `ColorSamparkPrimaryDefault`, `ColorSamparkDarkPrimaryDefault` |
+
+Everything else under `components:` is spacing, radius, typography or a
+non-brand colour, and is correctly fixed.
+
+### Why this is not being fixed now
+
+The obvious fix — make those preset values `var()` references — is the wall step
+0 hit: Material does `color-mix(in srgb, {primary.color}, …)` on primary, and a
+var chain there left the primary badge with no fill at all. See
+`docs/phase-2-step-0-plan.md`.
+
+The remaining option, **Route A**, is to remap the brand-derived
+`components.*` entries at runtime from the selected ramp, keeping every value a
+real colour so nothing breaks. Correct and complete, and a genuine piece of
+work: the preset has to know which of its component values are primary-derived,
+which is what the table above establishes. Held as a future option, to be taken
+only if a specific component needs it.
+
+**If primary-colour editing ever becomes a prominent theme-builder feature**,
+do Route A for `button`, `checkbox` and `radiobutton` first — they are the most
+visible mismatch, since a fixed gradient or tick fill sits right next to
+surfaces that did move. Keep the remap **hex-preserving**: every value stays a
+real colour so Material's `color-mix` on primary keeps working, which is exactly
+what the `var()` attempt broke.
+
+
+## Sampark's accent remap follows PrimeNG's step scale, not Sampark's own curve
+
+Not a defect so much as a boundary worth knowing: when someone picks a non-brand
+accent, Sampark's design-system ramp is written from `palette()` at the steps
+**PrimeNG's preset declares**, not at the steps that best match Sampark's
+designed colours.
+
+The map is the inverse of the `samparkMaroon` primitive block in
+`sampark.theme.ts`:
+
+| Sampark | ← palette | Δ to the Figma value |
+|---|---:|---:|
+| Primary/0 | 50 | 4 |
+| Primary/10 | 100 | 25 |
+| Primary/20 | 200 | 7 |
+| Primary/40 | 400 | 3 |
+| Primary/60 | 600 | 38 |
+| Primary/80 | 700 | 41 |
+| Primary/100 | 800 | 27 |
+
+**The default theme is unaffected.** At `accent: 'brand'` nothing is written and
+the Figma values apply directly — verified against Figma, all seven match the
+token file exactly.
+
+### Why the map is not the closest-colour one
+
+A first attempt chose the map by matching each Sampark step against
+`palette('#c96868')` by RGB distance and luminance, giving 60→500 and 80→600 and
+a much lower total Δ (100 rather than 145). It was measured, and it was wrong.
+
+PrimeNG's `semantic.colorScheme.light.primary` reads `{primary.600}`,
+`{primary.700}` and `{primary.800}`. So under an accent PrimeNG resolved primary
+to palette 600 while the design system wrote palette 500 into `primary-60`, and
+the page showed **two different reds** — `#cf3650` from PrimeNG next to
+`#f43f5e` from the design system.
+
+Colour distance was answering the wrong question. At the default nothing is
+written, so it does not apply; under an accent the whole ramp is a different hue
+and there is no Figma value left to be near. The only property visible on screen
+is whether the two sinks pick the *same* step. Aligning to the preset's own
+declaration guarantees that, at the cost of a Δ nobody can see.
+
+**If Sampark's own curve ever needs to be honoured under a remap**, the fix is a
+per-brand ramp generator rather than `palette()` — a design decision about what a
+re-themed Sampark should look like, deliberately not made here.
+
+## The `#9e3636` Sampark maroon lives in spm-ui, and it collides with PrimeNG's own scale
+
+Located, not fixed — it is in a different repository and the fix is someone
+else's call.
+
+### Where the drift is
+
+`color.sampark.primary.100` carries the note "code has drifted to `#9e3636`".
+That code is **spm-ui**, in two places:
+
+```
+src/styles/variables.css:11   --primary-100: #9e3636;
+src/styles/_table.scss:294    color: var(--primary-100, #9e3636);
+```
+
+Figma says `#873030`, verified directly this session. The design system already
+uses the Figma value, and the discrepancy was already written up in
+`libs/migration-data/src/audit/inconsistency-findings.mdx` — this section exists
+for the second thing, which was not known.
+
+### The part that is new: one variable name, two opposite meanings
+
+spm-ui loads the PrimeNG **indigo** theme and then its own variables:
+
+```
+angular.json styles[1]  …/theme-light/indigo/theme.css   --primary-100: #d0e1fd
+angular.json styles[8]  src/styles.scss  ->  variables.css  --primary-100: #9e3636
+```
+
+Both declare it on `:root`, so equal specificity and the later file wins:
+`--primary-100` resolves to the **maroon** everywhere, including inside the
+indigo theme's own rules.
+
+The two scales run in opposite directions. spm-ui uses the Figma convention
+where 0 is lightest and 100 is darkest; PrimeNG uses the Tailwind convention
+where 50 is lightest and 900 darkest, so its `100` is nearly the lightest step.
+Same name, inverted meaning.
+
+**Exactly one name collides** — checked: spm-ui declares `--primary-0/20/80/100`
+and indigo declares `--primary-50` through `--primary-900`, and only `100`
+appears in both.
+
+Six indigo rules read it, all expecting the pale blue:
+
+| Rule | Property |
+|---|---|
+| `.p-dropdown-item…p-focus` | `background` |
+| `.p-dropdown-item:hover` | `background` |
+| `.p-tag` | `background` |
+| `.p-inline-message-info` | `box-shadow` |
+| `.p-message-info` | `box-shadow` |
+| `.p-toast-message-info` | `box-shadow` |
+
+### How much this actually shows — unknown, and probably little
+
+spm-ui overrides these selectors heavily in its own styles: **68** rules
+touching `.p-tag`, 18 touching `.p-dropdown-item`, and a few for the message and
+toast variants. Those load after the indigo theme, so most of the six are likely
+overridden before they ever paint.
+
+Not verified. spm-ui was not run, so this is read from the stylesheets and the
+build's style order, not measured in a browser. **Treat "probably little" as the
+hypothesis it is** — the way to settle it is to open spm-ui and read the computed
+background on a `.p-tag` and a hovered dropdown item.
+
+### Why it is left alone
+
+Changing `#9e3636` to `#873030` is a visual change to a shipping application and
+belongs to whoever owns its design sign-off. Renaming spm-ui's scale to end the
+collision is a larger refactor in that repository. Neither is a design-system
+change, and neither was asked for.
+
+## The visual baseline cannot see a brand flip between two pale tints
+
+`0 diff` in the visual suite does **not** mean "nothing changed". For the brand
+migration — removing hardcoded `brand="sampark"` from stories so they follow the
+toolbar — it meant the opposite, and the suite said so twice before the cause
+was found.
+
+### What was measured
+
+`components-accordion--default` renders three count badges and three header
+bars. Before the flip they carried the Sampark skin, after it the MyBKY one:
+
+| | MyBKY | Sampark |
+| --- | --- | --- |
+| count badge background | `rgb(238, 240, 248)` | `rgba(135, 48, 48, 0.1)` |
+| header background | `rgb(248, 250, 251)` | `rgb(248, 247, 247)` |
+
+Comparing the blessed baseline against the post-flip render, pixel by pixel:
+
+| | `components-accordion--default` | `components-accordion--without-count` |
+| --- | --- | --- |
+| pixels with any RGB change | 45,182 of 195,936 (23.1%) | 30,546 of 146,016 (20.9%) |
+| largest pixelmatch YIQ delta | **0.0026** | **0.0018** |
+| pixels over the 0.2 threshold | **0** | **0** |
+
+A fifth of the image changed. Playwright counted zero different pixels and the
+run passed.
+
+### Why
+
+`toHaveScreenshot` has two independent tolerances, and only one of them was
+being reasoned about:
+
+- `maxDiffPixelRatio` (0.002 here) — **how many** pixels may differ.
+- `threshold` (Playwright's default 0.2) — **how far apart** two pixels must be
+  before either counts as differing at all.
+
+`threshold` runs first. Both skins paint pale near-white tints, so every changed
+pixel sits two orders of magnitude below 0.2, no pixel is ever counted, and
+`maxDiffPixelRatio` is handed a zero. Tightening `maxDiffPixelRatio` would not
+have helped — the count it filters is already empty.
+
+### What is done about it
+
+Computed style is the primary verification for brand-migration batches: the host
+class, the resolved colours and the layout box, read out of the rendered DOM.
+That is what caught this, and it is not subject to the same blindness.
+
+`threshold: 0` is set per story in `PER_STORY_SCREENSHOT_OPTIONS` for stories a
+batch touches, so those stories can fail on a tint change. The global stays at
+0.2 deliberately: dropping it across all 536 baselines to catch this one class of
+change trades a known, contained blind spot for unknown anti-aliasing noise on
+every other story.
+
+### What to take from this
+
+Do not read a green baseline as proof that a colour change did not happen.
+Anything that moves one pale surface to another pale surface — brand skins,
+surface-tier swaps, disabled states, hover tints — is invisible to this suite at
+its default tolerance. Verify those by reading computed style.
+
+## A visual run that writes many snapshots can die on the per-test cap, leaving the baseline half-written
+
+`stories.spec.ts` now sets `test.setTimeout(25 * 60 * 1000)` for the whole sweep
+of 268 stories. It was 15, and 15 killed a run four times — the raise is headroom
+for a machine that occasionally runs three times slower, not a budget anyone is
+expected to use. A normal run — compare only — takes 5 to 6 minutes and sits well
+inside that. A run that has to WRITE snapshots does not: a missing baseline makes
+Playwright capture twice for stability and then write to disk, and that cost is
+paid per story.
+
+This has already bitten once. A run that found the whole baseline directory empty
+wrote 214 snapshots on `chromium` and 86 on `chromium-mobile`, then hit the cap
+and was killed. What was left behind was not random damage — the missing files
+were an exact contiguous tail in story order in both projects, which is how you
+recognise this failure rather than a deletion.
+
+Recovery is simply running the suite again: `visual-test` writes any snapshot it
+finds missing, so each run fills in more of the tail. Two runs restored all 536.
+
+### The rule
+
+Keep a bless run under **4–8 rewritten baselines**. Split a batch that would
+exceed that, rather than trusting one long run to finish.
+
+Before deliberately regenerating a large set, raise the per-test timeout first.
+Do not start a full regeneration and hope it lands inside 15 minutes — that is
+the exact shape of the failure above.
+
+A run reporting `A snapshot doesn't exist … writing actual` is not a diff. Check
+whether the count of those messages equals the number of files you expected to
+be missing; if the run also ended early, the remainder is still missing and the
+suite is not yet green.
+
+## `threshold` and `maxDiffPixelRatio` are two gates, and a small component needs both at zero
+
+`threshold: 0` alone does not make a story able to fail. The two options answer
+different questions, in order:
+
+- **`threshold`** — how far apart must two pixels be before either COUNTS as
+  different. At the default 0.2, one pale tint replacing another counts as
+  nothing at all (see the pale-tint entry above).
+- **`maxDiffPixelRatio`** — how many counted pixels are tolerated. At the global
+  0.002, a 1248x82 canvas forgives about 205 of them.
+
+`components-divider--toolbar-separator` fails on the second gate, not the first.
+Its brand flip repaints three 1x16px rules — `#e1e0e0` to `#cbd5e1`, 48 pixels
+out of 102,336, a ratio of 0.00047. With `threshold: 0` every one of those pixels
+was counted, and the story still passed, because the ratio sat a quarter of the
+way to the limit.
+
+This is structural, not a tuning accident. A ratio is a fraction of the CANVAS,
+and a small component occupies almost none of it. A divider, a chip, a tag, a
+badge cannot move enough pixels to clear a ratio written for a data table — so on
+a small component the ratio gate quietly exempts the whole component.
+
+Brand-migration stories therefore carry `{ threshold: 0, maxDiffPixelRatio: 0 }`,
+both, in `PER_STORY_SCREENSHOT_OPTIONS`. The globals stay where they are: every
+other baseline keeps its anti-aliasing tolerance, and only the stories under
+active migration are held to exact equality.
+
+## `baps-tree-select` does not change height with `size`, and `baps-multi-select` does
+
+Noticed while unpinning the brand attribute on the tree-select stories, and not
+caused by that change — both brands behave the same way, before and after.
+
+`components-treeselect--sizes` renders `size="small"`, the default, and
+`size="large"` next to each other. All three come out the same height:
+
+| | small | default | large |
+| --- | --- | --- | --- |
+| tree-select, MyBKY | 36px | 36px | 36px |
+| tree-select, Sampark | 32px | 32px | 32px |
+| multi-select, MyBKY | 32px | 36px | 44px |
+| multi-select, Sampark | 28px | 32px | 40px |
+
+Multi-select moves a full step per size in both brands. Tree-select does not move
+at all.
+
+Not investigated and not changed — it is a component question, not a
+brand-migration one, and the migration was mid-flight. Three possibilities, in
+the order worth checking: the `size` input is accepted but never reaches the
+control's height rule; the Figma frames genuinely specify one height for
+tree-select and vary only type and padding; or the size classes are emitted
+under a selector the tree-select skin does not match.
+
+Whoever picks this up: read the computed height AND the applied classes on
+`.p-treeselect` at each size before concluding, and compare against the Figma
+tree-select frames rather than against multi-select — the two components are
+allowed to differ, and "multi-select does it" is not by itself evidence of a bug.
+
+## `baps-input-group`'s addon fill is the same colour under both brands
+
+Noticed while unpinning the brand attribute on the input-group stories, and not
+caused by that change — the value is identical before and after, on both brands.
+
+The addon (the `min` / `day/s` chips either side of the field) reads the same
+computed background whichever brand is active:
+
+| | MyBKY | Sampark |
+| --- | --- | --- |
+| addon background, leading | `rgba(21, 20, 20, 0.04)` | `rgba(21, 20, 20, 0.04)` |
+| addon background, trailing | `rgba(21, 20, 20, 0.02)` | `rgba(21, 20, 20, 0.02)` |
+| addon text | `rgb(24, 27, 29)` | `rgb(21, 20, 20)` |
+| input border | `rgb(24, 27, 29)` | `rgb(21, 20, 20)` |
+
+Text and border do flip. The fill does not — and the value it holds is Sampark's:
+`rgba(21, 20, 20, …)` is `ColorSamparkMonoAlpha4` / `ColorSamparkMonoAlpha2`,
+whose base is Sampark's Mono/100 `#151414`. MyBKY renders a Sampark token.
+
+Two readings, and this was not investigated far enough to choose between them:
+the fill is deliberately brand-neutral (a black tint reads the same on either
+brand's near-white ground), or MyBKY simply has no equivalent alpha token wired
+and inherited Sampark's by default. The second is plausible because the alpha
+primitives are a known soft spot — see the alpha-literals entry above.
+
+Left alone: it is a token-wiring question, not a brand-migration one, and the
+migration was mid-flight. To settle it, check whether a MyBKY mono-alpha token
+exists at all, then read the Figma input-group frames for both brands rather
+than assuming the two should differ.
+
+## `baps-slider`'s track is brand-neutral, and MyBKY's handle border is never set
+
+Noticed while unpinning the brand attribute on the slider stories. Neither value
+changed as a result — both brands read the same before and after.
+
+| | MyBKY | Sampark |
+| --- | --- | --- |
+| range fill | `rgb(95, 120, 184)` | `rgb(201, 104, 104)` |
+| handle fill | `rgb(95, 120, 184)` | `rgb(201, 104, 104)` |
+| track background | `rgb(203, 213, 225)` | `rgb(203, 213, 225)` |
+| handle border | `rgb(0, 0, 0)` | `rgb(201, 104, 104)` |
+
+The fills flip correctly. Two things do not:
+
+**The track.** `#cbd5e1` under both brands. It matches neither brand's border
+token — MyBKY's is `#e4ecf1`, Sampark's `#e1e0e0` — so this is a third value that
+belongs to neither ramp. Same shape of question as the input-group addon fill
+above, except that one at least used a real Sampark token; this one appears to
+come from outside the design system entirely, which makes an untokenised literal
+the more likely reading.
+
+**The MyBKY handle border.** `rgb(0, 0, 0)` is CSS's initial `border-color` — the
+value an element reports when nothing ever set it, not a colour anyone chose.
+Sampark sets its border to the brand colour; MyBKY sets nothing. It does not show
+today, almost certainly because the border width is zero, which is exactly why it
+went unnoticed — a border-width change would make a black ring appear on MyBKY
+sliders with no obvious cause.
+
+Neither is a brand-migration question and neither was changed. To settle them:
+find what paints `.p-slider` background and whether `#cbd5e1` is a token anywhere;
+and read the border-width on `.p-slider-handle` in both brands before deciding
+whether the missing MyBKY border colour is a latent bug or simply unused.
+
+## A measurement probe returning `0` or `null` means the selector missed, not that nothing changed
+
+This has now cost two wrong conclusions in the same workstream, so it is written
+down rather than re-learned.
+
+`getBoundingClientRect().height` of `0`, or a computed style of `null`, is what
+you get when the element you asked for is not the element doing the work — a
+`<table>` inside a wrapper that owns the height, a row that has not rendered yet,
+a class that exists on a child. It is not evidence that two states match.
+
+The concrete case: verifying the table brand migration, a probe read
+`tbody tr` and `table` heights and returned `0` for every story under both
+brands. Three stories were reported as "nothing to flip — brand-neutral content".
+The baseline run then moved all eleven, with heights shifting 278→326, 86→98 and
+784→838 px. Re-measuring at the `.p-datatable` wrapper reproduced exactly those
+numbers. The flip had been there the whole time; the probe was reading an element
+with no height.
+
+The same shape of error appeared earlier in this work when a `rootH: 0` reading
+was taken to mean a value was absent, when it meant the page had not mounted yet.
+
+**Rule.** Before concluding "no difference" from a probe, check that the probe
+returned a plausible non-zero value for something. If a dimension comes back `0`
+or a colour comes back `null`, the reading is void: find the element that
+actually carries the property — usually one level up — and measure again. A
+verification that cannot fail is not a verification.
+
+## Two ways a story-file edit breaks a baseline run, both learned the hard way
+
+### Never edit a story file while `visual-test` is running
+
+The suite starts its own Storybook on 4401 and that server watches the source.
+Editing a `.stories.ts` mid-run triggers a recompile; if the file is momentarily
+invalid — and during an edit it usually is — Storybook's indexer answers
+`index.json` with HTTP 500, and the spec's own guard throws:
+
+```
+Error: Could not read Storybook index.json (HTTP 500).
+```
+
+That is what killed one bless run here: the first attempt hung to the 25-minute
+cap, the retry hit the 500, and four baselines that had been deleted for
+re-blessing were never written. Nothing was corrupted, but the run was wasted and
+the snapshot count sat at 532 until the run was repeated.
+
+**Rule.** Wait for the run to finish before touching story files. Do not trust a
+"finished" notification — check that no Playwright process is alive:
+
+```bash
+wmic process where "name='node.exe'" get CommandLine /format:csv | grep -ic playwright
+```
+
+A port check on 4401 is NOT sufficient: at the start of a run the server has not
+bound the port yet, so the port reads free while the run is very much alive. That
+false reading produced a 528-vs-536 snapshot miscount in this work.
+
+### Delete lines in descending order
+
+`sed -i '164d;169d'` does not delete the lines that were 164 and 169 in the file
+you read. The first delete shifts every line after it up by one, so the second
+deletes what used to be line 170.
+
+That removed an opening `<baps-datepicker` tag while leaving its attributes
+behind, producing orphaned markup inside a template literal — which compiled
+under `tsc` as far as the template string is concerned, and broke the Storybook
+indexer instead.
+
+**Rule.** When deleting several lines from one file, either delete in DESCENDING
+line order, or match on content rather than line number. After any multi-line
+edit to a template, read the edited region back before moving on — the type
+checker will not catch a broken tag inside a template string.
+
+## `brand="mybky"` does not protect a component from a page-wide Sampark scope
+
+The two brand scopes are not symmetrical, and only one direction works.
+
+Every skinned component keys its Sampark rules off a selector shaped like:
+
+```scss
+:is(baps-chip.baps-sampark, .baps-ds-sampark baps-chip) { … }
+```
+
+The first arm is the per-instance opt-in (`brand="sampark"` sets `.baps-sampark`
+on the host). The second is the page-wide scope. There is no `:not()` guard on
+the MyBKY side, because MyBKY is the design system's UNSCOPED default — it has no
+class of its own to lose. So:
+
+| | inside a MyBKY page | inside a `.baps-ds-sampark` page |
+| --- | --- | --- |
+| `brand="sampark"` instance | renders Sampark — works | renders Sampark |
+| `brand="mybky"` instance | renders MyBKY | **renders Sampark** — the pin is ignored |
+
+Measured, not inferred: the Toast, Tag, Button and Badge stories all carry
+`brand: 'mybky'` in their meta args, and all of them still flip to the Sampark
+skin when the toolbar is switched. The same shows in
+`components-splitbutton--my-bky`, whose template hardcodes `brand="mybky"` on
+every control and which still renders Sampark under a Sampark page.
+
+Two consequences.
+
+**Inside this repo**, a `brand: 'mybky'` story pin is a no-op. Ten of them were
+found during the brand migration and removed as dead code, not as behaviour
+changes — the stories already followed the toolbar.
+
+**Outside this repo, this is the part that matters.** A consuming app cannot
+place a MyBKY-skinned component inside a Sampark-scoped page. The page-wide class
+wins and there is no per-instance way to opt back out. The reverse — a Sampark
+component on a MyBKY page — works fine. Whether that asymmetry is intended is a
+design question: it may be exactly right (a Sampark page should look Sampark
+throughout), or it may be a gap that surfaces the first time an app needs a mixed
+page.
+
+Not changed here. Fixing it means adding a `:not(.baps-mybky)` arm to the
+page-wide selector in every component's Sampark block and emitting a
+`.baps-mybky` host class for `brand="mybky"` — a design-system-wide change to
+component styles, well outside a story-level migration, and one that alters what
+consuming apps render.

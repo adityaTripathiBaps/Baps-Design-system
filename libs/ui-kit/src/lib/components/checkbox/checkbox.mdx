@@ -1,0 +1,91 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as CheckboxStories from './checkbox.stories';
+
+<Meta of={CheckboxStories} />
+
+# Checkbox
+
+A form checkbox control. `baps-checkbox` wraps PrimeNG's `p-checkbox` and implements `ControlValueAccessor` directly, so it drops into template-driven (`[(ngModel)]`) or reactive forms like a native control.
+
+## Usage
+
+```html
+<baps-checkbox
+  label="I accept the terms and conditions"
+  [(ngModel)]="accepted"
+  brand="sampark"
+/>
+```
+
+## Examples
+
+### Default
+
+<Canvas of={CheckboxStories.Default} />
+
+### Sizes
+
+<Canvas of={CheckboxStories.Sizes} />
+
+### States
+
+<Canvas of={CheckboxStories.States} />
+
+### Brands
+
+The stories above carry no `brand`, so they follow the toolbar's **Design
+System** switch — flip it to see MyBKY or Sampark.
+
+This last one pins `brand="sampark"`, the per-instance override for a Sampark
+control on a MyBKY page. Compare its **Disabled checked** row against the same
+row above under MyBKY: Sampark fills that box solid Mono/40 with a white tick,
+MyBKY keeps the pale Mono/20 ground and greys the tick. That difference is
+intentional in both Figma frames.
+
+<Canvas of={CheckboxStories.Sampark} />
+
+## Forms
+
+A full `ControlValueAccessor`, including `setDisabledState`, so it behaves like a
+native control in either forms API.
+
+### Template Driven
+
+```html
+<baps-checkbox label="I accept the terms" [(ngModel)]="value" />
+```
+
+### Reactive Forms
+
+```html
+<baps-checkbox label="I accept the terms" formControlName="value" />
+```
+
+```ts
+form = new FormGroup({ value: new FormControl(false) });
+```
+## When Not to Use
+
+| Need | Use | Not this |
+| --- | --- | --- |
+| A setting that takes effect immediately, with no submit | `baps-toggleswitch` | Checkbox |
+| Exactly one choice from several options | `baps-select`, or `baps-listbox` for an inline list | A column of checkboxes |
+| Multi-select from a long or searchable list | `baps-listbox` / `baps-users-dropdown` | Dozens of individual checkboxes |
+| Row selection inside a data grid | `baps-table`'s own selection support | A `baps-checkbox` per row wired by hand |
+| A tri-state "some children selected" parent | *(nothing here yet)* | `baps-checkbox` — it exposes no `indeterminate` input; PrimeNG's underlying checkbox supports the state but the wrapper does not forward it |
+
+## Accessibility
+
+### Screen Reader
+
+- The label is a real `<label for="...">` bound to the checkbox's generated `inputId` — clicking the label toggles the control.
+- `inputId` defaults to a module-level counter (`baps-chk-{n}`) rather than `Math.random()`, specifically to keep server- and client-rendered ids identical and avoid SSR hydration mismatches (see the source comment in `checkbox.component.ts`).
+- `disabled` propagates to the label via `[class.p-disabled]`, so the dimmed visual state and the actual non-interactive state stay in sync.
+- Space toggles the control natively through PrimeNG's underlying checkbox markup; no custom keyboard handling is added by this wrapper.
+
+### Keyboard Support
+
+| Key | Function |
+| --- | --- |
+| <kbd>Tab</kbd> | Moves focus to the checkbox. |
+| <kbd>Space</kbd> | Toggles the checked state. |

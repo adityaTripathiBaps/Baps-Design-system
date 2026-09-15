@@ -1,0 +1,105 @@
+{
+  "font": {
+    "family": {
+      "mybky": {
+        "value": "'Inter Variable', 'Inter', sans-serif",
+        "legacyMapping": {
+          "eventsUi": "--font-family (+ Roboto 400/500/700 base weight)"
+        }
+      },
+      "sampark": {
+        "value": "'Inter', 'Roboto', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif"
+      }
+    },
+    "size": {
+      "xs": {
+        "value": "0.75rem",
+        "comment": "12px"
+      },
+      "sm": {
+        "value": "0.875rem",
+        "comment": "14px — default body text for both brands"
+      },
+      "md": {
+        "value": "1rem",
+        "comment": "16px"
+      },
+      "lg": {
+        "value": "1.125rem",
+        "comment": "18px"
+      },
+      "xl": {
+        "value": "1.25rem",
+        "comment": "20px"
+      },
+      "2xl": {
+        "value": "1.5rem",
+        "comment": "24px"
+      },
+      "3xl": {
+        "value": "1.75rem",
+        "comment": "28px — mybky h1 only"
+      },
+      "2xs": {
+        "value": "0.625rem",
+        "comment": "10px — the smallest step on the Figma type sheet (H3/10 and Caps/10)"
+      },
+      "4xl": {
+        "value": "2.25rem",
+        "comment": "36px — Figma H1 tier"
+      },
+      "5xl": {
+        "value": "2.5rem",
+        "comment": "40px — Figma H1 tier, the largest step"
+      }
+    },
+    "weight": {
+      "regular": {
+        "value": "400"
+      },
+      "medium": {
+        "value": "500"
+      },
+      "semibold": {
+        "value": "600"
+      },
+      "bold": {
+        "value": "700"
+      }
+    },
+    "lineHeight": {
+      "tight": {
+        "value": "1.2",
+        "legacyMapping": {
+          "eventsUi": "heading scale line-height"
+        }
+      },
+      "snug": {
+        "value": "1.3",
+        "legacyMapping": {
+          "eventsUi": "--bkyms-h2-title-font-size line-height",
+          "spmUi": "label-line-height 130%"
+        }
+      },
+      "normal": {
+        "value": "1.5"
+      },
+      "relaxed": {
+        "value": "1.6",
+        "legacyMapping": {
+          "spmUi": "input field line-height"
+        }
+      }
+    },
+    "letterSpacing": {
+      "none": {
+        "value": "0",
+        "comment": "Every style on the Figma sheet except Caps"
+      },
+      "caps": {
+        "value": "0.05em",
+        "comment": "Figma \"Tracking 5%\" — the Caps styles only (Caps/10, /12, /14, /16), which are Semi Bold or Bold"
+      }
+    }
+  }
+}

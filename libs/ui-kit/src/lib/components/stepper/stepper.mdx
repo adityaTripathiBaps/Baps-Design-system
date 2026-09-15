@@ -1,0 +1,236 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as StepperStories from './stepper.stories';
+
+<Meta of={StepperStories} />
+
+# Stepper
+
+A multi-step flow, over PrimeNG v21 Stepper.
+
+Two ways in, and the first is the one to reach for:
+
+- **`baps-stepper` / `baps-step`** — the house shape. The connectors, the icon
+  wrap, the badge, the button and its ARIA are structural, so they are inputs
+  rather than markup repeated per step. No `p-` element at the call site.
+- **`bapsStepper`** — the directive, applied to a raw `p-stepper`. Use it when
+  a consumer needs PrimeNG's own step API, such as a custom header template.
+
+The skin lives in the global partial
+`styles/components/stepper/_stepper.scss` either way — a directive cannot
+carry `styles:`, and the wrapper's own view could not reach projected content.
+An app has to `@use` it.
+
+### Why a wrapper is possible here
+
+A `baps-stepper` existed once that rendered `<p-stepper>` around an
+`<ng-content>`, and it threw `NG0201: No provider found for Stepper` on every
+story. `Step`, `StepList`, `StepPanel` and `StepPanels` all resolve their
+parent with `inject(Stepper)`, and element injectors resolve up the
+DECLARATION tree — so PrimeNG markup written by the consumer looks for its
+stepper through the consumer, past the `p-stepper` living inside the wrapper's
+view, and falls through to the module injector.
+
+The shape that ships moves the PrimeNG markup instead of the lookup:
+`baps-step` renders **nothing** and hands its content over as a `TemplateRef`,
+so every `p-step` and `p-step-panel` is created next to the `p-stepper` that
+provides `Stepper`. The DI question disappears rather than being worked
+around. Same trick, same reason, as
+[`baps-accordion`](/docs/components-accordion--docs).
+
+## Usage
+
+```ts
+import { BapsStepperWrapper, BapsStep } from '@org/ui-kit';
+
+@Component({
+  imports: [BapsStepperWrapper, BapsStep],
+  template: `
+    <baps-stepper [(value)]="current" brand="mybky" [linear]="true">
+      <baps-step [value]="1" label="Basic Info" icon="info-circle" status="completed">
+        …panel content…
+      </baps-step>
+      <baps-step [value]="2" label="Eligibility" icon="checklist" [required]="true">
+        …panel content…
+      </baps-step>
+      <baps-step [value]="3" label="Payment" icon="wallet-money">…</baps-step>
+    </baps-stepper>
+  `,
+})
+export class EventWizard {
+  current = 2;
+}
+```
+
+A `baps-step` **with** an `icon` renders the icon rail; **without** one it
+renders a plain `p-step` and PrimeNG draws its own number and title — the
+Sampark shape. Mixing the two in one stepper is not a supported state.
+
+## Two shapes, one directive
+
+- **Icon rail** — a `#content` template on each `p-step` plus the
+  `.baps-step__*` classes. A tinted pill holds circular icon slots; the open
+  one grows to 56px and lifts off the row, finished ones fill green, labels
+  stay hidden until hover. This is the MyBKY event wizard.
+- **Numbered** — plain `p-step` with a title and no template. PrimeNG renders
+  the number and the label itself and the design system skins them. This is
+  what Sampark uses, and the right choice for any stepper without an icon per
+  step.
+
+## Position and fill are separate axes
+
+`--active` is the POSITION: 56px, lifted, its label pinned on the row line.
+`--completed`, `--in-progress` and `--invalid` are FILLS. `--locked` is a wash
+that rides over whatever else applies.
+
+A slot can carry a position and a fill at once — the open step of a finished
+section is large, lifted AND green. Resolving the pair to a single state was
+the bug the `ActiveAndCompleted` story now guards against.
+
+Precedence lives in TypeScript rather than in stylesheet order:
+
+```
+active > completed > in-progress > invalid > default
+```
+
+## The directive route
+
+Reach for this only when a consumer needs PrimeNG's own step API. Everything
+below is what `baps-stepper` writes for you.
+
+```ts
+import { StepperModule } from 'primeng/stepper';
+import { BapsStepper, BapsIcon, BapsOverlayBadge } from '@org/ui-kit';
+
+@Component({
+  imports: [StepperModule, BapsStepper, BapsIcon, BapsOverlayBadge],
+  template: `
+    <p-stepper bapsStepper #st brand="mybky" [(value)]="current" [linear]="true">
+      <p-step-list>
+        @for (s of steps; track s.index) {
+          <p-step [value]="s.index">
+            <ng-template #content let-activate="activateCallback">
+              <span class="baps-step__connector"></span>
+
+              <span class="baps-step">
+                <span class="baps-step__icon-wrap">
+                  <baps-overlaybadge severity="danger" badgeSize="small" [badgeDisabled]="!s.required">
+                    <button
+                      type="button"
+                      role="tab"
+                      [class]="classesFor(s)"
+                      [disabled]="!!s.locked"
+                      [attr.id]="st.id() + '_step_' + s.index"
+                      [attr.aria-controls]="st.id() + '_steppanel_' + s.index"
+                      [attr.aria-selected]="s.index === current"
+                      [attr.aria-label]="s.label"
+                      (click)="activate()"
+                    >
+                      <baps-icon class="baps-step__icon" [name]="s.icon" />
+                    </button>
+                  </baps-overlaybadge>
+                </span>
+
+                <span class="baps-step__label">{{ s.label }}</span>
+              </span>
+
+              <span class="baps-step__connector"></span>
+            </ng-template>
+          </p-step>
+        }
+      </p-step-list>
+
+      <p-step-panels>
+        @for (s of steps; track s.index) {
+          <p-step-panel [value]="s.index">
+            <!-- p-step-panel has NO ng-content: it renders a #content template
+                 only. Markup written straight inside the tag gives an EMPTY
+                 panel and no error. -->
+            <ng-template #content>…</ng-template>
+          </p-step-panel>
+        }
+      </p-step-panels>
+    </p-stepper>
+  `,
+})
+export class EventWizard {}
+```
+
+Three things in that template are load-bearing and easy to lose:
+
+- **`st.id()` is a signal.** Interpolated uncalled it renders
+  `[Signal (id): pn_id_1]_step_1` into the `id` and `aria-controls`, quietly
+  breaking the tab/panel association.
+- **The two `.baps-step__connector` spans are siblings of `.baps-step`,** not
+  children. The skin hides the pair either side of the open slot so no line
+  crosses a lifted circle.
+- **`.baps-step__icon-wrap` carries the lift, the button carries the scale.**
+  One element gets one `transform`, so they cannot share.
+
+## Examples
+
+### Default
+
+<Canvas of={StepperStories.Default} />
+
+### States
+
+<Canvas of={StepperStories.States} />
+
+### Active And Completed
+
+<Canvas of={StepperStories.ActiveAndCompleted} />
+
+### Required Steps
+
+<Canvas of={StepperStories.RequiredSteps} />
+
+### Linear
+
+<Canvas of={StepperStories.Linear} />
+
+### First Step
+
+<Canvas of={StepperStories.FirstStep} />
+
+### Numbered
+
+<Canvas of={StepperStories.Numbered} />
+
+### Numbered Sampark
+
+<Canvas of={StepperStories.NumberedSampark} />
+
+### Wrapper
+
+<Canvas of={StepperStories.Wrapper} />
+
+### Wrapper Numbered
+
+<Canvas of={StepperStories.WrapperNumbered} />
+
+## When Not to Use
+
+- **A flow the reader can complete in one screen.** A stepper adds navigation
+  to something that needed none; use a single form with sections.
+- **Peer views with no order between them.** That is tabs — see
+  [`bapsTabs`](/docs/components-tabs--docs).
+- **Progress that is not step-shaped**, such as a percentage or an upload.
+  Use [`baps-progress-bar`](/docs/components-progressbar--docs).
+- **Two steps.** A back/next pair over one boundary reads better as a single
+  screen with a confirm.
+
+## Accessibility
+
+- Each slot is a real `<button>` with `role="tab"`, `aria-selected` and
+  `aria-controls` pointing at its panel. Keyboard roving focus, the arrow keys
+  and the panel association are PrimeNG's; only the box is ours.
+- A locked step sets the `disabled` ATTRIBUTE, not just the `--locked` class.
+  `pointer-events: none` alone still leaves the slot reachable by keyboard.
+- Labels are hidden until hover on the icon rail, so every button carries an
+  `aria-label`. The open step's label is visible and is also its accessible
+  name — the two must not drift apart.
+- `invalid` deliberately does NOT recolour the circle; the red overlay badge
+  carries the signal. Colour is therefore never the only channel, and an
+  unvisited step and a failed one do not compete for the same fill.
+- `.p-focus` is PrimeNG's roving-focus marker and is applied on mouse clicks
+  too, so the visible focus ring is keyed on `:focus-visible` instead.

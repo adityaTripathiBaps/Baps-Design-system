@@ -1,0 +1,1815 @@
+{
+  "button": {
+    "mybky": {
+      "height": {
+        "s": {
+          "value": "2rem",
+          "comment": "32px, font 14px — Figma node 22465:93605"
+        },
+        "m": {
+          "value": "2.25rem",
+          "comment": "36px — default, font 14px",
+          "legacyMapping": {
+            "eventsUi": "--btn-height-m"
+          }
+        },
+        "l": {
+          "value": "2.25rem",
+          "comment": "36px (mobile variant, same height as M but font bumped to 16px)"
+        },
+        "xl": {
+          "value": "2.625rem",
+          "comment": "42px (mobile variant), font 16px"
+        }
+      },
+      "paddingX": {
+        "value": "1rem",
+        "comment": "16px, all sizes"
+      },
+      "paddingY": {
+        "value": "0.5rem",
+        "comment": "8px, all sizes"
+      },
+      "gap": {
+        "value": "0.25rem",
+        "comment": "4px icon-label gap — corrects noir.theme.ts's 6px, verified against Figma node 22465:93605",
+        "legacyMapping": {
+          "eventsUi": "noir.theme.ts button.root.gap was hand-set to 6px; Figma spec is 4px"
+        }
+      },
+      "radius": {
+        "value": "{radius.mybky.pill}"
+      },
+      "fontWeight": {
+        "value": "{font.weight.semibold}"
+      },
+      "disabledTextColor": {
+        "value": "#8d9ba5",
+        "comment": "button-specific disabled text — distinct from semantic text.disabled (#869097)"
+      },
+      "primary": {
+        "default": {
+          "value": "linear-gradient(135deg, {color.mybky.blue.600} 0%, {color.mybky.blue.800} 100%)"
+        },
+        "hover": {
+          "value": "linear-gradient(135deg, {color.mybky.blue.800} 0%, {color.mybky.blue.600} 100%)",
+          "comment": "gradient reversed on hover"
+        },
+        "disabled": {
+          "value": "{color.mybky.blue.alpha10}",
+          "comment": "blue.600 @ 10% opacity fill, 1px border {color.mybky.mono.300}"
+        },
+        "text": {
+          "value": "{color.mybky.mono.0}"
+        }
+      },
+      "secondary": {
+        "default": {
+          "value": "{color.mybky.mono.0}"
+        },
+        "hover": {
+          "value": "{color.mybky.mono.300}"
+        },
+        "disabled": {
+          "value": "{color.mybky.mono.50}"
+        },
+        "border": {
+          "value": "{color.mybky.mono.300}"
+        },
+        "text": {
+          "value": "{color.mybky.mono.900}"
+        }
+      },
+      "danger": {
+        "default": {
+          "value": "linear-gradient(135deg, {color.mybky.error.80} 0%, {color.mybky.error.100} 100%)"
+        },
+        "hover": {
+          "value": "linear-gradient(135deg, {color.mybky.error.100} 0%, {color.mybky.error.80} 100%)"
+        },
+        "text": {
+          "value": "{color.mybky.mono.0}"
+        }
+      },
+      "warning": {
+        "default": {
+          "value": "linear-gradient(135deg, {color.mybky.warning.60} 0%, {color.mybky.warning.80} 100%)"
+        },
+        "hover": {
+          "value": "linear-gradient(135deg, {color.mybky.warning.80} 0%, {color.mybky.warning.60} 100%)"
+        },
+        "text": {
+          "value": "{color.mybky.mono.0}"
+        }
+      },
+      "primaryGhost": {
+        "default": {
+          "value": "transparent"
+        },
+        "hover": {
+          "value": "{color.mybky.blue.alpha10}",
+          "comment": "blue.600 @ 10% opacity tint on hover"
+        },
+        "text": {
+          "value": "{color.mybky.blue.600}"
+        }
+      },
+      "secondaryGhost": {
+        "default": {
+          "value": "transparent"
+        },
+        "hover": {
+          "value": "rgba(43, 47, 50, 0.04)",
+          "comment": "mono.800 @ 4% opacity tint on hover"
+        },
+        "text": {
+          "value": "{color.mybky.mono.900}"
+        }
+      }
+    },
+    "sampark": {
+      "height": {
+        "sm": {
+          "value": "1.75rem",
+          "comment": "28px"
+        },
+        "default": {
+          "value": "2rem",
+          "comment": "32px"
+        },
+        "lg": {
+          "value": "2.25rem",
+          "comment": "36px"
+        },
+        "xl": {
+          "value": "2.625rem",
+          "comment": "42px — Figma node 13197:91897; every 'Size=XL (42) (Mob)' symbol measures height=42. Was 2.5rem/40px, a value no Figma variant specifies, and button.component.ts cited this same node as authority for 40px. Now matches button.mybky.height.xl, which was already 42px."
+        }
+      },
+      "gap": {
+        "value": "0.25rem",
+        "comment": "4px icon-label gap"
+      },
+      "radius": {
+        "value": "{radius.sampark.default}"
+      },
+      "fontWeight": {
+        "value": "{font.weight.medium}"
+      },
+      "primary": {
+        "default": {
+          "value": "{color.sampark.primary.60}",
+          "comment": "flat fill — no gradient, unlike mybky. Sampark Portal Figma node 13197:91897"
+        },
+        "hover": {
+          "value": "{color.sampark.primary.80}"
+        },
+        "active": {
+          "value": "{color.sampark.primary.100}"
+        },
+        "text": {
+          "value": "{color.sampark.mono.0}"
+        }
+      },
+      "secondary": {
+        "default": {
+          "value": "{color.sampark.mono.0}"
+        },
+        "hover": {
+          "value": "{color.sampark.mono.20}"
+        },
+        "border": {
+          "value": "{color.sampark.mono.borders}"
+        },
+        "text": {
+          "value": "{color.sampark.mono.100}"
+        }
+      },
+      "primaryGhost": {
+        "default": {
+          "value": "transparent"
+        },
+        "hover": {
+          "value": "{color.sampark.primary.0}",
+          "comment": "light maroon tint on hover — spm-ui p-button-text"
+        },
+        "text": {
+          "value": "{color.sampark.primary.60}"
+        }
+      },
+      "secondaryGhost": {
+        "default": {
+          "value": "transparent"
+        },
+        "hover": {
+          "value": "{color.sampark.mono.alpha4}",
+          "comment": "Figma node 13197:92094 (Secondary Ghost / Hover) references Mono/20% Black #1514140A — exactly color.sampark.mono.alpha4. Mirrors button.mybky.secondaryGhost.hover, which is the same 4% ink tint on the mybky mono ramp."
+        },
+        "text": {
+          "value": "{color.sampark.mono.100}",
+          "comment": "Figma node 13197:92066 (Secondary Ghost / Default) — Mono/100 #151414. Sampark had no secondaryGhost block at all, so 8 of the 44 Button cells fell through to PrimeNG's stock text-secondary colours."
+        }
+      },
+      "link": {
+        "text": {
+          "value": "{color.sampark.primary.60}",
+          "comment": "p-button-link — underline on hover, spm-ui only variant"
+        }
+      },
+      "disabled": {
+        "background": {
+          "value": "#f3eaea",
+          "comment": "distinct disabled fill — not an opacity dim, see button.mapping.mdx"
+        },
+        "border": {
+          "value": "{color.sampark.mono.borders}"
+        },
+        "text": {
+          "value": "{color.sampark.mono.40}"
+        }
+      }
+    }
+  },
+  "formField": {
+    "mybky": {
+      "paddingX": {
+        "value": "1rem",
+        "legacyMapping": {
+          "eventsUi": "noir.theme.ts formField.paddingX"
+        }
+      },
+      "paddingY": {
+        "value": "0.5625rem",
+        "legacyMapping": {
+          "eventsUi": "noir.theme.ts formField.paddingY"
+        }
+      },
+      "borderRadius": {
+        "value": "{radius.mybky.pill}"
+      },
+      "height": {
+        "value": "2.25rem",
+        "comment": "36px"
+      }
+    },
+    "sampark": {
+      "heightSm": {
+        "value": "1.75rem",
+        "comment": "28px"
+      },
+      "heightDefault": {
+        "value": "2rem",
+        "comment": "32px"
+      },
+      "heightLg": {
+        "value": "2.5rem",
+        "comment": "40px"
+      },
+      "borderRadius": {
+        "value": "{radius.sampark.default}"
+      }
+    }
+  },
+  "card": {
+    "mybky": {
+      "background": {
+        "value": "{color.mybky.surface.card}"
+      },
+      "border": {
+        "value": "{color.mybky.border.default}",
+        "comment": "hairline — structural separation, per CLAUDE.md 'Borders & shadows'"
+      },
+      "borderWidth": {
+        "value": "1px"
+      },
+      "radius": {
+        "value": "{radius.mybky.md}",
+        "comment": "8px. NOT radius.mybky.pill — the pill shape is for controls (buttons/inputs/badges), never containers"
+      },
+      "padding": {
+        "value": "{space.6}",
+        "comment": "24px — CLAUDE.md 'Spacing & Layout': space-5..space-6 inside a card"
+      },
+      "paddingCompact": {
+        "value": "{space.4}",
+        "comment": "16px — dense/table-adjacent cards"
+      },
+      "gap": {
+        "value": "{space.4}",
+        "comment": "16px — between header, body and footer (CLAUDE.md: space-4 within a block)"
+      },
+      "titleColor": {
+        "value": "{color.mybky.text.primary}"
+      },
+      "subtitleColor": {
+        "value": "{color.mybky.text.muted}"
+      },
+      "shadow": {
+        "value": "{shadow.mybky.card}",
+        "comment": "raised variant ONLY. A card at rest has no shadow — see CLAUDE.md"
+      }
+    },
+    "sampark": {
+      "background": {
+        "value": "{color.sampark.surface.card}"
+      },
+      "border": {
+        "value": "{color.sampark.border.default}"
+      },
+      "borderWidth": {
+        "value": "1px"
+      },
+      "radius": {
+        "value": "{radius.sampark.md}",
+        "comment": "8px — radius.sampark.md's own comment already names cards/dialogs/toast"
+      },
+      "padding": {
+        "value": "{space.6}",
+        "comment": "24px"
+      },
+      "paddingCompact": {
+        "value": "{space.4}",
+        "comment": "16px"
+      },
+      "gap": {
+        "value": "{space.4}",
+        "comment": "16px"
+      },
+      "titleColor": {
+        "value": "{color.sampark.text.primary}"
+      },
+      "subtitleColor": {
+        "value": "{color.sampark.text.muted}"
+      },
+      "shadow": {
+        "value": "{shadow.sampark.l2}",
+        "comment": "raised variant ONLY"
+      }
+    }
+  },
+  "drawer": {
+    "sampark": {
+      "background": {
+        "value": "{color.sampark.surface.card}",
+        "comment": "Mono/0 (White)"
+      },
+      "radius": {
+        "value": "1rem",
+        "comment": "16px on the two INNER corners only — no radius.sampark.* step is this large; the scale tops out at md (8px) for cards/dialogs"
+      },
+      "shadow": {
+        "value": "{shadow.sampark.drawer}"
+      },
+      "width": {
+        "value": "max(31.25rem, 26.042vw)",
+        "comment": "fluid — min 500px, scales with viewport above that; source config-sidebar spec"
+      },
+      "paddingX": {
+        "value": "{space.6}",
+        "comment": "24px"
+      },
+      "paddingY": {
+        "value": "{space.8}",
+        "comment": "32px"
+      },
+      "gap": {
+        "value": "{space.6}",
+        "comment": "24px between header, content and footer"
+      },
+      "headerPaddingX": {
+        "value": "{space.2}",
+        "comment": "8px — the header row is inset inside the panel padding"
+      },
+      "headerGap": {
+        "value": "{space.2}",
+        "comment": "8px between title, actions and close"
+      },
+      "titleColor": {
+        "value": "{color.sampark.text.primary}",
+        "comment": "Mono/100 (Header & Primary Text)"
+      },
+      "titleSize": {
+        "value": "1.25rem",
+        "comment": "20px — Inter/H2/(20)/Semi Bold"
+      },
+      "titleWeight": {
+        "value": "600"
+      },
+      "titleLineHeight": {
+        "value": "1.3"
+      },
+      "borderColor": {
+        "value": "{color.sampark.border.default}",
+        "comment": "Mono/Borders — header/footer separators"
+      },
+      "maskBackground": {
+        "value": "rgba(14,13,13,0.45)",
+        "comment": "scrim behind the panel; Mono/100 at 45%"
+      }
+    },
+    "mybky": {
+      "background": {
+        "value": "{color.mybky.surface.card}"
+      },
+      "radius": {
+        "value": "2rem",
+        "comment": "32px. Far beyond radius.mybky.md (8px) — a drawer is its own surface tier, not a big card.",
+        "legacyMapping": {
+          "eventsUi": ".app-drawer.p-drawer border-radius"
+        }
+      },
+      "shadow": {
+        "value": "{shadow.mybky.drawer}"
+      },
+      "padding": {
+        "value": "{space.8}",
+        "comment": "32px, and it wraps header + body + footer together"
+      },
+      "gap": {
+        "value": "{space.6}",
+        "comment": "24px between header, content and footer"
+      },
+      "headerGap": {
+        "value": "{space.2}",
+        "comment": "8px between title, actions and close — the same step the sampark half uses; the header row is identical geometry in both brands"
+      },
+      "backdropBlur": {
+        "value": "25px",
+        "comment": "backdrop-filter on the mask"
+      },
+      "headerBackground": {
+        "value": "transparent",
+        "comment": "FLAT panel — header and footer have no bar of their own, they inherit the panel white. Recorded so nobody re-adds one."
+      }
+    }
+  },
+  "badge": {
+    "mybky": {
+      "radius": {
+        "value": "{radius.mybky.pill}"
+      },
+      "gap": {
+        "value": "0.125rem",
+        "comment": "2px"
+      },
+      "size": {
+        "xs": {
+          "value": "1.125rem",
+          "comment": "18px"
+        },
+        "s": {
+          "value": "1.375rem",
+          "comment": "22px — default"
+        },
+        "m": {
+          "value": "1.625rem",
+          "comment": "26px"
+        },
+        "l": {
+          "value": "2rem",
+          "comment": "32px"
+        }
+      }
+    },
+    "sampark": {
+      "radius": {
+        "value": "100px",
+        "comment": "Pill. The Sampark count badge is a circle/stadium, NOT the 4px chip — that shape belongs to tag.sampark, which this block previously duplicated (20/22/28 at 4px). p-tag is the colour/status label; p-badge is the count."
+      },
+      "borderWidth": {
+        "value": "1px"
+      },
+      "gap": {
+        "value": "0.25rem",
+        "comment": "4px"
+      },
+      "size": {
+        "s": {
+          "value": "0.75rem",
+          "comment": "12px — badgeSize=\"small\""
+        },
+        "m": {
+          "value": "1rem",
+          "comment": "16px — default"
+        },
+        "l": {
+          "value": "1.25rem",
+          "comment": "20px — badgeSize=\"large\""
+        },
+        "xl": {
+          "value": "1.5rem",
+          "comment": "24px — badgeSize=\"xlarge\""
+        }
+      },
+      "fontSize": {
+        "s": {
+          "value": "0.625rem",
+          "comment": "10px"
+        },
+        "m": {
+          "value": "0.6875rem",
+          "comment": "11px"
+        },
+        "l": {
+          "value": "0.75rem",
+          "comment": "12px"
+        },
+        "xl": {
+          "value": "0.875rem",
+          "comment": "14px"
+        }
+      },
+      "padding": {
+        "s": {
+          "value": "0 0.125rem",
+          "comment": "0 2px"
+        },
+        "m": {
+          "value": "0 0.25rem",
+          "comment": "0 4px"
+        },
+        "l": {
+          "value": "0 0.375rem",
+          "comment": "0 6px"
+        },
+        "xl": {
+          "value": "0 0.5rem",
+          "comment": "0 8px"
+        }
+      },
+      "notification": {
+        "background": {
+          "value": "{color.sampark.error.80}",
+          "comment": "alert count — the only filled-red element in the family"
+        },
+        "text": {
+          "value": "{color.sampark.mono.0}"
+        },
+        "border": {
+          "value": "{color.sampark.mono.0}",
+          "comment": "white ring, so the badge still separates from whatever it overlaps"
+        }
+      },
+      "counts": {
+        "background": {
+          "value": "{color.sampark.mono.0}",
+          "comment": "plain count — no alert semantics"
+        },
+        "text": {
+          "value": "{color.sampark.mono.100}"
+        },
+        "border": {
+          "value": "{color.sampark.mono.borders}"
+        }
+      },
+      "disable": {
+        "background": {
+          "value": "{color.sampark.mono.alpha4}",
+          "comment": "a tint rather than an opaque fill, so it works on any surface"
+        },
+        "text": {
+          "value": "{color.sampark.mono.100}"
+        },
+        "border": {
+          "value": "{color.sampark.mono.borders}"
+        }
+      }
+    }
+  },
+  "tag": {
+    "mybky": {
+      "radius": {
+        "value": "{radius.mybky.pill}",
+        "comment": "99px pill — all sizes, Figma MyBKY Badge/Tag set (node 22465:95582)"
+      },
+      "fontWeight": {
+        "value": "{font.weight.medium}",
+        "comment": "Inter 500 — all sizes"
+      },
+      "gap": {
+        "value": "0.125rem",
+        "comment": "2px icon-label gap, all sizes",
+        "legacyMapping": {
+          "eventsUi": "_badge.scss gap"
+        }
+      },
+      "height": {
+        "xs": {
+          "value": "1.125rem",
+          "comment": "18px, font 12px"
+        },
+        "s": {
+          "value": "1.375rem",
+          "comment": "22px — default, font 12px"
+        },
+        "m": {
+          "value": "1.625rem",
+          "comment": "26px, font 14px"
+        },
+        "l": {
+          "value": "2rem",
+          "comment": "32px, font 16px — Figma l and l-mob share the same box"
+        }
+      },
+      "fontSize": {
+        "xs": {
+          "value": "0.75rem",
+          "comment": "12px"
+        },
+        "s": {
+          "value": "0.75rem",
+          "comment": "12px — default"
+        },
+        "m": {
+          "value": "0.875rem",
+          "comment": "14px"
+        },
+        "l": {
+          "value": "1rem",
+          "comment": "16px"
+        }
+      },
+      "padding": {
+        "xs": {
+          "value": "0.25rem 0.25rem",
+          "comment": "4px 4px — label adds 4px per side, so visual inset is 8px"
+        },
+        "s": {
+          "value": "0.25rem 0.375rem",
+          "comment": "4px 6px — default; label's 4px brings the visual inset to Figma's 10px"
+        },
+        "m": {
+          "value": "0.25rem 0.375rem",
+          "comment": "4px 6px"
+        },
+        "l": {
+          "value": "0.25rem 0.5rem",
+          "comment": "4px 8px"
+        }
+      },
+      "grey": {
+        "background": {
+          "value": "#2b2f3205",
+          "comment": "Mono/80 @ 2% — default (no severity) fill",
+          "legacyMapping": {
+            "eventsUi": "--badge-grey-bg"
+          }
+        },
+        "border": {
+          "value": "{color.mybky.mono.300}",
+          "legacyMapping": {
+            "eventsUi": "--badge-grey-border"
+          }
+        },
+        "borderHover": {
+          "value": "#9f9c9c",
+          "comment": "Figma Mono/60 hover ring — events-ui value predates the mybky mono scale (mono.500 is #6f777d); kept verbatim",
+          "legacyMapping": {
+            "eventsUi": "--badge-grey-border-hover"
+          }
+        },
+        "text": {
+          "value": "{color.mybky.mono.800}",
+          "legacyMapping": {
+            "eventsUi": "--badge-grey-color"
+          }
+        }
+      },
+      "primary": {
+        "background": {
+          "value": "{color.mybky.blue.50}",
+          "comment": "Figma 'Primary' variant — reached via severity=\"contrast\" (the unqualified PrimeNG tag renders grey)",
+          "legacyMapping": {
+            "eventsUi": "--badge-primary-bg"
+          }
+        },
+        "border": {
+          "value": "{color.mybky.blue.alpha20}",
+          "comment": "Primary/40 @ 20%"
+        },
+        "borderHover": {
+          "value": "{color.mybky.blue.800}"
+        },
+        "text": {
+          "value": "{color.mybky.blue.800}"
+        }
+      },
+      "secondary": {
+        "background": {
+          "value": "{color.mybky.mono.50}",
+          "legacyMapping": {
+            "eventsUi": "--badge-secondary-bg"
+          }
+        },
+        "border": {
+          "value": "#6f777d33",
+          "comment": "Mono/60 @ 20%"
+        },
+        "borderHover": {
+          "value": "{color.mybky.mono.800}"
+        },
+        "text": {
+          "value": "{color.mybky.mono.800}"
+        }
+      },
+      "info": {
+        "background": {
+          "value": "{color.mybky.info.20}",
+          "legacyMapping": {
+            "eventsUi": "--badge-info-bg"
+          }
+        },
+        "border": {
+          "value": "#528de033",
+          "comment": "Info/60 @ 20%"
+        },
+        "borderHover": {
+          "value": "{color.mybky.info.80}"
+        },
+        "text": {
+          "value": "{color.mybky.info.80}"
+        }
+      },
+      "warning": {
+        "background": {
+          "value": "{color.mybky.warning.20}",
+          "legacyMapping": {
+            "eventsUi": "--badge-warning-bg"
+          }
+        },
+        "border": {
+          "value": "#e0a65233",
+          "comment": "Warning/60 @ 20%"
+        },
+        "borderHover": {
+          "value": "{color.mybky.warning.80}"
+        },
+        "text": {
+          "value": "{color.mybky.warning.80}"
+        }
+      },
+      "error": {
+        "background": {
+          "value": "#fdd8d8",
+          "comment": "Error/20 — no matching step in color.mybky.error (80/100 only)",
+          "legacyMapping": {
+            "eventsUi": "--badge-error-bg"
+          }
+        },
+        "border": {
+          "value": "#b8474a33",
+          "comment": "Error/60 @ 20%"
+        },
+        "borderHover": {
+          "value": "{color.mybky.error.100}"
+        },
+        "text": {
+          "value": "{color.mybky.error.100}"
+        }
+      },
+      "success": {
+        "background": {
+          "value": "{color.mybky.success.50}",
+          "legacyMapping": {
+            "eventsUi": "--badge-success-bg"
+          }
+        },
+        "border": {
+          "value": "#40bf8433",
+          "comment": "Success/400 @ 20%"
+        },
+        "borderHover": {
+          "value": "#178251",
+          "comment": "Success/100 — no matching step in color.mybky.success (50/400/600 only)"
+        },
+        "text": {
+          "value": "#178251"
+        }
+      },
+      "disabled": {
+        "background": {
+          "value": "#2b2f320a",
+          "comment": "Mono/80 @ 4%"
+        },
+        "border": {
+          "value": "{color.mybky.mono.300}",
+          "comment": "no hover change on disabled"
+        },
+        "text": {
+          "value": "{color.mybky.mono.450}",
+          "comment": "Mono/40 'Disable Item' #8d9ba5. Was #bd9ba5, carried verbatim from events-ui and repeated in both badge style guides. The Figma disabled badge (22465:95659) binds this text to Mono/40 (Disable Item) = #8d9ba5, and Sampark's disabled badge (13197:90751) binds ITS text to its own Mono/40 — so both brands read the same token and #bd9ba5 was a one-character slip (b for 8) that the guides inherited"
+        }
+      }
+    },
+    "sampark": {
+      "radius": {
+        "value": "{radius.sampark.default}",
+        "comment": "4px — xs/s; l rounds to radiusL. Sampark's 'Badge' IS p-tag (spm-ui _badge.scss); NOT pill like mybky"
+      },
+      "radiusL": {
+        "value": "0.375rem",
+        "comment": "6px — l only"
+      },
+      "fontWeight": {
+        "value": "{font.weight.medium}",
+        "comment": "Inter 500 — all sizes, same as mybky"
+      },
+      "gap": {
+        "value": "0.125rem",
+        "comment": "2px icon-label gap, xs/s",
+        "legacyMapping": {
+          "spmUi": "_badge.scss gap"
+        }
+      },
+      "gapL": {
+        "value": "0.25rem",
+        "comment": "4px — l"
+      },
+      "height": {
+        "xs": {
+          "value": "1.25rem",
+          "comment": "20px, font 12px — mybky xs is 18px"
+        },
+        "s": {
+          "value": "1.375rem",
+          "comment": "22px — default; spm-ui md is the same box, so baps-tag m also renders this"
+        },
+        "l": {
+          "value": "1.75rem",
+          "comment": "28px — mybky l is 32px"
+        }
+      },
+      "fontSize": {
+        "xs": {
+          "value": "0.75rem",
+          "comment": "12px"
+        },
+        "s": {
+          "value": "0.875rem",
+          "comment": "14px — mybky s is 12px"
+        },
+        "l": {
+          "value": "0.875rem",
+          "comment": "14px — only the icon grows to 16px (iconSize.l)"
+        }
+      },
+      "iconSize": {
+        "xs": {
+          "value": "0.75rem",
+          "comment": "12px"
+        },
+        "s": {
+          "value": "0.875rem",
+          "comment": "14px"
+        },
+        "l": {
+          "value": "1rem",
+          "comment": "16px — outgrows the 14px label"
+        }
+      },
+      "padding": {
+        "xs": {
+          "value": "0 0.25rem",
+          "comment": "0 4px — label carries no extra inset, unlike mybky's +4px label padding"
+        },
+        "s": {
+          "value": "0 0.25rem",
+          "comment": "0 4px"
+        },
+        "l": {
+          "value": "0.25rem 0.375rem",
+          "comment": "4px 6px"
+        }
+      },
+      "grey": {
+        "background": {
+          "value": "#1514140a",
+          "comment": "Mono/100 @ 4% — default (no severity) fill",
+          "legacyMapping": {
+            "spmUi": "--badge-grey-bg"
+          }
+        },
+        "border": {
+          "value": "{color.sampark.mono.borders}",
+          "legacyMapping": {
+            "spmUi": "--badge-grey-border"
+          }
+        },
+        "borderHover": {
+          "value": "{color.sampark.mono.60}",
+          "legacyMapping": {
+            "spmUi": "--badge-grey-border-hover"
+          }
+        },
+        "text": {
+          "value": "{color.sampark.mono.80}",
+          "legacyMapping": {
+            "spmUi": "--badge-grey-color"
+          }
+        }
+      },
+      "primary": {
+        "background": {
+          "value": "{color.sampark.primary.alpha10}",
+          "comment": "Figma 'Primary' maroon chip — reached via severity=\"contrast\", same crossover as mybky. ALPHA, not the opaque primary.10 tint: the spm-ui badge spec writes this fill as rgba(135,48,48,.1), and a tag dropped on a tinted row has to keep what sits behind it. The two differ by roughly 5/255 on a white page, which is why the opaque one went unnoticed.",
+          "legacyMapping": {
+            "spmUi": "--badge-primary-bg"
+          }
+        },
+        "border": {
+          "value": "{color.sampark.primary.alpha20}",
+          "comment": "Primary/100 @ 20%"
+        },
+        "borderHover": {
+          "value": "{color.sampark.primary.80}"
+        },
+        "text": {
+          "value": "{color.sampark.primary.80}"
+        }
+      },
+      "secondary": {
+        "background": {
+          "value": "{color.sampark.secondary.10}",
+          "legacyMapping": {
+            "spmUi": "--badge-secondary-bg"
+          }
+        },
+        "border": {
+          "value": "#4a494733",
+          "comment": "Secondary/60 @ 20%"
+        },
+        "borderHover": {
+          "value": "{color.sampark.secondary.80}"
+        },
+        "text": {
+          "value": "{color.sampark.secondary.80}"
+        }
+      },
+      "info": {
+        "background": {
+          "value": "{color.sampark.info.10}",
+          "legacyMapping": {
+            "spmUi": "--badge-info-bg"
+          }
+        },
+        "border": {
+          "value": "#3889fa33",
+          "comment": "Info/60 @ 20%"
+        },
+        "borderHover": {
+          "value": "{color.sampark.info.80}"
+        },
+        "text": {
+          "value": "{color.sampark.info.80}"
+        }
+      },
+      "warning": {
+        "background": {
+          "value": "{color.sampark.warning.10}",
+          "legacyMapping": {
+            "spmUi": "--badge-warning-bg"
+          }
+        },
+        "border": {
+          "value": "#faab3833",
+          "comment": "Warning/60 @ 20%"
+        },
+        "borderHover": {
+          "value": "{color.sampark.warning.80}"
+        },
+        "text": {
+          "value": "{color.sampark.warning.80}"
+        }
+      },
+      "error": {
+        "background": {
+          "value": "{color.sampark.error.20}",
+          "legacyMapping": {
+            "spmUi": "--badge-error-bg"
+          }
+        },
+        "border": {
+          "value": "#ea151a33",
+          "comment": "Error/80 @ 20%"
+        },
+        "borderHover": {
+          "value": "{color.sampark.error.100}"
+        },
+        "text": {
+          "value": "{color.sampark.error.100}"
+        }
+      },
+      "success": {
+        "background": {
+          "value": "{color.sampark.success.10}",
+          "legacyMapping": {
+            "spmUi": "--badge-success-bg"
+          }
+        },
+        "border": {
+          "value": "#17b56c33",
+          "comment": "Success/60 @ 20%"
+        },
+        "borderHover": {
+          "value": "{color.sampark.success.80}"
+        },
+        "text": {
+          "value": "{color.sampark.success.80}"
+        }
+      },
+      "disabled": {
+        "background": {
+          "value": "#1514140a",
+          "comment": "same fill as grey — color tokens mute it, opacity stays 1"
+        },
+        "border": {
+          "value": "{color.sampark.mono.borders}",
+          "comment": "no hover change on disabled"
+        },
+        "text": {
+          "value": "{color.sampark.mono.40}",
+          "comment": "#bcb9b9 Mono/40 'Disable Item'"
+        }
+      }
+    }
+  },
+  "avatar": {
+    "mybky": {
+      "radius": {
+        "value": "{radius.mybky.pill}",
+        "comment": "full circle — differs from sampark's square avatars"
+      },
+      "background": {
+        "value": "{color.mybky.blue.50}",
+        "comment": "initials chip fill — not PrimeNG's grey default"
+      },
+      "text": {
+        "value": "{color.mybky.blue.800}"
+      },
+      "size": {
+        "xs": {
+          "value": "1.5rem",
+          "comment": "24px"
+        },
+        "s": {
+          "value": "2rem",
+          "comment": "32px"
+        },
+        "m": {
+          "value": "2.25rem",
+          "comment": "36px — default"
+        },
+        "l": {
+          "value": "3rem",
+          "comment": "48px"
+        },
+        "xl": {
+          "value": "3.75rem",
+          "comment": "60px"
+        },
+        "2xl": {
+          "value": "5rem",
+          "comment": "80px"
+        }
+      },
+      "fontSize": {
+        "xs": {
+          "value": "0.625rem",
+          "comment": "10px initials"
+        },
+        "s": {
+          "value": "0.75rem",
+          "comment": "12px"
+        },
+        "m": {
+          "value": "0.875rem",
+          "comment": "14px — default"
+        },
+        "l": {
+          "value": "1.125rem",
+          "comment": "18px"
+        },
+        "xl": {
+          "value": "1.5rem",
+          "comment": "24px"
+        },
+        "2xl": {
+          "value": "1.75rem",
+          "comment": "28px"
+        }
+      }
+    },
+    "sampark": {
+      "radius": {
+        "value": "4px",
+        "comment": "xs–l squares — differs from mybky's full circle; xl/2xl round more, see radiusXl/radius2xl. Source: spm-ui _avatar.scss (Figma node 13197:90187)"
+      },
+      "radiusXl": {
+        "value": "0.375rem",
+        "comment": "6px — the 60px xl step"
+      },
+      "radius2xl": {
+        "value": "0.5rem",
+        "comment": "8px — the 80px 2xl step"
+      },
+      "fontWeight": {
+        "value": "{font.weight.medium}",
+        "comment": "Inter 500 initials — every size except 2xl"
+      },
+      "fontWeight2xl": {
+        "value": "{font.weight.regular}",
+        "comment": "2xl initials drop to 400 (Figma H1/Regular)"
+      },
+      "background": {
+        "value": "{color.sampark.primary.0}",
+        "comment": "#fbf4f4 — the live variables.css value; the older theme-light $avatar-bg (#fbf3f3) predates the Figma-matched set",
+        "legacyMapping": {
+          "spmUi": "--avatar-primary-bg (styles/variables.css)"
+        }
+      },
+      "border": {
+        "value": "{color.sampark.primary.20}",
+        "comment": "1px border xs–m, 1.5px l–2xl (borderWidth tokens)",
+        "legacyMapping": {
+          "spmUi": "--avatar-primary-border"
+        }
+      },
+      "borderHover": {
+        "value": "{color.sampark.primary.40}",
+        "comment": "border darkens on hover; bg and text never change",
+        "legacyMapping": {
+          "spmUi": "--avatar-primary-border-hover"
+        }
+      },
+      "text": {
+        "value": "{color.sampark.mono.80}",
+        "comment": "#595656 — one text color across all three types; the topbar's mono-100 initials are a spm-ui one-off override",
+        "legacyMapping": {
+          "spmUi": "--avatar-text-color"
+        }
+      },
+      "borderWidth": {
+        "value": "1px",
+        "comment": "xs / s / m"
+      },
+      "borderWidthL": {
+        "value": "1.5px",
+        "comment": "l / xl / 2xl"
+      },
+      "secondary": {
+        "background": {
+          "value": "{color.sampark.secondary.0}",
+          "comment": "#f8f7f7 grey chip — replaces the older user-panel #f6f7f8 reading",
+          "legacyMapping": {
+            "spmUi": "--avatar-secondary-bg"
+          }
+        },
+        "border": {
+          "value": "{color.sampark.mono.40}",
+          "legacyMapping": {
+            "spmUi": "--avatar-secondary-border"
+          }
+        },
+        "borderHover": {
+          "value": "{color.sampark.mono.60}",
+          "legacyMapping": {
+            "spmUi": "--avatar-secondary-border-hover"
+          }
+        }
+      },
+      "warning": {
+        "background": {
+          "value": "{color.sampark.warning.10}",
+          "comment": "#fef4e6",
+          "legacyMapping": {
+            "spmUi": "--avatar-warning-bg"
+          }
+        },
+        "border": {
+          "value": "{color.sampark.warning.40}",
+          "legacyMapping": {
+            "spmUi": "--avatar-warning-border"
+          }
+        },
+        "borderHover": {
+          "value": "{color.sampark.warning.80}",
+          "legacyMapping": {
+            "spmUi": "--avatar-warning-border-hover"
+          }
+        }
+      },
+      "success": {
+        "background": {
+          "value": "{color.sampark.success.10}",
+          "comment": "#e8fcf0 — Figma node 13197:90388 (Icon Success / Default) labels this 'Success/20', but its VALUE is our success.10. Matched by value, not by name: Figma's success ramp labels sit one step above ours (its 'Success/80' #17b56c is our success.60)."
+        },
+        "border": {
+          "value": "{color.sampark.success.40}",
+          "comment": "#82e3af — Figma 'Success/60'."
+        },
+        "borderHover": {
+          "value": "{color.sampark.success.60}",
+          "comment": "#17b56c — node 13197:90412 (Icon Success / Hover) drops the mid step and uses Figma 'Success/80'."
+        }
+      },
+      "error": {
+        "background": {
+          "value": "{color.sampark.error.20}",
+          "comment": "#fde8e8 — Figma node 13197:90436 (Icon Error / Default). NOTE the error ramp does NOT share the success skew: Figma's error labels line up with ours exactly."
+        },
+        "border": {
+          "value": "{color.sampark.error.60}",
+          "comment": "#f27376"
+        },
+        "borderHover": {
+          "value": "{color.sampark.error.80}",
+          "comment": "#ea151a — node 13197:90460 (Icon Error / Hover)."
+        }
+      },
+      "statusDot": {
+        "color": {
+          "value": "#22c55e",
+          "comment": "green presence dot, top-right, 1.5–2px white ring — not on the sampark palette; kept verbatim",
+          "legacyMapping": {
+            "spmUi": "--avatar-status-dot-color"
+          }
+        },
+        "size": {
+          "value": "0.5rem",
+          "comment": "8px — s/m/l"
+        },
+        "sizeXs": {
+          "value": "0.375rem",
+          "comment": "6px"
+        },
+        "sizeXl": {
+          "value": "0.625rem",
+          "comment": "10px — xl/2xl"
+        }
+      },
+      "iconBadge": {
+        "background": {
+          "value": "#3b82f6",
+          "comment": "blue icon badge, bottom-right, white ring — not on the sampark palette; kept verbatim",
+          "legacyMapping": {
+            "spmUi": "--avatar-badge-bg"
+          }
+        },
+        "size": {
+          "value": "0.875rem",
+          "comment": "14px — s/m/l"
+        },
+        "sizeXs": {
+          "value": "0.625rem",
+          "comment": "10px"
+        },
+        "sizeXl": {
+          "value": "1.125rem",
+          "comment": "18px — xl/2xl"
+        }
+      },
+      "size": {
+        "xs": {
+          "value": "1.5rem",
+          "comment": "24px"
+        },
+        "s": {
+          "value": "2rem",
+          "comment": "32px"
+        },
+        "m": {
+          "value": "2.25rem",
+          "comment": "36px — default"
+        },
+        "l": {
+          "value": "3rem",
+          "comment": "48px"
+        },
+        "xl": {
+          "value": "3.75rem",
+          "comment": "60px"
+        },
+        "2xl": {
+          "value": "5rem",
+          "comment": "80px"
+        }
+      },
+      "fontSize": {
+        "xs": {
+          "value": "0.75rem",
+          "comment": "12px initials"
+        },
+        "s": {
+          "value": "0.875rem",
+          "comment": "14px"
+        },
+        "m": {
+          "value": "0.875rem",
+          "comment": "14px — default"
+        },
+        "l": {
+          "value": "1rem",
+          "comment": "16px"
+        },
+        "xl": {
+          "value": "1.25rem",
+          "comment": "20px"
+        },
+        "2xl": {
+          "value": "2.25rem",
+          "comment": "36px, weight 400"
+        }
+      },
+      "iconSize": {
+        "xs": {
+          "value": "1.125rem",
+          "comment": "18px icon/image slot"
+        },
+        "s": {
+          "value": "1.25rem",
+          "comment": "20px"
+        },
+        "m": {
+          "value": "1.5rem",
+          "comment": "24px — default"
+        },
+        "l": {
+          "value": "2rem",
+          "comment": "32px"
+        },
+        "xl": {
+          "value": "2.25rem",
+          "comment": "36px"
+        },
+        "2xl": {
+          "value": "3rem",
+          "comment": "48px"
+        }
+      }
+    }
+  },
+  "toggleSwitch": {
+    "mybky": {
+      "trackOff": {
+        "value": "#8d9ba5",
+        "comment": "cool grey — not on the mybky mono scale; kept verbatim from events-ui (Figma MyBKY 1.5 switch, node 22465:108921)",
+        "legacyMapping": {
+          "eventsUi": "--switch-track-unchecked"
+        }
+      },
+      "trackOn": {
+        "value": "{color.mybky.blue.600}",
+        "comment": "full-strength brand blue track; thumb stays WHITE when on (events-ui _switch.scss) — the earlier blue.200 track + blue.600 knob reading was wrong",
+        "legacyMapping": {
+          "eventsUi": "--switch-track-checked"
+        }
+      },
+      "trackOffDisabled": {
+        "value": "{color.mybky.mono.300}",
+        "comment": "#e4ecf1",
+        "legacyMapping": {
+          "eventsUi": "--switch-track-unchecked-disabled"
+        }
+      },
+      "trackOnDisabled": {
+        "value": "{color.mybky.blue.200}",
+        "comment": "#bdc6e4",
+        "legacyMapping": {
+          "eventsUi": "--switch-track-checked-disabled"
+        }
+      },
+      "thumbBg": {
+        "value": "{color.mybky.mono.0}",
+        "comment": "white in every state — on/off is carried by the track alone",
+        "legacyMapping": {
+          "eventsUi": "--switch-thumb-bg"
+        }
+      },
+      "trackWidth": {
+        "value": "2.25rem",
+        "comment": "36px — default (md)",
+        "legacyMapping": {
+          "eventsUi": "--switch-width-m"
+        }
+      },
+      "trackHeight": {
+        "value": "1.25rem",
+        "comment": "20px",
+        "legacyMapping": {
+          "eventsUi": "--switch-height-m"
+        }
+      },
+      "thumbSize": {
+        "value": "1.0625rem",
+        "comment": "17px — thumb sits fully inside the track (vs Material's overhanging 24px)",
+        "legacyMapping": {
+          "eventsUi": "--switch-thumb-size-m"
+        }
+      },
+      "trackWidthSm": {
+        "value": "1.75rem",
+        "comment": "28px — events-ui size=\"small\"",
+        "legacyMapping": {
+          "eventsUi": "--switch-width-s"
+        }
+      },
+      "trackHeightSm": {
+        "value": "1rem",
+        "comment": "16px"
+      },
+      "thumbSizeSm": {
+        "value": "0.8125rem",
+        "comment": "13px"
+      },
+      "trackWidthLg": {
+        "value": "2.5rem",
+        "comment": "40px — events-ui size=\"large\"",
+        "legacyMapping": {
+          "eventsUi": "--switch-width-l"
+        }
+      },
+      "trackHeightLg": {
+        "value": "1.5rem",
+        "comment": "24px"
+      },
+      "thumbSizeLg": {
+        "value": "1.3125rem",
+        "comment": "21px"
+      },
+      "gap": {
+        "value": "0.09375rem",
+        "comment": "1.5px thumb inset — PrimeNG's checked-position term reproduces events-ui's translate table exactly: md 36-17-1.5 = 17.5px, sm 13.5px, lg 17.5px",
+        "legacyMapping": {
+          "eventsUi": "--switch-padding"
+        }
+      }
+    },
+    "sampark": {
+      "trackOff": {
+        "value": "{color.sampark.mono.40}",
+        "legacyMapping": {
+          "spmUi": "--switch-track-unchecked"
+        }
+      },
+      "trackOn": {
+        "value": "{color.sampark.primary.60}",
+        "legacyMapping": {
+          "spmUi": "--switch-track-checked"
+        }
+      },
+      "trackOffDisabled": {
+        "value": "{color.sampark.mono.20}"
+      },
+      "trackOnDisabled": {
+        "value": "{color.sampark.primary.20}"
+      },
+      "thumbBg": {
+        "value": "{color.sampark.mono.0}",
+        "legacyMapping": {
+          "spmUi": "--switch-thumb-bg"
+        }
+      },
+      "gap": {
+        "value": "2px",
+        "comment": "thumb inset from track edge, all sizes — also PrimeNG's checked-position term (width - thumb - gap)"
+      },
+      "radius": {
+        "value": "0.25rem",
+        "comment": "4px — md/lg track; SQUARE, not Material's pill. xs/sm round to radiusSm",
+        "legacyMapping": {
+          "spmUi": "_switch.scss border-radius"
+        }
+      },
+      "radiusSm": {
+        "value": "0.1875rem",
+        "comment": "3px — xs/sm track"
+      },
+      "thumbRadius": {
+        "value": "0.125rem",
+        "comment": "2px — thumb, all sizes"
+      },
+      "shadowTrack": {
+        "value": "inset 0 0 4px 0 #00000026",
+        "comment": "black @ 15%",
+        "legacyMapping": {
+          "spmUi": "--switch-shadow-default"
+        }
+      },
+      "shadowTrackDisabled": {
+        "value": "inset 0 0 4px 0 #0000001a",
+        "comment": "black @ 10%",
+        "legacyMapping": {
+          "spmUi": "--switch-shadow-disabled"
+        }
+      },
+      "track": {
+        "xs": {
+          "width": {
+            "value": "1.75rem",
+            "comment": "28px — spm-ui switchsize xs/s, radius 3px, thumb 12px"
+          },
+          "height": {
+            "value": "1rem",
+            "comment": "16px"
+          }
+        },
+        "sm": {
+          "width": {
+            "value": "2rem",
+            "comment": "32px, radius 3px, thumb 16px"
+          },
+          "height": {
+            "value": "1.25rem",
+            "comment": "20px"
+          }
+        },
+        "md": {
+          "width": {
+            "value": "2.25rem",
+            "comment": "36px — default, thumb 18px"
+          },
+          "height": {
+            "value": "1.375rem",
+            "comment": "22px"
+          }
+        },
+        "lg": {
+          "width": {
+            "value": "2.5rem",
+            "comment": "40px, thumb 20px — spm-ui switchsize lg/l"
+          },
+          "height": {
+            "value": "1.5rem",
+            "comment": "24px"
+          }
+        }
+      },
+      "thumb": {
+        "xs": {
+          "value": "0.75rem",
+          "comment": "12px"
+        },
+        "sm": {
+          "value": "1rem",
+          "comment": "16px"
+        },
+        "md": {
+          "value": "1.125rem",
+          "comment": "18px"
+        },
+        "lg": {
+          "value": "1.25rem",
+          "comment": "20px"
+        }
+      }
+    }
+  },
+  "toolbar": {
+    "sampark": {
+      "padding": {
+        "value": "{space.2}",
+        "comment": "8px, all sides"
+      },
+      "gap": {
+        "value": "{space.2}",
+        "comment": "8px, between stacked toolbar rows"
+      },
+      "sectionGap": {
+        "value": "{space.1}",
+        "comment": "4px, gap within .left"
+      },
+      "background": {
+        "value": "{color.sampark.mono.0}"
+      },
+      "border": {
+        "value": "{color.sampark.mono.borders}"
+      },
+      "titleFontSize": {
+        "value": "{font.size.xl}",
+        "comment": "20px"
+      },
+      "titleFontWeight": {
+        "value": "{font.weight.semibold}"
+      },
+      "titleLineHeight": {
+        "value": "{font.lineHeight.normal}",
+        "comment": "1.5 — 30px at 20px font"
+      },
+      "titleColor": {
+        "value": "{color.sampark.mono.100}"
+      },
+      "searchWidth": {
+        "value": "16rem",
+        "comment": "256px — compact, matches the reference toolbar (title left / search+action right, single line, no wrap)"
+      }
+    }
+  },
+  "dashboard": {
+    "mybky": {
+      "pageBackground": {
+        "value": "{color.mybky.mono.50}",
+        "comment": "#F8FAFB. The dashboard repaints itself grey ON TOP of the white layout shell, so cards read as floating. Settings/config do NOT — they inherit the shell white."
+      },
+      "heroRadius": {
+        "value": "1rem",
+        "comment": "16px"
+      },
+      "heroPadding": {
+        "value": "{space.6}",
+        "comment": "24px"
+      },
+      "heroMinHeight": {
+        "value": "5.75rem"
+      },
+      "heroInvitedGradient": {
+        "value": "linear-gradient(90deg, #4B536C 0%, #1F2945 100%)",
+        "comment": "Was hardcoded in event-dashboard.ts with no token behind it — the one screen that broke the token pattern."
+      },
+      "heroInvitedLabel": {
+        "value": "#BDC6E4"
+      },
+      "heroRegisteredGradient": {
+        "value": "linear-gradient(90deg, #4AA16C 0%, #1E7A4D 100%)"
+      },
+      "heroRegisteredLabel": {
+        "value": "#D8FDEB"
+      },
+      "heroPendingGradient": {
+        "value": "linear-gradient(90deg, #5C8FE3 0%, #2D5FB5 100%)"
+      },
+      "heroPendingLabel": {
+        "value": "#D8E7FD"
+      },
+      "heroDeclinedGradient": {
+        "value": "linear-gradient(90deg, #D3A04B 0%, #B57A23 100%)"
+      },
+      "heroDeclinedLabel": {
+        "value": "#FDEDD8"
+      },
+      "chartCardBackground": {
+        "value": "{color.mybky.mono.0}"
+      },
+      "chartCardBorder": {
+        "value": "{color.mybky.border.default}"
+      },
+      "chartCardRadius": {
+        "value": "0.75rem",
+        "comment": "12px — smaller than the hero tile 16px"
+      },
+      "chartCardPadding": {
+        "value": "{space.6}",
+        "comment": "24px, shrinks at breakpoints"
+      },
+      "chartCardShadow": {
+        "value": "none",
+        "comment": "NO shadow, and no hover either. Only the region mini-cards lift."
+      },
+      "regionCardHoverShadow": {
+        "value": "{shadow.mybky.cardHover}"
+      },
+      "gridGap": {
+        "value": "{space.4}",
+        "comment": "16px between dashboard rows"
+      },
+      "regionGridGap": {
+        "value": "0.875rem",
+        "comment": "14px — OFF the 4px grid. Kept because it is what ships; flagged rather than silently rounded to 12 or 16."
+      }
+    }
+  },
+  "table": {
+    "mybky": {
+      "rowBackground": {
+        "value": "{color.mybky.mono.0}",
+        "comment": "Every row. NO zebra striping anywhere in events-ui — confirmed, not an oversight."
+      },
+      "rowHoverBackground": {
+        "value": "#FBFCFD",
+        "comment": "Barely-there wash, lighter than mono.50. No token existed for it."
+      },
+      "rowErrorBackground": {
+        "value": "#FFF5F5",
+        "comment": "Live in payment-config error rows. events-ui also declares --comm-unavailable-row-bg with this value and never uses it — that one is dead, this is not."
+      },
+      "embeddedRowHover": {
+        "value": "rgba(0,0,0,0.02)",
+        "comment": "Tables sitting INSIDE a dashboard card hover darker than standalone ones."
+      },
+      "borderColor": {
+        "value": "{color.mybky.border.default}"
+      },
+      "cellPaddingY": {
+        "value": "1.125rem"
+      },
+      "cellPaddingX": {
+        "value": "{space.4}",
+        "comment": "16px"
+      },
+      "headerPaddingY": {
+        "value": "0.625rem"
+      },
+      "rowWarningBackground": {
+        "value": "#FFF6EB",
+        "comment": "Warning/10. Refund rows in the Payment transactions table (Figma 25317:120737). Hover still overrides it — the Refund Hover variant paints Primary/0, not this."
+      }
+    }
+  },
+  "treeTable": {
+    "mybky": {
+      "rowHeight": {
+        "value": "3.75rem",
+        "comment": "60px fixed"
+      },
+      "headerHeight": {
+        "value": "2.5rem",
+        "comment": "40px"
+      },
+      "headerBackground": {
+        "value": "{color.mybky.mono.50}",
+        "comment": "#F8FAFB"
+      },
+      "rowBackground": {
+        "value": "{color.mybky.mono.0}",
+        "comment": "Every row — no striping"
+      },
+      "rowHoverBackground": {
+        "value": "{color.mybky.blue.50}",
+        "comment": "#EEF0F8. Note this differs from the flat tables above, which hover #FBFCFD."
+      },
+      "rowErrorBackground": {
+        "value": "#FFF5F5"
+      },
+      "borderColor": {
+        "value": "{color.mybky.border.default}",
+        "comment": "Bottom border only"
+      },
+      "connectorColor": {
+        "value": "{color.mybky.mono.450}",
+        "comment": "#8D9BA5. The ONE place a darker line than border.default is used — the hierarchy trunk needs to read against the row borders it crosses."
+      },
+      "expandedFontWeight": {
+        "value": "{font.weight.semibold}",
+        "comment": "An expanded parent gets weight only — no background change."
+      }
+    }
+  },
+  "stepper": {
+    "mybky": {
+      "railBackground": {
+        "value": "{color.mybky.blue.50}",
+        "comment": "Primary/0. The pill behind the whole rail."
+      },
+      "railRadius": {
+        "value": "1rem"
+      },
+      "railPaddingY": {
+        "value": "0.9rem",
+        "comment": "Per spec. Pill height then follows the 40px slot rather than being pinned."
+      },
+      "railPaddingX": {
+        "value": "2.5rem"
+      },
+      "railMaxWidth": {
+        "value": "55rem"
+      },
+      "slotSize": {
+        "value": "2.5rem",
+        "comment": "40px. Per the source spec (_event-shared.scss). The Figma frame 25317:104987 renders these circles at 32px; the spec is treated as authoritative because it is the shipping stylesheet."
+      },
+      "slotSizeActive": {
+        "value": "3.5rem",
+        "comment": "56px. Size, not just colour, is what marks the current step on a rail whose labels are hidden."
+      },
+      "iconSize": {
+        "value": "1.5rem",
+        "comment": "24px on a 40px slot."
+      },
+      "iconSizeActive": {
+        "value": "2rem"
+      },
+      "activeGradient": {
+        "value": "linear-gradient(135deg, {color.mybky.blue.600}, {color.mybky.blue.800})",
+        "comment": "Primary/60 to Primary/80. Also the hover preview on an unlocked inactive slot, and the in-progress fill."
+      },
+      "completedGradient": {
+        "value": "linear-gradient(135deg, #40BF84, #178251)",
+        "comment": "Success/80 to Success/100. A finished step is the one place a green fill appears in the wizard."
+      },
+      "connectorColor": {
+        "value": "{color.mybky.mono.450}",
+        "comment": "Mono/40. Solid, NOT dashed — measured from the shipping stylesheet."
+      },
+      "lockedOpacity": {
+        "value": "0.3"
+      },
+      "activeLift": {
+        "value": "2.6rem",
+        "comment": "41.6px. translateY on the icon WRAP, not the button — the button already spends its transform on scale() during hover, so the lift needs its own element. Same amount for the real active step and for a hovered one."
+      },
+      "hoverScale": {
+        "value": "1.4",
+        "comment": "40px x 1.4 = 56px VISUAL. Deliberately a scale, not a width change: the active step is genuinely 56px, a hovered one only looks it, so neighbours never reflow."
+      }
+    }
+  }
+}

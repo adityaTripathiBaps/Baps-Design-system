@@ -1,0 +1,64 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as SplitButtonStories from './split-button.stories';
+
+<Meta of={SplitButtonStories} />
+
+# SplitButton
+
+A primary action button paired with a dropdown of secondary actions. `baps-split-button` (`BapsSplitButton`) wraps PrimeNG's `p-splitbutton` — Sampark Portal "Split Button", Figma node [13197:92206](https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/%F0%9F%9F%A2-Sampark-Portal?node-id=13197-92206).
+
+**Known limitation, carried over from the component's own doc comment:** unlike `baps-button`, the Sampark skin here is CSS-only — there is no scoped `dt` input. `p-splitbutton` renders two inner `p-button` instances internally, and a scoped `dt` on the host component can't reach their nested button design tokens. So instead of theming through PrimeNG's token system, `split-button.component.ts` restates the `button.sampark.*` palette (heights, radii, colors, font weight) as plain CSS rules targeting `.p-splitbutton .p-button` / `.p-splitbutton-dropdown`. It works, but it's a duplicate of the button tokens rather than a single source of truth — if `button.sampark.*` changes, this file needs a matching manual update.
+
+## Usage
+
+```html
+<baps-split-button
+  label="Save"
+  icon="pi pi-check"
+  [model]="[
+    { label: 'Save as draft' },
+    { label: 'Duplicate' },
+    { separator: true },
+    { label: 'Delete' }
+  ]"
+  severity="primary"
+  brand="sampark"
+  (clicked)="onSave()"
+></baps-split-button>
+```
+
+## Examples
+
+### Playground
+
+<Canvas of={SplitButtonStories.Playground} />
+
+### With Count
+
+<Canvas of={SplitButtonStories.WithCount} />
+
+### My BKY
+
+<Canvas of={SplitButtonStories.MyBKY} />
+
+### Matrix
+
+<Canvas of={SplitButtonStories.Matrix} />
+
+## When Not to Use
+
+| Need | Use | Why not `baps-split-button` |
+| --- | --- | --- |
+| A single action, no alternatives | `baps-button` | The chevron promises a menu; an empty or one-item `model` is a broken promise |
+| Actions of genuinely equal weight | two `baps-button`s | The split button asserts a hierarchy that isn't there |
+| Navigating between destinations | `baps-navbar` / `baps-internal-navbar` / `baps-breadcrumb` | `MenuItem[]` can hold routes, but a menu hanging off an action button reads as "do", not "go" |
+| A row of many actions | `baps-toolbar` | Long `model` lists turn a button into a hidden nav menu |
+| Picking a **value** rather than running a command | `baps-select` | Select is form-bound (`ControlValueAccessor`); SplitButton emits nothing but clicks |
+| An icon-only trigger | `baps-button` | With no `label`, the label segment has no accessible name — see Accessibility |
+
+## Accessibility
+
+- The label segment renders as a native `<button>` with `aria-label` falling back to the visible `label` text.
+- The dropdown segment carries PrimeNG's own `aria-haspopup` and `aria-expanded` (reflecting the open menu state), plus its own default `expandAriaLabel` — none of which `BapsSplitButton` overrides or forwards a custom value for.
+- `BapsSplitButton` doesn't expose an `ariaLabel` input of its own for the label segment — for a labeled button this is fine (PrimeNG falls back to `label`), but an icon-only label segment (no `label`, `icon` only) would have no accessible name, since there's no override input to supply one. Always set `label` on this component, or add an explicit fix before shipping an icon-only variant.
+- The dropdown menu itself is keyboard-operable (native PrimeNG menu: arrow keys, Enter/Space to activate, Escape to close) with no additional wiring needed from this wrapper.

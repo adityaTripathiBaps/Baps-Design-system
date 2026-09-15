@@ -1,0 +1,67 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as PaginationStories from './pagination.stories';
+
+<Meta of={PaginationStories} />
+
+# Pagination
+
+Table / list pagination controls — record count, rows-per-page, first/prev/next/last, truncated page links, and an optional "Go to" field. `baps-paginator` (component class `BapsPaginator`) is built for Sampark Portal (Figma node [17512:73228](https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/%F0%9F%9F%A2-Sampark-Portal?node-id=17512-73228)).
+
+Unlike every other component in this library, this one **does not wrap** PrimeNG's `p-paginator`. The Figma spec calls for a truncated page-link list (`1 2 … 24 25` instead of one button per page) with the rows-per-page dropdown and a "Go to" field in a specific DOM order. PrimeNG's `Paginator` renders a fixed window of `pageLinkSize` consecutive links with no ellipsis, no first/last anchoring, and no template hook that reaches inside the link row (`paginatorleft`/`paginatorright` only bracket it) — there is no configuration of `p-paginator` that produces this layout. Same call as `bapsTabs` (see the design system's "When NOT to wrap" rule): where PrimeNG can't express the design, the markup is owned outright rather than fought. The public API is still kept `p-paginator`-shaped (`rows`, `first`, `totalRecords`, a `pageChange` event whose payload mirrors PrimeNG's `PageEvent`) so call sites read the same. The rows-per-page control itself **is** a real `p-select`, so it still inherits the shared select skin instead of a hand-rolled dropdown.
+
+## Usage
+
+```html
+<baps-paginator
+  [totalRecords]="250"
+  [rows]="rows"
+  [first]="first"
+  [rowsPerPageOptions]="[10, 20, 50, 100]"
+  [showCurrentPageReport]="true"
+  [showJumpToPage]="true"
+  brand="sampark"
+  (pageChange)="onPageChange($event)"
+/>
+```
+
+## Examples
+
+### Default
+
+<Canvas of={PaginationStories.Default} />
+
+### My BKY
+
+<Canvas of={PaginationStories.MyBKY} />
+
+### Mid Range
+
+<Canvas of={PaginationStories.MidRange} />
+
+### Few Pages
+
+<Canvas of={PaginationStories.FewPages} />
+
+### Compact
+
+<Canvas of={PaginationStories.Compact} />
+
+## When Not to Use
+
+| Need | Use | Not this |
+| --- | --- | --- |
+| Paging a table you are already rendering with the design system | `baps-table` with `[paginator]="true"` (it has `rows`, `first`, `totalRecords`, `rowsPerPageOptions`, `lazy`) | A second, standalone `baps-paginator` alongside it |
+| PrimeNG's consecutive `pageLinkSize` window, or a custom paginator template | `p-paginator` directly | `baps-paginator` — the ellipsis truncation and DOM order are hardcoded, with no template hooks |
+| Infinite scroll or a "Load more" affordance | `baps-button` driving your own fetch | A paginator hidden below the fold |
+| Signalling that a page fetch is in flight | `baps-progressbar` | The paginator — it has no busy or loading state |
+| Telling the user there are no results | `baps-alert` or `baps-message` | Rendering an empty paginator over an empty table |
+
+## Accessibility
+
+- Root wraps in `role="navigation"` with `[attr.aria-label]="ariaLabel"` (default `"Pagination"`).
+- Every icon-only nav button carries its own `aria-label` ("First page" / "Previous page" / "Next page" / "Last page").
+- Boundary buttons use the native `disabled` attribute (removed from tab order), not a CSS-only disabled look.
+- Active page link gets `aria-current="page"`; every page link gets `aria-label="Page N"`.
+- The `…` gap is `aria-hidden="true"` and not a `<button>` — it never enters the tab order.
+- The rows-per-page `p-select` has a hardcoded `ariaLabel="Rows per page"`.
+- The jump-to-page input has `aria-label="Go to page"` and `inputmode="numeric"`; it commits on `Enter`/`blur` so screen-reader/AT users aren't fighting a page change on every keystroke.

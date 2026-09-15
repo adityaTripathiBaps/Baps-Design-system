@@ -1,0 +1,181 @@
+import { Meta } from '@storybook/blocks';
+import {
+  ResourceTabs,
+  DemoCard,
+  CodeBlock,
+  PropsTable,
+  TokensTable,
+  KeyboardTable,
+} from '@baps/docs-blocks';
+import * as AlertStories from './alert.stories';
+
+<Meta of={AlertStories} />
+
+# Alert
+
+An inline notification banner: a coloured accent bar, a severity icon, text, and an optional close button.
+
+<ResourceTabs />
+
+`baps-alert` (`BapsAlert`) is a **custom component**, not a PrimeNG wrapper — the Sampark design's left-accent-bar layout differs enough from `p-message` that wrapping it would mean fighting its DOM rather than using it.
+
+## Usage
+
+<CodeBlock
+  filename="karyakar-form.component.html"
+  language="html"
+  code={`<!-- Rendered conditionally so role="alert" actually announces on appearance. -->
+@if (saveError()) {
+  <baps-alert
+    severity="error"
+    title="Could not save this karyakar"
+    [closable]="true"
+    (closed)="saveError.set(null)"
+  >
+    {{ saveError() }}
+  </baps-alert>
+}
+
+<baps-alert severity="success" text="Import complete." brand="sampark" />`}
+/>
+
+## Examples
+
+<DemoCard
+  title="Default"
+  description="Text only, info severity — the smallest useful alert."
+  of={AlertStories.Default}
+/>
+
+<DemoCard
+  title="Severities"
+  description="The four severities. Colour never carries the meaning on its own; the text does."
+  of={AlertStories.Severities}
+/>
+
+<DemoCard
+  title="With Title"
+  description="A bold first line for when the message needs a summary and a detail."
+  of={AlertStories.WithTitle}
+/>
+
+<DemoCard
+  title="Dismissible"
+  description="Adds a close button. The parent owns the state — the alert only emits closed."
+  of={AlertStories.Dismissible}
+/>
+
+<DemoCard
+  title="Form Validation"
+  description="Summarising several field errors above a form, rather than beside one input."
+  of={AlertStories.FormValidation}
+/>
+
+<DemoCard
+  title="Card"
+  description="The card layout: avatar or icon, timestamp, and its own actions."
+  of={AlertStories.Card}
+/>
+
+<DemoCard
+  title="Card Parts"
+  description="Each card part is optional — progress, actions and timestamp can all be dropped."
+  of={AlertStories.CardParts}
+/>
+
+<DemoCard
+  title="Sampark"
+  description="The same component under the Sampark brand."
+  of={AlertStories.Sampark}
+/>
+
+## API
+
+<PropsTable of={AlertStories} />
+
+## Theming
+
+Alert consumes primitive colour tokens directly — it has no `--alert-*` component tier, so its severities are re-pointed by editing the ramp rather than the component.
+
+<TokensTable
+  tokens={[
+    {
+      token: 'color.mybky.info.60',
+      light: '#2265c3',
+      dark: '#2265c3',
+      description: 'Info text and icon. Same value in both modes — see the gap below.',
+    },
+    {
+      token: 'color.mybky.success.400',
+      light: '#2a9c68',
+      dark: '#2a9c68',
+      description: 'Success text and icon.',
+    },
+    {
+      token: 'color.mybky.warning.60',
+      light: '#c38222',
+      dark: '#c38222',
+      description: 'Warning text and icon.',
+    },
+    {
+      token: 'color.mybky.error.100',
+      light: '#c32226',
+      dark: '#c32226',
+      description: 'Error text and icon.',
+    },
+    {
+      token: 'color.mybky.info.20',
+      light: '#d8e7fd',
+      dark: 'rgba(56,137,250,0.1)',
+      description: 'Info fill. The fill does switch for dark; the text above it does not.',
+    },
+  ]}
+/>
+
+### Known dark-mode gap
+
+The component ships twelve dark-mode rules and every one of them changes a *background* to a 10% tint. None changes a text colour, so in dark mode the light-mode saturated foreground sits on a near-black ground. Measured against the composited dark fill:
+
+| Severity | Contrast in dark | Verdict |
+| --- | --- | --- |
+| Info | 2.71:1 | Fails AA |
+| Error | 2.80:1 | Fails AA |
+| Success | 4.33:1 | Large text only |
+| Warning | 4.48:1 | Large text only |
+
+Fixing this means editing the component's own stylesheet, which is outside a documentation pass — it is recorded here rather than quietly patched.
+
+## Accessibility
+
+### Screen Reader
+
+- The root carries `role="alert"`, so assistive technology announces the content when it appears. This is why the component should be rendered conditionally rather than kept in the DOM and hidden with CSS — an alert that is always present is never announced.
+- `role="alert"` implies `aria-live="assertive"`, which interrupts the user. For non-urgent info this is arguably too aggressive; it's accepted here because alerts in this system are rendered in response to a user action.
+- The accent bar and icon are both `aria-hidden="true"` — severity reaches screen readers through the text, never through colour or glyph alone.
+- The close button is a real `<button type="button">` with `aria-label="Close"`, so it is reachable by keyboard and named without visible text.
+- **Known gap:** `aria-label="Close"` is hardcoded and not translatable or overridable. Fine for the current English-only surface; would need an input before localisation.
+
+### Keyboard Support
+
+<KeyboardTable
+  rows={[
+    { key: 'Tab', action: 'Move to the close button, and to any action buttons in the card layout' },
+    { key: 'Enter', action: 'Activate the focused button' },
+    { key: 'Space', action: 'Activate the focused button' },
+  ]}
+/>
+
+An alert with no close button and no actions has nothing focusable, which is correct — it is content, not a control.
+
+## When Not to Use
+
+`baps-alert` is one of four feedback surfaces and picking the wrong one is the most common mistake with it:
+
+| Need | Use | Not this |
+| --- | --- | --- |
+| Transient confirmation of an action that already finished ("Saved") | Toast | Alert — it persists and accumulates |
+| A decision that must block the workflow ("Delete this record?") | Dialog | Alert — it can't capture a response |
+| Which specific field is wrong, next to that field | `baps-message` | Alert — too far from the input to be useful |
+| Site-wide announcement above the app chrome | Banner (app shell) | Alert — it's scoped to page content |
+
+Also don't use it for loading or progress — that's `baps-progressbar`.

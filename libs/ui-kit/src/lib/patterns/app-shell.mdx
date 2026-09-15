@@ -1,0 +1,176 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Patterns/App shell" />
+
+# App shell
+
+The outer frame every admin screen sits inside: a top navbar, a side
+navigation, and a routed content area. Two components do the whole job —
+`baps-navbar` and `baps-internal-navbar` — but wiring them **to each other**
+takes a few non-obvious bindings that neither component's own docs page shows,
+because neither one owns the relationship.
+
+This page is the copy-paste answer. It was written after a consuming project
+reverse-engineered the same layout out of source comments; if you are starting
+a new app, start here.
+
+## What you get
+
+- Sampark's dark icon-over-label **rail** as the default sidebar state
+- The navbar's yellow chevron expanding and collapsing that rail
+- Routing driven from the nav items, since `baps-internal-navbar` deliberately
+  does not navigate on your behalf
+
+## The two bindings that are easy to miss
+
+**1. The rail is `brand="sampark"` + `[collapsed]="true"` — together.**
+`[collapsed]` on its own gives you the generic 56px icon-only strip with the
+labels hidden. Adding `brand="sampark"` switches it to the Sampark Portal rail
+instead: 104px wide, dark (`--color-sampark-secondary-100`), and the label
+stays visible *under* the icon rather than disappearing. They are one state,
+not two independent flags.
+
+**2. The navbar chevron is opt-in and reports the _next_ state.**
+`baps-navbar` has a Sampark-only chevron for exactly this job, but it is off
+until you set `[menuButton]="true"`. Its `(menuToggle)` output emits the
+`menuOpen` value being *requested* — not the current one — so the handler
+assigns it directly rather than inverting anything. `[menuOpen]` is the
+navbar's own open/closed state, which is the inverse of the sidebar's
+`collapsed`.
+
+## Component
+
+```ts
+import { Component, inject, signal } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
+import { BapsNavbar, BapsInternalNavbar, InternalNavItem, BapsAvatar, BapsBadge } from '@org/ui-kit';
+
+@Component({
+  selector: 'app-shell',
+  imports: [RouterOutlet, BapsNavbar, BapsInternalNavbar, BapsAvatar, BapsBadge],
+  templateUrl: './shell.component.html',
+  styleUrl: './shell.component.scss',
+})
+export class ShellComponent {
+  private readonly router = inject(Router);
+
+  /** Rail (collapsed) by default — the Sampark nav rail, not the wide list. */
+  protected readonly sidebarCollapsed = signal(true);
+
+  protected readonly navItems: InternalNavItem[] = [
+    { label: 'Dashboard', icon: 'pi-home', routerLink: '/dashboard' },
+    { label: 'Members', icon: 'pi-users', routerLink: '/members' },
+    { label: 'Donations', icon: 'pi-wallet', routerLink: '/donations' },
+    { separator: true, label: 'sep-1' },
+    { label: 'Settings', icon: 'pi-cog', routerLink: '/settings' },
+  ];
+
+  protected activeItem = 'Dashboard';
+
+  // baps-internal-navbar renders plain <button> items and only emits
+  // itemClick — it never navigates itself, so routing lives here.
+  protected onNavItemClick(item: InternalNavItem): void {
+    if (item.disabled) return;
+    this.activeItem = item.label;
+    if (item.routerLink) {
+      this.router.navigate(Array.isArray(item.routerLink) ? item.routerLink : [item.routerLink]);
+    }
+  }
+
+  /** The chevron reports the NEXT requested open state, not the current one. */
+  protected onMenuToggle(nextOpen: boolean): void {
+    this.sidebarCollapsed.set(!nextOpen);
+  }
+}
+```
+
+## Template
+
+```html
+<div class="app-shell">
+  <baps-navbar
+    title="BAPS"
+    version="v0.1"
+    ariaLabel="Primary navigation"
+    brand="sampark"
+    [menuButton]="true"
+    [menuOpen]="!sidebarCollapsed()"
+    (menuToggle)="onMenuToggle($event)"
+  >
+    <div navbar-end class="app-shell__navbar-end">
+      <baps-badge value="3" severity="danger" />
+      <baps-avatar label="AT" size="s" brand="sampark" />
+    </div>
+  </baps-navbar>
+
+  <div class="app-shell__body">
+    <baps-internal-navbar
+      title="Products"
+      [items]="navItems"
+      [activeItem]="activeItem"
+      [collapsed]="sidebarCollapsed()"
+      brand="sampark"
+      (itemClick)="onNavItemClick($event)"
+    />
+
+    <main class="app-shell__content">
+      <router-outlet />
+    </main>
+  </div>
+</div>
+```
+
+## Styles
+
+The shell owns only layout — every colour and dimension below is a token, and
+the sidebar's own width comes from the component, not from here.
+
+```scss
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-shell__body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.app-shell__content {
+  flex: 1;
+  min-width: 0;
+  padding: var(--space-6);
+  background: var(--color-sampark-surface-ground);
+  overflow-y: auto;
+}
+
+.app-shell__navbar-end {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+```
+
+## Gotchas
+
+**`InternalNavItem.separator` still needs a `label`.** The interface types
+`label` as required, so a separator row is written
+`{ separator: true, label: 'sep-1' }`. The label is never rendered; give each
+one a unique throwaway value.
+
+**Do not put `routerLink` on the `baps-internal-navbar` element.** The
+`routerLink` field on `InternalNavItem` is plain data that the component hands
+back to you through `itemClick` — it is not an Angular `RouterLink`
+directive, and the component will not act on it.
+
+**Guard `disabled` in your click handler.** `itemClick` fires for disabled
+items too; the early `if (item.disabled) return;` above is load-bearing.
+
+## Related
+
+- **Patterns → Sampark-only project** — how to make sure nothing in the app
+  falls back to the MyBKY skin
+- **Components → Navbar**, **Components → Internal navbar** — the full input
+  reference for each piece

@@ -1,0 +1,175 @@
+import { Meta } from '@storybook/blocks';
+import {
+  ResourceTabs,
+  DemoCard,
+  CodeBlock,
+  PropsTable,
+  TokensTable,
+  KeyboardTable,
+} from '@baps/docs-blocks';
+import * as ButtonStories from './button.stories';
+
+<Meta of={ButtonStories} />
+
+# Button
+
+Triggers a single action or navigation.
+
+<ResourceTabs />
+
+`baps-button` wraps PrimeNG's `p-button` and themes it globally — this page documents that usage against the `MyBky` preset (`libs/ui-kit/src/lib/theme/baps.theme.ts`), verified pixel-for-pixel against Figma node [22465:93605](https://www.figma.com/design/yY5bmcEifXbcCwhauoiy6Y/%F0%9F%9F%A2-MyBKY?node-id=22465-93605).
+
+The wrapper also carries a second visual skin — `brand="sampark"` — implementing the Sampark Portal button set from Figma node [13197:91897](https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/%F0%9F%9F%A2-Sampark-Portal?node-id=13197-91897).
+
+## Usage
+
+<CodeBlock
+  filename="karyakar-list.component.html"
+  language="html"
+  code={`<baps-button label="Save" severity="primary" icon="pi pi-check" />
+<baps-button label="Cancel" severity="secondary" [text]="true" />
+<baps-button label="Delete" severity="danger" />
+
+<!-- Sampark Portal skin -->
+<baps-button brand="sampark" label="Save" severity="primary" />
+<baps-button brand="sampark" label="Cancel" severity="secondary" [outlined]="true" />
+<baps-button brand="sampark" label="View details" [link]="true" />`}
+/>
+
+## Examples
+
+<DemoCard
+  title="Playground"
+  description="Every input on one button — use the controls panel to try combinations."
+  of={ButtonStories.Playground}
+/>
+
+<DemoCard
+  title="All Variants"
+  description="Severity crossed with the filled, outlined, text and link treatments."
+  of={ButtonStories.AllVariants}
+/>
+
+<DemoCard
+  title="All Sizes"
+  description="The MyBKY size steps. Figma's XL is 42px, not the 40px the old spec table claimed."
+  of={ButtonStories.AllSizes}
+/>
+
+<DemoCard
+  title="States"
+  description="Hover, focus, active, disabled and loading."
+  of={ButtonStories.States}
+/>
+
+<DemoCard
+  title="Sampark Variants"
+  description="The Sampark Portal set: maroon primary, bordered secondary, ghost and link."
+  of={ButtonStories.SamparkVariants}
+/>
+
+<DemoCard
+  title="Sampark Sizes"
+  description="28 / 32 / 36 / 40px. The XL step is a host-class rule — PrimeNG's token surface stops at lg."
+  of={ButtonStories.SamparkSizes}
+/>
+
+<DemoCard
+  title="Sampark Icon Only"
+  description="Square by design: width equals the height of its size step."
+  of={ButtonStories.SamparkIconOnly}
+/>
+
+<DemoCard
+  title="Sampark States"
+  description="The same five states under the Sampark skin."
+  of={ButtonStories.SamparkStates}
+/>
+
+## API
+
+<PropsTable of={ButtonStories} />
+
+## Theming
+
+Unlike most components here, Button has a real component-token tier: the Sampark skin is authored as PrimeNG design tokens (`SAMPARK_BUTTON_TOKENS`) rather than component CSS, so it is re-pointed from `libs/tokens` without touching the component.
+
+<TokensTable
+  tokens={[
+    {
+      token: 'button.sampark.primary.default',
+      light: '#c96868',
+      dark: '#c96868',
+      description: 'Filled primary background. Deliberately the same in both modes — see below.',
+    },
+    {
+      token: 'button.sampark.primary.hover',
+      light: '#b44141',
+      dark: '#b44141',
+      description: 'Primary hover.',
+    },
+    {
+      token: 'button.sampark.primary.text',
+      light: '#ffffff',
+      dark: '#ffffff',
+      description: 'Label on the filled primary.',
+    },
+    {
+      token: 'button.sampark.secondary.default',
+      light: '#ffffff',
+      dark: '#2b2f32',
+      description: 'Bordered secondary background — this one does switch.',
+    },
+    {
+      token: 'button.sampark.secondary.border',
+      light: '#e1e0e0',
+      dark: '#565652',
+      description: 'Secondary border.',
+    },
+    {
+      token: 'button.sampark.height.default',
+      light: '2rem',
+      dark: '2rem',
+      description: 'Size steps are scheme-independent: 1.75 / 2 / 2.25 / 2.625rem.',
+    },
+    {
+      token: 'button.sampark.radius',
+      light: '0.25rem',
+      dark: '0.25rem',
+      description: 'Corner radius.',
+    },
+  ]}
+/>
+
+**Why primary does not change in dark.** A filled button supplies its own ground, so the white-on-maroon pair is unaffected by what is behind it — unlike a text colour that sits directly on the page. The secondary treatment *is* affected, because its background is close to the page, and it switches accordingly. This is the opposite of the gap documented on [Alert](?path=/docs/components-alert--docs), where a foreground colour was left unchanged over a ground that moved.
+
+## Accessibility
+
+### Screen Reader
+
+- Renders a native `<button>`, so it is announced with the button role without any extra wiring.
+- Set `ariaLabel` when the button is icon-only — with no visible `label` there is nothing to announce.
+- `disabled` sets the native attribute, which also removes the button from the tab order. Prefer it over CSS-only disabling, which leaves a focusable control that does nothing.
+- `loading` does **not** imply `disabled`. Pair them where the action genuinely cannot be retriggered, otherwise a second activation fires while the first is still in flight.
+
+### Keyboard Support
+
+<KeyboardTable
+  rows={[
+    { key: 'Tab', action: 'Move focus to the button' },
+    { key: 'Enter', action: 'Activate the button' },
+    { key: 'Space', action: 'Activate the button' },
+  ]}
+/>
+
+## When Not to Use
+
+| Need | Use | Not this |
+| --- | --- | --- |
+| Navigate to another route or URL | `baps-link` | `baps-button` — it renders a `<button>`, so there is no href, no middle-click, no "open in new tab" |
+| One primary action plus related secondary ones | `baps-split-button` | Two adjacent buttons |
+| A setting that applies immediately, with no submit | `baps-toggleswitch` | A button you re-label between states |
+| A choice among options inside a form | `baps-checkbox` / `baps-select` / `baps-listbox` | A row of buttons acting as a picker |
+| Laying out a row of page-level actions | `baps-toolbar` as the container | Buttons positioned with ad-hoc margins |
+
+`[link]="true"` *looks* like a link but is still a `<button>` — when the destination is a URL, use `baps-link`.

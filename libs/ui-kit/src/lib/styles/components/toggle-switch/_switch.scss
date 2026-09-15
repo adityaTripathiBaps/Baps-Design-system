@@ -1,0 +1,98 @@
+/* =====================================================================
+   libs/ui-kit/src/lib/styles/components/toggle-switch/_switch.scss
+   PrimeNG v21 ToggleSwitch — MyBKY sm/lg sizes
+
+   The default (md) MyBKY switch — 36×20 pill track, 17px thumb, 1.5px
+   inset, colors, shadows, focus ring — ships entirely through the Baps
+   preset (baps.theme.ts toggleswitch section). Only the two non-default
+   events-ui sizes need CSS, and they re-use the same strategy as
+   _switch-sampark.scss: re-point the --p-toggleswitch-* variables and
+   let PrimeNG's checked-position calc(width - handle - gap) and
+   vertical centering track automatically.
+
+   SIZES (events-ui _switch.scss; gap 1.5px all sizes):
+   sm → 28×16 track | 13px thumb | checked left 13.5px
+   md → 36×20 track | 17px thumb | checked left 17.5px  (preset default)
+   lg → 40×24 track | 21px thumb | checked left 17.5px
+   MyBKY has no xs step of its own — size="xs" renders the sm box
+   (toggle-switch.mdx Sizes note); the true 28×16 xs is Sampark-only.
+
+   SCOPE: unscoped default skin, keyed off the BapsToggleSwitch host
+   classes (size input). The Sampark skin's :is(…) selectors are more
+   specific AND load later (styles.scss), so brand="sampark" /
+   .baps-ds-sampark instances keep their own size table untouched.
+   ===================================================================== */
+
+baps-toggleswitch.baps-switch-sm .p-toggleswitch,
+baps-toggleswitch.baps-switch-xs .p-toggleswitch {
+  --p-toggleswitch-width: var(--toggle-switch-mybky-track-width-sm, 1.75rem);
+  --p-toggleswitch-height: var(--toggle-switch-mybky-track-height-sm, 1rem);
+  --p-toggleswitch-handle-size: var(
+    --toggle-switch-mybky-thumb-size-sm,
+    0.8125rem
+  );
+}
+
+baps-toggleswitch.baps-switch-lg .p-toggleswitch {
+  --p-toggleswitch-width: var(--toggle-switch-mybky-track-width-lg, 2.5rem);
+  --p-toggleswitch-height: var(--toggle-switch-mybky-track-height-lg, 1.5rem);
+  --p-toggleswitch-handle-size: var(
+    --toggle-switch-mybky-thumb-size-lg,
+    1.3125rem
+  );
+}
+
+/* ── Label — Figma node 13197:89115 "Switch" ──────────────────────────
+   Every Figma variant pairs the track with trailing text, so the wrapper
+   ships for all sizes and both brands: 14px Inter Regular, Mono/80
+   (#595656) at rest. Unscoped on purpose — the mono ramp is shared, and
+   nothing in _switch-sampark.scss needs to fork it.
+
+   The wrapper div is always rendered (label or not); it is inline-flex so
+   a label-less switch keeps the inline flow it had before the wrapper
+   existed. Structure copied from baps-checkbox's .baps-checkbox-wrapper.
+
+   Disabled label colour follows FIGMA, not baps-checkbox: node 13197:89115
+   keeps the label at Mono/80 #595656 in every disabled variant, so only the
+   track dims. baps-checkbox greys its own label to Mono/40 — that is a
+   divergence between the two components in the design itself, and Figma is
+   the source of truth here, so it is reproduced rather than smoothed over.
+   If checkbox is later found to be the correct one, change both together. */
+baps-toggleswitch .baps-switch-wrapper {
+  display: inline-flex;
+  align-items: center;
+}
+
+baps-toggleswitch .p-toggleswitch-label {
+  margin-left: 0.5rem;
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--color-sampark-text-secondary, #595656);
+  cursor: pointer;
+}
+
+baps-toggleswitch .p-toggleswitch-label.p-disabled {
+  /* Stays Mono/80 — see the note above. Only the cursor changes. */
+  cursor: not-allowed;
+}
+
+.baps-dark baps-toggleswitch .p-toggleswitch-label {
+  color: var(--color-mybky-mono-50, #f8fafb);
+}
+
+/* A DISABLED control that has to explain itself.
+   A disabled <input> swallows pointer events, so a wrapper carrying a tooltip
+   that says WHY the switch is locked ("you do not have permission to change
+   this") never receives hover and the explanation is unreachable — the user
+   is left with a dead control and no reason. Letting events pass THROUGH the
+   disabled switch hands the hover to that wrapper:
+
+     <span [pTooltip]="lockReason" tooltipPosition="top">
+       <baps-toggleswitch [disabled]="true" />
+     </span>
+
+   Scoped to .p-disabled on purpose: an enabled switch must keep its own
+   pointer events or it stops being clickable. This is safe precisely because
+   a disabled switch has no interaction left to lose. */
+baps-toggleswitch .p-toggleswitch.p-disabled {
+  pointer-events: none;
+}

@@ -1,0 +1,228 @@
+/* =====================================================================
+   libs/ui-kit/src/lib/styles/components/drawer/_drawer-sampark.scss
+   PrimeNG v21 Drawer — Sampark slide-in panel skin
+
+   Figma: Sampark Portal node 17512:72588 (the Filters drawer).
+   Spec pulled from that node: Mono/0 surface, 16px radius on the two
+   INNER corners, drop shadow 0 0 40px rgba(0,0,0,.25), 24px inline /
+   32px block padding, 24px gap between header · content · footer, and a
+   header row of `title(20/600) · actions · close` with 8px gaps and an
+   8px inline inset.
+
+   SCOPE — a drawer is an OVERLAY. With appendTo="body" the panel is
+   moved out of <baps-drawer> entirely, so a host-anchored selector
+   (`baps-drawer.baps-sampark .p-drawer`) would silently stop matching.
+   This file therefore keys off classes that live on the panel itself,
+   the same reason _tooltip-sampark.scss targets the appended overlay
+   directly rather than the directive's host:
+   - .p-drawer.baps-drawer-sampark  — per instance, via brand="sampark"
+                                       (BapsDrawer puts it on styleClass)
+   - .baps-ds-sampark .p-drawer      — page-wide body class
+   The mask is matched the same way, plus a :has() fallback for the
+   page-wide case where the mask is a sibling wrapper of the panel.
+
+   USAGE:
+   <baps-drawer [(visible)]="open" header="Filters" brand="sampark"> … </baps-drawer>
+   ===================================================================== */
+
+/* ── Panel ───────────────────────────────────────────────────────────── */
+:is(.p-drawer.baps-drawer-sampark, .baps-ds-sampark .p-drawer) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--drawer-sampark-gap, 1.5rem);
+  box-sizing: border-box;
+  padding: var(--drawer-sampark-padding-y, 2rem) var(--drawer-sampark-padding-x, 1.5rem);
+  background: var(--drawer-sampark-background, #ffffff);
+  border: none;
+  box-shadow: var(--drawer-sampark-shadow, 0 0 40px rgba(0, 0, 0, 0.25));
+  color: var(--color-sampark-text-primary, #151414);
+}
+
+/* Only the two edges facing INTO the page are rounded — the edge flush
+   against the viewport stays square, which is what makes it read as
+   anchored rather than as a floating dialog. */
+:is(.p-drawer.baps-drawer-sampark, .baps-ds-sampark .p-drawer).p-drawer-right {
+  width: var(--drawer-sampark-width, max(31.25rem, 26.042vw));
+  border-radius: var(--drawer-sampark-radius, 1rem) 0 0 var(--drawer-sampark-radius, 1rem);
+}
+:is(.p-drawer.baps-drawer-sampark, .baps-ds-sampark .p-drawer).p-drawer-left {
+  width: var(--drawer-sampark-width, max(31.25rem, 26.042vw));
+  border-radius: 0 var(--drawer-sampark-radius, 1rem) var(--drawer-sampark-radius, 1rem) 0;
+}
+:is(.p-drawer.baps-drawer-sampark, .baps-ds-sampark .p-drawer).p-drawer-top {
+  border-radius: 0 0 var(--drawer-sampark-radius, 1rem) var(--drawer-sampark-radius, 1rem);
+}
+:is(.p-drawer.baps-drawer-sampark, .baps-ds-sampark .p-drawer).p-drawer-bottom {
+  border-radius: var(--drawer-sampark-radius, 1rem) var(--drawer-sampark-radius, 1rem) 0 0;
+}
+/* Full-screen has no page behind it to face — square, no float shadow. */
+:is(.p-drawer.baps-drawer-sampark, .baps-ds-sampark .p-drawer).p-drawer-full {
+  width: 100%;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* Below the panel width there is no room to inset it; go edge to edge.
+   !important because the fluid width above is itself a var() fallback —
+   without it, a per-instance --drawer-sampark-width override would win
+   the cascade tie at this breakpoint too. */
+@media (max-width: 767px) {
+  :is(.p-drawer.baps-drawer-sampark, .baps-ds-sampark .p-drawer):is(.p-drawer-left, .p-drawer-right) {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    border-radius: 0 !important;
+  }
+}
+
+/* ── Header — title · actions · close ────────────────────────────────
+   PrimeNG emits these three in the order [header template] → [title] →
+   [close]. The design wants the title first, so the order is corrected
+   here rather than by replacing PrimeNG's header (which would mean
+   re-implementing the close button, its aria-label and its part in the
+   focus trap). ── */
+:is(.p-drawer.baps-drawer-sampark, .baps-ds-sampark .p-drawer) .p-drawer-header {
+  display: flex;
+  align-items: center;
+  gap: var(--drawer-sampark-header-gap, 0.5rem);
+  padding: 0 var(--drawer-sampark-header-padding-x, 0.5rem);
+  flex: none;
+}
+
+:is(.p-drawer.baps-drawer-sampark, .baps-ds-sampark .p-drawer) .p-drawer-title {
+  order: 0;
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  font-size: var(--drawer-sampark-title-size, 1.25rem);
+  font-weight: var(--drawer-sampark-title-weight, 600);
+  line-height: var(--drawer-sampark-title-line-height, 1.3);
+  color: var(--drawer-sampark-title-color, #151414);
+}
+
+:is(.p-drawer.baps-drawer-sampark, .baps-ds-sampark .p-drawer) .baps-drawer__close {
+  order: 2;
+  flex: none;
+}
+
+:is(.p-drawer.baps-drawer-sampark, .baps-ds-sampark .p-drawer) .baps-drawer__actions {
+  order: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--drawer-sampark-header-gap, 0.5rem);
+  flex: none;
+}
+/* The gap above sits between the slot's CHILDREN, and the documented anatomy
+   (see drawer.component.ts) projects ONE `<div drawer-actions>` holding the
+   buttons — so the slot has a single child and the gap has nothing to act on.
+   Measured in the Projects filter drawer: `Clear All` ended at x=832 and
+   `Apply` began at x=833, one pixel apart, inside a slot whose computed gap
+   was a correct-looking 8px.
+
+   The wrapper is the design system's own convention rather than something a
+   consumer invented, so laying it out belongs here and not in every app that
+   follows the documented markup. Keyed on the attribute, which is the slot's
+   contract; a consumer projecting several bare buttons instead still gets the
+   slot's own gap. */
+:is(.p-drawer.baps-drawer-sampark, .baps-ds-sampark .p-drawer) .baps-drawer__actions > [drawer-actions] {
+  display: flex;
+  align-items: center;
+  gap: var(--drawer-sampark-header-gap, 0.5rem);
+}
+
+/* Divider between the actions and the close button (Figma "Divider", a
+   component instance in the header's frame): 1x16px, Mono/Borders, with 8px
+   either side.
+
+   A pseudo-element rather than a real node in the template. It is the LAST
+   flex child of the actions slot, so the slot's own 8px gap spaces it from
+   Apply and the header's 8px gap spaces it from the close — the two values
+   Figma marks — without a second element to keep in sync. It also inherits the
+   :empty collapse below for free: with nothing projected the whole slot is
+   display:none, so a drawer with no actions draws no stray hairline.
+
+   ::after does not affect :empty, which tests DOM children only. */
+:is(.p-drawer.baps-drawer-sampark, .baps-ds-sampark .p-drawer) .baps-drawer__actions::after {
+  content: '';
+  flex: none;
+  width: 1px;
+  height: 1rem;
+  background: var(--color-sampark-mono-borders, #e1e0e0);
+}
+
+/* No actions projected — collapse so it does not add a gap next to the
+   close button. Safe as :empty: its only child is an <ng-content>, which
+   leaves no DOM node when nothing is projected. */
+:is(.p-drawer.baps-drawer-sampark, .baps-ds-sampark .p-drawer) .baps-drawer__actions:empty {
+  display: none;
+}
+
+:is(.p-drawer.baps-drawer-sampark, .baps-ds-sampark .p-drawer) .p-drawer-close-button,
+:is(.p-drawer.baps-drawer-sampark, .baps-ds-sampark .p-drawer) .baps-drawer__close .p-button {
+  order: 2;
+  flex: none;
+  color: var(--color-sampark-text-secondary, #595656);
+  /* PrimeNG's icon-only button defaults to --p-button-icon-only-width (48px)
+     — the Figma close button is 32px, so pin the box directly rather than
+     retheme the shared token every icon-only button reads from. */
+  width: 32px;
+  height: 32px;
+}
+:is(.p-drawer.baps-drawer-sampark, .baps-ds-sampark .p-drawer) .p-drawer-close-button:hover,
+:is(.p-drawer.baps-drawer-sampark, .baps-ds-sampark .p-drawer) .baps-drawer__close .p-button:hover {
+  color: var(--color-sampark-text-primary, #151414);
+}
+
+/* ── Content — the only part that scrolls ────────────────────────────── */
+:is(.p-drawer.baps-drawer-sampark, .baps-ds-sampark .p-drawer) .p-drawer-content {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* ── Footer ──────────────────────────────────────────────────────────── */
+:is(.p-drawer.baps-drawer-sampark, .baps-ds-sampark .p-drawer) .p-drawer-footer {
+  flex: none;
+  padding: var(--drawer-sampark-gap, 1.5rem) 0 0;
+  border-top: 1px solid var(--drawer-sampark-border-color, #e1e0e0);
+}
+/* BapsDrawer always declares the footer template (PrimeNG only renders the
+   element when one exists), so an unused footer is an empty div — hide it
+   rather than leaving a stray rule and 24px of padding. */
+:is(.p-drawer.baps-drawer-sampark, .baps-ds-sampark .p-drawer) .p-drawer-footer:empty {
+  display: none;
+}
+
+/* ── Mask ────────────────────────────────────────────────────────────────
+   Two things make the mask awkward to skin, and both are worth knowing
+   before "simplifying" this:
+
+   1. PrimeNG appends the mask to <body>, NOT inside <baps-drawer> — it is
+      not an ancestor OR a sibling of the panel, so no selector anchored to
+      the panel can reach it.
+   2. The mask fades in via the `p-animate-overlay-mask-enter` keyframes
+      with `animation-fill-mode: forwards`. A filled animation outranks
+      every normal author declaration, so `background: …` here loses no
+      matter how specific it is — verified in-browser: the computed value
+      stayed PrimeNG's rgba(0,0,0,.32).
+
+   Custom properties are not animated, so the fix is to re-point the token
+   the keyframes read. Page-wide is handled here; the per-instance
+   (brand="sampark") case rides in on `maskStyle` from drawer.component.ts,
+   because that is the only hook that reaches the appended element. */
+.baps-ds-sampark {
+  --p-mask-background: var(--drawer-sampark-mask-background, rgba(14, 13, 13, 0.45));
+}
+
+/* ── Dark mode (PrimeNG darkModeSelector) ────────────────────────────── */
+.baps-dark :is(.p-drawer.baps-drawer-sampark, .baps-ds-sampark .p-drawer) {
+  background: var(--p-content-background, #1b1b1b);
+  color: var(--p-text-color, #e6e6e6);
+}
+.baps-dark :is(.p-drawer.baps-drawer-sampark, .baps-ds-sampark .p-drawer) .p-drawer-title {
+  color: var(--p-text-color, #e6e6e6);
+}
+.baps-dark :is(.p-drawer.baps-drawer-sampark, .baps-ds-sampark .p-drawer) .p-drawer-footer {
+  border-color: var(--p-content-border-color, rgba(255, 255, 255, 0.12));
+}

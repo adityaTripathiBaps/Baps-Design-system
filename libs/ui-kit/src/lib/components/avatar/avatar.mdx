@@ -1,0 +1,89 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as AvatarStories from './avatar.stories';
+
+<Meta of={AvatarStories} />
+
+# Avatar
+
+Represents a user or entity as initials, an icon, or an image. The BAPS wrapper components (`baps-avatar` and `baps-avatargroup`) wrap PrimeNG's `p-avatar` and `p-avatargroup` and theme them globally — this page documents that usage against the `MyBky` preset (`libs/ui-kit/src/lib/theme/baps.theme.ts`). This is a genuine cross-brand shape divergence: **MyBKY renders full circles** (`radius.mybky.pill`), while **Sampark uses `4px` bordered squares** in three type variants (Sampark Portal Figma node 13197:90187) — see `inconsistency-findings.mdx`. The Sampark skin renders live via `brand="sampark"` (per instance) or the Design system toolbar (whole preview).
+
+## Usage
+
+```html
+<!-- Initials -->
+<baps-avatar label="AT" shape="circle" />
+
+<!-- Icon — projected SVG (Lucide, stroke-width 1.75), not a PrimeNG icon string -->
+<baps-avatar shape="circle" size="l">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+       stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="8" r="5" /><path d="M20 21a8 8 0 0 0-16 0" />
+  </svg>
+</baps-avatar>
+
+<!-- Image -->
+<baps-avatar image="/assets/users/aditya.png" shape="circle" size="l" />
+
+<!-- Sampark skin (bordered square, maroon tint) -->
+<baps-avatar brand="sampark" label="AT" size="s" />
+<baps-avatar brand="sampark" label="AT" variant="secondary" />
+<baps-avatar brand="sampark" label="AT" variant="warning" />
+<baps-avatar brand="sampark" label="AT" [statusDot]="true" [iconBadge]="true" />
+
+<!-- Group with overflow -->
+<baps-avatargroup>
+  <baps-avatar image="/a.png" shape="circle" />
+  <baps-avatar image="/b.png" shape="circle" />
+  <baps-avatar label="+5" shape="circle" />
+</baps-avatargroup>
+```
+
+## Examples
+
+### Playground
+
+<Canvas of={AvatarStories.Playground} />
+
+### Types
+
+<Canvas of={AvatarStories.Types} />
+
+### Sizes
+
+<Canvas of={AvatarStories.Sizes} />
+
+### Sampark Variants
+
+<Canvas of={AvatarStories.SamparkVariants} />
+
+### Sampark Sizes
+
+<Canvas of={AvatarStories.SamparkSizes} />
+
+### Sampark Indicators
+
+<Canvas of={AvatarStories.SamparkIndicators} />
+
+### Shapes
+
+<Canvas of={AvatarStories.Shapes} />
+
+### Group
+
+<Canvas of={AvatarStories.Group} />
+
+## When Not to Use
+
+| Need | Use | Not this |
+| --- | --- | --- |
+| A count or status chip anchored to an icon/button | `baps-overlaybadge` | Avatar — it has no value slot |
+| A status expressed in words ("Active", "Pending") | `baps-tag` | Avatar with initials |
+| A presence dot under the MyBKY brand | `baps-overlaybadge` | `statusDot` / `iconBadge` — both are Sampark-only and inert under `brand="mybky"` |
+| A logo or decorative illustration | a plain `<img>` | Avatar — it forces a fixed square/circle box and, under MyBKY, stretches the image |
+| A clickable user-menu trigger | `baps-users-dropdown`, or a `baps-button` wrapping the avatar | Avatar alone — it renders no button, has no focus state and no click handling |
+
+## Accessibility
+
+- An `image` avatar should carry meaningful alt text via the surrounding context or an `ariaLabel`; PrimeNG renders the image without an inherent `alt` describing the person.
+- Initials alone are ambiguous to screen-reader users — ensure the full name is available nearby (a tooltip, adjacent label, or `ariaLabel`).
+- Decorative-only avatars (e.g. a generic icon avatar next to an already-labeled name) should not add redundant announcements.

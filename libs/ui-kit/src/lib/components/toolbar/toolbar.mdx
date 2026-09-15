@@ -1,0 +1,50 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as ToolbarStories from './toolbar.stories';
+
+<Meta of={ToolbarStories} />
+
+# Toolbar
+
+Sampark page-level toolbar: title on the left, search/actions on the right — one row, two zones. `baps-toolbar` wraps PrimeNG v21's `p-toolbar` using its real `start`/`end` template contract (`<p-toolbar><ng-template #start>…<ng-template #end>…`).
+
+## Usage
+
+```html
+<baps-toolbar title="Robbinsville">
+  <baps-button toolbar-left ariaLabel="Region" [text]="true" brand="sampark">
+    <i class="pi pi-globe"></i><i class="pi pi-chevron-down"></i>
+  </baps-button>
+
+  <input toolbar-right bapsInputText class="search-input" placeholder="Search" aria-label="Search" />
+  <baps-button toolbar-right label="Create Project" brand="sampark" />
+</baps-toolbar>
+```
+
+## Examples
+
+### Playground
+
+<Canvas of={ToolbarStories.Playground} />
+
+### Search Only
+
+<Canvas of={ToolbarStories.SearchOnly} />
+
+## When Not to Use
+
+| Need | Use instead | Why not the toolbar |
+| --- | --- | --- |
+| App-level chrome and global navigation | `baps-navbar` | This draws a page-section header, not the application shell |
+| Section navigation beneath the page header | `baps-internal-navbar` | The toolbar has no concept of an active item |
+| Switching between sibling views of one record | `p-tabs` + `bapsTabs` | |
+| Showing where the user is in a hierarchy | `baps-breadcrumb` | |
+| A cluster of related actions behind one control | `baps-split-button` | Better than crowding four buttons into `[toolbar-right]`, which is exactly what overflows first |
+| A three-zone bar with something centred | Not this component | `#center` is deliberately never declared — see [Anatomy](#anatomy) |
+| A header row inside a card or table | Plain `baps-button`s in that container | The toolbar paints page-level chrome (white fill, `border-bottom`) that reads wrong when nested |
+| A row that has to survive a phone viewport | Not this component as-is | Nothing here collapses, wraps or overflows gracefully — see below |
+
+## Accessibility
+
+- The title renders as a literal `<h1>` — if the hosting page already has its own top-level `<h1>`, using `baps-toolbar` a second time on that page produces two `h1`s; check the surrounding page structure before assuming this is always correct.
+- Icon-only buttons in the left/right slots (region switcher, filter, sort in `Playground`) all carry `ariaLabel` in the stories — follow that pattern for any new icon-only toolbar action.
+- The search input (see stories and the code example below) always pairs `placeholder` with an `aria-label` — placeholder text alone is not a reliable accessible name for screen readers. Do the same for any projected search input.

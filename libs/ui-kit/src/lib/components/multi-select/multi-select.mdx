@@ -1,0 +1,122 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as MultiSelectStories from './multi-select.stories';
+
+<Meta of={MultiSelectStories} />
+
+# MultiSelect
+
+A multi-value dropdown form field. `baps-multi-select` (`BapsMultiSelect`) wraps PrimeNG's `p-multiselect`, implements `ControlValueAccessor` so it drops straight into template-driven or reactive forms, and adds per-instance brand scoping via a host class. As with `baps-select`, the visual skin lives in `_select.scss` / `_select-sampark.scss`, not in this component's inline styles — the wrapper's own `styles` block only sets `display: block`.
+
+## Usage
+
+```ts
+import { BapsMultiSelect } from '@org/ui-kit';
+import { FormsModule } from '@angular/forms';
+
+@Component({
+  imports: [BapsMultiSelect, FormsModule],
+  template: `
+    <label for="regions">Regions</label>
+    <baps-multi-select
+      inputId="regions"
+      brand="sampark"
+      display="chip"
+      optionLabel="name"
+      optionValue="code"
+      placeholder="Select regions"
+      [options]="regions"
+      [filter]="true"
+      filterPlaceholder="Search regions"
+      [(ngModel)]="selected"
+      (selectAllChange)="onSelectAll($event)"
+    />
+  `,
+})
+export class RegionFilter {
+  regions = [
+    { name: 'India', code: 'IN' },
+    { name: 'United Kingdom', code: 'UK' },
+    { name: 'East Africa', code: 'EA' },
+  ];
+  selected: string[] = [];
+
+  onSelectAll(event: { checked: boolean }): void {
+    // React to the header checkbox if the call site needs to.
+  }
+}
+```
+
+## Examples
+
+### Default
+
+<Canvas of={MultiSelectStories.Default} />
+
+### Chips
+
+<Canvas of={MultiSelectStories.Chips} />
+
+### Filter And Select All
+
+<Canvas of={MultiSelectStories.FilterAndSelectAll} />
+
+### Grouped
+
+<Canvas of={MultiSelectStories.Grouped} />
+
+### Sizes
+
+<Canvas of={MultiSelectStories.Sizes} />
+
+### Brands
+
+<Canvas of={MultiSelectStories.Brands} />
+
+### Disabled
+
+<Canvas of={MultiSelectStories.Disabled} />
+
+## Forms
+
+A full `ControlValueAccessor`, including `setDisabledState`, so it behaves like a
+native control in either forms API.
+
+### Template Driven
+
+```html
+<baps-multi-select [options]="cities" optionLabel="name" placeholder="Select cities" [(ngModel)]="value" />
+```
+
+### Reactive Forms
+
+```html
+<baps-multi-select [options]="cities" optionLabel="name" placeholder="Select cities" formControlName="value" />
+```
+
+```ts
+form = new FormGroup({ value: new FormControl([]) });
+```
+## When Not to Use
+
+- **One value only** — use [`baps-select`](/docs/components-select--docs). The two share the same inputs, so switching is an element rename.
+- **Two or three mutually visible options** — use `baps-checkbox` in a group; a dropdown hides the choices behind a click for no gain.
+- **A picker with its own list UI** (avatars, subtitles, sections as list furniture) — that is a different pattern; see `baps-listbox`.
+- **A hierarchy** — a tree of parents and children needs TreeSelect, not a flat multi-select.
+
+## Accessibility
+
+### Screen Reader
+
+- Give the field a name: a visible `<label for>` matched to `inputId`, or `ariaLabel` / `ariaLabelledBy`.
+- Keyboard, checkbox roles, active-option tracking and the select-all announcement are PrimeNG's — this wrapper does not reimplement any of it, which is the reason to wrap rather than hand-roll.
+- `maxSelectedLabels` collapses the trigger text past a threshold; set `selectedItemsLabel` so the collapsed form still reads as a count rather than a bare number.
+- Touch targets follow the shared `@media (pointer: coarse)` rule in `_touch-targets.scss`.
+
+### Keyboard Support
+
+| Key | Function |
+| --- | --- |
+| <kbd>Tab</kbd> | Moves focus to the trigger. |
+| <kbd>Space / Enter</kbd> | Opens the panel; toggles the highlighted option when open. |
+| <kbd>Arrow Up / Down</kbd> | Moves through the options. |
+| <kbd>Esc</kbd> | Closes the panel. |

@@ -1,0 +1,162 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as FormControlsStories from './form-field.stories';
+
+<Meta of={FormControlsStories} />
+
+# Form Controls
+
+One combined catalogue of the three selection/input primitives — **FormField** (label + control + helper/error), **Listbox** (`baps-listbox` selection panels), and **Menu Item** (`baps-menu-item`, the base selectable row used inside menus and listboxes). All panels for all three live under this single component entry.
+
+---
+
+# FormField
+
+The text-input field pattern: a **label**, the **control**, and optional **helper** or **error** text. BAPS provides wrapper components and directives (such as `bapsInputText`, `baps-floatlabel`, `baps-iconfield`, `baps-inputicon`, and `baps-message`) wrapping their respective PrimeNG equivalents and themes them globally against the `MyBky` preset (`libs/ui-kit/src/lib/theme/baps.theme.ts`).
+
+MyBKY fields use the **pill radius** (`99px`) with 36px height and 1.5px hover/focus borders; Sampark uses `4px` radius, a 32/28/40px height scale, and keeps a 1px border in every state. Switch the **Design system** toolbar to Sampark to render it live — the skin lives in `libs/ui-kit/src/lib/styles/components/input/_input-sampark.scss`, which re-points the `--input-*` variables that `_input.scss` drives every state through.
+
+## Usage
+
+```html
+<div class="field">
+  <label for="email">Email</label>
+  <input
+    id="email"
+    bapsInputText
+    [(ngModel)]="email"
+    [invalid]="emailCtrl.invalid && emailCtrl.dirty"
+    placeholder="you@baps.dev"
+    aria-describedby="email-help"
+  />
+  @if (emailCtrl.invalid && emailCtrl.dirty) {
+    <baps-message id="email-help" severity="error" variant="simple" size="small">
+      Enter a valid email
+    </baps-message>
+  } @else {
+    <small id="email-help">We'll never share your address.</small>
+  }
+</div>
+```
+
+---
+
+# Listbox
+
+The BAPS Design System **Listbox** (`baps-listbox`) is a standalone Angular wrapper around PrimeNG's `p-listbox` component. It provides single or multiple selection of values from a list of options. It is highly customized to support both the **MyBKY** (pill radius, soft blue selections) and **Sampark** (flat corners, maroon branding, selected left accent bar indicator) styles.
+
+## Examples
+
+### Playground
+
+<Canvas of={FormControlsStories.Playground} />
+
+### States
+
+<Canvas of={FormControlsStories.States} />
+
+### Sizes
+
+<Canvas of={FormControlsStories.Sizes} />
+
+### Float Label Example
+
+<Canvas of={FormControlsStories.FloatLabelExample} />
+
+### With Icon
+
+<Canvas of={FormControlsStories.WithIcon} />
+
+### Sampark States
+
+<Canvas of={FormControlsStories.SamparkStates} />
+
+### Sampark Sizes
+
+<Canvas of={FormControlsStories.SamparkSizes} />
+
+### Sampark Float Label
+
+<Canvas of={FormControlsStories.SamparkFloatLabel} />
+
+### Sampark With Icon
+
+<Canvas of={FormControlsStories.SamparkWithIcon} />
+
+### Textarea Example
+
+<Canvas of={FormControlsStories.TextareaExample} />
+
+### Sampark Textarea
+
+<Canvas of={FormControlsStories.SamparkTextarea} />
+
+### Dropdowns
+
+<Canvas of={FormControlsStories.Dropdowns} />
+
+### Sampark Dropdowns
+
+<Canvas of={FormControlsStories.SamparkDropdowns} />
+
+### Sampark Dropdown Sizes
+
+<Canvas of={FormControlsStories.SamparkDropdownSizes} />
+
+### Listbox Playground
+
+<Canvas of={FormControlsStories.ListboxPlayground} />
+
+### Multi Select With Checkboxes
+
+<Canvas of={FormControlsStories.MultiSelectWithCheckboxes} />
+
+### With Filtering
+
+<Canvas of={FormControlsStories.WithFiltering} />
+
+### Grouped
+
+<Canvas of={FormControlsStories.Grouped} />
+
+### Rich Template Panel List
+
+<Canvas of={FormControlsStories.RichTemplatePanelList} />
+
+### Custom Templates Using P Template
+
+<Canvas of={FormControlsStories.CustomTemplatesUsingPTemplate} />
+
+### Disabled And Invalid
+
+<Canvas of={FormControlsStories.DisabledAndInvalid} />
+
+### Menu Item Playground
+
+<Canvas of={FormControlsStories.MenuItemPlayground} />
+
+### All Variants
+
+<Canvas of={FormControlsStories.AllVariants} />
+
+### All Variants My BKY
+
+<Canvas of={FormControlsStories.AllVariantsMyBKY} />
+
+## When Not to Use
+
+| Need | Use | Not this |
+| --- | --- | --- |
+| A single on/off value in a form | `baps-checkbox` | A text input with "yes"/"no" |
+| A setting that applies the moment it is flipped | `baps-toggleswitch` | `baps-checkbox`, which implies a save step |
+| A number inside a known range | `baps-slider` | A numeric input with min/max validation |
+| Picking a person from the directory | `baps-users-dropdown` | `baps-listbox` of names — it has no avatar/role row |
+| A submit-level summary of everything that failed | `baps-alert` at the top of the form | A stack of `baps-message` elements standing in for one |
+| Explaining a field on hover only | `bapsTooltip` | Helper text, which is always visible and adds height |
+| Displaying a value the user cannot change | Plain text, or `baps-tag` for a status | A disabled input — disabled controls are skipped by screen readers |
+
+## Accessibility
+
+- Every field needs a programmatic label: a `<label for>` matching the input `id`, a `baps-floatlabel`, or an `ariaLabel`. A `placeholder` is **not** a label — it disappears on input.
+- Associate error text with the field via `aria-describedby` pointing at the message element, so screen readers announce the error when the field gains focus.
+- Indicate required fields in the label text (or `aria-required`), not by color alone.
+- Don't disable a field to communicate "not yet" — disabled controls are skipped by screen readers; use read-only or contextual messaging instead.
