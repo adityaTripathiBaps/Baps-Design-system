@@ -757,3 +757,67 @@ paragraph of `Avatar` says MyBKY renders circles and Sampark bordered squares �
 that stays visible in both brands, because it explains the component rather than
 demonstrating one brand's version of it. Only the blocks that render a brand's
 examples, and the sentences attached to those blocks, go inside `<BrandOnly>`.
+
+## Some components render Sampark colours under MyBKY, because they have no MyBKY branch
+
+Found by a colour-based sweep of every docs page: instead of looking for the
+word "Sampark" in a heading, it reads the computed colours of every VISIBLE
+element inside a rendered canvas and flags a brand's signature hues appearing
+under the other brand. That catches what a name-based check cannot — a section
+called "All Variants" that renders entirely in maroon says nothing about its
+brand in its title.
+
+This is NOT the docs-scoping problem, which is fixed. Nothing is pinned in these
+stories; the components themselves paint Sampark tokens unconditionally.
+
+### The signature
+
+A component whose styles reference `--color-sampark-*` but contain no
+brand-scoped selector (`.baps-sampark` / `.baps-ds-sampark`) has no MyBKY branch
+at all, so it renders Sampark whichever brand is selected:
+
+| component | `--color-sampark-*` refs | brand-scoped selectors | meta tags |
+| --- | --- | --- | --- |
+| `baps-indicator` | 10 | **0** | `['ds:mybky', 'ds:sampark']` |
+| `baps-menu-item` | 8 | **0** | (no stories file of its own) |
+| `baps-file-upload` | 1 | 0 | `['ds:sampark']` |
+| `baps-users-dropdown` | 9 | 0 | `['ds:sampark']` |
+
+The last two are Sampark-only components by design — their meta says so, and the
+sidebar filter hides them under MyBKY. The first two are the bug: `baps-indicator`
+advertises BOTH brands and delivers one.
+
+`indicator.component.ts:137`
+
+```css
+--baps-indicator-fill: var(--color-sampark-primary-default, #c96868);
+```
+
+`baps-alert` is a partial case: 33 Sampark references against 16 brand-scoped
+selectors, so most of it switches, but the card action does not —
+`alert.component.ts:388-389` and `:524` paint `primary-0`, `primary-20` and
+`primary-60` with no brand branch, which is why a MyBKY page shows a maroon card
+action.
+
+### What this affects
+
+The pages where it currently shows: `components-indicator--docs` ("Icon Badge"),
+`components-alert--docs` ("Card"), and `components-form-controls--docs`
+("Menu Item Playground", "Custom Templates Using P Template", and the Sampark
+side of "Rich Template Panel List"). A MyBKY user reaches all of these from the
+MyBKY sidebar and sees maroon.
+
+`components-icon--docs` ("Inherits Colour") is NOT this bug and needs no fix: the
+story hardcodes `#c96868`, `#5f78b8` and `#089152` as three arbitrary swatches to
+demonstrate that the icon inherits its parent's `color`. Two of them happen to
+equal brand colours. Worth swapping for non-brand values one day, purely to stop
+it tripping the sweep.
+
+### Not fixed here
+
+The fix is a component/SCSS change: give each unscoped rule a MyBKY value and
+scope the Sampark one, the way `baps-chip` and `baps-pagination` already do.
+That is a design-system change affecting what consuming apps render, well
+outside a story- and docs-level migration, and it needs its own approval and its
+own baseline review — every one of these components has visual baselines that
+would move.
