@@ -1,4 +1,5 @@
 import { Meta, Canvas } from '@storybook/blocks';
+import { BrandOnly } from '@baps/docs-blocks';
 import * as ChipStories from './chip.stories';
 
 <Meta of={ChipStories} />
@@ -153,9 +154,13 @@ affordance.
 
 <Canvas of={ChipStories.Group} />
 
+<BrandOnly brand="comparison">
+
 ### Brands
 
 <Canvas of={ChipStories.Brands} />
+
+</BrandOnly>
 
 ### Matrix
 

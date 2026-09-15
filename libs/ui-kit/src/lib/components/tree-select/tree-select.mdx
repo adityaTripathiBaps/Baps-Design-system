@@ -1,4 +1,5 @@
 import { Meta, Canvas } from '@storybook/blocks';
+import { BrandOnly } from '@baps/docs-blocks';
 import * as TreeSelectStories from './tree-select.stories';
 
 <Meta of={TreeSelectStories} />
@@ -67,9 +68,13 @@ export class LocationPicker {
 
 <Canvas of={TreeSelectStories.Sizes} />
 
+<BrandOnly brand="comparison">
+
 ### Brands
 
 <Canvas of={TreeSelectStories.Brands} />
+
+</BrandOnly>
 
 ### Disabled
 

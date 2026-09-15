@@ -1,5 +1,6 @@
 import { Meta } from '@storybook/blocks';
 import {
+  BrandOnly,
   ResourceTabs,
   DemoCard,
   CodeBlock,
@@ -62,6 +63,8 @@ The wrapper also carries a second visual skin — `brand="sampark"` — implemen
   of={ButtonStories.States}
 />
 
+<BrandOnly brand="sampark">
+
 <DemoCard
   title="Sampark Variants"
   description="The Sampark Portal set: maroon primary, bordered secondary, ghost and link."
@@ -85,6 +88,8 @@ The wrapper also carries a second visual skin — `brand="sampark"` — implemen
   description="The same five states under the Sampark skin."
   of={ButtonStories.SamparkStates}
 />
+
+</BrandOnly>
 
 ## API
 

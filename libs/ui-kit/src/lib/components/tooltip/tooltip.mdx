@@ -1,4 +1,5 @@
 import { Meta, Canvas } from '@storybook/blocks';
+import { BrandOnly } from '@baps/docs-blocks';
 import * as TooltipStories from './tooltip.stories';
 
 <Meta of={TooltipStories} />
@@ -28,9 +29,13 @@ Informational tooltip on hover/focus. `bapsTooltip` is a host directive wrapping
 
 <Canvas of={TooltipStories.Default} />
 
+<BrandOnly brand="sampark">
+
 ### Sampark Rich Card
 
 <Canvas of={TooltipStories.SamparkRichCard} />
+
+</BrandOnly>
 
 ## When Not to Use
 

@@ -255,3 +255,78 @@ export const KeyboardTable = ({ rows }: { rows: { key: string; action: string }[
     ))}
   </Table>
 );
+
+/* ── BrandOnly ─────────────────────────────────────────────────────────────
+   One brand at a time, on docs pages.
+
+   The sidebar filter in manager.tsx hides stories that do not belong to the
+   selected brand. A docs page is not the sidebar: MDX mounts whatever
+   `<Canvas of={…}>` it names, filter or no filter, so a Sampark-pinned example
+   kept rendering on a MyBKY page — and, worse, the PROSE explaining it kept
+   rendering too, leaving a paragraph about Sampark above a MyBKY canvas.
+
+   Wrap both the prose and the canvas in one of these and the pair travels
+   together:
+
+       <BrandOnly brand="sampark">
+         Text about the Sampark behaviour…
+         <Canvas of={CheckboxStories.Sampark} />
+       </BrandOnly>
+
+   `brand="comparison"` is for content that shows BOTH brands side by side.
+   It stays hidden until the "Show brand comparisons" toolbar toggle is on,
+   matching how the sidebar treats `ds:comparison` stories.
+
+   The switching itself is CSS, in preview-head.html — no JS, no globals
+   subscription, and it reacts to the toolbar the moment the class on <body>
+   changes. This component only marks the block. */
+export const BrandOnly = ({
+  brand,
+  children,
+}: {
+  brand: 'mybky' | 'sampark' | 'comparison';
+  children: React.ReactNode;
+}) => {
+  const ref = React.useRef<HTMLDivElement>(null);
+
+  // The CSS above hides the BLOCK. It cannot hide the block's entries in the
+  // "On this page" list, because a `.toc-link` lives in a different branch of
+  // the document from the heading it points at — there is no selector that
+  // relates them. Left alone, a MyBKY page hid seven Sampark sections and then
+  // listed all seven in its table of contents.
+  //
+  // So each block syncs its own entries: read the ids of the headings inside
+  // it, find the `.toc-link` whose href matches, and hide that list item
+  // exactly when the block itself is hidden. Keyed off the rendered display
+  // value rather than the brand prop, so it stays correct no matter which rule
+  // did the hiding.
+  React.useEffect(() => {
+    const sync = () => {
+      const el = ref.current;
+      if (!el) return;
+      const hidden = getComputedStyle(el).display === 'none';
+      el.querySelectorAll<HTMLElement>('h1, h2, h3, h4, h5, h6').forEach((h) => {
+        if (!h.id) return;
+        const link = document.querySelector(`a.toc-link[href="#${CSS.escape(h.id)}"]`);
+        const item = link?.closest('li');
+        if (item instanceof HTMLElement) item.hidden = hidden;
+      });
+    };
+
+    sync();
+    // The toolbar switch re-renders the preview and re-toggles the brand class
+    // on <body>/<html>; the table of contents is rendered by Storybook and may
+    // arrive after this effect. Watching both covers the two orderings without
+    // polling.
+    const observer = new MutationObserver(sync);
+    observer.observe(document.body, { attributes: true, attributeFilter: ['class', 'data-baps-comparison'] });
+    observer.observe(document.body, { childList: true, subtree: true });
+    return () => observer.disconnect();
+  }, [brand]);
+
+  return (
+    <div ref={ref} data-brand={brand}>
+      {children}
+    </div>
+  );
+};

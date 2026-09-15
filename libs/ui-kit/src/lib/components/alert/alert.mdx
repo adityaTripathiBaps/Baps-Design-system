@@ -1,5 +1,6 @@
 import { Meta } from '@storybook/blocks';
 import {
+  BrandOnly,
   ResourceTabs,
   DemoCard,
   CodeBlock,
@@ -83,11 +84,15 @@ An inline notification banner: a coloured accent bar, a severity icon, text, and
   of={AlertStories.CardParts}
 />
 
+<BrandOnly brand="sampark">
+
 <DemoCard
   title="Sampark"
   description="The same component under the Sampark brand."
   of={AlertStories.Sampark}
 />
+
+</BrandOnly>
 
 ## API
 

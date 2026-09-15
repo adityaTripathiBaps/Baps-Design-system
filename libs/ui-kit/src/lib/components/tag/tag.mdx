@@ -1,4 +1,5 @@
 import { Meta, Canvas } from '@storybook/blocks';
+import { BrandOnly } from '@baps/docs-blocks';
 import * as TagStories from './tag.stories';
 
 <Meta of={TagStories} />
@@ -40,6 +41,8 @@ A labelled status or category chip — event status, member group, role code. Th
 
 <Canvas of={TagStories.Sizes} />
 
+<BrandOnly brand="sampark">
+
 ### Sampark Severities
 
 <Canvas of={TagStories.SamparkSeverities} />
@@ -48,17 +51,31 @@ A labelled status or category chip — event status, member group, role code. Th
 
 <Canvas of={TagStories.SamparkSizes} />
 
+</BrandOnly>
+
+<BrandOnly brand="comparison">
+
 ### Chevron
 
 <Canvas of={TagStories.Chevron} />
+
+</BrandOnly>
+
+<BrandOnly brand="comparison">
 
 ### Trailing Action
 
 <Canvas of={TagStories.TrailingAction} />
 
+</BrandOnly>
+
+<BrandOnly brand="comparison">
+
 ### Icon Only
 
 <Canvas of={TagStories.IconOnly} />
+
+</BrandOnly>
 
 ### With Icon
 

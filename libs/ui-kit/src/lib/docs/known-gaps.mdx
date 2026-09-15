@@ -727,3 +727,33 @@ page-wide selector in every component's Sampark block and emitting a
 `.baps-mybky` host class for `brand="mybky"` — a design-system-wide change to
 component styles, well outside a story-level migration, and one that alters what
 consuming apps render.
+
+## Brand scoping applies to component demos, not to system-reference docs
+
+The toolbar's Design system switch shows one brand at a time: the sidebar filters
+out the other brand's stories, and on a component's docs page `<BrandOnly>` hides
+the other brand's examples together with the prose describing them.
+
+Four pages deliberately do NOT follow that rule, and a sweep will report them as
+"leaks" if the distinction is not understood:
+
+- `Foundations / Colour` — the palette reference. It documents both ramps; a
+  half-hidden palette is not a palette.
+- `Foundations / Audit / Inconsistency findings` — its whole subject is where the
+  two brands diverge.
+- `Patterns / Single-brand project setup` — a guide for wiring an app to one
+  brand, which has to name both to explain the choice.
+- `Guidelines / Known gaps` — this page. Several entries are about cross-brand
+  behaviour and are addressed to whoever maintains the system.
+
+The line is what the content IS, not whether it mentions a brand name. A docs
+page that DEMONSTRATES a component in a brand is scoped; a page that DOCUMENTS
+the system, including how its brands differ, is not. The audience differs too: a
+component page is read by someone building in one brand, these four by someone
+working on the design system itself.
+
+Explanatory prose on a component page follows the same test. The opening
+paragraph of `Avatar` says MyBKY renders circles and Sampark bordered squares —
+that stays visible in both brands, because it explains the component rather than
+demonstrating one brand's version of it. Only the blocks that render a brand's
+examples, and the sentences attached to those blocks, go inside `<BrandOnly>`.

@@ -1,4 +1,5 @@
 import { Meta, Canvas } from '@storybook/blocks';
+import { BrandOnly } from '@baps/docs-blocks';
 import * as PaginationStories from './pagination.stories';
 
 <Meta of={PaginationStories} />
@@ -30,9 +31,13 @@ Unlike every other component in this library, this one **does not wrap** PrimeNG
 
 <Canvas of={PaginationStories.Default} />
 
+<BrandOnly brand="mybky">
+
 ### My BKY
 
 <Canvas of={PaginationStories.MyBKY} />
+
+</BrandOnly>
 
 ### Mid Range
 

@@ -1,4 +1,5 @@
 import { Meta, Canvas } from '@storybook/blocks';
+import { BrandOnly } from '@baps/docs-blocks';
 import * as SegmentedStories from './segmented.stories';
 
 <Meta of={SegmentedStories} />
@@ -31,9 +32,13 @@ Two to five mutually exclusive options, all visible at once. `baps-segmented` wr
 
 <Canvas of={SegmentedStories.ObjectOptions} />
 
+<BrandOnly brand="comparison">
+
 ### Brands
 
 <Canvas of={SegmentedStories.Brands} />
+
+</BrandOnly>
 
 ### Disabled
 

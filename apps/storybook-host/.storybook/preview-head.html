@@ -34,3 +34,40 @@
     }
   })();
 </script>
+
+<!--
+  One brand at a time on DOCS pages.
+
+  The sidebar filter (manager.tsx) cannot reach a docs page: MDX mounts every
+  `<Canvas of={…}>` it names regardless of the selected brand, and the prose
+  around it mounts too. So a MyBKY page kept showing a Sampark example AND the
+  paragraph describing it.
+
+  `<BrandOnly brand="…">` (see .storybook/blocks) wraps a brand's prose and its
+  canvas in one `[data-brand]` element; these rules decide which survives.
+
+  SCOPED TO `.sbdocs-wrapper`, AND THAT SCOPE IS THE WHOLE SAFETY ARGUMENT.
+  Measured before writing this: in story mode `.sbdocs-wrapper`, `.sbdocs` and
+  `.docs-story` all return 0 elements, and in docs mode they return 1, 6 and 4.
+  So nothing here can match inside a story iframe, which is what the 536 visual
+  baselines screenshot. (`#storybook-docs` would NOT have been safe — it is
+  present in both modes.)
+
+  The brand class is read as an ANCESTOR so it matches whether it sits on
+  <html> (stamped from the URL before first paint) or <body> (toggled live by
+  the decorator on a toolbar switch).
+-->
+<style>
+  /* MyBKY is the unscoped default: hide the Sampark-only blocks. */
+  .sbdocs-wrapper [data-brand='sampark'] { display: none; }
+
+  /* Sampark page: the mirror image. */
+  .baps-ds-sampark .sbdocs-wrapper [data-brand='sampark'] { display: block; }
+  .baps-ds-sampark .sbdocs-wrapper [data-brand='mybky'] { display: none; }
+
+  /* Blocks that show both brands at once stay hidden until the toolbar's
+     "Show brand comparisons" toggle is on — the same rule the sidebar applies
+     to `ds:comparison` stories, so the two surfaces agree. */
+  .sbdocs-wrapper [data-brand='comparison'] { display: none; }
+  body[data-baps-comparison='on'] .sbdocs-wrapper [data-brand='comparison'] { display: block; }
+</style>

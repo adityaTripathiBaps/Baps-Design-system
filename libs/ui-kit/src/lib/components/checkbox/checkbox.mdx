@@ -1,4 +1,5 @@
 import { Meta, Canvas } from '@storybook/blocks';
+import { BrandOnly } from '@baps/docs-blocks';
 import * as CheckboxStories from './checkbox.stories';
 
 <Meta of={CheckboxStories} />
@@ -36,13 +37,16 @@ A form checkbox control. `baps-checkbox` wraps PrimeNG's `p-checkbox` and implem
 The stories above carry no `brand`, so they follow the toolbar's **Design
 System** switch — flip it to see MyBKY or Sampark.
 
-This last one pins `brand="sampark"`, the per-instance override for a Sampark
-control on a MyBKY page. Compare its **Disabled checked** row against the same
-row above under MyBKY: Sampark fills that box solid Mono/40 with a white tick,
-MyBKY keeps the pale Mono/20 ground and greys the tick. That difference is
-intentional in both Figma frames.
+<BrandOnly brand="sampark">
+
+This one pins `brand="sampark"`, the per-instance override for a Sampark
+control. Its **Disabled checked** row fills the box solid Mono/40 with a white
+tick, where MyBKY keeps the pale Mono/20 ground and greys the tick — a
+difference that is intentional in both Figma frames.
 
 <Canvas of={CheckboxStories.Sampark} />
+
+</BrandOnly>
 
 ## Forms
 

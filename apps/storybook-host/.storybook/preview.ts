@@ -394,6 +394,17 @@ const withDesignSystem: Decorator = (storyFn, context) => {
   const preset = withSurface(branded, surface);
   if (typeof document !== 'undefined') {
     document.body.classList.toggle('baps-ds-sampark', ds === 'sampark');
+    // Also on <html>. preview-head.html adds it there from the URL so the first
+    // painted frame is already the right brand; without this line a LIVE switch
+    // (which re-renders without reloading the iframe) would leave that initial
+    // class behind and the two elements would disagree. The docs-page brand CSS
+    // keys off the class as an ancestor, so a stale one on <html> would show the
+    // wrong brand's prose.
+    document.documentElement.classList.toggle('baps-ds-sampark', ds === 'sampark');
+    // Comparison blocks on docs pages read this, the same way the sidebar
+    // filter reads the `comparison` global — see BrandOnly in .storybook/blocks.
+    document.body.dataset['bapsComparison'] =
+      context.globals['comparison'] === true ? 'on' : 'off';
     // RTL global, driven by the Theme settings popover (see manager.tsx). Dark
     // mode is NOT handled here — storybook-dark-mode owns the `.baps-dark` class
     // (PrimeNG's darkModeSelector, configured below) across chrome + preview.

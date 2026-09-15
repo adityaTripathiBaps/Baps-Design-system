@@ -1,4 +1,5 @@
 import { Meta, Canvas } from '@storybook/blocks';
+import { BrandOnly } from '@baps/docs-blocks';
 import * as SplitButtonStories from './split-button.stories';
 
 <Meta of={SplitButtonStories} />
@@ -33,13 +34,21 @@ A primary action button paired with a dropdown of secondary actions. `baps-split
 
 <Canvas of={SplitButtonStories.Playground} />
 
+<BrandOnly brand="comparison">
+
 ### With Count
 
 <Canvas of={SplitButtonStories.WithCount} />
 
+</BrandOnly>
+
+<BrandOnly brand="mybky">
+
 ### My BKY
 
 <Canvas of={SplitButtonStories.MyBKY} />
+
+</BrandOnly>
 
 ### Matrix
 

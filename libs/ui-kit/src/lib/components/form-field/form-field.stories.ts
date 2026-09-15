@@ -1037,6 +1037,12 @@ const menuItemMatrix = (brand: 'mybky' | 'sampark') => ({
 });
 
 export const AllVariants: Story = {
+  // Sampark-only, and not obviously so: the brand is an ARGUMENT to
+  // menuItemMatrix, not a `brand=` attribute or a story arg, so neither the
+  // pin scans nor the docs scan saw it. The name does not say Sampark either.
+  // Tagged so the sidebar hides it under MyBKY, the same as every other
+  // single-brand story.
+  tags: ['!ds:mybky'],
   name: 'Menu Item — All Variants',
   parameters: { controls: { disable: true } },
   render: () => menuItemMatrix('sampark'),

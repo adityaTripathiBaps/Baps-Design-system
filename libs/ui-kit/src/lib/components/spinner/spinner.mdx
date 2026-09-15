@@ -1,4 +1,5 @@
 import { Meta, Canvas } from '@storybook/blocks';
+import { BrandOnly } from '@baps/docs-blocks';
 import * as SpinnerStories from './spinner.stories';
 
 <Meta of={SpinnerStories} />
@@ -27,9 +28,13 @@ A loading indicator, indeterminate or determinate. `baps-spinner` wraps PrimeNGâ
 
 <Canvas of={SpinnerStories.DeterminateSteps} />
 
+<BrandOnly brand="comparison">
+
 ### Sizes
 
 <Canvas of={SpinnerStories.Sizes} />
+
+</BrandOnly>
 
 ## When Not to Use
 

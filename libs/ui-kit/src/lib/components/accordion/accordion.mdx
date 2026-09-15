@@ -1,4 +1,5 @@
 import { Meta, Canvas } from '@storybook/blocks';
+import { BrandOnly } from '@baps/docs-blocks';
 import * as AccordionStories from './accordion.stories';
 
 <Meta of={AccordionStories} />
@@ -74,9 +75,13 @@ export class EventFilters {
 
 <Canvas of={AccordionStories.Disabled} />
 
+<BrandOnly brand="comparison">
+
 ### Brands
 
 <Canvas of={AccordionStories.Brands} />
+
+</BrandOnly>
 
 ## When Not to Use
 

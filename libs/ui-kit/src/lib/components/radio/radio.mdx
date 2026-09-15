@@ -1,4 +1,5 @@
 import { Meta, Canvas } from '@storybook/blocks';
+import { BrandOnly } from '@baps/docs-blocks';
 import * as RadioStories from './radio.stories';
 
 <Meta of={RadioStories} />
@@ -33,11 +34,15 @@ A single choice from a small set. `baps-radio` wraps PrimeNG’s `p-radiobutton`
 The stories above carry no `brand`, so they follow the toolbar's **Design
 System** switch — flip it to see MyBKY or Sampark.
 
-This last one pins `brand="sampark"` instead, which is the per-instance
-override: a Sampark control sitting on a MyBKY page. There is no mirror of it,
-because MyBKY is the global preset and so has no `dt` to pin.
+<BrandOnly brand="sampark">
+
+This one pins `brand="sampark"` instead, which is the per-instance override.
+There is no mirror of it, because MyBKY is the global preset and so has no `dt`
+to pin.
 
 <Canvas of={RadioStories.Sampark} />
+
+</BrandOnly>
 
 ## Forms
 

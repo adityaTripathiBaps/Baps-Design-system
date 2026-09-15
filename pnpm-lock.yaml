@@ -159,6 +159,9 @@ importers:
       autoprefixer:
         specifier: ^10.4.0
         version: 10.5.2(postcss@8.5.16)
+      chromatic:
+        specifier: ^18.8.1
+        version: 18.8.1
       css-loader:
         specifier: ^7.1.4
         version: 7.1.4(@rspack/core@1.6.8(@swc/helpers@0.5.18))(webpack@5.105.2(@swc/core@1.15.8(@swc/helpers@0.5.18))(esbuild@0.25.12)(postcss@8.5.16))
@@ -4821,6 +4824,22 @@ packages:
       '@chromatic-com/cypress':
         optional: true
       '@chromatic-com/playwright':
+        optional: true
+
+  chromatic@18.8.1:
+    resolution: {integrity: sha512-ATJyUUuUrK1GA3bPNHPHgwQtqw/cSapC/hReF53EBO0HT0yYCl5jEeWBQP64+bAlZTK7zTSjzKe4109qbdKTvQ==}
+    engines: {node: '>=22.0.0'}
+    hasBin: true
+    peerDependencies:
+      '@chromatic-com/cypress': ^0.*.* || ^1.0.0
+      '@chromatic-com/playwright': ^0.*.* || ^1.0.0
+      '@chromatic-com/vitest': ^0.*.* || ^1.0.0
+    peerDependenciesMeta:
+      '@chromatic-com/cypress':
+        optional: true
+      '@chromatic-com/playwright':
+        optional: true
+      '@chromatic-com/vitest':
         optional: true
 
   chrome-trace-event@1.0.4:
@@ -14840,6 +14859,10 @@ snapshots:
   chownr@3.0.0: {}
 
   chromatic@11.29.0: {}
+
+  chromatic@18.8.1:
+    dependencies:
+      semver: 7.8.5
 
   chrome-trace-event@1.0.4: {}
 

@@ -1,4 +1,5 @@
 import { Meta, Canvas } from '@storybook/blocks';
+import { BrandOnly } from '@baps/docs-blocks';
 import * as AvatarStories from './avatar.stories';
 
 <Meta of={AvatarStories} />
@@ -52,6 +53,8 @@ Represents a user or entity as initials, an icon, or an image. The BAPS wrapper 
 
 <Canvas of={AvatarStories.Sizes} />
 
+<BrandOnly brand="sampark">
+
 ### Sampark Variants
 
 <Canvas of={AvatarStories.SamparkVariants} />
@@ -63,6 +66,8 @@ Represents a user or entity as initials, an icon, or an image. The BAPS wrapper 
 ### Sampark Indicators
 
 <Canvas of={AvatarStories.SamparkIndicators} />
+
+</BrandOnly>
 
 ### Shapes
 

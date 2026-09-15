@@ -1,4 +1,5 @@
 import { Meta, Canvas } from '@storybook/blocks';
+import { BrandOnly } from '@baps/docs-blocks';
 import * as ToggleSwitchStories from './toggle-switch.stories';
 
 <Meta of={ToggleSwitchStories} />
@@ -40,6 +41,8 @@ An instant on/off control — the change takes effect immediately, with no separ
 
 <Canvas of={ToggleSwitchStories.Sizes} />
 
+<BrandOnly brand="sampark">
+
 ### Sampark States
 
 <Canvas of={ToggleSwitchStories.SamparkStates} />
@@ -47,6 +50,8 @@ An instant on/off control — the change takes effect immediately, with no separ
 ### Sampark Sizes
 
 <Canvas of={ToggleSwitchStories.SamparkSizes} />
+
+</BrandOnly>
 
 ### With Label
 

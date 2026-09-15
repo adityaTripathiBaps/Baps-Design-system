@@ -1,4 +1,5 @@
 import { Meta, Canvas } from '@storybook/blocks';
+import { BrandOnly } from '@baps/docs-blocks';
 import * as DatePickerStories from './datepicker.stories';
 
 <Meta of={DatePickerStories} />
@@ -28,9 +29,13 @@ needs no per-instance attribute at all.
 
 <Canvas of={DatePickerStories.Range} />
 
+<BrandOnly brand="mybky">
+
 ### Range My BKY
 
 <Canvas of={DatePickerStories.RangeMyBKY} />
+
+</BrandOnly>
 
 ### Overlay
 
