@@ -216,7 +216,7 @@ const WIZARD_STEPS: RailStep[] = [
  * green, which is what the Figma frame shows. See `classesFor()`.
  */
 const meta: Meta<StepperRailDemo> = {
-  title: 'Components/Layout/Stepper',
+  title: 'Components/Organisms/Stepper',
   // Pinned so the categorised title above does not move the docs URL.
   id: 'components-stepper',
   // Design-system availability — drives the sidebar filter in .storybook/manager.tsx.

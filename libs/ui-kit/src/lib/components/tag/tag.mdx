@@ -1,5 +1,5 @@
 import { Meta, Canvas } from '@storybook/blocks';
-import { BrandOnly } from '@baps/docs-blocks';
+import { BrandOnly, PropsTable } from '@baps/docs-blocks';
 import * as TagStories from './tag.stories';
 
 <Meta of={TagStories} />
@@ -80,6 +80,12 @@ A labelled status or category chip — event status, member group, role code. Th
 ### With Icon
 
 <Canvas of={TagStories.WithIcon} />
+
+## API
+
+Inputs, outputs and their types, read from the component's own source.
+
+<PropsTable of={TagStories} />
 
 ## When Not to Use
 

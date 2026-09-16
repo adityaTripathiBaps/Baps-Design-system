@@ -70,7 +70,7 @@ const TEMPLATE = `
 type Args = BapsTableColumnConfig & Record<'onClosed', (event?: unknown) => void>;
 
 const meta: Meta<Args> = {
-  title: 'Components/Data/TableColumnConfig',
+  title: 'Components/Organisms/Table Column Config',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-data-tablecolumnconfig.
   id: 'components-tablecolumnconfig',

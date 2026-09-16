@@ -17,7 +17,7 @@ import { BapsTabs } from './tabs.directive';
 type TabsArgs = BapsTabs & { value: string };
 
 const meta: Meta<TabsArgs> = {
-  title: 'Components/Layout/Tabs',
+  title: 'Components/Molecules/Tabs',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-panel-tabs.
   id: 'components-tabs',

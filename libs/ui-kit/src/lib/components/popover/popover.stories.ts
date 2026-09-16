@@ -23,7 +23,7 @@ import { BapsButton } from '../button/button.component';
  * host-scoped.
  */
 const meta: Meta<BapsPopover> = {
-  title: 'Components/Overlay/Popover',
+  title: 'Components/Molecules/Popover',
   // Pinned so the categorised title above does not move the docs URL.
   id: 'components-popover',
   // Design-system availability — drives the sidebar filter in .storybook/manager.tsx.

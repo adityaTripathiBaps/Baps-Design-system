@@ -29,7 +29,7 @@ const MODEL: MenuItem[] = [
 ];
 
 const meta: Meta<SplitButtonArgs> = {
-  title: 'Components/Button/SplitButton',
+  title: 'Components/Molecules/Split Button',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-button-splitbutton.
   id: 'components-splitbutton',

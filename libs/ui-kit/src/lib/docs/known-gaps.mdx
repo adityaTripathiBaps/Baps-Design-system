@@ -14,7 +14,7 @@ checked by a different tool and read by a different audience.
 
 ## Stepper rail visual baselines capture the rail as empty
 
-**Screenshot harness limitation. Runtime is fine.** The 11 `Components/Layout/Stepper`
+**Screenshot harness limitation. Runtime is fine.** The 11 `Components/Organisms/Stepper`
 visual baselines pin a grey rounded bar where the icon rail should be, followed by
 the Back/Next buttons — no slots, no icons, no labels.
 
@@ -802,10 +802,17 @@ action.
 ### What this affects
 
 The pages where it currently shows: `components-indicator--docs` ("Icon Badge"),
-`components-alert--docs` ("Card"), and `components-form-controls--docs`
-("Menu Item Playground", "Custom Templates Using P Template", and the Sampark
-side of "Rich Template Panel List"). A MyBKY user reaches all of these from the
-MyBKY sidebar and sees maroon.
+`components-alert--docs` ("Card"), `components-molecules-menu-item--docs`
+("Playground") and `components-molecules-listbox--docs` ("Custom Templates
+Using P Template", and the Sampark side of "Rich Template Panel List"). A MyBKY
+user reaches all of these from the MyBKY sidebar and sees maroon.
+
+The Listbox page leaks the other way too: under Sampark, `.menu-item__bar` —
+the selected-row accent — paints the MyBKY blue `rgb(95, 120, 184)`. Same
+root cause, opposite direction; `baps-menu-item` has one hardcoded skin rather
+than a brand branch. Splitting Listbox and Menu Item onto their own pages is
+what made this visible: both used to sit behind the merged Form Controls entry,
+which was allow-listed as a whole.
 
 `components-icon--docs` ("Inherits Colour") is NOT this bug and needs no fix: the
 story hardcodes `#c96868`, `#5f78b8` and `#089152` as three arbitrary swatches to
@@ -821,3 +828,36 @@ That is a design-system change affecting what consuming apps render, well
 outside a story- and docs-level migration, and it needs its own approval and its
 own baseline review — every one of these components has visual baselines that
 would move.
+
+## Deferred by decision — five findings from the atomic-design reorg
+
+The Atomic Design reorganisation (Components split into Atoms / Molecules /
+Organisms, one documentation page per component) surfaced five issues. **All
+five were reviewed and deliberately deferred** — each is its own decision with
+its own blast radius, and none of them is a story- or docs-level change. They
+are recorded here so the reorg does not have to be re-audited to rediscover
+them.
+
+| # | Finding | Call | Blast radius |
+| --- | --- | --- | --- |
+| 1 | `components-form-controls` id vs the page now named **Input** | Leave as is | Renaming the id moves 24 story ids and their visual baselines. Not worth a baseline rewrite for a cosmetic match. |
+| 2 | `baps-table-column-config` / `baps-table-sort-config` duplication | Merge, or move both to Patterns — later | Two near-identical drawer + drag-and-drop + list components. An API change either way. |
+| 3 | 583 hardcoded hex literals in component `styles` | Its own token-migration workstream | **Critical for the Theme builder**: a literal does not follow the theme picker, so any component built from them is inert under a re-theme. Start with `baps-chip` (82 literals, the worst). |
+| 4 | `baps-menu-item` has no MyBKY branch | Small fix, separate approval | Touches component SCSS and moves baselines. Part of the same cluster as `baps-indicator` — see the section above. |
+| 5 | `baps-progress-bar`: 4 axe violations, 2 critical | Priority a11y fix, separate | `aria-allowed-attr`, `aria-valid-attr-value` (both critical), `aria-progressbar-name`, plus `button-name` on `baps-split-button`. |
+
+### Why they are not bundled
+
+The reorg changed no component `.ts`, no `.scss`, no token, no public API, no
+story id and no visual baseline — that is what made it safe to land in one go.
+Each of the five above breaks at least one of those guarantees, so bundling any
+of them would have cost the reorg its "no regression possible" property. They
+are sequenced after the code-viewer pilot.
+
+### What the reorg did fix, for the record
+
+`baps-menu-item`'s two-directional colour leak (#4) was **invisible** before the
+split: Listbox and Menu Item lived behind the merged "Form Controls" entry,
+which `tools/check-brand-scope.mjs` allow-listed as a single page. Giving each
+its own page is what exposed it, and the allowlist entry now names the two pages
+that actually carry the gap rather than hiding a third component behind them.

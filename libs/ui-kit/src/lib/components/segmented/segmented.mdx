@@ -1,5 +1,5 @@
 import { Meta, Canvas } from '@storybook/blocks';
-import { BrandOnly } from '@baps/docs-blocks';
+import { BrandOnly, PropsTable } from '@baps/docs-blocks';
 import * as SegmentedStories from './segmented.stories';
 
 <Meta of={SegmentedStories} />
@@ -43,6 +43,12 @@ Two to five mutually exclusive options, all visible at once. `baps-segmented` wr
 ### Disabled
 
 <Canvas of={SegmentedStories.Disabled} />
+
+## API
+
+Inputs, outputs and their types, read from the component's own source.
+
+<PropsTable of={SegmentedStories} />
 
 ## When Not to Use
 

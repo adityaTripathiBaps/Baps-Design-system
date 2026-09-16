@@ -4,17 +4,13 @@ import * as FormControlsStories from './form-field.stories';
 
 <Meta of={FormControlsStories} />
 
-# Form Controls
-
-One combined catalogue of the three selection/input primitives — **FormField** (label + control + helper/error), **Listbox** (`baps-listbox` selection panels), and **Menu Item** (`baps-menu-item`, the base selectable row used inside menus and listboxes). All panels for all three live under this single component entry.
-
----
-
-# FormField
+# Input
 
 The text-input field pattern: a **label**, the **control**, and optional **helper** or **error** text. BAPS provides wrapper components and directives (such as `bapsInputText`, `baps-floatlabel`, `baps-iconfield`, `baps-inputicon`, and `baps-message`) wrapping their respective PrimeNG equivalents and themes them globally against the `MyBky` preset (`libs/ui-kit/src/lib/theme/baps.theme.ts`).
 
 MyBKY fields use the **pill radius** (`99px`) with 36px height and 1.5px hover/focus borders; Sampark uses `4px` radius, a 32/28/40px height scale, and keeps a 1px border in every state. Switch the **Design system** toolbar to Sampark to render it live — the skin lives in `libs/ui-kit/src/lib/styles/components/input/_input-sampark.scss`, which re-points the `--input-*` variables that `_input.scss` drives every state through.
+
+The two other controls that share this stories file have their own pages: [Listbox](?path=/docs/components-molecules-listbox--docs) and [Menu Item](?path=/docs/components-molecules-menu-item--docs).
 
 ## Usage
 
@@ -38,12 +34,6 @@ MyBKY fields use the **pill radius** (`99px`) with 36px height and 1.5px hover/f
   }
 </div>
 ```
-
----
-
-# Listbox
-
-The BAPS Design System **Listbox** (`baps-listbox`) is a standalone Angular wrapper around PrimeNG's `p-listbox` component. It provides single or multiple selection of values from a list of options. It is highly customized to support both the **MyBKY** (pill radius, soft blue selections) and **Sampark** (flat corners, maroon branding, selected left accent bar indicator) styles.
 
 ## Examples
 
@@ -112,54 +102,6 @@ The BAPS Design System **Listbox** (`baps-listbox`) is a standalone Angular wrap
 ### Sampark Dropdown Sizes
 
 <Canvas of={FormControlsStories.SamparkDropdownSizes} />
-
-</BrandOnly>
-
-### Listbox Playground
-
-<Canvas of={FormControlsStories.ListboxPlayground} />
-
-### Multi Select With Checkboxes
-
-<Canvas of={FormControlsStories.MultiSelectWithCheckboxes} />
-
-### With Filtering
-
-<Canvas of={FormControlsStories.WithFiltering} />
-
-### Grouped
-
-<Canvas of={FormControlsStories.Grouped} />
-
-### Rich Template Panel List
-
-<Canvas of={FormControlsStories.RichTemplatePanelList} />
-
-### Custom Templates Using P Template
-
-<Canvas of={FormControlsStories.CustomTemplatesUsingPTemplate} />
-
-### Disabled And Invalid
-
-<Canvas of={FormControlsStories.DisabledAndInvalid} />
-
-### Menu Item Playground
-
-<Canvas of={FormControlsStories.MenuItemPlayground} />
-
-<BrandOnly brand="sampark">
-
-### All Variants
-
-<Canvas of={FormControlsStories.AllVariants} />
-
-</BrandOnly>
-
-<BrandOnly brand="mybky">
-
-### All Variants My BKY
-
-<Canvas of={FormControlsStories.AllVariantsMyBKY} />
 
 </BrandOnly>
 

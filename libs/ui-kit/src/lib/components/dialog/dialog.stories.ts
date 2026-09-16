@@ -53,7 +53,7 @@ const STORY_STYLES = `
  * at 600px with a form body).
  */
 const meta: Meta<BapsDialog> = {
-  title: 'Components/Overlay/Dialog',
+  title: 'Components/Organisms/Dialog',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-overlay-dialog.
   id: 'components-dialog',

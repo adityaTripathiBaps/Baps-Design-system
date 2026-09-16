@@ -8,7 +8,7 @@ import { BapsOverlayBadge } from './overlay-badge.component';
  * Badge — a small count/status chip. Badge uses the `BapsBadge` wrapper component.
  */
 const meta: Meta<BapsBadge> = {
-  title: 'Components/Utility/Badge',
+  title: 'Components/Atoms/Badge',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-misc-badge.
   id: 'components-badge',

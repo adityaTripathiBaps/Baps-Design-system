@@ -1,5 +1,5 @@
 import { Meta, Canvas } from '@storybook/blocks';
-import { BrandOnly } from '@baps/docs-blocks';
+import { BrandOnly, PropsTable } from '@baps/docs-blocks';
 import * as TreeSelectStories from './tree-select.stories';
 
 <Meta of={TreeSelectStories} />
@@ -100,6 +100,12 @@ native control in either forms API.
 ```ts
 form = new FormGroup({ value: new FormControl(null) });
 ```
+## API
+
+Inputs, outputs and their types, read from the component's own source.
+
+<PropsTable of={TreeSelectStories} />
+
 ## When Not to Use
 
 - **A flat list** — use [`baps-select`](/docs/components-select--docs) or [`baps-multi-select`](/docs/components-multiselect--docs). Indent styling on a flat list is not a tree, and modelling it as one buys nothing but complexity.

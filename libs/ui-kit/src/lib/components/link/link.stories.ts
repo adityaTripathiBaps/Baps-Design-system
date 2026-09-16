@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/angular';
 import { BapsLink } from './link.component';
 
 const meta: Meta<BapsLink> = {
-  title: 'Components/Utility/Link',
+  title: 'Components/Atoms/Link',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-misc-link.
   id: 'components-link',

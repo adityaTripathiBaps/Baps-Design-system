@@ -12,7 +12,7 @@ import { BapsChip } from './chip.component';
  * calls it a different philosophy, not a different number.
  */
 const meta: Meta<BapsChip> = {
-  title: 'Components/Utility/Chip',
+  title: 'Components/Atoms/Chip',
   // Pinned so the categorised title above does not move the docs URL.
   id: 'components-chip',
   // Design-system availability — drives the sidebar filter in .storybook/manager.tsx.

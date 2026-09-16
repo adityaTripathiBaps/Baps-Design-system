@@ -24,7 +24,7 @@ import { DatePickerModule } from 'primeng/datepicker';
  * prefixed "Listbox —" and menu-item stories "Menu Item —" in the sidebar.
  */
 const meta: Meta = {
-  title: 'Components/Form/Form Controls',
+  title: 'Components/Molecules/Input',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-form-form-controls.
   id: 'components-form-controls',

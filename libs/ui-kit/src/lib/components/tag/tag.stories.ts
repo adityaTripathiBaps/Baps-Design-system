@@ -10,7 +10,7 @@ import { BapsTag } from './tag.component';
 type Args = BapsTag & Record<'onActionClick', (event?: unknown) => void>;
 
 const meta: Meta<Args> = {
-  title: 'Components/Utility/Tag',
+  title: 'Components/Atoms/Tag',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-misc-tag.
   id: 'components-tag',

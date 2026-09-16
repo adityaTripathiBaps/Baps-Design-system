@@ -21,7 +21,7 @@ import { BapsCheckbox } from './checkbox.component';
  * separately from the template binding — the error was logged and ignored.
  */
 const meta: Meta<BapsCheckbox> = {
-  title: 'Components/Form/Checkbox',
+  title: 'Components/Atoms/Checkbox',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-form-checkbox.
   id: 'components-checkbox',

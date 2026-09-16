@@ -16,7 +16,7 @@ import { BapsButton } from '../button/button.component';
  * with visible text, and content wired through the injected Tooltip instance.
  */
 const meta: Meta<BapsTooltip> = {
-  title: 'Components/Overlay/Tooltip',
+  title: 'Components/Atoms/Tooltip',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-overlay-tooltip.
   id: 'components-tooltip',

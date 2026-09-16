@@ -1,5 +1,5 @@
 import { Meta, Canvas } from '@storybook/blocks';
-import { BrandOnly } from '@baps/docs-blocks';
+import { BrandOnly, PropsTable } from '@baps/docs-blocks';
 import * as InternalNavbarStories from './internal-navbar.stories';
 
 <Meta of={InternalNavbarStories} />
@@ -51,6 +51,12 @@ menuItems: InternalNavItem[] = [
 ### Nested
 
 <Canvas of={InternalNavbarStories.Nested} />
+
+## API
+
+Inputs, outputs and their types, read from the component's own source.
+
+<PropsTable of={InternalNavbarStories} />
 
 ## When Not to Use
 

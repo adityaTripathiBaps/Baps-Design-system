@@ -16,7 +16,7 @@ import { BapsSegmented } from './segmented.component';
  * Bound with ngModel: value is the CVA field, not an @Input.
  */
 const meta: Meta<BapsSegmented> = {
-  title: 'Components/Form/Segmented',
+  title: 'Components/Molecules/Segmented',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-form-segmented.
   id: 'components-segmented',

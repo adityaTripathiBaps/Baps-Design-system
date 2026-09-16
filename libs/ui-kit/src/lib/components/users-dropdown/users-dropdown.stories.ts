@@ -44,7 +44,7 @@ const harness = (minHeight: string) => `
 `;
 
 const meta: Meta<BapsUsersDropdown> = {
-  title: 'Components/Form/UsersDropdown',
+  title: 'Components/Molecules/Users Dropdown',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-form-usersdropdown.
   id: 'components-usersdropdown',

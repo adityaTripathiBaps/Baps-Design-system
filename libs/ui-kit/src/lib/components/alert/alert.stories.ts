@@ -6,7 +6,7 @@ import { BapsAlert } from './alert.component';
 type Args = BapsAlert & Record<'onClosed' | 'onPrimaryActionClick' | 'onSecondaryActionClick', (event?: unknown) => void>;
 
 const meta: Meta<Args> = {
-  title: 'Components/Feedback/Alert',
+  title: 'Components/Molecules/Alert',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-messages-alert.
   id: 'components-alert',

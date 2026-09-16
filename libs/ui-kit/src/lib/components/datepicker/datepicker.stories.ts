@@ -19,7 +19,7 @@ import { BapsDatepicker } from './datepicker.component';
  * portaled-overlay path is exercised by Overlay below.
  */
 const meta: Meta<BapsDatepicker> = {
-  title: 'Components/Form/DatePicker',
+  title: 'Components/Molecules/Date Picker',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-form-datepicker.
   id: 'components-datepicker',

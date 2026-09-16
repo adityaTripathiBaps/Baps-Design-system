@@ -1,5 +1,5 @@
 import { Meta, Canvas } from '@storybook/blocks';
-import { BrandOnly } from '@baps/docs-blocks';
+import { BrandOnly, PropsTable } from '@baps/docs-blocks';
 import * as AccordionStories from './accordion.stories';
 
 <Meta of={AccordionStories} />
@@ -82,6 +82,12 @@ export class EventFilters {
 <Canvas of={AccordionStories.Brands} />
 
 </BrandOnly>
+
+## API
+
+Inputs, outputs and their types, read from the component's own source.
+
+<PropsTable of={AccordionStories} />
 
 ## When Not to Use
 

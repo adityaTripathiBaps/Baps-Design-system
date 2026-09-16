@@ -1,5 +1,5 @@
 import { Meta, Canvas } from '@storybook/blocks';
-import { BrandOnly } from '@baps/docs-blocks';
+import { BrandOnly, PropsTable } from '@baps/docs-blocks';
 import * as ToggleSwitchStories from './toggle-switch.stories';
 
 <Meta of={ToggleSwitchStories} />
@@ -77,6 +77,12 @@ native control in either forms API.
 ```ts
 form = new FormGroup({ value: new FormControl(false) });
 ```
+## API
+
+Inputs, outputs and their types, read from the component's own source.
+
+<PropsTable of={ToggleSwitchStories} />
+
 ## When Not to Use
 
 | Need | Use instead | Why not a switch |

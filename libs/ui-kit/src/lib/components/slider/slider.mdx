@@ -1,4 +1,5 @@
 import { Meta, Canvas } from '@storybook/blocks';
+import { PropsTable } from '@baps/docs-blocks';
 import * as SliderStories from './slider.stories';
 
 <Meta of={SliderStories} />
@@ -53,6 +54,12 @@ native control in either forms API.
 ```ts
 form = new FormGroup({ value: new FormControl(40) });
 ```
+## API
+
+Inputs, outputs and their types, read from the component's own source.
+
+<PropsTable of={SliderStories} />
+
 ## When Not to Use
 
 | Need | Use | Why not `baps-slider` |

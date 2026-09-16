@@ -12,7 +12,7 @@ import { BapsSelect } from './select.component';
  * documents this input.
  */
 const meta: Meta<BapsSelect> = {
-  title: 'Components/Form/Select',
+  title: 'Components/Molecules/Select',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-form-select.
   id: 'components-select',

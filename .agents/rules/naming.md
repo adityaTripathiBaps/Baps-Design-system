@@ -91,7 +91,7 @@ filters on it. See `storybook.md`.
 ## Storybook titles and ids
 
 ```ts
-title: 'Components/Utility/Chip',
+title: 'Components/Atoms/Chip',
 id: 'components-chip',   // pinned — never derived, never removed
 ```
 

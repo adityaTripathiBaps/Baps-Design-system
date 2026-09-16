@@ -110,10 +110,12 @@ options, empty, loading, clear, custom templates, keyboard, long labels,
 mobile) and §21 (Slider: range, min/max, step, keyboard, tooltip, form
 integration) are substantially uncovered.
 
-Listbox and MenuItem have **no stories or MDX of their own** — both are
-documented inside `form-field.mdx` as the merged "Form Controls" entry. This is
-deliberate, not an oversight, but it does mean neither appears as its own
-Storybook sidebar entry.
+Listbox and MenuItem have **no stories file of their own** — their stories live
+in `form-field.stories.ts`, whose meta id is pinned to `components-form-controls`
+and whose story ids the visual baselines are keyed off. Each now has its own
+documentation page (`listbox.mdx`, `menu-item.mdx`) rendering those stories
+through `of={…}`, so both appear as their own sidebar entry without any story
+id moving.
 
 ---
 

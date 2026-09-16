@@ -16,7 +16,7 @@ import { BapsSkeleton } from './skeleton.component';
  * is the part that actually helps, and no placeholder can do it for you.
  */
 const meta: Meta<BapsSkeleton> = {
-  title: 'Components/Feedback/Skeleton',
+  title: 'Components/Atoms/Skeleton',
   // Pinned so the categorised title above does not move the docs URL.
   id: 'components-skeleton',
   // Design-system availability — drives the sidebar filter in .storybook/manager.tsx.

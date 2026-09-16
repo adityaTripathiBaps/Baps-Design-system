@@ -1,4 +1,5 @@
 import { Meta, Canvas, Controls } from '@storybook/blocks';
+import { PropsTable } from '@baps/docs-blocks';
 import * as TreeTableStories from './tree-table.stories';
 
 <Meta of={TreeTableStories} />
@@ -63,13 +64,19 @@ import { BapsTreeTable } from '@org/ui-kit';
 `p-treeTableToggler` is what makes a row expandable — without it the hierarchy
 renders flat with no way to open it.
 
-## When to use
+## When to Use
 
 - The rows genuinely nest: regions containing centres, accounts containing
   sub-accounts, a chart of accounts.
 - A user needs to see a parent and its children in the same columns.
 
-## When not to use
+## API
+
+Inputs, outputs and their types, read from the component's own source.
+
+<PropsTable of={TreeTableStories} />
+
+## When Not to Use
 
 - **Flat data you want grouped** — `baps-table` has a grouped mode, and it
   keeps sorting and paging behaving as a reader expects.

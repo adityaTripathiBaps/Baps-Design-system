@@ -164,7 +164,7 @@ class IconGallery {
 }
 
 const meta: Meta<BapsIcon> = {
-  title: 'Components/Utility/Icon',
+  title: 'Components/Atoms/Icon',
   // Pinned so the categorised title does not move the docs URL.
   id: 'components-icon',
   // Design-system availability — drives the sidebar filter in .storybook/manager.tsx.

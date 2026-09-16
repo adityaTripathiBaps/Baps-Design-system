@@ -26,7 +26,7 @@ import { BapsDatepicker } from '../datepicker/datepicker.component';
  * doc comment for the full reasoning.
  */
 const meta: Meta<BapsAccordion> = {
-  title: 'Components/Layout/Accordion',
+  title: 'Components/Molecules/Accordion',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-panel-accordion.
   id: 'components-accordion',

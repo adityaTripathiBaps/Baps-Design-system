@@ -13,7 +13,7 @@ import { BapsInputGroup } from './input-group.component';
  * no reserved column and no divider.
  */
 const meta: Meta<BapsInputGroup> = {
-  title: 'Components/Form/InputGroup',
+  title: 'Components/Molecules/Input Group',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-form-inputgroup.
   id: 'components-inputgroup',

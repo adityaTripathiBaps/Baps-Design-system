@@ -8,7 +8,7 @@ import { BapsButton } from './button.component';
  * component. Button uses the `BapsButton` wrapper component.
  */
 const meta: Meta<BapsButton> = {
-  title: 'Components/Button/Button',
+  title: 'Components/Atoms/Button',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-button-button.
   id: 'components-button',

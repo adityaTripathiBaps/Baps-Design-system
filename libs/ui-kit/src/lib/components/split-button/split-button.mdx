@@ -1,5 +1,5 @@
 import { Meta, Canvas } from '@storybook/blocks';
-import { BrandOnly } from '@baps/docs-blocks';
+import { BrandOnly, PropsTable } from '@baps/docs-blocks';
 import * as SplitButtonStories from './split-button.stories';
 
 <Meta of={SplitButtonStories} />
@@ -53,6 +53,12 @@ A primary action button paired with a dropdown of secondary actions. `baps-split
 ### Matrix
 
 <Canvas of={SplitButtonStories.Matrix} />
+
+## API
+
+Inputs, outputs and their types, read from the component's own source.
+
+<PropsTable of={SplitButtonStories} />
 
 ## When Not to Use
 

@@ -54,7 +54,7 @@ const NODES = [
  *   row indistinguishable from an expanded one.
  */
 const meta: Meta<BapsTreeTable> = {
-  title: 'Components/Data/TreeTable',
+  title: 'Components/Organisms/Tree Table',
   // Pinned so the categorised title above does not move the docs URL.
   id: 'components-treetable',
   // Design-system availability — drives the sidebar filter in .storybook/manager.tsx.

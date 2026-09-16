@@ -1,5 +1,5 @@
 import { Meta, Canvas } from '@storybook/blocks';
-import { BrandOnly } from '@baps/docs-blocks';
+import { BrandOnly, PropsTable } from '@baps/docs-blocks';
 import * as DatePickerStories from './datepicker.stories';
 
 <Meta of={DatePickerStories} />
@@ -65,6 +65,12 @@ native control in either forms API.
 ```ts
 form = new FormGroup({ value: new FormControl(null) });
 ```
+
+## API
+
+Inputs, outputs and their types, read from the component's own source.
+
+<PropsTable of={DatePickerStories} />
 
 ## When Not to Use
 

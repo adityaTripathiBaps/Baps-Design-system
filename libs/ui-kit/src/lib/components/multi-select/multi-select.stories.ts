@@ -13,7 +13,7 @@ import { BapsMultiSelect } from './multi-select.component';
  * reachable by writing raw `p-multiselect` in application code.
  */
 const meta: Meta<BapsMultiSelect> = {
-  title: 'Components/Form/MultiSelect',
+  title: 'Components/Molecules/Multi Select',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-form-multiselect.
   id: 'components-multiselect',

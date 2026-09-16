@@ -1,5 +1,5 @@
 import { Meta, Canvas } from '@storybook/blocks';
-import { BrandOnly } from '@baps/docs-blocks';
+import { BrandOnly, PropsTable } from '@baps/docs-blocks';
 import * as SpinnerStories from './spinner.stories';
 
 <Meta of={SpinnerStories} />
@@ -35,6 +35,12 @@ A loading indicator, indeterminate or determinate. `baps-spinner` wraps PrimeNGâ
 <Canvas of={SpinnerStories.Sizes} />
 
 </BrandOnly>
+
+## API
+
+Inputs, outputs and their types, read from the component's own source.
+
+<PropsTable of={SpinnerStories} />
 
 ## When Not to Use
 

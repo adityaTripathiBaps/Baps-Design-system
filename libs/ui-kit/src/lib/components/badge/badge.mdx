@@ -1,5 +1,5 @@
 import { Meta, Canvas } from '@storybook/blocks';
-import { BrandOnly } from '@baps/docs-blocks';
+import { BrandOnly, PropsTable } from '@baps/docs-blocks';
 import * as BadgeStories from './badge.stories';
 
 <Meta of={BadgeStories} />
@@ -52,6 +52,12 @@ A small count or status chip, typically overlaid on an icon/avatar or inline nex
 ### Dot And Overlay
 
 <Canvas of={BadgeStories.DotAndOverlay} />
+
+## API
+
+Inputs, outputs and their types, read from the component's own source.
+
+<PropsTable of={BadgeStories} />
 
 ## When Not to Use
 

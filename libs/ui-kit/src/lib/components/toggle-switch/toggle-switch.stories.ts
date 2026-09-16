@@ -9,7 +9,7 @@ import { BapsToggleSwitch } from './toggle-switch.component';
  * the `BapsToggleSwitch` wrapper component.
  */
 const meta: Meta<BapsToggleSwitch> = {
-  title: 'Components/Form/ToggleSwitch',
+  title: 'Components/Atoms/Toggle Switch',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-form-toggleswitch.
   id: 'components-toggleswitch',

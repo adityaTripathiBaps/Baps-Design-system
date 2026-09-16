@@ -1,5 +1,5 @@
 import { Meta, Canvas } from '@storybook/blocks';
-import { BrandOnly } from '@baps/docs-blocks';
+import { BrandOnly, PropsTable } from '@baps/docs-blocks';
 import * as InputGroupStories from './input-group.stories';
 
 <Meta of={InputGroupStories} />
@@ -37,6 +37,12 @@ A control with a fixed prefix or suffix — a unit, a currency, a bounded range.
 <Canvas of={InputGroupStories.Brands} />
 
 </BrandOnly>
+
+## API
+
+Inputs, outputs and their types, read from the component's own source.
+
+<PropsTable of={InputGroupStories} />
 
 ## When Not to Use
 

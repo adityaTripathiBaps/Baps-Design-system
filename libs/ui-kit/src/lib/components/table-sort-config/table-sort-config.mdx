@@ -1,4 +1,5 @@
 import { Meta, Canvas } from '@storybook/blocks';
+import { PropsTable } from '@baps/docs-blocks';
 import * as TableSortConfigStories from './table-sort-config.stories';
 
 <Meta of={TableSortConfigStories} />
@@ -52,6 +53,12 @@ export class ProjectsComponent {
 ### From Trigger
 
 <Canvas of={TableSortConfigStories.FromTrigger} />
+
+## API
+
+Inputs, outputs and their types, read from the component's own source.
+
+<PropsTable of={TableSortConfigStories} />
 
 ## When Not to Use
 

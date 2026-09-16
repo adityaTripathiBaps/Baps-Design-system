@@ -1,0 +1,80 @@
+import { Meta, Canvas } from '@storybook/blocks';
+
+{/*
+  Unattached on purpose (`title=`, not `of=`).
+
+  `baps-listbox` has no stories file of its own — its seven stories live in
+  form-field.stories.ts, whose meta pins `id: 'components-form-controls'`.
+  Moving them into a new CSF file would change every one of their story ids,
+  and the Playwright baselines in apps/storybook-host/visual are keyed by id.
+  An unattached page renders the same stories through `of={…}` while leaving
+  those ids exactly where they are, so Listbox gets its own sidebar entry at
+  zero cost to the visual suite.
+*/}
+
+<Meta title="Components/Molecules/Listbox" />
+
+import * as FormControlsStories from '../form-field/form-field.stories';
+
+# Listbox
+
+The BAPS Design System **Listbox** (`baps-listbox`) is a standalone Angular wrapper around PrimeNG's `p-listbox` component. It provides single or multiple selection of values from a list of options. It is customized for both the **MyBKY** (pill radius, soft blue selections) and **Sampark** (flat corners, maroon branding, selected left accent bar indicator) styles.
+
+Rows are rendered by [`baps-menu-item`](?path=/docs/components-molecules-menu-item--docs); the field variants of the same control are documented on [Input](?path=/docs/components-form-controls--docs).
+
+## Usage
+
+```html
+<baps-listbox
+  [options]="centers"
+  optionLabel="name"
+  optionValue="id"
+  [(ngModel)]="selectedCenter"
+/>
+```
+
+## Examples
+
+### Playground
+
+<Canvas of={FormControlsStories.ListboxPlayground} />
+
+### Multi Select With Checkboxes
+
+<Canvas of={FormControlsStories.MultiSelectWithCheckboxes} />
+
+### With Filtering
+
+<Canvas of={FormControlsStories.WithFiltering} />
+
+### Grouped
+
+<Canvas of={FormControlsStories.Grouped} />
+
+### Rich Template Panel List
+
+<Canvas of={FormControlsStories.RichTemplatePanelList} />
+
+### Custom Templates Using P Template
+
+<Canvas of={FormControlsStories.CustomTemplatesUsingPTemplate} />
+
+### Disabled And Invalid
+
+<Canvas of={FormControlsStories.DisabledAndInvalid} />
+
+## When Not to Use
+
+| Need | Use | Not this |
+| --- | --- | --- |
+| One value from a short list, inline in a form | `baps-select` | A listbox, which always occupies its full height |
+| Several values from a long list | `baps-multiselect` | A listbox with `multiple` and no filter |
+| Picking a person from the directory | `baps-users-dropdown` | A listbox of names — it has no avatar/role row |
+| A hierarchy of options | `baps-treeselect` | A flat listbox with indented labels |
+
+## Accessibility
+
+- The panel is a `listbox` and each row an `option`; selection state is announced through `aria-selected`, which `baps-menu-item` sets.
+- Give the control a programmatic label — `ariaLabel`, or a visible `<label>` associated with it. A panel with no accessible name is announced as "list box" and nothing else.
+- Arrow keys move through options, `Space` / `Enter` selects, and `Home` / `End` jump to the ends. Filtering keeps focus in the filter field; arrow keys move into the filtered list.
+- The selected left accent bar in the Sampark skin is decorative — selection is never communicated by that bar alone.

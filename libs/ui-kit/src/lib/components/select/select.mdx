@@ -1,4 +1,5 @@
 import { Meta, Canvas } from '@storybook/blocks';
+import { PropsTable } from '@baps/docs-blocks';
 import * as SelectStories from './select.stories';
 
 <Meta of={SelectStories} />
@@ -48,6 +49,12 @@ native control in either forms API.
 ```ts
 form = new FormGroup({ value: new FormControl(null) });
 ```
+## API
+
+Inputs, outputs and their types, read from the component's own source.
+
+<PropsTable of={SelectStories} />
+
 ## When Not to Use
 
 This is one of three selection surfaces in the kit and they are easy to confuse:

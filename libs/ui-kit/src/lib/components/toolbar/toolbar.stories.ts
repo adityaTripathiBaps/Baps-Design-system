@@ -6,7 +6,7 @@ import { BapsInputText } from '../form-field/directives/input-text.directive';
 import { BapsOverlayBadge } from '../badge/overlay-badge.component';
 
 const meta: Meta<BapsToolbar> = {
-  title: 'Components/Layout/Toolbar',
+  title: 'Components/Organisms/Toolbar',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-panel-toolbar.
   id: 'components-toolbar',

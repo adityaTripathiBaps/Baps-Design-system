@@ -1,4 +1,5 @@
 import { Meta, Canvas } from '@storybook/blocks';
+import { PropsTable } from '@baps/docs-blocks';
 import * as ToolbarStories from './toolbar.stories';
 
 <Meta of={ToolbarStories} />
@@ -29,6 +30,12 @@ Sampark page-level toolbar: title on the left, search/actions on the right — o
 ### Search Only
 
 <Canvas of={ToolbarStories.SearchOnly} />
+
+## API
+
+Inputs, outputs and their types, read from the component's own source.
+
+<PropsTable of={ToolbarStories} />
 
 ## When Not to Use
 

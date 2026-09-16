@@ -10,7 +10,7 @@ import { BapsIndicator } from './indicator.component';
  * Shared scale: 12 / 16 / 20 / 24px, white foreground on a semantic fill.
  */
 const meta: Meta<BapsIndicator> = {
-  title: 'Components/Feedback/Indicator',
+  title: 'Components/Atoms/Indicator',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-misc-indicator.
   id: 'components-indicator',

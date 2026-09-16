@@ -1,6 +1,6 @@
 {
   "accordion": {
-    "title": "Components/Layout/Accordion",
+    "title": "Components/Molecules/Accordion",
     "id": "components-accordion",
     "stories": [
       "Brands",
@@ -14,7 +14,7 @@
     ]
   },
   "alert": {
-    "title": "Components/Feedback/Alert",
+    "title": "Components/Molecules/Alert",
     "id": "components-alert",
     "stories": [
       "Card",
@@ -28,7 +28,7 @@
     ]
   },
   "avatar": {
-    "title": "Components/Media/Avatar",
+    "title": "Components/Atoms/Avatar",
     "id": "components-avatar",
     "stories": [
       "Group",
@@ -44,7 +44,7 @@
     ]
   },
   "badge": {
-    "title": "Components/Utility/Badge",
+    "title": "Components/Atoms/Badge",
     "id": "components-badge",
     "stories": [
       "DotAndOverlay",
@@ -56,14 +56,14 @@
     ]
   },
   "breadcrumb": {
-    "title": "Components/Navigation/Breadcrumb",
+    "title": "Components/Molecules/Breadcrumb",
     "id": "components-breadcrumb",
     "stories": [
       "Default"
     ]
   },
   "button": {
-    "title": "Components/Button/Button",
+    "title": "Components/Atoms/Button",
     "id": "components-button",
     "stories": [
       "AllSizes",
@@ -80,7 +80,7 @@
     ]
   },
   "card": {
-    "title": "Components/Layout/Card",
+    "title": "Components/Molecules/Card",
     "id": "components-card",
     "stories": [
       "BodyOnly",
@@ -93,7 +93,7 @@
     ]
   },
   "checkbox": {
-    "title": "Components/Form/Checkbox",
+    "title": "Components/Atoms/Checkbox",
     "id": "components-checkbox",
     "stories": [
       "ClickInteraction",
@@ -106,7 +106,7 @@
     ]
   },
   "chip": {
-    "title": "Components/Utility/Chip",
+    "title": "Components/Atoms/Chip",
     "id": "components-chip",
     "stories": [
       "Brands",
@@ -124,7 +124,7 @@
     ]
   },
   "datepicker": {
-    "title": "Components/Form/DatePicker",
+    "title": "Components/Molecules/Date Picker",
     "id": "components-datepicker",
     "stories": [
       "Constrained",
@@ -137,7 +137,7 @@
     ]
   },
   "dialog": {
-    "title": "Components/Overlay/Dialog",
+    "title": "Components/Organisms/Dialog",
     "id": "components-dialog",
     "stories": [
       "ActionsEnd",
@@ -151,7 +151,7 @@
     ]
   },
   "divider": {
-    "title": "Components/Layout/Divider",
+    "title": "Components/Atoms/Divider",
     "id": "components-divider",
     "stories": [
       "Default",
@@ -159,7 +159,7 @@
     ]
   },
   "drawer": {
-    "title": "Components/Overlay/Drawer",
+    "title": "Components/Organisms/Drawer",
     "id": "components-drawer",
     "stories": [
       "EscapeInteraction",
@@ -172,7 +172,7 @@
     ]
   },
   "file-upload": {
-    "title": "Components/Form/FileUpload",
+    "title": "Components/Molecules/File Upload",
     "id": "components-fileupload",
     "stories": [
       "KeyboardInteraction",
@@ -182,7 +182,7 @@
     ]
   },
   "form-field": {
-    "title": "Components/Form/Form Controls",
+    "title": "Components/Molecules/Input",
     "id": "components-form-controls",
     "stories": [
       "AllVariants",
@@ -212,7 +212,7 @@
     ]
   },
   "icon": {
-    "title": "Components/Utility/Icon",
+    "title": "Components/Atoms/Icon",
     "id": "components-icon",
     "stories": [
       "InheritsColour",
@@ -223,7 +223,7 @@
     ]
   },
   "indicator": {
-    "title": "Components/Feedback/Indicator",
+    "title": "Components/Atoms/Indicator",
     "id": "components-indicator",
     "stories": [
       "IconBadge",
@@ -234,7 +234,7 @@
     ]
   },
   "input-group": {
-    "title": "Components/Form/InputGroup",
+    "title": "Components/Molecules/Input Group",
     "id": "components-inputgroup",
     "stories": [
       "Brands",
@@ -244,7 +244,7 @@
     ]
   },
   "internal-navbar": {
-    "title": "Components/Navigation/InternalNavbar",
+    "title": "Components/Organisms/Internal Navbar",
     "id": "components-internalnavbar",
     "stories": [
       "Default",
@@ -253,7 +253,7 @@
     ]
   },
   "link": {
-    "title": "Components/Utility/Link",
+    "title": "Components/Atoms/Link",
     "id": "components-link",
     "stories": [
       "Default",
@@ -263,7 +263,7 @@
     ]
   },
   "multi-select": {
-    "title": "Components/Form/MultiSelect",
+    "title": "Components/Molecules/Multi Select",
     "id": "components-multiselect",
     "stories": [
       "Brands",
@@ -277,7 +277,7 @@
     ]
   },
   "navbar": {
-    "title": "Components/Navigation/Navbar",
+    "title": "Components/Organisms/Navbar",
     "id": "components-navbar",
     "stories": [
       "MyBky",
@@ -290,7 +290,7 @@
     ]
   },
   "pagination": {
-    "title": "Components/Data/Pagination",
+    "title": "Components/Molecules/Pagination",
     "id": "components-pagination",
     "stories": [
       "Compact",
@@ -302,7 +302,7 @@
     ]
   },
   "popover": {
-    "title": "Components/Overlay/Popover",
+    "title": "Components/Molecules/Popover",
     "id": "components-popover",
     "stories": [
       "Anchoring",
@@ -312,7 +312,7 @@
     ]
   },
   "progress-bar": {
-    "title": "Components/Feedback/ProgressBar",
+    "title": "Components/Atoms/Progress Bar",
     "id": "components-progressbar",
     "stories": [
       "Default",
@@ -322,7 +322,7 @@
     ]
   },
   "radio": {
-    "title": "Components/Form/Radio",
+    "title": "Components/Atoms/Radio",
     "id": "components-radio",
     "stories": [
       "Default",
@@ -334,7 +334,7 @@
     ]
   },
   "segmented": {
-    "title": "Components/Form/Segmented",
+    "title": "Components/Molecules/Segmented",
     "id": "components-segmented",
     "stories": [
       "Brands",
@@ -347,7 +347,7 @@
     ]
   },
   "select": {
-    "title": "Components/Form/Select",
+    "title": "Components/Molecules/Select",
     "id": "components-select",
     "stories": [
       "Default",
@@ -356,7 +356,7 @@
     ]
   },
   "skeleton": {
-    "title": "Components/Feedback/Skeleton",
+    "title": "Components/Atoms/Skeleton",
     "id": "components-skeleton",
     "stories": [
       "Card",
@@ -367,7 +367,7 @@
     ]
   },
   "slider": {
-    "title": "Components/Form/Slider",
+    "title": "Components/Atoms/Slider",
     "id": "components-slider",
     "stories": [
       "Default",
@@ -379,7 +379,7 @@
     ]
   },
   "spinner": {
-    "title": "Components/Feedback/Spinner",
+    "title": "Components/Atoms/Spinner",
     "id": "components-spinner",
     "stories": [
       "Determinate",
@@ -389,7 +389,7 @@
     ]
   },
   "split-button": {
-    "title": "Components/Button/SplitButton",
+    "title": "Components/Molecules/Split Button",
     "id": "components-splitbutton",
     "stories": [
       "Matrix",
@@ -400,7 +400,7 @@
     ]
   },
   "stepper": {
-    "title": "Components/Layout/Stepper",
+    "title": "Components/Organisms/Stepper",
     "id": "components-stepper",
     "stories": [
       "ActiveAndCompleted",
@@ -417,7 +417,7 @@
     ]
   },
   "table": {
-    "title": "Components/Data/Table",
+    "title": "Components/Organisms/Table",
     "id": "components-table",
     "stories": [
       "Compact",
@@ -434,7 +434,7 @@
     ]
   },
   "table-column-config": {
-    "title": "Components/Data/TableColumnConfig",
+    "title": "Components/Organisms/Table Column Config",
     "id": "components-tablecolumnconfig",
     "stories": [
       "Open",
@@ -444,7 +444,7 @@
     ]
   },
   "table-sort-config": {
-    "title": "Components/Data/TableSortConfig",
+    "title": "Components/Organisms/Table Sort Config",
     "id": "components-tablesortconfig",
     "stories": [
       "Default",
@@ -455,7 +455,7 @@
     ]
   },
   "tabs": {
-    "title": "Components/Layout/Tabs",
+    "title": "Components/Molecules/Tabs",
     "id": "components-tabs",
     "stories": [
       "Default",
@@ -468,7 +468,7 @@
     ]
   },
   "tag": {
-    "title": "Components/Utility/Tag",
+    "title": "Components/Atoms/Tag",
     "id": "components-tag",
     "stories": [
       "Chevron",
@@ -483,7 +483,7 @@
     ]
   },
   "toast": {
-    "title": "Components/Feedback/Toast",
+    "title": "Components/Molecules/Toast",
     "id": "components-toast",
     "stories": [
       "BottomCenter",
@@ -492,7 +492,7 @@
     ]
   },
   "toggle-switch": {
-    "title": "Components/Form/ToggleSwitch",
+    "title": "Components/Atoms/Toggle Switch",
     "id": "components-toggleswitch",
     "stories": [
       "KeyboardInteraction",
@@ -507,7 +507,7 @@
     ]
   },
   "toolbar": {
-    "title": "Components/Layout/Toolbar",
+    "title": "Components/Organisms/Toolbar",
     "id": "components-toolbar",
     "stories": [
       "Playground",
@@ -515,7 +515,7 @@
     ]
   },
   "tooltip": {
-    "title": "Components/Overlay/Tooltip",
+    "title": "Components/Atoms/Tooltip",
     "id": "components-tooltip",
     "stories": [
       "Default",
@@ -525,7 +525,7 @@
     ]
   },
   "tree-select": {
-    "title": "Components/Form/TreeSelect",
+    "title": "Components/Molecules/Tree Select",
     "id": "components-treeselect",
     "stories": [
       "Brands",
@@ -538,7 +538,7 @@
     ]
   },
   "tree-table": {
-    "title": "Components/Data/TreeTable",
+    "title": "Components/Organisms/Tree Table",
     "id": "components-treetable",
     "stories": [
       "Default",
@@ -547,7 +547,7 @@
     ]
   },
   "users-dropdown": {
-    "title": "Components/Form/UsersDropdown",
+    "title": "Components/Molecules/Users Dropdown",
     "id": "components-usersdropdown",
     "stories": [
       "Groups",

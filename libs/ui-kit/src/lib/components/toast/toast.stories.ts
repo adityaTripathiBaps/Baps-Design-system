@@ -60,7 +60,7 @@ class ToastDemo {
  * coloured toast over live content is hard to read and harder to ignore.
  */
 const meta: Meta<ToastDemo> = {
-  title: 'Components/Feedback/Toast',
+  title: 'Components/Molecules/Toast',
   // Pinned so the categorised title above does not move the docs URL.
   id: 'components-toast',
   // Design-system availability — drives the sidebar filter in .storybook/manager.tsx.

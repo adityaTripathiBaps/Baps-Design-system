@@ -1,5 +1,5 @@
 import { Meta, Canvas } from '@storybook/blocks';
-import { BrandOnly } from '@baps/docs-blocks';
+import { BrandOnly, PropsTable } from '@baps/docs-blocks';
 import * as ChipStories from './chip.stories';
 
 <Meta of={ChipStories} />
@@ -162,9 +162,11 @@ affordance.
 
 </BrandOnly>
 
-### Matrix
+## API
 
-<Canvas of={ChipStories.Matrix} />
+Inputs, outputs and their types, read from the component's own source.
+
+<PropsTable of={ChipStories} />
 
 ## When Not to Use
 

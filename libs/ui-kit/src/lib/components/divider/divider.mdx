@@ -1,4 +1,5 @@
 import { Meta, Canvas } from '@storybook/blocks';
+import { BrandOnly, PropsTable } from '@baps/docs-blocks';
 import * as DividerStories from './divider.stories';
 
 <Meta of={DividerStories} />
@@ -29,6 +30,25 @@ A visual separator between content sections. `baps-divider` wraps PrimeNG's `p-d
 ### Default
 
 <Canvas of={DividerStories.Default} />
+
+<BrandOnly brand="sampark">
+
+### Toolbar Separator
+
+Vertical rules between the action groups of a `baps-toolbar` — the one place a
+divider is used inside another component rather than between page sections. The
+surrounding chips are flat mark-up with literal Sampark colours, standing in for
+a toolbar this stories file cannot import.
+
+<Canvas of={DividerStories.ToolbarSeparator} />
+
+</BrandOnly>
+
+## API
+
+Inputs, outputs and their types, read from the component's own source.
+
+<PropsTable of={DividerStories} />
 
 ## When Not to Use
 

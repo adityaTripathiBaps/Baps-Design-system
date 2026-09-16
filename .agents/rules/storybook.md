@@ -41,7 +41,7 @@ Every meta **pins its `id`**:
 
 ```ts
 const meta: Meta<BapsChip> = {
-  title: 'Components/Utility/Chip',
+  title: 'Components/Atoms/Chip',
   // Pinned so the categorised title above does not move the docs URL.
   id: 'components-chip',
   …
@@ -57,10 +57,31 @@ the 462 visual baselines keyed off story ids. **Never remove it.**
 Getting Started · Foundations · Components · Patterns · Guidelines · Docs
 ```
 
-`Components/` groups: `Form · Button · Data · Layout · Overlay · Navigation ·
-Feedback · Media · Utility`. Order is set by `storySort` in `preview.ts`;
-anything unlisted falls back to alphabetical, so a new component appears in its
-category without editing the list.
+`Components/` groups, by Atomic Design tier: `Atoms · Molecules · Organisms`.
+Order is set by `storySort` in `preview.ts`; anything unlisted falls back to
+alphabetical, so a new component appears in its tier without editing the list.
+
+- **Atoms** — indivisible primitives (Button, Icon, Tag, Checkbox, Divider…).
+- **Molecules** — several atoms with one job (Select, Card, Pagination, Alert…).
+- **Organisms** — page sections, not reusable units (Table, Dialog, Navbar,
+  Toolbar, Stepper, the Table *Config drawers…). Put a component here only when
+  calling it a molecule would make "molecule" mean nothing.
+
+## One component = one page
+
+The sidebar shows **only the docs page** for each component. `manager.tsx`'s
+filter hides every `type: 'story'` entry whose id starts with `components-`,
+and Storybook then hoists a component whose sole remaining child is its docs
+entry into a leaf — so `Atoms › Button` opens the Button page directly.
+
+That is a SIDEBAR filter only. `index.json` still lists every story, so
+interaction, visual, controls, panels and a11y tooling are unaffected and every
+story is still reachable by URL. Consequences when adding a component:
+
+- A new example story is invisible until the `.mdx` renders it. Add a `Canvas`
+  or `DemoCard` for it, or it is documentation nobody can reach.
+- `*Interaction` stories need no entry — they exist for
+  `tools/check-interactions.mjs`, and being hidden is the point.
 
 ## Controls
 

@@ -1,5 +1,5 @@
 import { Meta, Canvas } from '@storybook/blocks';
-import { BrandOnly } from '@baps/docs-blocks';
+import { BrandOnly, PropsTable } from '@baps/docs-blocks';
 import * as LinkStories from './link.stories';
 
 <Meta of={LinkStories} />
@@ -37,6 +37,12 @@ Styled anchor / navigation link. `baps-link` is a pure HTML component — it has
 ### Sizes
 
 <Canvas of={LinkStories.Sizes} />
+
+## API
+
+Inputs, outputs and their types, read from the component's own source.
+
+<PropsTable of={LinkStories} />
 
 ## When Not to Use
 

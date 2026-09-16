@@ -1,5 +1,5 @@
 import { Meta, Canvas } from '@storybook/blocks';
-import { BrandOnly } from '@baps/docs-blocks';
+import { BrandOnly, PropsTable } from '@baps/docs-blocks';
 import * as PaginationStories from './pagination.stories';
 
 <Meta of={PaginationStories} />
@@ -50,6 +50,22 @@ Unlike every other component in this library, this one **does not wrap** PrimeNG
 ### Compact
 
 <Canvas of={PaginationStories.Compact} />
+
+## API
+
+Inputs, outputs and their types, read from the component's own source.
+
+{/*
+  Story-level `of`, not the module. Every other page passes the stories module
+  and gets the meta's component; here that hangs the docs render — the page
+  commits and then never paints, with no console error and an empty body.
+  `of={PaginationStories.Default}` produces the same 14-row table and renders.
+  BapsPaginator is the one component in the library that wraps no PrimeNG
+  component, so its compodoc entry is the odd one out; not chased further
+  because the story-level form is equivalent for a reader.
+*/}
+
+<PropsTable of={PaginationStories.Default} />
 
 ## When Not to Use
 

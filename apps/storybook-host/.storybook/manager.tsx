@@ -8,7 +8,7 @@ import {
 } from 'storybook/internal/manager-api';
 import { DOCS_RENDERED, STORY_RENDERED } from 'storybook/internal/core-events';
 import { IconButton, WithTooltip, Separator } from 'storybook/internal/components';
-import { DARK_MODE_EVENT_NAME } from 'storybook-dark-mode';
+import { DARK_MODE_EVENT_NAME, UPDATE_DARK_MODE_EVENT_NAME } from 'storybook-dark-mode';
 import { CHROME_THEMES, CHROME_ACCENT, type ChromeBrand } from './chrome-theme';
 
 /**
@@ -289,6 +289,26 @@ const BrandFilter: React.FC = () => {
   React.useEffect(() => {
     void api.experimental_setFilter('baps/brand-filter', (item) => {
       const tags: string[] = (item as { tags?: string[] }).tags ?? [];
+      // ── One component = one page ────────────────────────────────────────
+      //
+      // Every component meta pins `id: 'components-<name>'`, so a component's
+      // STORY entries are exactly the ids carrying that prefix. Hiding them
+      // leaves each component with a single surviving child — its docs page —
+      // and Storybook's sidebar then hoists a component whose only child is a
+      // docs entry into a leaf (Tree.tsx, `singleStoryComponentIds`). Result:
+      // "Atoms > Button" opens the Button page directly instead of expanding
+      // into Docs / Playground / Variants / Sizes / States / Interaction…
+      //
+      // This is a SIDEBAR filter, not an index change. index.json still lists
+      // every story, so the Playwright visual suite (which navigates to
+      // /iframe.html?id=…), tools/check-interactions.mjs, check-controls.mjs,
+      // check-panels.mjs and a11y-audit.mjs are all unaffected — they read the
+      // index, never the sidebar. Every story is still reachable by URL.
+      //
+      // Scoped to `components-` on purpose: Foundations, Patterns, Guidelines
+      // and Docs keep their own story entries, since those pages ARE the
+      // stories rather than examples of one component.
+      if (item.type === 'story' && item.id.startsWith('components-')) return false;
       if (tags.includes('ds:comparison')) return showComparison;
       if (!tags.some((t) => t.startsWith('ds:'))) return true;
       return tags.includes(`ds:${brand}`);
@@ -363,6 +383,89 @@ const SURFACE_OPTIONS = [
   { value: 'stone', label: 'Stone', color: '#78716c' },
 ];
 
+// PrimeNG reference ships two presets (Aura/Lara); this design system only
+// generates Aura-shaped tokens today, so Lara is scaffolded the same way
+// BAPS/App Sell are above — selectable, dashed, no palette behind it yet.
+const PRESET_OPTIONS = [
+  { value: 'aura', label: 'Aura' },
+  { value: 'lara', label: 'Lara', awaiting: true },
+];
+
+const MENU_TYPE_OPTIONS = [
+  { value: 'static', label: 'Static' },
+  { value: 'overlay', label: 'Overlay' },
+  { value: 'slim', label: 'Slim' },
+  { value: 'slim-plus', label: 'Slim+' },
+  { value: 'reveal', label: 'Reveal' },
+  { value: 'drawer', label: 'Drawer' },
+  { value: 'horizontal', label: 'Horizontal' },
+];
+
+// Cosmetic: no app shell here to actually re-layout, unlike Menu Type above.
+// Kept as its own global rather than folded into Color Scheme because the
+// PrimeNG reference treats them as independent knobs (a light app can still
+// pin a dark sidebar).
+const MENU_THEME_OPTIONS = [
+  { value: 'light', label: 'Light' },
+  { value: 'dark', label: 'Dark' },
+];
+
+const SegmentedRow: React.FC<{
+  options: { value: string; label: string; awaiting?: boolean }[];
+  selected: string;
+  accent: string;
+  onSelect: (v: string) => void;
+}> = ({ options, selected, accent, onSelect }) => (
+  <div style={{ display: 'flex', gap: 4, border: '1px solid rgba(128,128,128,0.35)', borderRadius: 8, padding: 3 }}>
+    {options.map((o) => (
+      <button
+        key={o.value}
+        type="button"
+        onClick={() => onSelect(o.value)}
+        title={o.awaiting ? `${o.label} has no palette yet` : undefined}
+        style={{
+          flex: 1,
+          padding: '5px 8px',
+          border: o.awaiting ? '1px dashed rgba(128,128,128,0.5)' : '1px solid transparent',
+          borderRadius: 6,
+          cursor: 'pointer',
+          fontSize: 12,
+          fontWeight: selected === o.value ? 600 : 400,
+          opacity: o.awaiting && selected !== o.value ? 0.6 : 1,
+          color: selected === o.value ? '#fff' : 'inherit',
+          background: selected === o.value ? accent : 'transparent',
+        }}
+      >
+        {o.label}
+      </button>
+    ))}
+  </div>
+);
+
+const RadioGrid: React.FC<{
+  options: { value: string; label: string }[];
+  selected: string;
+  accent: string;
+  onSelect: (v: string) => void;
+}> = ({ options, selected, accent, onSelect }) => (
+  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px 12px' }}>
+    {options.map((o) => (
+      <label
+        key={o.value}
+        style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: 13 }}
+      >
+        <input
+          type="radio"
+          checked={selected === o.value}
+          onChange={() => onSelect(o.value)}
+          style={{ accentColor: accent, margin: 0, cursor: 'pointer' }}
+        />
+        {o.label}
+      </label>
+    ))}
+  </div>
+);
+
 const Swatches: React.FC<{
   options: { value: string; label: string; color: string }[];
   selected: string;
@@ -404,9 +507,13 @@ const SettingsPanel = () => {
   // Two different "accents" meet here. `accent` is the Primary SWATCH global
   // the user picks below; `brandAccent` is the colour this panel's own controls
   // paint with, which follows the selected design system.
-  const { accent: brandAccent } = useBrand();
+  const { accent: brandAccent, dark } = useBrand();
+  const api = useStorybookApi();
   const accent = globals['accent'] ?? 'brand';
   const surface = globals['surface'] ?? 'default';
+  const preset = String(globals['preset'] ?? 'aura');
+  const menuType = String(globals['menuType'] ?? 'static');
+  const menuTheme = String(globals['menuTheme'] ?? 'light');
   const ripple = globals['ripple'] !== false;
   const rtl = globals['direction'] === 'rtl';
   const comparison = globals['comparison'] === true;
@@ -457,6 +564,41 @@ const SettingsPanel = () => {
         options={SURFACE_OPTIONS}
         selected={surface}
         onSelect={(v) => updateGlobals({ surface: v })}
+      />
+
+      <SectionLabel>Presets</SectionLabel>
+      <SegmentedRow
+        options={PRESET_OPTIONS}
+        selected={preset}
+        accent={brandAccent}
+        onSelect={(v) => updateGlobals({ preset: v })}
+      />
+
+      <SectionLabel>Color scheme</SectionLabel>
+      <SegmentedRow
+        options={[
+          { value: 'light', label: 'Light' },
+          { value: 'dark', label: 'Dark' },
+        ]}
+        selected={dark ? 'dark' : 'light'}
+        accent={brandAccent}
+        onSelect={(v) => api.getChannel().emit(UPDATE_DARK_MODE_EVENT_NAME, v)}
+      />
+
+      <SectionLabel>Menu type</SectionLabel>
+      <RadioGrid
+        options={MENU_TYPE_OPTIONS}
+        selected={menuType}
+        accent={brandAccent}
+        onSelect={(v) => updateGlobals({ menuType: v })}
+      />
+
+      <SectionLabel>Menu theme</SectionLabel>
+      <RadioGrid
+        options={MENU_THEME_OPTIONS}
+        selected={menuTheme}
+        accent={brandAccent}
+        onSelect={(v) => updateGlobals({ menuTheme: v })}
       />
 
       <SectionLabel>Options</SectionLabel>

@@ -1,4 +1,5 @@
 import { Meta, Canvas } from '@storybook/blocks';
+import { PropsTable } from '@baps/docs-blocks';
 import * as TableColumnConfigStories from './table-column-config.stories';
 
 <Meta of={TableColumnConfigStories} />
@@ -31,6 +32,12 @@ The "Fields" panel for `baps-table`: search, an active-column count, and a reord
 ### Without Pinning
 
 <Canvas of={TableColumnConfigStories.WithoutPinning} />
+
+## API
+
+Inputs, outputs and their types, read from the component's own source.
+
+<PropsTable of={TableColumnConfigStories} />
 
 ## When Not to Use
 

@@ -1,5 +1,5 @@
 import { Meta, Canvas } from '@storybook/blocks';
-import { BrandOnly } from '@baps/docs-blocks';
+import { BrandOnly, PropsTable } from '@baps/docs-blocks';
 import * as TabsStories from './tabs.stories';
 
 <Meta of={TabsStories} />
@@ -46,6 +46,12 @@ Sampark skin opt-in for PrimeNG v21's tab strip. There is **no `baps-tabs` wrapp
 <Canvas of={TabsStories.Sizes} />
 
 </BrandOnly>
+
+## API
+
+Inputs, outputs and their types, read from the component's own source.
+
+<PropsTable of={TabsStories} />
 
 ## When Not to Use
 

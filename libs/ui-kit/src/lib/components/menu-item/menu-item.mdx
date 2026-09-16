@@ -1,0 +1,68 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import { BrandOnly } from '@baps/docs-blocks';
+
+{/*
+  Unattached on purpose — see the note in listbox.mdx. `baps-menu-item`'s three
+  stories live in form-field.stories.ts under the pinned meta id
+  `components-form-controls`, and moving them would move the visual baselines
+  keyed off those ids.
+*/}
+
+<Meta title="Components/Molecules/Menu Item" />
+
+import * as FormControlsStories from '../form-field/form-field.stories';
+
+# Menu Item
+
+`baps-menu-item` is the base selectable row used inside menus, listbox panels and the users dropdown: an optional avatar or icon, a title, an optional subtitle, and the selected / disabled / danger treatments that go with them.
+
+It is a **molecule**, not an atom — it composes `baps-avatar` with its own two-line text block, and is the shared row every panel in the library renders.
+
+## Usage
+
+```html
+<baps-menu-item
+  title="Ghanshyam Pandey"
+  subtitle="Nation Leader"
+  avatarLabel="GP"
+  [selected]="selectedId === 1"
+  (click)="select(1)"
+/>
+```
+
+## Examples
+
+### Playground
+
+<Canvas of={FormControlsStories.MenuItemPlayground} />
+
+<BrandOnly brand="sampark">
+
+### All Variants
+
+<Canvas of={FormControlsStories.AllVariants} />
+
+</BrandOnly>
+
+<BrandOnly brand="mybky">
+
+### All Variants (MyBKY)
+
+<Canvas of={FormControlsStories.AllVariantsMyBKY} />
+
+</BrandOnly>
+
+## When Not to Use
+
+| Need | Use | Not this |
+| --- | --- | --- |
+| A whole selection panel | `baps-listbox` | A hand-rolled stack of menu items |
+| A person picker with search | `baps-users-dropdown` | Menu items inside a popover |
+| A page-level action | `baps-button` | A menu item styled to look like one |
+
+## Accessibility
+
+- `role` is set by the container: `option` inside a listbox, `menuitem` inside a menu. Set it to match, or the row is announced as plain text.
+- Selection is exposed through `aria-selected` / `aria-checked`, not through the highlight alone.
+- `disabled` removes the row from the tab order as well as dimming it — a dimmed-but-focusable row is the failure mode this avoids.
+- The avatar is decorative and carries `aria-hidden`; the title and subtitle are the announced content.

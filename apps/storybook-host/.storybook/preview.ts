@@ -575,26 +575,18 @@ const preview: Preview = {
           'Getting Started',
           'Foundations',
           'Components',
-          // Renamed onto the target IA: Menu -> Navigation, Messages -> Feedback,
-          // Panel -> Layout, Misc -> Utility. Every component meta pins its own
+          // Atomic Design, smallest first. Every component meta pins its own
           // id, so these are SIDEBAR LABELS only — the story URLs, and the 462
           // visual baselines keyed off them, did not move.
           //
-          // Button keeps its own category rather than being folded into Form or
-          // Utility: it is neither a form field nor a small display primitive,
-          // and burying the most-reached-for component in a bucket makes it
-          // harder to find than a two-entry category does.
-          [
-            'Form',
-            'Button',
-            'Data',
-            'Layout',
-            'Overlay',
-            'Navigation',
-            'Feedback',
-            'Media',
-            'Utility',
-          ],
+          // Atoms and Molecules are the two atomic tiers this library actually
+          // has. Organisms is the third bucket rather than a promise: the ten
+          // components in it (Table, Tree Table, Dialog, Drawer, Navbar,
+          // Internal Navbar, Toolbar, Stepper, and the two Table *Config
+          // drawers) are page SECTIONS, not reusable units, and forcing them
+          // into Molecules would have made Molecules mean nothing. Patterns,
+          // Guidelines and Docs stay outside Components entirely.
+          ['Atoms', 'Molecules', 'Organisms'],
           'Patterns',
           'Guidelines',
           'Docs',

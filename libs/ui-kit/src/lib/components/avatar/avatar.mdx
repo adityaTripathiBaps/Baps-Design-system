@@ -1,5 +1,5 @@
 import { Meta, Canvas } from '@storybook/blocks';
-import { BrandOnly } from '@baps/docs-blocks';
+import { BrandOnly, PropsTable } from '@baps/docs-blocks';
 import * as AvatarStories from './avatar.stories';
 
 <Meta of={AvatarStories} />
@@ -76,6 +76,30 @@ Represents a user or entity as initials, an icon, or an image. The BAPS wrapper 
 ### Group
 
 <Canvas of={AvatarStories.Group} />
+
+### Group Sizes
+
+A stack takes the size of its members: the overlap and the "+n" counter scale
+with them.
+
+<Canvas of={AvatarStories.GroupSizes} />
+
+<BrandOnly brand="mybky">
+
+### Statuses
+
+The MyBKY status ring — online, away, busy, offline — drawn on the avatar
+rather than beside it.
+
+<Canvas of={AvatarStories.MyBkyStatuses} />
+
+</BrandOnly>
+
+## API
+
+Inputs, outputs and their types, read from the component's own source.
+
+<PropsTable of={AvatarStories} />
 
 ## When Not to Use
 

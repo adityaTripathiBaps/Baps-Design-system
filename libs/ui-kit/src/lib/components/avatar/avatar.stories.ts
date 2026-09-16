@@ -20,7 +20,7 @@ const USER_ICON_SVG = `
  * uses the `BapsAvatar` wrapper component.
  */
 const meta: Meta<BapsAvatar> = {
-  title: 'Components/Media/Avatar',
+  title: 'Components/Atoms/Avatar',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-media-avatar.
   id: 'components-avatar',
