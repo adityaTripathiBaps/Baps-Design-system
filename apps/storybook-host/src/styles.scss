@@ -82,6 +82,12 @@
    rules intentionally outrank the component skins above on source order. */
 @use './docs-shell';
 
+/* baps-card. Loaded here as well as by the component itself, which is the
+   point of the move: the global copy is what styles a raw <baps-card> element
+   in the docs code viewer, where no Angular component rendered it. Identical
+   rules either way, so nothing shifts — the visual baseline is the check. */
+@use '../../../libs/ui-kit/src/lib/styles/components/card/card';
+
 html {
   font-size: 16px;                     /* Figma standard: 1rem = 16px */
   font-family: var(--font-family);

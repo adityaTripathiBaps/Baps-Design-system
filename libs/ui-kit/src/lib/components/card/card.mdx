@@ -1,11 +1,15 @@
 import { Meta, Canvas } from '@storybook/blocks';
+import { FrameworkTabs } from '@baps/docs-blocks';
 import * as CardStories from './card.stories';
+import { cardSnippets } from './card.snippets';
 
 <Meta of={CardStories} />
 
 # Card
 
-A bordered content container — the generic block dashboard tiles, form sections, list panels and empty states are built from. **Not** a PrimeNG wrap: PrimeNG's own `p-card` hard-codes a resting box-shadow and has no borderless/hairline mode, which conflicts with the design system's "hairlines do the structural work; shadows are for floating elements only" rule. `baps-card` is a from-scratch component built directly on design tokens.
+A bordered content container — the generic block dashboard tiles, form sections, list panels and empty states are built from. **Not** a PrimeNG wrap, and the reasons are structural, checked against primeng 21.1.3. The v21 card token set is `background`, `borderRadius`, `color`, `shadow` plus `body.padding`/`body.gap` and the title/subtitle text tokens — so the 1px hairline border that defines this card has no token to come from and is CSS either way. `.p-card-caption` also has no actions slot, and `divided` draws its rules full-bleed from negative margins keyed to the card's own padding, which therefore has to stay a CSS custom property. Wrapping would add two elements between the host and the content and split the focusable element from the one painting the border. `baps-card` is a from-scratch component built directly on design tokens.
+
+(An earlier version of this page said `p-card` "hard-codes a resting box-shadow" — that was wrong: `shadow` is a settable token in v21, reachable through the same `dt` passthrough the rest of this library uses.)
 
 ## Usage
 
@@ -33,6 +37,8 @@ A bordered content container — the generic block dashboard tiles, form section
 
 <Canvas of={CardStories.BodyOnly} />
 
+<FrameworkTabs of={CardStories.BodyOnly} snippets={cardSnippets.BodyOnly} />
+
 ### Divided
 
 <Canvas of={CardStories.Divided} />
@@ -41,9 +47,13 @@ A bordered content container — the generic block dashboard tiles, form section
 
 <Canvas of={CardStories.PaddingSteps} />
 
+<FrameworkTabs of={CardStories.PaddingSteps} snippets={cardSnippets.PaddingSteps} />
+
 ### Rest Vs Raised
 
 <Canvas of={CardStories.RestVsRaised} />
+
+<FrameworkTabs of={CardStories.RestVsRaised} snippets={cardSnippets.RestVsRaised} />
 
 ### Interactive
 

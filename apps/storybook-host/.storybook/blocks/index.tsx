@@ -330,3 +330,124 @@ export const BrandOnly = ({
     </div>
   );
 };
+
+/* ── FrameworkTabs ─────────────────────────────────────────────────────────
+   One use-case, four frameworks, one tab strip.
+
+   The Custom tab is NOT authored. It renders Storybook's own source for the
+   story, which means it stays correct for free: change the story and the
+   snippet changes with it. The other three are written by hand in the
+   component's `*.snippets.ts` and keyed by story export name — see
+   `SnippetSet` below.
+
+   Why hand-authored at all: decision D1 is a code-only viewer. There is no
+   React build of this design system, so React/Next snippets are documentation
+   of the intended markup, not generated output. `tools/check-snippets.mjs`
+   guards the part that can be checked mechanically — that they use design-system
+   classes and tokens rather than raw hex.
+
+   Tab order runs least-familiar to most: a reader who came for React finds it
+   first, and the two Angular flavours sit together at the end. */
+export type SnippetSet = {
+  react?: string;
+  next?: string;
+  primeng?: string;
+};
+
+const TAB_LABELS: Array<[keyof SnippetSet | 'custom', string]> = [
+  ['react', 'React'],
+  ['next', 'Next.js'],
+  ['primeng', 'PrimeNG-Angular'],
+  ['custom', 'Custom'],
+];
+
+const LANGUAGE: Record<string, SourceLanguage> = {
+  react: 'jsx',
+  next: 'jsx',
+  primeng: 'html',
+  custom: 'html',
+};
+
+export const FrameworkTabs = ({ of, snippets }: { of: unknown; snippets?: SnippetSet }) => {
+  const [active, setActive] = useState<string>('react');
+  // The Custom tab has no authored string to copy, so Copy reads the rendered
+  // source out of the DOM — scoped to THIS strip. A document-wide query would
+  // hand every strip on the page the first block on it.
+  const wrap = React.useRef<HTMLDivElement>(null);
+  const [copied, setCopied] = useState(false);
+
+  const available = TAB_LABELS.filter(([key]) => key === 'custom' || snippets?.[key as keyof SnippetSet]);
+  // A use-case with no authored snippets is not a broken tab strip — it is a
+  // use-case that has only its live Angular source, so show that alone rather
+  // than a strip with one tab.
+  const current = available.some(([k]) => k === active) ? active : 'custom';
+  const code = current === 'custom' ? null : (snippets?.[current as keyof SnippetSet] ?? '');
+
+  useEffect(() => {
+    if (!copied) return undefined;
+    const id = setTimeout(() => setCopied(false), 1600);
+    return () => clearTimeout(id);
+  }, [copied]);
+
+  if (available.length < 2) return <Source of={of as never} />;
+
+  return (
+    <div ref={wrap} style={{ margin: '0 0 1.5rem' }}>
+      <div
+        role="tablist"
+        aria-label="Framework"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 2,
+          borderBottom: '1px solid var(--baps-docs-divider)',
+        }}
+      >
+        {available.map(([key, label]) => (
+          <button
+            key={key}
+            role="tab"
+            aria-selected={current === key}
+            onClick={() => setActive(key)}
+            style={{
+              appearance: 'none',
+              background: 'transparent',
+              border: 'none',
+              borderBottom: `2px solid ${current === key ? 'var(--baps-docs-accent)' : 'transparent'}`,
+              color: current === key ? 'var(--baps-docs-accent)' : 'var(--baps-docs-muted)',
+              font: `${current === key ? 600 : 400} 0.8125rem/1.2 ${mono}`,
+              padding: '0.5rem 0.75rem',
+              cursor: 'pointer',
+            }}
+          >
+            {label}
+          </button>
+        ))}
+        <button
+          onClick={() => {
+            const text = code ?? wrap.current?.querySelector('.docblock-source pre')?.textContent ?? '';
+            void navigator.clipboard?.writeText(text).then(() => setCopied(true));
+          }}
+          style={{
+            marginLeft: 'auto',
+            appearance: 'none',
+            background: 'transparent',
+            border: '1px solid var(--baps-docs-divider)',
+            borderRadius: 4,
+            color: 'var(--baps-docs-muted)',
+            font: `400 0.75rem/1.2 ${mono}`,
+            padding: '0.3rem 0.6rem',
+            cursor: 'pointer',
+          }}
+        >
+          {copied ? 'Copied' : 'Copy'}
+        </button>
+      </div>
+      {current === 'custom' ? (
+        <Source of={of as never} />
+      ) : (
+        <Source code={code ?? ''} language={LANGUAGE[current]} />
+      )}
+    </div>
+  );
+};

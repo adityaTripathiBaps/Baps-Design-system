@@ -32,6 +32,7 @@
     "../src/**/*.stories.mdx",
     "../../../libs/tokens/src/generated/tokens.ts",
     "../../../libs/ui-kit/src/**/*.stories.ts",
+    "../../../libs/ui-kit/src/**/*.snippets.ts",
     "../../../libs/ui-kit/src/**/*.mdx",
     "../../../libs/migration-data/src/**/*.mdx",
     "blocks/**/*.tsx",
