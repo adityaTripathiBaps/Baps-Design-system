@@ -9,6 +9,7 @@ import {
   KeyboardTable,
 } from '@baps/docs-blocks';
 import * as AlertStories from './alert.stories';
+import { alertSnippets } from './alert.snippets';
 
 <Meta of={AlertStories} />
 
@@ -52,24 +53,28 @@ An inline notification banner: a coloured accent bar, a severity icon, text, and
   title="Severities"
   description="The four severities. Colour never carries the meaning on its own; the text does."
   of={AlertStories.Severities}
+  snippets={alertSnippets.Severities}
 />
 
 <DemoCard
   title="With Title"
   description="A bold first line for when the message needs a summary and a detail."
   of={AlertStories.WithTitle}
+  snippets={alertSnippets.WithTitle}
 />
 
 <DemoCard
   title="Dismissible"
   description="Adds a close button. The parent owns the state — the alert only emits closed."
   of={AlertStories.Dismissible}
+  snippets={alertSnippets.Dismissible}
 />
 
 <DemoCard
   title="Form Validation"
   description="Summarising several field errors above a form, rather than beside one input."
   of={AlertStories.FormValidation}
+  snippets={alertSnippets.FormValidation}
 />
 
 <DemoCard

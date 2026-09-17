@@ -93,11 +93,16 @@ export const DemoCard = ({
   title,
   description,
   of,
+  snippets,
   children,
 }: {
   title: string;
   description?: string;
   of?: unknown;
+  /* Authored React/Next snippets for this use-case. Supplying them swaps the
+     canvas's own SHOW CODE toggle for the framework tab strip, whose Custom tab
+     renders the same Angular source — one code viewer per example, not two. */
+  snippets?: SnippetSet;
   children?: React.ReactNode;
 }) => (
   <section style={{ margin: '0 0 2rem' }}>
@@ -105,7 +110,18 @@ export const DemoCard = ({
     {description ? (
       <p style={{ color: 'var(--baps-docs-text)', margin: '0 0 0.75rem' }}>{description}</p>
     ) : null}
-    {of ? <Canvas of={of as never} /> : children}
+    {of ? (
+      snippets ? (
+        <>
+          <Canvas of={of as never} sourceState="none" />
+          <FrameworkTabs of={of} snippets={snippets} />
+        </>
+      ) : (
+        <Canvas of={of as never} />
+      )
+    ) : (
+      children
+    )}
   </section>
 );
 

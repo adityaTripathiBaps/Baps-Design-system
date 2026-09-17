@@ -87,6 +87,9 @@
    in the docs code viewer, where no Angular component rendered it. Identical
    rules either way, so nothing shifts — the visual baseline is the check. */
 @use '../../../libs/ui-kit/src/lib/styles/components/card/card';
+/* Alert — same CSS-move as card above, so raw <baps-alert> markup is styled
+   without the Angular component. */
+@use '../../../libs/ui-kit/src/lib/styles/components/alert/alert';
 
 html {
   font-size: 16px;                     /* Figma standard: 1rem = 16px */

@@ -1,5 +1,5 @@
 import { Meta, Canvas } from '@storybook/blocks';
-import { FrameworkTabs } from '@baps/docs-blocks';
+import { FrameworkTabs, PropsTable } from '@baps/docs-blocks';
 import * as CardStories from './card.stories';
 import { cardSnippets } from './card.snippets';
 
@@ -35,7 +35,7 @@ A bordered content container — the generic block dashboard tiles, form section
 
 ### Body Only
 
-<Canvas of={CardStories.BodyOnly} />
+<Canvas of={CardStories.BodyOnly} sourceState="none" />
 
 <FrameworkTabs of={CardStories.BodyOnly} snippets={cardSnippets.BodyOnly} />
 
@@ -45,13 +45,13 @@ A bordered content container — the generic block dashboard tiles, form section
 
 ### Padding Steps
 
-<Canvas of={CardStories.PaddingSteps} />
+<Canvas of={CardStories.PaddingSteps} sourceState="none" />
 
 <FrameworkTabs of={CardStories.PaddingSteps} snippets={cardSnippets.PaddingSteps} />
 
 ### Rest Vs Raised
 
-<Canvas of={CardStories.RestVsRaised} />
+<Canvas of={CardStories.RestVsRaised} sourceState="none" />
 
 <FrameworkTabs of={CardStories.RestVsRaised} snippets={cardSnippets.RestVsRaised} />
 
@@ -62,6 +62,12 @@ A bordered content container — the generic block dashboard tiles, form section
 ### Dashboard Tiles
 
 <Canvas of={CardStories.DashboardTiles} />
+
+## API
+
+Inputs, outputs and their types, read from the component's own source.
+
+<PropsTable of={CardStories} />
 
 ## When Not to Use
 
