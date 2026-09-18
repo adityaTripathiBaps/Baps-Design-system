@@ -553,3 +553,193 @@ export default {
     darkModeSelector: '.baps-dark',
   },
 };
+
+/* ── Route A — primary-derived component overrides, remapped at runtime ─────
+ *
+ * The problem this solves, measured: picking an accent moves two of the three
+ * places a colour can live — PrimeNG's `semantic.primary` and the design
+ * system's `--color-*` — and never the third, `components.*`. Those are baked
+ * at build time, because `tokens.ts` resolves even a token written as a
+ * reference into a literal:
+ *
+ *     ButtonMybkyPrimaryDefault = "linear-gradient(135deg, #5f78b8 0%, #384871 100%)"
+ *
+ * So a MyBKY Button kept its blue fill at `accent:amber` while the surfaces
+ * around it moved. Split Button, which has NO `components.splitbutton` entry
+ * and is therefore styled from `{primary.*}`, followed correctly — the
+ * component with FEWER tokens was the one that worked.
+ *
+ * ## Why this rebuilds the values instead of substituting hexes
+ *
+ * The four affected tokens have four different SHAPES: a gradient, the same
+ * gradient reversed, an alpha derivation, and a plain hex. A find-and-replace
+ * of `#5f78b8` would happen to work today and break the moment a value is
+ * re-authored. These are rebuilt from the ramp using the same formulas the
+ * tokens themselves express, so the shape is reproduced rather than patched.
+ *
+ * ## Why no var() chain
+ *
+ * The obvious fix — making these `var(--p-primary-600)` references — was tried
+ * and reverted: Material runs `color-mix(in srgb, {primary.color}, …)` over
+ * primary, and a var chain there left the primary badge with no fill at all
+ * (see docs/phase-2-step-0-plan.md). Every value returned here is a REAL
+ * colour, which is what keeps color-mix working.
+ *
+ * Scope: MyBKY button only, and only the values that trace back to the brand
+ * ramp. `ButtonMybkyPrimaryText` (#ffffff) is not primary-derived and is left
+ * alone, as are danger, warn and secondary — those are severity and mono
+ * colours, and a Danger button staying red at `accent:amber` is correct.
+ */
+type RampSteps = Record<number | string, string | undefined>;
+
+export function myBkyPrimaryDerivedComponents(ramp: RampSteps) {
+  // 600 is the brand blue (#5f78b8, "gradient light stop"), 800 the dark navy
+  // (#384871, "gradient dark stop"). A generated ramp always carries both.
+  const light = ramp[600];
+  const dark = ramp[800];
+  if (!light || !dark) return {};
+
+  const primary = {
+    background: `linear-gradient(135deg, ${light} 0%, ${dark} 100%)`,
+    hoverBackground: `linear-gradient(135deg, ${dark} 0%, ${light} 100%)`,
+    activeBackground: `linear-gradient(135deg, ${dark} 0%, ${light} 100%)`,
+  };
+  // The ghost tint is the 600 step at 10%, stated with relative-colour syntax
+  // exactly as the token does.
+  const ghost = {
+    hoverBackground: `rgb(from ${light} r g b / 0.1)`,
+    activeBackground: `rgb(from ${light} r g b / 0.1)`,
+    color: light,
+  };
+  // Restated for dark, because the preset restates them there too: left to
+  // merge, Material's dark scheme washes the solid fill out to a pale tint.
+  const scheme = { root: { primary }, text: { primary: ghost } };
+
+  return {
+    button: { colorScheme: { light: scheme, dark: scheme } },
+    ...radiobutton(ramp),
+    ...toggleswitch(ramp),
+    ...avatar(ramp),
+  };
+}
+
+/* toggleswitch — the simplest of the four: the "on" track is the 600 step, and
+ * the preset declares no dark colorScheme for it, so there are exactly two
+ * sites.
+ *
+ * NOT remapped: ToggleSwitchMybkyTrackOnDisabled (#bdc6e4, ramp 200). It is
+ * interpolated into the preset's raw `css:` string rather than a token slot —
+ *
+ *     .p-toggleswitch.p-toggleswitch-checked.p-disabled .p-toggleswitch-slider
+ *       { background: ${tokens.ToggleSwitchMybkyTrackOnDisabled}; }
+ *
+ * — and definePreset replaces a string wholesale, so reaching that one
+ * declaration would mean restating the whole block, which also carries the
+ * thumb shadow and the disabled inset. Restating three unrelated rules to
+ * recolour one is a worse trade than the residual: a switch that is BOTH
+ * checked and disabled keeps its blue track under a non-brand accent. Recorded
+ * in guidelines/known-gaps rather than silently accepted.
+ */
+function toggleswitch(ramp: RampSteps) {
+  const on = ramp[600];
+  if (!on) return {};
+  return {
+    toggleswitch: {
+      colorScheme: {
+        light: { root: { checkedBackground: on, checkedHoverBackground: on } },
+      },
+    },
+  };
+}
+
+/* avatar — four steps, and the widest spread of the four components: the
+ * initials chip is a PALE fill with DARK ink in light mode, and the inverse in
+ * dark mode.
+ *
+ *   light  background  AvatarMybkyBackground  #eef0f8   ramp  50
+ *   light  color       AvatarMybkyText        #384871   ramp 800
+ *   dark   background  ColorMybkyBlue900      #252f4a   ramp 900
+ *   dark   color       ColorMybkyBlue200      #bdc6e4   ramp 200
+ *
+ * Both schemes are a light/dark PAIR, and the pairing flips between them. This
+ * is the clearest case for reproducing shape rather than substituting a hex:
+ * dropping the 600 in here — the step that reads as "the brand colour" — would
+ * give a mid-blue chip with mid-blue text and no contrast at all, in both
+ * modes. What has to be preserved is the RELATIONSHIP (pale ground, dark ink,
+ * inverted for dark), not any single value.
+ */
+function avatar(ramp: RampSteps) {
+  const pale = ramp[50];
+  const ink = ramp[800];
+  const darkGround = ramp[900];
+  const darkInk = ramp[200];
+  if (!pale || !ink || !darkGround || !darkInk) return {};
+  return {
+    avatar: {
+      colorScheme: {
+        light: { root: { background: pale, color: ink } },
+        dark: { root: { background: darkGround, color: darkInk } },
+      },
+    },
+  };
+}
+
+/* radiobutton — a different SHAPE from button, which is why each site is
+ * enumerated rather than pattern-matched.
+ *
+ * Button needed two ramp steps and reproduced a gradient. Radio needs FOUR, all
+ * plain hexes, and its dark scheme deliberately runs the other way:
+ *
+ *   light  checked / icon    ColorMybkyPrimaryDefault      #5f78b8   ramp 600
+ *   light  hover borders     ColorMybkyPrimaryActive       #384871   ramp 800
+ *   dark   checked / icon    ColorMybkyDarkPrimaryDefault  #9fadd9   ramp 400
+ *   dark   hover borders     ColorMybkyDarkPrimaryHover    #bdc6e4   ramp 200
+ *
+ * The dark pair is LIGHTER than the light pair on purpose — the token carries
+ * the reason ("one step lighter than light mode - 7.79:1 on the dark ground").
+ * Substituting 600/800 into dark the way button does would have quietly
+ * destroyed that contrast ratio, which is the whole argument for doing this
+ * shape-first instead of find-and-replacing a hex.
+ *
+ * Scoped to `components.radiobutton`, NOT to the tokens. ColorMybkyPrimaryDefault
+ * and ColorMybkyPrimaryActive are shared semantic tokens — checkbox reads the
+ * same two — so remapping the token would silently move Checkbox as well.
+ * Checkbox measured as a PARTIAL follower and is deliberately deferred; it gets
+ * its own decision, not a side effect of this one.
+ */
+function radiobutton(ramp: RampSteps) {
+  const on = ramp[600];
+  const hover = ramp[800];
+  const darkOn = ramp[400];
+  const darkHover = ramp[200];
+  if (!on || !hover || !darkOn || !darkHover) return {};
+
+  return {
+    radiobutton: {
+      colorScheme: {
+        light: {
+          root: {
+            hoverBorderColor: hover,
+            checkedBorderColor: on,
+            checkedHoverBorderColor: hover,
+          },
+          icon: {
+            checkedColor: on,
+            checkedHoverColor: on,
+          },
+        },
+        dark: {
+          root: {
+            hoverBorderColor: darkHover,
+            checkedBorderColor: darkOn,
+            checkedHoverBorderColor: darkHover,
+          },
+          icon: {
+            checkedColor: darkOn,
+            checkedHoverColor: darkHover,
+          },
+        },
+      },
+    },
+  };
+}

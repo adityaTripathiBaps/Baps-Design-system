@@ -3,6 +3,7 @@ import { definePreset, palette } from '@primeuix/themes';
 // the top of baps.theme.ts for why the barrel emits "undefined" under AOT.
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import * as t from '@org/tokens/generated/tokens';
+import { MyBky, myBkyPrimaryDerivedComponents } from './baps.theme';
 
 /**
  * Primary + Surface palette switching for the Storybook theme-settings panel —
@@ -15,9 +16,17 @@ import * as t from '@org/tokens/generated/tokens';
  * PrimeNG configurator ships). This is a Storybook exploration control only —
  * product code still follows CLAUDE.md's four product accents.
  *
- * ponytail: primary re-skins semantic-primary surfaces (focus rings, links,
- * checkbox, formField hover). It does NOT change the primary *button* fill —
- * MyBKY buttons run off their own Button* tokens in baps.theme.ts.
+ * primary re-skins semantic-primary surfaces (focus rings, links, checkbox,
+ * formField hover) AND, since Route A, the MyBKY button fill.
+ *
+ * That second half used to be the opposite. This note read "It does NOT change
+ * the primary *button* fill — MyBKY buttons run off their own Button* tokens in
+ * baps.theme.ts", which was accurate and was the bug: those tokens resolve to
+ * literals at build time, so a MyBKY Button kept its blue gradient at
+ * `accent:amber` while every surface around it moved. `withPrimaryRamp` below
+ * now remaps the primary-derived `components.button` values from the selected
+ * ramp. Danger, warn and secondary still run off their own tokens and are
+ * meant to — they are severity and mono colours, not primary-derived.
  */
 export interface Swatch {
   key: string;
@@ -116,7 +125,38 @@ type Preset = ReturnType<typeof definePreset>;
 /** Returns `preset` with the chosen primary ramp. 'brand'/unknown → unchanged. */
 export function withAccent(preset: Preset, key: string): Preset {
   const ramp = PRIMARY_RAMPS[key];
-  return ramp ? definePreset(preset, { semantic: { primary: ramp } }) : preset;
+  return ramp ? withPrimaryRamp(preset, ramp) : preset;
+}
+
+/**
+ * Applies a primary ramp to BOTH sinks a preset owns: `semantic.primary`, and
+ * the `components.*` entries whose values are primary-derived.
+ *
+ * Split out from `withAccent` because the accent picker has two entry points —
+ * a swatch KEY, resolved through `PRIMARY_RAMPS` above, and a raw HEX from the
+ * theme builder, which is not a key here and so is turned into a ramp by the
+ * caller. Both have to reach the same two sinks; before this existed only the
+ * key path did, and a hex chosen in the builder moved the surfaces while
+ * leaving the primary button on its baked gradient.
+ *
+ * The components half is per-preset and opt-in: a preset states which of its
+ * component values are primary-derived, and presets that state nothing are
+ * merged with `semantic.primary` alone, exactly as before. Right now MyBKY is
+ * the only one that does — see `myBkyPrimaryDerivedComponents`. Sampark's
+ * button is maroon by brand rather than by accent, so it is deliberately not
+ * remapped; its own sink-3 entries (toggleswitch, tabs) are a separate item.
+ *
+ * Identity comparison against the exported preset object, not a name or a
+ * duck-typed probe: a caller that has already wrapped the preset gets the
+ * plain semantic merge, which is the safe direction to fail in — a missed
+ * remap looks like today's behaviour, a wrongly applied one would paint MyBKY
+ * button values onto another brand.
+ */
+export function withPrimaryRamp(preset: Preset, ramp: Ramp): Preset {
+  const withSemantic = definePreset(preset, { semantic: { primary: ramp } });
+  if (preset !== MyBky) return withSemantic;
+  const components = myBkyPrimaryDerivedComponents(ramp as Record<number | string, string | undefined>);
+  return Object.keys(components).length ? definePreset(withSemantic, { components }) : withSemantic;
 }
 
 /** Returns `preset` with the chosen surface ramp. 'default'/unknown → unchanged. */

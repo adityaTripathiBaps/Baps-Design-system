@@ -3,10 +3,10 @@ import type { Decorator, Preview } from '@storybook/angular';
 import { applicationConfig } from '@storybook/angular';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
-import { definePreset, palette, usePreset } from '@primeuix/themes';
+import { palette, usePreset } from '@primeuix/themes';
 import { addons } from 'storybook/internal/preview-api';
 import { DARK_MODE_EVENT_NAME } from 'storybook-dark-mode';
-import { MyBky, PRIMARY_RAMPS, Sampark, withAccent, withSurface } from '@org/ui-kit';
+import { MyBky, PRIMARY_RAMPS, Sampark, withAccent, withPrimaryRamp, withSurface } from '@org/ui-kit';
 // Compodoc metadata for the API tables. The storybook target regenerates
 // documentation.json on every start (compodoc: true + compodocArgs in
 // apps/storybook-host/project.json); generating it is NOT enough on its own -
@@ -389,7 +389,14 @@ const withDesignSystem: Decorator = (storyFn, context) => {
   // `semantic.primary` replaced with a ramp — so the library needs no change.
   const accentRamp = accent.startsWith('#') ? rampFor(accent) : undefined;
   const branded = accentRamp
-    ? definePreset(DS_PRESETS[ds], { semantic: { primary: accentRamp } })
+    ? // `withPrimaryRamp`, not a bare `semantic.primary` merge: the library
+      // function also remaps the primary-derived `components.*` entries, which
+      // is what makes the MyBKY button fill follow the accent. Merging only
+      // `semantic.primary` here would have left the theme builder's own hex
+      // moving the surfaces while the primary button kept its baked gradient —
+      // the exact bug Route A fixes, reintroduced on the one path that bypasses
+      // `withAccent`.
+      withPrimaryRamp(DS_PRESETS[ds], accentRamp)
     : withAccent(DS_PRESETS[ds], accent);
   const preset = withSurface(branded, surface);
   if (typeof document !== 'undefined') {

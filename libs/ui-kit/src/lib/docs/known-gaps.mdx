@@ -990,3 +990,74 @@ The obvious fix — making preset values `var()` references — **was tried and
 reverted**: Material does `color-mix(in srgb, {primary.color}, …)` on primary,
 and a var chain there left the primary badge with no fill at all. Route A exists
 to avoid that. **Every remapped value must stay a real colour; no var() chains.**
+
+## Route A — done for the four sink-3 components
+
+The audit above named four components whose primary-derived colour was baked
+into `components.*` and therefore ignored the accent picker. All four are now
+remapped at runtime from the selected ramp.
+
+| Component | Sites | Ramp steps used |
+| --- | --- | --- |
+| `button` | 6 | 600, 800 |
+| `radiobutton` | 10 | 600, 800 light · 400, 200 dark |
+| `toggleswitch` | 2 | 600 |
+| `avatar` | 4 | 50, 800 light · 900, 200 dark |
+
+### Why it is shape-aware rather than a hex substitution
+
+The four components have four different value shapes, and only one of them is a
+plain colour:
+
+- **button** reproduces a gradient — `linear-gradient(135deg, 600 0%, 800 100%)`
+  — plus the same gradient REVERSED on hover, plus an alpha derivation for the
+  ghost tint (`rgb(from 600 r g b / 0.1)`).
+- **radiobutton** is four plain hexes, but its dark scheme runs the other way
+  (400/200, LIGHTER than light mode's 600/800) because the token says so:
+  "one step lighter than light mode - 7.79:1 on the dark ground".
+- **avatar** is a light/dark PAIR that inverts between schemes — pale ground
+  with dark ink in light, dark ground with pale ink in dark.
+
+A find-and-replace of `#5f78b8` would have produced a mid-amber avatar chip with
+mid-amber text and no contrast at all, and would have flattened radiobutton's
+dark contrast ratio. What has to survive is the RELATIONSHIP, not any one value.
+
+### It is switch-activated, and that is why no baseline moved
+
+`PRIMARY_RAMPS` has no `brand` key — `brand` is the preset default and appears
+only in the swatch list — so `withAccent` hits its `ramp ? … : preset` guard and
+returns the preset untouched. Baselines capture at the default accent, so all
+536 are unchanged: the remap adds a behaviour that did not exist (accent
+tracking) without altering the one that did (the default skin). Measured, both
+directions: the default gradient still resolves to `#5f78b8 → #384871`, byte for
+byte the original literals.
+
+### Scope, and what was deliberately not touched
+
+Every remap is keyed to `components.<name>`, never to a token.
+`ColorMybkyPrimaryDefault` and `ColorMybkyPrimaryActive` are SHARED — checkbox
+reads the same two — so remapping the token would have moved Checkbox silently.
+Checkbox is a partial follower and is deferred; it gets its own decision.
+Verified by measurement: at `accent:amber` Checkbox moves exactly the one
+element it moved before Route A existed.
+
+Tag, Chip and Tabs likewise still show their pre-existing partial behaviour —
+the colours they read from `--color-*` (sink 2) follow the picker while their
+preset literals (sink 3) do not. A Tag at `accent:amber` is an amber border
+around a blue fill. Unchanged by Route A and still deferred.
+
+### Residual — a checked AND disabled toggle switch keeps its blue track
+
+`ToggleSwitchMybkyTrackOnDisabled` (`#bdc6e4`, ramp 200) is interpolated into
+the preset's raw `css:` string, not a token slot:
+
+```
+.p-toggleswitch.p-toggleswitch-checked.p-disabled .p-toggleswitch-slider
+  { background: ${tokens.ToggleSwitchMybkyTrackOnDisabled}; }
+```
+
+`definePreset` replaces a string wholesale, so reaching that one declaration
+means restating the entire block — which also carries the thumb shadow and the
+disabled inset. Restating three unrelated rules to recolour one is a worse trade
+than the residual, which is visible only on a switch that is BOTH checked and
+disabled. Left as is, on purpose.
