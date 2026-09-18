@@ -861,3 +861,132 @@ split: Listbox and Menu Item lived behind the merged "Form Controls" entry,
 which `tools/check-brand-scope.mjs` allow-listed as a single page. Giving each
 its own page is what exposed it, and the allowlist entry now names the two pages
 that actually carry the gap rather than hiding a third component behind them.
+
+## `baps-button`'s sm icon-only step is 34x28, not square
+
+Found while building the Custom tab's PrimeNG-free markup, by measuring the
+component rather than reading it. Every other icon-only step is square — 32x32,
+36x36, 42x42 — because `iconOnlyWidth` and the height token agree. The sm step
+does not:
+
+| step | width token | retained padding | rendered |
+| --- | --- | --- | --- |
+| sm | 1.75rem = 28px | 16px + 16px + 2px border = 34px | **34 x 28** |
+| default | 2rem = 32px | 0 | 32 x 32 |
+| lg | 2.25rem = 36px | 16px + 16px + 2px = 34px | 36 x 36 |
+| xl | 2.625rem = 42px | 0 | 42 x 42 |
+
+`border-box` takes the larger of the two, so at sm the 34px the padding needs
+wins over the 28px the token asks for. The glyph then has a **0px content box**
+and survives only because the button carries `overflow: hidden` — measured:
+button width 34px, icon width 14.88px, content box 0.
+
+PrimeNG zeroes the horizontal padding at `default` and `xl` but keeps 16px at
+`sm` and `lg`. At lg that is harmless, because 36 > 34. At sm it is not.
+
+### Not fixed here
+
+The fix is a component change — zero the padding on the sm icon-only step the
+way `default` already does — and it moves that story's visual baseline. This
+work was scoped to add a stylesheet and snippets without touching
+`button.component.ts` or `SAMPARK_BUTTON_TOKENS`, so the behaviour is
+**reproduced** in `styles/components/button/_button.scss` instead: the Custom
+tab has to show what the component actually renders, and a partial that quietly
+rendered a square button there would be documenting a component that does not
+exist. When the component is fixed, `tools/check-button-drift.mjs` fails and
+names the cell — which is the intended way to find out.
+
+## Two things a non-Angular page needs that nothing in `ui-kit` applies
+
+Both were found by `tools/check-button-drift.mjs` — every colour, border,
+radius and padding matched while the buttons came out 1-3px narrow.
+
+1. **`--font-feature-settings`.** Inter's OpenType set (`case`, `cpsp`, `salt`,
+   `ss01/03/04`, `cv01`-`cv11`) changes glyph advance widths. `layout/_common.scss`
+   defines the variable; **nothing in ui-kit applies it.** The rule
+   (`html { font-feature-settings: var(--font-feature-settings) }`) lives in the
+   app's own `apps/storybook-host/src/styles.scss`, so a consuming app that
+   loads the partials and not that rule renders every label narrower than the
+   design system does.
+2. **`button, input, textarea, select { font-feature-settings: inherit }`.** A
+   form control does not inherit OpenType features from `html` on its own, so
+   even an app that states rule 1 gets unfeatured text inside every button
+   without this second rule.
+
+Same class of gap as the `font-family` one recorded in `card.snippets.ts`: the
+partials are complete, the base rules that make them render correctly are not
+shipped with them. A real styles export would be the place to fix it — see the
+packaging note in that file.
+
+## Theme-picker responsiveness — all 47 components, measured
+
+The "Third sink" section above was a **static scan** of `components.*` entries.
+This is the same question asked **empirically**: every component docs page
+rendered twice — default accent and `accent:amber` — with the computed colours
+of every visible element inside the story canvases diffed element by element.
+47/47 measured, 0 errors.
+
+**18 follow the accent picker. 29 do not.** And the 29 are not one problem —
+they are three, with three different fixes:
+
+| Cause | Count | What it means |
+| --- | --- | --- |
+| **A. Preset override (sink 3)** | 4 | Colour IS primary-derived, but baked into `components.*`. The only true "should follow and doesn't". |
+| **B. Hardcoded hex** | 21 | Never primary-derived. The picker was never going to move it. 535 hex across these. |
+| **C. Nothing to theme** | 4 | Icon, Input, Multi Select, Tree Select — 0 hex, no brand colour. **Not a bug.** |
+
+### A — the four to fix
+
+| Component | Hardcoded hex | Preset tokens to remap |
+| --- | --- | --- |
+| `button` | 25 | `ButtonMybkyPrimaryDefault`, `…PrimaryHover`, `…PrimaryGhostHover`, `…PrimaryGhostText` |
+| `avatar` | 43 | `AvatarMybkyBackground`, `AvatarMybkyText` |
+| `radiobutton` | 18 | `ColorMybkyPrimaryDefault`, `…PrimaryActive`, `ColorMybkyDarkPrimaryDefault`, `…DarkPrimaryHover` |
+| `toggleswitch` | 16 | `ToggleSwitchMybkyTrackOn`, `…TrackOnDisabled` |
+
+~12 tokens, one shared fix. **Route A first** — this is the whole
+"should-follow-but-doesn't" set, and nothing else in the library qualifies.
+
+### Where the static scan and the measurement disagree
+
+The table above lists `tag`, `checkbox` and `tabs` as sink-3 components. All
+three **measured as FOLLOWS** — their other colours move while the preset-pinned
+ones stay put. They are *partial* failures, which a scan of the preset cannot
+see and a render diff can. Deferred with bucket B: a mixed component is a worse
+first patient than a clean one.
+
+### The counter-intuitive part, worth stating plainly
+
+**Split Button follows the picker. Button does not — because Button has more
+tokens.**
+
+`components.splitbutton` does not exist in either preset (0 occurrences), so
+PrimeNG styles it from `{primary.*}` and the picker reaches it. `components.button`
+does exist, and `tokens.ts` resolves its value to a literal at build time:
+
+```ts
+ButtonMybkyPrimaryDefault = "linear-gradient(135deg, #5f78b8 0%, #384871 100%)"
+```
+
+So a component-tier token tier — normally the thing that makes a component
+*more* themeable — is exactly what makes these four *less* themeable. Worth
+remembering before treating "add component tokens" as automatically an
+improvement.
+
+Scope note: only `primary` is affected. A MyBKY Button at `accent:amber` shows
+Primary and Primary Ghost failing to move; Danger and Warning keeping their own
+colours is **correct** — they are severity colours, not primary-derived.
+
+### Bucket B — deferred, deliberately
+
+535 hardcoded hex across 21 components, worst first: `select` 122, `alert` 52,
+`pagination` 36, `tree-table` 32, `navbar` 23. **Select alone is larger than all
+four Route A fixes combined**, and fixes a component nobody has reported as
+broken. This is the token-migration workstream, not a bug queue.
+
+### The constraint any fix must respect
+
+The obvious fix — making preset values `var()` references — **was tried and
+reverted**: Material does `color-mix(in srgb, {primary.color}, …)` on primary,
+and a var chain there left the primary badge with no fill at all. Route A exists
+to avoid that. **Every remapped value must stay a real colour; no var() chains.**
