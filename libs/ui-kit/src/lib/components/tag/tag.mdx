@@ -53,25 +53,46 @@ A labelled status or category chip — event status, member group, role code. Th
 
 </BrandOnly>
 
-<BrandOnly brand="comparison">
-
 ### Chevron
 
-<Canvas of={TagStories.Chevron} />
+A decorative disclosure caret after the label — 8px at `xs`, 10px at `s`, 12px
+at `l`. Not interactive and not announced, so it hints that something opens
+without claiming to be the control that opens it.
 
-</BrandOnly>
-
-<BrandOnly brand="comparison">
+<Canvas of={TagStories.ChevronAxis} />
 
 ### Trailing Action
 
-<Canvas of={TagStories.TrailingAction} />
+A real `<button>` with its own hover plate and an `actionClick` output — not a
+decorative glyph. Figma names the frame "Badge Hover Action" and draws a
+diagonal arrow rather than a cross, which is why the input is `action` and not
+`removable`. `actionLabel` has no default: the button carries no text, so
+without one it is announced as nothing.
 
-</BrandOnly>
+<Canvas of={TagStories.TrailingActionAxis} />
+
+### Icon Only
+
+Figma's `Text=False` column: a square icon box (20 / 22 / 28), not a chip
+collapsed to its icon. Chevron-only and icon + chevron grow past the square.
+
+<Canvas of={TagStories.IconOnlyAxis} />
 
 <BrandOnly brand="comparison">
 
-### Icon Only
+### Chevron — both brands
+
+The same axis with one tag pinned to Sampark beside the brand-following ones.
+Shown only with the **Comparison** toolbar toggle on, since it renders two
+brands at once.
+
+<Canvas of={TagStories.Chevron} />
+
+### Trailing Action — both brands
+
+<Canvas of={TagStories.TrailingAction} />
+
+### Icon Only — both brands
 
 <Canvas of={TagStories.IconOnly} />
 

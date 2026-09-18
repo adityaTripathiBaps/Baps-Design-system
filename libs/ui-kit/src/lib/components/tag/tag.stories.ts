@@ -254,3 +254,70 @@ export const WithIcon: Story = {
     `,
   }),
 };
+
+/* ── Brand-following copies of the three Figma axes ────────────────────────
+   Chevron, TrailingAction and IconOnly above each pin one tag to
+   brand="sampark" as a sample, which is why all three are declared
+   `ds:comparison` and hidden unless the Comparison toolbar toggle is on. That
+   was a reasonable call for a story mixing two brands in one row, and a bad
+   outcome for a reader: with the toggle off — which is every default session —
+   a MyBKY or Sampark reader had no way to discover that Tag supports a
+   chevron, a trailing action or an icon-only form at all. Three real variants,
+   invisible behind a toggle nobody mentions.
+
+   These are the same rows with the pinned tag dropped, so every tag follows
+   the toolbar and they carry no `ds:comparison`. They are what the docs page
+   shows by default; the pinned versions stay exactly as they are, ids and
+   baselines untouched, and remain the both-brands view behind the toggle.
+
+   Added rather than edited on purpose: unpinning the originals would have
+   changed six existing baselines and lost the side-by-side comparison. New
+   stories only write new ones. */
+
+/** Figma's `Chevron` axis under the active brand — 8px at xs, 10px at s, 12px at l. */
+export const ChevronAxis: Story = {
+  name: 'Chevron (current brand)',
+  render: () => ({
+    template: `
+      <div style="display:flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+        <baps-tag value="Extra small" size="xs" [chevron]="true" />
+        <baps-tag value="Small" [chevron]="true" />
+        <baps-tag value="Large" size="l" [chevron]="true" />
+        <baps-tag value="With icon" severity="info" icon="pi pi-user" [chevron]="true" />
+        <baps-tag value="Disabled" [chevron]="true" [disabled]="true" />
+      </div>
+    `,
+  }),
+};
+
+/** Figma's `Trailing Action` axis under the active brand — a real button, not a glyph. */
+export const TrailingActionAxis: Story = {
+  name: 'Trailing action (current brand)',
+  render: () => ({
+    props: { onAction: (event: MouseEvent) => console.log('action', event) },
+    template: `
+      <div style="display:flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+        <baps-tag value="Extra small" size="xs" [action]="true" actionLabel="Open Extra small" (actionClick)="onAction($event)" />
+        <baps-tag value="Small" [action]="true" actionLabel="Open Small" (actionClick)="onAction($event)" />
+        <baps-tag value="Large" size="l" [action]="true" actionLabel="Open Large" (actionClick)="onAction($event)" />
+        <baps-tag value="Filter" severity="contrast" icon="pi pi-filter" [action]="true" actionIcon="pi pi-times" actionLabel="Remove filter" />
+        <baps-tag value="Disabled" [action]="true" actionLabel="Open Disabled" [disabled]="true" />
+      </div>
+    `,
+  }),
+};
+
+/** Figma's `Text=False` column under the active brand — a square icon box, not a collapsed chip. */
+export const IconOnlyAxis: Story = {
+  name: 'Icon only (current brand)',
+  render: () => ({
+    template: `
+      <div style="display:flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+        <baps-tag icon="pi pi-user" size="xs" />
+        <baps-tag icon="pi pi-user" />
+        <baps-tag icon="pi pi-user" size="l" />
+        <baps-tag icon="pi pi-user" [chevron]="true" />
+      </div>
+    `,
+  }),
+};

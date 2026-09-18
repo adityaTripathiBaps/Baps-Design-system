@@ -472,13 +472,16 @@
     "id": "components-tag",
     "stories": [
       "Chevron",
+      "ChevronAxis",
       "IconOnly",
+      "IconOnlyAxis",
       "Playground",
       "SamparkSeverities",
       "SamparkSizes",
       "Severities",
       "Sizes",
       "TrailingAction",
+      "TrailingActionAxis",
       "WithIcon"
     ]
   },
