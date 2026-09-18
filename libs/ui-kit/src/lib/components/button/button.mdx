@@ -9,6 +9,7 @@ import {
   KeyboardTable,
 } from '@baps/docs-blocks';
 import * as ButtonStories from './button.stories';
+import { buttonSnippets } from './button.snippets';
 
 <Meta of={ButtonStories} />
 
@@ -49,18 +50,21 @@ The wrapper also carries a second visual skin — `brand="sampark"` — implemen
   title="All Variants"
   description="Severity crossed with the filled, outlined, text and link treatments."
   of={ButtonStories.AllVariants}
+  snippets={buttonSnippets.AllVariants}
 />
 
 <DemoCard
   title="All Sizes"
   description="The MyBKY size steps. Figma's XL is 42px, not the 40px the old spec table claimed."
   of={ButtonStories.AllSizes}
+  snippets={buttonSnippets.AllSizes}
 />
 
 <DemoCard
   title="States"
   description="Hover, focus, active, disabled and loading."
   of={ButtonStories.States}
+  snippets={buttonSnippets.States}
 />
 
 <BrandOnly brand="sampark">
@@ -69,24 +73,28 @@ The wrapper also carries a second visual skin — `brand="sampark"` — implemen
   title="Sampark Variants"
   description="The Sampark Portal set: maroon primary, bordered secondary, ghost and link."
   of={ButtonStories.SamparkVariants}
+  snippets={buttonSnippets.SamparkVariants}
 />
 
 <DemoCard
   title="Sampark Sizes"
   description="28 / 32 / 36 / 40px. The XL step is a host-class rule — PrimeNG's token surface stops at lg."
   of={ButtonStories.SamparkSizes}
+  snippets={buttonSnippets.SamparkSizes}
 />
 
 <DemoCard
   title="Sampark Icon Only"
   description="Square by design: width equals the height of its size step."
   of={ButtonStories.SamparkIconOnly}
+  snippets={buttonSnippets.SamparkIconOnly}
 />
 
 <DemoCard
   title="Sampark States"
   description="The same five states under the Sampark skin."
   of={ButtonStories.SamparkStates}
+  snippets={buttonSnippets.SamparkStates}
 />
 
 </BrandOnly>

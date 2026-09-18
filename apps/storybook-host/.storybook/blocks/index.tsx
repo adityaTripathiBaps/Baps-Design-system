@@ -368,6 +368,23 @@ export type SnippetSet = {
   react?: string;
   next?: string;
   primeng?: string;
+  /* Overrides the Custom tab.
+   *
+   * Left unset (Card, Alert), the Custom tab renders Storybook's own source for
+   * the story, which stays correct for free. That works because neither
+   * component wraps PrimeNG: their live Angular markup IS copyable into a plain
+   * HTML page.
+   *
+   * Button is the first component where it is not. `<baps-button>` renders
+   * `<p-button>` inside it, so its live source pasted outside Angular is an
+   * empty custom element — nothing to style, nothing to click. Such a component
+   * supplies hand-written raw HTML here instead, and pairs it with a standalone
+   * partial that styles it (see button.snippets.ts and _button.scss).
+   *
+   * An authored Custom tab loses the "correct for free" property, so it needs
+   * its own guard: tools/check-button-drift.mjs renders both this markup and the
+   * Angular component and diffs them property by property. */
+  custom?: string;
 };
 
 const TAB_LABELS: Array<[keyof SnippetSet | 'custom', string]> = [
@@ -397,7 +414,12 @@ export const FrameworkTabs = ({ of, snippets }: { of: unknown; snippets?: Snippe
   // use-case that has only its live Angular source, so show that alone rather
   // than a strip with one tab.
   const current = available.some(([k]) => k === active) ? active : 'custom';
-  const code = current === 'custom' ? null : (snippets?.[current as keyof SnippetSet] ?? '');
+  // `null` means "render the live Angular source". An authored `custom` string
+  // replaces it — for a PrimeNG wrapper the live source is not copyable.
+  const code =
+    current === 'custom'
+      ? (snippets?.custom ?? null)
+      : (snippets?.[current as keyof SnippetSet] ?? '');
 
   useEffect(() => {
     if (!copied) return undefined;
@@ -459,10 +481,10 @@ export const FrameworkTabs = ({ of, snippets }: { of: unknown; snippets?: Snippe
           {copied ? 'Copied' : 'Copy'}
         </button>
       </div>
-      {current === 'custom' ? (
+      {code === null ? (
         <Source of={of as never} />
       ) : (
-        <Source code={code ?? ''} language={LANGUAGE[current]} />
+        <Source code={code} language={LANGUAGE[current]} />
       )}
     </div>
   );

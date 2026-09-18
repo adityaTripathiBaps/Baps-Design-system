@@ -73,7 +73,7 @@
  * A React app in another repo would need a real styles export first; that is a
  * packaging decision and has not been made.
  */
-export type SnippetSet = { react?: string; next?: string; primeng?: string };
+export type SnippetSet = { react?: string; next?: string; primeng?: string; custom?: string };
 
 /** Stated once; the same loads behind every snippet on this page. */
 const SETUP = `/* Once, at your app's entry. Paths are relative because no package export
@@ -98,6 +98,21 @@ export const cardSnippets: Record<string, SnippetSet> = {
   // nowhere in the repo — checked — so it is dropped here rather than copied
   // into documentation. The inline styles are what actually render.
   BodyOnly: {
+    primeng: `<div style="max-width: 420px">
+  <baps-card>
+    <span style="display:block; margin-bottom: 0.5rem">Donations this month</span>
+    <div style="font-size: 1.75rem; font-weight: 700">₹ 3,42,600</div>
+  </baps-card>
+</div>`,
+    custom: `<!-- Identical markup: baps-card is not a PrimeNG wrapper, so the element the
+     Angular component renders is the element you write by hand. Only the inputs
+     change - they become classes. -->
+<div style="max-width: 420px">
+  <baps-card>
+    <span style="display:block; margin-bottom: 0.5rem">Donations this month</span>
+    <div style="font-size: 1.75rem; font-weight: 700">₹ 3,42,600</div>
+  </baps-card>
+</div>`,
     react: `${SETUP}
 
 export function BodyOnly() {
@@ -127,6 +142,37 @@ export default function BodyOnly() {
   },
 
   PaddingSteps: {
+    primeng: `<div style="display: grid; gap: 1rem; max-width: 420px">
+  <baps-card padding="default">
+    <span card-title>default</span>
+    24px — the standard content card.
+  </baps-card>
+  <baps-card padding="compact">
+    <span card-title>compact</span>
+    16px — dense or table-adjacent.
+  </baps-card>
+  <baps-card padding="none" [divided]="true">
+    <span card-title style="padding: 1rem 1rem 0">none</span>
+    <div style="padding: 1rem">0 — the body supplies its own gutters.</div>
+  </baps-card>
+</div>`,
+    custom: `<!-- padding="compact" -> class="baps-card-compact"
+     padding="none"    -> class="baps-card-flush"
+     [divided]="true"  -> class="baps-card-divided" -->
+<div style="display: grid; gap: 1rem; max-width: 420px">
+  <baps-card>
+    <span card-title>default</span>
+    24px — the standard content card.
+  </baps-card>
+  <baps-card class="baps-card-compact">
+    <span card-title>compact</span>
+    16px — dense or table-adjacent.
+  </baps-card>
+  <baps-card class="baps-card-flush baps-card-divided">
+    <span card-title style="padding: 1rem 1rem 0">none</span>
+    <div style="padding: 1rem">0 — the body supplies its own gutters.</div>
+  </baps-card>
+</div>`,
     react: `export function PaddingSteps() {
   return (
     <div style={{ display: 'grid', gap: '1rem', maxWidth: 420 }}>
@@ -168,6 +214,31 @@ export default function PaddingSteps() {
   },
 
   RestVsRaised: {
+    primeng: `<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; max-width: 640px">
+  <baps-card>
+    <span card-title>At rest</span>
+    <span card-subtitle>Hairline border, no shadow</span>
+    This is what almost every card should be.
+  </baps-card>
+  <baps-card [raised]="true">
+    <span card-title>Raised</span>
+    <span card-subtitle>Brand shadow</span>
+    Only for cards that float above the page.
+  </baps-card>
+</div>`,
+    custom: `<!-- [raised]="true" -> class="baps-card-raised" -->
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; max-width: 640px">
+  <baps-card>
+    <span card-title>At rest</span>
+    <span card-subtitle>Hairline border, no shadow</span>
+    This is what almost every card should be.
+  </baps-card>
+  <baps-card class="baps-card-raised">
+    <span card-title>Raised</span>
+    <span card-subtitle>Brand shadow</span>
+    Only for cards that float above the page.
+  </baps-card>
+</div>`,
     react: `export function RestVsRaised() {
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', maxWidth: 640 }}>

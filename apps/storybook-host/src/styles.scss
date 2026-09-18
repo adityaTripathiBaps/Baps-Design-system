@@ -90,6 +90,16 @@
 /* Alert — same CSS-move as card above, so raw <baps-alert> markup is styled
    without the Angular component. */
 @use '../../../libs/ui-kit/src/lib/styles/components/alert/alert';
+/* Button — NOT a move. baps-button wraps PrimeNG, so its design is generated
+   at runtime and there was nothing to extract; this partial is authored from
+   the --button-* tokens so the Custom tab's raw <button class="baps-button">
+   markup renders identically. It is deliberately not on the component, which
+   keeps PrimeNG the only thing styling baps-button. The class namespace is
+   disjoint from anything the component emits — the component uses the
+   baps-button ELEMENT plus .p-button — so this adds no rule that can reach an
+   existing render; the visual baseline is the check. Drift between the two is
+   caught by tools/check-button-drift.mjs. */
+@use '../../../libs/ui-kit/src/lib/styles/components/button/button';
 
 html {
   font-size: 16px;                     /* Figma standard: 1rem = 16px */

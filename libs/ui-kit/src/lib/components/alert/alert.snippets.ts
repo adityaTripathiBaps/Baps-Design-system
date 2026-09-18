@@ -73,7 +73,7 @@
  * the partial is reachable by relative path, the way
  * `apps/storybook-host/src/styles.scss` loads it.
  */
-export type SnippetSet = { react?: string; next?: string; primeng?: string };
+export type SnippetSet = { react?: string; next?: string; primeng?: string; custom?: string };
 
 const SETUP = `/* Once, at your app's entry. Paths are relative because no package export
    exists yet — see alert.snippets.ts.
@@ -94,6 +94,53 @@ const SETUP = `/* Once, at your app's entry. Paths are relative because no packa
 
 export const alertSnippets: Record<string, SnippetSet> = {
   Severities: {
+    primeng: `<div style="display:flex; flex-direction:column; gap:12px;">
+  <baps-alert severity="info">This is an info alert.</baps-alert>
+  <baps-alert severity="success">This is a success alert.</baps-alert>
+  <baps-alert severity="warning">This is a warning alert.</baps-alert>
+  <baps-alert severity="error">This is an error alert.</baps-alert>
+</div>`,
+    custom: `<!-- The classes each input produces. baps-alert stays as the outer element:
+     every selector in _alert.scss is anchored to it, so a bare <div> would be
+     unstyled. It is an unregistered custom element here - no Angular needed. -->
+<div style="display:flex; flex-direction:column; gap:12px;">
+  <baps-alert>
+    <div class="baps-alert baps-alert--info" role="alert">
+      <span class="baps-alert__bar" aria-hidden="true"></span>
+      <span class="baps-alert__icon" aria-hidden="true"><i class="pi pi-info-circle"></i></span>
+      <span class="baps-alert__content">
+        <span class="baps-alert__text">This is an info alert.</span>
+      </span>
+    </div>
+  </baps-alert>
+  <baps-alert>
+    <div class="baps-alert baps-alert--success" role="alert">
+      <span class="baps-alert__bar" aria-hidden="true"></span>
+      <span class="baps-alert__icon" aria-hidden="true"><i class="pi pi-check-circle"></i></span>
+      <span class="baps-alert__content">
+        <span class="baps-alert__text">This is a success alert.</span>
+      </span>
+    </div>
+  </baps-alert>
+  <baps-alert>
+    <div class="baps-alert baps-alert--warning" role="alert">
+      <span class="baps-alert__bar" aria-hidden="true"></span>
+      <span class="baps-alert__icon" aria-hidden="true"><i class="pi pi-exclamation-triangle"></i></span>
+      <span class="baps-alert__content">
+        <span class="baps-alert__text">This is a warning alert.</span>
+      </span>
+    </div>
+  </baps-alert>
+  <baps-alert>
+    <div class="baps-alert baps-alert--error" role="alert">
+      <span class="baps-alert__bar" aria-hidden="true"></span>
+      <span class="baps-alert__icon" aria-hidden="true"><i class="pi pi-times-circle"></i></span>
+      <span class="baps-alert__content">
+        <span class="baps-alert__text">This is an error alert.</span>
+      </span>
+    </div>
+  </baps-alert>
+</div>`,
     react: `${SETUP}
 
 const ICON = {
@@ -169,6 +216,39 @@ export default function Severities() {
   },
 
   WithTitle: {
+    primeng: `<div style="display:flex; flex-direction:column; gap:12px;">
+  <baps-alert severity="warning" title="Session expiring">
+    You will be signed out in 5 minutes. Save your work.
+  </baps-alert>
+  <baps-alert severity="error" title="Upload failed" [closable]="true">
+    3 of 12 files could not be processed. Check the file format and retry.
+  </baps-alert>
+</div>`,
+    custom: `<div style="display:flex; flex-direction:column; gap:12px;">
+  <baps-alert>
+    <div class="baps-alert baps-alert--warning" role="alert">
+      <span class="baps-alert__bar" aria-hidden="true"></span>
+      <span class="baps-alert__icon" aria-hidden="true"><i class="pi pi-exclamation-triangle"></i></span>
+      <span class="baps-alert__content">
+        <span class="baps-alert__title">Session expiring</span>
+        <span class="baps-alert__text">You will be signed out in 5 minutes. Save your work.</span>
+      </span>
+    </div>
+  </baps-alert>
+  <baps-alert>
+    <div class="baps-alert baps-alert--error baps-alert--closable" role="alert">
+      <span class="baps-alert__bar" aria-hidden="true"></span>
+      <span class="baps-alert__icon" aria-hidden="true"><i class="pi pi-times-circle"></i></span>
+      <span class="baps-alert__content">
+        <span class="baps-alert__title">Upload failed</span>
+        <span class="baps-alert__text">3 of 12 files could not be processed. Check the file format and retry.</span>
+      </span>
+      <button type="button" class="baps-alert__close" aria-label="Close">
+        <i class="pi pi-times"></i>
+      </button>
+    </div>
+  </baps-alert>
+</div>`,
     react: `export function WithTitle() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -253,6 +333,43 @@ export default function WithTitle() {
   // dismissal state belongs to the consumer. That is the whole point of the
   // story, and it survives the translation unchanged.
   Dismissible: {
+    primeng: `<!-- The parent owns the state. baps-alert only emits (closed) - it never
+     removes itself, so a dismissal you need to remember stays yours to store. -->
+<div style="display:flex; flex-direction:column; gap:12px;">
+  @if (!dismissed) {
+    <baps-alert severity="info" [closable]="true" (closed)="dismissed = true">
+      Dismiss me — the parent owns the state, not the alert.
+    </baps-alert>
+  }
+  <baps-alert severity="warning">
+    Persistent — no close button, cannot be dismissed.
+  </baps-alert>
+</div>`,
+    custom: `<!-- Without Angular the close button needs its own handler; the markup below
+     is the rendered result, and removing the node is the caller's job. -->
+<div style="display:flex; flex-direction:column; gap:12px;">
+  <baps-alert>
+    <div class="baps-alert baps-alert--info baps-alert--closable" role="alert">
+      <span class="baps-alert__bar" aria-hidden="true"></span>
+      <span class="baps-alert__icon" aria-hidden="true"><i class="pi pi-info-circle"></i></span>
+      <span class="baps-alert__content">
+        <span class="baps-alert__text">Dismiss me — the parent owns the state, not the alert.</span>
+      </span>
+      <button type="button" class="baps-alert__close" aria-label="Close">
+        <i class="pi pi-times"></i>
+      </button>
+    </div>
+  </baps-alert>
+  <baps-alert>
+    <div class="baps-alert baps-alert--warning" role="alert">
+      <span class="baps-alert__bar" aria-hidden="true"></span>
+      <span class="baps-alert__icon" aria-hidden="true"><i class="pi pi-exclamation-triangle"></i></span>
+      <span class="baps-alert__content">
+        <span class="baps-alert__text">Persistent — no close button, cannot be dismissed.</span>
+      </span>
+    </div>
+  </baps-alert>
+</div>`,
     react: `import { useState } from 'react';
 
 export function Dismissible() {
@@ -356,6 +473,23 @@ export default function Dismissible() {
   },
 
   FormValidation: {
+    primeng: `<div style="max-width: 26rem;">
+  <baps-alert severity="error" title="Could not save this karyakar">
+    Name is required. Email is not a valid address.
+  </baps-alert>
+</div>`,
+    custom: `<div style="max-width: 26rem;">
+  <baps-alert>
+    <div class="baps-alert baps-alert--error" role="alert">
+      <span class="baps-alert__bar" aria-hidden="true"></span>
+      <span class="baps-alert__icon" aria-hidden="true"><i class="pi pi-times-circle"></i></span>
+      <span class="baps-alert__content">
+        <span class="baps-alert__title">Could not save this karyakar</span>
+        <span class="baps-alert__text">Name is required. Email is not a valid address.</span>
+      </span>
+    </div>
+  </baps-alert>
+</div>`,
     react: `export function FormValidation() {
   return (
     <div style={{ maxWidth: '26rem' }}>
