@@ -1,6 +1,7 @@
 import { Meta, Canvas } from '@storybook/blocks';
-import { BrandOnly, PropsTable } from '@baps/docs-blocks';
+import { BrandOnly, FrameworkTabs, PropsTable } from '@baps/docs-blocks';
 import * as SpinnerStories from './spinner.stories';
+import { spinnerSnippets } from './spinner.snippets';
 
 <Meta of={SpinnerStories} />
 
@@ -18,7 +19,9 @@ A loading indicator, indeterminate or determinate. `baps-spinner` wraps PrimeNGâ
 
 ### Indeterminate
 
-<Canvas of={SpinnerStories.Indeterminate} />
+<Canvas of={SpinnerStories.Indeterminate} sourceState="none" />
+
+<FrameworkTabs of={SpinnerStories.Indeterminate} snippets={spinnerSnippets.Indeterminate} />
 
 ### Determinate
 
@@ -26,13 +29,17 @@ A loading indicator, indeterminate or determinate. `baps-spinner` wraps PrimeNGâ
 
 ### Determinate Steps
 
-<Canvas of={SpinnerStories.DeterminateSteps} />
+<Canvas of={SpinnerStories.DeterminateSteps} sourceState="none" />
+
+<FrameworkTabs of={SpinnerStories.DeterminateSteps} snippets={spinnerSnippets.DeterminateSteps} />
 
 <BrandOnly brand="comparison">
 
 ### Sizes
 
-<Canvas of={SpinnerStories.Sizes} />
+<Canvas of={SpinnerStories.Sizes} sourceState="none" />
+
+<FrameworkTabs of={SpinnerStories.Sizes} snippets={spinnerSnippets.Sizes} />
 
 </BrandOnly>
 

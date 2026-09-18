@@ -1061,3 +1061,55 @@ means restating the entire block — which also carries the thumb shadow and the
 disabled inset. Restating three unrelated rules to recolour one is a worse trade
 than the residual, which is visible only on a switch that is BOTH checked and
 disabled. Left as is, on purpose.
+
+## "Non-wrapper" does not mean "snippet-able" — measure each one
+
+The rollout estimate assumed the ten components that do not wrap PrimeNG were
+the cheap tier: extract the CSS, write the snippets, done. Building them proved
+that wrong, and the correction matters more than the components do.
+
+**Not wrapping PrimeNG makes the CSS MOVE cheap. It says nothing about whether
+a Custom tab can honestly exist.** Those are two different questions, and only
+the first one is answered by an import list.
+
+### Running list — measured, not estimated
+
+| Component | CSS move | Custom tab | Why |
+| --- | --- | --- | --- |
+| `card` | done | **yes** | plain divs, tokens throughout |
+| `alert` | done | **yes** | same |
+| `link` | done | **yes** | 34 decls, every input a host class |
+| `spinner` | done | **yes** | own SVG; arc maths resolves to literals |
+| `button` | n/a — authored | **yes** | wrapper, but 56 tokens cover it; drift-guarded |
+| `icon` | done | **no — structural** | see below |
+| `indicator` | done | **deferred** | 17 hex against 10 tokens — a Custom tab would bake the literals |
+| `file-upload` | done | open | nests `baps-button`, whose raw markup now exists |
+| `internal-navbar` | done | open | 193 decls / 53 selectors — largest of the set |
+| `menu-item` | not moved | blocked | nests `baps-avatar`, a wrapper with no raw markup |
+| `users-dropdown` | not moved | **no — structural** | 14.5 KB, nests `baps-menu-item`, itself blocked |
+
+### The two structural refusals
+
+**`icon`** has its own CSS — 54 lines, moved and shipping — but its colour is
+`color: inherit`, by design: an icon takes the colour of whatever contains it.
+A Custom tab can show the markup, and it cannot demonstrate "the same design",
+because the design depends on the parent. A snippet that appeared to prove it
+would be proving the surrounding example instead.
+
+**`users-dropdown`** is an organism whose Custom tab would mean reimplementing
+its nested chain in raw markup. The snippet would be larger than the component
+and would drift the moment either moves.
+
+Neither is a gap to close later. They are cases where the artifact would be
+misleading, which is worse than absent — the same reasoning that keeps a
+`p-message` snippet off the Alert page.
+
+### What this does to the rollout number
+
+The earlier estimate — 16 of 47 viable — is an UPPER bound reached by counting
+tokens. Building four of them turned up two structural refusals and one deferral
+that token-counting could not see. The honest number is lower, and it is only
+knowable per component, by reading it.
+
+So the rule for any future batch: **measure the component, then decide.** A
+component-by-component read is not overhead on the rollout; it IS the rollout.

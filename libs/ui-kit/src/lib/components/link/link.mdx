@@ -1,6 +1,7 @@
 import { Meta, Canvas } from '@storybook/blocks';
-import { BrandOnly, PropsTable } from '@baps/docs-blocks';
+import { BrandOnly, FrameworkTabs, PropsTable } from '@baps/docs-blocks';
 import * as LinkStories from './link.stories';
+import { linkSnippets } from './link.snippets';
 
 <Meta of={LinkStories} />
 
@@ -24,19 +25,25 @@ Styled anchor / navigation link. `baps-link` is a pure HTML component — it has
 
 ### Variants
 
-<Canvas of={LinkStories.Variants} />
+<Canvas of={LinkStories.Variants} sourceState="none" />
+
+<FrameworkTabs of={LinkStories.Variants} snippets={linkSnippets.Variants} />
 
 <BrandOnly brand="comparison">
 
 ### Disabled
 
-<Canvas of={LinkStories.Disabled} />
+<Canvas of={LinkStories.Disabled} sourceState="none" />
+
+<FrameworkTabs of={LinkStories.Disabled} snippets={linkSnippets.Disabled} />
 
 </BrandOnly>
 
 ### Sizes
 
-<Canvas of={LinkStories.Sizes} />
+<Canvas of={LinkStories.Sizes} sourceState="none" />
+
+<FrameworkTabs of={LinkStories.Sizes} snippets={linkSnippets.Sizes} />
 
 ## API
 
