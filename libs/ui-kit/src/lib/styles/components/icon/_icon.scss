@@ -1,0 +1,54 @@
+/* baps-icon — the design-system glyph.
+ *
+ * Moved out of icon.component.ts's inline `styles:` block, byte for byte, for
+ * the same reason card and alert were: an inline `styles:` block is only
+ * injected when its component is used, so a raw <baps-icon> on a page where
+ * Angular never rendered one gets no styling at all — measured. It lives here
+ * so the same rules reach the markup in the docs code viewer's Custom tab.
+ *
+ * The component still owns it through `styleUrls`, so nothing changes for an
+ * app that imports BapsIcon and never touches this file.
+ *
+ * Selectors stay anchored to the `baps-icon` element, which is what makes the
+ * raw markup work unchanged. A class hook is NOT added here — same call as
+ * _card.scss, and unlike _button.scss, which had no choice because its raw
+ * markup has to be a real <button>.
+ *
+ * ## The one input that is not a class
+ *
+ * `size` is applied by a host STYLE binding, not a class:
+ *
+ *     host: { '[style.--baps-icon-size.px]': 'pixels()' }
+ *
+ * so outside Angular you write the custom property yourself:
+ *
+ *     <baps-icon style="--baps-icon-size: 32px">…</baps-icon>
+ *
+ * The fallback below is the lg step (24px), which is the size the artwork is
+ * actually drawn at, so omitting it is safe rather than broken.
+ */
+baps-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  /* Set by the size input; the fallback is the lg step, which is the size
+     the artwork is actually drawn at. */
+  width: var(--baps-icon-size, 24px);
+  height: var(--baps-icon-size, 24px);
+  color: inherit;
+  vertical-align: middle;
+}
+
+baps-icon .baps-icon__glyph {
+  display: block;
+  width: 100%;
+  height: 100%;
+  line-height: 0;
+}
+
+baps-icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}

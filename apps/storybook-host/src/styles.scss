@@ -100,6 +100,19 @@
    existing render; the visual baseline is the check. Drift between the two is
    caught by tools/check-button-drift.mjs. */
 @use '../../../libs/ui-kit/src/lib/styles/components/button/button';
+/* Icon — CSS-move like card and alert: the component keeps it via styleUrls,
+   and this global copy styles a raw <baps-icon> in the docs code viewer. */
+@use '../../../libs/ui-kit/src/lib/styles/components/icon/icon';
+/* Link, Spinner, Indicator, File Upload and Internal Navbar — the same
+   CSS-move as card, alert and icon. Each component keeps its rules via
+   styleUrls; these global copies are what style the raw markup in the docs
+   code viewer, where no Angular component rendered it. Identical rules either
+   way, so nothing shifts — the visual baseline is the check. */
+@use '../../../libs/ui-kit/src/lib/styles/components/link/link';
+@use '../../../libs/ui-kit/src/lib/styles/components/spinner/spinner';
+@use '../../../libs/ui-kit/src/lib/styles/components/indicator/indicator';
+@use '../../../libs/ui-kit/src/lib/styles/components/file-upload/file-upload';
+@use '../../../libs/ui-kit/src/lib/styles/components/internal-navbar/internal-navbar';
 
 html {
   font-size: 16px;                     /* Figma standard: 1rem = 16px */

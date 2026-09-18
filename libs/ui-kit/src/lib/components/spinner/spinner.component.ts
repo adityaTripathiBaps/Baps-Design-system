@@ -38,89 +38,10 @@ const CIRCUMFERENCE = 2 * Math.PI * 14;
     </svg>
   `,
   encapsulation: ViewEncapsulation.None,
-  styles: `
-    baps-spinner {
-      display: inline-flex;
-      /* Figma: 32px ring (determinate loader symbol). */
-      inline-size: var(--baps-spinner-size, 2rem);
-      block-size: var(--baps-spinner-size, 2rem);
-    }
-
-    /* Figma: 24px ring (Regular Spinner symbol). Only two steps are drawn,
-       so only two are offered — there is no invented size ramp here. */
-    baps-spinner.baps-spinner-small {
-      --baps-spinner-size: 1.5rem;
-    }
-
-    baps-spinner .baps-spinner-svg {
-      inline-size: 100%;
-      block-size: 100%;
-    }
-
-    baps-spinner .baps-spinner-track,
-    baps-spinner .baps-spinner-arc {
-      fill: none;
-      /* 4 user units in a 32-unit viewBox = the 16/12 radius pair Figma
-         exports, and it scales to 3px at the 24px step by itself. */
-      stroke-width: 4;
-    }
-
-    /* MyBKY reading of the Figma pair. The spec was drawn in Sampark
-       (#f8f7f7 track = sampark mono.10, #b44141 arc = sampark primary.80),
-       so MyBKY takes the structural equivalents from its own ramp. */
-    baps-spinner .baps-spinner-track {
-      stroke: var(--color-mybky-mono-50, #f8fafb);
-    }
-
-    baps-spinner .baps-spinner-arc {
-      stroke: var(--color-mybky-primary-default, #5f78b8);
-      /* Start the arc at 12 o'clock and sweep clockwise. Lives on the arc,
-         not the svg, so the indeterminate rotation below owns the svg
-         transform outright and the two never fight. */
-      transform: rotate(-90deg);
-      transform-box: fill-box;
-      transform-origin: center;
-      transition: stroke-dashoffset 0.3s ease;
-    }
-
-    /* Indeterminate: the 90-degree arc with the rounded leading cap Figma
-       draws as a separate 3px dot at the arc tip. */
-    baps-spinner.baps-spinner-indeterminate .baps-spinner-arc {
-      stroke-linecap: round;
-      transition: none;
-    }
-
-    baps-spinner.baps-spinner-indeterminate .baps-spinner-svg {
-      animation: baps-spinner-rotate 1s linear infinite;
-    }
-
-    @keyframes baps-spinner-rotate {
-      to {
-        transform: rotate(360deg);
-      }
-    }
-
-    /* ── Sampark ── the values Figma actually specifies. */
-    :is(baps-spinner.baps-sampark, .baps-ds-sampark baps-spinner) .baps-spinner-track {
-      stroke: var(--color-sampark-mono-10, #f8f7f7);
-    }
-    :is(baps-spinner.baps-sampark, .baps-ds-sampark baps-spinner) .baps-spinner-arc {
-      stroke: var(--color-sampark-primary-80, #b44141);
-    }
-
-    /* An infinite 1s rotation is the textbook vestibular trigger, so it stops
-       outright — the static quarter arc still reads as a busy indicator, and
-       role="status" carries the meaning for anyone who cannot see it at all.
-       The determinate sweep loses its tween too: value changes snap. */
-    @media (prefers-reduced-motion: reduce) {
-      baps-spinner .baps-spinner-svg {
-        animation: none;
-      }
-      baps-spinner .baps-spinner-arc {
-        transition: none;
-      }
-    }
-  `,
+  // CSS lives in ../../styles/components/spinner/_spinner.scss so the same rules
+  // can style raw markup that Angular never rendered — see the header comment
+  // there. styleUrls keeps it shipping with the component.
+  styleUrls: ['../../styles/components/spinner/_spinner.scss'],
   host: {
     '[class.baps-sampark]': "brand === 'sampark'",
     '[class.baps-spinner-small]': "size === 'small'",
