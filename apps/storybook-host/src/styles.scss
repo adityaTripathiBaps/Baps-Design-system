@@ -113,6 +113,17 @@
 @use '../../../libs/ui-kit/src/lib/styles/components/indicator/indicator';
 @use '../../../libs/ui-kit/src/lib/styles/components/file-upload/file-upload';
 @use '../../../libs/ui-kit/src/lib/styles/components/internal-navbar/internal-navbar';
+/* Tag — AUTHORED like button, not moved: baps-tag wraps p-tag, so its design
+   is generated at runtime and there was nothing to extract. Class namespace
+   (.baps-tag*) is disjoint from what the component emits (.p-tag), so this adds
+   no rule that can reach an existing render. Drift caught by
+   tools/check-tag-drift.mjs.
+
+   The Custom TAB is hidden (see tag.mdx hideCustom) — a wrapper cannot have an
+   honest one. This partial stays because Tag's React/Next snippets cite its
+   classes, and because it is the bucket-B migration target: when the preset
+   literals go, the guard is what proves the two still agree. */
+@use '../../../libs/ui-kit/src/lib/styles/components/tag/tag';
 
 html {
   font-size: 16px;                     /* Figma standard: 1rem = 16px */

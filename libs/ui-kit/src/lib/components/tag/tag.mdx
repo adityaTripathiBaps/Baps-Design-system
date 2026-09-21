@@ -1,6 +1,7 @@
 import { Meta, Canvas } from '@storybook/blocks';
-import { BrandOnly, PropsTable } from '@baps/docs-blocks';
+import { BrandOnly, FrameworkTabs, PropsTable } from '@baps/docs-blocks';
 import * as TagStories from './tag.stories';
+import { tagSnippets } from './tag.snippets';
 
 <Meta of={TagStories} />
 
@@ -35,11 +36,15 @@ A labelled status or category chip — event status, member group, role code. Th
 
 ### Severities
 
-<Canvas of={TagStories.Severities} />
+<Canvas of={TagStories.Severities} sourceState="none" />
+
+<FrameworkTabs of={TagStories.Severities} snippets={tagSnippets.Severities} hideCustom />
 
 ### Sizes
 
-<Canvas of={TagStories.Sizes} />
+<Canvas of={TagStories.Sizes} sourceState="none" />
+
+<FrameworkTabs of={TagStories.Sizes} snippets={tagSnippets.Sizes} hideCustom />
 
 <BrandOnly brand="sampark">
 
@@ -100,7 +105,9 @@ brands at once.
 
 ### With Icon
 
-<Canvas of={TagStories.WithIcon} />
+<Canvas of={TagStories.WithIcon} sourceState="none" />
+
+<FrameworkTabs of={TagStories.WithIcon} snippets={tagSnippets.WithIcon} hideCustom />
 
 ## API
 

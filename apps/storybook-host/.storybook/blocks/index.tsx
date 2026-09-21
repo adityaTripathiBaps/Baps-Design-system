@@ -401,7 +401,29 @@ const LANGUAGE: Record<string, SourceLanguage> = {
   custom: 'html',
 };
 
-export const FrameworkTabs = ({ of, snippets }: { of: unknown; snippets?: SnippetSet }) => {
+export const FrameworkTabs = ({
+  of,
+  snippets,
+  hideCustom,
+}: {
+  of: unknown;
+  snippets?: SnippetSet;
+  /* Omit the Custom tab entirely, for a component that cannot have an honest
+     one. Needed because the tab is otherwise unconditional, and its unset
+     behaviour — render the live Angular source — is the WRONG fallback for a
+     PrimeNG wrapper: `<baps-tag value="Grey" />` outside Angular is an empty
+     custom element.
+
+     The rule this encodes: a wrapper's colour is delivered by the PrimeNG
+     preset, so a PrimeNG-free Custom tab is a second implementation of the
+     same design, and two implementations drift. Until the token migration
+     (bucket B) makes the preset unnecessary, wrappers get the three tabs that
+     document intent and skip the one that claims to BE the component.
+
+     Non-wrappers don't need this: their partial keys off the `baps-*` element
+     selector and ships globally, so the live source IS copyable. */
+  hideCustom?: boolean;
+}) => {
   const [active, setActive] = useState<string>('react');
   // The Custom tab has no authored string to copy, so Copy reads the rendered
   // source out of the DOM — scoped to THIS strip. A document-wide query would
@@ -409,11 +431,16 @@ export const FrameworkTabs = ({ of, snippets }: { of: unknown; snippets?: Snippe
   const wrap = React.useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState(false);
 
-  const available = TAB_LABELS.filter(([key]) => key === 'custom' || snippets?.[key as keyof SnippetSet]);
+  const available = TAB_LABELS.filter(([key]) =>
+    key === 'custom' ? !hideCustom : snippets?.[key as keyof SnippetSet],
+  );
   // A use-case with no authored snippets is not a broken tab strip — it is a
   // use-case that has only its live Angular source, so show that alone rather
   // than a strip with one tab.
-  const current = available.some(([k]) => k === active) ? active : 'custom';
+  // Falls back to the first tab that exists, not to 'custom' — with hideCustom
+  // set, 'custom' is not in `available` and pinning to it would select a tab
+  // the strip does not render.
+  const current = available.some(([k]) => k === active) ? active : (available[0]?.[0] ?? 'custom');
   // `null` means "render the live Angular source". An authored `custom` string
   // replaces it — for a PrimeNG wrapper the live source is not copyable.
   const code =

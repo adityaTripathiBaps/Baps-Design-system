@@ -1,0 +1,314 @@
+/* baps-tag — the PrimeNG-free skin for the docs code viewer's Custom tab.
+ *
+ * AUTHORED, not moved — the same call as _button.scss and for the same reason:
+ * `baps-tag` wraps `p-tag`, so its design is generated in the browser by
+ * definePreset and there is no file to import. Raw `<baps-tag>` markup is an
+ * empty custom element with no `.p-tag` inside it, so the markup has to be a
+ * plain element carrying classes.
+ *
+ * Unlike button, almost nothing here needed measuring to discover: tag has the
+ * best token surface in the library — 94 properties, 46 MyBKY and 48 Sampark,
+ * with a background/border/text triple for every one of the seven severities
+ * plus disabled, and height/font-size/padding for all four size steps. Every
+ * value below is a token reference; the fallbacks are the measured render.
+ *
+ * Measured from the live component, and reproduced here:
+ *
+ *   xs   18px tall, 12px text, 4px/4px padding
+ *   s    22px tall, 12px text, 4px/6px padding   (the default — no class)
+ *   m    26px tall, 14px text, 4px/6px padding
+ *   l    32px tall, 16px text, 4px/8px padding
+ *   all  99px pill radius, 1px border, weight 500, 2px gap
+ *
+ * ## Inputs become classes
+ *
+ *   severity="info"    -> class="baps-tag--info"      (grey is the default)
+ *   size="xs|m|l"      -> class="baps-tag--xs|m|l"    (s is the default)
+ *   [disabled]="true"  -> class="baps-tag--disabled"
+ *   brand="sampark"    -> class="baps-sampark"
+ *   no value (icon only) -> class="baps-tag--icon-only"
+ *
+ * ## No var() chain
+ *
+ * Every value resolves to a real colour through a token with a literal
+ * fallback. The var-reference attempt that broke Material's color-mix was on
+ * the PRESET side; these are plain CSS custom properties from tokens.css, which
+ * a bare page loads as a file, so nothing here goes through definePreset.
+ *
+ * Drift between this and the component is caught by tools/check-tag-drift.mjs.
+ */
+
+.baps-tag {
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  column-gap: var(--tag-mybky-gap, 2px);
+  height: var(--tag-mybky-height-s, 1.375rem);
+  padding: var(--tag-mybky-padding-s, 0.25rem 0.375rem);
+  border: 1px solid transparent;
+  border-radius: var(--tag-mybky-radius, 99px);
+  font-family: inherit;
+  font-size: var(--tag-mybky-font-size-s, 0.75rem);
+  font-weight: var(--tag-mybky-font-weight, 500);
+  line-height: normal;
+  white-space: nowrap;
+
+  /* Grey is the DEFAULT severity, not a modifier: a tag with no `severity`
+     input renders grey in the component, so the base carries it. .baps-tag--grey
+     below is kept as an explicit alias for markup that wants to say so. */
+  background-color: var(--tag-mybky-grey-background, #2b2f3205);
+  border-color: var(--tag-mybky-grey-border, #e4ecf1);
+  color: var(--tag-mybky-grey-text, #2b2f32);
+}
+
+/* The label is its own element with its own padding, mirroring PrimeNG's
+   .p-tag-label. That 4px either side is NOT decoration — measured, it is the
+   whole of a constant 8px width difference the drift guard reported on every
+   single tag, independent of label length:
+
+     tag 49.23 = 6 + 6 (tag padding) + 1 + 1 (border) + 35.23 (label)
+
+   A constant offset that ignores text length is a box the markup is missing,
+   never a font problem — which is what pointed at the label rather than at
+   glyph metrics. */
+.baps-tag .baps-tag__label {
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+/* ── Severities ───────────────────────────────────────────────────────────
+   Seven fills plus disabled, each a background / border / text triple. Grey is
+   what a tag with no `severity` renders. */
+.baps-tag--grey {
+  background-color: var(--tag-mybky-grey-background, #2b2f3205);
+  border-color: var(--tag-mybky-grey-border, #e4ecf1);
+  color: var(--tag-mybky-grey-text, #2b2f32);
+}
+
+/* Primary is the one severity where this file deliberately does NOT use the
+   token, and the reason is that the snippet has to match the LIVE component.
+
+   --tag-mybky-primary-background resolves to var(--color-mybky-blue-50), and
+   the theme picker rewrites --color-mybky-blue-*, so referencing the token here
+   would make the Custom tab follow the accent. The live component does not: its
+   fill comes from components.tag.contrast.background in baps.theme.ts, which is
+   the resolved literal TagMybkyPrimaryBackground. That is the sink-3 gap
+   recorded in known-gaps, and tag is in the DEFERRED bucket for it.
+
+   So a token reference would be a snippet that is "more correct" than the thing
+   it documents — at accent:amber it would render amber beside a live tag that
+   stayed blue, and check-tag-drift.mjs would go red on a file that is not
+   wrong. Baked to match reality instead.
+
+   The BORDER is left on its token on purpose: --tag-mybky-primary-border has no
+   preset counterpart, so the live component genuinely does follow the picker
+   there. Measured, both halves: at accent:amber a primary tag renders an amber
+   border around a blue fill. The split below is that measurement, not a
+   preference.
+
+   When bucket B migrates tag off the preset literals, the live component starts
+   following and these two lines become token references again — with the drift
+   guard as the thing that notices. */
+.baps-tag--primary {
+  background-color: #eef0f8; /* = TagMybkyPrimaryBackground, baked like the preset */
+  border-color: var(--tag-mybky-primary-border, #5f78b833); /* sink 2 — follows */
+  color: #384871; /* = TagMybkyPrimaryText, baked like the preset */
+}
+
+.baps-tag--secondary {
+  background-color: var(--tag-mybky-secondary-background, #f8fafb);
+  border-color: var(--tag-mybky-secondary-border, #6f777d33);
+  color: var(--tag-mybky-secondary-text, #2b2f32);
+}
+
+.baps-tag--info {
+  background-color: var(--tag-mybky-info-background, #d8e7fd);
+  border-color: var(--tag-mybky-info-border, #528de033);
+  color: var(--tag-mybky-info-text, #2265c3);
+}
+
+.baps-tag--warning {
+  background-color: var(--tag-mybky-warning-background, #fdedd8);
+  border-color: var(--tag-mybky-warning-border, #e0a65233);
+  color: var(--tag-mybky-warning-text, #c38222);
+}
+
+.baps-tag--error {
+  background-color: var(--tag-mybky-error-background, #fdd8d8);
+  border-color: var(--tag-mybky-error-border, #b8474a33);
+  color: var(--tag-mybky-error-text, #c32226);
+}
+
+.baps-tag--success {
+  background-color: var(--tag-mybky-success-background, #d8fdeb);
+  border-color: var(--tag-mybky-success-border, #40bf8433);
+  color: var(--tag-mybky-success-text, #178251);
+}
+
+/* Disabled overrides whatever severity is also present, which is why it is
+   stated after all seven. */
+.baps-tag--disabled {
+  background-color: var(--tag-mybky-disabled-background, #2b2f320a);
+  border-color: var(--tag-mybky-disabled-border, #e4ecf1);
+  color: var(--tag-mybky-disabled-text, #8d9ba5);
+}
+
+/* ── Size steps ───────────────────────────────────────────────────────────
+   `s` is the default and carries no class, matching the component, whose host
+   binds only xs / m / l. */
+.baps-tag--xs {
+  height: var(--tag-mybky-height-xs, 1.125rem);
+  padding: var(--tag-mybky-padding-xs, 0.25rem);
+  font-size: var(--tag-mybky-font-size-xs, 0.75rem);
+}
+
+.baps-tag--m {
+  height: var(--tag-mybky-height-m, 1.625rem);
+  padding: var(--tag-mybky-padding-m, 0.25rem 0.375rem);
+  font-size: var(--tag-mybky-font-size-m, 0.875rem);
+}
+
+.baps-tag--l {
+  height: var(--tag-mybky-height-l, 2rem);
+  padding: var(--tag-mybky-padding-l, 0.25rem 0.5rem);
+  font-size: var(--tag-mybky-font-size-l, 1rem);
+  column-gap: 2px;
+}
+
+/* The leading icon and the chevron inherit the label's colour and scale with
+   the step, which is what keeps a tag readable at xs. */
+/* The icon and chevron INHERIT the tag's font-size, which is what the live
+   component does: measured, .p-tag-icon renders 14px inside an m tag, i.e. the
+   same as .p-tag-label. An earlier version of this file pinned them to
+   --tag-mybky-icon-size-*, which looked reasonable and was wrong twice over —
+   those tokens do not exist for MyBKY at all (only Sampark declares them), and
+   pinning made the glyph 12px where the component renders 14. The drift guard
+   caught it as a 12.66px width difference on every icon tag. */
+.baps-tag .baps-tag__icon,
+.baps-tag .baps-tag-chevron {
+  font-size: inherit;
+  line-height: 1;
+  color: inherit;
+  /* 1em, not the glyph's natural advance. PrimeNG gives .p-tag-icon an explicit
+     box — measured 14px inside a 14px tag — while a bare primeicons glyph
+     advances only 10.89px. The 3.11px difference showed up on every icon tag
+     and nowhere else, which is the signature of a fixed box rather than a font
+     problem. 1em keeps it correct at all four size steps instead of pinning
+     14px and drifting at xs and l. */
+  width: 1em;
+  height: 1em;
+  text-align: center;
+}
+
+/* Icon-only is square on its step rather than a chip collapsed to its glyph. */
+.baps-tag--icon-only {
+  justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
+  width: var(--tag-mybky-height-s, 1.375rem);
+}
+
+.baps-tag--icon-only.baps-tag--xs {
+  width: var(--tag-mybky-height-xs, 1.125rem);
+}
+
+.baps-tag--icon-only.baps-tag--m {
+  width: var(--tag-mybky-height-m, 1.625rem);
+}
+
+.baps-tag--icon-only.baps-tag--l {
+  width: var(--tag-mybky-height-l, 2rem);
+}
+
+/* ── Sampark ──────────────────────────────────────────────────────────────
+   The same structure re-pointed at the Sampark token set. Scoped the two ways
+   the component is — one instance opting in, or a page switched wholesale. */
+.baps-tag.baps-sampark,
+.baps-ds-sampark .baps-tag {
+  column-gap: var(--tag-sampark-gap, 2px);
+  height: var(--tag-sampark-height-s, 1.375rem);
+  padding: var(--tag-sampark-padding-s, 0.25rem 0.375rem);
+  border-radius: var(--tag-sampark-radius, 0.25rem);
+  font-size: var(--tag-sampark-font-size-s, 0.75rem);
+  font-weight: var(--tag-sampark-font-weight, 500);
+}
+
+.baps-tag.baps-sampark.baps-tag--grey,
+.baps-ds-sampark .baps-tag.baps-tag--grey {
+  background-color: var(--tag-sampark-grey-background);
+  border-color: var(--tag-sampark-grey-border);
+  color: var(--tag-sampark-grey-text);
+}
+
+.baps-tag.baps-sampark.baps-tag--primary,
+.baps-ds-sampark .baps-tag.baps-tag--primary {
+  background-color: var(--tag-sampark-primary-background);
+  border-color: var(--tag-sampark-primary-border);
+  color: var(--tag-sampark-primary-text);
+}
+
+.baps-tag.baps-sampark.baps-tag--secondary,
+.baps-ds-sampark .baps-tag.baps-tag--secondary {
+  background-color: var(--tag-sampark-secondary-background);
+  border-color: var(--tag-sampark-secondary-border);
+  color: var(--tag-sampark-secondary-text);
+}
+
+.baps-tag.baps-sampark.baps-tag--info,
+.baps-ds-sampark .baps-tag.baps-tag--info {
+  background-color: var(--tag-sampark-info-background);
+  border-color: var(--tag-sampark-info-border);
+  color: var(--tag-sampark-info-text);
+}
+
+.baps-tag.baps-sampark.baps-tag--warning,
+.baps-ds-sampark .baps-tag.baps-tag--warning {
+  background-color: var(--tag-sampark-warning-background);
+  border-color: var(--tag-sampark-warning-border);
+  color: var(--tag-sampark-warning-text);
+}
+
+.baps-tag.baps-sampark.baps-tag--error,
+.baps-ds-sampark .baps-tag.baps-tag--error {
+  background-color: var(--tag-sampark-error-background);
+  border-color: var(--tag-sampark-error-border);
+  color: var(--tag-sampark-error-text);
+}
+
+.baps-tag.baps-sampark.baps-tag--success,
+.baps-ds-sampark .baps-tag.baps-tag--success {
+  background-color: var(--tag-sampark-success-background);
+  border-color: var(--tag-sampark-success-border);
+  color: var(--tag-sampark-success-text);
+}
+
+.baps-tag.baps-sampark.baps-tag--disabled,
+.baps-ds-sampark .baps-tag.baps-tag--disabled {
+  background-color: var(--tag-sampark-disabled-background);
+  border-color: var(--tag-sampark-disabled-border);
+  color: var(--tag-sampark-disabled-text);
+}
+
+.baps-tag.baps-sampark.baps-tag--xs,
+.baps-ds-sampark .baps-tag.baps-tag--xs {
+  height: var(--tag-sampark-height-xs, 1.125rem);
+  padding: var(--tag-sampark-padding-xs, 0.25rem);
+  font-size: var(--tag-sampark-font-size-xs, 0.75rem);
+}
+
+/* Sampark declares no `m` step — tokens.css has --tag-mybky-height-m and no
+   --tag-sampark-height-m. The m geometry is shared, so this defers to the
+   MyBKY token rather than inventing a Sampark one. */
+.baps-tag.baps-sampark.baps-tag--m,
+.baps-ds-sampark .baps-tag.baps-tag--m {
+  height: var(--tag-mybky-height-m, 1.625rem);
+  padding: var(--tag-mybky-padding-m, 0.25rem 0.375rem);
+  font-size: var(--tag-mybky-font-size-m, 0.875rem);
+}
+
+.baps-tag.baps-sampark.baps-tag--l,
+.baps-ds-sampark .baps-tag.baps-tag--l {
+  height: var(--tag-sampark-height-l, 2rem);
+  padding: var(--tag-sampark-padding-l, 0.25rem 0.5rem);
+  font-size: var(--tag-sampark-font-size-l, 1rem);
+}

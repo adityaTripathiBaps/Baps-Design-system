@@ -3,10 +3,13 @@ import type { Decorator, Preview } from '@storybook/angular';
 import { applicationConfig } from '@storybook/angular';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
-import { palette, usePreset } from '@primeuix/themes';
+import { usePreset } from '@primeuix/themes';
 import { addons } from 'storybook/internal/preview-api';
 import { DARK_MODE_EVENT_NAME } from 'storybook-dark-mode';
-import { MyBky, PRIMARY_RAMPS, Sampark, withAccent, withPrimaryRamp, withSurface } from '@org/ui-kit';
+import { MyBky, Sampark, withAccent, withPrimaryRamp, withSurface, applyThemeToDesignSystem, rampFor } from '@org/ui-kit';
+
+
+
 // Compodoc metadata for the API tables. The storybook target regenerates
 // documentation.json on every start (compodoc: true + compodocArgs in
 // apps/storybook-host/project.json); generating it is NOT enough on its own -
@@ -289,88 +292,11 @@ const showAwaitingPaletteNotice = (label: string | undefined): void => {
  * palette 300/900/950 have no Sampark counterpart and are not written; 500 is
  * skipped because the preset collapses 500 and 600 onto the same step and 600 is
  * the one `primary.color` actually reads.
- */
-const DS_RAMPS: Record<
-  keyof typeof DS_PRESETS,
-  { prefix: string; steps: ReadonlyArray<readonly [dsStep: number, paletteStep: number]> }
-> = {
-  mybky: {
-    prefix: '--color-mybky-blue-',
-    steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950].map((s) => [s, s] as const),
-  },
-  sampark: {
-    prefix: '--color-sampark-primary-',
-    steps: [
-      [0, 50],
-      [10, 100],
-      [20, 200],
-      [40, 400],
-      [60, 600],
-      [80, 700],
-      [100, 800],
-    ] as const,
-  },
-};
-
-/**
- * The ramp an `accent` global names.
  *
- * One global carries both forms: a swatch key (`'brand'`, `'rose'`, …) or a raw
- * `#rrggbb` from the Theme builder's colour input. One value means one thing to
- * put in the URL and one thing to export; a second `accentHex` global would be
- * two values that can disagree, and an export that has to say which wins.
- *
- * `'brand'` returns undefined here on purpose — it is the preset's own primary,
- * so there is nothing to override. That is what keeps the default a no-op.
+ * DS_RAMPS, rampFor and applyThemeToDesignSystem now live in @org/ui-kit
+ * (accent.theme.ts) so apps get the same sink Storybook uses; imported above.
  */
-const rampFor = (accent: string): Record<number, string> | undefined =>
-  accent.startsWith('#')
-    ? (palette(accent) as Record<number, string>)
-    : (PRIMARY_RAMPS[accent] as Record<number, string> | undefined);
 
-/** Exactly what the last call wrote, so the next one can undo precisely that. */
-let writtenProps: string[] = [];
-
-const applyThemeToDesignSystem = (ds: keyof typeof DS_PRESETS, accent: string): void => {
-  if (typeof document === 'undefined') return;
-  const root = document.documentElement;
-
-  // Undo the previous config first. Without this, switching from an accent back
-  // to Brand leaves the old ramp stuck on: the inline properties outrank
-  // tokens.css and nothing else clears them.
-  for (const prop of writtenProps) root.style.removeProperty(prop);
-  writtenProps = [];
-
-  // GUARD — the default must write NOTHING.
-  //
-  // At `accent: 'brand'` the design system's own values are already correct, so
-  // there is nothing to override. Writing them back anyway would re-serialise
-  // every colour through the CSSOM — `#5f78b8` comes back out as
-  // `rgb(95, 120, 184)` — which is the same colour and a different string, and
-  // would move all 536 baselines for no visual reason. Every baseline is
-  // captured at this default, so this branch is the one that runs during a
-  // visual run.
-  if (accent === 'brand') return;
-
-  const ramp = rampFor(accent);
-  if (!ramp) return;
-
-  const { prefix, steps } = DS_RAMPS[ds];
-  for (const [dsStep, paletteStep] of steps) {
-    const value = ramp[paletteStep];
-    if (!value) continue;
-    const prop = `${prefix}${dsStep}`;
-    root.style.setProperty(prop, value);
-    writtenProps.push(prop);
-  }
-
-  // Not written, and not an oversight:
-  // - `sampark.primary.default/hover/tint` are references to steps above, so
-  //   they re-resolve on their own.
-  // - `primary.alpha20` is a relative colour reading off primary.100, so it
-  //   re-tints too. `primary.alpha10` is still a literal and will NOT follow —
-  //   see Guidelines → Known gaps.
-};
 
 const withDesignSystem: Decorator = (storyFn, context) => {
   const selected = String(context.globals['designSystem'] ?? 'mybky');

@@ -277,6 +277,41 @@ surfaces that did move. Keep the remap **hex-preserving**: every value stays a
 real colour so Material's `color-mix` on primary keeps working, which is exactly
 what the `var()` attempt broke.
 
+### Status — 2026-09-21: Route A is done for Sampark too, and chrome is a third sink
+
+`samparkPrimaryDerivedComponents` now exists alongside
+`myBkyPrimaryDerivedComponents` and remaps `button`, `checkbox`, `radiobutton`,
+`toggleswitch`, `tabs`, `slider`, `progressbar`, `avatar` and `datatable` from
+the chosen ramp. Hex-preserving, as the paragraph above requires. The `tabs`
+row in the Sampark table is therefore closed; `toggleswitch` too.
+
+`tabs` was the one worth calling out. `_tabs-sampark.scss` sets the active tab's
+colour with `!important` from `--color-sampark-primary-default`, so in LIGHT
+mode a custom accent already appeared to work — the CSS was winning over the
+preset. The active bar and the entire dark scheme still read the baked
+`#c96868`. A fix that only looked at light mode would have declared this done.
+
+**`primary.alpha10` no longer needs the conversion described above** for the
+runtime path: `applyThemeToDesignSystem` writes
+`--color-sampark-primary-alpha10` as `rgb(from <ramp 800> r g b / 0.1)`
+directly. The token file still holds the literal, so the *static* gap stands —
+only the picker path is covered.
+
+**Chrome is a separate channel, not part of the primary ramp.** `baps-navbar`
+and `baps-internal-navbar` take their fill from the SECONDARY tier
+(`--color-sampark-secondary-100/80/60`), which is why moving the accent never
+moved them and is not a bug. `applyNavTheme(hex)` in `accent.theme.ts` drives
+those three steps; the `--navbar-bg`, `--navbar-border` and `--baps-inav-*`
+names are declared *on the components*, so writing them at `:root` is a no-op
+and the function deliberately does not.
+
+Same reason the primary sink writes only the seven base steps: everything in
+the alias tier (`--color-sampark-primary-default/hover/tint`, the whole
+`--button-sampark-primary-*` set, `--tag-sampark-primary-*`,
+`--avatar-sampark-*`, `--toggle-switch-sampark-track-on`) is already
+`var(--color-sampark-primary-NN)` in `tokens.css` and re-resolves on its own.
+
+
 
 ## Sampark's accent remap follows PrimeNG's step scale, not Sampark's own curve
 
@@ -1113,3 +1148,121 @@ knowable per component, by reading it.
 
 So the rule for any future batch: **measure the component, then decide.** A
 component-by-component read is not overhead on the rollout; it IS the rollout.
+
+## A snippet's source of truth is the live render, not the token file
+
+A Custom-tab snippet exists to be copied into a page that has no Angular and no
+PrimeNG, and to come out looking like the component it sits under. So the value
+it must reproduce is **what the component actually paints**, not what the token
+that nominally feeds it says. Those two are not always the same value, and when
+they disagree the token is the one that is wrong for this purpose.
+
+### Where they come apart
+
+Tag is the worked example. `--tag-mybky-primary-background` resolves to
+`var(--color-mybky-blue-50)`, and the component's primary fill is
+`components.tag.contrast.background` in the PrimeNG preset — a literal baked at
+build time by `tokens.ts`. Measured on the live component:
+
+| Context | Primary tag background |
+| --- | --- |
+| MyBKY, default accent | `rgb(238, 240, 248)` = `#eef0f8` |
+| MyBKY, accent `rose` | `rgb(238, 240, 248)` — unchanged |
+| Sampark | `rgba(135, 48, 48, 0.1)` |
+
+The theme picker rewrites `--color-mybky-blue-*` (sink 2) and does not rewrite
+the preset (sink 3). A snippet written from the token would therefore follow the
+accent while the component beside it stayed blue — a snippet that is *more*
+correct than the thing it documents, which is still a snippet that is wrong.
+
+`.baps-tag--primary` bakes `#eef0f8` for that reason, while leaving
+`border-color` on `--tag-mybky-primary-border`, which has no preset counterpart
+and genuinely does follow. At `accent:rose` a primary tag renders a rose border
+around a blue fill; the split in the partial is that measurement, not a
+preference. When bucket B migrates tag off the preset literals, both lines go
+back to tokens and the drift guard is what notices.
+
+### Why "read the token file" is not a shortcut
+
+A token file states intent. A preset override, a `::ng-deep` rule, a
+`definePreset` computation and a runtime severity map can each sit between that
+intent and the pixel, and none of them are visible in the token file. Reading it
+answers "what was meant", and the snippet has to answer "what is painted".
+
+### How this is enforced rather than remembered
+
+`tools/check-button-drift.mjs` and `tools/check-tag-drift.mjs` do not compare the
+partial against the tokens. They render the Angular component and the raw snippet
+markup side by side in the same browser and diff the **computed** styles —
+628 properties across 30 buttons, 270 across 15 tags, both at zero. A guard built
+that way cannot be satisfied by a value that is merely well-sourced, and it goes
+red on exactly the mistake this section describes.
+
+Corollary worth stating: a green drift guard is evidence, so "this literal looks
+suspicious" is not on its own a reason to change it. Changing a baked value to a
+better-sourced one that the component does not render turns a passing guard red.
+
+## The Custom tab is viable for custom components, not for wrappers
+
+The code viewer's Custom tab promises one thing: markup you can paste into a
+page with no Angular and no PrimeNG, that looks like the component above it.
+Whether that promise can be kept is decided by **where the component's colour
+comes from**, and that splits the library cleanly in two.
+
+### Why a wrapper cannot keep the promise
+
+A wrapper's design is delivered by the PrimeNG preset at runtime —
+`components.tag`, `components.toggleswitch`, `components.button`. Those entries
+are resolved literals baked by `tokens.ts`, so nothing in a plain stylesheet
+reproduces them; the only way to show the design without PrimeNG is to write it
+again. That second copy is a **second implementation of the same design**, and
+two implementations of one design drift. Button and Tag both needed a dedicated
+drift guard for exactly this reason, and the guards are the admission, not the
+solution.
+
+Measured, all three of the components this was tried on:
+
+| | blocker |
+| --- | --- |
+| **tag** | `components.tag.colorScheme` carries all seven severities. The preset reads the same `--tag-mybky-*` tokens the partial does, but the theme picker rewrites `--color-*` (sink 2) and not the preset (sink 3), so fills stop following while borders keep following. |
+| **toggle-switch** | Same sink-3 shape, no severity axis — but it is an interactive control. Raw markup needs a checkbox-and-label rewrite, and `ToggleSwitchMybkyTrackOnDisabled` is interpolated into a raw `css:` string, not a token slot. |
+| **drawer** | No preset section at all, yet still not a CSS-move: `_drawer.scss` is 139 lines of `.p-drawer.baps-drawer-mybky …`. PrimeNG-namespaced selectors cannot be reused under a different class name. The panel is `appendTo="body"` portalled, so raw markup shows a static box rather than a drawer. |
+
+### Route A removed the reason to want one
+
+The four components Route A fixed — button, radiobutton, toggleswitch, avatar —
+now follow the accent picker through the preset itself. A wrapper that already
+tracks the theme does not need a raw re-implementation to prove it does; the
+live component is the proof. The Custom tab was only ever interesting where the
+live source is not copyable, and for a theme-following wrapper the answer is to
+copy the Angular usage, which the PrimeNG-Angular tab already shows.
+
+### What a custom component has instead
+
+A non-wrapper's partial keys off its own element selector — `baps-indicator`,
+`baps-file-upload`, `baps-internal-navbar` — and ships in the global
+stylesheet. Checked across all eight candidates: **zero `:host` rules**. That
+matters more than it sounds. `:host` resolves only under Angular's view
+encapsulation, so a partial using it would style nothing on a bare page; an
+element selector matches an unknown element in any browser. So a raw
+`<baps-indicator>` in plain HTML is styled by the same bytes that style the
+Angular one, and the Custom tab can simply render the live source. There is no
+second implementation, so there is nothing to drift, and no guard is needed.
+
+This is why hex-count is not the gate. Alert ships 54 hex literals and Card 19,
+and neither can drift — component and snippet load the identical file. Tag has
+two, and needed a 270-property guard, because its two copies are genuinely
+separate.
+
+### The rule
+
+**Custom tab only for components that own their CSS under their own element
+selector.** For a wrapper, ship `react` / `next` / `primeng` — which are
+documented as statements of intended markup, not as generated output — and pass
+`hideCustom` on `FrameworkTabs`. The opt-out exists because the tab is otherwise
+unconditional, and its unset behaviour (render the live Angular source) is the
+worst of the three options for a wrapper: `<baps-tag value="Grey" />` outside
+Angular is an empty custom element.
+
+Revisit after bucket B. When the token migration removes the preset literals,
+the wrappers become ordinary token consumers and the tab becomes honest.
