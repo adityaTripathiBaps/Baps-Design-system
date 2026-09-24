@@ -136,3 +136,27 @@ the rule is.
 - **Backticks in a `styles:` comment terminate the template literal.** The build
   then reports errors inside the CSS that point nowhere near the comment. Guard:
   `node tools/check-styles-literals.mjs`. See `formatting.md`.
+- **`.baps-dark` belongs on `<html>`, not only on `<body>`.** A custom property
+  declared as a reference is evaluated on the element that declares it, and
+  almost every token is declared at `:root`. With the dark class on `<body>`,
+  `--p-datatable-row-color: var(--p-content-color)` resolves on `<html>` to the
+  LIGHT ink and every row inherits that computed colour, while
+  `--p-content-color` read on the same row correctly says the dark one. Literal
+  tokens flip either way, which is what makes this fail in a scattered,
+  plausible-looking pattern rather than all at once. Storybook sets both classes
+  (`.storybook/preview.ts`); an app embedding this library must do the same.
+
+## 9. Dark mode
+
+- **Dark is a scheme, not a skin.** PrimeNG values go in
+  `semantic.colorScheme.dark` (see `libs/ui-kit/src/lib/theme/dark.scheme.ts`,
+  which both presets share); CSS values go in a `.baps-dark` block in the
+  component's own partial, mirroring the light selector chain exactly.
+- **The brand alias tier flips for free.** `_dark-aliases.scss` re-points
+  `--color-<brand>-text-*`, `-surface-*` and `-border-default` under
+  `.baps-dark`, so a partial that reads those aliases needs no dark block. What
+  still needs one: anything naming a light PRIMITIVE (`mono-50`, `blue-50`,
+  `primary-0`) or a pale severity surface, because a primitive cannot flip.
+- **Guard:** `node tools/check-dark-contrast.mjs` resolves both presets and
+  measures WCAG ratios without a browser. A new failure either gets fixed or
+  gets an entry in its `ACCEPTED` map with the reason.

@@ -106,7 +106,26 @@ if (typeof document !== 'undefined') {
   // switches with the toolbar toggle. Initial state comes from the addon's own
   // persisted store (STORAGE_KEY 'sb-addon-themes-3') so a freshly-loaded docs
   // iframe isn't stuck light until the first event arrives.
+  // The class goes on <html> as well as <body>, and the <html> half is not
+  // cosmetic — it is what makes dark mode resolve at all.
+  //
+  // Every design token is declared at `:root`, i.e. on <html>. A token that
+  // holds a literal (`--p-content-background: #ffffff`) flips fine wherever the
+  // dark class sits, because the dark block re-declares it. A token declared as
+  // a REFERENCE does not: `--p-datatable-row-color: var(--p-content-color)` is
+  // evaluated on <html>, so with the class only on <body> it computes the LIGHT
+  // value and every row inherits that computed colour. Measured: dark table
+  // cells were #0f172a (Material's light ink) while `--p-text-color` on the
+  // same cell read #f8fafb. The same trap hits the brand alias tier that
+  // _dark-aliases.scss re-points, and any partial declaring its own variables
+  // at `:root`.
+  //
+  // <body> keeps the class too: the docs shell and several component partials
+  // are written as `.baps-dark <something>` and a portalled overlay is a child
+  // of <body>, not of the story root.
   const setDark = (isDark: boolean) => {
+    document.documentElement.classList.toggle('baps-dark', isDark);
+    document.documentElement.classList.toggle('baps-light', !isDark);
     document.body.classList.toggle('baps-dark', isDark);
     document.body.classList.toggle('baps-light', !isDark);
   };

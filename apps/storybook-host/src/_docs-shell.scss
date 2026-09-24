@@ -71,6 +71,15 @@ body.baps-dark {
   --baps-docs-control: var(--color-mybky-dark-border-control, #6f777d);
   --baps-docs-accent: var(--color-mybky-dark-primary-default, #9fadd9);
   --baps-docs-code-ground: var(--color-mybky-dark-surface-card, #2b2f32);
+  /* Hairlines inside the foundations SHOWCASE stories, which draw with inline
+     style="" attributes that no rule can outrank. They read
+     var(--baps-doc-rule, #eaeff3): undefined in light, so the inline fallback
+     stands and the light baselines do not move; defined here, so the rules
+     stop being near-white lines on a dark page. */
+  --baps-doc-rule: var(--color-mybky-dark-border-divider, #3d4144);
+  /* Same contract as --baps-doc-rule: undefined in light so the showcase's own
+     inline literal stands, defined here so its body copy is legible. */
+  --baps-doc-ink-soft: var(--color-mybky-dark-text-secondary, #e4ecf1);
 }
 
 body.baps-dark.baps-ds-sampark {
@@ -83,6 +92,8 @@ body.baps-dark.baps-ds-sampark {
   --baps-docs-control: var(--color-sampark-dark-border-control, #94928f);
   --baps-docs-accent: var(--color-sampark-dark-primary-default, #d48787);
   --baps-docs-code-ground: var(--color-sampark-dark-surface-card, #2c2c2a);
+  --baps-doc-rule: var(--color-sampark-dark-border-divider, #4a4947);
+  --baps-doc-ink-soft: var(--color-sampark-dark-text-secondary, #e6e6e5);
 }
 
 /* ── Canvas ─────────────────────────────────────────────────────────────────
@@ -429,6 +440,94 @@ body.baps-dark .sbdocs-wrapper {
 
 .sbdocs-wrapper table tbody tr:nth-of-type(2n + 1) {
   background: var(--baps-docs-ground) !important;
+}
+
+/* ── Docs chrome that addon-docs paints with emotion ────────────────────────
+   The colour rules further up win for most of the docs page, but addon-docs
+   injects its emotion styles AFTER this file for a handful of elements, and
+   those kept the LIGHT docs theme on a dark page. Measured across 66 docs
+   pages in dark mode, worst first:
+
+     58 pages  the code block's Copy affordance      #ffffff
+     44 pages  the type/default chips in the API table #f7fafc with dark ink
+     42 pages  the API table's group row ("INPUTS")  #f6f9fc
+     24 pages  syntax-highlighted comments           2.96:1 on the code ground
+      3 pages  the Controls column's text inputs     #ffffff
+
+   Everything here is scoped to `body.baps-dark`, so the light docs pages —
+   and their baselines — are untouched. Selectors are structural: the emotion
+   hashes beside these stable ancestors change between Storybook builds.
+   ───────────────────────────────────────────────────────────────────────── */
+
+body.baps-dark {
+  /* API table rows. The group row ("INPUTS", "OUTPUTS") is the one with a
+     title attribute — it takes the raised surface so it still reads as a
+     header rather than another data row. */
+  .sbdocs-wrapper .docblock-argstable-body tr > td,
+  .sbdocs-wrapper .docblock-argstable-body tr > th {
+    background: var(--baps-docs-ground) !important;
+    border-color: var(--baps-docs-divider) !important;
+  }
+
+  .sbdocs-wrapper .docblock-argstable-body tr[title] > td {
+    background: var(--baps-docs-raised) !important;
+  }
+
+  /* The type and default chips. Matched by position (a span inside a cell's
+     own div) rather than by class, and never the chevron's wrapper, which
+     holds an svg and no text. */
+  .sbdocs-wrapper .docblock-argstable-body td span:not(:has(svg)):not(:has(input)) {
+    background-color: var(--baps-docs-code-ground) !important;
+    color: var(--baps-docs-heading) !important;
+  }
+
+  /* Controls column widgets: text fields, the "Set object"/"Set string"
+     buttons and the boolean toggle's label. The group row's own toggle is
+     excluded further down — it has to stay invisible. */
+  .sbdocs-wrapper .docblock-argstable :is(input, textarea, select),
+  .sbdocs-wrapper .docblock-argstable-body td :is(button, label) {
+    background: var(--baps-docs-raised) !important;
+    color: var(--baps-docs-text) !important;
+    border-color: var(--baps-docs-divider) !important;
+  }
+
+  /* The boolean control is a switch: <label><input role=switch><span>False</span>
+     <span>True</span></label>, and Storybook paints the ACTIVE half as a white
+     pill. On the dark label that left the inactive half at 1.03:1. Both halves
+     take muted ink; the active one — first span when unchecked, second when
+     checked — takes the page ground so the pill still reads as the choice. */
+  .sbdocs-wrapper .docblock-argstable-body td label:has(input[role='switch']) > span {
+    background-color: transparent !important;
+    color: var(--baps-docs-muted) !important;
+  }
+
+  .sbdocs-wrapper .docblock-argstable-body td label:has(input[role='switch']:not(:checked)) > span:nth-of-type(1),
+  .sbdocs-wrapper .docblock-argstable-body td label:has(input[role='switch']:checked) > span:nth-of-type(2) {
+    background-color: var(--baps-docs-ground) !important;
+    color: var(--baps-docs-heading) !important;
+  }
+
+  /* The group row's toggle carries the accessible name and is deliberately
+     invisible — Storybook draws the visible "INPUTS" label separately. Keeping
+     it transparent stops the two from printing on top of each other. */
+  .sbdocs-wrapper .docblock-argstable-body tr[title] > td > button {
+    color: transparent !important;
+    background: transparent !important;
+  }
+
+  /* Code block: the Copy affordance and the strip it sits in. */
+  .sbdocs-wrapper .docblock-source > div,
+  .sbdocs-wrapper .docblock-source button {
+    background: var(--baps-docs-raised) !important;
+    color: var(--baps-docs-text) !important;
+    border-color: var(--baps-docs-divider) !important;
+  }
+
+  /* Syntax highlighting: comments sat at 2.96:1 on the code ground, which is
+     where most of a snippet's explanation lives. */
+  .sbdocs-wrapper :is(.token.comment, .token.prolog, .token.doctype, .token.cdata) {
+    color: var(--baps-docs-muted) !important;
+  }
 }
 
 /* ── Foundation blocks (.storybook/blocks/foundations.tsx) ──────────────────

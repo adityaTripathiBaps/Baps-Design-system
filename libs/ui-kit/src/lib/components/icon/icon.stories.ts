@@ -133,6 +133,31 @@ import { BAPS_ALL_ICON_NAMES, type BapsIconName } from './icon-set';
 
     .ig__empty { font-size: 0.875rem; color: #6f777d; }
 
+    /* Dark. The grid is 541 white tiles and a white search field, which on a
+       dark docs page is the brightest block in the library. :host-context
+       because this showcase keeps Angular's emulated encapsulation — a plain
+       .baps-dark ancestor selector would be rewritten with the component's
+       own _ngcontent attribute and match nothing. */
+    :host-context(.baps-dark) .ig__search,
+    :host-context(.baps-dark) .ig__tile {
+      background: var(--color-mybky-dark-surface-card, #2b2f32);
+      border-color: var(--color-mybky-dark-border-divider, #3d4144);
+      color: var(--color-mybky-dark-text-primary, #f8fafb);
+    }
+    :host-context(.baps-dark) .ig__search input { color: var(--color-mybky-dark-text-primary, #f8fafb); }
+    :host-context(.baps-dark) :is(.ig__tile code, .ig__empty, .ig__count) {
+      color: var(--color-mybky-dark-text-muted, #b6b6af);
+    }
+    :host-context(.baps-dark) .ig__tile:hover { border-color: var(--color-mybky-dark-primary-default, #9fadd9); }
+    /* The copied state keeps its meaning by hue: the tint step on a 16% wash,
+       the same inversion the dark tags and messages use. */
+    :host-context(.baps-dark) .ig__tile--copied {
+      background: color-mix(in srgb, var(--color-mybky-success-400, #40bf84), transparent 84%);
+      border-color: var(--color-mybky-success-tint, #93ecbb);
+      color: var(--color-mybky-success-tint, #93ecbb);
+    }
+    :host-context(.baps-dark) .ig__tile--copied code { color: var(--color-mybky-success-tint, #93ecbb); }
+
     @media (prefers-reduced-motion: reduce) {
       .ig__tile baps-icon { transition: none; }
       .ig__tile:hover baps-icon { transform: none; }
@@ -199,7 +224,7 @@ export const Sizes: Story = {
         @for (s of sizes; track s) {
           <div style="display:flex; flex-direction:column; align-items:center; gap:.5rem;">
             <baps-icon name="notification" [size]="s" />
-            <span style="font-size:12px; color:#6f777d;">{{ s }}</span>
+            <span style="font-size:12px; color:var(--color-mybky-text-muted, #6f777d);">{{ s }}</span>
           </div>
         }
       </div>
