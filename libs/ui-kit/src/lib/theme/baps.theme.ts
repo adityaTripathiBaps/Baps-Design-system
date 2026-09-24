@@ -617,9 +617,12 @@ export function myBkyPrimaryDerivedComponents(ramp: RampSteps) {
 
   return {
     button: { colorScheme: { light: scheme, dark: scheme } },
+    ...checkbox(ramp),
     ...radiobutton(ramp),
     ...toggleswitch(ramp),
+    ...progressbar(ramp),
     ...avatar(ramp),
+    ...tag(ramp),
   };
 }
 
@@ -743,3 +746,86 @@ function radiobutton(ramp: RampSteps) {
     },
   };
 }
+
+/* checkbox — mirrors radiobutton: checked border and checkmark tick both take
+ * the brand accent in light and dark mode.
+ *
+ *   light  checked / icon    ColorMybkyPrimaryDefault      #5f78b8   ramp 600
+ *   light  hover borders     ColorMybkyPrimaryActive       #384871   ramp 800
+ *   dark   checked / icon    ColorMybkyDarkPrimaryDefault  #9fadd9   ramp 400
+ *   dark   hover borders     ColorMybkyDarkPrimaryHover    #bdc6e4   ramp 200
+ */
+function checkbox(ramp: RampSteps) {
+  const on = ramp[600];
+  const hover = ramp[800];
+  const darkOn = ramp[400];
+  const darkHover = ramp[200];
+  if (!on || !hover || !darkOn || !darkHover) return {};
+
+  return {
+    checkbox: {
+      colorScheme: {
+        light: {
+          root: {
+            hoverBorderColor: hover,
+            checkedBorderColor: on,
+            checkedHoverBorderColor: hover,
+          },
+          icon: {
+            checkedColor: on,
+            checkedHoverColor: on,
+          },
+        },
+        dark: {
+          root: {
+            hoverBorderColor: darkHover,
+            checkedBorderColor: darkOn,
+            checkedHoverBorderColor: darkHover,
+          },
+          icon: {
+            checkedColor: darkOn,
+            checkedHoverColor: darkHover,
+          },
+        },
+      },
+    },
+  };
+}
+
+/* progressbar — the bar value takes the primary accent 600 step. */
+function progressbar(ramp: RampSteps) {
+  const light = ramp[600];
+  if (!light) return {};
+  return {
+    progressbar: {
+      value: {
+        background: light,
+      },
+    },
+  };
+}
+
+/* tag — contrast variant follows the primary accent palette. */
+function tag(ramp: RampSteps) {
+  const pale = ramp[50];
+  const ink = ramp[800];
+  const darkOn = ramp[400];
+  const darkHover = ramp[200];
+  if (!pale || !ink || !darkOn || !darkHover) return {};
+  return {
+    tag: {
+      colorScheme: {
+        light: {
+          contrast: { background: pale, color: ink },
+        },
+        dark: {
+          contrast: {
+            background: `color-mix(in srgb, ${darkOn}, transparent 84%)`,
+            color: darkHover,
+          },
+        },
+      },
+    },
+  };
+}
+
