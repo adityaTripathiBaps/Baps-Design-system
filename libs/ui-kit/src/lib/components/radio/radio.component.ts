@@ -182,10 +182,15 @@ let nextRadioId = 0;
       --sel-ring: 0 0 0 2px rgba(255, 255, 255, 0.12);
       --sel-label: var(--color-mybky-dark-text-primary, #f8fafb);
       --sel-label-disabled: var(--color-mybky-dark-text-disabled, #6f777d);
+      /* Disabled+checked kept its light fill in dark — see baps-checkbox. */
+      --sel-disabled-checked-bg: var(--color-mybky-dark-surface-hover, #3d4144);
+      --sel-disabled-checked-dot: var(--color-mybky-dark-text-disabled, #8d9ba5);
     }
     .baps-dark :is(baps-radio.baps-sampark, .baps-ds-sampark baps-radio) {
       --sel-label: var(--color-sampark-dark-text-primary, #f8fafb);
       --sel-label-disabled: var(--color-sampark-dark-text-disabled, #6f777d);
+      --sel-disabled-checked-bg: var(--color-sampark-dark-surface-hover, #4a4947);
+      --sel-disabled-checked-dot: var(--color-sampark-dark-text-disabled, #94928f);
     }`,
   providers: [
     {

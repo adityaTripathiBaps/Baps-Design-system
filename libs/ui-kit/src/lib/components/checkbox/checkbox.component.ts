@@ -227,11 +227,18 @@ let nextCheckboxId = 0;
       --sel-border-checked: var(--color-mybky-dark-primary-default, #9fadd9);
       --sel-label: var(--color-mybky-dark-text-primary, #f8fafb);
       --sel-label-disabled: var(--color-mybky-dark-text-disabled, #6f777d);
+      /* Disabled+checked kept its light fill in dark — a pale #e4ecf1 box on the
+         #2b2f32 card, the brightest thing in the group. Same muted, non-accent
+         relationship as light, read for a dark ground. */
+      --sel-disabled-checked-bg: var(--color-mybky-dark-surface-hover, #3d4144);
+      --sel-disabled-checked-icon: var(--color-mybky-dark-text-disabled, #8d9ba5);
     }
     .baps-dark :is(baps-checkbox.baps-sampark, .baps-ds-sampark baps-checkbox) {
       --sel-border-checked: var(--color-sampark-dark-primary-default, #d48787);
       --sel-label: var(--color-sampark-dark-text-primary, #f8fafb);
       --sel-label-disabled: var(--color-sampark-dark-text-disabled, #6f777d);
+      --sel-disabled-checked-bg: var(--color-sampark-dark-surface-hover, #4a4947);
+      --sel-disabled-checked-icon: var(--color-sampark-dark-text-disabled, #94928f);
     }`,
   providers: [
     {
