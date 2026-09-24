@@ -57,12 +57,16 @@ export default meta;
 
 /** The Frequency row from node 17512:78163 — three pills across 344px. */
 export const Default: StoryObj<BapsSegmented> = {
-  render: () => ({
-    props: { options: ['Once', 'Repeat', 'Ad-hoc'], frequency: 'Once' },
+  render: (args) => ({
+    props: { ...args, options: ['Once', 'Repeat', 'Ad-hoc'], frequency: 'Once' },
     template: `
       <div style="width:344px">
         <baps-segmented
           ariaLabel="Frequency"
+          [brand]="brand"
+          [disabled]="disabled"
+          [multiple]="multiple"
+          [allowEmpty]="allowEmpty"
           [options]="options"
           [(ngModel)]="frequency"
         ></baps-segmented>

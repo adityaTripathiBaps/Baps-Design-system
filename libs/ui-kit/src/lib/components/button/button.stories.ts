@@ -50,6 +50,7 @@ const meta: Meta<BapsButton> = {
     rounded: false,
     raised: false,
     link: false,
+    iconPos: 'left',
   },
   render: (args) => ({
     props: args,
@@ -66,6 +67,11 @@ const meta: Meta<BapsButton> = {
       [raised]="raised"
       [link]="link"
       [icon]="icon"
+      [iconPos]="iconPos"
+      [fluid]="fluid"
+      [plain]="plain"
+      [autofocus]="autofocus"
+      [ariaLabel]="ariaLabel"
     />`,
   }),
 };

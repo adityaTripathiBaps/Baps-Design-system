@@ -84,15 +84,24 @@ const REGIONS: TreeNode[] = [
 ];
 
 export const Default: Story = {
-  render: () => ({
-    props: { options: REGIONS, model: null },
+  render: (args) => ({
+    props: { ...args, options: REGIONS, model: null },
     template: `
       <div style="max-width: 20rem">
         <baps-tree-select
           appendTo="body"
-          placeholder="Select a location"
+          [placeholder]="placeholder || 'Select a location'"
           [options]="options"
           [(ngModel)]="model"
+          [disabled]="disabled"
+          [filter]="filter"
+          [fluid]="fluid"
+          [loading]="loading"
+          [showClear]="showClear"
+          [selectionMode]="selectionMode"
+          [display]="display"
+          [size]="size"
+          [brand]="brand"
         ></baps-tree-select>
       </div>
     `,

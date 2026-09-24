@@ -1,4 +1,4 @@
-import { Meta, Canvas } from '@storybook/blocks';
+import { Meta, Canvas, Controls } from '@storybook/blocks';
 import { BrandOnly, PropsTable } from '@baps/docs-blocks';
 import * as NavbarStories from './navbar.stories';
 
@@ -41,6 +41,7 @@ The two brands render genuinely different bars, not two tints of one component:
 ### Playground
 
 <Canvas of={NavbarStories.Playground} />
+<Controls of={NavbarStories.Playground} />
 
 <BrandOnly brand="sampark">
 

@@ -35,7 +35,7 @@ const meta: Meta<BapsInternalNavbar> = {
   render: (args) => ({
     props: { ...args, onItemClick: action('itemClick') },
     template: `
-      <baps-internal-navbar [brand]="brand"
+      <baps-internal-navbar [brand]="brand" [collapsed]="collapsed" [activeItem]="activeItem" [title]="title" [ariaLabel]="ariaLabel"
         (itemClick)="onItemClick($event)">
         <a href="#" class="active">Overview</a>
         <a href="#">Settings</a>

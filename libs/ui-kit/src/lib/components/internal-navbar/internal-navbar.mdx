@@ -1,4 +1,4 @@
-import { Meta, Canvas } from '@storybook/blocks';
+import { Meta, Canvas, Controls } from '@storybook/blocks';
 import { BrandOnly, PropsTable } from '@baps/docs-blocks';
 import * as InternalNavbarStories from './internal-navbar.stories';
 
@@ -39,6 +39,7 @@ menuItems: InternalNavItem[] = [
 ### Default
 
 <Canvas of={InternalNavbarStories.Default} />
+<Controls of={InternalNavbarStories.Default} />
 
 <BrandOnly brand="sampark">
 

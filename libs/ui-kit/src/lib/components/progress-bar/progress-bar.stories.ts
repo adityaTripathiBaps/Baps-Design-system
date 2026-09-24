@@ -32,7 +32,14 @@ const meta: Meta<BapsProgressBar> = {
   render: (args) => ({
     props: args,
     template: `
-      <baps-progressbar [value]="value" [brand]="brand"></baps-progressbar>
+      <baps-progressbar
+        [value]="value"
+        [brand]="brand"
+        [mode]="mode"
+        [severity]="severity"
+        [showValue]="showValue"
+        [styleClass]="styleClass">
+      </baps-progressbar>
     `,
   }),
 };

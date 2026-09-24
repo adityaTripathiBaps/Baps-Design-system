@@ -124,31 +124,31 @@ type Story = StoryObj<BapsDialog>;
  */
 export const Default: Story = {
   render: (args) => ({
-    props: { args, ui: { open: args.visible } },
+    props: args,
     template: `
       <div class="story-pad">
         <baps-button
-          [brand]="args.brand"
+          [brand]="brand"
           severity="secondary"
           [outlined]="true"
           label="Cancel upload"
-          (click)="ui.open = true"
+          (click)="visible = true"
         />
 
         <baps-dialog
-          [(visible)]="ui.open"
-          [header]="args.header"
-          [brand]="args.brand"
-          [width]="args.width"
-          [align]="args.align"
-          [actionsAlign]="args.actionsAlign"
-          [role]="args.role"
-          [modal]="args.modal"
-          [closable]="args.closable"
-          [closeOnEscape]="args.closeOnEscape"
-          [dismissableMask]="args.dismissableMask"
-          [blockScroll]="args.blockScroll"
-          [appendTo]="args.appendTo"
+          [(visible)]="visible"
+          [header]="header"
+          [brand]="brand"
+          [width]="width"
+          [align]="align"
+          [actionsAlign]="actionsAlign"
+          [role]="role"
+          [modal]="modal"
+          [closable]="closable"
+          [closeOnEscape]="closeOnEscape"
+          [dismissableMask]="dismissableMask"
+          [blockScroll]="blockScroll"
+          [appendTo]="appendTo"
         >
           <i dialog-media class="pi pi-exclamation-triangle story-dialog-glyph"></i>
 
@@ -159,19 +159,19 @@ export const Default: Story = {
 
           <div dialog-footer>
             <baps-button
-              [brand]="args.brand"
+              [brand]="brand"
               severity="secondary"
               [outlined]="true"
               size="small"
               label="Continue Upload"
-              (click)="ui.open = false"
+              (click)="visible = false"
             />
             <baps-button
-              [brand]="args.brand"
+              [brand]="brand"
               severity="danger"
               size="small"
               label="Yes, Cancel"
-              (click)="ui.open = false"
+              (click)="visible = false"
             />
           </div>
         </baps-dialog>

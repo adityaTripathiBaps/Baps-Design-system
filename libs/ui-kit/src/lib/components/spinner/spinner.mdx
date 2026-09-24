@@ -1,4 +1,4 @@
-import { Meta, Canvas } from '@storybook/blocks';
+import { Meta, Canvas, Controls } from '@storybook/blocks';
 import { BrandOnly, FrameworkTabs, PropsTable } from '@baps/docs-blocks';
 import * as SpinnerStories from './spinner.stories';
 import { spinnerSnippets } from './spinner.snippets';
@@ -20,6 +20,7 @@ A loading indicator, indeterminate or determinate. `baps-spinner` wraps PrimeNGâ
 ### Indeterminate
 
 <Canvas of={SpinnerStories.Indeterminate} sourceState="none" />
+<Controls of={SpinnerStories.Indeterminate} />
 
 <FrameworkTabs of={SpinnerStories.Indeterminate} snippets={spinnerSnippets.Indeterminate} />
 

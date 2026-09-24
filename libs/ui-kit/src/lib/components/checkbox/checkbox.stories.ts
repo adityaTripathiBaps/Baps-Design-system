@@ -59,7 +59,17 @@ const meta: Meta<BapsCheckbox> = {
   render: (args) => ({
     props: { ...args, model: true },
     template: `
-      <baps-checkbox [label]="label" [binary]="binary" [brand]="brand" [(ngModel)]="model"></baps-checkbox>
+      <baps-checkbox
+        [label]="label"
+        [binary]="binary"
+        [brand]="brand"
+        [disabled]="disabled"
+        [readonly]="readonly"
+        [indeterminate]="indeterminate"
+        [size]="size"
+        [variant]="variant"
+        [(ngModel)]="model">
+      </baps-checkbox>
     `,
   }),
 };

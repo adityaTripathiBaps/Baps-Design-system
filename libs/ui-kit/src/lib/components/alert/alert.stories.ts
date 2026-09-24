@@ -29,17 +29,40 @@ const meta: Meta<Args> = {
       control: 'select',
       options: ['info', 'success', 'warning', 'error'],
     },
+    appearance: { control: 'inline-radio', options: ['inline', 'card'] },
     brand: { control: 'select', options: ['mybky', 'sampark'] },
     closable: { control: 'boolean' },
+    title: { control: 'text' },
+    text: { control: 'text' },
+    avatarLabel: { control: 'text' },
+    timestamp: { control: 'text' },
+    primaryAction: { control: 'text' },
+    secondaryAction: { control: 'text' },
+    progress: { control: { type: 'number', min: 0, max: 100 } },
   },
   args: {
     severity: 'info',
+    appearance: 'inline',
     closable: true,
+    title: 'Document Update',
+    text: 'A new file has been uploaded to your center.',
   },
   render: (args) => ({
     props: { ...args, onClosed: action('closed'), onPrimaryActionClick: action('primaryActionClick'), onSecondaryActionClick: action('secondaryActionClick') },
     template: `
-      <baps-alert [severity]="severity" [brand]="brand" [closable]="closable" [icon]="icon"
+      <baps-alert
+        [severity]="severity"
+        [appearance]="appearance"
+        [brand]="brand"
+        [closable]="closable"
+        [icon]="icon"
+        [title]="title"
+        [text]="text"
+        [avatarLabel]="avatarLabel"
+        [timestamp]="timestamp"
+        [primaryAction]="primaryAction"
+        [secondaryAction]="secondaryAction"
+        [progress]="progress"
         (closed)="onClosed($event)"
         (primaryActionClick)="onPrimaryActionClick($event)"
         (secondaryActionClick)="onSecondaryActionClick($event)">

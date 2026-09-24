@@ -27,8 +27,24 @@ const meta: Meta<BapsSkeleton> = {
     shape: { control: 'inline-radio', options: ['rectangle', 'circle'] },
     animation: { control: 'inline-radio', options: ['wave', 'none'] },
     brand: { control: 'inline-radio', options: ['mybky', 'sampark'] },
+    width: { control: 'text' },
+    height: { control: 'text' },
+    size: { control: 'text' },
   },
-  args: { width: '12rem', height: '1rem' },
+  args: { width: '12rem', height: '1rem', shape: 'rectangle', animation: 'wave' },
+  render: (args) => ({
+    props: args,
+    template: `
+      <baps-skeleton
+        [shape]="shape"
+        [size]="size"
+        [width]="width"
+        [height]="height"
+        [animation]="animation"
+        [brand]="brand"
+      />
+    `,
+  }),
 };
 
 export default meta;

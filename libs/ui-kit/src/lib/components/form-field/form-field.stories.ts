@@ -66,16 +66,32 @@ type Story = StoryObj;
 
 export const Playground: Story = {
   argTypes: {
+    label: { control: 'text' },
+    showLabel: { control: 'boolean' },
+    mandatory: { control: 'boolean' },
+    placeholder: { control: 'text' },
+    showHint: { control: 'boolean' },
+    hintText: { control: 'text' },
     pSize: { control: 'select', options: [undefined, 'small', 'large'] },
     variant: { control: 'radio', options: ['outlined', 'filled'] },
     invalid: { control: 'boolean' },
+    warning: { control: 'boolean' },
+    ghost: { control: 'boolean' },
     disabled: { control: 'boolean' },
     fluid: { control: 'boolean' },
   },
   args: {
+    label: 'Email',
+    showLabel: true,
+    mandatory: false,
+    placeholder: 'you@baps.dev',
+    showHint: true,
+    hintText: "We'll never share your address.",
     pSize: undefined,
     variant: 'outlined',
     invalid: false,
+    warning: false,
+    ghost: false,
     disabled: false,
     fluid: false,
   },
@@ -83,7 +99,11 @@ export const Playground: Story = {
     props: { ...args, value: '' },
     template: `
       <div style="display:flex; flex-direction:column; gap:6px; max-width:320px; font:14px/1.4 sans-serif;">
-        <label for="pg" style="color:var(--label-color, #2b2f32); font-weight:500;">Email</label>
+        @if (showLabel) {
+          <label for="pg" style="color:var(--label-color, #2b2f32); font-weight:500;">
+            {{ label }}@if (mandatory) {<span style="color:var(--red-500, #e24c4c); margin-left:2px;">*</span>}
+          </label>
+        }
         <input
           id="pg"
           bapsInputText
@@ -93,9 +113,13 @@ export const Playground: Story = {
           [invalid]="invalid"
           [disabled]="disabled"
           [fluid]="fluid"
-          placeholder="you@baps.dev"
+          [class.p-inputtext-warning]="warning"
+          [class.p-inputtext-ghost]="ghost"
+          [placeholder]="placeholder"
         />
-        <small style="color:var(--input-hint-color, #6f777d);">We'll never share your address.</small>
+        @if (showHint) {
+          <small style="color:var(--input-hint-color, #6f777d);">{{ hintText }}</small>
+        }
       </div>
     `,
   }),

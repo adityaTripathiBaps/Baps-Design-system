@@ -21,6 +21,17 @@ interface RailStep {
   locked?: boolean;
 }
 
+const WIZARD_STEPS: RailStep[] = [
+  { index: 1, label: 'Basic Info', icon: 'info-circle', status: 'completed' },
+  { index: 2, label: 'Eligibility', icon: 'checklist', required: true },
+  { index: 3, label: 'Payment', icon: 'wallet-money' },
+  { index: 4, label: 'Promo Code', icon: 'bill-list' },
+  { index: 5, label: 'Rooming', icon: 'bedside-table' },
+  { index: 6, label: 'Daycare', icon: 'confetti' },
+  { index: 7, label: 'Forms', icon: 'clipboard-list' },
+  { index: 8, label: 'Features', icon: 'settings' },
+];
+
 /**
  * A host for the icon rail, because the state of each slot is DERIVED (from
  * the open step and the step's own status) rather than authored per slot. A
@@ -105,13 +116,21 @@ interface RailStep {
     </div>
   `,
 })
-class StepperRailDemo {
+export class StepperRailDemo {
   @Input() brand: 'mybky' | 'sampark' = 'mybky';
   @Input() linear = false;
   @Input() set value(v: number) {
     this.current.set(v);
   }
-  @Input() steps: RailStep[] = [];
+  @Input() set steps(val: RailStep[] | undefined) {
+    if (val && val.length > 0) {
+      this._steps = val;
+    }
+  }
+  get steps(): RailStep[] {
+    return this._steps;
+  }
+  private _steps: RailStep[] = WIZARD_STEPS;
 
   readonly current = signal(1);
 
@@ -165,16 +184,6 @@ class StepperRailDemo {
  * story. It also silently defeated `Linear`, whose whole point is that steps
  * AHEAD are unreachable: with all eight complete, all eight stayed clickable.
  */
-const WIZARD_STEPS: RailStep[] = [
-  { index: 1, label: 'Basic Info', icon: 'info-circle', status: 'completed' },
-  { index: 2, label: 'Eligibility', icon: 'checklist', required: true },
-  { index: 3, label: 'Payment', icon: 'wallet-money' },
-  { index: 4, label: 'Promo Code', icon: 'bill-list' },
-  { index: 5, label: 'Rooming', icon: 'bedside-table' },
-  { index: 6, label: 'Daycare', icon: 'confetti' },
-  { index: 7, label: 'Forms', icon: 'clipboard-list' },
-  { index: 8, label: 'Features', icon: 'settings' },
-];
 
 /**
  * Stepper — a multi-step flow.
@@ -227,6 +236,17 @@ const meta: Meta<StepperRailDemo> = {
       imports: [StepperRailDemo, BapsStepper, BapsButton, BapsIcon, BapsOverlayBadge, StepperModule, BapsStepperWrapper, BapsStep],
     }),
   ],
+  render: (args) => ({
+    props: { ...args, steps: args['steps'] ?? WIZARD_STEPS },
+    template: `
+      <baps-stepper-rail-demo
+        [brand]="brand"
+        [linear]="linear"
+        [value]="value"
+        [steps]="steps"
+      />
+    `,
+  }),
   argTypes: {
     brand: { control: 'inline-radio', options: ['mybky', 'sampark'] },
     value: {

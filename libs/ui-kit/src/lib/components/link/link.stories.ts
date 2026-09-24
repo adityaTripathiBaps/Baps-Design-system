@@ -34,7 +34,7 @@ const meta: Meta<BapsLink> = {
   render: (args) => ({
     props: args,
     template: `
-      <baps-link [href]="href" [target]="target" [brand]="brand">
+      <baps-link [href]="href" [target]="target" [variant]="variant" [size]="size" [disabled]="disabled" [brand]="brand">
         Click here to view more details
       </baps-link>
     `,

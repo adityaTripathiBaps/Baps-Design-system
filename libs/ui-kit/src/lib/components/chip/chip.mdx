@@ -1,4 +1,4 @@
-import { Meta, Canvas } from '@storybook/blocks';
+import { Meta, Canvas, Controls } from '@storybook/blocks';
 import { BrandOnly, PropsTable } from '@baps/docs-blocks';
 import * as ChipStories from './chip.stories';
 
@@ -8,6 +8,10 @@ import * as ChipStories from './chip.stories';
 
 A compact label for a selected value, a filter, or an entity. `baps-chip`
 wraps PrimeNG's `p-chip`.
+
+<Canvas of={ChipStories.Default} />
+
+<Controls of={ChipStories.Default} />
 
 Figma calls this component **Badge** — MyBKY
 [22465:95582](https://www.figma.com/design/yY5bmcEifXbcCwhauoiy6Y/%F0%9F%9F%A2-MyBKY--Phase-1-?node-id=22465-95582),

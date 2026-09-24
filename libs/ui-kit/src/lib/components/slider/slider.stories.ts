@@ -61,7 +61,17 @@ const meta: Meta<BapsSlider> = {
     template: `
       <div style="max-width: 20rem">
         <baps-slider
-          ariaLabel="Value" [min]="min" [max]="max" [brand]="brand" [(ngModel)]="model"></baps-slider>
+          ariaLabel="Value"
+          [min]="min"
+          [max]="max"
+          [step]="step"
+          [disabled]="disabled"
+          [range]="range"
+          [showValueTooltip]="showValueTooltip"
+          [orientation]="orientation"
+          [brand]="brand"
+          [(ngModel)]="model">
+        </baps-slider>
       </div>
     `,
   }),

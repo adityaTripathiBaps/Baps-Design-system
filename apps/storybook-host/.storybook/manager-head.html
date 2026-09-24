@@ -1,0 +1,25 @@
+<!--
+  Manager chrome. The counterpart to preview-head.html, for the OUTER frame —
+  sidebar, toolbar, addon panel. Storybook's manager is a bundled React app, so
+  a stylesheet is the only way in; manager.tsx can set theme values but not
+  reach an element Storybook renders itself.
+-->
+<style>
+  /*
+    The testing module ("Run tests" + its status line) is an absolutely
+    positioned block pinned over the bottom of the sidebar's scroll container.
+    The container's content ends with 20px of padding, and the block is 66px
+    tall, so the last two or three entries in the tree could be scrolled to but
+    never uncovered — on this page, "Menu Item" and "Multi Select".
+
+    Reserving the space on the tree itself is the fix, rather than shrinking or
+    hiding the module: it keeps a scrollable end-stop that clears the block, and
+    it costs nothing when the module is absent (the padding is simply the last
+    thing in an already-scrolled list).
+
+    5rem = the block's 66px plus a step of clearance, rounded to the scale.
+  */
+  #storybook-explorer-tree {
+    padding-bottom: 5rem;
+  }
+</style>

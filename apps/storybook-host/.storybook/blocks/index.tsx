@@ -17,7 +17,7 @@
  * and the brand switcher without knowing either exists.
  */
 import React, { useEffect, useState } from 'react';
-import { Canvas, Source } from '@storybook/blocks';
+import { Canvas, Controls, Source } from '@storybook/blocks';
 
 /** Source only accepts the languages Prism is loaded for, so mirror its type. */
 type SourceLanguage = React.ComponentProps<typeof Source>['language'];
@@ -93,12 +93,14 @@ export const DemoCard = ({
   title,
   description,
   of,
+  controls,
   snippets,
   children,
 }: {
   title: string;
   description?: string;
   of?: unknown;
+  controls?: boolean;
   /* Authored React/Next snippets for this use-case. Supplying them swaps the
      canvas's own SHOW CODE toggle for the framework tab strip, whose Custom tab
      renders the same Angular source — one code viewer per example, not two. */
@@ -114,10 +116,14 @@ export const DemoCard = ({
       snippets ? (
         <>
           <Canvas of={of as never} sourceState="none" />
+          {controls ? <Controls of={of as never} /> : null}
           <FrameworkTabs of={of} snippets={snippets} />
         </>
       ) : (
-        <Canvas of={of as never} />
+        <>
+          <Canvas of={of as never} />
+          {controls ? <Controls of={of as never} /> : null}
+        </>
       )
     ) : (
       children
@@ -140,10 +146,20 @@ export const CodeBlock = ({
   code: string;
   language?: SourceLanguage;
 }) => (
-  <div style={{ margin: '0 0 1.25rem' }}>
+  /* data-baps-codeblock is the handle _docs-shell.scss needs to treat the strip
+     and the <Source> below it as one card: it closes the 25px addon-docs puts
+     between them and lifts the source's own Copy button into this header row.
+     A data attribute rather than a class because the inline styles here and the
+     stylesheet there are already split that way. */
+  <div data-baps-codeblock style={{ margin: '0 0 1.25rem' }}>
     {filename ? (
       <div
         style={{
+          display: 'flex',
+          alignItems: 'center',
+          /* Fixed rather than derived from the padding, because the Copy button
+             is absolutely positioned against this same height. */
+          minHeight: '2rem',
           fontFamily: mono,
           fontSize: '0.75rem',
           color: 'var(--baps-docs-muted)',
@@ -151,7 +167,7 @@ export const CodeBlock = ({
           border: '1px solid var(--baps-docs-divider)',
           borderBottom: 'none',
           borderRadius: '0.5rem 0.5rem 0 0',
-          padding: '0.4rem 0.75rem',
+          padding: '0 0.75rem',
         }}
       >
         {filename}

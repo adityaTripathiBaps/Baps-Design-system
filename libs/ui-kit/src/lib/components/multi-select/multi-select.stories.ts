@@ -80,6 +80,12 @@ export const Default: Story = {
           [optionLabel]="optionLabel"
           [placeholder]="placeholder"
           [brand]="brand"
+          [disabled]="disabled"
+          [filter]="filter"
+          [showToggleAll]="showToggleAll"
+          [showClear]="showClear"
+          [display]="display"
+          [size]="size"
           [(ngModel)]="model"
         ></baps-multi-select>
       </div>

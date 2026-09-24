@@ -15,7 +15,9 @@ import { BapsButton } from '../button/button.component';
  * (see tooltip.directive.ts fix). Both are fixed here: a real `baps-button`
  * with visible text, and content wired through the injected Tooltip instance.
  */
-const meta: Meta<BapsTooltip> = {
+type TooltipArgs = BapsTooltip & { tooltipPosition?: 'top' | 'bottom' | 'left' | 'right' };
+
+const meta: Meta<TooltipArgs> = {
   title: 'Components/Atoms/Tooltip',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-overlay-tooltip.
@@ -31,7 +33,12 @@ const meta: Meta<BapsTooltip> = {
     bapsTooltip: { control: 'text' },
     tooltipTitle: { control: 'text' },
     tooltipLinkLabel: { control: 'text' },
+    tooltipPosition: { control: 'select', options: ['top', 'bottom', 'left', 'right'] },
     tooltipStyleClass: { control: 'text' },
+  },
+  args: {
+    bapsTooltip: 'This is a Sampark tooltip',
+    tooltipPosition: 'top',
   },
   parameters: {
     // Design tab — the Figma frame this component implements, node 13197:90046.
@@ -48,7 +55,14 @@ const meta: Meta<BapsTooltip> = {
     props: args,
     template: `
       <div style="padding: 80px; display: flex; justify-content: center;">
-        <baps-button label="Hover me" [bapsTooltip]="tooltipText" [tooltipPosition]="tooltipPosition"></baps-button>
+        <baps-button
+          label="Hover me"
+          [brand]="brand"
+          [bapsTooltip]="bapsTooltip"
+          [tooltipPosition]="tooltipPosition"
+          [tooltipTitle]="tooltipTitle"
+          [tooltipLinkLabel]="tooltipLinkLabel"
+        ></baps-button>
       </div>
     `,
   }),
@@ -56,12 +70,7 @@ const meta: Meta<BapsTooltip> = {
 
 export default meta;
 
-export const Default: StoryObj<BapsTooltip & { tooltipText: string; tooltipPosition: string }> = {
-  args: {
-    tooltipText: 'This is a Sampark tooltip',
-    tooltipPosition: 'top',
-  },
-};
+export const Default: StoryObj<TooltipArgs> = {};
 
 /**
  * Sampark Portal rich tooltip card — title, supporting text and a "Learn
