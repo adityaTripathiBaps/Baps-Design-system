@@ -168,7 +168,10 @@ body.baps-dark {
   --select-option-selected-bg: var(--color-mybky-blue-900, #252f4a);
   --select-option-selected-text: var(--color-mybky-blue-200, #bdc6e4);
   --select-option-selected-hover-bg: var(--color-mybky-blue-800, #384871);
-  --select-option-disabled-text: var(--color-mybky-mono-500, #6f777d);
+  /* mono.450, not the light block's mono.500: #6f777d measures 3.80:1 on the
+     dark panel, which reads as "missing" rather than "unavailable". mono.450
+     keeps a clear step below the muted colour below it while staying legible. */
+  --select-option-disabled-text: var(--color-mybky-mono-450, #8d9ba5);
   --select-option-group-text: var(--color-mybky-mono-400, #b6b6af);
 
   /* Trigger chevron — light on dark */
@@ -183,7 +186,18 @@ body.baps-dark {
 
   /* DatePicker calendar */
   --datepicker-day-hover-bg: var(--color-mybky-mono-800, #2b2f32);
-  --datepicker-muted-text: var(--color-mybky-mono-500, #6f777d);
+  /* mono.400, not the mono.500 the light block uses. The dark block had been
+     carrying the light value unchanged, which put the weekday row and the
+     out-of-month days at 3.80:1 on the dark panel. mono.400 is the brand's
+     dark/text/muted step and measures 8.49:1. */
+  --datepicker-muted-text: var(--color-mybky-mono-400, #b6b6af);
+  /* The selected day is the one filled-primary element in the calendar. Left
+     on the light pair it was white on blue.600 — 4.32:1, just under AA for the
+     small numeral it carries. In dark the accent moves one step lighter and
+     the ink inverts, which is what the presets do for every other filled
+     accent in dark (7.79:1). */
+  --datepicker-day-selected-bg: var(--color-mybky-dark-primary-default, #9fadd9);
+  --datepicker-day-selected-text: var(--color-mybky-dark-text-inverse, #181b1d);
 }
 
 /* ══════════════════════════════════════════════════════════════════════

@@ -80,6 +80,30 @@ baps-spinner.baps-spinner-indeterminate .baps-spinner-svg {
   stroke: var(--color-sampark-primary-80, #b44141);
 }
 
+/* ── Dark ──
+ * The track is the unfilled part of the ring, so it has to be a step OFF the
+ * page, not a near-white one: #f8fafb / #f8f7f7 on a dark page draws a bright
+ * ring with a faint arc on it, which reads as a full loader at 100%. The arc
+ * takes the brand's dark accent, where the light one measures 3.5:1 (MyBKY)
+ * and 2.6:1 (Sampark) against the dark ground.
+ *
+ * After the Sampark block on purpose — same specificity, so order decides. */
+.baps-dark baps-spinner .baps-spinner-track {
+  stroke: var(--color-mybky-dark-surface-hover, #3d4144);
+}
+.baps-dark baps-spinner .baps-spinner-arc {
+  stroke: var(--color-mybky-dark-primary-default, #9fadd9);
+}
+
+.baps-dark :is(baps-spinner.baps-sampark, .baps-ds-sampark baps-spinner) .baps-spinner-track,
+.baps-ds-sampark .baps-dark baps-spinner .baps-spinner-track {
+  stroke: var(--color-sampark-dark-surface-hover, #4a4947);
+}
+.baps-dark :is(baps-spinner.baps-sampark, .baps-ds-sampark baps-spinner) .baps-spinner-arc,
+.baps-ds-sampark .baps-dark baps-spinner .baps-spinner-arc {
+  stroke: var(--color-sampark-dark-primary-default, #d48787);
+}
+
 /* An infinite 1s rotation is the textbook vestibular trigger, so it stops
    outright — the static quarter arc still reads as a busy indicator, and
    role="status" carries the meaning for anyone who cannot see it at all.

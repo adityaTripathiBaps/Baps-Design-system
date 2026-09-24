@@ -1,0 +1,48 @@
+/* Selected-row / selected-option accent bar, dark mode only.
+ *
+ * Why a bar at all. Selection in PrimeNG is a tint of the accent over the
+ * panel. On a light panel that tint has room to be both subtle and legible; on
+ * a near-black one it does not. Measured against the dark panel, Material's
+ * stock 16% tint is 1.35:1, and even the 40% this design system now uses only
+ * reaches 2.34:1 (MyBKY) / 2.07:1 (Sampark). Reaching the 3:1 WCAG 2.2 asks of
+ * a state cue takes roughly a 45% wash, which stops reading as a tint and
+ * starts reading as a fill.
+ *
+ * So the tint stays subtle and the 3:1 is carried by a 3px bar in the accent
+ * itself: 7.79:1 (MyBKY) and 6.17:1 (Sampark) against the panel. It also
+ * survives greyscale printing and colour-blind viewing, which a hue change on
+ * its own does not.
+ *
+ * Dark only. Light mode's tint already clears the threshold, and adding a bar
+ * there would move every visual baseline for no accessibility gain.
+ *
+ * Implementation notes:
+ * - `box-shadow: inset`, not a border or a pseudo-element. A border changes the
+ *   box and shifts every cell; a pseudo-element would collide with the ones the
+ *   Sampark table already uses to draw its tree spine (see _table-sampark.scss).
+ * - The bar's direction is a custom property so RTL flips it. `box-shadow` has
+ *   no logical-property form, so the offset has to be swapped by hand.
+ * - Table rows only. Overlay and inline LIST options already get an accent bar
+ *   from _overlay-list.scss, which draws one on hover, focus and selection in
+ *   both schemes; a second bar here would just paint over it.
+ */
+
+.baps-dark {
+  --baps-selected-bar: inset 3px 0 0 0 var(--p-primary-color);
+}
+
+[dir='rtl'] .baps-dark,
+.baps-dark[dir='rtl'],
+[dir='rtl'].baps-dark {
+  --baps-selected-bar: inset -3px 0 0 0 var(--p-primary-color);
+}
+
+.baps-dark {
+  /* Tables: the bar goes on the row's first cell, because a <tr> is not a
+     reliable box-shadow target across engines. `:first-child` follows the DOM,
+     which is also the visually leading cell in RTL. */
+  .p-datatable-tbody > tr.p-datatable-row-selected > td:first-child,
+  .p-treetable-tbody > tr.p-treetable-row-selected > td:first-child {
+    box-shadow: var(--baps-selected-bar);
+  }
+}

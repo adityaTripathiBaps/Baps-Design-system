@@ -176,6 +176,23 @@ import { Toolbar } from 'primeng/toolbar';
         width: 100%;
       }
     }
+
+    /* ── Dark ──
+       The three colour values above name Sampark's LIGHT chrome directly
+       (#ffffff bar, #e1e0e0 hairline, #151414 title), so in dark the toolbar
+       stayed a white band across the top of a dark page — and a button label
+       inside it measured 1:1 against it, white on white.
+
+       Sampark's own dark tokens, same three roles. Not brand-scoped for the
+       same reason the light rules are not: baps-toolbar is Sampark-only. */
+    .baps-dark baps-toolbar .p-toolbar {
+      background: var(--color-sampark-dark-surface-card, #2c2c2a);
+      border-bottom-color: var(--color-sampark-dark-border-divider, #4a4947);
+    }
+
+    .baps-dark baps-toolbar .page-toolbar-title {
+      color: var(--color-sampark-dark-text-primary, #f8f7f7);
+    }
   `,
 })
 export class BapsToolbar {

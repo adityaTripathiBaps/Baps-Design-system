@@ -87,6 +87,48 @@
   --baps-list-muted-bg: var(--color-sampark-mono-10, #f8f7f7);
 }
 
+/* Dark.
+ *
+ * `--baps-list-text` needs nothing here: it reads the brand alias tier, which
+ * _dark-aliases.scss re-points under `.baps-dark`. The other three are the ones
+ * that cannot follow, because they name a LIGHT step directly — a pale blue or
+ * clay tint for the hover fill, the mid accent for the bar, and a near-white
+ * for the muted row. On a dark panel the first two are light blocks and the
+ * third is brighter than the rows around it.
+ *
+ * The selector chains mirror the light blocks above exactly, including the
+ * portalled-overlay variants: an overlay is appended to `body`, which is where
+ * `.baps-dark` lives, so `.baps-dark .p-select-overlay` is what reaches it.
+ * `.baps-ds-sampark` sits on `<html>`, one level further out, which is why the
+ * Sampark chains read `.baps-ds-sampark .baps-dark …`.
+ */
+.baps-dark,
+.baps-dark .p-select-overlay,
+.baps-dark .p-multiselect-overlay,
+.baps-dark .p-treeselect-overlay,
+.baps-dark .p-tieredmenu-overlay,
+.baps-dark .p-menu-overlay,
+.baps-dark .p-autocomplete-overlay {
+  /* The hover fill is the accent at 16% rather than a fixed pale step: over a
+     near-black panel a tint composites to something readable, a pale step does
+     not. */
+  --baps-list-hover-bg: color-mix(in srgb, var(--color-mybky-dark-primary-default, #9fadd9), transparent 84%);
+  --baps-list-bar: var(--color-mybky-dark-primary-default, #9fadd9);
+  --baps-list-muted-bg: var(--color-mybky-dark-surface-hover, #3d4144);
+}
+
+.baps-ds-sampark .baps-dark,
+.baps-ds-sampark .baps-dark .p-select-overlay,
+.baps-ds-sampark .baps-dark .p-multiselect-overlay,
+.baps-ds-sampark .baps-dark .p-treeselect-overlay,
+.baps-ds-sampark .baps-dark .p-tieredmenu-overlay,
+.baps-ds-sampark .baps-dark .p-menu-overlay,
+.baps-ds-sampark .baps-dark .p-autocomplete-overlay {
+  --baps-list-hover-bg: color-mix(in srgb, var(--color-sampark-dark-primary-default, #d48787), transparent 84%);
+  --baps-list-bar: var(--color-sampark-dark-primary-default, #d48787);
+  --baps-list-muted-bg: var(--color-sampark-dark-surface-hover, #4a4947);
+}
+
 /* The rows. PrimeNG v21 names, which differ from the v17 names the source
    uses (-option not -item, .p-tree-node-content not .p-treenode-content). */
 .p-select-option,
@@ -225,4 +267,23 @@
 .p-tieredmenu-item.baps-menu-item--danger:hover::before,
 .p-contextmenu-item.baps-menu-item--danger:hover::before {
   background: var(--color-mybky-error-100, #c32226);
+}
+
+/* The danger row in dark. `error-surface` is a near-white pink and `error-100`
+   a deep red — on a dark menu that is a light block with dark text, i.e. the
+   inverse of the rows around it. Same relationship, dark: the fill is the error
+   hue at 16%, the ink is the tint step (5.67:1 on that fill). */
+.baps-dark .p-menu-item.baps-menu-item--danger:hover > .p-menu-item-content,
+.baps-dark .p-menu-item.baps-menu-item--danger.p-focus > .p-menu-item-content,
+.baps-dark .p-tieredmenu-item.baps-menu-item--danger:hover > .p-tieredmenu-item-content,
+.baps-dark .p-contextmenu-item.baps-menu-item--danger:hover > .p-contextmenu-item-content {
+  background: color-mix(in srgb, var(--color-mybky-error-80, #e05255), transparent 84%) !important;
+  color: var(--color-mybky-error-tint, #ec9394) !important;
+}
+
+.baps-dark .p-menu-item.baps-menu-item--danger:hover::before,
+.baps-dark .p-menu-item.baps-menu-item--danger.p-focus::before,
+.baps-dark .p-tieredmenu-item.baps-menu-item--danger:hover::before,
+.baps-dark .p-contextmenu-item.baps-menu-item--danger:hover::before {
+  background: var(--color-mybky-error-tint, #ec9394);
 }

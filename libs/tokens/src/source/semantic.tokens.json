@@ -30,7 +30,7 @@
           "primary": { "value": "{color.mybky.mono.50}" },
           "secondary": { "value": "{color.mybky.mono.300}" },
           "muted": { "value": "{color.mybky.mono.400}" },
-          "disabled": { "value": "{color.mybky.mono.500}" },
+          "disabled": { "value": "{color.mybky.mono.450}", "comment": "mono.450, not mono.500: on the dark ground mono.500 measures 3.80:1, which reads as missing rather than unavailable, and it is also the value of dark/border/control - one colour cannot be both the disabled ink and the control boundary. mono.450 gives 5.24:1 and keeps a clear step below dark/text/muted." },
           "inverse": { "value": "{color.mybky.mono.900}" }
         },
         "border": {

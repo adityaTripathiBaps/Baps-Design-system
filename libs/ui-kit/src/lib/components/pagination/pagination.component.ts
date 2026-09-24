@@ -496,6 +496,59 @@ export interface BapsPageEvent {
       background: rgba(255, 255, 255, 0.08);
       color: var(--color-mybky-mono-50, #f8fafb);
     }
+
+    /* The same treatment for the DEFAULT (MyBKY) paginator, which had none.
+       Measured before this block, in dark: the report line was #181b1d on
+       #181b1d — 1:1, literally invisible — page numbers were #2b2f32 at
+       1.28:1, and the jump box was a white card. Every value below is the
+       mono step the light rule uses, read from the other end of the ramp. */
+    .baps-dark baps-paginator .baps-paginator__report,
+    .baps-dark baps-paginator .baps-paginator__jump-label,
+    .baps-dark baps-paginator .baps-paginator__jump-input {
+      color: var(--color-mybky-dark-text-primary, #f8fafb);
+    }
+
+    .baps-dark baps-paginator .baps-paginator__nav,
+    .baps-dark baps-paginator .baps-paginator__page {
+      color: var(--color-mybky-dark-text-secondary, #e4ecf1);
+    }
+
+    .baps-dark baps-paginator .baps-paginator__gap {
+      color: var(--color-mybky-dark-text-muted, #b6b6af);
+    }
+
+    .baps-dark baps-paginator .baps-paginator__nav:hover:not(:disabled),
+    .baps-dark baps-paginator .baps-paginator__page:hover:not(.baps-paginator__page--active) {
+      background: var(--color-mybky-dark-surface-hover, #3d4144);
+      color: var(--color-mybky-dark-text-primary, #f8fafb);
+    }
+
+    .baps-dark baps-paginator .baps-paginator__nav:disabled {
+      color: var(--color-mybky-dark-text-disabled, #6f777d);
+    }
+
+    /* The active page inverts in light — dark ink chip, white number. Inverting
+       the same way in dark would be a near-black chip on a near-black strip, so
+       it takes the raised surface and the accent's dark step instead. */
+    .baps-dark baps-paginator .baps-paginator__page--active {
+      background: var(--color-mybky-dark-surface-hover, #3d4144);
+      color: var(--color-mybky-dark-primary-default, #9fadd9);
+    }
+
+    .baps-dark baps-paginator .baps-paginator__jump {
+      background: var(--color-mybky-dark-surface-card, #2b2f32);
+      border-color: var(--color-mybky-dark-border-divider, #3d4144);
+    }
+
+    .baps-dark baps-paginator .baps-paginator__jump-label {
+      border-inline-end-color: var(--color-mybky-dark-border-divider, #3d4144);
+    }
+
+    .baps-dark baps-paginator :is(.baps-paginator__nav, .baps-paginator__page):focus-visible,
+    .baps-dark baps-paginator .baps-paginator__jump:focus-within {
+      outline-color: var(--color-mybky-dark-primary-default, #9fadd9);
+      border-color: var(--color-mybky-dark-primary-default, #9fadd9);
+    }
   `,
   host: {
     '[class.baps-sampark]': "brand === 'sampark'",

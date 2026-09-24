@@ -1,6 +1,11 @@
 /* Module loads (sass @use) — CSS is emitted once per module, in this order. */
 @use '../../../libs/ui-kit/src/lib/styles/layout/fonts';
 @use '../../../libs/ui-kit/src/lib/styles/layout/common';
+/* Dark re-points for the brand alias tier (text/surface/border). Early on
+   purpose: it is foundational, and any partial that wants a different dark
+   value declares it later and wins. Must come after tokens.css, which
+   preview.ts imports before this file. */
+@use '../../../libs/ui-kit/src/lib/styles/components/dark/dark-aliases';
 @use '../../../libs/ui-kit/src/lib/styles/components/input/input';
 /* Checkbox/radio border geometry for the ones PrimeNG renders itself (overlay
    options, table select-all, tree nodes) — see the partial for why it cannot
@@ -78,6 +83,10 @@
    select/listbox/tree skins above, the same way the source's _list_hover.scss
    overrides _dropdown.scss and _multiselect.scss. */
 @use '../../../libs/ui-kit/src/lib/styles/components/overlay-list/overlay-list';
+/* Dark-mode selection bar for list options and table rows. After overlay-list
+   on purpose: it adds the state cue on top of that file's hover skin, and the
+   two must not be resolved the other way round. */
+@use '../../../libs/ui-kit/src/lib/styles/components/selection/selection-dark';
 /* Storybook docs chrome. Last of the @use block on purpose: several of its
    rules intentionally outrank the component skins above on source order. */
 @use './docs-shell';

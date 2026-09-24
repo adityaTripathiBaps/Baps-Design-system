@@ -179,3 +179,56 @@
   cursor: not-allowed !important;
   pointer-events: none !important;
 }
+
+/* ── Dark ────────────────────────────────────────────────────────────────
+   Every fill above is a PALE tint with saturated ink — success #e8fcf0 with
+   #089152 on it. Measured on a dark page those chips were the brightest
+   things on screen (0.93 luminance) and the neutral one put #f8fafb label
+   text on #f8f7f7, i.e. 1.02:1.
+
+   Nothing below re-states a rule: the severity rules already read these
+   variables, so re-pointing the variables is enough and the `!important`
+   they carry keeps working for us instead of against us.
+
+   The inversion is the one the rest of the dark work uses: the fill becomes
+   the same hue at 16%, and the ink moves UP to the brand's 40 step, which
+   clears 4.5:1 on that fill (Info 5.92, Error 7.12, Success 7.52, Warn 7.64).
+   Neutral chips take a white wash rather than a hue, because "no severity"
+   must not read as a colour.
+   ──────────────────────────────────────────────────────────────────────── */
+.baps-dark {
+  --tag-sampark-grey-background: rgba(255, 255, 255, 0.08);
+  --tag-sampark-grey-text: var(--color-sampark-dark-text-secondary, #e6e6e5);
+  --tag-sampark-grey-border: var(--color-sampark-dark-border-divider, #4a4947);
+
+  /* Hover plate behind the trailing glyph — mono-20 stays pale in dark. */
+  --tag-sampark-action-hover-background: rgba(255, 255, 255, 0.08);
+
+  --tag-sampark-secondary-background: var(--color-sampark-dark-surface-hover, #4a4947);
+  --tag-sampark-secondary-text: var(--color-sampark-dark-text-primary, #f8f7f7);
+  --tag-sampark-secondary-border: var(--color-sampark-dark-border-control, #94928f);
+
+  --tag-sampark-primary-background: color-mix(in srgb, var(--color-sampark-dark-primary-default, #d48787), transparent 84%);
+  --tag-sampark-primary-text: var(--color-sampark-dark-primary-hover, #e9c3c3);
+  --tag-sampark-primary-border: color-mix(in srgb, var(--color-sampark-dark-primary-default, #d48787), transparent 64%);
+
+  --tag-sampark-info-background: color-mix(in srgb, var(--color-sampark-info-60, #3889fa), transparent 84%);
+  --tag-sampark-info-text: var(--color-sampark-info-40, #83b5fc);
+  --tag-sampark-info-border: color-mix(in srgb, var(--color-sampark-info-60, #3889fa), transparent 64%);
+
+  --tag-sampark-warning-background: color-mix(in srgb, var(--color-sampark-warning-60, #faab38), transparent 84%);
+  --tag-sampark-warning-text: var(--color-sampark-warning-40, #fcca83);
+  --tag-sampark-warning-border: color-mix(in srgb, var(--color-sampark-warning-60, #faab38), transparent 64%);
+
+  --tag-sampark-error-background: color-mix(in srgb, var(--color-sampark-error-80, #ea151a), transparent 84%);
+  --tag-sampark-error-text: var(--color-sampark-error-40, #f9b9ba);
+  --tag-sampark-error-border: color-mix(in srgb, var(--color-sampark-error-80, #ea151a), transparent 64%);
+
+  --tag-sampark-success-background: color-mix(in srgb, var(--color-sampark-success-60, #17b56c), transparent 84%);
+  --tag-sampark-success-text: var(--color-sampark-success-40, #82e3af);
+  --tag-sampark-success-border: color-mix(in srgb, var(--color-sampark-success-60, #17b56c), transparent 64%);
+
+  --tag-sampark-disabled-background: rgba(255, 255, 255, 0.04);
+  --tag-sampark-disabled-text: var(--color-sampark-dark-text-disabled, #94928f);
+  --tag-sampark-disabled-border: var(--color-sampark-dark-border-divider, #4a4947);
+}

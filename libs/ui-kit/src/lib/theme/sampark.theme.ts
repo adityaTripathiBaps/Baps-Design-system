@@ -4,6 +4,7 @@ import Material from '@primeuix/themes/material';
 // same AOT re-export elision issue documented in baps.theme.ts.
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import * as tokens from '@org/tokens/generated/tokens';
+import { darkColorScheme, darkMessageSeverities, darkSharedComponents } from './dark.scheme';
 
 /**
  * Sampark button token block. Values are the Style Dictionary
@@ -101,9 +102,36 @@ export const SAMPARK_BUTTON_TOKENS = {
           borderColor: 'transparent',
           hoverBorderColor: 'transparent',
           activeBorderColor: 'transparent',
-          color: tokens.ButtonSamparkPrimaryText,
-          hoverColor: tokens.ButtonSamparkPrimaryText,
-          activeColor: tokens.ButtonSamparkPrimaryText,
+          // NOT ButtonSamparkPrimaryText (#ffffff) as in light. In dark the
+          // fill is the LIGHTER maroon step (`primary.400`, #d48787) and white
+          // on it measures 2.76:1 — a label you have to squint at. The brand's
+          // dark inverse ink gives 6.17:1 on the same fill, and 10.58:1 on the
+          // hover step, which is what "contrast colour flips in dark" means in
+          // PrimeNG's own presets too.
+          color: tokens.ColorSamparkDarkTextInverse,
+          hoverColor: tokens.ColorSamparkDarkTextInverse,
+          activeColor: tokens.ColorSamparkDarkTextInverse,
+        },
+        // Sampark declared no danger variant at all, so a destructive button
+        // fell through to whatever was ambient: Material's dark red.400 with
+        // red.950 ink (3.95:1) on a Sampark page, and MyBKY's red GRADIENT when
+        // a `brand="sampark"` button sits on a MyBKY one — the delete
+        // confirmation pattern does exactly that, and the ink then had to work
+        // against two different reds at once.
+        //
+        // Stating the fill alongside the ink is what makes it decidable: the
+        // brand's own error red with white on it, 4.54:1 at rest and 5.88:1 on
+        // hover, and no dependence on what the page underneath happens to be.
+        danger: {
+          background: tokens.ColorSamparkError80,
+          hoverBackground: tokens.ColorSamparkError100,
+          activeBackground: tokens.ColorSamparkError100,
+          borderColor: 'transparent',
+          hoverBorderColor: 'transparent',
+          activeBorderColor: 'transparent',
+          color: tokens.ColorSamparkMono0,
+          hoverColor: tokens.ColorSamparkMono0,
+          activeColor: tokens.ColorSamparkMono0,
         },
         secondary: {
           background: tokens.ColorMybkyMono800,
@@ -120,6 +148,7 @@ export const SAMPARK_BUTTON_TOKENS = {
       outlined: {
         secondary: {
           hoverBackground: tokens.ColorMybkyMono800,
+          activeBackground: tokens.ColorMybkyMono800,
           borderColor: tokens.ColorMybkyMono600,
           color: tokens.ColorMybkyMono50,
         },
@@ -129,6 +158,11 @@ export const SAMPARK_BUTTON_TOKENS = {
           hoverBackground: 'rgba(255, 255, 255, 0.08)',
           activeBackground: 'rgba(255, 255, 255, 0.12)',
           color: '{primary.color}',
+        },
+        secondary: {
+          hoverBackground: 'rgba(255, 255, 255, 0.08)',
+          activeBackground: 'rgba(255, 255, 255, 0.12)',
+          color: tokens.ColorMybkyMono50,
         },
       },
       link: {
@@ -541,10 +575,40 @@ export const Sampark = definePreset(Material, {
           placeholderColor: tokens.ColorSamparkTextPlaceholder,
         },
       },
+      // Unlike MyBKY, `samparkMono` collapses at the dark end — 800/900/950 all
+      // resolve to Mono100 (#151414) — so it cannot serve as the dark ramp. The
+      // steps Material actually reads in dark are taken from the brand's own
+      // `sampark/dark/*` tokens instead, in the same slots MyBKY's mono ramp
+      // happens to occupy. See dark.scheme.ts.
+      dark: darkColorScheme({
+        0: tokens.ColorSamparkMono0,
+        50: tokens.ColorSamparkDarkTextPrimary,
+        100: tokens.ColorSamparkMono20,
+        200: tokens.ColorSamparkMonoBorders,
+        300: tokens.ColorSamparkMono40,
+        400: tokens.ColorSamparkDarkTextMuted,
+        500: tokens.ColorSamparkDarkBorderControl,
+        600: tokens.ColorSamparkMono80,
+        700: tokens.ColorSamparkDarkSurfaceHover,
+        800: tokens.ColorSamparkDarkSurfaceCard,
+        900: tokens.ColorSamparkDarkSurfaceGround,
+        950: tokens.ColorSamparkMono100,
+      }),
     },
   },
 
   components: {
+    ...darkSharedComponents,
+    // Dark `p-message` severities in Sampark hues — see dark.scheme.ts. The
+    // dark datatable block this preset already declares further down covers
+    // what `darkComponents` does for MyBKY, so that spread is not repeated.
+    ...darkMessageSeverities({
+      info: { core: tokens.ColorSamparkInfo60, tint: tokens.ColorSamparkInfo40 },
+      success: { core: tokens.ColorSamparkSuccess60, tint: tokens.ColorSamparkSuccess40 },
+      warn: { core: tokens.ColorSamparkWarning60, tint: tokens.ColorSamparkWarning40 },
+      error: { core: tokens.ColorSamparkError80, tint: tokens.ColorSamparkError40 },
+    }),
+
     button: SAMPARK_BUTTON_TOKENS,
 
     badge: SAMPARK_BADGE_TOKENS,
@@ -582,7 +646,10 @@ export const Sampark = definePreset(Material, {
     slider: SAMPARK_SLIDER_TOKENS,
 
     // ProgressBar — 4px radius, maroon fill.
-    progressbar: SAMPARK_PROGRESSBAR_TOKENS,
+    // Spread order matters: these keys are declared LATER than
+    // `...darkSharedComponents` above, so the shared dark colorScheme has to be
+    // carried in explicitly or it is silently dropped for this brand.
+    progressbar: { ...darkSharedComponents.progressbar, ...SAMPARK_PROGRESSBAR_TOKENS },
 
     // Paginator — 4px radius, maroon active page.
     paginator: {
@@ -595,6 +662,7 @@ export const Sampark = definePreset(Material, {
 
     // Tooltip — dark bg, white text, 4px radius.
     tooltip: {
+      ...darkSharedComponents.tooltip,
       root: {
         borderRadius: tokens.RadiusSamparkDefault,
       },

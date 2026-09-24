@@ -61,6 +61,37 @@ baps-table {
   --baps-table-cell-secondary-wrap: normal;
 }
 
+/* DARK — the variables that name a light step directly, for both brands.
+ *
+ * AFTER the Sampark block on purpose: `.baps-dark baps-table` and
+ * `.baps-ds-sampark baps-table` have the same specificity, so whichever comes
+ * last wins, and a dark table has to beat a light brand re-point.
+ *
+ * `--baps-table-cell-color` and `--baps-table-cell-secondary` are absent here:
+ * they read the brand alias tier, which _dark-aliases.scss re-points under
+ * `.baps-dark`, so they follow without being restated.
+ *
+ * Rows take the GROUND and not the card, matching what the preset does to
+ * `datatable.row.background` in dark — the header is the raised surface, and a
+ * table whose rows are also raised has nothing left to separate the two.
+ */
+.baps-dark baps-table {
+  --baps-table-row-bg: var(--color-mybky-dark-surface-ground, #181b1d);
+  --baps-table-row-hover: var(--color-mybky-dark-surface-hover, #3d4144);
+  /* The error row keeps its meaning by hue, not by being pale: 12% of the error
+     colour over the dark ground, where #fff5f5 would have been a white band. */
+  --baps-table-row-error: color-mix(in srgb, var(--color-mybky-error-80, #e05255), transparent 88%);
+  --baps-table-border: var(--color-mybky-dark-border-divider, #3d4144);
+}
+
+.baps-dark :is(baps-table.baps-sampark, .baps-ds-sampark baps-table),
+.baps-ds-sampark .baps-dark baps-table {
+  --baps-table-row-bg: var(--color-sampark-dark-surface-ground, #1d1c1b);
+  --baps-table-row-hover: var(--color-sampark-dark-surface-hover, #4a4947);
+  --baps-table-row-error: color-mix(in srgb, var(--color-sampark-error-80, #ea151a), transparent 88%);
+  --baps-table-border: var(--color-sampark-dark-border-divider, #4a4947);
+}
+
 /* Header. Both selectors are needed: PrimeNG only puts its own cell class on
    cells it generates from [columns], and a forwarded header template is the
    consumer's raw <th> with no class at all — the same gap that left

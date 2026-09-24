@@ -8,6 +8,7 @@ import Material from '@primeuix/themes/material';
 // directly sidesteps it. Revisit when auditing the token pipeline in Phase A.
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import * as tokens from '@org/tokens/generated/tokens';
+import { darkColorScheme, darkComponents, darkMessageSeverities } from './dark.scheme';
 
 /**
  * MyBKY (events-ui) live preset — PrimeNG v21 preset generated from the
@@ -106,10 +107,40 @@ export const MyBky = definePreset(Material, {
           placeholderColor: '{bkymsMono.500}',
         },
       },
+      // The mono ramp IS the dark palette: 900 is `dark/surface/ground`, 800
+      // `dark/surface/card`, 700 `dark/surface/hover` and `dark/border/divider`,
+      // 500 `dark/border/control`, 400 `dark/text/muted`. Handing it to
+      // `darkColorScheme` swaps Material's zinc for the brand's own greys
+      // everywhere at once — see dark.scheme.ts for why that is one lever.
+      dark: darkColorScheme({
+        0: '{bkymsMono.0}',
+        50: '{bkymsMono.50}',
+        100: '{bkymsMono.100}',
+        200: '{bkymsMono.200}',
+        300: '{bkymsMono.300}',
+        400: '{bkymsMono.400}',
+        500: '{bkymsMono.500}',
+        600: '{bkymsMono.600}',
+        700: '{bkymsMono.700}',
+        800: '{bkymsMono.800}',
+        900: '{bkymsMono.900}',
+        950: '{bkymsMono.950}',
+      }),
     },
   },
 
   components: {
+    // Dark-only component fixes no semantic token reaches (table header tint).
+    // Sampark declares its own dark datatable block further down its preset, so
+    // this is spread into MyBKY only.
+    ...darkComponents,
+    ...darkMessageSeverities({
+      info: { core: tokens.ColorMybkyInfo60, tint: tokens.ColorMybkyInfoTint },
+      success: { core: tokens.ColorMybkySuccess600, tint: tokens.ColorMybkySuccessTint },
+      warn: { core: tokens.ColorMybkyWarning80, tint: tokens.ColorMybkyWarningTint },
+      error: { core: tokens.ColorMybkyError80, tint: tokens.ColorMybkyErrorTint },
+    }),
+
     button: {
       root: {
         gap: tokens.ButtonMybkyGap,
@@ -271,6 +302,10 @@ export const MyBky = definePreset(Material, {
     // no severity concept for this component, so there is no token to carry
     // them — tokens are per-component, not per-variant.
     progressbar: {
+      // Spread first, own keys after: this block is declared LATER in the same
+      // object literal than `...darkComponents` above, so without carrying the
+      // shared dark colorScheme in explicitly it would silently drop it.
+      ...darkComponents.progressbar,
       root: {
         borderRadius: tokens.RadiusMybkyPill,
         height: '0.5rem',
@@ -328,6 +363,40 @@ export const MyBky = definePreset(Material, {
           warn: { background: tokens.TagMybkyWarningBackground, color: tokens.TagMybkyWarningText },
           danger: { background: tokens.TagMybkyErrorBackground, color: tokens.TagMybkyErrorText },
           contrast: { background: tokens.TagMybkyPrimaryBackground, color: tokens.TagMybkyPrimaryText },
+        },
+        // Dark. Left to merge, Material paints tags as SOLID 400-level fills
+        // with near-black ink, and `contrast` as a pure white chip — three
+        // different chip languages on one page next to the pale-tint ones this
+        // brand uses everywhere else.
+        //
+        // Same relationship as light, read for a dark ground: a 16% wash of the
+        // severity hue, ink on the brand's own tint step. Ratios on their own
+        // fill: info 6.14, danger 5.67, success 8.24, warn 7.52. Neutral chips
+        // take a white wash instead of a hue — "no severity" must not read as a
+        // colour.
+        dark: {
+          primary: { background: 'rgba(255, 255, 255, 0.08)', color: tokens.ColorMybkyDarkTextSecondary },
+          secondary: { background: tokens.ColorMybkyDarkSurfaceHover, color: tokens.ColorMybkyDarkTextPrimary },
+          success: {
+            background: `color-mix(in srgb, ${tokens.ColorMybkySuccess400}, transparent 84%)`,
+            color: tokens.ColorMybkySuccessTint,
+          },
+          info: {
+            background: `color-mix(in srgb, ${tokens.ColorMybkyInfo60}, transparent 84%)`,
+            color: tokens.ColorMybkyInfoTint,
+          },
+          warn: {
+            background: `color-mix(in srgb, ${tokens.ColorMybkyWarning60}, transparent 84%)`,
+            color: tokens.ColorMybkyWarningTint,
+          },
+          danger: {
+            background: `color-mix(in srgb, ${tokens.ColorMybkyError80}, transparent 84%)`,
+            color: tokens.ColorMybkyErrorTint,
+          },
+          contrast: {
+            background: `color-mix(in srgb, ${tokens.ColorMybkyDarkPrimaryDefault}, transparent 84%)`,
+            color: tokens.ColorMybkyDarkPrimaryHover,
+          },
         },
       },
     },

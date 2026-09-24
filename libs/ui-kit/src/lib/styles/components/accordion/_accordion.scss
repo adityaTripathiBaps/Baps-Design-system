@@ -301,9 +301,22 @@ p-accordion .baps-accordion-slider {
 /* ── Dark mode (PrimeNG darkModeSelector). Surfaces follow the preset's own
    content tokens so a panel sits on the dark canvas correctly. ── */
 .baps-dark p-accordion {
-  --baps-accordion-header-bg: var(--p-content-background, #1b1b1b);
+  /* One step above the card, like mono-50 over white in light. The content
+     background here was the card's own fill, so the header plate vanished. */
+  --baps-accordion-header-bg: var(--color-mybky-dark-surface-hover, #3d4144);
   --baps-accordion-text: var(--p-text-color, #e6e6e6);
   --baps-accordion-border: var(--p-content-border-color, rgba(255, 255, 255, 0.12));
+  /* The count badge was left out of this block and kept its light fill —
+     blue.50 (#eef0f8) measured 0.87 luminance on a 0.01 page, a white chip in
+     the header. The accent at 16% is the same "tinted slot" idea the light
+     value expresses, read for a dark ground; the numeral inherits
+     --baps-accordion-text above, so it is light on it. */
+  --baps-accordion-count-bg: color-mix(in srgb, var(--p-primary-color), transparent 84%);
+}
+
+.baps-dark :is(p-accordion.baps-sampark, .baps-ds-sampark p-accordion),
+.baps-ds-sampark .baps-dark p-accordion {
+  --baps-accordion-header-bg: var(--color-sampark-dark-surface-hover, #4a4947);
 }
 
 /* Header clear control (baps-accordion-panel [clearable]).

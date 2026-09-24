@@ -1,0 +1,105 @@
+/* The brand alias tier, re-pointed for dark. One file instead of fourteen.
+ *
+ * The problem this solves. Fourteen partials — select-sampark, tag, tag-sampark,
+ * table, badge-sampark, overlay-list, indicator, file-upload, tooltip-sampark,
+ * switch-sampark, spinner, button, table-surface-sampark, checkbox — declare
+ * their local custom properties from the brand alias tier:
+ *
+ *     --baps-list-text: var(--color-mybky-text-primary, #181b1d);
+ *
+ * tokens.css declares that alias once, at `:root`, from the LIGHT ramp
+ * (`--color-mybky-mono-900`). It has no `.baps-dark` counterpart — the dark
+ * values live under separate names (`--color-mybky-dark-text-primary`). So in
+ * dark mode those fourteen partials kept painting near-black text on the panels
+ * PrimeNG had already turned near-black.
+ *
+ * Re-pointing the alias under `.baps-dark` fixes all of them at once, because a
+ * custom property that is declared as `var(--other)` re-resolves per element:
+ * an overlay portalled into `body.baps-dark` computes the dark value with no
+ * edit to the partial that declared it.
+ *
+ * Load order matters. This must come after tokens.css (preview.ts imports it
+ * first), since `.baps-dark` and `:root` have identical specificity and the
+ * later rule wins.
+ *
+ * Two things are deliberately NOT flipped:
+ *
+ * - `text-inverse`. It means "ink that sits on a filled accent", not "ink on
+ *   the page". The accent keeps its own contrast in dark, so flipping the
+ *   inverse would put dark ink on the brand blue instead of white.
+ * - `primary-*`. Flipping the accent is a per-component judgement — a pale
+ *   accent that reads well as text is the wrong fill behind white label text —
+ *   and the PrimeNG presets already carry the dark accent through
+ *   `semantic.colorScheme.dark`. Partials that tint a hover with the accent
+ *   still need their own `.baps-dark` block.
+ */
+
+.baps-dark {
+  /* MyBKY ------------------------------------------------------------- */
+  --color-mybky-text-primary: var(--color-mybky-dark-text-primary);
+  --color-mybky-text-secondary: var(--color-mybky-dark-text-secondary);
+  --color-mybky-text-muted: var(--color-mybky-dark-text-muted);
+  --color-mybky-text-disabled: var(--color-mybky-dark-text-disabled);
+  --color-mybky-surface-card: var(--color-mybky-dark-surface-card);
+  --color-mybky-surface-ground: var(--color-mybky-dark-surface-ground);
+  /* `border-default` is the divider step, not the control step: it is what the
+     table, card and panel partials draw gridlines and hairlines with. Controls
+     that need the 3:1 boundary read `--color-mybky-dark-border-control`
+     directly, the way the PrimeNG presets do. */
+  --color-mybky-border-default: var(--color-mybky-dark-border-divider);
+
+  /* Sampark ----------------------------------------------------------- */
+  --color-sampark-text-primary: var(--color-sampark-dark-text-primary);
+  --color-sampark-text-secondary: var(--color-sampark-dark-text-secondary);
+  --color-sampark-text-muted: var(--color-sampark-dark-text-muted);
+  --color-sampark-text-disabled: var(--color-sampark-dark-text-disabled);
+  --color-sampark-surface-card: var(--color-sampark-dark-surface-card);
+  --color-sampark-surface-ground: var(--color-sampark-dark-surface-ground);
+  --color-sampark-surface-disabled: var(--color-sampark-dark-surface-hover);
+  --color-sampark-border-default: var(--color-sampark-dark-border-divider);
+
+  /* Native form controls & text caret (F11 / F12) */
+  accent-color: var(--p-primary-color);
+  caret-color: var(--p-primary-color);
+}
+
+.baps-dark ::selection {
+  background: color-mix(in srgb, var(--p-primary-color), transparent 70%);
+  color: var(--p-text-color);
+}
+
+
+/* Sampark's BUTTON alias tier.
+ *
+ * These are a tier below the colour aliases above: tokens.css declares them as
+ * `var(--color-sampark-primary-NN)`, so they follow the accent picker but not
+ * the colour scheme. Everything that paints a Sampark action reads them —
+ * baps-button's partial, baps-split-button, the disabled state — and in dark
+ * they kept the LIGHT maroon: a split button measured white on #c96868
+ * (3.71:1) and a disabled button drew a #f3eaea pill on the dark page.
+ *
+ * Declared on .baps-dark rather than :root on purpose. The Theme builder writes
+ * some of these as INLINE properties on <html> when an accent is picked, and an
+ * inline declaration outranks any rule; a declaration on the <body> copy of
+ * .baps-dark shadows it for everything inside, which is the whole page.
+ */
+.baps-dark {
+  --button-sampark-primary-default: var(--color-sampark-dark-primary-default, #d48787);
+  --button-sampark-primary-hover: var(--color-sampark-dark-primary-hover, #e9c3c3);
+  --button-sampark-primary-active: var(--color-sampark-dark-primary-hover, #e9c3c3);
+  /* The fill is now the LIGHT maroon step, so its ink inverts — 6.17:1, where
+     white on it was 2.76:1. Matches the preset's own dark button block. */
+  --button-sampark-primary-text: var(--color-sampark-dark-text-inverse, #1d1c1b);
+
+  --button-sampark-primary-ghost-text: var(--color-sampark-dark-primary-default, #d48787);
+  --button-sampark-primary-ghost-hover: rgba(255, 255, 255, 0.08);
+  --button-sampark-primary-ghost-default: transparent;
+  --button-sampark-link-text: var(--color-sampark-dark-primary-default, #d48787);
+
+  --button-sampark-disabled-background: rgba(255, 255, 255, 0.06);
+  --button-sampark-disabled-border: var(--color-sampark-dark-border-divider, #4a4947);
+  --button-sampark-disabled-text: var(--color-sampark-dark-text-disabled, #94928f);
+
+  --button-sampark-secondary-default: var(--color-sampark-dark-surface-card, #2c2c2a);
+  --button-sampark-secondary-border: var(--color-sampark-dark-border-control, #94928f);
+}

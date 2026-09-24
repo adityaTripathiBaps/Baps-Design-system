@@ -124,3 +124,13 @@ baps-indicator.baps-indicator--disabled {
 baps-indicator.baps-indicator--ring {
   border: 1.5px solid var(--color-sampark-mono-0, #ffffff);
 }
+
+/* The ring is a cut-out, not a white outline: its job is to look like the
+   surface the marker sits on, so the marker reads as punched out of the avatar
+   rather than ringed in white. In dark that surface is the raised card, and a
+   white ring there is the brightest thing on the screen.
+   The saturated fills above are left alone — they carry the same meaning on
+   either ground. */
+.baps-dark baps-indicator.baps-indicator--ring {
+  border-color: var(--color-sampark-dark-surface-card, #2c2c2a);
+}

@@ -693,3 +693,43 @@
     color: var(--color-sampark-text-primary, #151414);
   }
 }
+
+/* ── Dark ────────────────────────────────────────────────────────────────
+   The Sampark scope re-points the select and datepicker variable set to LIGHT
+   values, and it loads after the base file's own dark block, so it was
+   overwriting that block's dark values with light ones. Three of them were
+   visibly wrong on a dark page: a multiselect chip drew #f3f2f2 with #f8f7f7
+   label text on it (1.04:1 — the label was invisible), and the selected day
+   kept white on the light maroon at 3.71:1.
+
+   Only the values that name a light step are restated. The chain mirrors the
+   light block exactly, with `.baps-dark` in front, because an overlay is
+   portalled to <body> where that class lives.
+   ──────────────────────────────────────────────────────────────────────── */
+.baps-dark
+  :is(
+    .baps-ds-sampark,
+    baps-select.baps-sampark,
+    baps-multi-select.baps-sampark,
+    baps-tree-select.baps-sampark,
+    baps-datepicker.baps-sampark
+  ),
+.baps-ds-sampark.baps-dark,
+.baps-dark.baps-ds-sampark {
+  --select-overlay-bg: var(--color-sampark-dark-surface-card, #2c2c2a);
+  --select-filter-bg: var(--color-sampark-dark-surface-hover, #4a4947);
+
+  --select-chip-bg: var(--color-sampark-dark-surface-hover, #4a4947);
+  --select-chip-text: var(--color-sampark-dark-text-primary, #f8f7f7);
+  --select-chip-border: var(--color-sampark-dark-border-divider, #4a4947);
+  --select-chip-border-hover: var(--color-sampark-dark-border-control, #94928f);
+  --select-chip-remove-color: var(--color-sampark-dark-text-muted, #b7b6b3);
+
+  --select-trigger-icon: var(--color-sampark-dark-text-secondary, #e6e6e5);
+
+  /* The one filled-accent cell in the calendar: the lighter maroon with the
+     brand's dark inverse ink, the same swap the dark button primary makes. */
+  --datepicker-day-hover-bg: var(--color-sampark-dark-surface-hover, #4a4947);
+  --datepicker-day-selected-bg: var(--color-sampark-dark-primary-default, #d48787);
+  --datepicker-day-selected-text: var(--color-sampark-dark-text-inverse, #1d1c1b);
+}

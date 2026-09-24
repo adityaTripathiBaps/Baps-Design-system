@@ -334,7 +334,23 @@ import { BapsAvatar } from '../avatar/avatar.component';
       --menu-item-text: var(--color-mybky-mono-50, #f8fafb);
       --menu-item-subtitle: var(--color-mybky-mono-400, #b6b6af);
       --menu-item-text-disabled: var(--color-mybky-mono-500, #6f777d);
-      --menu-item-control-border: var(--color-mybky-mono-600, #55595d);
+      --menu-item-control-border: var(--color-mybky-dark-border-control, #6f777d);
+      /* The danger row kept the light error red: #e05255 measures 3.54:1 on the
+         raised surface it sits on. The tint step is the dark counterpart the
+         messages, tags and avatars all use. */
+      --menu-item-text-danger: var(--color-mybky-error-tint, #ec9394);
+    }
+
+    /* This component's base block is authored in Sampark's palette, so a
+       Sampark-scoped row kept light ink in dark — title and subtitle both at
+       3.80:1 on the dark ground. */
+    .baps-dark :is(baps-menu-item.baps-sampark, .baps-ds-sampark baps-menu-item) {
+      --menu-item-bg-selected: var(--color-sampark-dark-surface-card, #2c2c2a);
+      --menu-item-text: var(--color-sampark-dark-text-primary, #f8f7f7);
+      --menu-item-subtitle: var(--color-sampark-dark-text-muted, #b7b6b3);
+      --menu-item-text-disabled: var(--color-sampark-dark-text-disabled, #94928f);
+      --menu-item-control-border: var(--color-sampark-dark-border-control, #94928f);
+      --menu-item-text-danger: var(--color-sampark-error-40, #f9b9ba);
     }
   `,
   host: {

@@ -271,9 +271,24 @@ const SELECTBUTTON_TOKENS = { root: { borderRadius: '4px' } };
 
     /* ── Dark mode ── */
     .baps-dark baps-segmented {
-      --baps-seg-surface: var(--color-mybky-mono-800, #2b2f32);
-      --baps-seg-border: var(--color-mybky-mono-600, #565652);
-      --baps-seg-text: var(--color-mybky-mono-50, #f8fafb);
+      --baps-seg-surface: var(--color-mybky-dark-surface-card, #2b2f32);
+      --baps-seg-border: var(--color-mybky-dark-border-divider, #3d4144);
+      --baps-seg-text: var(--color-mybky-dark-text-primary, #f8fafb);
+      /* The selected pill was left out and kept blue.50 — a pale block with
+         the light accent on it, 3.79:1. Accent one step lighter, tint as a 16%
+         wash of it, same pairing the rest of dark mode uses. */
+      --baps-seg-accent: var(--color-mybky-dark-primary-default, #9fadd9);
+      --baps-seg-accent-tint: color-mix(in srgb, var(--color-mybky-dark-primary-default, #9fadd9), transparent 84%);
+      --baps-seg-text-disabled: var(--color-mybky-dark-text-disabled, #8d9ba5);
+    }
+
+    .baps-dark :is(baps-segmented.baps-sampark, .baps-ds-sampark baps-segmented) {
+      --baps-seg-surface: var(--color-sampark-dark-surface-card, #2c2c2a);
+      --baps-seg-border: var(--color-sampark-dark-border-divider, #4a4947);
+      --baps-seg-text: var(--color-sampark-dark-text-primary, #f8f7f7);
+      --baps-seg-accent: var(--color-sampark-dark-primary-default, #d48787);
+      --baps-seg-accent-tint: color-mix(in srgb, var(--color-sampark-dark-primary-default, #d48787), transparent 84%);
+      --baps-seg-text-disabled: var(--color-sampark-dark-text-disabled, #94928f);
     }
   `,
   providers: [
