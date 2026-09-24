@@ -298,15 +298,60 @@ const showAwaitingPaletteNotice = (label: string | undefined): void => {
  */
 
 
-const withDesignSystem: Decorator = (storyFn, context) => {
-  const selected = String(context.globals['designSystem'] ?? 'mybky');
+/**
+ * The document-level half of the design-system switch: brand class, comparison
+ * flag, direction, and the accent's inline ramp on <html>.
+ *
+ * Split out of the decorator because a decorator only runs when a STORY
+ * renders. A docs page with no canvas on it — Foundations/Design Tokens,
+ * Spacing, Shadows — never ran it, so the toolbar did nothing there: measured,
+ * body class and `--color-sampark-primary-60` both unchanged after a switch.
+ * The channel listener below runs it for those pages too; the decorator still
+ * calls it for every story, so nothing about story rendering changed.
+ */
+const applyDocumentTheme = (globals: Record<string, unknown>) => {
+  const selected = String(globals['designSystem'] ?? 'mybky');
   // A scaffolded brand falls back to the MyBKY base and announces itself; it
   // never borrows another brand's skin. Anything unrecognised lands here too,
   // which is the right default for a stale URL carrying a removed brand.
   const awaiting = AWAITING_PALETTE[selected];
   showAwaitingPaletteNotice(awaiting);
   const ds: keyof typeof DS_PRESETS = selected === 'sampark' ? 'sampark' : 'mybky';
-  const accent = (context.globals['accent'] as string) ?? 'brand';
+  const accent = (globals['accent'] as string) ?? 'brand';
+  if (typeof document !== 'undefined') {
+    document.body.classList.toggle('baps-ds-sampark', ds === 'sampark');
+    // Also on <html>. preview-head.html adds it there from the URL so the first
+    // painted frame is already the right brand; without this line a LIVE switch
+    // (which re-renders without reloading the iframe) would leave that initial
+    // class behind and the two elements would disagree. The docs-page brand CSS
+    // keys off the class as an ancestor, so a stale one on <html> would show the
+    // wrong brand's prose.
+    document.documentElement.classList.toggle('baps-ds-sampark', ds === 'sampark');
+    // Comparison blocks on docs pages read this, the same way the sidebar
+    // filter reads the `comparison` global — see BrandOnly in .storybook/blocks.
+    document.body.dataset['bapsComparison'] = globals['comparison'] === true ? 'on' : 'off';
+    // RTL global, driven by the Theme settings popover (see manager.tsx). Dark
+    // mode is NOT handled here — storybook-dark-mode owns the `.baps-dark` class
+    // (PrimeNG's darkModeSelector, configured below) across chrome + preview.
+    document.documentElement.dir = globals['direction'] === 'rtl' ? 'rtl' : 'ltr';
+  }
+  // The design-system sink. Idempotent and a no-op at the default, so running
+  // it from both the decorator and the listener costs nothing.
+  applyThemeToDesignSystem(ds, accent);
+  return { ds, accent };
+};
+
+// SET_GLOBALS carries the initial (URL) globals, GLOBALS_UPDATED every toolbar
+// change. Event names as strings: they are stable core events and importing
+// them from core-events would add a dependency for two literals.
+for (const event of ['setGlobals', 'globalsUpdated']) {
+  addons.getChannel().on(event, ({ globals }: { globals: Record<string, unknown> }) => applyDocumentTheme(globals));
+}
+
+const withDesignSystem: Decorator = (storyFn, context) => {
+  // The Angular app is re-bootstrapped on story navigation and the inline
+  // properties have to survive that, so this re-applies on every render.
+  const { ds, accent } = applyDocumentTheme(context.globals);
   const surface = (context.globals['surface'] as string) ?? 'default';
   const ripple = context.globals['ripple'] !== false;
   // A swatch key goes through the library's own `withAccent`; a raw hex from the
@@ -325,29 +370,6 @@ const withDesignSystem: Decorator = (storyFn, context) => {
       withPrimaryRamp(DS_PRESETS[ds], accentRamp)
     : withAccent(DS_PRESETS[ds], accent);
   const preset = withSurface(branded, surface);
-  if (typeof document !== 'undefined') {
-    document.body.classList.toggle('baps-ds-sampark', ds === 'sampark');
-    // Also on <html>. preview-head.html adds it there from the URL so the first
-    // painted frame is already the right brand; without this line a LIVE switch
-    // (which re-renders without reloading the iframe) would leave that initial
-    // class behind and the two elements would disagree. The docs-page brand CSS
-    // keys off the class as an ancestor, so a stale one on <html> would show the
-    // wrong brand's prose.
-    document.documentElement.classList.toggle('baps-ds-sampark', ds === 'sampark');
-    // Comparison blocks on docs pages read this, the same way the sidebar
-    // filter reads the `comparison` global — see BrandOnly in .storybook/blocks.
-    document.body.dataset['bapsComparison'] =
-      context.globals['comparison'] === true ? 'on' : 'off';
-    // RTL global, driven by the Theme settings popover (see manager.tsx). Dark
-    // mode is NOT handled here — storybook-dark-mode owns the `.baps-dark` class
-    // (PrimeNG's darkModeSelector, configured below) across chrome + preview.
-    document.documentElement.dir = context.globals['direction'] === 'rtl' ? 'rtl' : 'ltr';
-  }
-  // The design-system sink. Runs on every render, not only on change, because
-  // Storybook re-bootstraps the Angular app on story navigation and the inline
-  // properties have to survive that. It is idempotent and a no-op at the
-  // default, so re-running it costs nothing.
-  applyThemeToDesignSystem(ds, accent);
 
   // PrimeNG's theme is a document-level singleton — a running app won't re-read
   // its providers, so push preset changes (design system / primary / surface) live.
@@ -507,6 +529,22 @@ const preview: Preview = {
         order: [
           'Getting Started',
           'Foundations',
+          // Tokens before the things built from them, then roughly the order a
+          // designer reads a system in. Labels only — the Colour/Typography
+          // URLs are unchanged, so no link or baseline moved.
+          [
+            'Audit',
+            ['Overview'],
+            'Design Tokens',
+            'Colour',
+            'Typography',
+            'Spacing',
+            'Grid & Layout',
+            'Borders & Radius',
+            'Shadows',
+            'Icons',
+            'Motion',
+          ],
           'Components',
           // Atomic Design, smallest first. Every component meta pins its own
           // id, so these are SIDEBAR LABELS only — the story URLs, and the 462
@@ -563,7 +601,10 @@ const preview: Preview = {
         // showcase does — and without this they are collected as PAGE sections,
         // so the nav fills up with 'The quick brown fox jumps over the lazy dog'.
         // Only the MDX's own headings are page structure.
-        ignoreSelector: '.docs-story *',
+        // .baps-docs-foundation: the Foundations blocks' own h3/h4 (one per
+        // colour ramp, one per role) are real headings for the outline but would
+        // swamp the nav.
+        ignoreSelector: '.docs-story *, .baps-docs-foundation *',
         title: 'On this page',
       },
       // ── Make "Show code" paste-ready ──────────────────────────────────────

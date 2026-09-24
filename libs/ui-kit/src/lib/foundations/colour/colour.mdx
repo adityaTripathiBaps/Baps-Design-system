@@ -1,18 +1,46 @@
 import { Meta } from '@storybook/blocks';
-import { ResourceTabs, DemoCard } from '@baps/docs-blocks';
+import { ResourceTabs, ColorRamps, SemanticColors, InteractionStates, TokenExplorer } from '@baps/docs-blocks';
 import * as ColourStories from './colour.stories';
 
 <Meta of={ColourStories} />
 
 # Colour
 
-The primitive colour ramps both brands are built from.
+The semantic roles and primitive ramps both brands are built from. Everything on this page follows the toolbar: the Design system switch picks the brand, the theme toggle picks light or dark, and the accent picker re-tints the primary ramp.
 
-<ResourceTabs sections={['Usage', 'Examples', 'Accessibility']} />
+<ResourceTabs sections={['Semantic colours', 'States', 'Palette', 'Usage', 'Accessibility', 'Figma reference']} />
 
 Source: Figma [node 13193:59098](https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/%F0%9F%9F%A2-Sampark-Portal?node-id=13193-59098) — the "BAPS Pixel" variable sheet, 74 values.
 
-Every swatch below is rendered **from the token module**, not from a list typed into this page. A ramp that changes in `libs/tokens` changes here on the next build, which is the one property a hand-maintained swatch sheet never has.
+Every swatch below is rendered **from the token build**, not from a list typed into this page, and painted with its own `var(--…)`. A ramp that changes in `libs/tokens` changes here on the next build, which is the one property a hand-maintained swatch sheet never has.
+
+## Semantic colours
+
+What components reference. Background, surface, text, border, action and status — for the active brand and mode, each with its contrast against the card surface.
+
+<SemanticColors />
+
+## States
+
+The five interaction states, built from the brand's action tokens. Hover darkens one step, active two; focus is a ring, disabled is opacity — never a new colour. See [Guidelines → Accessibility](?path=/docs/guidelines-accessibility--docs) for the focus ring.
+
+<InteractionStates />
+
+## Palette
+
+The primitive ramps — Brand / Primary, Secondary, Tertiary, Neutral, and the four status ramps. Primitives define the semantic tier; components should rarely reach them directly.
+
+<ColorRamps />
+
+### Accent ramps
+
+The four product accents behind the toolbar's accent picker. Shared by every brand: selecting one rewrites the brand's primary ramp on `<html>`, and every semantic token above re-resolves from it.
+
+<ColorRamps accent />
+
+### All colour tokens
+
+<TokenExplorer categories={['Color']} label="Colour tokens" limit={40} />
 
 ## Usage
 
@@ -56,32 +84,6 @@ Two things to know when adding one:
   converted, `sampark.primary.alpha10` among them — see
   [Guidelines → Known gaps](?path=/docs/guidelines-known-gaps--docs).
 
-## Examples
-
-<DemoCard
-  title="Sampark Brand"
-  description="Primary, secondary and tertiary. The secondary ramp doubles as the dark-mode neutral scale."
-  of={ColourStories.SamparkBrand}
-/>
-
-<DemoCard
-  title="Sampark Neutrals"
-  description="Surfaces, text, borders and the alpha scrims. Swatches sit on a checkerboard so transparency is visible."
-  of={ColourStories.SamparkNeutrals}
-/>
-
-<DemoCard
-  title="Sampark Status"
-  description="Error, info, success and warning."
-  of={ColourStories.SamparkStatus}
-/>
-
-<DemoCard
-  title="MyBKY"
-  description="The MyBKY blue and mono ramps."
-  of={ColourStories.MyBky}
-/>
-
 ## Step labels differ from Figma on three ramps
 
 Worth knowing before you match a value against the Figma sheet by its step number.
@@ -111,3 +113,12 @@ Contrast is a property of a *pair*, so a ramp on its own cannot be compliant or 
 - On the dark ground, the relationship inverts — see the dark role mapping documented on each component's Theming section.
 
 Non-text UI needs 3:1 (WCAG 1.4.11), which is why the dark palette splits its border role in two: a quiet divider tier and a control tier that clears the threshold. A decorative rule and the outline of a text input are not the same job.
+
+- **Known failure:** Sampark `text.muted` (`#9f9c9c`) is 2.72:1 on white — below AA. It is flagged in [Audit → Overview](?path=/docs/foundations-audit-overview--docs). Use `text.secondary` for anything a user has to read.
+- Never use colour alone to carry meaning. A status also needs an icon or a word; the audit chips on this site follow the same rule.
+- The AA/AAA badges above measure text on the card surface. Alpha steps are composited over that surface first, so a scrim's ratio is the ratio of what it actually paints.
+
+## Figma reference
+
+- Colour variables: [node 13193:59098](https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/%F0%9F%9F%A2-Sampark-Portal?node-id=13193-59098) (Sampark Portal).
+- Step-label offsets between Figma and the token names: see above.

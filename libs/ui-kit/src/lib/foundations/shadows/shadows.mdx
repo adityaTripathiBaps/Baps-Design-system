@@ -1,0 +1,70 @@
+import { Meta } from '@storybook/blocks';
+import { ResourceTabs, ShadowScale, CodeBlock } from '@baps/docs-blocks';
+
+<Meta title="Foundations/Shadows" />
+
+# Shadows
+
+Elevation for things that float — and only for things that float.
+
+<ResourceTabs sections={['Overview', 'Shadow tokens', 'Elevation', 'Usage', 'Accessibility', 'Developer implementation']} />
+
+## Overview
+
+Shadows are long and soft, and **only** on floating elements: dropdowns, popovers, dialogs, drawers, toasts, tooltips. A card at rest has a hairline border and no shadow. Both brands carry their own set — `--shadow-mybky-*` and `--shadow-sampark-*` — named after the Figma drop-shadow styles where one exists (XS, S, XL) and after the component otherwise. Source: `libs/tokens/src/source/shadow.tokens.json`.
+
+## Shadow tokens
+
+Every shadow in the active brand, previewed on the docs surface. The value is read from the page, so it is what actually renders.
+
+<ShadowScale />
+
+## Elevation
+
+The levels, lowest to highest, with the token each surface uses.
+
+| Level | MyBKY | Sampark | Surfaces |
+| --- | --- | --- | --- |
+| 0 — flat | none | none | Card at rest, table, page regions |
+| 1 — resting lift | `--shadow-mybky-xs` | `--shadow-sampark-xs`, `-s` | Stepper slot, table outer edge, slider bubble |
+| 2 — raised | `--shadow-mybky-card` | `--shadow-sampark-l2` | Raised or hovered card (`baps-card [raised]`) |
+| 3 — floating | `--shadow-mybky-tooltip` | `--shadow-sampark-dropdown` | Tooltip, dropdown, popover, select overlay |
+| 4 — overlay | `--shadow-mybky-drawer` | `--shadow-sampark-drawer`, `-overlay` | Drawer, dialog |
+| 5 — top | `--shadow-mybky-xl` | `--shadow-sampark-xl`, `-toast` | Toast, alert, lifted stepper slot |
+
+Focus and error rings (`--shadow-sampark-input-focus`, `-input-error`) and the switch recesses are shadows by implementation, not elevation.
+
+## Usage
+
+### Do
+
+- Use a shadow to say "this is above the page and will go away" — an overlay, a menu, a toast.
+- Pair a floating surface's shadow with its z-index layer (`--z-index-sampark-overlay-*`).
+
+### Don't
+
+- Put a shadow on a card at rest, or use one to separate two regions. That is a hairline's job.
+- Jump the shadow on hover. Hover darkens a background one step; it never lifts or scales.
+- Hand-write `box-shadow: 0 4px 6px …`. The audit counts these.
+
+## Accessibility
+
+- A shadow is decoration. It is dropped in Windows High Contrast, so a dialog also needs a border to keep its edge.
+- In dark mode a shadow barely reads against a dark ground; elevation there comes from a lighter surface (`dark.surface.card` over `dark.surface.ground`), with the shadow as a supplement.
+- Overlays still need focus management and `Escape` to close — the shadow tells a sighted user it is on top; nothing tells a screen reader user except the dialog semantics.
+
+## Developer implementation
+
+<CodeBlock
+  filename="_my-menu.scss"
+  language="css"
+  code={`.my-menu {
+  border: 1px solid var(--color-mybky-border-default);
+  box-shadow: var(--shadow-mybky-tooltip);
+}
+.baps-ds-sampark .my-menu {
+  border-color: var(--color-sampark-border-default);
+  box-shadow: var(--shadow-sampark-dropdown);
+  z-index: var(--z-index-sampark-overlay-panel);
+}`}
+/>

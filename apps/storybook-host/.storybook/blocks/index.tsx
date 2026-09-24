@@ -479,7 +479,7 @@ export const FrameworkTabs = ({
               background: 'transparent',
               border: 'none',
               borderBottom: `2px solid ${current === key ? 'var(--baps-docs-accent)' : 'transparent'}`,
-              color: current === key ? 'var(--baps-docs-accent)' : 'var(--baps-docs-muted)',
+              color: current === key ? 'var(--baps-docs-link)' : 'var(--baps-docs-muted)',
               font: `${current === key ? 600 : 400} 0.8125rem/1.2 ${mono}`,
               padding: '0.5rem 0.75rem',
               cursor: 'pointer',
@@ -516,3 +516,4 @@ export const FrameworkTabs = ({
     </div>
   );
 };
+export * from './foundations';

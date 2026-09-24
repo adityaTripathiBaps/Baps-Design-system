@@ -1,0 +1,86 @@
+import { Meta } from '@storybook/blocks';
+import { ResourceTabs, MotionPlayground, TokenExplorer, CodeBlock } from '@baps/docs-blocks';
+
+<Meta title="Foundations/Motion" />
+
+# Motion
+
+Animation and transitions: quiet, fast, and never required to understand what happened.
+
+<ResourceTabs sections={['Overview', 'Tokens', 'Live preview', 'Usage', 'Accessibility', 'Developer implementation']} />
+
+## Overview
+
+Motion comes in two generations, and both are tokens:
+
+- **Shipped** — `--motion-duration-fast` (120ms), `-base` (150ms), `-moderate` (200ms), with `--motion-easing-standard` and `--motion-easing-overlay`. What existing components use.
+- **Target** — `--motion-duration-ui-transition` (220ms), `-view-change` (420ms) and `--motion-easing-calm`. The design-language spec; new work should adopt these.
+
+Easing is calm and decelerating. **Never bounce, never overshoot.** Source: `libs/tokens/src/source/motion.tokens.json`.
+
+## Tokens
+
+<TokenExplorer categories={['Motion — duration', 'Motion — easing']} label="Motion tokens" />
+
+## Live preview
+
+Choose a duration and an easing, then play. Fade, slide, scale and expand/collapse are the four motions the library uses.
+
+<MotionPlayground />
+
+## Usage
+
+Recommended pairings, from `design-language.md` and the legacy mappings recorded in `motion.tokens.json`. Components built before the target tokens still use the shipped trio.
+
+| Motion | Duration | Easing | Behaviour |
+| --- | --- | --- | --- |
+| Hover, press | `fast` 120ms | `standard` | Colour change; press adds `translateY(1px)` |
+| Transition (tabs, toggles) | `base` / `moderate` | `standard` | Colour, opacity |
+| Entrance | `ui-transition` 220ms | `calm` | Fade + 4px rise |
+| Exit | `fast` 120ms | `standard` | Fade only |
+| Expand / collapse | `ui-transition` | `calm` | Height via `grid-template-rows` |
+| Overlay, tooltip | `moderate` 200ms | `overlay` | Fade + slight scale |
+| Dialog | `ui-transition` | `calm` | Fade + scale from 0.96 |
+| Drawer | `ui-transition` | `calm` | Slide from its edge |
+| View change | `view-change` 420ms | `calm` | Route transitions |
+
+### Do
+
+- Exit faster than you enter. Leaving should never hold the user up.
+- Animate `opacity` and `transform`. They are cheap and do not reflow.
+
+### Don't
+
+- Auto-play, parallax, or "delightful" micro-animations. The interface is quiet.
+- Bounce or overshoot (`cubic-bezier` handles above 1).
+- Make a change visible **only** through motion. A toast that slides in also says what happened in words.
+
+## Accessibility
+
+- **`prefers-reduced-motion: reduce`** turns movement off. Components drop to an instant change (see `_spinner.scss`, `_stepper.scss`, the skeleton); the previews above do the same when your system asks for it.
+- Reduced motion is not *no feedback*: state still changes, instantly. A fade may stay if it is short; slides, scales and parallax go.
+- Animations must never be needed to understand application state (WCAG 2.3.3). If the animation were deleted, the page should still say everything it said.
+- Nothing flashes more than three times a second (WCAG 2.3.1).
+
+## Developer implementation
+
+<CodeBlock
+  filename="_my-panel.scss"
+  language="css"
+  code={`.my-panel {
+  transition:
+    opacity var(--motion-duration-ui-transition) var(--motion-easing-calm),
+    transform var(--motion-duration-ui-transition) var(--motion-easing-calm);
+}
+.my-panel--hidden {
+  opacity: 0;
+  transform: translateY(4px);
+  transition-duration: var(--motion-duration-fast);   /* exit is faster */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .my-panel { transition: none; }
+}`}
+/>
+
+PrimeNG overlays take their animation from the preset; `--motion-easing-overlay` is the value they are reconciled to.

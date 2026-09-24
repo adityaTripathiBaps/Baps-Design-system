@@ -1,0 +1,93 @@
+import { Meta } from '@storybook/blocks';
+import { ResourceTabs, RadiusScale, RadiusSurfaces, TokenExplorer, CodeBlock } from '@baps/docs-blocks';
+
+<Meta title="Foundations/Borders & Radius" />
+
+# Borders & Radius
+
+Hairlines, border colours and the two brands' radius scales.
+
+<ResourceTabs sections={['Overview', 'Radius scale', 'Surfaces', 'Borders', 'Usage', 'Accessibility', 'Developer implementation']} />
+
+## Overview
+
+Radius is where the two brands differ most — the token file calls it "a different philosophy":
+
+| Aspect | MyBKY | Sampark |
+| --- | --- | --- |
+| Default shape | **99px pill** — buttons, fields, badges, avatars, switches | **4px** rounded rect — buttons, inputs, badges, avatars |
+| Pill | Universal | Badges, counts and switch tracks only |
+| Cards, dialogs | 8px | 8px |
+
+So there is no single `--radius-md`. Every radius is brand-scoped (`--radius-mybky-*`, `--radius-sampark-*`), and components read their own token (`--button-sampark-radius`), which references the scale. Source: `libs/tokens/src/source/spacing.tokens.json` (radius) and `component.tokens.json`.
+
+## Radius scale
+
+<RadiusScale />
+
+## Surfaces
+
+The radius each common surface actually uses in the active brand, read from its component token. Switch the Design system in the toolbar to see the other philosophy.
+
+<RadiusSurfaces />
+
+## Borders
+
+**Hairlines do 80% of the work.** Structural separation is a 1px border, never a shadow.
+
+| Property | Value | Token |
+| --- | --- | --- |
+| Width | `1px`, always in px — `0.0625rem` rounds to 0 at some zoom levels | Component tokens, e.g. `--card-mybky-border-width` |
+| Style | `solid`. Dashed only for drop zones (`baps-file-upload`) | — |
+| Default colour | Divider between regions, input outline | `--color-mybky-border-default` · `--color-sampark-border-default` |
+| Hover | Input hover | `--color-sampark-border-hover` |
+| Error | Invalid field | `--color-sampark-border-error` |
+| Dark — divider | Quiet separator, below 3:1 on purpose | `--color-{brand}-dark-border-divider` |
+| Dark — control | Outline that is a control's only cue, clears 3:1 | `--color-{brand}-dark-border-control` |
+
+<TokenExplorer categories={['Border radius', 'Border width']} label="Radius and border-width tokens" limit={40} />
+
+## Usage
+
+| Radius | Use |
+| --- | --- |
+| None | Table cells, full-bleed regions, dividers |
+| `sm` | Checkbox (MyBKY), small elements (Sampark) |
+| `default` (Sampark) | Buttons, inputs, badges, avatars |
+| `md` | Cards, dialogs, toasts, tooltips |
+| `lg` (Sampark) | Large avatars |
+| `pill` | MyBKY: nearly everything interactive. Sampark: badges, counts, switch tracks |
+| `circle` | Notification dots, round avatars |
+
+### Do
+
+- Use the component's own radius token inside that component.
+- Keep nested radii concentric: an inner radius is the outer minus the padding.
+
+### Don't
+
+- Hard-code `border-radius: 4px`. The audit counts these (see [Audit → Overview](?path=/docs/foundations-audit-overview--docs)).
+- Give a Sampark button a pill, or a MyBKY field a 4px corner. The shape is the brand.
+
+## Accessibility
+
+- A border that is the **only** indication a control exists needs 3:1 against its background (WCAG 1.4.11). That is why dark mode has a separate `control` tier.
+- Focus is never communicated by a border colour change alone — it gets the 2px ring (see [Colour → States](?path=/docs/foundations-colour--docs#states)).
+- Windows High Contrast drops box-shadows but keeps borders, so a control that is outlined only by a shadow disappears there. Keep a real border, transparent if need be.
+
+## Developer implementation
+
+<CodeBlock
+  filename="_my-card.scss"
+  language="css"
+  code={`.my-card {
+  border: var(--card-mybky-border-width) solid var(--card-mybky-border);
+  border-radius: var(--card-mybky-radius);
+}
+.baps-ds-sampark .my-card {
+  border-color: var(--card-sampark-border);
+  border-radius: var(--card-sampark-radius);
+}`}
+/>
+
+Prefer `baps-card` over a hand-rolled panel — it encodes these rules already.

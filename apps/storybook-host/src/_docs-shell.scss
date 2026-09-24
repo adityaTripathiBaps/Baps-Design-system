@@ -133,8 +133,31 @@ hr,
   border-color: var(--baps-docs-divider) !important;
 }
 
+/* Links read one step darker than the accent. The accent itself is 4.31:1
+   (MyBKY #5f78b8) and ~3.9:1 (Sampark #c96868) on white — both under AA for
+   13–14px text, which axe flagged on every docs page. The hover step clears it
+   in both brands and still follows the accent picker, which rewrites that step
+   along with the rest of the ramp. Dark mode keeps the accent: it passes there. */
+body {
+  --baps-docs-link: var(--color-mybky-primary-hover, #4c6095);
+}
+body.baps-ds-sampark {
+  --baps-docs-link: var(--color-sampark-primary-hover, #b44141);
+}
+body.baps-dark {
+  --baps-docs-link: var(--baps-docs-accent);
+}
+
 .sbdocs a {
-  color: var(--baps-docs-accent) !important;
+  color: var(--baps-docs-link) !important;
+}
+
+
+/* A link inside running text needs more than colour to stand out from it
+   (WCAG 1.4.1) — in dark mode the accent and body text are close in lightness. */
+.sbdocs :is(p, li, td) > a {
+  text-decoration: underline !important;
+  text-underline-offset: 0.15em;
 }
 
 /* Story frame, code block and arg table share one card treatment: hairline
@@ -406,4 +429,125 @@ body.baps-dark .sbdocs-wrapper {
 
 .sbdocs-wrapper table tbody tr:nth-of-type(2n + 1) {
   background: var(--baps-docs-ground) !important;
+}
+
+/* ── Foundation blocks (.storybook/blocks/foundations.tsx) ──────────────────
+   Buttons and status chips the Foundations pages share. Status colours ride
+   the BORDER and the marker, never the text: no green in either brand's
+   success ramp clears 4.5:1 as text on white, so the words stay in the
+   heading colour and the glyph + label carry the meaning. */
+body {
+  --baps-docs-status-passed: var(--color-mybky-success-600, #2a9c68);
+  --baps-docs-status-warning: var(--color-mybky-warning-80, #c38222);
+  --baps-docs-status-error: var(--color-mybky-error-100, #c32226);
+}
+body.baps-ds-sampark {
+  --baps-docs-status-passed: var(--color-sampark-success-80, #089152);
+  --baps-docs-status-warning: var(--color-sampark-warning-80, #e08705);
+  --baps-docs-status-error: var(--color-sampark-error-100, #cc0005);
+}
+
+.sbdocs-wrapper .baps-docs-copy {
+  appearance: none;
+  font: 500 0.72rem/1.2 var(--font-family-mono, ui-monospace, monospace);
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--baps-docs-control);
+  border-radius: 4px;
+  background: var(--baps-docs-ground);
+  color: var(--baps-docs-text);
+  cursor: pointer;
+  /* 24px minimum target (WCAG 2.5.8) without inflating the table rows. */
+  min-height: 1.5rem;
+}
+.sbdocs-wrapper .baps-docs-copy:hover {
+  border-color: var(--baps-docs-accent);
+  color: var(--baps-docs-heading);
+}
+.sbdocs-wrapper .baps-docs-copy[aria-pressed='true'] {
+  border-color: var(--baps-docs-accent);
+  box-shadow: inset 0 0 0 1px var(--baps-docs-accent);
+  color: var(--baps-docs-heading);
+}
+.sbdocs-wrapper :is(.baps-docs-copy, .baps-docs-foundation input, .baps-docs-foundation select, .baps-docs-foundation textarea, .baps-docs-audit summary, [role='region'][tabindex]):focus-visible {
+  outline: 2px solid var(--baps-docs-accent);
+  outline-offset: 2px;
+}
+
+.sbdocs-wrapper .baps-docs-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  line-height: 1.4;
+  padding: 0 0.4rem;
+  border: 1px solid var(--baps-docs-divider);
+  border-left-width: 3px;
+  border-radius: 4px;
+  color: var(--baps-docs-heading);
+  white-space: nowrap;
+}
+.sbdocs-wrapper .baps-docs-status[data-status='passed'] { border-left-color: var(--baps-docs-status-passed); }
+.sbdocs-wrapper .baps-docs-status[data-status='warning'] { border-left-color: var(--baps-docs-status-warning); }
+.sbdocs-wrapper .baps-docs-status[data-status='error'] { border-left-color: var(--baps-docs-status-error); }
+.sbdocs-wrapper .baps-docs-status[data-status='deprecated'] { border-left-color: var(--baps-docs-muted); border-left-style: dashed; }
+
+.sbdocs-wrapper .baps-docs-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* No zebra on the foundation tables: addon-docs stripes even rows with the
+   raised ground, and muted text there drops to 4.35:1 — under AA. The rows
+   already have hairlines. */
+.sbdocs-wrapper table.baps-docs-table tbody tr:nth-of-type(n) {
+  background: transparent !important;
+}
+
+/* Foundation pages hold wide tables and resizable previews; neither may widen
+   the canvas on a phone. Each table scrolls inside its own region instead. */
+.sbdocs-wrapper .baps-docs-foundation {
+  max-width: 100%;
+  min-width: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sbdocs-wrapper .baps-docs-foundation * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* ── Phone width: no page-level horizontal scroll ───────────────────────────
+   Measured at 375px before this rule: Button docs overflowed by 214px, Token
+   Inventory by 629px — markdown tables and code blocks sized the whole column
+   to their content. Each wide thing now scrolls inside itself instead.
+   Mobile-only on purpose: `display: block` on a table stops it stretching to
+   100%, which would change every desktop table. */
+@media (max-width: 767px) {
+  .sbdocs-wrapper {
+    padding-inline: var(--space-4, 1rem) !important;
+  }
+  .sbdocs-wrapper .sbdocs-content {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .sbdocs-wrapper .sbdocs-content > table,
+  .sbdocs-wrapper .docblock-argstable {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+  .sbdocs-wrapper :is(.docblock-source, pre, .docs-story) {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+  .sbdocs-wrapper .sbdocs-content :not(pre) > code {
+    white-space: normal !important;
+    overflow-wrap: anywhere;
+  }
 }
