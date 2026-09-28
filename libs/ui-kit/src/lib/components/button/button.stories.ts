@@ -1,6 +1,48 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { expect, fn, userEvent, within } from '@storybook/test';
 import { BapsButton } from './button.component';
+import { BAPS_ALL_ICON_NAMES } from '../icon/icon-set';
+
+const POPULAR_BUTTON_ICONS = [
+  undefined,
+  'add-to-filter',
+  'check',
+  'plus',
+  'trash',
+  'search',
+  'filter',
+  'edit',
+  'calendar',
+  'settings',
+  'user',
+  'notification',
+  'download',
+  'upload',
+  'angle-down',
+  'angle-right',
+  'refresh',
+  'cross',
+  'info-circle',
+  'check-circle',
+  'exclamation-circle',
+  'share',
+  'eye',
+  'copy',
+  'heart',
+  'pi pi-check',
+  'pi pi-search',
+  'pi pi-plus',
+  'pi pi-trash',
+  'pi pi-pencil',
+  'pi pi-filter',
+  'pi pi-calendar',
+  'pi pi-times',
+];
+
+const BUTTON_ICON_OPTIONS = [
+  ...POPULAR_BUTTON_ICONS,
+  ...BAPS_ALL_ICON_NAMES.filter((name) => !POPULAR_BUTTON_ICONS.includes(name)),
+];
 
 /**
  * Pilot component for the BAPS authoring pattern — copy this file's shape
@@ -35,7 +77,16 @@ const meta: Meta<BapsButton> = {
     rounded: { control: 'boolean' },
     raised: { control: 'boolean' },
     link: { control: 'boolean' },
-    icon: { control: 'text' },
+    icon: {
+      control: 'select',
+      options: BUTTON_ICON_OPTIONS,
+      description: 'Icon name: select BAPS SVG icon or PrimeIcons class. Clear label to test icon-only buttons.',
+    },
+    iconPos: { control: 'select', options: ['left', 'right', 'top', 'bottom'] },
+    fluid: { control: 'boolean' },
+    autofocus: { control: 'boolean' },
+    plain: { control: 'boolean' },
+    ariaLabel: { control: 'text' },
   },
   args: {
     autofocus: false,
@@ -138,6 +189,58 @@ export const States: Story = {
         <baps-button label="Default" />
         <baps-button label="Disabled" [disabled]="true" />
         <baps-button label="Loading" [loading]="true" />
+      </div>
+    `,
+  }),
+};
+
+/**
+ * Buttons with icons placed on the left, right, top or bottom.
+ * Supports both BAPS design-system SVG icons (e.g. add-to-filter, plus, search)
+ * and PrimeIcons font classes (pi pi-check).
+ */
+export const WithIcons: Story = {
+  render: () => ({
+    template: `
+      <div style="display:flex; flex-direction:column; gap: 16px;">
+        <div style="display:flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+          <baps-button label="Add Filter" icon="add-to-filter" severity="primary" />
+          <baps-button label="Add to Filter" icon="add-to-filter" iconPos="right" severity="success" />
+          <baps-button label="Create" icon="plus" severity="primary" />
+          <baps-button label="Search" icon="search" severity="secondary" />
+          <baps-button label="Delete" icon="trash" severity="danger" />
+          <baps-button label="PrimeIcon" icon="pi pi-check" iconPos="right" severity="info" />
+        </div>
+        <div style="display:flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+          <baps-button label="Top Icon" icon="settings" iconPos="top" severity="secondary" [outlined]="true" />
+          <baps-button label="Bottom Icon" icon="download" iconPos="bottom" severity="secondary" [outlined]="true" />
+        </div>
+      </div>
+    `,
+  }),
+};
+
+/**
+ * Dedicated icon-only button variants across sizes and severities.
+ * Omit the label and specify ariaLabel for accessibility.
+ */
+export const IconOnly: Story = {
+  render: () => ({
+    template: `
+      <div style="display:flex; flex-direction:column; gap: 16px;">
+        <div style="display:flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+          <baps-button icon="add-to-filter" ariaLabel="Add to filter" size="small" />
+          <baps-button icon="add-to-filter" ariaLabel="Add to filter" />
+          <baps-button icon="add-to-filter" ariaLabel="Add to filter" size="large" />
+          <baps-button icon="add-to-filter" ariaLabel="Add to filter" size="xlarge" />
+        </div>
+        <div style="display:flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+          <baps-button icon="plus" ariaLabel="Add" severity="primary" />
+          <baps-button icon="edit" ariaLabel="Edit" severity="secondary" [outlined]="true" />
+          <baps-button icon="trash" ariaLabel="Delete" severity="danger" [text]="true" />
+          <baps-button icon="search" ariaLabel="Search" severity="info" [rounded]="true" />
+          <baps-button icon="notification" ariaLabel="Notifications" severity="warn" [rounded]="true" [outlined]="true" />
+        </div>
       </div>
     `,
   }),

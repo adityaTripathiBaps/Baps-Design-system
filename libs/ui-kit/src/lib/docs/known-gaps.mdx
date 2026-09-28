@@ -1097,6 +1097,19 @@ disabled inset. Restating three unrelated rules to recolour one is a worse trade
 than the residual, which is visible only on a switch that is BOTH checked and
 disabled. Left as is, on purpose.
 
+### Residual — a checked AND disabled checkbox or radio stays mono grey
+
+MyBKY's disabled+checked checkbox and radio keep a mono ground (`#e4ecf1`,
+mono-300) with a mono tick, dot and border (`#8d9ba5`, mono-450), and do not
+follow the accent. Intentional: disabled reads as muted, and a grey mark keeps
+it clearly inactive. Same category as the toggle switch residual above.
+
+The checked and indeterminate states DO follow — `checkbox(ramp)` in
+`baps.theme.ts` plus the `--sel-*` vars reading `--color-mybky-blue-*` (sink 2).
+Measured on `components-checkbox--states` / `components-radio--states`: at
+`accent:amber` the checked border and tick go `#5f78b8` → `#d08609` in light and
+`#9fadd9` → `#f7b039` in dark; at `accent:brand` they stay the original literals.
+
 ## "Non-wrapper" does not mean "snippet-able" — measure each one
 
 The rollout estimate assumed the ten components that do not wrap PrimeNG were

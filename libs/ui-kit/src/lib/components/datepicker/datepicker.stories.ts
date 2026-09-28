@@ -90,10 +90,28 @@ export default meta;
  * for a generic example.
  */
 export const Default: StoryObj<BapsDatepicker> = {
-  render: () => ({
-    props: { date: new Date(2025, 0, 10) },
+  render: (args) => ({
+    props: { ...args, date: new Date(2025, 0, 10) },
     template: `
-      <baps-datepicker inline="true" ariaLabel="Event date" [(ngModel)]="date"></baps-datepicker>
+      <baps-datepicker
+        [inline]="inline"
+        ariaLabel="Event date"
+        [brand]="brand"
+        [disabled]="disabled"
+        [numberOfMonths]="numberOfMonths"
+        [showButtonBar]="showButtonBar"
+        [showClear]="showClear"
+        [showIcon]="showIcon"
+        [iconDisplay]="iconDisplay"
+        [selectionMode]="selectionMode"
+        [view]="view"
+        [placeholder]="placeholder"
+        [dateFormat]="dateFormat"
+        [showOtherMonths]="showOtherMonths"
+        [selectOtherMonths]="selectOtherMonths"
+        [readonlyInput]="readonlyInput"
+        [(ngModel)]="date">
+      </baps-datepicker>
     `,
   }),
 };

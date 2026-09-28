@@ -76,6 +76,7 @@ const meta: Meta<BapsDialog> = {
     appendTo: { control: 'inline-radio', options: ['self', 'body'] },
   },
   args: {
+    brand: 'sampark',
     styleClass: '',
     header: 'Cancel Document Upload',
     width: '31.25rem',

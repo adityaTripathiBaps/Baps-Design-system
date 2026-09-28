@@ -79,6 +79,19 @@ export type BapsAvatarSize = 'xs' | 's' | 'm' | 'l' | 'xl' | '2xl' | 'normal' | 
       flex: none;
     }
 
+    /* Square shape: MyBKY's default preset is circle (99px), so shape="square"
+       must override .p-avatar's pill radius to crisp 4/6/8px corners. */
+    baps-avatar .p-avatar:not(.p-avatar-circle) {
+      border-radius: var(--avatar-mybky-radius-square, 4px);
+    }
+    baps-avatar.baps-avatar-xl .p-avatar:not(.p-avatar-circle),
+    baps-avatar .p-avatar.p-avatar-xl:not(.p-avatar-circle) {
+      border-radius: var(--avatar-mybky-radius-xl-square, 6px);
+    }
+    baps-avatar.baps-avatar-2xl .p-avatar:not(.p-avatar-circle) {
+      border-radius: var(--avatar-mybky-radius-2xl-square, 8px);
+    }
+
     /* PrimeUIX hard-codes .p-avatar-icon's box to avatar.icon.size while every
        per-size rule below only re-states font-size — a larger glyph then
        overflows the stale box and renders off-centre. Size the box from the
@@ -109,6 +122,14 @@ export type BapsAvatarSize = 'xs' | 's' | 'm' | 'l' | 'xl' | '2xl' | 'normal' | 
        slot, where cropping would clip the glyph.) */
     baps-avatar .p-avatar.p-avatar-image img {
       object-fit: cover;
+    }
+    /* The photo covers the box, so drop the preset-driven fill. The img
+       follows the box radius, so shape="square" stays square. */
+    baps-avatar .p-avatar.p-avatar-image {
+      background: transparent;
+    }
+    baps-avatar .p-avatar.p-avatar-image img {
+      border-radius: inherit;
     }
 
     /* xs / s / 2xl — Figma steps beyond PrimeNG's size input. Both brands
@@ -148,7 +169,7 @@ export type BapsAvatarSize = 'xs' | 's' | 'm' | 'l' | 'xl' | '2xl' | 'normal' | 
       transition: border-color 150ms ease;
     }
     baps-avatar:hover .p-avatar {
-      border-color: var(--baps-avatar-border-hover);
+      border-color: var(--baps-avatar-border-hover) !important;
     }
 
     baps-avatar.baps-avatar-secondary .p-avatar {
@@ -185,6 +206,15 @@ export type BapsAvatarSize = 'xs' | 's' | 'm' | 'l' | 'xl' | '2xl' | 'normal' | 
       --baps-avatar-border-hover: var(--color-mybky-info-60, #528de0);
     }
 
+    /* Image avatars render as clean photos — the status fill and
+       border only make sense on initial / icon content.  Primary already has
+       no explicit border; the five named variants below add one, so we strip
+       both background AND border for the image content type. */
+    baps-avatar:is(.baps-avatar-secondary, .baps-avatar-success, .baps-avatar-error, .baps-avatar-warning, .baps-avatar-info) .p-avatar.p-avatar-image {
+      background: transparent;
+      border: none;
+    }
+
     /* ── Dark, for the five variants above ──
        Each light variant is a pale SURFACE with mid-tone ink (success/10 fill,
        success/400 text). On a dark page that is a bright disc, and the sweep
@@ -204,19 +234,32 @@ export type BapsAvatarSize = 'xs' | 's' | 'm' | 'l' | 'xl' | '2xl' | 'normal' | 
     }
     .baps-dark baps-avatar.baps-avatar-success .p-avatar {
       background: color-mix(in srgb, var(--color-mybky-success-400, #40bf84), transparent 84%);
+      border-color: color-mix(in srgb, var(--color-mybky-success-tint, #93ecbb), transparent 84%);
       color: var(--color-mybky-success-tint, #93ecbb);
+      --baps-avatar-border-hover: var(--color-mybky-success-400, #40bf84);
     }
     .baps-dark baps-avatar.baps-avatar-error .p-avatar {
       background: color-mix(in srgb, var(--color-mybky-error-80, #e05255), transparent 84%);
+      border-color: color-mix(in srgb, var(--color-mybky-error-tint, #ec9394), transparent 84%);
       color: var(--color-mybky-error-tint, #ec9394);
+      --baps-avatar-border-hover: var(--color-mybky-error-80, #e05255);
     }
     .baps-dark baps-avatar.baps-avatar-warning .p-avatar {
       background: color-mix(in srgb, var(--color-mybky-warning-60, #e0a652), transparent 84%);
+      border-color: color-mix(in srgb, var(--color-mybky-warning-tint, #ecc893), transparent 84%);
       color: var(--color-mybky-warning-tint, #ecc893);
+      --baps-avatar-border-hover: var(--color-mybky-warning-60, #e0a652);
     }
     .baps-dark baps-avatar.baps-avatar-info .p-avatar {
       background: color-mix(in srgb, var(--color-mybky-info-60, #528de0), transparent 84%);
+      border-color: color-mix(in srgb, var(--color-mybky-info-tint, #93b7ec), transparent 84%);
       color: var(--color-mybky-info-tint, #93b7ec);
+      --baps-avatar-border-hover: var(--color-mybky-info-60, #528de0);
+    }
+    /* Same reset in dark — image avatars stay borderless there too. */
+    .baps-dark baps-avatar:is(.baps-avatar-secondary, .baps-avatar-success, .baps-avatar-error, .baps-avatar-warning, .baps-avatar-info) .p-avatar.p-avatar-image {
+      background: transparent;
+      border: none;
     }
 
     /* ── Sampark scope — single instance opted in via brand="sampark" (host

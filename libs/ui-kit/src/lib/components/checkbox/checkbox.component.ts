@@ -237,8 +237,6 @@ let nextCheckboxId = 0;
       --sel-border-checked: var(--color-sampark-dark-primary-default, #d48787);
       --sel-label: var(--color-sampark-dark-text-primary, #f8fafb);
       --sel-label-disabled: var(--color-sampark-dark-text-disabled, #6f777d);
-      --sel-disabled-checked-bg: var(--color-sampark-dark-surface-hover, #4a4947);
-      --sel-disabled-checked-icon: var(--color-sampark-dark-text-disabled, #94928f);
     }`,
   providers: [
     {

@@ -287,6 +287,16 @@ const BrandFilter: React.FC = () => {
   const showComparison = globals['comparison'] === true;
 
   React.useEffect(() => {
+    // Toolbar brand switch while on a brand-pinned story (MyBkyX / SamparkX):
+    // jump to the other brand's twin. Only when the twin exists — most pinned
+    // stories have none, and selecting a missing id shows "Couldn't find story".
+    const { storyId } = api.getUrlState();
+    const [from, to] = brand === 'sampark' ? ['--my-bky-', '--sampark-'] : ['--sampark-', '--my-bky-'];
+    if (storyId?.includes(from)) {
+      const twin = storyId.replace(from, to);
+      if (api.getData(twin)) api.selectStory(twin);
+    }
+
     void api.experimental_setFilter('baps/brand-filter', (item) => {
       const tags: string[] = (item as { tags?: string[] }).tags ?? [];
       // ── One component = one page ────────────────────────────────────────

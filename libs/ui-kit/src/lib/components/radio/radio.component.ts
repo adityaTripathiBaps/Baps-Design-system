@@ -189,8 +189,6 @@ let nextRadioId = 0;
     .baps-dark :is(baps-radio.baps-sampark, .baps-ds-sampark baps-radio) {
       --sel-label: var(--color-sampark-dark-text-primary, #f8fafb);
       --sel-label-disabled: var(--color-sampark-dark-text-disabled, #6f777d);
-      --sel-disabled-checked-bg: var(--color-sampark-dark-surface-hover, #4a4947);
-      --sel-disabled-checked-dot: var(--color-sampark-dark-text-disabled, #94928f);
     }`,
   providers: [
     {
