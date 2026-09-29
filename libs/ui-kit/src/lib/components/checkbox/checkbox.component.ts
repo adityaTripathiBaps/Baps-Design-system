@@ -100,6 +100,35 @@ let nextCheckboxId = 0;
     baps-checkbox .p-checkbox-box {
       transition: background 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
     }
+    
+    /* Enforce rigid geometry for the default size so appending the checked SVG 
+       or increasing border width does not stretch the flex container and shift the label. */
+    baps-checkbox:not(.baps-checkbox-lg) .p-checkbox,
+    baps-checkbox:not(.baps-checkbox-lg) .p-checkbox-box {
+      width: 16px;
+      height: 16px;
+      min-width: 16px;
+      min-height: 16px;
+      flex-shrink: 0;
+    }
+
+    baps-checkbox .p-checkbox-box {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    baps-checkbox .p-checkbox-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      max-width: 100%;
+      max-height: 100%;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
 
     /* Indeterminate. v21 sets no class for this state on the root, but an
        unchecked box renders no icon at all — so "has an icon and is not
@@ -198,6 +227,9 @@ let nextCheckboxId = 0;
     baps-checkbox.baps-checkbox-lg .p-checkbox-box {
       width: 22px;
       height: 22px;
+      min-width: 22px;
+      min-height: 22px;
+      flex-shrink: 0;
     }
     /* Both glyphs scale with the box — only the box used to be resized, so on
        a large checkbox the tick stayed at its small-size width and read as
