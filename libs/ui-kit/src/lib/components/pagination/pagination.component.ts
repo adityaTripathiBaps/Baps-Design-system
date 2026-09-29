@@ -238,13 +238,18 @@ export interface BapsPageEvent {
        text, Mono/10 hover fill, Mono/100 fill for the active page.
        ══════════════════════════════════════════════════════════════════ */
     baps-paginator .baps-paginator {
-      gap: 0.125rem;
+      gap: 0.25rem;
       font-size: 0.875rem;
     }
 
     baps-paginator .baps-paginator__report {
+      margin-inline-end: 0.25rem;
       color: var(--color-mybky-mono-900, #181b1d);
       white-space: nowrap;
+    }
+
+    baps-paginator .baps-paginator__rpp {
+      margin-inline-end: 0.25rem;
     }
 
     baps-paginator .baps-paginator__rpp .p-select {
