@@ -48,7 +48,7 @@ export type BapsAvatarSize = 'xs' | 's' | 'm' | 'l' | 'xl' | '2xl' | 'normal' | 
     <p-avatar
       [label]="label"
       [image]="image"
-      [shape]="shape"
+      [shape]="computedShape"
       [size]="primeSize"
       [style]="style"
       [styleClass]="styleClass"
@@ -207,10 +207,9 @@ export type BapsAvatarSize = 'xs' | 's' | 'm' | 'l' | 'xl' | '2xl' | 'normal' | 
     }
 
     /* Image avatars render as clean photos — the status fill and
-       border only make sense on initial / icon content.  Primary already has
-       no explicit border; the five named variants below add one, so we strip
-       both background AND border for the image content type. */
-    baps-avatar:is(.baps-avatar-secondary, .baps-avatar-success, .baps-avatar-error, .baps-avatar-warning, .baps-avatar-info) .p-avatar.p-avatar-image {
+       border only make sense on initial / icon content. The six named variants
+       add a border, so we strip both background AND border for the image content type. */
+    baps-avatar:is(.baps-avatar-primary, .baps-avatar-secondary, .baps-avatar-success, .baps-avatar-error, .baps-avatar-warning, .baps-avatar-info) .p-avatar.p-avatar-image {
       background: transparent;
       border: none;
     }
@@ -488,6 +487,7 @@ export type BapsAvatarSize = 'xs' | 's' | 'm' | 'l' | 'xl' | '2xl' | 'normal' | 
     '[class.baps-avatar-s]': "figmaSize === 's'",
     '[class.baps-avatar-xl]': "figmaSize === 'xl'",
     '[class.baps-avatar-2xl]': "figmaSize === '2xl'",
+    '[class.baps-avatar-primary]': "variant === 'primary'",
     '[class.baps-avatar-secondary]': "variant === 'secondary'",
     '[class.baps-avatar-warning]': "variant === 'warning'",
     '[class.baps-avatar-success]': "variant === 'success'",
@@ -502,7 +502,7 @@ export class BapsAvatar {
   @Input() label?: string;
   @Input() image?: string;
   /** Under either preset the brand radius wins for `square`; `circle` forces 50%. */
-  @Input() shape: 'square' | 'circle' = 'square';
+  @Input() shape?: 'square' | 'circle';
   /**
    * Figma sizes: xs 24 / s 32 / m 36 (default) / l 48 / xl 60 / 2xl 80px.
    * PrimeNG's `normal`/`large`/`xlarge` still work and alias to m/l/xl.
@@ -541,6 +541,11 @@ export class BapsAvatar {
   @Input() brand: 'mybky' | 'sampark' = 'mybky';
   @Input() style?: Record<string, string | number>;
   @Input() styleClass?: string;
+
+  get computedShape(): 'square' | 'circle' {
+    if (this.shape) return this.shape;
+    return this.brand === 'sampark' ? 'square' : 'circle';
+  }
 
   get figmaSize(): 'xs' | 's' | 'm' | 'l' | 'xl' | '2xl' {
     const aliases = { normal: 'm', large: 'l', xlarge: 'xl' } as const;

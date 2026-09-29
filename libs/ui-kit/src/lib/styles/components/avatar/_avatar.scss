@@ -56,6 +56,13 @@
     border-radius: var(--avatar-mybky-radius);
   }
 
+  &--primary {
+    border: 1px solid var(--color-mybky-blue-tint, #93b7ec);
+    background: var(--avatar-mybky-background, var(--color-mybky-blue-50, #f4f7fe));
+    color: var(--avatar-mybky-text, var(--color-mybky-blue-400, #5f78b8));
+    --baps-avatar-border-hover: var(--color-mybky-blue-400, #5f78b8);
+  }
+
   &--secondary {
     border: 1px solid var(--color-mybky-mono-450);
     background: var(--color-mybky-mono-50);
