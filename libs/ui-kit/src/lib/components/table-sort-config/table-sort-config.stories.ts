@@ -20,7 +20,7 @@ import { BapsButton } from '../button/button.component';
  * See the Table stories for it.
  */
 const meta: Meta<BapsTableSortConfig> = {
-  title: 'Components/Data/TableSortConfig',
+  title: 'Components/Organisms/Table Sort Config',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-data-tablesortconfig.
   id: 'components-tablesortconfig',

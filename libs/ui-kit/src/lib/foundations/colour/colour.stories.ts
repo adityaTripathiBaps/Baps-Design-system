@@ -44,14 +44,14 @@ const GRID = `
     @for (g of groups; track g.title) {
       <section>
         <h3 style="margin:0 0 .25rem; font-size:.95rem;">{{ g.title }}</h3>
-        <p style="margin:0 0 .75rem; font-size:.82rem; color:#6f777d;">{{ g.note }}</p>
+        <p style="margin:0 0 .75rem; font-size:.82rem; color:var(--color-mybky-text-muted, #6f777d);">{{ g.note }}</p>
         <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(140px, 1fr)); gap:.75rem;">
           @for (s of g.swatches; track s.name) {
             <div style="border:1px solid #e4ecf1; border-radius:8px; overflow:hidden;">
               <div [style.background]="s.value" style="height:56px; background-image:linear-gradient(45deg,#eee 25%,transparent 25%,transparent 75%,#eee 75%),linear-gradient(45deg,#eee 25%,transparent 25%,transparent 75%,#eee 75%); background-size:12px 12px; background-position:0 0,6px 6px;"></div>
               <div style="padding:.5rem .625rem; font-family:ui-monospace,monospace; font-size:11px; line-height:1.5;">
                 <strong style="display:block;">{{ s.step }}</strong>
-                <span style="color:#6f777d;">{{ s.value }}</span>
+                <span style="color:var(--color-mybky-text-muted, #6f777d);">{{ s.value }}</span>
               </div>
             </div>
           }

@@ -1,0 +1,387 @@
+/* baps-button — the PrimeNG-free skin for the docs code viewer's Custom tab.
+ *
+ * ## Why this file is AUTHORED, not extracted
+ *
+ * _card.scss and _alert.scss were MOVES: those components are not PrimeNG
+ * wrappers, their inline `styles:` block WAS the whole design, and one file
+ * drives both the Angular render and raw markup through `styleUrls`.
+ *
+ * Button cannot work that way, and this was measured before a line was
+ * written. button.component.ts's inline block is 82 lines / 11 rules / 18
+ * declarations, and every selector in it is anchored to a class PrimeNG
+ * generates at runtime — `.p-button`, `.p-button-sm`, `.p-button-lg`,
+ * `.p-button-icon-only`, `.p-button-text`, `.p-button-link`, `.p-button-label`,
+ * `.p-button-icon`. Those 18 declarations are only the DELTA on top of
+ * PrimeNG: XL height, the four Sampark heights, icon-only XL width, the
+ * Sampark disabled fill, label nowrap, link hover underline. Background,
+ * border, radius, padding, font-weight, gap and every hover/active state come
+ * from SAMPARK_BUTTON_TOKENS + baps.theme.ts, fed through definePreset /
+ * usePreset into a stylesheet PrimeNG BUILDS IN THE BROWSER. There is no file
+ * to import, so porting those 82 lines would produce a stylesheet targeting
+ * classes raw markup never has — one that silently does nothing.
+ *
+ * So the design is rebuilt here from the 56 public custom properties the token
+ * pipeline already emits (31 `--button-mybky-*` and 25 `--button-sampark-*` in
+ * libs/tokens/build/css/tokens.css), against values MEASURED from the live
+ * Angular render rather than guessed from the tokens alone.
+ *
+ * ## Why a CLASS hook, when _card.scss says not to
+ *
+ * _card.scss states: "A class hook (.baps-card) would be a different design
+ * and is NOT added here." Card had the choice — its Angular template is plain
+ * divs under a real `baps-card` element, so raw `<baps-card>` markup is the
+ * SAME markup and one element selector reaches both.
+ *
+ * Button has no such choice. `<baps-button>` renders `<p-button>` inside it, so
+ * a raw `<baps-button>` element is an empty custom element: nothing to style,
+ * nothing to click, nothing focusable. The raw markup has to be a real
+ * `<button>`, and a real `<button>` needs a class hook to carry severity,
+ * variant and size. Hence `.baps-button` plus modifiers. A justified exception
+ * to card's rule, not a change of mind about it.
+ *
+ * ## Two parallel stylesheets, on purpose
+ *
+ * This file is deliberately NOT linked into button.component.ts via
+ * `styleUrls`. Doing that would restyle the real component, which is the
+ * guardrail this work was scoped to respect: the component, its template and
+ * SAMPARK_BUTTON_TOKENS are untouched. PrimeNG's runtime theme drives
+ * `baps-button`; this file drives the Custom tab's copyable markup.
+ *
+ * So the two CAN drift, which card never could. The guard is measurement, not
+ * discipline: `node tools/check-button-drift.mjs` renders both and diffs them
+ * property by property.
+ *
+ * ## Coverage
+ *
+ * The severities that have BAPS tokens, and no others. MyBKY: primary,
+ * secondary, danger, warn, plus the two ghosts. Sampark: primary, secondary,
+ * ghost, link. PrimeNG's success / info / help / contrast carry no `--button-*`
+ * token in this design system, so they are not invented here.
+ */
+
+/* ── Base ──────────────────────────────────────────────────────────────────
+   What measured identical across every variant of both brands. Anything that
+   differs per brand or size is set below. */
+.baps-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  column-gap: var(--button-mybky-gap, 0.25rem);
+  border: 1px solid transparent;
+  border-radius: var(--button-mybky-radius, 99px);
+  padding: var(--button-mybky-padding-y, 0.5rem) var(--button-mybky-padding-x, 1rem);
+  font-family: inherit;
+  font-size: 14px;
+  /* 400 on the BOX, measured. The semibold that --button-mybky-font-weight
+     resolves to lands on the label element, not here — see
+     .baps-button__label below. Setting it here instead would bolden the icon
+     glyph too, which the component does not do. */
+  font-weight: 400;
+  line-height: normal;
+  cursor: pointer;
+  text-decoration: none;
+  appearance: none;
+  background-color: transparent;
+  background-image: none;
+}
+
+/* The label is its own element, mirroring PrimeNG's `.p-button-label`. That
+   is not decoration: the nowrap rule belongs here rather than on the button
+   box — measured, the component leaves `white-space: normal` on .p-button and
+   sets nowrap on the label — and a wrapping label is what pushes a glyph
+   off-centre, since the height is fixed by the size step. Long labels overflow
+   visibly instead, which is the honest failure: the fix is a shorter label,
+   not a taller control. */
+.baps-button__label {
+  white-space: nowrap;
+  /* The weight tokens apply HERE, which is where PrimeNG puts them too —
+     measured 600 on a MyBKY label and 500 on a Sampark one, against 400 on
+     both button boxes. This is not cosmetic: a label one weight light measures
+     1-3px narrower per word, so the whole button comes out narrow, which is
+     how check-button-drift.mjs caught it. */
+  font-weight: var(--button-mybky-font-weight, 600);
+}
+
+.baps-button.baps-sampark .baps-button__label,
+.baps-ds-sampark .baps-button .baps-button__label {
+  font-weight: var(--button-sampark-font-weight, 500);
+}
+
+/* ── MyBKY severities ──────────────────────────────────────────────────────
+   The filled three are gradients, which is why `background-image` carries the
+   fill and `background-color` measures transparent on the real component. */
+.baps-button--primary {
+  background-image: var(--button-mybky-primary-default);
+  color: var(--button-mybky-primary-text, #ffffff);
+}
+
+.baps-button--primary:hover:not(:disabled) {
+  background-image: var(--button-mybky-primary-hover);
+}
+
+.baps-button--secondary {
+  background-color: var(--button-mybky-secondary-default, #ffffff);
+  border-color: var(--button-mybky-secondary-border, #e4ecf1);
+  color: var(--button-mybky-secondary-text, #181b1d);
+}
+
+.baps-button--secondary:hover:not(:disabled) {
+  background-color: var(--button-mybky-secondary-hover);
+}
+
+.baps-button--danger {
+  background-image: var(--button-mybky-danger-default);
+  color: var(--button-mybky-danger-text, #ffffff);
+}
+
+.baps-button--danger:hover:not(:disabled) {
+  background-image: var(--button-mybky-danger-hover);
+}
+
+.baps-button--warn {
+  background-image: var(--button-mybky-warning-default);
+  color: var(--button-mybky-warning-text, #ffffff);
+}
+
+.baps-button--warn:hover:not(:disabled) {
+  background-image: var(--button-mybky-warning-hover);
+}
+
+/* Ghost ("text" on the Angular API) — transparent ground, coloured ink. */
+.baps-button--ghost-primary {
+  background-color: var(--button-mybky-primary-ghost-default, transparent);
+  color: var(--button-mybky-primary-ghost-text, #5f78b8);
+}
+
+.baps-button--ghost-primary:hover:not(:disabled) {
+  background-color: var(--button-mybky-primary-ghost-hover);
+}
+
+.baps-button--ghost-secondary {
+  background-color: var(--button-mybky-secondary-ghost-default, transparent);
+  color: var(--button-mybky-secondary-ghost-text, #181b1d);
+}
+
+.baps-button--ghost-secondary:hover:not(:disabled) {
+  background-color: var(--button-mybky-secondary-ghost-hover);
+}
+
+/* ── MyBKY sizes ───────────────────────────────────────────────────────────
+   MyBKY sets no height: it falls out of padding plus the font's line box,
+   which is why the measured steps are 33 / 35 / 37 rather than the round
+   numbers the story labels use. The sm and lg padding-y values are literals
+   because no token carries them — they come from PrimeNG's own size scale and
+   were read off the rendered component (7px at sm, 7.6px at lg).
+   check-button-drift.mjs is what keeps them honest. */
+.baps-button--s {
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+
+.baps-button--l {
+  padding-top: 7.6px;
+  padding-bottom: 7.6px;
+  font-size: 16px;
+}
+
+/* XL is the one MyBKY step with an explicit height, exactly as in
+   button.component.ts — PrimeNG's `size` input stops at 'large'. */
+.baps-button--xl {
+  height: var(--button-mybky-height-xl, 2.625rem);
+  font-size: 16px;
+}
+
+/* ── Disabled / loading, MyBKY ─────────────────────────────────────────────
+   PrimeNG's generic dim, measured at 0.38. The fill itself does not change. */
+.baps-button:disabled,
+.baps-button--loading {
+  opacity: 0.38;
+  cursor: default;
+}
+
+/* ── Sampark ───────────────────────────────────────────────────────────────
+   Flat language: 4px radius, explicit heights per step, no gradient. Scoped
+   the two ways the component is — a single instance opting in (.baps-sampark
+   on the element, where the component puts it on its host) or a whole page
+   switched by the Design system toolbar (.baps-ds-sampark ancestor). */
+.baps-button.baps-sampark,
+.baps-ds-sampark .baps-button {
+  border-radius: var(--button-sampark-radius, 0.25rem);
+  column-gap: var(--button-sampark-gap, 0.25rem);
+  /* Height is explicit here, so vertical padding goes to zero and flex
+     centring does the work — matching the component's own Sampark rule. */
+  height: var(--button-sampark-height-default, 2rem);
+  padding-top: 0;
+  padding-bottom: 0;
+  background-image: none;
+}
+
+.baps-button.baps-sampark.baps-button--primary,
+.baps-ds-sampark .baps-button.baps-button--primary {
+  background-color: var(--button-sampark-primary-default, #c96868);
+  border-color: transparent;
+  color: var(--button-sampark-primary-text, #ffffff);
+}
+
+.baps-button.baps-sampark.baps-button--primary:hover:not(:disabled),
+.baps-ds-sampark .baps-button.baps-button--primary:hover:not(:disabled) {
+  background-color: var(--button-sampark-primary-hover);
+}
+
+.baps-button.baps-sampark.baps-button--primary:active:not(:disabled),
+.baps-ds-sampark .baps-button.baps-button--primary:active:not(:disabled) {
+  background-color: var(--button-sampark-primary-active);
+}
+
+/* Sampark's secondary is OUTLINED — transparent ground, mono border. */
+.baps-button.baps-sampark.baps-button--secondary,
+.baps-ds-sampark .baps-button.baps-button--secondary {
+  background-color: transparent;
+  border-color: var(--button-sampark-secondary-border, #e1e0e0);
+  color: var(--button-sampark-secondary-text, #151414);
+}
+
+.baps-button.baps-sampark.baps-button--secondary:hover:not(:disabled),
+.baps-ds-sampark .baps-button.baps-button--secondary:hover:not(:disabled) {
+  background-color: var(--button-sampark-secondary-hover);
+}
+
+.baps-button.baps-sampark.baps-button--ghost-primary,
+.baps-ds-sampark .baps-button.baps-button--ghost-primary {
+  background-color: var(--button-sampark-primary-ghost-default, transparent);
+  border-color: transparent;
+  color: var(--button-sampark-primary-ghost-text, #c96868);
+}
+
+.baps-button.baps-sampark.baps-button--ghost-primary:hover:not(:disabled),
+.baps-ds-sampark .baps-button.baps-button--ghost-primary:hover:not(:disabled) {
+  background-color: var(--button-sampark-primary-ghost-hover);
+}
+
+.baps-button.baps-sampark.baps-button--ghost-secondary,
+.baps-ds-sampark .baps-button.baps-button--ghost-secondary {
+  background-color: var(--button-sampark-secondary-ghost-default, transparent);
+  border-color: transparent;
+  color: var(--button-sampark-secondary-ghost-text, #151414);
+}
+
+.baps-button.baps-sampark.baps-button--ghost-secondary:hover:not(:disabled),
+.baps-ds-sampark .baps-button.baps-button--ghost-secondary:hover:not(:disabled) {
+  background-color: var(--button-sampark-secondary-ghost-hover);
+}
+
+/* Link — MyBKY has no equivalent. Still a <button>, so it has no href: use a
+   real anchor when the destination is a URL, the same caveat baps-link
+   carries. */
+.baps-button.baps-sampark.baps-button--link,
+.baps-ds-sampark .baps-button.baps-button--link {
+  background-color: transparent;
+  border-color: transparent;
+  color: var(--button-sampark-link-text, #c96868);
+}
+
+.baps-button.baps-sampark.baps-button--link:hover:not(:disabled),
+.baps-ds-sampark .baps-button.baps-button--link:hover:not(:disabled) {
+  text-decoration: underline;
+}
+
+/* Sampark sizes — explicit heights, 28 / 32 / 36 / 42. The XL step is 42 in
+   both brands; the story label reading "XL (40px)" predates the Figma frame
+   (13197:91897) whose XL symbols measure 42. */
+.baps-button.baps-sampark.baps-button--s,
+.baps-ds-sampark .baps-button.baps-button--s {
+  height: var(--button-sampark-height-sm, 1.75rem);
+  padding-top: 0;
+  padding-bottom: 0;
+  font-size: 14px;
+}
+
+.baps-button.baps-sampark.baps-button--l,
+.baps-ds-sampark .baps-button.baps-button--l {
+  height: var(--button-sampark-height-lg, 2.25rem);
+  padding-top: 0;
+  padding-bottom: 0;
+  font-size: 16px;
+}
+
+.baps-button.baps-sampark.baps-button--xl,
+.baps-ds-sampark .baps-button.baps-button--xl {
+  height: var(--button-sampark-height-xl, 2.625rem);
+  font-size: 14px;
+}
+
+/* ── Sampark disabled ──────────────────────────────────────────────────────
+   A distinct fill, not an opacity dim — see button.mapping.mdx. Ghost and link
+   keep a transparent ground and dim only the ink. */
+.baps-button.baps-sampark:disabled,
+.baps-button.baps-sampark.baps-button--loading,
+.baps-ds-sampark .baps-button:disabled,
+.baps-ds-sampark .baps-button.baps-button--loading {
+  opacity: 1;
+  background-color: var(--button-sampark-disabled-background, #f3eaea);
+  border-color: var(--button-sampark-disabled-border, #e1e0e0);
+  color: var(--button-sampark-disabled-text, #bcb9b9);
+}
+
+.baps-button.baps-sampark.baps-button--ghost-primary:disabled,
+.baps-button.baps-sampark.baps-button--ghost-secondary:disabled,
+.baps-button.baps-sampark.baps-button--link:disabled,
+.baps-ds-sampark .baps-button.baps-button--ghost-primary:disabled,
+.baps-ds-sampark .baps-button.baps-button--ghost-secondary:disabled,
+.baps-ds-sampark .baps-button.baps-button--link:disabled {
+  background-color: transparent;
+  border-color: transparent;
+  color: var(--button-sampark-disabled-text, #bcb9b9);
+}
+
+/* ── Icon-only ─────────────────────────────────────────────────────────────
+   Square on the same scale: width equals the height of the size step. The
+   horizontal padding measured on the real component is NOT zero at the sm and
+   lg steps — PrimeNG keeps 16px there while zeroing it at default and xl, so
+   the sm icon-only button measures 34 wide against a 28 tall box instead of
+   being square. That asymmetry is reproduced here rather than tidied, because
+   the Custom tab has to show what the component actually renders. It is
+   recorded as a component inconsistency in guidelines/known-gaps instead of
+   being silently "fixed" on one side only. */
+/* Doubled class for specificity: the Sampark block above is (0,2,0) and sets
+   column-gap, so a single-class rule here loses to it and an icon-only Sampark
+   button keeps a 4px gap it has no second child to apply it to. */
+.baps-button--icon-only.baps-button--icon-only {
+  column-gap: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.baps-button.baps-sampark.baps-button--icon-only,
+.baps-ds-sampark .baps-button.baps-button--icon-only {
+  width: var(--button-sampark-height-default, 2rem);
+}
+
+/* The sm step is where the component's own geometry contradicts itself, and
+   this reproduces it rather than tidying it. The width token says 28px, the
+   retained 16px padding either side plus 2px of border needs 34, and
+   border-box takes the larger — so the button renders 34 wide against a 28
+   tall box (not square, unlike every other step) with the glyph overflowing
+   into `overflow: hidden`. Measured on the component: width 34px, icon 14.88px
+   in a 0px content box. Recorded in guidelines/known-gaps; fixing it belongs
+   with the component, not here, or the Custom tab would stop matching. */
+.baps-button.baps-sampark.baps-button--icon-only.baps-button--s,
+.baps-ds-sampark .baps-button.baps-button--icon-only.baps-button--s {
+  width: var(--button-sampark-height-sm, 1.75rem);
+  padding-left: var(--button-mybky-padding-x, 1rem);
+  padding-right: var(--button-mybky-padding-x, 1rem);
+  overflow: hidden;
+}
+
+.baps-button.baps-sampark.baps-button--icon-only.baps-button--l,
+.baps-ds-sampark .baps-button.baps-button--icon-only.baps-button--l {
+  width: var(--button-sampark-height-lg, 2.25rem);
+  padding-left: var(--button-mybky-padding-x, 1rem);
+  padding-right: var(--button-mybky-padding-x, 1rem);
+}
+
+.baps-button.baps-sampark.baps-button--icon-only.baps-button--xl,
+.baps-ds-sampark .baps-button.baps-button--icon-only.baps-button--xl {
+  width: var(--button-sampark-height-xl, 2.625rem);
+}

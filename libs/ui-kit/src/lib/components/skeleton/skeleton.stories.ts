@@ -16,7 +16,7 @@ import { BapsSkeleton } from './skeleton.component';
  * is the part that actually helps, and no placeholder can do it for you.
  */
 const meta: Meta<BapsSkeleton> = {
-  title: 'Components/Feedback/Skeleton',
+  title: 'Components/Atoms/Skeleton',
   // Pinned so the categorised title above does not move the docs URL.
   id: 'components-skeleton',
   // Design-system availability — drives the sidebar filter in .storybook/manager.tsx.
@@ -27,8 +27,24 @@ const meta: Meta<BapsSkeleton> = {
     shape: { control: 'inline-radio', options: ['rectangle', 'circle'] },
     animation: { control: 'inline-radio', options: ['wave', 'none'] },
     brand: { control: 'inline-radio', options: ['mybky', 'sampark'] },
+    width: { control: 'text' },
+    height: { control: 'text' },
+    size: { control: 'text' },
   },
-  args: { width: '12rem', height: '1rem' },
+  args: { width: '12rem', height: '1rem', shape: 'rectangle', animation: 'wave' },
+  render: (args) => ({
+    props: args,
+    template: `
+      <baps-skeleton
+        [shape]="shape"
+        [size]="size"
+        [width]="width"
+        [height]="height"
+        [animation]="animation"
+        [brand]="brand"
+      />
+    `,
+  }),
 };
 
 export default meta;

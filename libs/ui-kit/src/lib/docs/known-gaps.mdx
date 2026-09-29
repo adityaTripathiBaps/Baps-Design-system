@@ -14,7 +14,7 @@ checked by a different tool and read by a different audience.
 
 ## Stepper rail visual baselines capture the rail as empty
 
-**Screenshot harness limitation. Runtime is fine.** The 11 `Components/Layout/Stepper`
+**Screenshot harness limitation. Runtime is fine.** The 11 `Components/Organisms/Stepper`
 visual baselines pin a grey rounded bar where the icon rail should be, followed by
 the Back/Next buttons — no slots, no icons, no labels.
 
@@ -276,6 +276,41 @@ visible mismatch, since a fixed gradient or tick fill sits right next to
 surfaces that did move. Keep the remap **hex-preserving**: every value stays a
 real colour so Material's `color-mix` on primary keeps working, which is exactly
 what the `var()` attempt broke.
+
+### Status — 2026-09-21: Route A is done for Sampark too, and chrome is a third sink
+
+`samparkPrimaryDerivedComponents` now exists alongside
+`myBkyPrimaryDerivedComponents` and remaps `button`, `checkbox`, `radiobutton`,
+`toggleswitch`, `tabs`, `slider`, `progressbar`, `avatar` and `datatable` from
+the chosen ramp. Hex-preserving, as the paragraph above requires. The `tabs`
+row in the Sampark table is therefore closed; `toggleswitch` too.
+
+`tabs` was the one worth calling out. `_tabs-sampark.scss` sets the active tab's
+colour with `!important` from `--color-sampark-primary-default`, so in LIGHT
+mode a custom accent already appeared to work — the CSS was winning over the
+preset. The active bar and the entire dark scheme still read the baked
+`#c96868`. A fix that only looked at light mode would have declared this done.
+
+**`primary.alpha10` no longer needs the conversion described above** for the
+runtime path: `applyThemeToDesignSystem` writes
+`--color-sampark-primary-alpha10` as `rgb(from <ramp 800> r g b / 0.1)`
+directly. The token file still holds the literal, so the *static* gap stands —
+only the picker path is covered.
+
+**Chrome is a separate channel, not part of the primary ramp.** `baps-navbar`
+and `baps-internal-navbar` take their fill from the SECONDARY tier
+(`--color-sampark-secondary-100/80/60`), which is why moving the accent never
+moved them and is not a bug. `applyNavTheme(hex)` in `accent.theme.ts` drives
+those three steps; the `--navbar-bg`, `--navbar-border` and `--baps-inav-*`
+names are declared *on the components*, so writing them at `:root` is a no-op
+and the function deliberately does not.
+
+Same reason the primary sink writes only the seven base steps: everything in
+the alias tier (`--color-sampark-primary-default/hover/tint`, the whole
+`--button-sampark-primary-*` set, `--tag-sampark-primary-*`,
+`--avatar-sampark-*`, `--toggle-switch-sampark-track-on`) is already
+`var(--color-sampark-primary-NN)` in `tokens.css` and re-resolves on its own.
+
 
 
 ## Sampark's accent remap follows PrimeNG's step scale, not Sampark's own curve
@@ -802,10 +837,17 @@ action.
 ### What this affects
 
 The pages where it currently shows: `components-indicator--docs` ("Icon Badge"),
-`components-alert--docs` ("Card"), and `components-form-controls--docs`
-("Menu Item Playground", "Custom Templates Using P Template", and the Sampark
-side of "Rich Template Panel List"). A MyBKY user reaches all of these from the
-MyBKY sidebar and sees maroon.
+`components-alert--docs` ("Card"), `components-molecules-menu-item--docs`
+("Playground") and `components-molecules-listbox--docs` ("Custom Templates
+Using P Template", and the Sampark side of "Rich Template Panel List"). A MyBKY
+user reaches all of these from the MyBKY sidebar and sees maroon.
+
+The Listbox page leaks the other way too: under Sampark, `.menu-item__bar` —
+the selected-row accent — paints the MyBKY blue `rgb(95, 120, 184)`. Same
+root cause, opposite direction; `baps-menu-item` has one hardcoded skin rather
+than a brand branch. Splitting Listbox and Menu Item onto their own pages is
+what made this visible: both used to sit behind the merged Form Controls entry,
+which was allow-listed as a whole.
 
 `components-icon--docs` ("Inherits Colour") is NOT this bug and needs no fix: the
 story hardcodes `#c96868`, `#5f78b8` and `#089152` as three arbitrary swatches to
@@ -821,3 +863,419 @@ That is a design-system change affecting what consuming apps render, well
 outside a story- and docs-level migration, and it needs its own approval and its
 own baseline review — every one of these components has visual baselines that
 would move.
+
+## Deferred by decision — five findings from the atomic-design reorg
+
+The Atomic Design reorganisation (Components split into Atoms / Molecules /
+Organisms, one documentation page per component) surfaced five issues. **All
+five were reviewed and deliberately deferred** — each is its own decision with
+its own blast radius, and none of them is a story- or docs-level change. They
+are recorded here so the reorg does not have to be re-audited to rediscover
+them.
+
+| # | Finding | Call | Blast radius |
+| --- | --- | --- | --- |
+| 1 | `components-form-controls` id vs the page now named **Input** | Leave as is | Renaming the id moves 24 story ids and their visual baselines. Not worth a baseline rewrite for a cosmetic match. |
+| 2 | `baps-table-column-config` / `baps-table-sort-config` duplication | Merge, or move both to Patterns — later | Two near-identical drawer + drag-and-drop + list components. An API change either way. |
+| 3 | 583 hardcoded hex literals in component `styles` | Its own token-migration workstream | **Critical for the Theme builder**: a literal does not follow the theme picker, so any component built from them is inert under a re-theme. Start with `baps-chip` (82 literals, the worst). |
+| 4 | `baps-menu-item` has no MyBKY branch | Small fix, separate approval | Touches component SCSS and moves baselines. Part of the same cluster as `baps-indicator` — see the section above. |
+| 5 | `baps-progress-bar`: 4 axe violations, 2 critical | Priority a11y fix, separate | `aria-allowed-attr`, `aria-valid-attr-value` (both critical), `aria-progressbar-name`, plus `button-name` on `baps-split-button`. |
+
+### Why they are not bundled
+
+The reorg changed no component `.ts`, no `.scss`, no token, no public API, no
+story id and no visual baseline — that is what made it safe to land in one go.
+Each of the five above breaks at least one of those guarantees, so bundling any
+of them would have cost the reorg its "no regression possible" property. They
+are sequenced after the code-viewer pilot.
+
+### What the reorg did fix, for the record
+
+`baps-menu-item`'s two-directional colour leak (#4) was **invisible** before the
+split: Listbox and Menu Item lived behind the merged "Form Controls" entry,
+which `tools/check-brand-scope.mjs` allow-listed as a single page. Giving each
+its own page is what exposed it, and the allowlist entry now names the two pages
+that actually carry the gap rather than hiding a third component behind them.
+
+## `baps-button`'s sm icon-only step is 34x28, not square
+
+Found while building the Custom tab's PrimeNG-free markup, by measuring the
+component rather than reading it. Every other icon-only step is square — 32x32,
+36x36, 42x42 — because `iconOnlyWidth` and the height token agree. The sm step
+does not:
+
+| step | width token | retained padding | rendered |
+| --- | --- | --- | --- |
+| sm | 1.75rem = 28px | 16px + 16px + 2px border = 34px | **34 x 28** |
+| default | 2rem = 32px | 0 | 32 x 32 |
+| lg | 2.25rem = 36px | 16px + 16px + 2px = 34px | 36 x 36 |
+| xl | 2.625rem = 42px | 0 | 42 x 42 |
+
+`border-box` takes the larger of the two, so at sm the 34px the padding needs
+wins over the 28px the token asks for. The glyph then has a **0px content box**
+and survives only because the button carries `overflow: hidden` — measured:
+button width 34px, icon width 14.88px, content box 0.
+
+PrimeNG zeroes the horizontal padding at `default` and `xl` but keeps 16px at
+`sm` and `lg`. At lg that is harmless, because 36 > 34. At sm it is not.
+
+### Not fixed here
+
+The fix is a component change — zero the padding on the sm icon-only step the
+way `default` already does — and it moves that story's visual baseline. This
+work was scoped to add a stylesheet and snippets without touching
+`button.component.ts` or `SAMPARK_BUTTON_TOKENS`, so the behaviour is
+**reproduced** in `styles/components/button/_button.scss` instead: the Custom
+tab has to show what the component actually renders, and a partial that quietly
+rendered a square button there would be documenting a component that does not
+exist. When the component is fixed, `tools/check-button-drift.mjs` fails and
+names the cell — which is the intended way to find out.
+
+## Two things a non-Angular page needs that nothing in `ui-kit` applies
+
+Both were found by `tools/check-button-drift.mjs` — every colour, border,
+radius and padding matched while the buttons came out 1-3px narrow.
+
+1. **`--font-feature-settings`.** Inter's OpenType set (`case`, `cpsp`, `salt`,
+   `ss01/03/04`, `cv01`-`cv11`) changes glyph advance widths. `layout/_common.scss`
+   defines the variable; **nothing in ui-kit applies it.** The rule
+   (`html { font-feature-settings: var(--font-feature-settings) }`) lives in the
+   app's own `apps/storybook-host/src/styles.scss`, so a consuming app that
+   loads the partials and not that rule renders every label narrower than the
+   design system does.
+2. **`button, input, textarea, select { font-feature-settings: inherit }`.** A
+   form control does not inherit OpenType features from `html` on its own, so
+   even an app that states rule 1 gets unfeatured text inside every button
+   without this second rule.
+
+Same class of gap as the `font-family` one recorded in `card.snippets.ts`: the
+partials are complete, the base rules that make them render correctly are not
+shipped with them. A real styles export would be the place to fix it — see the
+packaging note in that file.
+
+## Theme-picker responsiveness — all 47 components, measured
+
+The "Third sink" section above was a **static scan** of `components.*` entries.
+This is the same question asked **empirically**: every component docs page
+rendered twice — default accent and `accent:amber` — with the computed colours
+of every visible element inside the story canvases diffed element by element.
+47/47 measured, 0 errors.
+
+**18 follow the accent picker. 29 do not.** And the 29 are not one problem —
+they are three, with three different fixes:
+
+| Cause | Count | What it means |
+| --- | --- | --- |
+| **A. Preset override (sink 3)** | 4 | Colour IS primary-derived, but baked into `components.*`. The only true "should follow and doesn't". |
+| **B. Hardcoded hex** | 21 | Never primary-derived. The picker was never going to move it. 535 hex across these. |
+| **C. Nothing to theme** | 4 | Icon, Input, Multi Select, Tree Select — 0 hex, no brand colour. **Not a bug.** |
+
+### A — the four to fix
+
+| Component | Hardcoded hex | Preset tokens to remap |
+| --- | --- | --- |
+| `button` | 25 | `ButtonMybkyPrimaryDefault`, `…PrimaryHover`, `…PrimaryGhostHover`, `…PrimaryGhostText` |
+| `avatar` | 43 | `AvatarMybkyBackground`, `AvatarMybkyText` |
+| `radiobutton` | 18 | `ColorMybkyPrimaryDefault`, `…PrimaryActive`, `ColorMybkyDarkPrimaryDefault`, `…DarkPrimaryHover` |
+| `toggleswitch` | 16 | `ToggleSwitchMybkyTrackOn`, `…TrackOnDisabled` |
+
+~12 tokens, one shared fix. **Route A first** — this is the whole
+"should-follow-but-doesn't" set, and nothing else in the library qualifies.
+
+### Where the static scan and the measurement disagree
+
+The table above lists `tag`, `checkbox` and `tabs` as sink-3 components. All
+three **measured as FOLLOWS** — their other colours move while the preset-pinned
+ones stay put. They are *partial* failures, which a scan of the preset cannot
+see and a render diff can. Deferred with bucket B: a mixed component is a worse
+first patient than a clean one.
+
+### The counter-intuitive part, worth stating plainly
+
+**Split Button follows the picker. Button does not — because Button has more
+tokens.**
+
+`components.splitbutton` does not exist in either preset (0 occurrences), so
+PrimeNG styles it from `{primary.*}` and the picker reaches it. `components.button`
+does exist, and `tokens.ts` resolves its value to a literal at build time:
+
+```ts
+ButtonMybkyPrimaryDefault = "linear-gradient(135deg, #5f78b8 0%, #384871 100%)"
+```
+
+So a component-tier token tier — normally the thing that makes a component
+*more* themeable — is exactly what makes these four *less* themeable. Worth
+remembering before treating "add component tokens" as automatically an
+improvement.
+
+Scope note: only `primary` is affected. A MyBKY Button at `accent:amber` shows
+Primary and Primary Ghost failing to move; Danger and Warning keeping their own
+colours is **correct** — they are severity colours, not primary-derived.
+
+### Bucket B — deferred, deliberately
+
+535 hardcoded hex across 21 components, worst first: `select` 122, `alert` 52,
+`pagination` 36, `tree-table` 32, `navbar` 23. **Select alone is larger than all
+four Route A fixes combined**, and fixes a component nobody has reported as
+broken. This is the token-migration workstream, not a bug queue.
+
+### The constraint any fix must respect
+
+The obvious fix — making preset values `var()` references — **was tried and
+reverted**: Material does `color-mix(in srgb, {primary.color}, …)` on primary,
+and a var chain there left the primary badge with no fill at all. Route A exists
+to avoid that. **Every remapped value must stay a real colour; no var() chains.**
+
+## Route A — done for the four sink-3 components
+
+The audit above named four components whose primary-derived colour was baked
+into `components.*` and therefore ignored the accent picker. All four are now
+remapped at runtime from the selected ramp.
+
+| Component | Sites | Ramp steps used |
+| --- | --- | --- |
+| `button` | 6 | 600, 800 |
+| `radiobutton` | 10 | 600, 800 light · 400, 200 dark |
+| `toggleswitch` | 2 | 600 |
+| `avatar` | 4 | 50, 800 light · 900, 200 dark |
+
+### Why it is shape-aware rather than a hex substitution
+
+The four components have four different value shapes, and only one of them is a
+plain colour:
+
+- **button** reproduces a gradient — `linear-gradient(135deg, 600 0%, 800 100%)`
+  — plus the same gradient REVERSED on hover, plus an alpha derivation for the
+  ghost tint (`rgb(from 600 r g b / 0.1)`).
+- **radiobutton** is four plain hexes, but its dark scheme runs the other way
+  (400/200, LIGHTER than light mode's 600/800) because the token says so:
+  "one step lighter than light mode - 7.79:1 on the dark ground".
+- **avatar** is a light/dark PAIR that inverts between schemes — pale ground
+  with dark ink in light, dark ground with pale ink in dark.
+
+A find-and-replace of `#5f78b8` would have produced a mid-amber avatar chip with
+mid-amber text and no contrast at all, and would have flattened radiobutton's
+dark contrast ratio. What has to survive is the RELATIONSHIP, not any one value.
+
+### It is switch-activated, and that is why no baseline moved
+
+`PRIMARY_RAMPS` has no `brand` key — `brand` is the preset default and appears
+only in the swatch list — so `withAccent` hits its `ramp ? … : preset` guard and
+returns the preset untouched. Baselines capture at the default accent, so all
+536 are unchanged: the remap adds a behaviour that did not exist (accent
+tracking) without altering the one that did (the default skin). Measured, both
+directions: the default gradient still resolves to `#5f78b8 → #384871`, byte for
+byte the original literals.
+
+### Scope, and what was deliberately not touched
+
+Every remap is keyed to `components.<name>`, never to a token.
+`ColorMybkyPrimaryDefault` and `ColorMybkyPrimaryActive` are SHARED — checkbox
+reads the same two — so remapping the token would have moved Checkbox silently.
+Checkbox is a partial follower and is deferred; it gets its own decision.
+Verified by measurement: at `accent:amber` Checkbox moves exactly the one
+element it moved before Route A existed.
+
+Tag, Chip and Tabs likewise still show their pre-existing partial behaviour —
+the colours they read from `--color-*` (sink 2) follow the picker while their
+preset literals (sink 3) do not. A Tag at `accent:amber` is an amber border
+around a blue fill. Unchanged by Route A and still deferred.
+
+### Residual — a checked AND disabled toggle switch keeps its blue track
+
+`ToggleSwitchMybkyTrackOnDisabled` (`#bdc6e4`, ramp 200) is interpolated into
+the preset's raw `css:` string, not a token slot:
+
+```
+.p-toggleswitch.p-toggleswitch-checked.p-disabled .p-toggleswitch-slider
+  { background: ${tokens.ToggleSwitchMybkyTrackOnDisabled}; }
+```
+
+`definePreset` replaces a string wholesale, so reaching that one declaration
+means restating the entire block — which also carries the thumb shadow and the
+disabled inset. Restating three unrelated rules to recolour one is a worse trade
+than the residual, which is visible only on a switch that is BOTH checked and
+disabled. Left as is, on purpose.
+
+### Residual — a checked AND disabled checkbox or radio stays mono grey
+
+MyBKY's disabled+checked checkbox and radio keep a mono ground (`#e4ecf1`,
+mono-300) with a mono tick, dot and border (`#8d9ba5`, mono-450), and do not
+follow the accent. Intentional: disabled reads as muted, and a grey mark keeps
+it clearly inactive. Same category as the toggle switch residual above.
+
+The checked and indeterminate states DO follow — `checkbox(ramp)` in
+`baps.theme.ts` plus the `--sel-*` vars reading `--color-mybky-blue-*` (sink 2).
+Measured on `components-checkbox--states` / `components-radio--states`: at
+`accent:amber` the checked border and tick go `#5f78b8` → `#d08609` in light and
+`#9fadd9` → `#f7b039` in dark; at `accent:brand` they stay the original literals.
+
+## "Non-wrapper" does not mean "snippet-able" — measure each one
+
+The rollout estimate assumed the ten components that do not wrap PrimeNG were
+the cheap tier: extract the CSS, write the snippets, done. Building them proved
+that wrong, and the correction matters more than the components do.
+
+**Not wrapping PrimeNG makes the CSS MOVE cheap. It says nothing about whether
+a Custom tab can honestly exist.** Those are two different questions, and only
+the first one is answered by an import list.
+
+### Running list — measured, not estimated
+
+| Component | CSS move | Custom tab | Why |
+| --- | --- | --- | --- |
+| `card` | done | **yes** | plain divs, tokens throughout |
+| `alert` | done | **yes** | same |
+| `link` | done | **yes** | 34 decls, every input a host class |
+| `spinner` | done | **yes** | own SVG; arc maths resolves to literals |
+| `button` | n/a — authored | **yes** | wrapper, but 56 tokens cover it; drift-guarded |
+| `icon` | done | **no — structural** | see below |
+| `indicator` | done | **deferred** | 17 hex against 10 tokens — a Custom tab would bake the literals |
+| `file-upload` | done | open | nests `baps-button`, whose raw markup now exists |
+| `internal-navbar` | done | open | 193 decls / 53 selectors — largest of the set |
+| `menu-item` | not moved | blocked | nests `baps-avatar`, a wrapper with no raw markup |
+| `users-dropdown` | not moved | **no — structural** | 14.5 KB, nests `baps-menu-item`, itself blocked |
+
+### The two structural refusals
+
+**`icon`** has its own CSS — 54 lines, moved and shipping — but its colour is
+`color: inherit`, by design: an icon takes the colour of whatever contains it.
+A Custom tab can show the markup, and it cannot demonstrate "the same design",
+because the design depends on the parent. A snippet that appeared to prove it
+would be proving the surrounding example instead.
+
+**`users-dropdown`** is an organism whose Custom tab would mean reimplementing
+its nested chain in raw markup. The snippet would be larger than the component
+and would drift the moment either moves.
+
+Neither is a gap to close later. They are cases where the artifact would be
+misleading, which is worse than absent — the same reasoning that keeps a
+`p-message` snippet off the Alert page.
+
+### What this does to the rollout number
+
+The earlier estimate — 16 of 47 viable — is an UPPER bound reached by counting
+tokens. Building four of them turned up two structural refusals and one deferral
+that token-counting could not see. The honest number is lower, and it is only
+knowable per component, by reading it.
+
+So the rule for any future batch: **measure the component, then decide.** A
+component-by-component read is not overhead on the rollout; it IS the rollout.
+
+## A snippet's source of truth is the live render, not the token file
+
+A Custom-tab snippet exists to be copied into a page that has no Angular and no
+PrimeNG, and to come out looking like the component it sits under. So the value
+it must reproduce is **what the component actually paints**, not what the token
+that nominally feeds it says. Those two are not always the same value, and when
+they disagree the token is the one that is wrong for this purpose.
+
+### Where they come apart
+
+Tag is the worked example. `--tag-mybky-primary-background` resolves to
+`var(--color-mybky-blue-50)`, and the component's primary fill is
+`components.tag.contrast.background` in the PrimeNG preset — a literal baked at
+build time by `tokens.ts`. Measured on the live component:
+
+| Context | Primary tag background |
+| --- | --- |
+| MyBKY, default accent | `rgb(238, 240, 248)` = `#eef0f8` |
+| MyBKY, accent `rose` | `rgb(238, 240, 248)` — unchanged |
+| Sampark | `rgba(135, 48, 48, 0.1)` |
+
+The theme picker rewrites `--color-mybky-blue-*` (sink 2) and does not rewrite
+the preset (sink 3). A snippet written from the token would therefore follow the
+accent while the component beside it stayed blue — a snippet that is *more*
+correct than the thing it documents, which is still a snippet that is wrong.
+
+`.baps-tag--primary` bakes `#eef0f8` for that reason, while leaving
+`border-color` on `--tag-mybky-primary-border`, which has no preset counterpart
+and genuinely does follow. At `accent:rose` a primary tag renders a rose border
+around a blue fill; the split in the partial is that measurement, not a
+preference. When bucket B migrates tag off the preset literals, both lines go
+back to tokens and the drift guard is what notices.
+
+### Why "read the token file" is not a shortcut
+
+A token file states intent. A preset override, a `::ng-deep` rule, a
+`definePreset` computation and a runtime severity map can each sit between that
+intent and the pixel, and none of them are visible in the token file. Reading it
+answers "what was meant", and the snippet has to answer "what is painted".
+
+### How this is enforced rather than remembered
+
+`tools/check-button-drift.mjs` and `tools/check-tag-drift.mjs` do not compare the
+partial against the tokens. They render the Angular component and the raw snippet
+markup side by side in the same browser and diff the **computed** styles —
+628 properties across 30 buttons, 270 across 15 tags, both at zero. A guard built
+that way cannot be satisfied by a value that is merely well-sourced, and it goes
+red on exactly the mistake this section describes.
+
+Corollary worth stating: a green drift guard is evidence, so "this literal looks
+suspicious" is not on its own a reason to change it. Changing a baked value to a
+better-sourced one that the component does not render turns a passing guard red.
+
+## The Custom tab is viable for custom components, not for wrappers
+
+The code viewer's Custom tab promises one thing: markup you can paste into a
+page with no Angular and no PrimeNG, that looks like the component above it.
+Whether that promise can be kept is decided by **where the component's colour
+comes from**, and that splits the library cleanly in two.
+
+### Why a wrapper cannot keep the promise
+
+A wrapper's design is delivered by the PrimeNG preset at runtime —
+`components.tag`, `components.toggleswitch`, `components.button`. Those entries
+are resolved literals baked by `tokens.ts`, so nothing in a plain stylesheet
+reproduces them; the only way to show the design without PrimeNG is to write it
+again. That second copy is a **second implementation of the same design**, and
+two implementations of one design drift. Button and Tag both needed a dedicated
+drift guard for exactly this reason, and the guards are the admission, not the
+solution.
+
+Measured, all three of the components this was tried on:
+
+| | blocker |
+| --- | --- |
+| **tag** | `components.tag.colorScheme` carries all seven severities. The preset reads the same `--tag-mybky-*` tokens the partial does, but the theme picker rewrites `--color-*` (sink 2) and not the preset (sink 3), so fills stop following while borders keep following. |
+| **toggle-switch** | Same sink-3 shape, no severity axis — but it is an interactive control. Raw markup needs a checkbox-and-label rewrite, and `ToggleSwitchMybkyTrackOnDisabled` is interpolated into a raw `css:` string, not a token slot. |
+| **drawer** | No preset section at all, yet still not a CSS-move: `_drawer.scss` is 139 lines of `.p-drawer.baps-drawer-mybky …`. PrimeNG-namespaced selectors cannot be reused under a different class name. The panel is `appendTo="body"` portalled, so raw markup shows a static box rather than a drawer. |
+
+### Route A removed the reason to want one
+
+The four components Route A fixed — button, radiobutton, toggleswitch, avatar —
+now follow the accent picker through the preset itself. A wrapper that already
+tracks the theme does not need a raw re-implementation to prove it does; the
+live component is the proof. The Custom tab was only ever interesting where the
+live source is not copyable, and for a theme-following wrapper the answer is to
+copy the Angular usage, which the PrimeNG-Angular tab already shows.
+
+### What a custom component has instead
+
+A non-wrapper's partial keys off its own element selector — `baps-indicator`,
+`baps-file-upload`, `baps-internal-navbar` — and ships in the global
+stylesheet. Checked across all eight candidates: **zero `:host` rules**. That
+matters more than it sounds. `:host` resolves only under Angular's view
+encapsulation, so a partial using it would style nothing on a bare page; an
+element selector matches an unknown element in any browser. So a raw
+`<baps-indicator>` in plain HTML is styled by the same bytes that style the
+Angular one, and the Custom tab can simply render the live source. There is no
+second implementation, so there is nothing to drift, and no guard is needed.
+
+This is why hex-count is not the gate. Alert ships 54 hex literals and Card 19,
+and neither can drift — component and snippet load the identical file. Tag has
+two, and needed a 270-property guard, because its two copies are genuinely
+separate.
+
+### The rule
+
+**Custom tab only for components that own their CSS under their own element
+selector.** For a wrapper, ship `react` / `next` / `primeng` — which are
+documented as statements of intended markup, not as generated output — and pass
+`hideCustom` on `FrameworkTabs`. The opt-out exists because the tab is otherwise
+unconditional, and its unset behaviour (render the live Angular source) is the
+worst of the three options for a wrapper: `<baps-tag value="Grey" />` outside
+Angular is an empty custom element.
+
+Revisit after bucket B. When the token migration removes the preset literals,
+the wrappers become ordinary token consumers and the tab becomes honest.

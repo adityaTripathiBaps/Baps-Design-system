@@ -1,0 +1,49 @@
+import { Meta } from '@storybook/blocks';
+import { ResourceTabs, AuditReport } from '@baps/docs-blocks';
+import snapshot from './audit.snapshot.json';
+
+<Meta title="Foundations/Audit/Overview" />
+
+# Foundations Audit
+
+How much of the library is built from its own tokens, and where it is not — one check per foundation.
+
+<ResourceTabs sections={['Checks', 'Statuses', 'Other audits', 'Running it']} />
+
+## Checks
+
+<AuditReport snapshot={snapshot} />
+
+## Statuses
+
+| Status | Means | Example |
+| --- | --- | --- |
+| **Passed** | Nothing to do | Every var() resolves |
+| **Warning** | Renders correctly today, drifts tomorrow | `border-radius: 4px` that happens to equal `--radius-sampark-default` |
+| **Error** | Renders wrong, or not at all | A var() nothing defines; body text under 4.5:1 |
+| **Deprecated** | Still works, scheduled for removal | A token whose source comment says so |
+
+Warnings are the migration backlog, ranked by file. They are not fixed by editing component CSS to satisfy the count — the existing appearance is the baseline (non-negotiable #4), so each literal is swapped for the token that already renders the same value.
+
+## Other audits
+
+This page covers the foundations. The rest of the audit trail lives beside it:
+
+| Page / tool | Covers |
+| --- | --- |
+| [Token Inventory](?path=/docs/foundations-audit-token-inventory--docs) | How each token reconciles the two legacy codebases |
+| [Inconsistency Findings](?path=/docs/foundations-audit-inconsistency-findings--docs) | Contradictions between MyBKY and Sampark that need a design decision |
+| [Button Mapping](?path=/docs/foundations-audit-button-mapping-v17-vs-v21--docs) | PrimeNG v17 → v21 |
+| [Docs → Audit report](?path=/docs/docs-audit-report--docs) | Component-level audit |
+| `node tools/a11y-audit.mjs` | axe on one story per component |
+| `node tools/check-dark-contrast.mjs` | Dark-mode contrast pairs |
+| `node tools/check-brand-scope.mjs` | Sampark rules that escape their scope |
+
+## Running it
+
+```bash
+node tools/audit-foundations.mjs           # rewrite audit.snapshot.json
+node tools/audit-foundations.mjs --check   # exit 1 if any check is an Error
+```
+
+The snapshot is committed, so this page shows the state as of its date rather than scanning in the browser. Re-run it after a token or style change and commit the result with the change.

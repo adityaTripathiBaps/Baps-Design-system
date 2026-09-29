@@ -282,7 +282,7 @@ const assignmentStatusSeverity: Record<string, string | undefined> = {
 };
 
 const meta: Meta<BapsTable> = {
-  title: 'Components/Data/Table',
+  title: 'Components/Organisms/Table',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-data-table.
   id: 'components-table',

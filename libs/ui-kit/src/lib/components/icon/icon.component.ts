@@ -49,33 +49,10 @@ const SIZE_PX: Record<BapsIconSize, number> = {
     [attr.role]="label ? 'img' : null"
     [attr.aria-label]="label || null"
   ></span>`,
-  styles: `
-    baps-icon {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      flex: none;
-      /* Set by the size input; the fallback is the lg step, which is the size
-         the artwork is actually drawn at. */
-      width: var(--baps-icon-size, 24px);
-      height: var(--baps-icon-size, 24px);
-      color: inherit;
-      vertical-align: middle;
-    }
-
-    baps-icon .baps-icon__glyph {
-      display: block;
-      width: 100%;
-      height: 100%;
-      line-height: 0;
-    }
-
-    baps-icon svg {
-      display: block;
-      width: 100%;
-      height: 100%;
-    }
-  `,
+  // CSS lives in ../../styles/components/icon/_icon.scss so the same rules can
+  // style raw <baps-icon> markup that Angular never rendered — see the header
+  // comment there. styleUrls keeps it shipping with the component.
+  styleUrls: ['../../styles/components/icon/_icon.scss'],
   // Matches the rest of the library. It is also load-bearing here: with
   // emulated encapsulation the `baps-icon { … }` rule below compiles to
   // `baps-icon[_ngcontent-x]`, which never matches the host, so the size rule

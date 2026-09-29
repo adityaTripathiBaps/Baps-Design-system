@@ -226,6 +226,18 @@ export interface BapsUserGroup {
       --users-dropdown-placeholder: var(--color-mybky-mono-400, #b6b6af);
       --users-dropdown-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
     }
+
+    /* The light block above is authored in Sampark's palette (this is a
+       Sampark-first component), so the MyBKY dark values alone left a
+       Sampark-scoped instance on its light surface — a #f8f7f7 trigger with
+       muted ink on it, 1.91:1. */
+    .baps-dark :is(baps-users-dropdown.baps-sampark, .baps-ds-sampark baps-users-dropdown) {
+      --users-dropdown-bg: var(--color-sampark-dark-surface-card, #2c2c2a);
+      --users-dropdown-border: var(--color-sampark-dark-border-divider, #4a4947);
+      --users-dropdown-border-hover: var(--color-sampark-dark-border-control, #94928f);
+      --users-dropdown-text: var(--color-sampark-dark-text-primary, #f8f7f7);
+      --users-dropdown-placeholder: var(--color-sampark-dark-text-muted, #b7b6b3);
+    }
   `,
 })
 export class BapsUsersDropdown {

@@ -19,7 +19,7 @@ import { BapsRadio } from './radio.component';
  * Bound with `ngModel`: `value` is the CVA field, not an `@Input`.
  */
 const meta: Meta<BapsRadio> = {
-  title: 'Components/Form/Radio',
+  title: 'Components/Atoms/Radio',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-form-radio.
   id: 'components-radio',
@@ -54,13 +54,13 @@ export default meta;
 
 /** A real single-choice group — radios grouped by a shared `name`. */
 export const Default: StoryObj<BapsRadio> = {
-  render: () => ({
-    props: { scope: 'all' },
+  render: (args) => ({
+    props: { ...args, scope: 'all' },
     template: `
       <div style="display:flex; flex-direction:column; gap:0.75rem; align-items:flex-start">
-        <baps-radio name="scope" radioValue="all" label="All karyakars" [(ngModel)]="scope"></baps-radio>
-        <baps-radio name="scope" radioValue="mine" label="Assigned to me" [(ngModel)]="scope"></baps-radio>
-        <baps-radio name="scope" radioValue="center" label="My center only" [(ngModel)]="scope"></baps-radio>
+        <baps-radio name="scope" radioValue="all" [label]="label || 'All karyakars'" [disabled]="disabled" [size]="size" [variant]="variant" [brand]="brand" [(ngModel)]="scope"></baps-radio>
+        <baps-radio name="scope" radioValue="mine" label="Assigned to me" [disabled]="disabled" [size]="size" [variant]="variant" [brand]="brand" [(ngModel)]="scope"></baps-radio>
+        <baps-radio name="scope" radioValue="center" label="My center only" [disabled]="disabled" [size]="size" [variant]="variant" [brand]="brand" [(ngModel)]="scope"></baps-radio>
       </div>
     `,
   }),

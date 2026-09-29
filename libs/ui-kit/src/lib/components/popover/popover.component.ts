@@ -55,7 +55,7 @@ import { Popover } from 'primeng/popover';
       --baps-popover-bg: var(--color-mybky-mono-0, #ffffff);
       --baps-popover-border: var(--color-mybky-mono-300, #e4ecf1);
       --baps-popover-text: var(--color-mybky-text-primary, #181b1d);
-      --baps-popover-radius: 0.75rem;
+      --baps-popover-radius: 1rem;
       --baps-popover-shadow:
         0 4px 6px -1px rgba(24, 27, 29, 0.06),
         0 10px 24px -4px rgba(24, 27, 29, 0.1);

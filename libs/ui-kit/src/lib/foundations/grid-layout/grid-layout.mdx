@@ -1,0 +1,99 @@
+import { Meta } from '@storybook/blocks';
+import { ResourceTabs, BreakpointTable, LayoutPreview, CodeBlock } from '@baps/docs-blocks';
+
+<Meta title="Foundations/Grid & Layout" />
+
+# Grid & Layout
+
+Breakpoints, page frames and the measures layouts are built from.
+
+<ResourceTabs sections={['Overview', 'Breakpoints', 'Layout measures', 'Interactive preview', 'Usage', 'Accessibility', 'Developer implementation']} />
+
+## Overview
+
+The library ships **no grid utility and no breakpoint tokens**. Layouts are CSS grid and flexbox inside each pattern, spaced with the `--space-*` scale. What is fixed is the set of measures below and the one breakpoint the components agree on. This page documents exactly that, and the column grid in the preview is a recipe built from those tokens — not a class you can import.
+
+## Breakpoints
+
+Measured from every `@media` rule in `libs/ui-kit`. The library is **desktop-first**: every rule is `max-width`, and the unqueried style is desktop.
+
+<BreakpointTable />
+
+**767px is the one that matters.** Navbar, toolbar, internal navbar and the Sampark drawer all switch there; the others are specific to the stepper.
+
+## Layout measures
+
+From `.agents/rules/design-language.md`:
+
+| Measure | Value | Notes |
+| --- | --- | --- |
+| Base grid | 4px | The `--space-*` scale |
+| Admin table outer gutter | 24px | `--space-6` |
+| Max reading width | 680px | Long-form text, forms |
+| Sidebar — web admin | 264px, fixed left | |
+| Sidebar — tablet | 320px | |
+| Sidebar — mobile | Drawer | `baps-drawer` |
+| Top bar — web admin | 56px, fixed | |
+| Mobile top status | ~44px | |
+| Mobile bottom tab bar | 76px incl. safe area | |
+
+Content width: admin tables are full width inside the gutters; reading content is contained at 680px.
+
+## Interactive preview
+
+Pick a layout and resize the frame — drag its bottom-right corner, or use the presets. The label reports the breakpoint band the frame is in.
+
+<LayoutPreview />
+
+## Usage
+
+| Layout | When |
+| --- | --- |
+| Sidebar + content | Every admin screen. The sidebar becomes a drawer at 767px and below. |
+| Full width | Data tables and dashboards — full width inside 24px gutters. |
+| Contained | Forms, settings and reading content — max 680px, centred. |
+| Two-column | Detail pages with a summary beside the body; stacks at 767px. |
+| Column grid | Dashboards of cards. 12 columns on desktop, 4 on mobile, `--space-6` / `--space-4` gutters. |
+
+### Do
+
+- Use the shared `(max-width: 767px)` split so a page collapses at the same width as the navbar.
+- Let content decide column spans; use `minmax()` rather than a fixed count where you can.
+
+### Don't
+
+- Invent a new breakpoint for one component. If the stepper's are needed elsewhere, they should become tokens first.
+- Scroll the page horizontally. A wide table scrolls inside its own container.
+
+## Accessibility
+
+- Reflow (WCAG 1.4.10): content must work at 320 CSS px wide without two-dimensional scrolling — the 767px rules are what make this true.
+- Keep the DOM order the reading order. Reordering columns with `order` or grid placement changes what a screen reader and a keyboard user meet first.
+- Fixed bars take height from a zoomed viewport. At 400% zoom a 56px top bar plus a 76px tab bar can leave little room; keep content scrollable between them.
+
+## Developer implementation
+
+<CodeBlock
+  filename="_page.scss"
+  language="css"
+  code={`.page {
+  display: grid;
+  grid-template-columns: 264px 1fr;   /* sidebar + content */
+  grid-template-rows: 56px 1fr;       /* top bar */
+}
+.page__content {
+  padding: var(--space-6);            /* 24px gutters */
+}
+.page__cards {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--space-6);
+}
+
+@media (max-width: 767px) {
+  .page { grid-template-columns: 1fr; }         /* sidebar → baps-drawer */
+  .page__cards { grid-template-columns: repeat(4, 1fr); gap: var(--space-4); }
+}`}
+/>
+
+**Token gap:** the breakpoints and the layout measures above are literals in the code today. Adding `breakpoint.*` and `layout.*` to `libs/tokens/src/source/` is the change that would let this page render them from the build like the others.

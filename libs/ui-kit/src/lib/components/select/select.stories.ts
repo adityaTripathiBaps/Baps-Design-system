@@ -12,7 +12,7 @@ import { BapsSelect } from './select.component';
  * documents this input.
  */
 const meta: Meta<BapsSelect> = {
-  title: 'Components/Form/Select',
+  title: 'Components/Molecules/Select',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-form-select.
   id: 'components-select',
@@ -54,7 +54,18 @@ const meta: Meta<BapsSelect> = {
   render: (args) => ({
     props: args,
     template: `
-      <baps-select [options]="options" [optionLabel]="optionLabel" [placeholder]="placeholder" [brand]="brand" appendTo="body"></baps-select>
+      <baps-select
+        [options]="options"
+        [optionLabel]="optionLabel"
+        [placeholder]="placeholder"
+        [brand]="brand"
+        [disabled]="disabled"
+        [filter]="filter"
+        [showClear]="showClear"
+        [editable]="editable"
+        [size]="size"
+        appendTo="body">
+      </baps-select>
     `,
   }),
 };
@@ -67,7 +78,11 @@ export const Default: StoryObj<BapsSelect> = {
     optionLabel: 'name',
     options: [
       { name: 'New York', code: 'NY' },
-    ]
+      { name: 'Rome', code: 'RM' },
+      { name: 'London', code: 'LDN' },
+      { name: 'Istanbul', code: 'IST' },
+      { name: 'Paris', code: 'PRS' },
+    ],
   },
 };
 

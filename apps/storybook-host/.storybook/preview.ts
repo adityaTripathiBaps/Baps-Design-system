@@ -3,10 +3,13 @@ import type { Decorator, Preview } from '@storybook/angular';
 import { applicationConfig } from '@storybook/angular';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
-import { definePreset, palette, usePreset } from '@primeuix/themes';
+import { usePreset } from '@primeuix/themes';
 import { addons } from 'storybook/internal/preview-api';
 import { DARK_MODE_EVENT_NAME } from 'storybook-dark-mode';
-import { MyBky, PRIMARY_RAMPS, Sampark, withAccent, withSurface } from '@org/ui-kit';
+import { MyBky, Sampark, withAccent, withPrimaryRamp, withSurface, applyThemeToDesignSystem, rampFor } from '@org/ui-kit';
+
+
+
 // Compodoc metadata for the API tables. The storybook target regenerates
 // documentation.json on every start (compodoc: true + compodocArgs in
 // apps/storybook-host/project.json); generating it is NOT enough on its own -
@@ -17,6 +20,9 @@ import { MyBky, PRIMARY_RAMPS, Sampark, withAccent, withSurface } from '@org/ui-
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import docJson from '../../../documentation.json';
 import { setCompodocJson } from '@storybook/addon-docs/angular';
+// Copy prompt on every Canvas (see the `canvas` parameter below and the
+// header of blocks/prompt.tsx).
+import { canvasPromptAction, rememberSource, setSourceTransform } from './blocks/prompt';
 
 setCompodocJson(docJson);
 
@@ -103,7 +109,26 @@ if (typeof document !== 'undefined') {
   // switches with the toolbar toggle. Initial state comes from the addon's own
   // persisted store (STORAGE_KEY 'sb-addon-themes-3') so a freshly-loaded docs
   // iframe isn't stuck light until the first event arrives.
+  // The class goes on <html> as well as <body>, and the <html> half is not
+  // cosmetic — it is what makes dark mode resolve at all.
+  //
+  // Every design token is declared at `:root`, i.e. on <html>. A token that
+  // holds a literal (`--p-content-background: #ffffff`) flips fine wherever the
+  // dark class sits, because the dark block re-declares it. A token declared as
+  // a REFERENCE does not: `--p-datatable-row-color: var(--p-content-color)` is
+  // evaluated on <html>, so with the class only on <body> it computes the LIGHT
+  // value and every row inherits that computed colour. Measured: dark table
+  // cells were #0f172a (Material's light ink) while `--p-text-color` on the
+  // same cell read #f8fafb. The same trap hits the brand alias tier that
+  // _dark-aliases.scss re-points, and any partial declaring its own variables
+  // at `:root`.
+  //
+  // <body> keeps the class too: the docs shell and several component partials
+  // are written as `.baps-dark <something>` and a portalled overlay is a child
+  // of <body>, not of the story root.
   const setDark = (isDark: boolean) => {
+    document.documentElement.classList.toggle('baps-dark', isDark);
+    document.documentElement.classList.toggle('baps-light', !isDark);
     document.body.classList.toggle('baps-dark', isDark);
     document.body.classList.toggle('baps-light', !isDark);
   };
@@ -289,109 +314,32 @@ const showAwaitingPaletteNotice = (label: string | undefined): void => {
  * palette 300/900/950 have no Sampark counterpart and are not written; 500 is
  * skipped because the preset collapses 500 and 600 onto the same step and 600 is
  * the one `primary.color` actually reads.
+ *
+ * DS_RAMPS, rampFor and applyThemeToDesignSystem now live in @org/ui-kit
+ * (accent.theme.ts) so apps get the same sink Storybook uses; imported above.
  */
-const DS_RAMPS: Record<
-  keyof typeof DS_PRESETS,
-  { prefix: string; steps: ReadonlyArray<readonly [dsStep: number, paletteStep: number]> }
-> = {
-  mybky: {
-    prefix: '--color-mybky-blue-',
-    steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950].map((s) => [s, s] as const),
-  },
-  sampark: {
-    prefix: '--color-sampark-primary-',
-    steps: [
-      [0, 50],
-      [10, 100],
-      [20, 200],
-      [40, 400],
-      [60, 600],
-      [80, 700],
-      [100, 800],
-    ] as const,
-  },
-};
+
 
 /**
- * The ramp an `accent` global names.
+ * The document-level half of the design-system switch: brand class, comparison
+ * flag, direction, and the accent's inline ramp on <html>.
  *
- * One global carries both forms: a swatch key (`'brand'`, `'rose'`, …) or a raw
- * `#rrggbb` from the Theme builder's colour input. One value means one thing to
- * put in the URL and one thing to export; a second `accentHex` global would be
- * two values that can disagree, and an export that has to say which wins.
- *
- * `'brand'` returns undefined here on purpose — it is the preset's own primary,
- * so there is nothing to override. That is what keeps the default a no-op.
+ * Split out of the decorator because a decorator only runs when a STORY
+ * renders. A docs page with no canvas on it — Foundations/Design Tokens,
+ * Spacing, Shadows — never ran it, so the toolbar did nothing there: measured,
+ * body class and `--color-sampark-primary-60` both unchanged after a switch.
+ * The channel listener below runs it for those pages too; the decorator still
+ * calls it for every story, so nothing about story rendering changed.
  */
-const rampFor = (accent: string): Record<number, string> | undefined =>
-  accent.startsWith('#')
-    ? (palette(accent) as Record<number, string>)
-    : (PRIMARY_RAMPS[accent] as Record<number, string> | undefined);
-
-/** Exactly what the last call wrote, so the next one can undo precisely that. */
-let writtenProps: string[] = [];
-
-const applyThemeToDesignSystem = (ds: keyof typeof DS_PRESETS, accent: string): void => {
-  if (typeof document === 'undefined') return;
-  const root = document.documentElement;
-
-  // Undo the previous config first. Without this, switching from an accent back
-  // to Brand leaves the old ramp stuck on: the inline properties outrank
-  // tokens.css and nothing else clears them.
-  for (const prop of writtenProps) root.style.removeProperty(prop);
-  writtenProps = [];
-
-  // GUARD — the default must write NOTHING.
-  //
-  // At `accent: 'brand'` the design system's own values are already correct, so
-  // there is nothing to override. Writing them back anyway would re-serialise
-  // every colour through the CSSOM — `#5f78b8` comes back out as
-  // `rgb(95, 120, 184)` — which is the same colour and a different string, and
-  // would move all 536 baselines for no visual reason. Every baseline is
-  // captured at this default, so this branch is the one that runs during a
-  // visual run.
-  if (accent === 'brand') return;
-
-  const ramp = rampFor(accent);
-  if (!ramp) return;
-
-  const { prefix, steps } = DS_RAMPS[ds];
-  for (const [dsStep, paletteStep] of steps) {
-    const value = ramp[paletteStep];
-    if (!value) continue;
-    const prop = `${prefix}${dsStep}`;
-    root.style.setProperty(prop, value);
-    writtenProps.push(prop);
-  }
-
-  // Not written, and not an oversight:
-  // - `sampark.primary.default/hover/tint` are references to steps above, so
-  //   they re-resolve on their own.
-  // - `primary.alpha20` is a relative colour reading off primary.100, so it
-  //   re-tints too. `primary.alpha10` is still a literal and will NOT follow —
-  //   see Guidelines → Known gaps.
-};
-
-const withDesignSystem: Decorator = (storyFn, context) => {
-  const selected = String(context.globals['designSystem'] ?? 'mybky');
+const applyDocumentTheme = (globals: Record<string, unknown>) => {
+  const selected = String(globals['designSystem'] ?? 'mybky');
   // A scaffolded brand falls back to the MyBKY base and announces itself; it
   // never borrows another brand's skin. Anything unrecognised lands here too,
   // which is the right default for a stale URL carrying a removed brand.
   const awaiting = AWAITING_PALETTE[selected];
   showAwaitingPaletteNotice(awaiting);
   const ds: keyof typeof DS_PRESETS = selected === 'sampark' ? 'sampark' : 'mybky';
-  const accent = (context.globals['accent'] as string) ?? 'brand';
-  const surface = (context.globals['surface'] as string) ?? 'default';
-  const ripple = context.globals['ripple'] !== false;
-  // A swatch key goes through the library's own `withAccent`; a raw hex from the
-  // builder is applied here instead, because `withAccent` resolves its argument
-  // against `PRIMARY_RAMPS` and a hex is not a key there. Same shape either way —
-  // `semantic.primary` replaced with a ramp — so the library needs no change.
-  const accentRamp = accent.startsWith('#') ? rampFor(accent) : undefined;
-  const branded = accentRamp
-    ? definePreset(DS_PRESETS[ds], { semantic: { primary: accentRamp } })
-    : withAccent(DS_PRESETS[ds], accent);
-  const preset = withSurface(branded, surface);
+  const accent = (globals['accent'] as string) ?? 'brand';
   if (typeof document !== 'undefined') {
     document.body.classList.toggle('baps-ds-sampark', ds === 'sampark');
     // Also on <html>. preview-head.html adds it there from the URL so the first
@@ -403,18 +351,47 @@ const withDesignSystem: Decorator = (storyFn, context) => {
     document.documentElement.classList.toggle('baps-ds-sampark', ds === 'sampark');
     // Comparison blocks on docs pages read this, the same way the sidebar
     // filter reads the `comparison` global — see BrandOnly in .storybook/blocks.
-    document.body.dataset['bapsComparison'] =
-      context.globals['comparison'] === true ? 'on' : 'off';
+    document.body.dataset['bapsComparison'] = globals['comparison'] === true ? 'on' : 'off';
     // RTL global, driven by the Theme settings popover (see manager.tsx). Dark
     // mode is NOT handled here — storybook-dark-mode owns the `.baps-dark` class
     // (PrimeNG's darkModeSelector, configured below) across chrome + preview.
-    document.documentElement.dir = context.globals['direction'] === 'rtl' ? 'rtl' : 'ltr';
+    document.documentElement.dir = globals['direction'] === 'rtl' ? 'rtl' : 'ltr';
   }
-  // The design-system sink. Runs on every render, not only on change, because
-  // Storybook re-bootstraps the Angular app on story navigation and the inline
-  // properties have to survive that. It is idempotent and a no-op at the
-  // default, so re-running it costs nothing.
+  // The design-system sink. Idempotent and a no-op at the default, so running
+  // it from both the decorator and the listener costs nothing.
   applyThemeToDesignSystem(ds, accent);
+  return { ds, accent };
+};
+
+// SET_GLOBALS carries the initial (URL) globals, GLOBALS_UPDATED every toolbar
+// change. Event names as strings: they are stable core events and importing
+// them from core-events would add a dependency for two literals.
+for (const event of ['setGlobals', 'globalsUpdated']) {
+  addons.getChannel().on(event, ({ globals }: { globals: Record<string, unknown> }) => applyDocumentTheme(globals));
+}
+
+const withDesignSystem: Decorator = (storyFn, context) => {
+  // The Angular app is re-bootstrapped on story navigation and the inline
+  // properties have to survive that, so this re-applies on every render.
+  const { ds, accent } = applyDocumentTheme(context.globals);
+  const surface = (context.globals['surface'] as string) ?? 'default';
+  const ripple = context.globals['ripple'] !== false;
+  // A swatch key goes through the library's own `withAccent`; a raw hex from the
+  // builder is applied here instead, because `withAccent` resolves its argument
+  // against `PRIMARY_RAMPS` and a hex is not a key there. Same shape either way —
+  // `semantic.primary` replaced with a ramp — so the library needs no change.
+  const accentRamp = accent.startsWith('#') ? rampFor(accent) : undefined;
+  const branded = accentRamp
+    ? // `withPrimaryRamp`, not a bare `semantic.primary` merge: the library
+      // function also remaps the primary-derived `components.*` entries, which
+      // is what makes the MyBKY button fill follow the accent. Merging only
+      // `semantic.primary` here would have left the theme builder's own hex
+      // moving the surfaces while the primary button kept its baked gradient —
+      // the exact bug Route A fixes, reintroduced on the one path that bypasses
+      // `withAccent`.
+      withPrimaryRamp(DS_PRESETS[ds], accentRamp)
+    : withAccent(DS_PRESETS[ds], accent);
+  const preset = withSurface(branded, surface);
 
   // PrimeNG's theme is a document-level singleton — a running app won't re-read
   // its providers, so push preset changes (design system / primary / surface) live.
@@ -574,27 +551,39 @@ const preview: Preview = {
         order: [
           'Getting Started',
           'Foundations',
+          // Tokens before the things built from them, then roughly the order a
+          // designer reads a system in. Labels only — the Colour/Typography
+          // URLs are unchanged, so no link or baseline moved.
+          [
+            'Audit',
+            ['Overview'],
+            'Design Tokens',
+            'Colour',
+            'Typography',
+            'Spacing',
+            'Grid & Layout',
+            'Borders & Radius',
+            'Shadows',
+            'Icons',
+            'Motion',
+            // The whole theme on real screens; last, because it is built from
+            // everything above it.
+            'Theme Preview',
+          ],
           'Components',
-          // Renamed onto the target IA: Menu -> Navigation, Messages -> Feedback,
-          // Panel -> Layout, Misc -> Utility. Every component meta pins its own
+          // Atomic Design, smallest first. Every component meta pins its own
           // id, so these are SIDEBAR LABELS only — the story URLs, and the 462
           // visual baselines keyed off them, did not move.
           //
-          // Button keeps its own category rather than being folded into Form or
-          // Utility: it is neither a form field nor a small display primitive,
-          // and burying the most-reached-for component in a bucket makes it
-          // harder to find than a two-entry category does.
-          [
-            'Form',
-            'Button',
-            'Data',
-            'Layout',
-            'Overlay',
-            'Navigation',
-            'Feedback',
-            'Media',
-            'Utility',
-          ],
+          // Atoms and Molecules are the two atomic tiers this library actually
+          // has. Organisms is the third bucket rather than a promise: the ten
+          // components in it (Table, Tree Table, Dialog, Drawer, Navbar,
+          // Internal Navbar, Toolbar, Stepper, and the two Table *Config
+          // drawers) are page SECTIONS, not reusable units, and forcing them
+          // into Molecules would have made Molecules mean nothing. Patterns,
+          // Guidelines and Docs stay outside Components entirely.
+          // Overview (every component on one page) comes before the tiers.
+          ['Overview', 'Atoms', 'Molecules', 'Organisms'],
           'Patterns',
           'Guidelines',
           'Docs',
@@ -638,8 +627,21 @@ const preview: Preview = {
         // showcase does — and without this they are collected as PAGE sections,
         // so the nav fills up with 'The quick brown fox jumps over the lazy dog'.
         // Only the MDX's own headings are page structure.
-        ignoreSelector: '.docs-story *',
+        // .baps-docs-foundation: the Foundations blocks' own h3/h4 (one per
+        // colour ramp, one per role) are real headings for the outline but would
+        // swamp the nav.
+        ignoreSelector: '.docs-story *, .baps-docs-foundation *',
         title: 'On this page',
+      },
+      // ── Copy prompt on every example ────────────────────────────────────
+      //
+      // Storybook's own Canvas extension point: each action renders in the
+      // strip beside "Show code", on every Canvas of every docs page. The
+      // action works out which story it sits on and copies an AI prompt with
+      // THAT example's code (Playground, Sizes, Group…), for the framework
+      // the reader picked: PrimeNG-Angular, Custom, React or Next.js.
+      canvas: {
+        additionalActions: [canvasPromptAction],
       },
       // ── Make "Show code" paste-ready ──────────────────────────────────────
       //
@@ -705,5 +707,18 @@ const preview: Preview = {
   },
   decorators: [withDesignSystem],
 };
+
+// The prompt carries each example's code exactly as "Show code" shows it:
+// the snippet Storybook's Angular sourceDecorator emits when the story
+// renders, run through the same paste-ready transform as above.
+setSourceTransform(
+  (preview.parameters?.['docs'] as { source?: { transform?: (code: string, ctx: { args?: Record<string, unknown> }) => string } })
+    ?.source?.transform ?? ((code: string) => code),
+);
+addons
+  .getChannel()
+  .on('storybook/docs/snippet-rendered', (e: { id?: string; source?: string; args?: Record<string, unknown> }) => {
+    if (e?.id && e.source) rememberSource(e.id, e.source, e.args);
+  });
 
 export default preview;

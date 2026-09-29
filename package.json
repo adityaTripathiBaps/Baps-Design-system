@@ -4,7 +4,8 @@
   "license": "MIT",
   "scripts": {
     "test:interactions": "node tools/check-interactions.mjs",
-    "check:panels": "node tools/check-panels.mjs"
+    "check:panels": "node tools/check-panels.mjs",
+    "check:dark-contrast": "node tools/check-dark-contrast.mjs"
   },
   "private": true,
   "devDependencies": {

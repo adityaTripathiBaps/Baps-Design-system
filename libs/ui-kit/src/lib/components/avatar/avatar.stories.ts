@@ -3,6 +3,14 @@ import { moduleMetadata } from '@storybook/angular';
 import { BapsAvatar } from './avatar.component';
 import { BapsAvatarGroup } from './avatar-group.component';
 
+const SAMPLE_AVATAR_IMAGES = [
+  undefined,
+  'https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png',
+  'https://primefaces.org/cdn/primeng/images/demo/avatar/asiyajavayant.png',
+  'https://primefaces.org/cdn/primeng/images/demo/avatar/onyamalimba.png',
+  'https://primefaces.org/cdn/primeng/images/demo/avatar/ionibowcher.png',
+];
+
 /**
  * The icon content mode: Lucide-style inline SVG, projected — not a
  * PrimeIcons class string. See the icon-slot doc on `BapsAvatar`. Shared
@@ -20,14 +28,12 @@ const USER_ICON_SVG = `
  * uses the `BapsAvatar` wrapper component.
  */
 const meta: Meta<BapsAvatar> = {
-  title: 'Components/Media/Avatar',
+  title: 'Components/Atoms/Avatar',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-media-avatar.
   id: 'components-avatar',
   parameters: {
-    // Design tab — the Figma frame this component implements.
-    // Harvested from avatar.stories.ts, where it was already recorded as a comment.
-    design: { type: 'figma', url: 'https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/🟢-Sampark-Portal?node-id=13197-90187' },
+    design: { type: 'figma', url: 'https://www.figma.com/design/yY5bmcEifXbcCwhauoiy6Y/?node-id=22465-97983' },
   },
   // Design-system availability — drives the sidebar filter in .storybook/manager.ts
   tags: ['ds:mybky', 'ds:sampark'],
@@ -35,7 +41,11 @@ const meta: Meta<BapsAvatar> = {
   decorators: [moduleMetadata({ imports: [BapsAvatar, BapsAvatarGroup] })],
   argTypes: {
     label: { control: 'text' },
-    image: { control: 'text' },
+    image: {
+      control: 'select',
+      options: SAMPLE_AVATAR_IMAGES,
+      description: 'Image URL: select a sample profile photo or provide an image URL.',
+    },
     shape: { control: 'radio', options: ['circle', 'square'] },
     size: { control: 'select', options: ['xs', 's', 'm', 'l', 'xl', '2xl'] },
     variant: {
@@ -50,6 +60,7 @@ const meta: Meta<BapsAvatar> = {
     styleClass: '',
     style: {},
     label: 'AT',
+    image: undefined,
     shape: 'circle',
     size: 'm',
     variant: 'primary',
@@ -78,7 +89,22 @@ const meta: Meta<BapsAvatar> = {
 export default meta;
 type Story = StoryObj<BapsAvatar>;
 
-export const Playground: Story = {};
+export const MyBkyPlayground: Story = {
+  name: 'Playground',
+  tags: ['!ds:sampark'],
+  parameters: {
+    design: { type: 'figma', url: 'https://www.figma.com/design/yY5bmcEifXbcCwhauoiy6Y/?node-id=22465-97983' }
+  }
+};
+
+export const SamparkPlayground: Story = {
+  name: 'Playground',
+  tags: ['!ds:mybky'],
+  args: { brand: 'sampark', variant: 'primary', shape: 'square' },
+  parameters: {
+    design: { type: 'figma', url: 'https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/?node-id=13197-90187' }
+  }
+};
 
 export const HtmlCss: Story = {
   name: 'HTML/CSS — MyBKY',
@@ -120,6 +146,8 @@ export const HtmlCssTypes: Story = {
  * initials read as a subtle branded chip rather than PrimeNG's grey default.
  */
 export const Types: Story = {
+  // Pinned to one brand — hidden from the other brand's sidebar.
+  tags: ['!ds:sampark'],
   render: () => ({
     template: `
       <div style="display:flex; gap: 16px; align-items: center;">
@@ -139,6 +167,8 @@ export const Types: Story = {
  * normal/large/xlarge names still work as aliases for m/l/xl.
  */
 export const Sizes: Story = {
+  // Pinned to one brand — hidden from the other brand's sidebar.
+  tags: ['!ds:sampark'],
   render: () => ({
     template: `
       <div style="display:flex; gap: 16px; align-items: center;">
@@ -155,7 +185,7 @@ export const Sizes: Story = {
 
 /**
  * Sampark Portal avatar set — Figma node 13197:90187
- * (https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/🟢-Sampark-Portal?node-id=13197-90187),
+ * (https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/?node-id=13197-90187),
  * mirrored 1:1 in spm-ui's _avatar.scss. Bordered squares (1px, 1.5px from
  * L up; radius 4px, xl 6px, 2xl 8px) with mono.80 initials in three types:
  * primary (maroon-tinted), secondary (grey), warning (amber). Hovering
@@ -165,6 +195,12 @@ export const Sizes: Story = {
 export const SamparkVariants: Story = {
   // Pinned to one brand — hidden from the other brand's sidebar.
   tags: ['!ds:mybky'],
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/?node-id=13197-90187',
+    },
+  },
   render: () => ({
     props: { icon: USER_ICON_SVG },
     template: `
@@ -215,6 +251,12 @@ export const SamparkVariants: Story = {
 export const SamparkSizes: Story = {
   // Pinned to one brand — hidden from the other brand's sidebar.
   tags: ['!ds:mybky'],
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/?node-id=13197-90187',
+    },
+  },
   render: () => ({
     template: `
       <div style="display:flex; gap: 16px; align-items: center;">
@@ -237,6 +279,12 @@ export const SamparkSizes: Story = {
 export const SamparkIndicators: Story = {
   // Pinned to one brand — hidden from the other brand's sidebar.
   tags: ['!ds:mybky'],
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/?node-id=13197-90187',
+    },
+  },
   render: () => ({
     template: `
       <div style="display:flex; gap: 16px; align-items: center;">
@@ -267,14 +315,39 @@ export const Shapes: Story = {
 };
 
 /** Stacked avatars for compact multi-user contexts (attendees, assignees). */
-export const Group: Story = {
-  render: () => ({
+export const MyBkyGroup: Story = {
+  name: 'Group',
+  tags: ['!ds:sampark'],
+  parameters: {
+    design: { type: 'figma', url: 'https://www.figma.com/design/yY5bmcEifXbcCwhauoiy6Y/?node-id=22465-98596' }
+  },
+  render: (args) => ({
+    props: args,
     template: `
-      <baps-avatargroup size="m">
-        <baps-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle" />
-        <baps-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/asiyajavayant.png" shape="circle" />
-        <baps-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/onyamalimba.png" shape="circle" />
-        <baps-avatar label="+3" shape="circle" />
+      <baps-avatargroup [size]="size">
+        <baps-avatar [image]="image || 'https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png'" shape="circle" [variant]="variant" />
+        <baps-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/asiyajavayant.png" shape="circle" [variant]="variant" />
+        <baps-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/onyamalimba.png" shape="circle" [variant]="variant" />
+        <baps-avatar label="+3" shape="circle" [variant]="variant" />
+      </baps-avatargroup>
+    `,
+  }),
+};
+
+export const SamparkGroup: Story = {
+  name: 'Group',
+  tags: ['!ds:mybky'],
+  parameters: {
+    design: { type: 'figma', url: 'https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/?node-id=13197-90187' }
+  },
+  render: (args) => ({
+    props: args,
+    template: `
+      <baps-avatargroup [size]="size">
+        <baps-avatar [image]="image || 'https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png'" shape="square" [variant]="variant" brand="sampark" />
+        <baps-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/asiyajavayant.png" shape="square" [variant]="variant" brand="sampark" />
+        <baps-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/onyamalimba.png" shape="square" [variant]="variant" brand="sampark" />
+        <baps-avatar label="+3" shape="square" [variant]="variant" brand="sampark" />
       </baps-avatargroup>
     `,
   }),
@@ -289,6 +362,12 @@ export const Group: Story = {
 export const MyBkyStatuses: Story = {
   // Pinned to one brand — hidden from the other brand's sidebar.
   tags: ['!ds:sampark'],
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/yY5bmcEifXbcCwhauoiy6Y/?node-id=22465-97983',
+    },
+  },
   render: () => ({
     template: `
       <div style="display:flex; flex-direction:column; gap:14px;">
@@ -330,7 +409,12 @@ export const MyBkyStatuses: Story = {
  * value has to go on each child, because the group never instantiates the
  * avatars it lays out.
  */
-export const GroupSizes: Story = {
+export const MyBkyGroupSizes: Story = {
+  name: 'Group Sizes',
+  tags: ['!ds:sampark'],
+  parameters: {
+    design: { type: 'figma', url: 'https://www.figma.com/design/yY5bmcEifXbcCwhauoiy6Y/?node-id=22465-98596' }
+  },
   render: () => ({
     template: `
       <div style="display:flex; flex-direction:column; gap:20px; align-items:flex-start;">
@@ -338,11 +422,41 @@ export const GroupSizes: Story = {
           <div style="display:flex; align-items:center; gap:16px;">
             <code style="font-size:11px; width:34px;">{{ s }}</code>
             <baps-avatargroup [size]="s">
-              <baps-avatar [size]="s" shape="square" label="RW" />
-              <baps-avatar [size]="s" shape="square" label="SP" />
-              <baps-avatar [size]="s" shape="square" label="DG" />
-              <baps-avatar [size]="s" shape="square" label="GD" />
-              <baps-avatar [size]="s" shape="square" label="+2" />
+              <baps-avatar [size]="s" shape="circle" label="RW" />
+              <baps-avatar [size]="s" shape="circle" label="SP" />
+              <baps-avatar [size]="s" shape="circle" label="DG" />
+              <baps-avatar [size]="s" shape="circle" label="GD" />
+              <baps-avatar [size]="s" shape="circle" label="+2" />
+            </baps-avatargroup>
+          </div>
+        }
+      </div>
+    `,
+    props: { sizes: ['xs', 's', 'm', 'l', 'xl', '2xl'] },
+  }),
+};
+
+export const SamparkGroupSizes: Story = {
+  name: 'Group Sizes',
+  tags: ['!ds:mybky'],
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/?node-id=13197-90187',
+    },
+  },
+  render: () => ({
+    template: `
+      <div style="display:flex; flex-direction:column; gap:20px; align-items:flex-start;">
+        @for (s of sizes; track s) {
+          <div style="display:flex; align-items:center; gap:16px;">
+            <code style="font-size:11px; width:34px;">{{ s }}</code>
+            <baps-avatargroup [size]="s">
+              <baps-avatar brand="sampark" [size]="s" shape="square" label="RW" />
+              <baps-avatar brand="sampark" [size]="s" shape="square" label="SP" />
+              <baps-avatar brand="sampark" [size]="s" shape="square" label="DG" />
+              <baps-avatar brand="sampark" [size]="s" shape="square" label="GD" />
+              <baps-avatar brand="sampark" [size]="s" shape="square" label="+2" />
             </baps-avatargroup>
           </div>
         }

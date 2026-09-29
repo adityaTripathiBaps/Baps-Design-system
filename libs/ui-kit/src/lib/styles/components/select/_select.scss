@@ -168,7 +168,10 @@ body.baps-dark {
   --select-option-selected-bg: var(--color-mybky-blue-900, #252f4a);
   --select-option-selected-text: var(--color-mybky-blue-200, #bdc6e4);
   --select-option-selected-hover-bg: var(--color-mybky-blue-800, #384871);
-  --select-option-disabled-text: var(--color-mybky-mono-500, #6f777d);
+  /* mono.450, not the light block's mono.500: #6f777d measures 3.80:1 on the
+     dark panel, which reads as "missing" rather than "unavailable". mono.450
+     keeps a clear step below the muted colour below it while staying legible. */
+  --select-option-disabled-text: var(--color-mybky-mono-450, #8d9ba5);
   --select-option-group-text: var(--color-mybky-mono-400, #b6b6af);
 
   /* Trigger chevron — light on dark */
@@ -183,7 +186,18 @@ body.baps-dark {
 
   /* DatePicker calendar */
   --datepicker-day-hover-bg: var(--color-mybky-mono-800, #2b2f32);
-  --datepicker-muted-text: var(--color-mybky-mono-500, #6f777d);
+  /* mono.400, not the mono.500 the light block uses. The dark block had been
+     carrying the light value unchanged, which put the weekday row and the
+     out-of-month days at 3.80:1 on the dark panel. mono.400 is the brand's
+     dark/text/muted step and measures 8.49:1. */
+  --datepicker-muted-text: var(--color-mybky-mono-400, #b6b6af);
+  /* The selected day is the one filled-primary element in the calendar. Left
+     on the light pair it was white on blue.600 — 4.32:1, just under AA for the
+     small numeral it carries. In dark the accent moves one step lighter and
+     the ink inverts, which is what the presets do for every other filled
+     accent in dark (7.79:1). */
+  --datepicker-day-selected-bg: var(--color-mybky-dark-primary-default, #9fadd9);
+  --datepicker-day-selected-text: var(--color-mybky-dark-text-inverse, #181b1d);
 }
 
 /* ══════════════════════════════════════════════════════════════════════
@@ -721,12 +735,17 @@ p-datepicker.p-datepicker:has(.p-datepicker-panel-inline) {
 .p-datepicker-panel:not(.p-datepicker-panel-inline) {
   background: var(--select-overlay-bg) !important;
   border: 1px solid var(--select-overlay-border) !important;
-  border-radius: var(--select-overlay-radius) !important;
+  border-radius: var(--select-overlay-radius, 1rem) !important; /* 16px panel shell */
   box-shadow: var(--select-overlay-shadow) !important;
   overflow: hidden !important; /* clip option hover bg to the radius */
   /* Gap between trigger and panel. PrimeNG leaves this at 0; a brand whose
      panel border is close in value to the trigger's needs the separation. */
   margin-top: var(--select-overlay-offset, 0) !important;
+}
+
+/* Hide PrimeNG's close icon in the multiselect header */
+.p-multiselect-header .p-multiselect-close {
+  display: none !important;
 }
 
 .p-select-overlay .p-select-list,
@@ -760,7 +779,7 @@ p-datepicker.p-datepicker:has(.p-datepicker-panel-inline) {
 .p-cascadeselect-option .p-cascadeselect-option-content,
 .p-treeselect-overlay .p-tree-node-content,
 .p-autocomplete-option {
-  min-height: var(--select-option-height) !important;
+  min-height: 48px !important;
   padding: var(--select-option-padding-y, 0) var(--select-option-padding-x) !important;
   border-radius: var(--select-option-radius) !important;
   color: var(--select-option-text) !important;
@@ -806,9 +825,9 @@ p-datepicker.p-datepicker:has(.p-datepicker-panel-inline) {
 .p-cascadeselect-option:not(.p-disabled):hover
   > .p-cascadeselect-option-content,
 .p-treeselect-overlay .p-tree-node-content:not(.p-disabled):hover {
-  background: var(--select-option-hover-bg) !important;
+  background: var(--p-primary-50, #EEF0F8) !important;
   color: var(--select-option-text) !important;
-  box-shadow: inset var(--select-option-bar-width, 0) 0 0 0 var(--select-option-bar, transparent) !important;
+  box-shadow: inset 3px 0 0 0 var(--p-primary-600, #5F78B8) !important;
 }
 
 /* Selected — with [checkmark]="true" PrimeNG drops .p-select-option-selected
@@ -818,15 +837,10 @@ p-datepicker.p-datepicker:has(.p-datepicker-panel-inline) {
 .p-multiselect-option.p-multiselect-option-selected,
 .p-autocomplete-option.p-autocomplete-option-selected,
 .p-treeselect-overlay .p-tree-node-content.p-tree-node-selected {
-  background: var(--select-option-selected-bg) !important;
+  background: var(--p-primary-50, #EEF0F8) !important;
   color: var(--select-option-selected-text) !important;
-  /* MyBKY bolds a selected row so it reads at a glance in a long list. Sampark
-     deliberately does not — its rows carry a checkbox, which already says it. */
   font-weight: var(--select-option-selected-weight, 500) !important;
-  /* The left bar, as an inset shadow rather than a border: a border changes the
-     row's box and shifts its label 3px, so rows would jog sideways as selection
-     moves. Width is a variable and Sampark sets it to 0. */
-  box-shadow: inset var(--select-option-bar-width, 0) 0 0 0 var(--select-option-bar, transparent) !important;
+  box-shadow: inset 3px 0 0 0 var(--p-primary-600, #5F78B8) !important;
 }
 
 /* Selected + HOVER — one step darker, still primary text.
@@ -845,8 +859,9 @@ p-datepicker.p-datepicker:has(.p-datepicker-panel-inline) {
 .p-select-option.p-select-option-selected:hover,
 .p-select-option[data-p-selected='true']:hover,
 .p-multiselect-option.p-multiselect-option-selected:hover {
-  background: var(--select-option-selected-hover-bg) !important;
+  background: var(--select-option-selected-hover-bg, #d5dbee) !important;
   color: var(--select-option-selected-text) !important;
+  box-shadow: inset 3px 0 0 0 var(--p-primary-600, #5F78B8) !important;
 }
 
 /* Check icon on the selected row (single select, [checkmark]="true").
@@ -869,15 +884,20 @@ p-datepicker.p-datepicker:has(.p-datepicker-panel-inline) {
   opacity: 1 !important; /* color carries the state, not opacity */
 }
 
-/* Option group headers — quiet, never selectable */
+/* Option group headers — quiet, never selectable.
+   Figma (MyBKY node 25317-118454): uppercase eyebrow label in the panel's
+   muted blue, with a 1px hairline above to separate groups visually. */
 .p-select-option-group,
 .p-multiselect-option-group,
 .p-autocomplete-option-group {
-  padding: 0.5rem var(--select-option-padding-x) 0.25rem !important;
-  color: var(--select-option-group-text) !important;
-  font-size: 0.75rem !important; /* 12px */
-  font-weight: 500 !important;
+  padding: 0.75rem var(--select-option-padding-x) 0.5rem !important;
+  color: var(--select-option-group-text, var(--color-mybky-blue-600, #5f78b8)) !important;
+  font-size: 0.6875rem !important; /* 11px */
+  font-weight: 600 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
   background: transparent !important;
+  border-top: 1px solid var(--select-overlay-border, #e4ecf1) !important;
 }
 
 /* Empty message ("No results") */
@@ -899,19 +919,60 @@ p-datepicker.p-datepicker:has(.p-datepicker-panel-inline) {
    higher specificity (0,2,0 beats 0,1,0).
    ══════════════════════════════════════════════════════════════════════ */
 
-.p-select-header,
-.p-multiselect-header {
-  padding: var(--select-header-padding, var(--select-overlay-padding)) !important;
-  border-bottom: 1px solid var(--select-header-border, var(--select-overlay-border)) !important;
-  background: var(--select-header-bg, transparent) !important;
+/* ── Select filter header (single-select) ─────────────────────────────
+   Figma: light blue-grey background bar at the top of the panel, with a
+   white pill-shaped search input inside. The header inherits the panel's
+   top-left/right radius so no gap is visible between them. */
+.p-select-header {
+  padding: 0.5rem !important;
+  border-bottom: none !important;
+  background: var(--select-header-bg, var(--color-mybky-mono-200, #e4ecf1)) !important;
+  border-top-left-radius: var(--select-overlay-radius, 1rem) !important;
+  border-top-right-radius: var(--select-overlay-radius, 1rem) !important;
 }
 
-.p-select-filter.p-inputtext,
-.p-multiselect-filter.p-inputtext {
-  height: var(--select-filter-height, 2rem) !important;
-  border-radius: var(--select-filter-radius) !important;
-  background: var(--select-filter-bg) !important;
-  border-color: transparent !important;
+/* ── MultiSelect header (filter + select-all) ─────────────────────────
+   The header wraps the filter row and the select-all checkbox in a column.
+   The filter container sits on top with the grey background; the checkbox
+   row sits below on white. */
+.p-multiselect-header {
+  display: flex !important;
+  flex-direction: column !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border-bottom: none !important;
+}
+
+.p-multiselect-filter-container {
+  display: flex !important;
+  width: 100% !important;
+  order: -1 !important;
+  padding: 0.5rem !important;
+  background: var(--select-header-bg, transparent) !important;
+  border-top-left-radius: var(--select-overlay-radius, 1rem) !important;
+  border-top-right-radius: var(--select-overlay-radius, 1rem) !important;
+}
+
+.p-select-filter-icon,
+.p-multiselect-filter-icon {
+  /* Do not hide search icons by default in MyBKY */
+}
+
+.p-select-filter,
+.p-multiselect-filter {
+  height: var(--select-filter-height, 2.5rem) !important;
+  border-radius: var(--select-filter-radius, 0.5rem) !important; /* 8px rectangle */
+  background: var(--select-filter-bg, #ffffff) !important;
+  border: 1px solid var(--select-filter-border, var(--color-mybky-mono-300, #e4ecf1)) !important;
+  color: var(--input-text, #181b1d) !important;
+  /* Add left padding so the placeholder isn't squished to the edge, leaving room for the icon */
+  padding-left: 2.5rem !important;
+}
+
+.p-select-filter::placeholder,
+.p-multiselect-filter::placeholder {
+  color: var(--input-text-placeholder, #6f777d) !important;
+  opacity: 1 !important;
 }
 
 .p-select-filter.p-inputtext:focus,
@@ -920,29 +981,36 @@ p-datepicker.p-datepicker:has(.p-datepicker-panel-inline) {
   box-shadow: none !important; /* no ring inside a floating panel */
 }
 
-/* The filter's own search and clear glyphs. The panel's search row is a single
-   pill with placeholder text; PrimeNG's icons sit inside it and make the pill
-   read as two controls. Hidden rather than removed — they are PrimeNG's markup,
-   and the placeholder is what names the field (see `filterPlaceholder`, which
-   now defaults to "Search" so the pill is never a blank box). */
-.p-select-filter-icon,
-.p-multiselect-filter-icon,
-.p-multiselect-filter-container > .p-icon:not(.p-checkbox-icon) {
-  display: none !important;
+/* Checkbox row inside the header — "Select All".
+   Figma: full-width white row below the search bar, separated by a subtle
+   hairline. The checkbox and label sit at the same left-padding as the
+   list options so everything aligns on one vertical rail. */
+.p-multiselect-header > .p-checkbox,
+.p-multiselect-header > p-checkbox,
+.p-multiselect-header-checkbox {
+  order: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  min-height: 3rem !important; /* 48px */
+  padding: 0 var(--select-option-padding-x, 0.75rem) !important;
+  background: var(--select-overlay-bg, #ffffff) !important;
+  border-bottom: 1px solid var(--select-overlay-border, #e4ecf1) !important;
+  box-sizing: border-box !important;
 }
 
-/* ── Select-all row: NOT attempted here ──
-   The guide describes two rows — a grey search bar, then a white 48px band
-   with a "Select All" label. PrimeNG v21 renders BOTH the filter and the
-   toggle-all checkbox inside ONE .p-multiselect-header, so there is no second
-   element to paint or to label.
-
-   A version of this shipped briefly and was reverted: it flexed the single
-   header, repainted it, and injected the label with ::after. The result put the
-   checkbox, the search pill and a wrapped "Select All" on one cramped 48px row
-   — worse than the header it replaced. Splitting them needs a DOM change (a
-   wrapper component rendering its own select-all row above PrimeNG"s header),
-   not CSS, and that is a call to make deliberately rather than in passing. */
+/* Label for the checkbox row */
+.p-multiselect-header > .p-checkbox::after,
+.p-multiselect-header > p-checkbox::after,
+.p-multiselect-header-checkbox::after {
+  content: "Select All";
+  margin-inline-start: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--select-option-text, #181b1d);
+  cursor: pointer;
+  white-space: nowrap;
+}
 
 /* ══════════════════════════════════════════════════════════════════════
    STEP 10 — DATEPICKER CALENDAR PANEL

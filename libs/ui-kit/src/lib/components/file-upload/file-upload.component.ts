@@ -66,81 +66,10 @@ import { BapsButton } from '../button/button.component';
     </div>
   `,
   encapsulation: ViewEncapsulation.None,
-  styles: `
-    baps-file-upload {
-      display: block;
-    }
-
-    baps-file-upload .baps-file-upload-zone {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.25rem;
-      padding: 2rem 1.5rem;
-      background: var(--input-bg-default, #ffffff);
-      border: 1px solid var(--input-border-default, #e1e0e0);
-      border-radius: var(--radius-sampark-default, 0.25rem);
-      cursor: pointer;
-      transition: border-color 150ms ease, box-shadow 150ms ease, background 150ms ease;
-    }
-
-    baps-file-upload .baps-file-upload-zone:hover:not(.baps-file-upload-disabled):not(.baps-file-upload-invalid),
-    baps-file-upload .baps-file-upload-zone.baps-file-upload-dragover:not(.baps-file-upload-disabled):not(.baps-file-upload-invalid) {
-      border-color: var(--input-border-hover, #94928f);
-    }
-
-    baps-file-upload .baps-file-upload-zone:focus-within:not(.baps-file-upload-invalid) {
-      border-color: var(--input-border-hover, #94928f);
-      box-shadow: 0 0 0 3px var(--input-shadow-focused, #f2f1f0);
-    }
-
-    baps-file-upload .baps-file-upload-zone.baps-file-upload-invalid {
-      border-color: var(--input-border-error, #ea151a);
-    }
-
-    baps-file-upload .baps-file-upload-zone.baps-file-upload-invalid:focus-within,
-    baps-file-upload .baps-file-upload-zone.baps-file-upload-invalid.baps-file-upload-dragover {
-      box-shadow: 0 0 0 3px var(--input-shadow-error, #ffe5e5);
-    }
-
-    baps-file-upload .baps-file-upload-zone.baps-file-upload-disabled {
-      background: var(--input-bg-disabled, #f8f7f7);
-      cursor: not-allowed;
-    }
-
-    /* Concentric rings around the image glyph, per the Figma spec. */
-    baps-file-upload .baps-file-upload-ring {
-      width: 4.5rem;
-      height: 4.5rem;
-      border-radius: 50%;
-      border: 1px solid var(--color-sampark-mono-20, #f3f2f2);
-      display: grid;
-      place-items: center;
-      margin-bottom: 0.5rem;
-    }
-
-    baps-file-upload .baps-file-upload-icon {
-      width: 3.25rem;
-      height: 3.25rem;
-      border-radius: 50%;
-      border: 1px solid var(--input-border-default, #e1e0e0);
-      display: grid;
-      place-items: center;
-      color: var(--input-text-ghost, #595656);
-    }
-
-    baps-file-upload .baps-file-upload-hint {
-      margin: 0;
-      font-size: 0.75rem;
-      line-height: 1.3;
-      color: var(--input-text-placeholder, #9f9c9c);
-      text-align: center;
-    }
-
-    baps-file-upload .baps-file-upload-hint:first-of-type {
-      margin-top: 0.25rem;
-    }
-  `,
+  // CSS lives in ../../styles/components/file-upload/_file-upload.scss so the same rules
+  // can style raw markup that Angular never rendered — see the header comment
+  // there. styleUrls keeps it shipping with the component.
+  styleUrls: ['../../styles/components/file-upload/_file-upload.scss'],
 })
 export class BapsFileUpload {
   /** Native accept filter, e.g. "image/*" or ".svg,.png". */

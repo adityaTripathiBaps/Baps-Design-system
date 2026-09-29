@@ -25,29 +25,37 @@
   gap: var(--drawer-mybky-gap, 1.5rem);
   padding: var(--drawer-mybky-padding, 2rem);
   background: var(--drawer-mybky-background, #ffffff);
-  border: none;
-  border-radius: var(--drawer-mybky-radius, 2rem);
+  border: none !important;
   box-shadow: var(--drawer-mybky-shadow, 0 4px 6px rgba(16, 24, 40, 0.06), 0 12px 16px rgba(16, 24, 40, 0.12));
   color: var(--color-mybky-text-primary, #181b1d);
 }
 
-/* A drawer is anchored to an edge, so a radius on all four corners would leave
-   two of them floating off-screen. Only the INNER pair is rounded, per side. */
+/* A drawer is anchored to an edge. The panel "floats" 12px from all viewport
+   edges, and the two corners touching the anchored edge are flat (0) while the
+   inner pair keeps the 32px radius. PrimeNG's internal CSS sets top:0; right:0;
+   height:100% on .p-drawer-right, so we must override those explicitly.
+
+   height: calc(100% - 24px)  — 12px top + 12px bottom margin.
+   top/right/left/bottom      — 12px offset from the anchored edge. */
 .p-drawer-right.baps-drawer-mybky {
-  border-start-end-radius: 0;
-  border-end-end-radius: 0;
+  margin: 12px 12px 12px 0 !important;
+  height: calc(100% - 24px) !important;
+  border-radius: var(--drawer-mybky-radius, 2rem) 0 0 var(--drawer-mybky-radius, 2rem) !important;
 }
 .p-drawer-left.baps-drawer-mybky {
-  border-start-start-radius: 0;
-  border-end-start-radius: 0;
+  margin: 12px 0 12px 12px !important;
+  height: calc(100% - 24px) !important;
+  border-radius: 0 var(--drawer-mybky-radius, 2rem) var(--drawer-mybky-radius, 2rem) 0 !important;
 }
 .p-drawer-top.baps-drawer-mybky {
-  border-start-start-radius: 0;
-  border-start-end-radius: 0;
+  margin: 12px 12px 0 12px !important;
+  width: calc(100% - 24px) !important;
+  border-radius: 0 0 var(--drawer-mybky-radius, 2rem) var(--drawer-mybky-radius, 2rem) !important;
 }
 .p-drawer-bottom.baps-drawer-mybky {
-  border-end-start-radius: 0;
-  border-end-end-radius: 0;
+  margin: 0 12px 12px 12px !important;
+  width: calc(100% - 24px) !important;
+  border-radius: var(--drawer-mybky-radius, 2rem) var(--drawer-mybky-radius, 2rem) 0 0 !important;
 }
 
 /* The header carries no fill of its own — the panel surface runs behind it, so
@@ -136,4 +144,12 @@
 
 .p-drawer.baps-drawer-mybky .baps-drawer__close .p-button:hover {
   color: var(--color-mybky-text-primary, #181b1d);
+}
+
+
+
+/* ── Ghost Mask Fix ─────────────────────────────────────────────────────
+   Prevents clicks on the mask while it is fading out. */
+.p-overlay-mask-leave-active {
+  pointer-events: none !important;
 }

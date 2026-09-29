@@ -1,4 +1,5 @@
 import { Meta, Canvas, Controls } from '@storybook/blocks';
+import { PropsTable } from '@baps/docs-blocks';
 import * as SkeletonStories from './skeleton.stories';
 
 <Meta of={SkeletonStories} />
@@ -29,13 +30,19 @@ state read as content — the user waits for something that is already "there".
 
 Only the corner differs: **MyBKY 6px, Sampark 4px**. A circle ignores both.
 
-## When to use
+## When to Use
 
 - The shape of the incoming content is known — a table row, a card, an avatar
   beside two lines of text. The placeholder then holds the layout still.
 - The wait is long enough to notice but short enough not to need a message.
 
-## When not to use
+## API
+
+Inputs, outputs and their types, read from the component's own source.
+
+<PropsTable of={SkeletonStories} />
+
+## When Not to Use
 
 - **The shape is unknown** — use a [spinner](/docs/components-spinner--docs).
   A skeleton guessing at a layout it cannot know causes a jump on arrival.

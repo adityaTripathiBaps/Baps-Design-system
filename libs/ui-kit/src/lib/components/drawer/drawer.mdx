@@ -1,4 +1,5 @@
-import { Meta, Canvas } from '@storybook/blocks';
+import { Meta, Canvas, Controls } from '@storybook/blocks';
+import { PropsTable } from '@baps/docs-blocks';
 import * as DrawerStories from './drawer.stories';
 
 <Meta of={DrawerStories} />
@@ -30,6 +31,8 @@ A slide-in panel anchored to an edge of the screen. `baps-drawer` wraps PrimeNG 
 
 <Canvas of={DrawerStories.Playground} />
 
+<Controls of={DrawerStories.Playground} />
+
 ### Open
 
 <Canvas of={DrawerStories.Open} />
@@ -45,6 +48,12 @@ A slide-in panel anchored to an edge of the screen. `baps-drawer` wraps PrimeNG 
 ### Non Dismissible
 
 <Canvas of={DrawerStories.NonDismissible} />
+
+## API
+
+Inputs, outputs and their types, read from the component's own source.
+
+<PropsTable of={DrawerStories} />
 
 ## When Not to Use
 

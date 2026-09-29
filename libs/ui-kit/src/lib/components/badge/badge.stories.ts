@@ -8,7 +8,7 @@ import { BapsOverlayBadge } from './overlay-badge.component';
  * Badge — a small count/status chip. Badge uses the `BapsBadge` wrapper component.
  */
 const meta: Meta<BapsBadge> = {
-  title: 'Components/Utility/Badge',
+  title: 'Components/Atoms/Badge',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-misc-badge.
   id: 'components-badge',
@@ -23,6 +23,7 @@ const meta: Meta<BapsBadge> = {
       options: [undefined, 'secondary', 'success', 'info', 'warn', 'danger', 'contrast'],
     },
     badgeSize: { control: 'select', options: [undefined, 'small', 'large', 'xlarge'] },
+    type: { control: 'select', options: [undefined, 'notification', 'counts', 'disable'] },
     badgeDisabled: { control: 'boolean' },
     brand: { control: 'select', options: ['mybky', 'sampark'] },
   },
@@ -41,6 +42,7 @@ const meta: Meta<BapsBadge> = {
       [severity]="severity"
       [badgeSize]="badgeSize"
       [badgeDisabled]="badgeDisabled"
+      [type]="type"
       [brand]="brand"
     />`,
   }),

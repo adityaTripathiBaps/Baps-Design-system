@@ -1,5 +1,5 @@
-import { Meta, Canvas } from '@storybook/blocks';
-import { BrandOnly, FrameworkTabs } from '@baps/docs-blocks';
+import { Meta, Canvas, Controls } from '@storybook/blocks';
+import { BrandOnly, PropsTable, FrameworkTabs } from '@baps/docs-blocks';
 import * as AvatarStories from './avatar.stories';
 import { avatarSnippets } from './avatar.snippets';
 
@@ -44,13 +44,23 @@ Represents a user or entity as initials, an icon, or an image. The BAPS wrapper 
 
 ### Playground
 
-<Canvas of={AvatarStories.Playground} />
+<BrandOnly brand="mybky">
+<Canvas of={AvatarStories.MyBkyPlayground} />
+<Controls of={AvatarStories.MyBkyPlayground} />
+</BrandOnly>
+
+<BrandOnly brand="sampark">
+<Canvas of={AvatarStories.SamparkPlayground} />
+<Controls of={AvatarStories.SamparkPlayground} />
+</BrandOnly>
+
+<BrandOnly brand="mybky">
 
 Avatar wraps PrimeNG. The MyBKY initials example also has a standalone HTML/CSS
 implementation verified against the Angular render and styled by the shared
 token-driven stylesheet. Sampark and the unshown variants remain Angular-only.
 
-<FrameworkTabs of={AvatarStories.Playground} snippets={avatarSnippets.Playground} />
+<FrameworkTabs of={AvatarStories.MyBkyPlayground} snippets={avatarSnippets.MyBkyPlayground} />
 
 ### HTML/CSS Preview
 
@@ -69,6 +79,8 @@ token-driven stylesheet. Sampark and the unshown variants remain Angular-only.
 ### Sizes
 
 <Canvas of={AvatarStories.Sizes} />
+
+</BrandOnly>
 
 <BrandOnly brand="sampark">
 
@@ -90,9 +102,52 @@ token-driven stylesheet. Sampark and the unshown variants remain Angular-only.
 
 <Canvas of={AvatarStories.Shapes} />
 
+<BrandOnly brand="mybky">
+
 ### Group
 
-<Canvas of={AvatarStories.Group} />
+<Canvas of={AvatarStories.MyBkyGroup} />
+
+### Group Sizes
+
+A stack takes the size of its members: the overlap and the "+n" counter scale
+with them.
+
+<Canvas of={AvatarStories.MyBkyGroupSizes} />
+
+</BrandOnly>
+
+<BrandOnly brand="sampark">
+
+### Group
+
+<Canvas of={AvatarStories.SamparkGroup} />
+
+### Group Sizes
+
+A stack takes the size of its members: the overlap and the "+n" counter scale
+with them.
+
+<Canvas of={AvatarStories.SamparkGroupSizes} />
+
+</BrandOnly>
+
+<BrandOnly brand="mybky">
+
+### Statuses
+
+The MyBKY status ring — online, away, busy, offline — drawn on the avatar
+rather than beside it.
+
+<Canvas of={AvatarStories.MyBkyStatuses} />
+
+</BrandOnly>
+
+## API
+
+Inputs, outputs and their types, read from the component's own source.
+
+<PropsTable of={AvatarStories} />
 
 ## When Not to Use
 

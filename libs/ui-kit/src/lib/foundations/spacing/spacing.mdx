@@ -1,0 +1,77 @@
+import { Meta } from '@storybook/blocks';
+import { ResourceTabs, SpacingScale, SpacingExamples, CodeBlock } from '@baps/docs-blocks';
+
+<Meta title="Foundations/Spacing" />
+
+# Spacing
+
+A 4px base grid, numbered by multiples of 4. Shared by every brand.
+
+<ResourceTabs sections={['Overview', 'Scale', 'Examples', 'Usage', 'Accessibility', 'Developer implementation']} />
+
+## Overview
+
+The scale is numeric, not t-shirt sized: `--space-N` is `N × 4px`. The half steps (`0-5`, `1-5`, `2-5`, `3-5`, `5-5`) exist to match measured Figma values on existing components — they are not for new layout. Source: `libs/tokens/src/source/spacing.tokens.json`.
+
+Most gaps are **8, 12, 16 and 24px**. `--space-8` (32px) separates unrelated blocks; `--space-4` (16px) separates things inside one block.
+
+## Scale
+
+<SpacingScale />
+
+## Examples
+
+Each example is laid out with the token under it — the dashed box is the space.
+
+<SpacingExamples />
+
+## Usage
+
+| Context | Spacing | Token |
+| --- | --- | --- |
+| Icon ↔ label, inline chips | 4–8px | `--space-1`, `--space-2` |
+| Dense layouts, table cells | 8px vertical, 12px horizontal | `--space-2`, `--space-3` |
+| Forms — label → field → hint | 4px, then 12–16px between fields | `--space-1`, `--space-3`/`--space-4` |
+| Cards — padding | 20–24px | `--space-5`, `--space-6` |
+| Tables — outer gutter (admin) | 24px | `--space-6` |
+| Between unrelated blocks | 32px | `--space-8` |
+| Page sections | 40px | `--space-10` |
+
+### Do
+
+- Pick the step, then the property: `gap: var(--space-3)`.
+- Use `gap` for siblings instead of margins on children.
+
+### Don't
+
+- `padding: 13px` — off-grid, and nothing else will line up with it.
+- Reach for a half step (`--space-2-5`) in new work. They encode existing Figma measurements.
+- Add a t-shirt alias (`--space-md`). The numeric scale is the convention.
+
+## Accessibility
+
+- Touch targets need 24px minimum (WCAG 2.5.8), 44px on touch-first screens. Spacing *around* a small control counts toward the target — `_touch-targets.scss` handles this for the library's controls.
+- Spacing is `rem`, so it scales with the user's font size. Keep it that way: a `px` gap stays put while the text grows into it.
+- Grouping is meaning. Related fields sit closer together than unrelated ones (`--space-4` vs `--space-8`); a screen magnifier user relies on that proximity more than anyone.
+
+## Developer implementation
+
+<CodeBlock
+  filename="_my-form.scss"
+  language="css"
+  code={`.my-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);          /* 16px between fields */
+}
+.my-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);          /* 4px label → control */
+}
+.my-form__actions {
+  margin-top: var(--space-8);   /* 32px — a separate block */
+  display: flex;
+  gap: var(--space-2);
+}`}
+/>

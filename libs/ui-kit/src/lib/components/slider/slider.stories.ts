@@ -14,7 +14,7 @@ import { BapsSlider } from './slider.component';
  * the handle simply sat at 0 — the binding never applied.
  */
 const meta: Meta<BapsSlider> = {
-  title: 'Components/Form/Slider',
+  title: 'Components/Atoms/Slider',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-form-slider.
   id: 'components-slider',
@@ -61,7 +61,17 @@ const meta: Meta<BapsSlider> = {
     template: `
       <div style="max-width: 20rem">
         <baps-slider
-          ariaLabel="Value" [min]="min" [max]="max" [brand]="brand" [(ngModel)]="model"></baps-slider>
+          ariaLabel="Value"
+          [min]="min"
+          [max]="max"
+          [step]="step"
+          [disabled]="disabled"
+          [range]="range"
+          [showValueTooltip]="showValueTooltip"
+          [orientation]="orientation"
+          [brand]="brand"
+          [(ngModel)]="model">
+        </baps-slider>
       </div>
     `,
   }),

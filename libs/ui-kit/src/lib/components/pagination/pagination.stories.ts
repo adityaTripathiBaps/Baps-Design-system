@@ -15,7 +15,7 @@ import { BapsPaginator } from './pagination.component';
  * the middle of the Full story below to see it open up.
  */
 const meta: Meta<BapsPaginator> = {
-  title: 'Components/Data/Pagination',
+  title: 'Components/Molecules/Pagination',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-data-pagination.
   id: 'components-pagination',

@@ -1,6 +1,11 @@
 /* Module loads (sass @use) — CSS is emitted once per module, in this order. */
 @use '../../../libs/ui-kit/src/lib/styles/layout/fonts';
 @use '../../../libs/ui-kit/src/lib/styles/layout/common';
+/* Dark re-points for the brand alias tier (text/surface/border). Early on
+   purpose: it is foundational, and any partial that wants a different dark
+   value declares it later and wins. Must come after tokens.css, which
+   preview.ts imports before this file. */
+@use '../../../libs/ui-kit/src/lib/styles/components/dark/dark-aliases';
 @use '../../../libs/ui-kit/src/lib/styles/components/input/input';
 /* Checkbox/radio border geometry for the ones PrimeNG renders itself (overlay
    options, table select-all, tree nodes) — see the partial for why it cannot
@@ -78,6 +83,10 @@
    select/listbox/tree skins above, the same way the source's _list_hover.scss
    overrides _dropdown.scss and _multiselect.scss. */
 @use '../../../libs/ui-kit/src/lib/styles/components/overlay-list/overlay-list';
+/* Dark-mode selection bar for list options and table rows. After overlay-list
+   on purpose: it adds the state cue on top of that file's hover skin, and the
+   two must not be resolved the other way round. */
+@use '../../../libs/ui-kit/src/lib/styles/components/selection/selection-dark';
 /* Storybook docs chrome. Last of the @use block on purpose: several of its
    rules intentionally outrank the component skins above on source order. */
 @use './docs-shell';
@@ -88,6 +97,44 @@
    rules either way, so nothing shifts — the visual baseline is the check. */
 @use '../../../libs/ui-kit/src/lib/styles/components/card/card';
 @use '../../../libs/ui-kit/src/lib/styles/components/avatar/avatar';
+
+/* Alert — same CSS-move as card above, so raw <baps-alert> markup is styled
+   without the Angular component. */
+@use '../../../libs/ui-kit/src/lib/styles/components/alert/alert';
+/* Button — NOT a move. baps-button wraps PrimeNG, so its design is generated
+   at runtime and there was nothing to extract; this partial is authored from
+   the --button-* tokens so the Custom tab's raw <button class="baps-button">
+   markup renders identically. It is deliberately not on the component, which
+   keeps PrimeNG the only thing styling baps-button. The class namespace is
+   disjoint from anything the component emits — the component uses the
+   baps-button ELEMENT plus .p-button — so this adds no rule that can reach an
+   existing render; the visual baseline is the check. Drift between the two is
+   caught by tools/check-button-drift.mjs. */
+@use '../../../libs/ui-kit/src/lib/styles/components/button/button';
+/* Icon — CSS-move like card and alert: the component keeps it via styleUrls,
+   and this global copy styles a raw <baps-icon> in the docs code viewer. */
+@use '../../../libs/ui-kit/src/lib/styles/components/icon/icon';
+/* Link, Spinner, Indicator, File Upload and Internal Navbar — the same
+   CSS-move as card, alert and icon. Each component keeps its rules via
+   styleUrls; these global copies are what style the raw markup in the docs
+   code viewer, where no Angular component rendered it. Identical rules either
+   way, so nothing shifts — the visual baseline is the check. */
+@use '../../../libs/ui-kit/src/lib/styles/components/link/link';
+@use '../../../libs/ui-kit/src/lib/styles/components/spinner/spinner';
+@use '../../../libs/ui-kit/src/lib/styles/components/indicator/indicator';
+@use '../../../libs/ui-kit/src/lib/styles/components/file-upload/file-upload';
+@use '../../../libs/ui-kit/src/lib/styles/components/internal-navbar/internal-navbar';
+/* Tag — AUTHORED like button, not moved: baps-tag wraps p-tag, so its design
+   is generated at runtime and there was nothing to extract. Class namespace
+   (.baps-tag*) is disjoint from what the component emits (.p-tag), so this adds
+   no rule that can reach an existing render. Drift caught by
+   tools/check-tag-drift.mjs.
+
+   The Custom TAB is hidden (see tag.mdx hideCustom) — a wrapper cannot have an
+   honest one. This partial stays because Tag's React/Next snippets cite its
+   classes, and because it is the bucket-B migration target: when the preset
+   literals go, the guard is what proves the two still agree. */
+@use '../../../libs/ui-kit/src/lib/styles/components/tag/tag';
 
 html {
   font-size: 16px;                     /* Figma standard: 1rem = 16px */

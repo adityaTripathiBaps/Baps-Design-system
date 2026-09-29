@@ -1,16 +1,18 @@
 import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { Button } from 'primeng/button';
+import { BapsIcon, type BapsIconSize } from '../icon/icon.component';
+import { BAPS_ICONS } from '../icon/icon-set';
 // Sampark button skin lives in the theme layer so the same token block drives
 // both the whole-preview Sampark preset and this per-instance dt scoping.
 import { SAMPARK_BUTTON_TOKENS } from '../../theme/sampark.theme';
 
 @Component({
   selector: 'baps-button',
-  imports: [Button],
+  imports: [Button, BapsIcon],
   template: `
     <p-button
       [label]="label"
-      [icon]="icon"
+      [icon]="primeIcon"
       [iconPos]="iconPos"
       [loading]="loading"
       [loadingIcon]="loadingIcon"
@@ -28,6 +30,15 @@ import { SAMPARK_BUTTON_TOKENS } from '../../theme/sampark.theme';
       [ariaLabel]="ariaLabel"
       [dt]="dt"
     >
+      @if (isBapsIcon) {
+        <ng-template #icon let-iconClass="class">
+          <baps-icon
+            [name]="$any(icon)"
+            [size]="iconSize"
+            [class]="iconClass"
+          />
+        </ng-template>
+      }
       <ng-content></ng-content>
     </p-button>
   `,
@@ -118,6 +129,22 @@ import { SAMPARK_BUTTON_TOKENS } from '../../theme/sampark.theme';
     :is(baps-button.baps-sampark, .baps-ds-sampark baps-button) .p-button-link:not(:disabled):hover .p-button-label {
       text-decoration: underline;
     }
+
+    /* Icon positioning and alignment */
+    baps-button .p-button-icon-right,
+    baps-button .p-button-icon-bottom {
+      order: 2;
+    }
+    baps-button .p-button-icon-left,
+    baps-button .p-button-icon-top {
+      order: 0;
+    }
+    baps-button baps-icon.p-button-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
   `,
   host: {
     '[class.baps-sampark]': "brand === 'sampark'",
@@ -156,6 +183,26 @@ export class BapsButton {
    * language (4px radius, flat #c96868 primary) via scoped design tokens.
    */
   @Input() brand: 'mybky' | 'sampark' = 'mybky';
+
+  get isBapsIcon(): boolean {
+    if (!this.icon) return false;
+    // PrimeIcons classes start with 'pi ' or 'pi-'
+    if (this.icon.startsWith('pi ') || this.icon.startsWith('pi-')) {
+      return false;
+    }
+    return this.icon in BAPS_ICONS || !this.icon.includes(' ');
+  }
+
+  get primeIcon(): string | undefined {
+    return this.isBapsIcon ? undefined : this.icon;
+  }
+
+  get iconSize(): BapsIconSize | number {
+    if (this.size === 'small') return 'sm';
+    if (this.size === 'large') return 18;
+    if (this.size === 'xlarge') return 'md';
+    return 'sm';
+  }
 
   get primeSize(): 'small' | 'large' | undefined {
     return this.size === 'xlarge' ? undefined : this.size;

@@ -13,7 +13,7 @@ import { BapsInputGroup } from './input-group.component';
  * no reserved column and no divider.
  */
 const meta: Meta<BapsInputGroup> = {
-  title: 'Components/Form/InputGroup',
+  title: 'Components/Molecules/Input Group',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-form-inputgroup.
   id: 'components-inputgroup',
@@ -39,13 +39,13 @@ const meta: Meta<BapsInputGroup> = {
 
 export default meta;
 
-/** The Min field from node 17512:82916 — both addons, 168px wide. */
 export const Default: StoryObj<BapsInputGroup> = {
-  render: () => ({
-    props: { days: 15 },
+  args: { prefix: 'min', suffix: 'day/s' },
+  render: (args) => ({
+    props: { ...args, days: 15 },
     template: `
       <div style="width:168px">
-        <baps-input-group prefix="min" suffix="day/s">
+        <baps-input-group [prefix]="prefix" [suffix]="suffix" [brand]="brand">
           <input pInputText type="number" aria-label="Minimum days" [(ngModel)]="days" />
         </baps-input-group>
       </div>

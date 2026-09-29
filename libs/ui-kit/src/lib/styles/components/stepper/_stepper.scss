@@ -99,6 +99,11 @@ p-stepper {
      the button, because the button spends its transform on scale(). */
   --baps-step-active-lift: var(--stepper-mybky-active-lift, 2.6rem);
 
+  /* How far a revealed step's own lines may reach into each neighbour to
+     stay visible beside a wide label. Kept under half a slot share so a
+     borrowed line never reaches the neighbour's circle. */
+  --baps-step-lend: var(--stepper-mybky-connector-lend, 1.5rem);
+
   /* Hover on an inactive slot previews the active SIZE. A scale, not a
      width/height change, so the neighbours do not reflow as the mouse moves
      along the rail. 2.5rem x 1.4 = 3.5rem, i.e. exactly the active size — the
@@ -109,6 +114,8 @@ p-stepper {
      resize on a 56px circle reads as a glitch. */
   --baps-step-motion: 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
   --baps-step-motion-icon: 0.7s cubic-bezier(0.25, 0.1, 0.25, 1);
+  --baps-step-duration: 0.8s;
+  --baps-step-border-duration: 0.5s;
 
   /* Asymmetric on purpose: slow in so a deliberate hover reveals the name,
      fast out so sweeping across the rail does not leave a trail of labels.
@@ -139,6 +146,8 @@ p-stepper {
   --baps-step-hover-scale: 1;
   --baps-step-motion: 150ms ease;
   --baps-step-motion-icon: 150ms ease;
+  --baps-step-duration: 150ms;
+  --baps-step-border-duration: 150ms;
 }
 
 /* ── Rail ─────────────────────────────────────────────────────────────── */
@@ -152,6 +161,9 @@ p-stepper .p-steplist {
   max-width: var(--baps-step-rail-max-width);
   margin-inline: auto;
   overflow: visible;
+  /* Own stacking context, so the connectors' z-index: -1 lands above this
+     background instead of behind the page. */
+  isolation: isolate;
 }
 
 /* Each slot takes an equal share, so the rail stays evenly spaced no matter
@@ -166,8 +178,22 @@ p-stepper .p-steplist > .p-step {
   gap: 0.5rem;
 }
 
+/* min-width: 0 locks every slot to its equal share. Without it a revealed
+   label wider than the share (8 steps on a 790px rail = 89px each) forces its
+   step wider, flexbox takes the room from EVERY connector, and the whole rail
+   shivers on hover. With it only the hovered/active step's own connectors
+   give way; `justify-content: center` lets anything still too wide overflow
+   evenly into both neighbours. */
 p-stepper .p-steplist:has(.baps-step__btn) > .p-step {
   padding: 0;
+  min-width: 0;
+  justify-content: center;
+}
+
+p-stepper .p-step:has(.baps-step__btn--active) .baps-step__connector,
+p-stepper .p-step:has(.baps-step:hover) .baps-step__connector,
+p-stepper .p-step:has(.baps-step:focus-within) .baps-step__connector {
+  min-width: 0;
 }
 
 /* PrimeNG's own separator is off in the icon rail: the connector is drawn by
@@ -274,12 +300,19 @@ p-stepper .p-step-active ~ .p-step .p-step-title {
  * later wins, and the hover either stops growing or stops lifting.
  */
 
+/* One grid cell shared by the icon wrap and the label, so a label that takes
+   the row line (active / hovered) widens the slot to fit itself and the
+   connectors stop short of it instead of running under the text. */
 p-stepper .baps-step {
   position: relative;
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
+  display: inline-grid;
+  place-items: center;
   flex: 0 0 auto;
+}
+
+p-stepper .baps-step > .baps-step__icon-wrap,
+p-stepper .baps-step > .baps-step__label {
+  grid-area: 1 / 1;
 }
 
 /* Carries the LIFT only. Its own layout height stays the resting slot's, so
@@ -309,9 +342,11 @@ p-stepper .baps-step__btn {
   color: var(--baps-step-icon-idle);
   box-shadow: var(--baps-step-shadow-idle);
   cursor: pointer;
-  transition: transform var(--baps-step-motion), background var(--baps-step-motion),
-    color var(--baps-step-motion), box-shadow var(--baps-step-motion),
-    border-color 0.5s ease;
+  /* Curves per the events-ui spec: only the scale rides the cubic-bezier,
+     the colour changes run on plain ease at the same duration. */
+  transition: transform var(--baps-step-motion), background var(--baps-step-duration) ease,
+    color var(--baps-step-duration) ease, box-shadow var(--baps-step-duration) ease,
+    border-color var(--baps-step-border-duration) ease;
 }
 
 p-stepper .baps-step__icon {
@@ -435,16 +470,37 @@ p-stepper
 }
 
 /* ── Label ──
-   Absolutely positioned so revealing it cannot nudge the rail's layout, and
-   z-index 0 so it passes UNDER a lifted neighbouring circle rather than over
-   it. */
+   ONE position, always: on the row line, in the grid cell the circle shares.
+   Only opacity and width ever change, never `position` or `top` — a label
+   that switched layout on hover jumped below the pill on mouse-leave while it
+   was still fading out, and appeared on the row before the circle had lifted
+   out of its way.
+
+   The WIDTH is what makes room. At rest `width: 0` reserves nothing, so a
+   resting slot is only as wide as its circle; revealed, it opens to the word
+   and the step's own connectors (flex: 1) give up the room.
+
+   `width: 0 → max-content`, NOT `max-width: 0 → 20rem`. The max-width version
+   hit the word's real ~80px in the first 200ms of a 700ms curve, so the lines
+   dipped (22px → 14.6px) and then grew back (→ 24.5px) as the lend margin
+   caught up — measured frame by frame, and it read as a hitch on every hover.
+   Animating to the real size puts the label and the lend on the same curve.
+   Needs `interpolate-size` (Chromium 129+); elsewhere the width snaps, which
+   is the old behaviour minus the dip. `justify-content: center`
+   is what keeps the word centred while its box is narrower than it: a flex
+   container overflows EVENLY both ways, a plain inline box only to the right.
+
+   padding-inline + the step's 0.5rem gap = the 16px of air either side of the
+   word in Figma 25317:105059.
+
+   No z-index: an in-flow label paints below the lifted circle (the wrap has a
+   transform), so a circle on its way up passes over the word, not under it. */
 p-stepper .baps-step__label {
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 0;
-  margin-top: 0.25rem;
+  interpolate-size: allow-keywords;
+  display: flex;
+  justify-content: center;
+  width: 0;
+  padding-inline: 0;
   font-size: 1rem;
   font-weight: 500;
   line-height: 1.3;
@@ -452,37 +508,28 @@ p-stepper .baps-step__label {
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--baps-step-label-fade-out) ease-out;
+  transition: opacity var(--baps-step-label-fade-out) ease-out,
+    width var(--baps-step-motion-icon), padding var(--baps-step-motion-icon);
 }
 
-/* A label takes the ROW LINE whenever its circle has lifted off it — for the
-   current step always, and for a hovered one while the hover lasts. The label
-   moves into the space the circle left, which is why the pill reads as holding
-   a word beside its icons rather than a caption hanging beneath one.
- *
- * A resting label keeps `top: 100%`: its circle has NOT moved, and a label on
- * the row would land on top of it. */
-p-stepper .baps-step--active .baps-step__label,
 p-stepper .baps-step:has(.baps-step__btn--active) .baps-step__label,
 p-stepper .baps-step:hover:has(.baps-step__btn:not(.baps-step__btn--locked)) .baps-step__label,
 p-stepper
   .baps-step:focus-within:has(.baps-step__btn:not(.baps-step__btn--locked))
   .baps-step__label {
-  top: 50%;
-  transform: translate(-50%, -50%);
-  margin-top: 0;
+  width: max-content;
+  padding-inline: 0.5rem;
   opacity: 1;
   pointer-events: auto;
 }
 
-/* Reveal is SLOWER than the hide, and slower than the icon's lift, so the name
-   arrives after the circle has settled rather than racing it. */
+/* Reveal is SLOWER than the hide, and starts a beat late, so the word fades in
+   once the circle has mostly cleared the row instead of racing it. The hide
+   stays fast so a sweep along the rail leaves no trail of names. */
 p-stepper .baps-step:hover .baps-step__label,
 p-stepper .baps-step:focus-within .baps-step__label {
-  opacity: 1;
-  pointer-events: auto;
-  transition-duration: var(--baps-step-label-fade-in);
-  transition-timing-function: ease-in-out;
+  transition: opacity var(--baps-step-label-fade-in) ease-in-out 0.2s,
+    width var(--baps-step-motion-icon), padding var(--baps-step-motion-icon);
 }
 
 /* A locked step names nothing on hover — it is not going anywhere. */
@@ -492,49 +539,94 @@ p-stepper .baps-step:has(.baps-step__btn--locked):hover .baps-step__label {
 
 /* ── Connector ──
    Drawn by the caller on each side of a slot; `flex: 1` is what spreads the
-   rail evenly. Solid, not dashed — measured from the shipping stylesheet. */
+   rail evenly. Solid, not dashed — measured from the shipping stylesheet.
+
+   z-index -1 (inside the steplist's isolated context) keeps every line under
+   every label, including a long one that overflows into a neighbour. */
 p-stepper .baps-step__connector {
+  position: relative;
+  z-index: -1;
   flex: 1;
   min-width: 0.375rem;
   height: 1px;
+}
+
+/* The line is inset 1px at the end FACING THE CIRCLE rather than being the
+   connector's own background: a connector squeezed to a fraction of a pixel
+   by a wide label otherwise still paints a stray dot beside the word. An
+   abspos box whose insets exceed its container resolves to zero width, so
+   under 1px the line simply is not drawn. The outer end stays flush, so the
+   two halves meeting between steps still read as one unbroken line. */
+p-stepper .baps-step__connector::before {
+  content: '';
+  position: absolute;
+  inset: 0 1px 0 0;
   background: var(--baps-step-line);
 }
 
-/* No line may cross an enlarged circle, from either side. Two cases per
-   lifted slot: its own pair of connectors, and the TRAILING connector of the
-   step before it. visibility rather than display, so the rail's spacing does
-   not jump as the mouse moves along it.
- *
- * Three things here were each wrong once and are load-bearing now:
- *
- * 1. `:has()` CANNOT be nested inside `:has()`. The obvious
- *    `:has(+ .p-step:has(.baps-step__btn--active))` is an INVALID selector,
- *    and an invalid selector anywhere in a comma list drops the WHOLE rule —
- *    so the valid half silently stopped working too. `:has(+ .p-step .x)`
- *    expresses the same thing and parses.
- * 2. The trailing connector is NOT `:last-child`. A step's children are
- *    connector · .baps-step · connector · p-stepper-separator, so the
- *    separator holds that slot. `.baps-step + .baps-step__connector` names it.
- * 3. Each selector is its own rule, so one bad edit can only cost the case it
- *    belongs to rather than all four. */
-p-stepper .p-step:has(.baps-step__btn--active) .baps-step__connector {
-  visibility: hidden;
+p-stepper .baps-step ~ .baps-step__connector::before {
+  inset: 0 0 0 1px;
 }
 
-p-stepper .p-step:has(+ .p-step .baps-step__btn--active) .baps-step + .baps-step__connector {
-  visibility: hidden;
+/* A revealed word is often wider than its step's share (8 steps on a 790px
+   rail = 89px each), and the lines either side of it must SHORTEN, never
+   vanish (Figma 25317:105059: a short line, 16px of air, the word).
+
+   So the revealed step's own connectors are allowed to reach past the step's
+   box into each neighbour by --baps-step-lend, via a negative outer margin.
+   The step's own box never changes size — its share is fixed by `min-width:
+   0` above — so no other slot on the rail moves. The neighbour's facing
+   connector simply runs underneath the borrowed one in the same colour, and
+   what reads is one continuous, shorter line ending 16px short of the word.
+
+   pointer-events: none on every connector, so a line reaching into a
+   neighbour never steals that neighbour's hover. */
+p-stepper .baps-step__connector {
+  pointer-events: none;
+  transition: margin var(--baps-step-motion-icon);
 }
 
-p-stepper .p-step:has(.baps-step:hover .baps-step__btn:not(.baps-step__btn--locked)) .baps-step__connector {
-  visibility: hidden;
+p-stepper .p-step:has(.baps-step__btn--active) .baps-step__connector:has(+ .baps-step),
+p-stepper
+  .p-step:has(.baps-step:hover .baps-step__btn:not(.baps-step__btn--locked))
+  .baps-step__connector:has(+ .baps-step) {
+  margin-inline-start: calc(-1 * var(--baps-step-lend));
+}
+
+p-stepper .p-step:has(.baps-step__btn--active) .baps-step ~ .baps-step__connector,
+p-stepper
+  .p-step:has(.baps-step:hover .baps-step__btn:not(.baps-step__btn--locked))
+  .baps-step
+  ~ .baps-step__connector {
+  margin-inline-end: calc(-1 * var(--baps-step-lend));
+}
+
+/* Two revealed steps side by side (active + a hovered neighbour): there is no
+   room to borrow, and a borrowed line would run into the other label. The
+   facing pair keeps its margin — dropping it on one side only would shift
+   that step's circle and word off-centre — but stops DRAWING the borrowed
+   part, so each line ends at its own step's edge. */
+p-stepper
+  .p-step:has(
+    + .p-step
+      :is(.baps-step__btn--active, .baps-step:hover .baps-step__btn:not(.baps-step__btn--locked))
+  )
+  .baps-step
+  ~ .baps-step__connector::before {
+  inset: 0 var(--baps-step-lend) 0 1px;
 }
 
 p-stepper
-  .p-step:has(+ .p-step .baps-step:hover .baps-step__btn:not(.baps-step__btn--locked))
-  .baps-step
-  + .baps-step__connector {
-  visibility: hidden;
+  .p-step:is(
+    :has(.baps-step__btn--active),
+    :has(.baps-step:hover .baps-step__btn:not(.baps-step__btn--locked))
+  )
+  + .p-step
+  .baps-step__connector:has(+ .baps-step)::before {
+  inset: 0 1px 0 var(--baps-step-lend);
 }
+
+
 
 /* ── Required-step badge ──
    Every layer of the badge has to be inline-flex, INCLUDING the inner
@@ -553,6 +645,126 @@ p-stepper .baps-step .p-overlaybadge {
   display: inline-flex;
 }
 
+/* The dot itself, per the MyBKY sheet: 8px with a 1px white ring on a resting
+   40px slot, 16px on the open 56px one. PrimeNG's dot-sm (18px here) is sized
+   for a generic avatar corner, not this rail.
+
+   Its CENTRE sits on the circle's rim at 45°, in both sizes. PrimeNG pins the
+   dot's centre to the BOX corner (translate(50%, -50%)); the rim at 45° is
+   0.1464 × diameter in from that corner (r − r/√2).
+
+   Hover is the awkward one: the button scales to 56px but its box stays 40px,
+   and the badge is the button's sibling, so it is not scaled with it. The
+   extra (visual − box) / 2 moves the dot out to where the grown rim actually
+   is, and it rides the same curve as the scale so the two land together. */
+p-stepper .baps-step .p-overlaybadge {
+  --baps-step-badge: 0.5rem;
+  --baps-step-badge-box: var(--baps-step-size);
+  --baps-step-badge-visual: var(--baps-step-size);
+  --baps-step-badge-shift: calc(
+    (var(--baps-step-badge-visual) - var(--baps-step-badge-box)) / 2 - 0.1464 *
+      var(--baps-step-badge-visual)
+  );
+}
+
+/* The open button's box is 56px WIDE but its wrapper is only 40px TALL — the
+   negative margin-block that keeps the pill from growing — so the corner the
+   dot is pinned to sits 8px below the button's real top. The y-shift puts
+   that back; without it the dot landed at 31°, measured. */
+p-stepper .baps-step .p-overlaybadge:has(.baps-step__btn--active) {
+  --baps-step-badge: 1rem;
+  --baps-step-badge-box: var(--baps-step-size-active);
+  --baps-step-badge-visual: var(--baps-step-size-active);
+  --baps-step-badge-dy: calc((var(--baps-step-size-active) - var(--baps-step-size)) / 2);
+}
+
+p-stepper
+  .baps-step:is(:hover, :focus-within)
+  .p-overlaybadge:has(.baps-step__btn:not(.baps-step__btn--active):not(.baps-step__btn--locked)) {
+  --baps-step-badge: 1rem;
+  --baps-step-badge-visual: var(--baps-step-size-active);
+}
+
+p-stepper .baps-step .p-overlaybadge .p-badge {
+  width: var(--baps-step-badge);
+  min-width: 0;
+  height: var(--baps-step-badge);
+  padding: 0;
+  /* Above the button (z-index 1): centred on the rim, half the dot overlaps
+     the circle, and without this the circle painted over that half. */
+  z-index: 2;
+  outline: 1px solid var(--baps-step-fill-idle);
+  transform: translate(
+    calc(50% + var(--baps-step-badge-shift)),
+    calc(-50% - var(--baps-step-badge-shift) - var(--baps-step-badge-dy, 0px))
+  );
+  transition: transform var(--baps-step-motion), width var(--baps-step-motion),
+    height var(--baps-step-motion);
+}
+
+/* ── Responsive ──
+   Breakpoints and sizes from the events-ui wizard. Every step re-states the
+   hover scale because it is inactive/active size: a stale 1.4 would overshoot
+   or undershoot the active circle it is meant to preview.
+
+   Icons need !important: baps-icon writes --baps-icon-size as an INLINE
+   style from its [size] input, and nothing else outranks that. */
+@media (max-width: 1024px) {
+  p-stepper {
+    --baps-step-rail-padding: 0.375rem 1rem 1.5rem;
+    --baps-step-size: 1.75rem;
+    --baps-step-size-active: 2.75rem;
+    --baps-step-hover-scale: 1.57;
+  }
+  p-stepper .baps-step__label {
+    font-size: 0.6875rem;
+  }
+  p-stepper .baps-step__connector {
+    min-width: 0.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  p-stepper {
+    --baps-step-rail-padding: 0.375rem 0.75rem;
+    --baps-step-size: 1.625rem;
+    --baps-step-size-active: 2.5rem;
+    --baps-step-hover-scale: 1.54;
+    --baps-step-active-lift: 1.5rem;
+  }
+  /* No room for a word on the row at this width; the circle carries it. */
+  p-stepper .baps-step__label {
+    display: none;
+  }
+  p-stepper .baps-step__connector {
+    min-width: 0.125rem;
+  }
+}
+
+@media (max-width: 425px) {
+  p-stepper {
+    --baps-step-size: 1.5rem;
+    --baps-step-size-active: 2rem;
+    --baps-step-hover-scale: 1.33;
+  }
+  p-stepper .baps-step__btn .baps-step__icon {
+    --baps-icon-size: 1rem !important;
+  }
+  p-stepper .baps-step__btn--active .baps-step__icon {
+    --baps-icon-size: 1.125rem !important;
+  }
+}
+
+@media (max-width: 360px) {
+  p-stepper {
+    --baps-step-size-active: 2.125rem;
+    --baps-step-hover-scale: 1.42;
+  }
+  p-stepper .baps-step__connector {
+    min-width: 0;
+  }
+}
+
 /* ── Reduced motion ──
    A 0.8s scale on every slot is exactly the sweep this setting exists to
    suppress; the state colours still change, only the animation stops. */
@@ -560,6 +772,8 @@ p-stepper .baps-step .p-overlaybadge {
   p-stepper {
     --baps-step-motion: 0s;
     --baps-step-motion-icon: 0s;
+    --baps-step-duration: 0s;
+    --baps-step-border-duration: 0s;
     --baps-step-label-fade-in: 0s;
     --baps-step-label-fade-out: 0s;
     --baps-step-hover-scale: 1;

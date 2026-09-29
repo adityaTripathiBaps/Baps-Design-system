@@ -200,6 +200,25 @@ const SWATCHES = [
     }
     .tb__note { font-size: 12px; opacity: 0.7; margin: 0.75rem 0 0; }
     .tb__preview { display: flex; flex-direction: column; gap: 1rem; }
+
+    /* Dark. The selected chip is white on the LIGHT accent (#5f78b8), which
+       measures 4.32:1 — under AA for its 12px label. In dark the accent steps
+       one lighter and the ink inverts, the same swap every other filled accent
+       makes here (7.79:1). Borders move off the light mono step for the same
+       reason they do everywhere else.
+
+       :host-context, not a plain .baps-dark descendant rule: this component
+       keeps Angular's EMULATED encapsulation (chip and avatar set
+       ViewEncapsulation.None, this one does not), so every compound in the
+       selector gets the _ngcontent attribute — including the ancestor, which
+       html/body never carries, and the rule would match nothing. */
+    :host-context(.baps-dark) .tb__chip--on {
+      background: var(--color-mybky-dark-primary-default, #9fadd9);
+      color: var(--color-mybky-dark-text-inverse, #181b1d);
+    }
+    :host-context(.baps-dark) :is(.tb__chip, .tb__colour, .tb__hex, .tb__reset) {
+      border-color: var(--color-mybky-dark-border-divider, #3d4144);
+    }
   `,
 })
 class ThemeBuilder {

@@ -4,6 +4,7 @@ import Material from '@primeuix/themes/material';
 // same AOT re-export elision issue documented in baps.theme.ts.
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import * as tokens from '@org/tokens/generated/tokens';
+import { darkColorScheme, darkMessageSeverities, darkSharedComponents } from './dark.scheme';
 
 /**
  * Sampark button token block. Values are the Style Dictionary
@@ -33,9 +34,9 @@ export const SAMPARK_BUTTON_TOKENS = {
     light: {
       root: {
         primary: {
-          background: tokens.ButtonSamparkPrimaryDefault,
-          hoverBackground: tokens.ButtonSamparkPrimaryHover,
-          activeBackground: tokens.ButtonSamparkPrimaryActive,
+          background: '{primary.color}',
+          hoverBackground: '{primary.hover.color}',
+          activeBackground: '{primary.active.color}',
           borderColor: 'transparent',
           hoverBorderColor: 'transparent',
           activeBorderColor: 'transparent',
@@ -65,9 +66,9 @@ export const SAMPARK_BUTTON_TOKENS = {
       },
       text: {
         primary: {
-          hoverBackground: tokens.ButtonSamparkPrimaryGhostHover,
-          activeBackground: tokens.ButtonSamparkPrimaryGhostHover,
-          color: tokens.ButtonSamparkPrimaryGhostText,
+          hoverBackground: '{primary.50}',
+          activeBackground: '{primary.100}',
+          color: '{primary.color}',
         },
         // Secondary Ghost — Figma node 13197:91897 rows "Button=⚫️ Secondary
         // Ghost". Eight of the frame's 44 cells had no Sampark path at all:
@@ -82,9 +83,9 @@ export const SAMPARK_BUTTON_TOKENS = {
         },
       },
       link: {
-        color: tokens.ButtonSamparkLinkText,
-        hoverColor: tokens.ButtonSamparkLinkText,
-        activeColor: tokens.ButtonSamparkLinkText,
+        color: '{primary.color}',
+        hoverColor: '{primary.hover.color}',
+        activeColor: '{primary.active.color}',
       },
     },
     // Dark mode. Primary is RESTATED with the same clay tokens as light — left to
@@ -95,15 +96,42 @@ export const SAMPARK_BUTTON_TOKENS = {
     dark: {
       root: {
         primary: {
-          background: tokens.ButtonSamparkPrimaryDefault,
-          hoverBackground: tokens.ButtonSamparkPrimaryHover,
-          activeBackground: tokens.ButtonSamparkPrimaryActive,
+          background: '{primary.color}',
+          hoverBackground: '{primary.hover.color}',
+          activeBackground: '{primary.active.color}',
           borderColor: 'transparent',
           hoverBorderColor: 'transparent',
           activeBorderColor: 'transparent',
-          color: tokens.ButtonSamparkPrimaryText,
-          hoverColor: tokens.ButtonSamparkPrimaryText,
-          activeColor: tokens.ButtonSamparkPrimaryText,
+          // NOT ButtonSamparkPrimaryText (#ffffff) as in light. In dark the
+          // fill is the LIGHTER maroon step (`primary.400`, #d48787) and white
+          // on it measures 2.76:1 — a label you have to squint at. The brand's
+          // dark inverse ink gives 6.17:1 on the same fill, and 10.58:1 on the
+          // hover step, which is what "contrast colour flips in dark" means in
+          // PrimeNG's own presets too.
+          color: tokens.ColorSamparkDarkTextInverse,
+          hoverColor: tokens.ColorSamparkDarkTextInverse,
+          activeColor: tokens.ColorSamparkDarkTextInverse,
+        },
+        // Sampark declared no danger variant at all, so a destructive button
+        // fell through to whatever was ambient: Material's dark red.400 with
+        // red.950 ink (3.95:1) on a Sampark page, and MyBKY's red GRADIENT when
+        // a `brand="sampark"` button sits on a MyBKY one — the delete
+        // confirmation pattern does exactly that, and the ink then had to work
+        // against two different reds at once.
+        //
+        // Stating the fill alongside the ink is what makes it decidable: the
+        // brand's own error red with white on it, 4.54:1 at rest and 5.88:1 on
+        // hover, and no dependence on what the page underneath happens to be.
+        danger: {
+          background: tokens.ColorSamparkError80,
+          hoverBackground: tokens.ColorSamparkError100,
+          activeBackground: tokens.ColorSamparkError100,
+          borderColor: 'transparent',
+          hoverBorderColor: 'transparent',
+          activeBorderColor: 'transparent',
+          color: tokens.ColorSamparkMono0,
+          hoverColor: tokens.ColorSamparkMono0,
+          activeColor: tokens.ColorSamparkMono0,
         },
         secondary: {
           background: tokens.ColorMybkyMono800,
@@ -120,6 +148,7 @@ export const SAMPARK_BUTTON_TOKENS = {
       outlined: {
         secondary: {
           hoverBackground: tokens.ColorMybkyMono800,
+          activeBackground: tokens.ColorMybkyMono800,
           borderColor: tokens.ColorMybkyMono600,
           color: tokens.ColorMybkyMono50,
         },
@@ -128,14 +157,18 @@ export const SAMPARK_BUTTON_TOKENS = {
         primary: {
           hoverBackground: 'rgba(255, 255, 255, 0.08)',
           activeBackground: 'rgba(255, 255, 255, 0.12)',
-          // Clay primary lifted for contrast on dark (light-mode text is darker).
-          color: tokens.ButtonSamparkPrimaryDefault,
+          color: '{primary.color}',
+        },
+        secondary: {
+          hoverBackground: 'rgba(255, 255, 255, 0.08)',
+          activeBackground: 'rgba(255, 255, 255, 0.12)',
+          color: tokens.ColorMybkyMono50,
         },
       },
       link: {
-        color: tokens.ButtonSamparkPrimaryDefault,
-        hoverColor: tokens.ButtonSamparkPrimaryDefault,
-        activeColor: tokens.ButtonSamparkPrimaryDefault,
+        color: '{primary.color}',
+        hoverColor: '{primary.hover.color}',
+        activeColor: '{primary.active.color}',
       },
     },
   },
@@ -234,7 +267,7 @@ export const SAMPARK_PROGRESSBAR_TOKENS = {
     background: tokens.ColorSamparkMono20,
   },
   value: {
-    background: tokens.ColorSamparkPrimaryDefault,
+    background: '{primary.color}',
   },
   label: {
     color: tokens.ColorSamparkMono0,
@@ -281,7 +314,7 @@ export const SAMPARK_CHECKBOX_TOKENS = {
         // itself in the disabled ink, so enabled and disabled read almost the
         // same. The two steps are #9f9c9c and #bcb9b9.
         borderColor: tokens.ColorSamparkMono60,
-        hoverBorderColor: tokens.ColorSamparkPrimary80,
+        hoverBorderColor: '{primary.hover.color}',
         // The defining rule of this frame: a checked box stays WHITE. Colour
         // is carried by the border and the tick, never by a fill.
         //
@@ -290,17 +323,17 @@ export const SAMPARK_CHECKBOX_TOKENS = {
         // checked checkbox in both brands rendered as a solid maroon/blue
         // square instead of the outlined box Figma draws.
         checkedBackground: tokens.ColorSamparkMono0,
-        checkedBorderColor: tokens.ColorSamparkPrimary60,
+        checkedBorderColor: '{primary.color}',
         // Stays white on hover too; only the border darkens to Primary/80.
         checkedHoverBackground: tokens.ColorSamparkMono0,
-        checkedHoverBorderColor: tokens.ColorSamparkPrimary80,
+        checkedHoverBorderColor: '{primary.hover.color}',
         disabledBackground: tokens.ColorSamparkMono20,
       },
       icon: {
-        checkedColor: tokens.ColorSamparkPrimary60,
+        checkedColor: '{primary.color}',
         // The tick does NOT darken with the border on hover — Figma keeps it
         // at Primary/60 in both checked rows.
-        checkedHoverColor: tokens.ColorSamparkPrimary60,
+        checkedHoverColor: '{primary.color}',
         // Disabled+checked is the one state that does fill (Mono/40), so its
         // tick goes white for contrast. The fill has no token; see the
         // component's CSS.
@@ -358,10 +391,10 @@ export const SAMPARK_CHECKBOX_TOKENS = {
  */
 export const SAMPARK_SLIDER_TOKENS = {
   track: { borderRadius: tokens.RadiusSamparkDefault },
-  range: { background: tokens.ColorSamparkPrimaryDefault },
+  range: { background: '{primary.color}' },
   handle: {
-    background: tokens.ColorSamparkPrimaryDefault,
-    hoverBackground: tokens.ColorSamparkPrimaryHover,
+    background: '{primary.color}',
+    hoverBackground: '{primary.hover.color}',
   },
   colorScheme: {
     // Sampark has no dark palette yet — the track borrows the mybky mono
@@ -397,16 +430,16 @@ export const SAMPARK_RADIO_TOKENS = {
         // Mono/60, same correction as the checkbox — this was the Mono/40
         // "Disable Item" step.
         borderColor: tokens.ColorSamparkMono60,
-        hoverBorderColor: tokens.ColorSamparkPrimary80,
+        hoverBorderColor: '{primary.hover.color}',
         // Checked stays white: ring + dot carry the colour.
         checkedBackground: tokens.ColorSamparkMono0,
-        checkedBorderColor: tokens.ColorSamparkPrimary60,
+        checkedBorderColor: '{primary.color}',
         // THE ONE PLACE THE TWO CONTROLS DIVERGE. A checked radio under the
         // pointer fills solid Primary/80 and flips its dot to white; a checked
         // checkbox never fills. This is deliberate in the Sampark spec — do
         // not "tidy" it into consistency with the checkbox.
-        checkedHoverBackground: tokens.ColorSamparkPrimary80,
-        checkedHoverBorderColor: tokens.ColorSamparkPrimary80,
+        checkedHoverBackground: '{primary.hover.color}',
+        checkedHoverBorderColor: '{primary.hover.color}',
         // Disabled UNCHECKED: Mono/20 fill, Mono/40 ring.
         disabledBackground: tokens.ColorSamparkMono20,
         checkedDisabledBorderColor: tokens.ColorSamparkMono40,
@@ -414,7 +447,7 @@ export const SAMPARK_RADIO_TOKENS = {
       icon: {
         // 6px dot in a 16px box — Sampark runs a tighter dot than MyBKY's 8px.
         size: '6px',
-        checkedColor: tokens.ColorSamparkPrimary60,
+        checkedColor: '{primary.color}',
         // White, because this is the one hover state with a solid fill under it.
         checkedHoverColor: tokens.ColorSamparkMono0,
         // Disabled+checked fills Mono/40, so the dot is white on top of it.
@@ -542,10 +575,40 @@ export const Sampark = definePreset(Material, {
           placeholderColor: tokens.ColorSamparkTextPlaceholder,
         },
       },
+      // Unlike MyBKY, `samparkMono` collapses at the dark end — 800/900/950 all
+      // resolve to Mono100 (#151414) — so it cannot serve as the dark ramp. The
+      // steps Material actually reads in dark are taken from the brand's own
+      // `sampark/dark/*` tokens instead, in the same slots MyBKY's mono ramp
+      // happens to occupy. See dark.scheme.ts.
+      dark: darkColorScheme({
+        0: tokens.ColorSamparkMono0,
+        50: tokens.ColorSamparkDarkTextPrimary,
+        100: tokens.ColorSamparkMono20,
+        200: tokens.ColorSamparkMonoBorders,
+        300: tokens.ColorSamparkMono40,
+        400: tokens.ColorSamparkDarkTextMuted,
+        500: tokens.ColorSamparkDarkBorderControl,
+        600: tokens.ColorSamparkMono80,
+        700: tokens.ColorSamparkDarkSurfaceHover,
+        800: tokens.ColorSamparkDarkSurfaceCard,
+        900: tokens.ColorSamparkDarkSurfaceGround,
+        950: tokens.ColorSamparkMono100,
+      }),
     },
   },
 
   components: {
+    ...darkSharedComponents,
+    // Dark `p-message` severities in Sampark hues — see dark.scheme.ts. The
+    // dark datatable block this preset already declares further down covers
+    // what `darkComponents` does for MyBKY, so that spread is not repeated.
+    ...darkMessageSeverities({
+      info: { core: tokens.ColorSamparkInfo60, tint: tokens.ColorSamparkInfo40 },
+      success: { core: tokens.ColorSamparkSuccess60, tint: tokens.ColorSamparkSuccess40 },
+      warn: { core: tokens.ColorSamparkWarning60, tint: tokens.ColorSamparkWarning40 },
+      error: { core: tokens.ColorSamparkError80, tint: tokens.ColorSamparkError40 },
+    }),
+
     button: SAMPARK_BUTTON_TOKENS,
 
     badge: SAMPARK_BADGE_TOKENS,
@@ -583,7 +646,10 @@ export const Sampark = definePreset(Material, {
     slider: SAMPARK_SLIDER_TOKENS,
 
     // ProgressBar — 4px radius, maroon fill.
-    progressbar: SAMPARK_PROGRESSBAR_TOKENS,
+    // Spread order matters: these keys are declared LATER than
+    // `...darkSharedComponents` above, so the shared dark colorScheme has to be
+    // carried in explicitly or it is silently dropped for this brand.
+    progressbar: { ...darkSharedComponents.progressbar, ...SAMPARK_PROGRESSBAR_TOKENS },
 
     // Paginator — 4px radius, maroon active page.
     paginator: {
@@ -596,6 +662,7 @@ export const Sampark = definePreset(Material, {
 
     // Tooltip — dark bg, white text, 4px radius.
     tooltip: {
+      ...darkSharedComponents.tooltip,
       root: {
         borderRadius: tokens.RadiusSamparkDefault,
       },
@@ -725,9 +792,179 @@ export const Sampark = definePreset(Material, {
   },
 });
 
+type RampSteps = Record<number | string, string | undefined>;
+
+/**
+ * Remaps the component-level tokens in the Sampark preset that derive from the
+ * brand primary ramp.
+ *
+ * Parallel to `myBkyPrimaryDerivedComponents` in baps.theme.ts: presets define
+ * component tokens using build-time token literals (`#c96868`, etc.).
+ * When re-theming under an accent or custom primary color, merging
+ * `semantic.primary` alone leaves component tokens on their baked default
+ * literals. This function reconstructs those component overrides from the
+ * chosen ramp so both semantic and component tokens move together.
+ */
+export function samparkPrimaryDerivedComponents(ramp: RampSteps) {
+  const c50 = ramp[50];
+  const c100 = ramp[100];
+  const c200 = ramp[200];
+  const c400 = ramp[400];
+  const c600 = ramp[600];
+  const c700 = ramp[700];
+  const c800 = ramp[800];
+
+  if (!c600) return {};
+
+  const primaryBtn = {
+    background: c600,
+    hoverBackground: c700 ?? c600,
+    activeBackground: c800 ?? c700 ?? c600,
+  };
+
+  const ghostBtn = {
+    hoverBackground: c50 ?? 'rgba(0,0,0,0.04)',
+    activeBackground: c100 ?? c50 ?? 'rgba(0,0,0,0.08)',
+    color: c600,
+  };
+
+  const linkBtn = {
+    color: c600,
+    hoverColor: c700 ?? c600,
+    activeColor: c800 ?? c600,
+  };
+
+  return {
+    button: {
+      colorScheme: {
+        light: {
+          root: { primary: primaryBtn },
+          text: { primary: ghostBtn },
+          link: linkBtn,
+        },
+        dark: {
+          root: { primary: primaryBtn },
+          text: { primary: { color: c600 } },
+          link: linkBtn,
+        },
+      },
+    },
+    toggleswitch: {
+      colorScheme: {
+        light: {
+          root: {
+            checkedBackground: c600,
+            checkedHoverBackground: c700 ?? c600,
+          },
+        },
+      },
+    },
+    checkbox: {
+      colorScheme: {
+        light: {
+          root: {
+            hoverBorderColor: c700 ?? c600,
+            checkedBorderColor: c600,
+            checkedHoverBorderColor: c700 ?? c600,
+          },
+          icon: {
+            checkedColor: c600,
+            checkedHoverColor: c600,
+          },
+        },
+        dark: {
+          root: {
+            hoverBorderColor: c200 ?? c400 ?? c600,
+            checkedBorderColor: c400 ?? c600,
+            checkedHoverBorderColor: c200 ?? c400 ?? c600,
+          },
+          icon: {
+            checkedColor: c400 ?? c600,
+            checkedHoverColor: c200 ?? c400 ?? c600,
+          },
+        },
+      },
+    },
+    radiobutton: {
+      colorScheme: {
+        light: {
+          root: {
+            hoverBorderColor: c700 ?? c600,
+            checkedBorderColor: c600,
+            checkedHoverBackground: c700 ?? c600,
+            checkedHoverBorderColor: c700 ?? c600,
+          },
+          icon: {
+            checkedColor: c600,
+          },
+        },
+        dark: {
+          root: {
+            hoverBorderColor: c200 ?? c400 ?? c600,
+            checkedBorderColor: c400 ?? c600,
+            checkedHoverBackground: c200 ?? c400 ?? c600,
+            checkedHoverBorderColor: c200 ?? c400 ?? c600,
+          },
+          icon: {
+            checkedColor: c400 ?? c600,
+          },
+        },
+      },
+    },
+    // Tabs. The preset bakes ColorSamparkPrimaryDefault (the literal #c96868),
+    // and _tabs-sampark.scss masks two of the three cells with !important —
+    // so light mode LOOKED like it followed the picker while the active-bar
+    // colour and the whole dark scheme stayed maroon.
+    tabs: {
+      colorScheme: {
+        light: {
+          tab: { activeColor: c600, activeBorderColor: c600 },
+          activeBar: { background: c600 },
+        },
+        dark: {
+          tab: {
+            activeColor: c400 ?? c600,
+            activeBorderColor: c400 ?? c600,
+          },
+          activeBar: { background: c400 ?? c600 },
+        },
+      },
+    },
+    progressbar: {
+      value: {
+        background: c600,
+      },
+    },
+    slider: {
+      range: {
+        background: c600,
+      },
+      handle: {
+        background: c600,
+        hoverBackground: c700 ?? c600,
+      },
+    },
+    avatar: {
+      root: {
+        background: c50 ?? tokens.ColorSamparkPrimary0,
+      },
+    },
+    datatable: {
+      colorScheme: {
+        light: {
+          row: {
+            selectedBackground: c50 ?? tokens.ColorSamparkPrimary0,
+          },
+        },
+      },
+    },
+  };
+}
+
 export default {
   preset: Sampark,
   options: {
     darkModeSelector: '.baps-dark',
   },
 };
+

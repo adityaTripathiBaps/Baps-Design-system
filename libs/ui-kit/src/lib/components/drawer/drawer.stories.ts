@@ -19,7 +19,7 @@ import { BapsInputGroup } from '../input-group/input-group.component';
 type Args = BapsDrawer & Record<'onShown', (event?: unknown) => void>;
 
 const meta: Meta<Args> = {
-  title: 'Components/Overlay/Drawer',
+  title: 'Components/Organisms/Drawer',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-overlay-drawer.
   id: 'components-drawer',
@@ -191,7 +191,7 @@ export const FilterPanel: Story = {
 
           <baps-accordion-panel value="location" label="Location" [count]="1" [divider]="false">
             <baps-multi-select
-              [brand]="brand" display="chip" optionLabel="name" appendTo="body"
+              [brand]="brand" display="chip" optionLabel="name"
               placeholder="Select location" [options]="locations" [(ngModel)]="location"
             ></baps-multi-select>
           </baps-accordion-panel>
@@ -209,9 +209,9 @@ export const FilterPanel: Story = {
               <div class="baps-accordion-cell"><baps-radio [brand]="brand" name="duration" radioValue="custom" label="Custom Date Range" [(ngModel)]="period" /></div>
             </div>
             <div class="baps-accordion-daterange">
-              <baps-datepicker [brand]="brand" appendTo="body" dateFormat="dd M, yy" [showIcon]="true" iconDisplay="input" ariaLabel="From date" [(ngModel)]="from"></baps-datepicker>
+              <baps-datepicker [brand]="brand" dateFormat="dd M, yy" [showIcon]="true" iconDisplay="input" ariaLabel="From date" [(ngModel)]="from"></baps-datepicker>
               <span aria-hidden="true">-</span>
-              <baps-datepicker [brand]="brand" appendTo="body" dateFormat="dd M, yy" [showIcon]="true" iconDisplay="input" ariaLabel="To date" [(ngModel)]="to"></baps-datepicker>
+              <baps-datepicker [brand]="brand" dateFormat="dd M, yy" [showIcon]="true" iconDisplay="input" ariaLabel="To date" [(ngModel)]="to"></baps-datepicker>
             </div>
           </baps-accordion-panel>
 

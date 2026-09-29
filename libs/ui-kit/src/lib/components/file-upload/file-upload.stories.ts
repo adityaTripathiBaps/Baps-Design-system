@@ -24,7 +24,7 @@ interface FileUploadArgs {
 }
 
 const meta: Meta<FileUploadArgs> = {
-  title: 'Components/Form/FileUpload',
+  title: 'Components/Molecules/File Upload',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-form-fileupload.
   id: 'components-fileupload',

@@ -26,6 +26,7 @@ carry the two constraints that cause the most rework.
 | [`testing.md`](testing.md) | adding tests, or when a suite fails |
 | [`publishing.md`](publishing.md) | touching `dist/`, the build scripts, or Nx targets |
 | [`git-commit.md`](git-commit.md) | writing a commit or PR |
+| [`table-panel.md`](table-panel.md) | working with tables, panels, dropdowns, filters, or split buttons |
 
 `styling-tokens.md` and `design-language.md` are a pair: the first says **how**
 to consume a value, the second says **what the value should be**.

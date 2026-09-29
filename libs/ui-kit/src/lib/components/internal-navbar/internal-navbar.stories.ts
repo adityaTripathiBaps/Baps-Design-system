@@ -3,7 +3,7 @@ import { action } from '@storybook/addon-actions';
 import { BapsInternalNavbar, InternalNavItem } from './internal-navbar.component';
 
 const meta: Meta<BapsInternalNavbar> = {
-  title: 'Components/Navigation/InternalNavbar',
+  title: 'Components/Organisms/Internal Navbar',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-menu-internalnavbar.
   id: 'components-internalnavbar',
@@ -35,7 +35,7 @@ const meta: Meta<BapsInternalNavbar> = {
   render: (args) => ({
     props: { ...args, onItemClick: action('itemClick') },
     template: `
-      <baps-internal-navbar [brand]="brand"
+      <baps-internal-navbar [brand]="brand" [collapsed]="collapsed" [activeItem]="activeItem" [title]="title" [ariaLabel]="ariaLabel"
         (itemClick)="onItemClick($event)">
         <a href="#" class="active">Overview</a>
         <a href="#">Settings</a>

@@ -1,4 +1,5 @@
-import { Meta, Canvas } from '@storybook/blocks';
+import { Meta, Canvas, Controls } from '@storybook/blocks';
+import { PropsTable } from '@baps/docs-blocks';
 import * as FileUploadStories from './file-upload.stories';
 
 <Meta of={FileUploadStories} />
@@ -27,10 +28,17 @@ A click-or-drag dropzone (Sampark Portal "Web File Upload", Figma node 13197:878
 ### Playground
 
 <Canvas of={FileUploadStories.Playground} />
+<Controls of={FileUploadStories.Playground} />
 
 ### States
 
 <Canvas of={FileUploadStories.States} />
+
+## API
+
+Inputs, outputs and their types, read from the component's own source.
+
+<PropsTable of={FileUploadStories} />
 
 ## When Not to Use
 

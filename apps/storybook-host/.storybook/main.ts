@@ -85,6 +85,15 @@ const config: StorybookConfig = {
     {
       from: '../static',
       to: '/'
+    },
+    // The Playwright baselines double as the still image on each Components
+    // Overview card (ComponentGallery in blocks/showcase.tsx), 21st.dev-style:
+    // a picture at rest, the live story on hover. Served read-only from where
+    // the visual suite already writes them, so there is no second copy to keep
+    // in sync; a new or updated baseline shows up on the next start.
+    {
+      from: '../visual/stories.spec.ts-snapshots',
+      to: '/visual-baselines'
     }
   ],
   webpackFinal: async (webpackConfig) => {
@@ -97,6 +106,15 @@ const config: StorybookConfig = {
     };
     webpackConfig.module ??= { rules: [] };
     webpackConfig.module.rules ??= [];
+    // compodoc's documentation.json is imported by preview.ts, so it is inlined
+    // into main.iframe.bundle.js and parsed by EVERY iframe — docs pages,
+    // stories, each Playwright visual test. It was 6.7 MB of an 8.47 MB bundle,
+    // mostly the BAPS_ICONS registry listed twice. The loader strips what no
+    // reader uses (see its header) for 0.67 MB; the file on disk is untouched.
+    webpackConfig.module.rules.push({
+      test: /[\\/]documentation\.json$/,
+      use: [require('path').resolve(__dirname, 'compodoc-slim-loader.cjs')],
+    });
     webpackConfig.module.rules.push({
       test: /\.css$/,
       // Angular emits component `styles` as virtual .css?ngResource modules that

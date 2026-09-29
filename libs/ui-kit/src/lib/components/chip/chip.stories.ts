@@ -12,7 +12,7 @@ import { BapsChip } from './chip.component';
  * calls it a different philosophy, not a different number.
  */
 const meta: Meta<BapsChip> = {
-  title: 'Components/Utility/Chip',
+  title: 'Components/Atoms/Chip',
   // Pinned so the categorised title above does not move the docs URL.
   id: 'components-chip',
   // Design-system availability — drives the sidebar filter in .storybook/manager.tsx.
@@ -33,17 +33,39 @@ const meta: Meta<BapsChip> = {
       options: ['grey', 'primary', 'secondary', 'info', 'warning', 'error', 'success'],
     },
     size: { control: 'inline-radio', options: [undefined, 'xs', 's', 'm', 'l'] },
+    icon: { control: 'text' },
+    chevron: { control: 'boolean' },
+    disabled: { control: 'boolean' },
+    removable: { control: 'boolean' },
+    count: { control: 'number' },
   },
-  // Only what Default needs. Every extra arg here is echoed into Show code as a
-  // bound property (`[removable]="false"` etc.), so an unset default is noise in
-  // the snippet — the control still appears, inferred from the component input.
   args: {
     styleClass: '',
     label: 'Robbinsvile',
     chevron: false,
     disabled: false,
     removable: false,
+    severity: 'grey',
+    size: 'm',
   },
+  render: (args) => ({
+    props: args,
+    template: `
+      <baps-chip
+        [label]="label"
+        [icon]="icon"
+        [image]="image"
+        [removable]="removable"
+        [removeIcon]="removeIcon"
+        [disabled]="disabled"
+        [chevron]="chevron"
+        [count]="count"
+        [size]="size"
+        [severity]="severity"
+        [brand]="brand"
+      />
+    `,
+  }),
 };
 
 export default meta;

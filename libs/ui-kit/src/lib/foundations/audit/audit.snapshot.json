@@ -1,0 +1,1188 @@
+{
+  "generatedAt": "2026-09-24",
+  "generatedBy": "node tools/audit-foundations.mjs",
+  "scanned": {
+    "scss": 37,
+    "components": 53,
+    "tokens": 698
+  },
+  "checks": [
+    {
+      "id": "token-usage",
+      "title": "Token usage",
+      "area": "Tokens",
+      "status": "passed",
+      "count": 479,
+      "summary": "2271 var() references in 37 SCSS partials and 53 components. 479 of 698 design tokens are referenced directly; the rest reach components through the PrimeNG presets or as the reference of another token.",
+      "files": [],
+      "details": []
+    },
+    {
+      "id": "hardcoded-colors",
+      "title": "Hard-coded colours",
+      "area": "Colour",
+      "status": "warning",
+      "count": 52,
+      "summary": "52 declarations across 9 file(s) use a literal instead of a token. Replace with the semantic token, or the primitive if no semantic exists yet.",
+      "files": [
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/input/_input.scss",
+          "count": 27
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/table/_table-sampark.scss",
+          "count": 7
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "count": 6
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/input/_input-sampark.scss",
+          "count": 3
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/tag/_tag-sampark.scss",
+          "count": 3
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/dark/_dark-aliases.scss",
+          "count": 2
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/tag/_tag.scss",
+          "count": 2
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/internal-navbar/_internal-navbar.scss",
+          "count": 1
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/overlay-list/_overlay-list.scss",
+          "count": 1
+        }
+      ],
+      "details": [
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 87,
+          "text": "background: rgba(0, 0, 0, 0.06);"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 128,
+          "text": "background: rgba(224, 82, 85, 0.12);"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 404,
+          "text": ".baps-dark baps-alert .baps-alert--info { background: rgba(56, 137, 250, 0.1); }"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 405,
+          "text": ".baps-dark baps-alert .baps-alert--success { background: rgba(23, 181, 108, 0.1); }"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 406,
+          "text": ".baps-dark baps-alert .baps-alert--warning { background: rgba(250, 171, 56, 0.1); }"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 407,
+          "text": ".baps-dark baps-alert .baps-alert--error { background: rgba(234, 21, 26, 0.1); }"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/dark/_dark-aliases.scss",
+          "line": 95,
+          "text": "--button-sampark-primary-ghost-hover: rgba(255, 255, 255, 0.08);"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/dark/_dark-aliases.scss",
+          "line": 99,
+          "text": "--button-sampark-disabled-background: rgba(255, 255, 255, 0.06);"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/input/_input-sampark.scss",
+          "line": 132,
+          "text": "--input-shadow-focused: #f2f1f0;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/input/_input-sampark.scss",
+          "line": 133,
+          "text": "--input-shadow-error: #ffe5e5;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/input/_input-sampark.scss",
+          "line": 186,
+          "text": "--input-shadow-error: rgba(234, 21, 26, 0.28);"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/input/_input.scss",
+          "line": 111,
+          "text": "--input-border-default: #e4ecf1;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/input/_input.scss",
+          "line": 112,
+          "text": "--input-border-hover: #9fadd9;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/input/_input.scss",
+          "line": 113,
+          "text": "--input-border-error: #e05255;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/input/_input.scss",
+          "line": 114,
+          "text": "--input-border-warning: #e0a652;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/input/_input.scss",
+          "line": 117,
+          "text": "--input-bg-default: #ffffff;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/input/_input.scss",
+          "line": 118,
+          "text": "--input-bg-disabled: #f8fafb;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/input/_input.scss",
+          "line": 122,
+          "text": "--input-text-placeholder: #6f777d;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/input/_input.scss",
+          "line": 127,
+          "text": "--input-text-disabled: #8d9ba5;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/input/_input.scss",
+          "line": 130,
+          "text": "--input-shadow-focused: rgba("
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/input/_input.scss",
+          "line": 136,
+          "text": "--input-shadow-error: rgba(224, 82, 85, 0.35);"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/input/_input.scss",
+          "line": 137,
+          "text": "--input-shadow-warning: rgba(224, 166, 82, 0.35);"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/input/_input.scss",
+          "line": 140,
+          "text": "--input-hint-color: #6f777d;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/input/_input.scss",
+          "line": 141,
+          "text": "--input-hint-color-error: #e05255;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/input/_input.scss",
+          "line": 142,
+          "text": "--input-hint-color-warning: #e0a652;"
+        }
+      ]
+    },
+    {
+      "id": "typography",
+      "title": "Typography consistency",
+      "area": "Typography",
+      "status": "warning",
+      "count": 185,
+      "summary": "185 declarations across 19 file(s) use a literal instead of a token. Use --font-size-*, --font-weight-*, --font-line-height-*.",
+      "files": [
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/table/_table-sampark.scss",
+          "count": 30
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "count": 23
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/select/_select.scss",
+          "count": 21
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/input/_input.scss",
+          "count": 19
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/internal-navbar/_internal-navbar.scss",
+          "count": 13
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/select/_select-sampark.scss",
+          "count": 12
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/stepper/_stepper.scss",
+          "count": 9
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/tooltip/_tooltip-sampark.scss",
+          "count": 9
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/layout/_step-page.scss",
+          "count": 9
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/accordion/_accordion.scss",
+          "count": 8
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/layout/_dashboard.scss",
+          "count": 8
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/button/_button.scss",
+          "count": 7
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/input/_input-sampark.scss",
+          "count": 5
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/table/_table.scss",
+          "count": 3
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/tabs/_tabs-sampark.scss",
+          "count": 3
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/file-upload/_file-upload.scss",
+          "count": 2
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/indicator/_indicator.scss",
+          "count": 2
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/link/_link.scss",
+          "count": 1
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/layout/_fonts.scss",
+          "count": 1
+        }
+      ],
+      "details": [
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/accordion/_accordion.scss",
+          "line": 108,
+          "text": "font-size: 0.875rem;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/accordion/_accordion.scss",
+          "line": 109,
+          "text": "font-weight: 500;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/accordion/_accordion.scss",
+          "line": 110,
+          "text": "line-height: 1.3;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/accordion/_accordion.scss",
+          "line": 122,
+          "text": "font-size: 0.875rem;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/accordion/_accordion.scss",
+          "line": 123,
+          "text": "font-weight: 500;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/accordion/_accordion.scss",
+          "line": 124,
+          "text": "line-height: 1.3;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/accordion/_accordion.scss",
+          "line": 132,
+          "text": "font-weight: 500;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/accordion/_accordion.scss",
+          "line": 340,
+          "text": "font-size: 0.8125rem;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 30,
+          "text": "font-size: 0.875rem;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 31,
+          "text": "line-height: 1.5;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 47,
+          "text": "font-size: 1.125rem;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 60,
+          "text": "font-weight: 600;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 61,
+          "text": "font-size: 0.875rem;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 64,
+          "text": "font-weight: 400;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 79,
+          "text": "font-size: 0.75rem;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 207,
+          "text": "line-height: 1.3;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 220,
+          "text": "font-size: 24px;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 247,
+          "text": "font-size: 14px;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 248,
+          "text": "font-weight: 500;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 280,
+          "text": "font-size: 14px;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 281,
+          "text": "font-weight: 600;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 289,
+          "text": "font-size: 12px;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 290,
+          "text": "font-weight: 400;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 295,
+          "text": "font-size: 14px;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 296,
+          "text": "font-weight: 400;"
+        }
+      ]
+    },
+    {
+      "id": "spacing",
+      "title": "Spacing consistency",
+      "area": "Spacing",
+      "status": "warning",
+      "count": 146,
+      "summary": "146 declarations across 19 file(s) use a literal instead of a token. Use the --space-* scale (4px base).",
+      "files": [
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/table/_table-sampark.scss",
+          "count": 22
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/input/_input.scss",
+          "count": 16
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/internal-navbar/_internal-navbar.scss",
+          "count": 16
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "count": 14
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/select/_select-sampark.scss",
+          "count": 14
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/accordion/_accordion.scss",
+          "count": 11
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/select/_select.scss",
+          "count": 10
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/layout/_step-page.scss",
+          "count": 9
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/input/_input-sampark.scss",
+          "count": 5
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/tabs/_tabs-sampark.scss",
+          "count": 5
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/button/_button.scss",
+          "count": 4
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/file-upload/_file-upload.scss",
+          "count": 4
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/tooltip/_tooltip-sampark.scss",
+          "count": 4
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/table/_table.scss",
+          "count": 3
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/tag/_tag.scss",
+          "count": 3
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/stepper/_stepper.scss",
+          "count": 2
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/layout/_dashboard.scss",
+          "count": 2
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/drawer/_drawer.scss",
+          "count": 1
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/toggle-switch/_switch.scss",
+          "count": 1
+        }
+      ],
+      "details": [
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/accordion/_accordion.scss",
+          "line": 99,
+          "text": "gap: 0.5rem;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/accordion/_accordion.scss",
+          "line": 141,
+          "text": "padding-inline-start: 0.5rem;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/accordion/_accordion.scss",
+          "line": 172,
+          "text": "padding: 0.5625rem;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/accordion/_accordion.scss",
+          "line": 226,
+          "text": "padding-block: 0.5rem 1rem;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/accordion/_accordion.scss",
+          "line": 247,
+          "text": "padding-inline: 0.5rem;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/accordion/_accordion.scss",
+          "line": 259,
+          "text": "gap: 0.25rem;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/accordion/_accordion.scss",
+          "line": 260,
+          "text": "padding-inline: 0.25rem;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/accordion/_accordion.scss",
+          "line": 276,
+          "text": "gap: 0.5rem;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/accordion/_accordion.scss",
+          "line": 277,
+          "text": "padding-inline: 0.25rem;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/accordion/_accordion.scss",
+          "line": 288,
+          "text": "padding: 1.75rem 0.75rem 0.5rem;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/accordion/_accordion.scss",
+          "line": 333,
+          "text": "margin-inline-end: 0.5rem;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 26,
+          "text": "gap: 0.75rem;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 27,
+          "text": "padding: 0.75rem 1rem 0.75rem 1.25rem;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 56,
+          "text": "gap: 0.125rem;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 190,
+          "text": "gap: 16px;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 194,
+          "text": "padding: 16px;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 256,
+          "text": "gap: 12px;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 266,
+          "text": "gap: 8px;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 273,
+          "text": "gap: 8px;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 276,
+          "text": "padding-right: 28px;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 310,
+          "text": "padding: 8px 4px;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 329,
+          "text": "gap: 8px;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 330,
+          "text": "padding: 8px 0;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 358,
+          "text": "margin-left: -10px;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 365,
+          "text": "padding: 8px 10px;"
+        }
+      ]
+    },
+    {
+      "id": "radius",
+      "title": "Border radius consistency",
+      "area": "Borders & Radius",
+      "status": "warning",
+      "count": 31,
+      "summary": "31 declarations across 9 file(s) use a literal instead of a token. Use --radius-{brand}-* or the component radius token.",
+      "files": [
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/select/_select.scss",
+          "count": 8
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/input/_input.scss",
+          "count": 6
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/select/_select-sampark.scss",
+          "count": 4
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/input/_input-sampark.scss",
+          "count": 3
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/table/_table-sampark.scss",
+          "count": 3
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "count": 2
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/internal-navbar/_internal-navbar.scss",
+          "count": 2
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/layout/_step-page.scss",
+          "count": 2
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/link/_link.scss",
+          "count": 1
+        }
+      ],
+      "details": [
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 335,
+          "text": "border-radius: 4px;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/alert/_alert.scss",
+          "line": 342,
+          "text": "border-radius: 4px;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/input/_input-sampark.scss",
+          "line": 462,
+          "text": "border-radius: 0.25rem 0 0 0.25rem !important;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/input/_input-sampark.scss",
+          "line": 467,
+          "text": "border-radius: 0 0.25rem 0.25rem 0 !important;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/input/_input-sampark.scss",
+          "line": 471,
+          "text": "border-radius: 0.25rem !important;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/input/_input.scss",
+          "line": 254,
+          "text": "border-radius: 99px !important;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/input/_input.scss",
+          "line": 742,
+          "text": "border-radius: 0.25rem 0 0 0.25rem !important;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/input/_input.scss",
+          "line": 747,
+          "text": "border-radius: 0 0.25rem 0.25rem 0 !important;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/input/_input.scss",
+          "line": 751,
+          "text": "border-radius: 0.25rem !important;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/input/_input.scss",
+          "line": 1068,
+          "text": "border-radius: 1rem !important;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/input/_input.scss",
+          "line": 1162,
+          "text": "border-radius: 9999px !important;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/internal-navbar/_internal-navbar.scss",
+          "line": 136,
+          "text": "border-radius: 0 2px 2px 0;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/internal-navbar/_internal-navbar.scss",
+          "line": 304,
+          "text": "border-radius: 0.5rem;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/link/_link.scss",
+          "line": 106,
+          "text": "border-radius: 2px;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/select/_select-sampark.scss",
+          "line": 447,
+          "text": "border-radius: 0.375rem !important;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/select/_select-sampark.scss",
+          "line": 519,
+          "text": "border-radius: 0.125rem !important;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/select/_select-sampark.scss",
+          "line": 556,
+          "text": "border-radius: 0.25rem !important;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/select/_select-sampark.scss",
+          "line": 647,
+          "text": "border-radius: 0.375rem !important;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/select/_select.scss",
+          "line": 252,
+          "text": "border-radius: 99px !important;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/select/_select.scss",
+          "line": 485,
+          "text": "border-radius: 1rem !important;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/select/_select.scss",
+          "line": 623,
+          "text": "border-radius: 0 99px 99px 0 !important;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/select/_select.scss",
+          "line": 677,
+          "text": "border-radius: 0 99px 99px 0 !important;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/select/_select.scss",
+          "line": 999,
+          "text": "border-radius: 0.5rem !important;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/select/_select.scss",
+          "line": 1013,
+          "text": "border-radius: 99px !important;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/select/_select.scss",
+          "line": 1075,
+          "text": "border-radius: 0.5rem !important;"
+        }
+      ]
+    },
+    {
+      "id": "shadows",
+      "title": "Shadow usage",
+      "area": "Shadows",
+      "status": "warning",
+      "count": 13,
+      "summary": "13 declarations across 6 file(s) use a literal instead of a token. Use --shadow-{brand}-*. Focus rings built from a token colour count here too.",
+      "files": [
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/select/_select-sampark.scss",
+          "count": 3
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/select/_select.scss",
+          "count": 3
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/file-upload/_file-upload.scss",
+          "count": 2
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/input/_input.scss",
+          "count": 2
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/table/_table-sampark.scss",
+          "count": 2
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/tabs/_tabs-sampark.scss",
+          "count": 1
+        }
+      ],
+      "details": [
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/file-upload/_file-upload.scss",
+          "line": 38,
+          "text": "box-shadow: 0 0 0 3px var(--input-shadow-focused, #f2f1f0);"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/file-upload/_file-upload.scss",
+          "line": 47,
+          "text": "box-shadow: 0 0 0 3px var(--input-shadow-error, #ffe5e5);"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/input/_input.scss",
+          "line": 94,
+          "text": "box-shadow: 0 0 0 3px $ring !important;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/input/_input.scss",
+          "line": 1115,
+          "text": "box-shadow: 0 0 0 3px var(--input-shadow-focused) !important;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/select/_select-sampark.scss",
+          "line": 227,
+          "text": "box-shadow: 0 0 0 3px var(--input-shadow-focused) !important;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/select/_select-sampark.scss",
+          "line": 234,
+          "text": "box-shadow: 0 0 0 3px var(--input-shadow-warning) !important;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/select/_select-sampark.scss",
+          "line": 262,
+          "text": "box-shadow: 0 0 0 3px var(--input-shadow-error) !important;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/select/_select.scss",
+          "line": 364,
+          "text": "box-shadow: 0 0 0 3px var(--input-shadow-error) !important;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/select/_select.scss",
+          "line": 825,
+          "text": "box-shadow: inset var(--select-option-bar-width, 0) 0 0 0 var(--select-option-bar, transparent) !important;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/select/_select.scss",
+          "line": 843,
+          "text": "box-shadow: inset var(--select-option-bar-width, 0) 0 0 0 var(--select-option-bar, transparent) !important;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/table/_table-sampark.scss",
+          "line": 402,
+          "text": "box-shadow: inset -1px 0 0 var(--table-border) !important;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/table/_table-sampark.scss",
+          "line": 434,
+          "text": "box-shadow: inset 1px 0 0 var(--table-border) !important;"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/styles/components/tabs/_tabs-sampark.scss",
+          "line": 61,
+          "text": "box-shadow: 0 0 0 2px var(--shadow-sampark-input-focus, #f2f1f0);"
+        }
+      ]
+    },
+    {
+      "id": "icons",
+      "title": "Icon usage",
+      "area": "Icons",
+      "status": "warning",
+      "count": 15,
+      "summary": "15 PrimeIcons class reference(s) in components. Product icons should be <baps-icon>; PrimeIcons stays only where PrimeNG draws its own chrome.",
+      "files": [
+        {
+          "file": "libs/ui-kit/src/lib/components/pagination/pagination.component.ts",
+          "count": 4
+        },
+        {
+          "file": "libs/ui-kit/src/lib/components/table-sort-config/table-sort-config.component.ts",
+          "count": 3
+        },
+        {
+          "file": "libs/ui-kit/src/lib/components/alert/alert.component.ts",
+          "count": 2
+        },
+        {
+          "file": "libs/ui-kit/src/lib/components/table-column-config/table-column-config.component.ts",
+          "count": 2
+        },
+        {
+          "file": "libs/ui-kit/src/lib/components/tag/tag.component.ts",
+          "count": 2
+        },
+        {
+          "file": "libs/ui-kit/src/lib/components/accordion/accordion-wrapper.component.ts",
+          "count": 1
+        },
+        {
+          "file": "libs/ui-kit/src/lib/components/drawer/drawer.component.ts",
+          "count": 1
+        }
+      ],
+      "details": [
+        {
+          "file": "libs/ui-kit/src/lib/components/accordion/accordion-wrapper.component.ts",
+          "line": 89,
+          "text": "<i class=\"pi pi-times-circle\" aria-hidden=\"true\"></i>"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/components/alert/alert.component.ts",
+          "line": 71,
+          "text": "<i class=\"pi pi-times\" aria-hidden=\"true\"></i>"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/components/alert/alert.component.ts",
+          "line": 154,
+          "text": "<i class=\"pi pi-times\"></i>"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/components/drawer/drawer.component.ts",
+          "line": 117,
+          "text": "icon=\"pi pi-times\""
+        },
+        {
+          "file": "libs/ui-kit/src/lib/components/pagination/pagination.component.ts",
+          "line": 78,
+          "text": "<i class=\"pi pi-angle-double-left\" aria-hidden=\"true\"></i>"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/components/pagination/pagination.component.ts",
+          "line": 89,
+          "text": "<i class=\"pi pi-angle-left\" aria-hidden=\"true\"></i>"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/components/pagination/pagination.component.ts",
+          "line": 118,
+          "text": "<i class=\"pi pi-angle-right\" aria-hidden=\"true\"></i>"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/components/pagination/pagination.component.ts",
+          "line": 129,
+          "text": "<i class=\"pi pi-angle-double-right\" aria-hidden=\"true\"></i>"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/components/table-column-config/table-column-config.component.ts",
+          "line": 138,
+          "text": "<baps-inputicon styleClass=\"pi pi-search\" />"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/components/table-column-config/table-column-config.component.ts",
+          "line": 203,
+          "text": "<i class=\"pi pi-thumbtack\" aria-hidden=\"true\"></i>"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/components/table-sort-config/table-sort-config.component.ts",
+          "line": 137,
+          "text": "<i class=\"pi pi-bars\" aria-hidden=\"true\"></i>"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/components/table-sort-config/table-sort-config.component.ts",
+          "line": 177,
+          "text": "<i class=\"pi pi-lock\" aria-hidden=\"true\"></i>"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/components/table-sort-config/table-sort-config.component.ts",
+          "line": 186,
+          "text": "<i class=\"pi pi-trash\" aria-hidden=\"true\"></i>"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/components/tag/tag.component.ts",
+          "line": 29,
+          "text": "<span class=\"baps-tag-chevron pi pi-chevron-down\" aria-hidden=\"true\"></span>"
+        },
+        {
+          "file": "libs/ui-kit/src/lib/components/tag/tag.component.ts",
+          "line": 255,
+          "text": "@Input() actionIcon = 'pi pi-arrow-up-right';"
+        }
+      ]
+    },
+    {
+      "id": "contrast",
+      "title": "Accessibility — text contrast",
+      "area": "Colour",
+      "status": "warning",
+      "count": 1,
+      "summary": "Semantic text roles measured against the card surface, both brands, light and dark. WCAG 1.4.3 needs 4.5:1; disabled text is exempt. Components themselves are covered by tools/a11y-audit.mjs.",
+      "files": [],
+      "details": [
+        {
+          "file": "mybky light",
+          "line": 0,
+          "text": "text.primary #181b1d on surface.card #ffffff — 17.31:1",
+          "status": "passed"
+        },
+        {
+          "file": "mybky light",
+          "line": 0,
+          "text": "text.secondary #2b2f32 on surface.card #ffffff — 13.50:1",
+          "status": "passed"
+        },
+        {
+          "file": "mybky light",
+          "line": 0,
+          "text": "text.muted #6f777d on surface.card #ffffff — 4.55:1",
+          "status": "passed"
+        },
+        {
+          "file": "mybky light",
+          "line": 0,
+          "text": "text.disabled #869097 on surface.card #ffffff — 3.26:1",
+          "status": "passed"
+        },
+        {
+          "file": "mybky dark",
+          "line": 0,
+          "text": "text.primary #f8fafb on surface.card #2b2f32 — 12.90:1",
+          "status": "passed"
+        },
+        {
+          "file": "mybky dark",
+          "line": 0,
+          "text": "text.secondary #e4ecf1 on surface.card #2b2f32 — 11.29:1",
+          "status": "passed"
+        },
+        {
+          "file": "mybky dark",
+          "line": 0,
+          "text": "text.muted #b6b6af on surface.card #2b2f32 — 6.62:1",
+          "status": "passed"
+        },
+        {
+          "file": "mybky dark",
+          "line": 0,
+          "text": "text.disabled #8d9ba5 on surface.card #2b2f32 — 4.73:1",
+          "status": "passed"
+        },
+        {
+          "file": "sampark light",
+          "line": 0,
+          "text": "text.primary #151414 on surface.card #ffffff — 18.39:1",
+          "status": "passed"
+        },
+        {
+          "file": "sampark light",
+          "line": 0,
+          "text": "text.secondary #595656 on surface.card #ffffff — 7.27:1",
+          "status": "passed"
+        },
+        {
+          "file": "sampark light",
+          "line": 0,
+          "text": "text.muted #9f9c9c on surface.card #ffffff — 2.72:1",
+          "status": "warning"
+        },
+        {
+          "file": "sampark light",
+          "line": 0,
+          "text": "text.disabled #bcb9b9 on surface.card #ffffff — 1.95:1",
+          "status": "passed"
+        },
+        {
+          "file": "sampark dark",
+          "line": 0,
+          "text": "text.primary #f8f7f7 on surface.card #2c2c2a — 13.09:1",
+          "status": "passed"
+        },
+        {
+          "file": "sampark dark",
+          "line": 0,
+          "text": "text.secondary #e6e6e5 on surface.card #2c2c2a — 11.20:1",
+          "status": "passed"
+        },
+        {
+          "file": "sampark dark",
+          "line": 0,
+          "text": "text.muted #b7b6b3 on surface.card #2c2c2a — 6.90:1",
+          "status": "passed"
+        },
+        {
+          "file": "sampark dark",
+          "line": 0,
+          "text": "text.disabled #94928f on surface.card #2c2c2a — 4.51:1",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "id": "theme",
+      "title": "Theme compatibility",
+      "area": "Tokens",
+      "status": "warning",
+      "count": 3,
+      "summary": "3 light text/surface role(s) have no dark-mode counterpart. A component using one keeps its light value under .baps-dark.",
+      "files": [],
+      "details": [
+        {
+          "file": "mybky",
+          "line": 0,
+          "text": "color.mybky.surface.auth has no color.mybky.dark.surface.auth"
+        },
+        {
+          "file": "sampark",
+          "line": 0,
+          "text": "color.sampark.text.placeholder has no color.sampark.dark.text.placeholder"
+        },
+        {
+          "file": "sampark",
+          "line": 0,
+          "text": "color.sampark.surface.disabled has no color.sampark.dark.surface.disabled"
+        }
+      ]
+    },
+    {
+      "id": "deprecated",
+      "title": "Deprecated tokens",
+      "area": "Tokens",
+      "status": "passed",
+      "count": 0,
+      "summary": "No token is marked deprecated.",
+      "files": [],
+      "details": []
+    },
+    {
+      "id": "target",
+      "title": "Target tokens (spec, not yet adopted)",
+      "area": "Tokens",
+      "status": "warning",
+      "count": 3,
+      "summary": "3 token(s) carry a \"target\" comment: they encode the design-language spec and exist so new work can adopt them, but existing components still use the legacy values.",
+      "files": [],
+      "details": [
+        {
+          "file": "--motion-duration-ui-transition",
+          "line": 0,
+          "text": "target — CLAUDE.md Motion: UI transitions (panels, drawers, tab switches)"
+        },
+        {
+          "file": "--motion-duration-view-change",
+          "line": 0,
+          "text": "target — CLAUDE.md Motion: full view/route changes"
+        },
+        {
+          "file": "--motion-easing-calm",
+          "line": 0,
+          "text": "target — CLAUDE.md Motion: calm, decelerating; never bounce/overshoot. Pair with duration.uiTransition/viewChange, not the legacy fast/base/"
+        }
+      ]
+    },
+    {
+      "id": "missing-refs",
+      "title": "Missing token references",
+      "area": "Tokens",
+      "status": "passed",
+      "count": 0,
+      "summary": "Every var() without a fallback resolves to a defined custom property.",
+      "files": [],
+      "details": []
+    }
+  ]
+}

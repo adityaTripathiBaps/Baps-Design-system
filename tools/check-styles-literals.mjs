@@ -64,8 +64,8 @@ for (const file of files) {
       // more likely one. It missed exactly that and let a broken story reach
       // Storybook, where it surfaced as an opaque babel "Unexpected token,
       // expected ','" from the indexer rather than as this check failing.
-      const cssOpen = (body.match(/\/\*/g) || []).length;
-      const cssClose = (body.match(/\*\//g) || []).length;
+      const cssOpen = key === 'styles' ? (body.match(/\/\*/g) || []).length : 0;
+      const cssClose = key === 'styles' ? (body.match(/\*\//g) || []).length : 0;
       const htmlOpen = (body.match(/<!--/g) || []).length;
       const htmlClose = (body.match(/-->/g) || []).length;
       if (cssOpen > cssClose || htmlOpen > htmlClose) {

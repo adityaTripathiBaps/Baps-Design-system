@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/angular';
 import { BapsBreadcrumb } from './breadcrumb.component';
 
 const meta: Meta<BapsBreadcrumb> = {
-  title: 'Components/Navigation/Breadcrumb',
+  title: 'Components/Molecules/Breadcrumb',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-menu-breadcrumb.
   id: 'components-breadcrumb',

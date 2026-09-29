@@ -258,18 +258,6 @@ export interface BapsListboxOption {
       margin-right: 4px;
     }
 
-    /* Dark Mode variables */
-    .baps-dark baps-listbox {
-      --listbox-bg: var(--color-mybky-mono-900, #181b1d);
-      --listbox-border: var(--color-mybky-mono-700, #3d4144);
-      --listbox-text: var(--color-mybky-mono-50, #f8fafb);
-      --listbox-text-disabled: var(--color-mybky-mono-500, #6f777d);
-      --listbox-bg-selected: var(--color-mybky-mono-800, #2b2f32);
-      --listbox-text-selected: var(--color-mybky-mono-50, #f8fafb);
-      --listbox-text-muted: var(--color-mybky-mono-400, #b6b6af);
-      --listbox-bar-color: var(--color-mybky-blue-600, #1f4a5c);
-    }
-
     /* Sampark Brand theme scoped */
     baps-listbox.baps-sampark,
     .baps-ds-sampark baps-listbox {
@@ -296,6 +284,40 @@ export interface BapsListboxOption {
       --listbox-text-selected: var(--color-mybky-mono-900, #0e1114);
       --listbox-text-muted: var(--color-mybky-mono-500, #6f777d);
       --listbox-bar-color: var(--color-mybky-blue-600, #1f4a5c);
+    }
+
+    /* ── Dark ──
+       LAST on purpose. This block used to sit above the two brand blocks, and
+       the MyBKY one outranks it: baps-listbox:not(.baps-sampark):not(...) is
+       (0,2,2) against a plain .baps-dark baps-listbox at (0,1,1), because
+       :not() carries its argument's specificity — and specificity beats source
+       order, so moving the block was not enough. The dark rule repeats the same
+       :not() chain to sit one class above it. The rules were correct all along
+       and simply never applied: a dark docs page rendered a white listbox with
+       #e4ecf1 text on it, 1.2:1.
+
+       The Sampark half was missing entirely; it is added here rather than in
+       the Sampark block above so both brands' dark values sit together. */
+    .baps-dark baps-listbox:not(.baps-sampark):not(.baps-ds-sampark baps-listbox) {
+      --listbox-bg: var(--color-mybky-dark-surface-ground, #181b1d);
+      --listbox-border: var(--color-mybky-dark-border-divider, #3d4144);
+      --listbox-text: var(--color-mybky-dark-text-primary, #f8fafb);
+      --listbox-text-disabled: var(--color-mybky-dark-text-disabled, #8d9ba5);
+      --listbox-bg-selected: var(--color-mybky-dark-surface-card, #2b2f32);
+      --listbox-text-selected: var(--color-mybky-dark-text-primary, #f8fafb);
+      --listbox-text-muted: var(--color-mybky-dark-text-muted, #b6b6af);
+      --listbox-bar-color: var(--color-mybky-dark-primary-default, #9fadd9);
+    }
+
+    .baps-dark :is(baps-listbox.baps-sampark, .baps-ds-sampark baps-listbox) {
+      --listbox-bg: var(--color-sampark-dark-surface-ground, #1d1c1b);
+      --listbox-border: var(--color-sampark-dark-border-divider, #4a4947);
+      --listbox-text: var(--color-sampark-dark-text-primary, #f8f7f7);
+      --listbox-text-disabled: var(--color-sampark-dark-text-disabled, #94928f);
+      --listbox-bg-selected: var(--color-sampark-dark-surface-card, #2c2c2a);
+      --listbox-text-selected: var(--color-sampark-dark-text-primary, #f8f7f7);
+      --listbox-text-muted: var(--color-sampark-dark-text-muted, #b7b6b3);
+      --listbox-bar-color: var(--color-sampark-dark-primary-default, #d48787);
     }
   `,
   host: {

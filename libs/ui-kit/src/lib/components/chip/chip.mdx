@@ -1,5 +1,5 @@
-import { Meta, Canvas } from '@storybook/blocks';
-import { BrandOnly } from '@baps/docs-blocks';
+import { Meta, Canvas, Controls } from '@storybook/blocks';
+import { BrandOnly, PropsTable } from '@baps/docs-blocks';
 import * as ChipStories from './chip.stories';
 
 <Meta of={ChipStories} />
@@ -8,6 +8,10 @@ import * as ChipStories from './chip.stories';
 
 A compact label for a selected value, a filter, or an entity. `baps-chip`
 wraps PrimeNG's `p-chip`.
+
+<Canvas of={ChipStories.Default} />
+
+<Controls of={ChipStories.Default} />
 
 Figma calls this component **Badge** — MyBKY
 [22465:95582](https://www.figma.com/design/yY5bmcEifXbcCwhauoiy6Y/%F0%9F%9F%A2-MyBKY--Phase-1-?node-id=22465-95582),
@@ -154,6 +158,16 @@ affordance.
 
 <Canvas of={ChipStories.Group} />
 
+### Full Matrix
+
+Every severity crossed with every size, and each of those crossed with the four
+content shapes — label + count, label + count + chevron, icon + count + chevron,
+icon alone — plus the disabled row. Removable is deliberately absent: a hover
+plate over a hundred chips buries the ramp this view exists to show, so it has
+its own example above.
+
+<Canvas of={ChipStories.Matrix} />
+
 <BrandOnly brand="comparison">
 
 ### Brands
@@ -162,9 +176,11 @@ affordance.
 
 </BrandOnly>
 
-### Matrix
+## API
 
-<Canvas of={ChipStories.Matrix} />
+Inputs, outputs and their types, read from the component's own source.
+
+<PropsTable of={ChipStories} />
 
 ## When Not to Use
 

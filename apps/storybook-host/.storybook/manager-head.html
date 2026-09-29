@@ -1,0 +1,54 @@
+<!--
+  Manager chrome. The counterpart to preview-head.html, for the OUTER frame —
+  sidebar, toolbar, addon panel. Storybook's manager is a bundled React app, so
+  a stylesheet is the only way in; manager.tsx can set theme values but not
+  reach an element Storybook renders itself.
+-->
+<style>
+  /*
+    The testing module ("Run tests" + its status line) is an absolutely
+    positioned block pinned over the bottom of the sidebar's scroll container.
+    The container's content ends with 20px of padding, and the block is 66px
+    tall, so the last two or three entries in the tree could be scrolled to but
+    never uncovered — on this page, "Menu Item" and "Multi Select".
+
+    Reserving the space on the tree itself is the fix, rather than shrinking or
+    hiding the module: it keeps a scrollable end-stop that clears the block, and
+    it costs nothing when the module is absent (the padding is simply the last
+    thing in an already-scrolled list).
+
+    5rem = the block's 66px plus a step of clearance, rounded to the scale.
+  */
+  #storybook-explorer-tree {
+    padding-bottom: 5rem;
+  }
+
+  /*
+    Sidebar, 21st.dev pass. Measured before (1280px, MyBKY light): items 16px
+    on a 28px row; the selected item a solid primary bar with white 700 text.
+    After: 14px items, and the selected item a soft brand-tinted pill with
+    brand-coloured 500 text.
+
+    The colours are NOT in this file. manager.tsx (ThemeSync) publishes them
+    from chrome-theme.ts's CHROME_SELECTION as --baps-chrome-selected-* on
+    <html>, per brand and mode. The rules are gated on [data-baps-brand], which
+    ThemeSync sets in the same effect, so until it runs Storybook's own
+    selected style stands rather than an unset variable.
+
+    Hooks: `.sidebar-item` and `data-selected` are Storybook's stable markers;
+    the emotion hash beside them (css-1clt8py) changes between builds.
+  */
+  #storybook-explorer-tree .sidebar-item {
+    font-size: 0.875rem;
+  }
+
+  :root[data-baps-brand] #storybook-explorer-tree .sidebar-item[data-selected='true'] {
+    background: var(--baps-chrome-selected-bg) !important;
+    color: var(--baps-chrome-selected-text) !important;
+    font-weight: 500 !important;
+  }
+
+  :root[data-baps-brand] #storybook-explorer-tree .sidebar-item[data-selected='true'] :is(a, span, svg) {
+    color: var(--baps-chrome-selected-text) !important;
+  }
+</style>

@@ -61,6 +61,13 @@ async function loadStoryIds(page: Page): Promise<{ id: string; title: string; na
     // Named explicitly rather than pattern-matched, so adding a second
     // Guidelines page does not silently opt out too.
     .filter((e) => e.id !== 'guidelines-theme-builder--builder')
+    // VISUAL_ONLY=tag narrows the sweep to the ids containing that substring.
+    // The suite is ONE test over every story, so verifying a single component
+    // otherwise means sitting through all of them — and the 25-minute cap has
+    // killed runs before reaching the component that was actually changed
+    // (pagination hung on networkidle, tag never ran). Unset in CI, where the
+    // full sweep is the point.
+    .filter((e) => !process.env['VISUAL_ONLY'] || e.id.includes(process.env['VISUAL_ONLY']))
     .map(({ id, title, name }) => ({ id, title, name }));
 }
 

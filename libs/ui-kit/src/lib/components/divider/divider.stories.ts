@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/angular';
 import { BapsDivider } from './divider.component';
 
 const meta: Meta<BapsDivider> = {
-  title: 'Components/Layout/Divider',
+  title: 'Components/Atoms/Divider',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-panel-divider.
   id: 'components-divider',
@@ -26,7 +26,7 @@ const meta: Meta<BapsDivider> = {
     template: `
       <div>
         <p>Section 1</p>
-        <baps-divider [layout]="layout" [align]="align" [brand]="brand">
+        <baps-divider [layout]="layout" [align]="align" [type]="type" [size]="size" [brand]="brand">
           <b>Divider Text</b>
         </baps-divider>
         <p>Section 2</p>

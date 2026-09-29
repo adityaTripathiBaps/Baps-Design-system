@@ -1,0 +1,109 @@
+import { Meta } from '@storybook/blocks';
+import { ResourceTabs, TokenExplorer, TierSummary, CodeBlock } from '@baps/docs-blocks';
+
+<Meta title="Foundations/Design Tokens" />
+
+# Design Tokens
+
+Every token the design system ships, searchable, with the value the current theme resolves it to.
+
+<ResourceTabs sections={['Overview', 'Explorer', 'Usage', 'Developer implementation', 'Gaps']} />
+
+## Overview
+
+Tokens are authored once in `libs/tokens/src/source/*.tokens.json` and built by Style Dictionary into four outputs. This page reads the JSON output and the **live** CSS custom properties, so nothing below is typed by hand — change a token and it changes here on the next build.
+
+| Output | Path | Consumed by |
+| --- | --- | --- |
+| CSS custom properties | `libs/tokens/build/css/tokens.css` | Every SCSS partial and component style, via `var(--…)` |
+| SCSS variables | `libs/tokens/build/scss/_tokens.scss` | Sass that needs a value at compile time |
+| TypeScript constants | `libs/tokens/src/generated/tokens.ts` | PrimeNG presets, stories |
+| Flat JSON | `libs/tokens/build/json/tokens.flat.json` | This page, the audit, legacy-mapping reports |
+
+### Three tiers
+
+<TierSummary />
+
+A semantic token says what a colour is *for* (`--color-sampark-text-primary`); a primitive only says what colour it *is* (`--color-sampark-mono-100`). Reach for the highest tier that fits.
+
+### Naming
+
+There is **one** naming convention, and it is the path in the source JSON, kebab-cased:
+
+```
+color.sampark.text.primary   →  --color-sampark-text-primary   ·  $color-sampark-text-primary
+space.4                      →  --space-4
+radius.mybky.pill            →  --radius-mybky-pill
+motion.duration.fast         →  --motion-duration-fast
+button.sampark.radius        →  --button-sampark-radius
+```
+
+Brand-specific tokens carry the brand as their second segment (`mybky`, `sampark`). Tokens without one — spacing, font sizes, motion, the accent ramps — are shared by every brand.
+
+## Explorer
+
+Filter by tier and category, or search by name, value or description. **Resolved value** is read from the page right now, so it follows the toolbar's accent picker; the **→** line under a name is the token it references. The Brand filter defaults to the brand selected in the toolbar.
+
+<TokenExplorer />
+
+## Usage
+
+- Use a token for every colour, spacing, radius, shadow, font and duration. Non-negotiable #1 in `AGENTS.md`.
+- Prefer semantic over primitive, and a component token over both inside that component.
+- Keep the brand in the name. A MyBKY page reads `--color-mybky-*`; a Sampark rule lives under `.baps-ds-sampark` and reads `--color-sampark-*`. See `.agents/rules/brand-theming.md`.
+- Never write an alias-tier variable at `:root` to re-theme. They re-resolve from the primitives, and the accent picker writes the primitive ramp for that reason.
+
+### Do
+
+- `color: var(--color-sampark-text-secondary);`
+- Add a missing value to `libs/tokens/src/source/` and rebuild.
+
+### Don't
+
+- `color: #595656;` — correct today, stale after the next palette change.
+- Invent a generic name such as `--radius-md` or `--text-primary`. They do not exist; see [Gaps](#gaps).
+
+## Developer implementation
+
+<CodeBlock
+  filename="_my-component.scss"
+  language="css"
+  code={`.my-panel {
+  padding: var(--space-4);
+  border: 1px solid var(--color-mybky-border-default);
+  border-radius: var(--radius-mybky-md);
+  color: var(--color-mybky-text-primary);
+  transition: background-color var(--motion-duration-base) var(--motion-easing-standard);
+}
+
+.baps-ds-sampark .my-panel {
+  border-color: var(--color-sampark-border-default);
+  border-radius: var(--radius-sampark-md);
+  color: var(--color-sampark-text-primary);
+}`}
+/>
+
+<CodeBlock
+  filename="my-preset.ts"
+  language="typescript"
+  code={`import { ColorSamparkPrimaryDefault } from '@org/tokens/generated/tokens';`}
+/>
+
+Rebuilding is two steps — Style Dictionary, then the TypeScript build — or the generated `.d.ts` goes stale silently:
+
+<CodeBlock
+  language="bash"
+  code={`npx nx build tokens`}
+/>
+
+## Gaps
+
+Groups the design language names but the token set does not have yet. They are listed rather than invented here, so this page cannot become a second source of truth.
+
+| Group | Status |
+| --- | --- |
+| Opacity | No tokens. Disabled is `opacity: 0.4` by rule (`design-language.md`), written per component. |
+| Breakpoints | No tokens. The library uses `767px` and `1024px` literally — see [Grid & Layout](?path=/docs/foundations-grid-layout--docs). |
+| Border width | No shared scale. Components carry their own (`--card-mybky-border-width`, `--avatar-sampark-border-width`). |
+| Z-index | Sampark overlay layers only (`--z-index-sampark-overlay-*`). |
+| Generic radius (`--radius-md`, `--radius-lg`) | **Target** names in `design-language.md`, not shipped. Use the brand-scoped `--radius-{brand}-*`. |

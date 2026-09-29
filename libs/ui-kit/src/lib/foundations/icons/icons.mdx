@@ -1,0 +1,118 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import { ResourceTabs, CodeBlock } from '@baps/docs-blocks';
+import * as IconsStories from './icons.stories';
+import * as IconStories from '../../components/icon/icon.stories';
+
+<Meta of={IconsStories} />
+
+# Icons
+
+BAPS Pixel Icons — one stroked set for both brands, drawn with `<baps-icon>`.
+
+<ResourceTabs sections={['Overview', 'Gallery', 'Sizes', 'Colour', 'In context', 'Usage', 'Accessibility', 'Developer implementation', 'Figma reference']} />
+
+## Overview
+
+The set is generated from the Figma "BAPS Pixel Icons" sheet into `libs/ui-kit/src/lib/components/icon/icon-set.ts`; hand-drawn additions live in `icon-set-extra.ts` so a regeneration cannot drop them. Every glyph is a 24×24 outline whose stroke is `currentColor`.
+
+Two icon sources exist, for different jobs:
+
+| Source | Use it for | How |
+| --- | --- | --- |
+| **BAPS Pixel Icons** | Every product icon | `<baps-icon name="…" />`, or a component's `icon` input (`baps-button`) |
+| PrimeIcons | Chrome PrimeNG draws itself — close ×, pager arrows, input icons | `pi pi-*` classes. Already installed; do not add new product icons with it |
+
+The audit counts the remaining `pi pi-*` uses in components (see [Audit → Overview](?path=/docs/foundations-audit-overview--docs)). `design-language.md` names Lucide as the target primary set; nothing in the library uses it yet, so it is not shown here.
+
+## Gallery
+
+Search by name; click a tile to copy the name. There is no category filter because the Figma sheet carries no categories — names are the API, so search matches on the name.
+
+<Canvas of={IconStories.Library} />
+
+## Sizes
+
+| Size | px | Use |
+| --- | --- | --- |
+| `xs` | 12 | Inline with 12px metadata |
+| `sm` | 16 | Dense tables, inputs, buttons |
+| `md` | 20 | Navigation |
+| `lg` | 24 | **Default** — the size the glyphs are drawn at |
+| `xl` | 32 | Empty states |
+
+A pixel number is also accepted (`[size]="18"`) for a one-off. The stroke is about 1px at 24px and scales with the icon, so it thins visibly below `sm` — prefer `sm` and up for anything a user must recognise.
+
+<Canvas of={IconStories.Sizes} />
+
+## Colour
+
+An icon takes the colour of the text around it. There is no `color` input and no `brand` input — put it inside something maroon and it is maroon; in dark mode it follows the text there.
+
+<Canvas of={IconStories.InheritsColour} />
+
+## In context
+
+Icon only, icon + text, button, input, navigation, status and disabled.
+
+<Canvas of={IconsStories.InContext} />
+
+## Usage
+
+- **Alignment** — sit an icon in an `inline-flex` row with `align-items: center` and `gap: var(--space-2)`. The glyph box is square, so centring aligns it with the text's x-height.
+- **Interactive** — the *control* is interactive, not the icon. Wrap it in a `button` or `a`; never put a click handler on `baps-icon`.
+- **Disabled** — no separate disabled icon. It inherits the control's 40% opacity.
+- **Colour** — inherit. In navigation, muted by default and the accent when active.
+
+### Do
+
+- Pair a status icon with a word.
+- Use `lg` (24px) unless the context in the table above says otherwise.
+
+### Don't
+
+- Rotate, flip or re-colour an icon for decoration.
+- Use emoji or raster images as icons.
+- Edit `icon-set.ts` by hand — it is regenerated. Add to `icon-set-extra.ts`.
+
+## Accessibility
+
+One input decides it: **`label`**.
+
+- **No `label`** → decorative. Rendered `aria-hidden="true"`. Correct when visible text sits beside it — announcing it would repeat the text.
+- **`label` set** → content. Rendered `role="img"` with `aria-label`. Required when the icon *is* the content.
+- An **icon-only button** gets its name on the button (`aria-label`), and the icon stays decorative.
+- The icon inherits text colour, so it meets contrast wherever its text does. A standalone icon that conveys meaning needs 3:1 (WCAG 1.4.11).
+
+<Canvas of={IconStories.Labelled} />
+
+## Developer implementation
+
+<CodeBlock
+  filename="my.component.ts"
+  language="typescript"
+  code={`import { BapsIcon, BapsButton } from '@org/ui-kit';
+
+@Component({
+  imports: [BapsIcon, BapsButton],
+  template: \`
+    <!-- decorative, beside its own text -->
+    <span class="row"><baps-icon name="calendar" size="sm" /> 24 September 2026</span>
+
+    <!-- icon-only control: the button is named, the icon stays decorative -->
+    <button type="button" aria-label="Delete row"><baps-icon name="trash" size="sm" /></button>
+
+    <!-- meaningful on its own -->
+    <baps-icon name="alert-triangle" label="Warning" />
+
+    <!-- through a component input -->
+    <baps-button label="Add filter" icon="add-to-filter" />
+  \`,
+})
+export class MyComponent {}`}
+/>
+
+`name` is typed as `BapsIconName`, so an unknown name is a compile error in a strict template, and renders nothing at runtime.
+
+## Figma reference
+
+BAPS Pixel Icons: [node 13193:56731](https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/%F0%9F%9F%A2-Sampark-Portal?node-id=13193-56731) (Sampark Portal). Regenerate with `node tools/icons/extract-baps-icons.mjs`.

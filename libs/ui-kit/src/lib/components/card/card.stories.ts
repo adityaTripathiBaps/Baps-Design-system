@@ -8,7 +8,7 @@ import { BapsAvatarGroup } from '../avatar/avatar-group.component';
 import { BapsProgressBar } from '../progress-bar/progress-bar.component';
 
 const meta: Meta<BapsCard> = {
-  title: 'Components/Layout/Card',
+  title: 'Components/Molecules/Card',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-panel-card.
   id: 'components-card',

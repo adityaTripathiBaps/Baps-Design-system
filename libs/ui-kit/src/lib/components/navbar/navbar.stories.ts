@@ -43,7 +43,7 @@ const USER_BLOCK_CSS = `
 type Args = BapsNavbar & Record<'onMenuToggle' | 'onMobileMenuToggle', (event?: unknown) => void>;
 
 const meta: Meta<Args> = {
-  title: 'Components/Navigation/Navbar',
+  title: 'Components/Organisms/Navbar',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-menu-navbar.
   id: 'components-navbar',

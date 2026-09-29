@@ -17,7 +17,8 @@
  * and the brand switcher without knowing either exists.
  */
 import React, { useEffect, useState } from 'react';
-import { Canvas, Source } from '@storybook/blocks';
+import { Canvas, Controls, Source, useOf } from '@storybook/blocks';
+import { useRegisterSnippets } from './prompt';
 
 /** Source only accepts the languages Prism is loaded for, so mirror its type. */
 type SourceLanguage = React.ComponentProps<typeof Source>['language'];
@@ -93,11 +94,18 @@ export const DemoCard = ({
   title,
   description,
   of,
+  controls,
+  snippets,
   children,
 }: {
   title: string;
   description?: string;
   of?: unknown;
+  controls?: boolean;
+  /* Authored React/Next snippets for this use-case. Supplying them swaps the
+     canvas's own SHOW CODE toggle for the framework tab strip, whose Custom tab
+     renders the same Angular source — one code viewer per example, not two. */
+  snippets?: SnippetSet;
   children?: React.ReactNode;
 }) => (
   <section style={{ margin: '0 0 2rem' }}>
@@ -105,9 +113,34 @@ export const DemoCard = ({
     {description ? (
       <p style={{ color: 'var(--baps-docs-text)', margin: '0 0 0.75rem' }}>{description}</p>
     ) : null}
-    {of ? <Canvas of={of as never} /> : children}
+    {of ? (
+      snippets ? (
+        <>
+          <Canvas of={of as never} sourceState="none" />
+          {controls ? <Controls of={of as never} /> : null}
+          <FrameworkTabs of={of} snippets={snippets} />
+          <RegisterSnippets of={of} snippets={snippets} />
+        </>
+      ) : (
+        <>
+          <Canvas of={of as never} />
+          {controls ? <Controls of={of as never} /> : null}
+        </>
+      )
+    ) : (
+      children
+    )}
   </section>
 );
+
+/* Hands this example's authored React / Next.js / Custom markup to the Copy
+   prompt action on its Canvas, so a React prompt copied from "Sizes" carries
+   the Sizes React snippet. Renders nothing. */
+const RegisterSnippets = ({ of, snippets }: { of: unknown; snippets: SnippetSet }) => {
+  const resolved = useOf(of as never) as { type?: string; story?: { id: string } };
+  useRegisterSnippets(resolved.type === 'story' ? resolved.story?.id : undefined, snippets);
+  return null;
+};
 
 /* ── CodeBlock ─────────────────────────────────────────────────────────────
    Storybook's <Source> with a filename strip above it. The strip is what makes
@@ -124,10 +157,20 @@ export const CodeBlock = ({
   code: string;
   language?: SourceLanguage;
 }) => (
-  <div style={{ margin: '0 0 1.25rem' }}>
+  /* data-baps-codeblock is the handle _docs-shell.scss needs to treat the strip
+     and the <Source> below it as one card: it closes the 25px addon-docs puts
+     between them and lifts the source's own Copy button into this header row.
+     A data attribute rather than a class because the inline styles here and the
+     stylesheet there are already split that way. */
+  <div data-baps-codeblock style={{ margin: '0 0 1.25rem' }}>
     {filename ? (
       <div
         style={{
+          display: 'flex',
+          alignItems: 'center',
+          /* Fixed rather than derived from the padding, because the Copy button
+             is absolutely positioned against this same height. */
+          minHeight: '2rem',
           fontFamily: mono,
           fontSize: '0.75rem',
           color: 'var(--baps-docs-muted)',
@@ -135,7 +178,7 @@ export const CodeBlock = ({
           border: '1px solid var(--baps-docs-divider)',
           borderBottom: 'none',
           borderRadius: '0.5rem 0.5rem 0 0',
-          padding: '0.4rem 0.75rem',
+          padding: '0 0.75rem',
         }}
       >
         {filename}
@@ -332,17 +375,13 @@ export const BrandOnly = ({
 };
 
 /* ── FrameworkTabs ─────────────────────────────────────────────────────────
-   One use-case, several frameworks, one tab strip.
+   One use-case, four frameworks, one tab strip.
 
-   Angular source is the live Storybook render of the Angular component, so it is
-   never hand-authored. It stays correct by default: change the story and the
-   snippet changes with it. The other tabs are authored in a component's
-   `*.snippets.ts` and keyed by story export name — see `SnippetSet` below.
-
-   HTML/CSS is only shown when the component has a verified standalone
-   implementation using the repo's existing design tokens and shared styles.
-   Unsupported components stay Angular-only and the tabs do not invent a custom
-   implementation.
+   The Custom tab is NOT authored. It renders Storybook's own source for the
+   story, which means it stays correct for free: change the story and the
+   snippet changes with it. The other three are written by hand in the
+   component's `*.snippets.ts` and keyed by story export name — see
+   `SnippetSet` below.
 
    Why hand-authored at all: decision D1 is a code-only viewer. There is no
    React build of this design system, so React/Next snippets are documentation
@@ -351,49 +390,98 @@ export const BrandOnly = ({
    classes and tokens rather than raw hex.
 
    Tab order runs least-familiar to most: a reader who came for React finds it
-   first, then the Angular variants, then any verified HTML/CSS implementation. */
+   first, and the two Angular flavours sit together at the end. */
 export type SnippetSet = {
   react?: string;
   next?: string;
   primeng?: string;
-  htmlcss?: string;
+  /* Overrides the Custom tab.
+   *
+   * Left unset (Card, Alert), the Custom tab renders Storybook's own source for
+   * the story, which stays correct for free. That works because neither
+   * component wraps PrimeNG: their live Angular markup IS copyable into a plain
+   * HTML page.
+   *
+   * Button is the first component where it is not. `<baps-button>` renders
+   * `<p-button>` inside it, so its live source pasted outside Angular is an
+   * empty custom element — nothing to style, nothing to click. Such a component
+   * supplies hand-written raw HTML here instead, and pairs it with a standalone
+   * partial that styles it (see button.snippets.ts and _button.scss).
+   *
+   * An authored Custom tab loses the "correct for free" property, so it needs
+   * its own guard: tools/check-button-drift.mjs renders both this markup and the
+   * Angular component and diffs them property by property. */
+  custom?: string;
 };
 
-const TAB_LABELS: Array<[keyof SnippetSet | 'angular', string]> = [
+const TAB_LABELS: Array<[keyof SnippetSet | 'custom', string]> = [
   ['react', 'React'],
   ['next', 'Next.js'],
   ['primeng', 'PrimeNG-Angular'],
-  ['angular', 'Angular source'],
-  ['htmlcss', 'HTML/CSS'],
+  ['custom', 'Custom'],
 ];
 
 const LANGUAGE: Record<string, SourceLanguage> = {
   react: 'jsx',
   next: 'jsx',
   primeng: 'html',
-  angular: 'html',
-  htmlcss: 'html',
+  custom: 'html',
 };
 
-export const FrameworkTabs = ({ of, snippets }: { of: unknown; snippets?: SnippetSet }) => {
-  const [active, setActive] = useState<string>('angular');
-  // The Angular source tab has no authored string to copy, so Copy reads the
-  // rendered source out of the DOM — scoped to THIS strip. A document-wide
-  // query would hand every strip on the page the first block on it.
+export const FrameworkTabs = ({
+  of,
+  snippets,
+  hideCustom,
+}: {
+  of: unknown;
+  snippets?: SnippetSet;
+  /* Omit the Custom tab entirely, for a component that cannot have an honest
+     one. Needed because the tab is otherwise unconditional, and its unset
+     behaviour — render the live Angular source — is the WRONG fallback for a
+     PrimeNG wrapper: `<baps-tag value="Grey" />` outside Angular is an empty
+     custom element.
+
+     The rule this encodes: a wrapper's colour is delivered by the PrimeNG
+     preset, so a PrimeNG-free Custom tab is a second implementation of the
+     same design, and two implementations drift. Until the token migration
+     (bucket B) makes the preset unnecessary, wrappers get the three tabs that
+     document intent and skip the one that claims to BE the component.
+
+     Non-wrappers don't need this: their partial keys off the `baps-*` element
+     selector and ships globally, so the live source IS copyable. */
+  hideCustom?: boolean;
+}) => {
+  const [active, setActive] = useState<string>('react');
+  // The Custom tab has no authored string to copy, so Copy reads the rendered
+  // source out of the DOM — scoped to THIS strip. A document-wide query would
+  // hand every strip on the page the first block on it.
   const wrap = React.useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState(false);
 
-  const available = TAB_LABELS.filter(
-    ([key]) => key === 'angular' || Boolean(snippets?.[key as keyof SnippetSet]),
+  const available = TAB_LABELS.filter(([key]) =>
+    key === 'custom' ? !hideCustom : snippets?.[key as keyof SnippetSet],
   );
-  const current = available.some(([k]) => k === active) ? active : 'angular';
-  const code = current === 'angular' ? null : (snippets?.[current as keyof SnippetSet] ?? '');
+  // A use-case with no authored snippets is not a broken tab strip — it is a
+  // use-case that has only its live Angular source, so show that alone rather
+  // than a strip with one tab.
+  // Falls back to the first tab that exists, not to 'custom' — with hideCustom
+  // set, 'custom' is not in `available` and pinning to it would select a tab
+  // the strip does not render.
+  const current = available.some(([k]) => k === active) ? active : (available[0]?.[0] ?? 'custom');
+  // `null` means "render the live Angular source". An authored `custom` string
+  // replaces it — for a PrimeNG wrapper the live source is not copyable.
+  const code =
+    current === 'custom'
+      ? (snippets?.custom ?? null)
+      : (snippets?.[current as keyof SnippetSet] ?? '');
 
   useEffect(() => {
     if (!copied) return undefined;
     const id = setTimeout(() => setCopied(false), 1600);
     return () => clearTimeout(id);
   }, [copied]);
+
+  if (available.length < 2) return <Source of={of as never} />;
 
   return (
     <div ref={wrap} style={{ margin: '0 0 1.5rem' }}>
@@ -418,7 +506,7 @@ export const FrameworkTabs = ({ of, snippets }: { of: unknown; snippets?: Snippe
               background: 'transparent',
               border: 'none',
               borderBottom: `2px solid ${current === key ? 'var(--baps-docs-accent)' : 'transparent'}`,
-              color: current === key ? 'var(--baps-docs-accent)' : 'var(--baps-docs-muted)',
+              color: current === key ? 'var(--baps-docs-link)' : 'var(--baps-docs-muted)',
               font: `${current === key ? 600 : 400} 0.8125rem/1.2 ${mono}`,
               padding: '0.5rem 0.75rem',
               cursor: 'pointer',
@@ -447,11 +535,14 @@ export const FrameworkTabs = ({ of, snippets }: { of: unknown; snippets?: Snippe
           {copied ? 'Copied' : 'Copy'}
         </button>
       </div>
-      {current === 'angular' ? (
+      {code === null ? (
         <Source of={of as never} />
       ) : (
-        <Source code={code ?? ''} language={LANGUAGE[current]} />
+        <Source code={code} language={LANGUAGE[current]} />
       )}
     </div>
   );
 };
+export * from './foundations';
+// CopyPrompt, ComponentGallery, ThemePreview — see the header of showcase.tsx.
+export * from './showcase';

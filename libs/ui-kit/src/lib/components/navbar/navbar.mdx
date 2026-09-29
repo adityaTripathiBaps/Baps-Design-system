@@ -1,5 +1,5 @@
-import { Meta, Canvas } from '@storybook/blocks';
-import { BrandOnly } from '@baps/docs-blocks';
+import { Meta, Canvas, Controls } from '@storybook/blocks';
+import { BrandOnly, PropsTable } from '@baps/docs-blocks';
 import * as NavbarStories from './navbar.stories';
 
 <Meta of={NavbarStories} />
@@ -41,6 +41,7 @@ The two brands render genuinely different bars, not two tints of one component:
 ### Playground
 
 <Canvas of={NavbarStories.Playground} />
+<Controls of={NavbarStories.Playground} />
 
 <BrandOnly brand="sampark">
 
@@ -73,6 +74,12 @@ The two brands render genuinely different bars, not two tints of one component:
 <Canvas of={NavbarStories.MyBky} />
 
 </BrandOnly>
+
+## API
+
+Inputs, outputs and their types, read from the component's own source.
+
+<PropsTable of={NavbarStories} />
 
 ## When Not to Use
 

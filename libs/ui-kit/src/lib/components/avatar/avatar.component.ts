@@ -79,6 +79,19 @@ export type BapsAvatarSize = 'xs' | 's' | 'm' | 'l' | 'xl' | '2xl' | 'normal' | 
       flex: none;
     }
 
+    /* Square shape: MyBKY's default preset is circle (99px), so shape="square"
+       must override .p-avatar's pill radius to crisp 4/6/8px corners. */
+    baps-avatar .p-avatar:not(.p-avatar-circle) {
+      border-radius: var(--avatar-mybky-radius-square, 4px);
+    }
+    baps-avatar.baps-avatar-xl .p-avatar:not(.p-avatar-circle),
+    baps-avatar .p-avatar.p-avatar-xl:not(.p-avatar-circle) {
+      border-radius: var(--avatar-mybky-radius-xl-square, 6px);
+    }
+    baps-avatar.baps-avatar-2xl .p-avatar:not(.p-avatar-circle) {
+      border-radius: var(--avatar-mybky-radius-2xl-square, 8px);
+    }
+
     /* PrimeUIX hard-codes .p-avatar-icon's box to avatar.icon.size while every
        per-size rule below only re-states font-size — a larger glyph then
        overflows the stale box and renders off-centre. Size the box from the
@@ -109,6 +122,14 @@ export type BapsAvatarSize = 'xs' | 's' | 'm' | 'l' | 'xl' | '2xl' | 'normal' | 
        slot, where cropping would clip the glyph.) */
     baps-avatar .p-avatar.p-avatar-image img {
       object-fit: cover;
+    }
+    /* The photo covers the box, so drop the preset-driven fill. The img
+       follows the box radius, so shape="square" stays square. */
+    baps-avatar .p-avatar.p-avatar-image {
+      background: transparent;
+    }
+    baps-avatar .p-avatar.p-avatar-image img {
+      border-radius: inherit;
     }
 
     /* xs / s / 2xl — Figma steps beyond PrimeNG's size input. Both brands
@@ -148,7 +169,7 @@ export type BapsAvatarSize = 'xs' | 's' | 'm' | 'l' | 'xl' | '2xl' | 'normal' | 
       transition: border-color 150ms ease;
     }
     baps-avatar:hover .p-avatar {
-      border-color: var(--baps-avatar-border-hover);
+      border-color: var(--baps-avatar-border-hover) !important;
     }
 
     baps-avatar.baps-avatar-secondary .p-avatar {
@@ -185,6 +206,62 @@ export type BapsAvatarSize = 'xs' | 's' | 'm' | 'l' | 'xl' | '2xl' | 'normal' | 
       --baps-avatar-border-hover: var(--color-mybky-info-60, #528de0);
     }
 
+    /* Image avatars render as clean photos — the status fill and
+       border only make sense on initial / icon content.  Primary already has
+       no explicit border; the five named variants below add one, so we strip
+       both background AND border for the image content type. */
+    baps-avatar:is(.baps-avatar-secondary, .baps-avatar-success, .baps-avatar-error, .baps-avatar-warning, .baps-avatar-info) .p-avatar.p-avatar-image {
+      background: transparent;
+      border: none;
+    }
+
+    /* ── Dark, for the five variants above ──
+       Each light variant is a pale SURFACE with mid-tone ink (success/10 fill,
+       success/400 text). On a dark page that is a bright disc, and the sweep
+       measured the neutral one at #f8fafb — the brightest thing on screen.
+
+       Same relationship, read the other way: the fill becomes the hue at 16%
+       over whatever is behind it, the border stays the tint step, and the ink
+       moves UP to that tint so it clears 4.5:1 on its own fill (the same swap
+       the dark message severities make — see dark.scheme.ts).
+
+       Placed before the Sampark scope so that block still wins for Sampark. */
+    .baps-dark baps-avatar.baps-avatar-secondary .p-avatar {
+      background: var(--color-mybky-dark-surface-hover, #3d4144);
+      border-color: var(--color-mybky-dark-border-control, #6f777d);
+      color: var(--color-mybky-dark-text-primary, #f8fafb);
+      --baps-avatar-border-hover: var(--color-mybky-dark-text-muted, #b6b6af);
+    }
+    .baps-dark baps-avatar.baps-avatar-success .p-avatar {
+      background: color-mix(in srgb, var(--color-mybky-success-400, #40bf84), transparent 84%);
+      border-color: color-mix(in srgb, var(--color-mybky-success-tint, #93ecbb), transparent 84%);
+      color: var(--color-mybky-success-tint, #93ecbb);
+      --baps-avatar-border-hover: var(--color-mybky-success-400, #40bf84);
+    }
+    .baps-dark baps-avatar.baps-avatar-error .p-avatar {
+      background: color-mix(in srgb, var(--color-mybky-error-80, #e05255), transparent 84%);
+      border-color: color-mix(in srgb, var(--color-mybky-error-tint, #ec9394), transparent 84%);
+      color: var(--color-mybky-error-tint, #ec9394);
+      --baps-avatar-border-hover: var(--color-mybky-error-80, #e05255);
+    }
+    .baps-dark baps-avatar.baps-avatar-warning .p-avatar {
+      background: color-mix(in srgb, var(--color-mybky-warning-60, #e0a652), transparent 84%);
+      border-color: color-mix(in srgb, var(--color-mybky-warning-tint, #ecc893), transparent 84%);
+      color: var(--color-mybky-warning-tint, #ecc893);
+      --baps-avatar-border-hover: var(--color-mybky-warning-60, #e0a652);
+    }
+    .baps-dark baps-avatar.baps-avatar-info .p-avatar {
+      background: color-mix(in srgb, var(--color-mybky-info-60, #528de0), transparent 84%);
+      border-color: color-mix(in srgb, var(--color-mybky-info-tint, #93b7ec), transparent 84%);
+      color: var(--color-mybky-info-tint, #93b7ec);
+      --baps-avatar-border-hover: var(--color-mybky-info-60, #528de0);
+    }
+    /* Same reset in dark — image avatars stay borderless there too. */
+    .baps-dark baps-avatar:is(.baps-avatar-secondary, .baps-avatar-success, .baps-avatar-error, .baps-avatar-warning, .baps-avatar-info) .p-avatar.p-avatar-image {
+      background: transparent;
+      border: none;
+    }
+
     /* ── Sampark scope — single instance opted in via brand="sampark" (host
        .baps-sampark class) or the whole page via .baps-ds-sampark. Spec:
        spm-ui _avatar.scss + variables.css --avatar-* (Figma 13197:90187). ── */
@@ -206,6 +283,30 @@ export type BapsAvatarSize = 'xs' | 's' | 'm' | 'l' | 'xl' | '2xl' | 'normal' | 
     }
     :is(baps-avatar.baps-sampark, .baps-ds-sampark baps-avatar):hover .p-avatar {
       border-color: var(--baps-avatar-border-hover);
+    }
+
+    /* ── Dark, Sampark ──
+       The base fill is a token on root, outside any colorScheme, so it stayed
+       #fbf4f4 in dark; the sweep caught the worst case at 1.02:1 — #f8fafb
+       initials on a #f8f7f7 disc. Re-pointing the VARIABLES rather than
+       restating the rules keeps the type variants (secondary/warning/success)
+       working off the same block they already read.
+
+       The fill goes to a 16% wash of the dark maroon and the initials to the
+       hover step (#e9c3c3), which Sampark keeps as one colour across variants —
+       the border carries the status, not the ink. */
+    .baps-dark :is(baps-avatar.baps-sampark, .baps-ds-sampark baps-avatar) .p-avatar {
+      background: color-mix(in srgb, var(--color-sampark-dark-primary-default, #d48787), transparent 84%);
+      color: var(--color-sampark-dark-primary-hover, #e9c3c3);
+    }
+    .baps-dark :is(baps-avatar.baps-sampark, .baps-ds-sampark baps-avatar) {
+      --avatar-sampark-border: color-mix(in srgb, var(--color-sampark-dark-primary-default, #d48787), transparent 64%);
+      --avatar-sampark-secondary-background: var(--color-sampark-dark-surface-hover, #4a4947);
+      --avatar-sampark-secondary-border: var(--color-sampark-dark-border-control, #94928f);
+      --avatar-sampark-warning-background: color-mix(in srgb, var(--color-sampark-warning-60, #faab38), transparent 84%);
+      --avatar-sampark-warning-border: var(--color-sampark-warning-40, #fcca83);
+      --avatar-sampark-success-background: color-mix(in srgb, var(--color-sampark-success-60, #17b56c), transparent 84%);
+      --avatar-sampark-success-border: var(--color-sampark-success-40, #82e3af);
     }
 
     /* Type variants — border + fill change; text stays mono.80 everywhere. */

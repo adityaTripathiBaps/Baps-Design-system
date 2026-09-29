@@ -346,6 +346,28 @@ const MYBKY_DIALOG_TOKENS = {
     .baps-dialog-panel .p-dialog-content:has(+ .p-dialog-footer:empty) {
       padding-bottom: 2rem;
     }
+
+    /* ── Dark ──
+       Both token objects above are scoped dt values, not a colorScheme, so the
+       shell stayed on its light surface: a white panel with #f8f7f7 title text
+       on it, 1.07:1. CSS rather than a second token object because the panel is
+       portalled and the dt is written as inline custom properties — a rule on
+       the panel class is what reliably outranks them. */
+    .baps-dark .baps-dialog-panel {
+      background: var(--color-mybky-dark-surface-card, #2b2f32);
+      color: var(--color-mybky-dark-text-secondary, #e4ecf1);
+    }
+    .baps-dark .baps-dialog-panel .baps-dialog__title {
+      color: var(--color-mybky-dark-text-primary, #f8fafb);
+    }
+
+    .baps-dark .baps-dialog-panel.baps-ds-sampark {
+      background: var(--color-sampark-dark-surface-card, #2c2c2a);
+      color: var(--color-sampark-dark-text-secondary, #e6e6e5);
+    }
+    .baps-dark .baps-dialog-panel.baps-ds-sampark .baps-dialog__title {
+      color: var(--color-sampark-dark-text-primary, #f8f7f7);
+    }
   `,
 })
 export class BapsDialog {

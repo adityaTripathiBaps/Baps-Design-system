@@ -120,12 +120,13 @@ const SAMPARK_RADIUS = 4;
 
 export const bapsTheme = makeTheme('light', {
   primary: tokens.ColorMybkyBlue600,
-  // Primary/0, not Mono/50. Both brands' mono ramps top out at a neutral
-  // near-white (#f8fafb here, #fafafa on Sampark), which made the two chromes
-  // three RGB units apart — the theme switched correctly and nothing looked
-  // like it had. The brand tint is what makes the switch legible, and each
-  // brand already ships one as its lightest primary step.
-  chrome: tokens.ColorMybkyBlue50,
+  // White chrome, as on 21st.dev: sidebar and content share one surface and a
+  // hairline separates them. This USED to be Blue/50, because both brands'
+  // mono ramps top out at a neutral near-white and the brand switch was
+  // otherwise invisible. The brand tint has not gone — it moved to the
+  // selected sidebar item (CHROME_SELECTION below), where it still makes the
+  // switch legible without tinting the whole frame.
+  chrome: tokens.ColorMybkyMono0,
   content: tokens.ColorMybkyMono0,
   border: tokens.ColorMybkyBorderDefault,
   inputBorder: tokens.ColorMybkyBorderDefault,
@@ -159,8 +160,9 @@ export const bapsDarkTheme = makeTheme('dark', {
 // the two chromes differ in palette and shape without differing in structure.
 export const samparkTheme = makeTheme('light', {
   primary: tokens.ColorSamparkPrimaryDefault,
-  // Primary/0 — the maroon-tinted counterpart to MyBKY's Blue/50 above.
-  chrome: tokens.ColorSamparkPrimary0,
+  // White, like MyBKY above; Primary/0 (the maroon tint) now marks the
+  // selected sidebar item instead of the whole chrome.
+  chrome: tokens.ColorSamparkMono0,
   content: tokens.ColorSamparkMono0,
   border: tokens.ColorSamparkBorderDefault,
   inputBorder: tokens.ColorSamparkBorderDefault,
@@ -211,3 +213,27 @@ export const CHROME_ACCENT: Record<ChromeBrand, { light: string; dark: string }>
   },
 };
 
+/**
+ * Selected sidebar item — a soft brand-tinted pill with brand-coloured text,
+ * in place of Storybook's solid primary bar with white bold text (21st.dev's
+ * sidebar treatment). Storybook's theme object has no key for this, so
+ * manager.tsx publishes these as CSS custom properties on <html> and
+ * manager-head.html paints the item with them.
+ *
+ * Text contrast was measured against its own pill, since 14px text needs
+ * 4.5:1 (WCAG 1.4.3). The brand DEFAULT fails there (MyBKY 3.79, Sampark
+ * 3.42), so light takes the HOVER step, the same one --baps-docs-link uses:
+ * MyBKY #4c6095 on Blue/50 = 5.40, Sampark #b44141 on Primary/0 = 5.13.
+ * Dark primaries also fail on surface-hover (Sampark 3.26), so dark uses the
+ * text-primary step: 9.84 and 8.41.
+ */
+export const CHROME_SELECTION: Record<ChromeBrand, Record<'light' | 'dark', { bg: string; text: string }>> = {
+  mybky: {
+    light: { bg: tokens.ColorMybkyBlue50, text: tokens.ColorMybkyPrimaryHover },
+    dark: { bg: tokens.ColorMybkyDarkSurfaceHover, text: tokens.ColorMybkyDarkTextPrimary },
+  },
+  sampark: {
+    light: { bg: tokens.ColorSamparkPrimary0, text: tokens.ColorSamparkPrimaryHover },
+    dark: { bg: tokens.ColorSamparkDarkSurfaceHover, text: tokens.ColorSamparkDarkTextPrimary },
+  },
+};

@@ -57,7 +57,8 @@ const ALLOWED_BOTH = new Map([
   // stays useful for everything else; remove an entry when its skin is fixed.
   ['components-indicator--docs', 'KNOWN GAP — baps-indicator has no MyBKY branch'],
   ['components-alert--docs', 'KNOWN GAP — alert card action has no MyBKY branch'],
-  ['components-form-controls--docs', 'KNOWN GAP — baps-menu-item has no MyBKY branch'],
+  ['components-molecules-menu-item--docs', 'KNOWN GAP — baps-menu-item has no MyBKY branch'],
+  ['components-molecules-listbox--docs', 'KNOWN GAP — its rows are baps-menu-item, which has no MyBKY branch'],
   ['components-icon--docs', 'demonstrates colour inheritance with literal swatches'],
 ]);
 

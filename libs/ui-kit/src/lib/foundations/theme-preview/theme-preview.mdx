@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/blocks';
+import { ThemePreview } from '@baps/docs-blocks';
+import * as ThemePreviewStories from './theme-preview.stories';
+
+<Meta of={ThemePreviewStories} />
+
+# Theme Preview
+
+Every theme this design system ships, on one page. Open a card to see that theme's colours, type and corner radius, then the real components and screens drawn in it — whatever the toolbar is set to.
+
+**Apply to Storybook** in an open theme sets the toolbar to it, so every other page follows.
+
+<ThemePreview />
+
+## What a theme is here
+
+- **Brand** — MyBKY or Sampark. The brands differ in colour, and in shape: MyBKY corners are 8px, Sampark's are 4px.
+- **Mode** — light or dark. Each brand has both.
+- **Primary colour** — an optional swap of the primary colour ramp on top of a brand. It is the Primary picker in the toolbar's Theme settings; the rest of the brand stays as it is.
+
+BAPS and App Sell are listed in the toolbar but have no palette yet, so their cards are shown as not ready rather than borrowing another brand's colours.
