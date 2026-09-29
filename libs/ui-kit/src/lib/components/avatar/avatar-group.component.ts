@@ -67,13 +67,20 @@ const OVERLAP: Record<'xs' | 's' | 'm' | 'l' | 'xl' | '2xl', number> = {
     baps-avatargroup :is(.p-avatar-group, .p-avatargroup) {
       display: inline-flex;
       align-items: center;
+      gap: 0 !important; /* Prevent PrimeNG v21 default gaps from breaking the overlap */
     }
 
     /* PrimeNG's own group rule pulls every avatar after the first left by a
        fixed -1rem and adds a 2px white ring. Both are replaced: the ring is
-       not in either sheet, and a fixed pull is wrong at five of six sizes. */
-    baps-avatargroup :is(.p-avatar-group, .p-avatargroup) > baps-avatar + baps-avatar,
-    baps-avatargroup :is(.p-avatar-group, .p-avatargroup) > .p-avatar + .p-avatar {
+       not in either sheet, and a fixed pull is wrong at five of six sizes.
+       Actually, Figma does show a white ring for MyBKY group avatars to
+       create a cutout effect, so we apply a 2px white border here. */
+    baps-avatargroup baps-avatar .p-avatar {
+      border: 2px solid var(--color-mybky-mono-0, #ffffff) !important;
+    }
+
+    baps-avatargroup :is(.p-avatar-group, .p-avatargroup) > baps-avatar ~ baps-avatar,
+    baps-avatargroup :is(.p-avatar-group, .p-avatargroup) > .p-avatar ~ .p-avatar {
       margin-left: calc(-1 * var(--baps-avatargroup-overlap, 10px));
     }
 

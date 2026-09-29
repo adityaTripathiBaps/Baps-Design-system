@@ -172,6 +172,13 @@ export type BapsAvatarSize = 'xs' | 's' | 'm' | 'l' | 'xl' | '2xl' | 'normal' | 
       border-color: var(--baps-avatar-border-hover) !important;
     }
 
+    baps-avatar.baps-avatar-primary .p-avatar {
+      background: var(--color-mybky-blue-50, #f4f7fe);
+      border: 1px solid var(--color-mybky-blue-tint, #93b7ec);
+      color: var(--color-mybky-blue-400, #5f78b8);
+      --baps-avatar-border-hover: var(--color-mybky-blue-400, #5f78b8);
+    }
+
     baps-avatar.baps-avatar-secondary .p-avatar {
       background: var(--color-mybky-mono-50, #f8fafb);
       border: 1px solid var(--color-mybky-mono-450, #8d9ba5);
@@ -225,6 +232,12 @@ export type BapsAvatarSize = 'xs' | 's' | 'm' | 'l' | 'xl' | '2xl' | 'normal' | 
        the dark message severities make — see dark.scheme.ts).
 
        Placed before the Sampark scope so that block still wins for Sampark. */
+    .baps-dark baps-avatar.baps-avatar-primary .p-avatar {
+      background: color-mix(in srgb, var(--color-mybky-blue-400, #5f78b8), transparent 84%);
+      border-color: color-mix(in srgb, var(--color-mybky-blue-tint, #93b7ec), transparent 84%);
+      color: var(--color-mybky-blue-tint, #93b7ec);
+      --baps-avatar-border-hover: var(--color-mybky-blue-400, #5f78b8);
+    }
     .baps-dark baps-avatar.baps-avatar-secondary .p-avatar {
       background: var(--color-mybky-dark-surface-hover, #3d4144);
       border-color: var(--color-mybky-dark-border-control, #6f777d);
