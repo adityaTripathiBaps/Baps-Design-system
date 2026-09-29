@@ -20,6 +20,9 @@ import { MyBky, Sampark, withAccent, withPrimaryRamp, withSurface, applyThemeToD
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import docJson from '../../../documentation.json';
 import { setCompodocJson } from '@storybook/addon-docs/angular';
+// Copy prompt on every Canvas (see the `canvas` parameter below and the
+// header of blocks/prompt.tsx).
+import { canvasPromptAction, rememberSource, setSourceTransform } from './blocks/prompt';
 
 setCompodocJson(docJson);
 
@@ -563,6 +566,9 @@ const preview: Preview = {
             'Shadows',
             'Icons',
             'Motion',
+            // The whole theme on real screens; last, because it is built from
+            // everything above it.
+            'Theme Preview',
           ],
           'Components',
           // Atomic Design, smallest first. Every component meta pins its own
@@ -576,7 +582,8 @@ const preview: Preview = {
           // drawers) are page SECTIONS, not reusable units, and forcing them
           // into Molecules would have made Molecules mean nothing. Patterns,
           // Guidelines and Docs stay outside Components entirely.
-          ['Atoms', 'Molecules', 'Organisms'],
+          // Overview (every component on one page) comes before the tiers.
+          ['Overview', 'Atoms', 'Molecules', 'Organisms'],
           'Patterns',
           'Guidelines',
           'Docs',
@@ -625,6 +632,16 @@ const preview: Preview = {
         // swamp the nav.
         ignoreSelector: '.docs-story *, .baps-docs-foundation *',
         title: 'On this page',
+      },
+      // ── Copy prompt on every example ────────────────────────────────────
+      //
+      // Storybook's own Canvas extension point: each action renders in the
+      // strip beside "Show code", on every Canvas of every docs page. The
+      // action works out which story it sits on and copies an AI prompt with
+      // THAT example's code (Playground, Sizes, Group…), for the framework
+      // the reader picked: PrimeNG-Angular, Custom, React or Next.js.
+      canvas: {
+        additionalActions: [canvasPromptAction],
       },
       // ── Make "Show code" paste-ready ──────────────────────────────────────
       //
@@ -690,5 +707,18 @@ const preview: Preview = {
   },
   decorators: [withDesignSystem],
 };
+
+// The prompt carries each example's code exactly as "Show code" shows it:
+// the snippet Storybook's Angular sourceDecorator emits when the story
+// renders, run through the same paste-ready transform as above.
+setSourceTransform(
+  (preview.parameters?.['docs'] as { source?: { transform?: (code: string, ctx: { args?: Record<string, unknown> }) => string } })
+    ?.source?.transform ?? ((code: string) => code),
+);
+addons
+  .getChannel()
+  .on('storybook/docs/snippet-rendered', (e: { id?: string; source?: string; args?: Record<string, unknown> }) => {
+    if (e?.id && e.source) rememberSource(e.id, e.source, e.args);
+  });
 
 export default preview;

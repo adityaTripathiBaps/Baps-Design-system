@@ -22,4 +22,33 @@
   #storybook-explorer-tree {
     padding-bottom: 5rem;
   }
+
+  /*
+    Sidebar, 21st.dev pass. Measured before (1280px, MyBKY light): items 16px
+    on a 28px row; the selected item a solid primary bar with white 700 text.
+    After: 14px items, and the selected item a soft brand-tinted pill with
+    brand-coloured 500 text.
+
+    The colours are NOT in this file. manager.tsx (ThemeSync) publishes them
+    from chrome-theme.ts's CHROME_SELECTION as --baps-chrome-selected-* on
+    <html>, per brand and mode. The rules are gated on [data-baps-brand], which
+    ThemeSync sets in the same effect, so until it runs Storybook's own
+    selected style stands rather than an unset variable.
+
+    Hooks: `.sidebar-item` and `data-selected` are Storybook's stable markers;
+    the emotion hash beside them (css-1clt8py) changes between builds.
+  */
+  #storybook-explorer-tree .sidebar-item {
+    font-size: 0.875rem;
+  }
+
+  :root[data-baps-brand] #storybook-explorer-tree .sidebar-item[data-selected='true'] {
+    background: var(--baps-chrome-selected-bg) !important;
+    color: var(--baps-chrome-selected-text) !important;
+    font-weight: 500 !important;
+  }
+
+  :root[data-baps-brand] #storybook-explorer-tree .sidebar-item[data-selected='true'] :is(a, span, svg) {
+    color: var(--baps-chrome-selected-text) !important;
+  }
 </style>

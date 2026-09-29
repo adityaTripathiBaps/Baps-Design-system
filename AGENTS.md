@@ -66,6 +66,7 @@ content instead of five drifting copies.
 | [testing.md](.agents/rules/testing.md) | adding tests, or when a suite fails |
 | [publishing.md](.agents/rules/publishing.md) | `dist/`, build scripts, Nx targets |
 | [git-commit.md](.agents/rules/git-commit.md) | writing a commit or PR |
+| [table-panel.md](.agents/rules/table-panel.md) | working with tables, panels, dropdowns, filters, or split buttons |
 
 Read `primeng-wrapper.md` and `styling-tokens.md` before writing any component —
 they carry the two constraints that cause the most rework.

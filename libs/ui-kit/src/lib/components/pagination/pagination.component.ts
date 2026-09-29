@@ -261,7 +261,7 @@ export interface BapsPageEvent {
       padding: 0 0.375rem;
       background: transparent;
       border: 0;
-      border-radius: var(--radius-mybky-pill, 9999px);
+      border-radius: var(--radius-mybky-md, 0.5rem);
       color: var(--color-mybky-mono-800, #2b2f32);
       font-family: inherit;
       font-size: 0.875rem;
@@ -281,8 +281,8 @@ export interface BapsPageEvent {
     }
 
     baps-paginator .baps-paginator__page--active {
-      background: var(--color-mybky-mono-900, #181b1d);
-      color: var(--color-mybky-mono-0, #ffffff);
+      background: transparent;
+      color: var(--color-mybky-mono-900, #181b1d);
       font-weight: 600;
     }
 
@@ -309,7 +309,7 @@ export interface BapsPageEvent {
       margin-inline-start: 0.25rem;
       background: var(--color-mybky-mono-0, #ffffff);
       border: 1px solid var(--color-mybky-mono-300, #e4ecf1);
-      border-radius: var(--radius-mybky-md, 0.5rem);
+      border-radius: var(--radius-mybky-pill, 9999px);
       overflow: hidden;
     }
 

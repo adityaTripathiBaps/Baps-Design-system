@@ -99,6 +99,10 @@ baps-table {
 baps-table .p-datatable-thead > tr > th {
   padding: var(--baps-table-header-py) var(--baps-table-cell-px);
   border-color: var(--baps-table-border);
+  background: var(--table-mybky-header-bg, #ffffff);
+  color: var(--baps-table-cell-secondary);
+  font-weight: 500;
+  border-bottom: 1px solid var(--baps-table-border);
 }
 
 /* Body. NO zebra striping — every row is the card surface, matching
@@ -116,6 +120,19 @@ baps-table .p-datatable-tbody > tr > td {
 baps-table .p-datatable-tbody > tr:hover,
 baps-table .p-datatable-tbody > tr:hover > td {
   background: var(--baps-table-row-hover);
+}
+
+/* Selected row highlight for MyBKY */
+baps-table:not(.baps-sampark) .p-datatable-tbody > tr.p-highlight,
+baps-table:not(.baps-sampark) .p-datatable-tbody > tr.p-highlight > td,
+baps-table:not(.baps-sampark) .p-datatable-tbody > tr[data-p-highlight='true'],
+baps-table:not(.baps-sampark) .p-datatable-tbody > tr[data-p-highlight='true'] > td {
+  background: var(--p-primary-50, #EEF0F8);
+}
+
+baps-table:not(.baps-sampark) .p-datatable-tbody > tr.p-highlight > td:first-child,
+baps-table:not(.baps-sampark) .p-datatable-tbody > tr[data-p-highlight='true'] > td:first-child {
+  box-shadow: inset 3px 0 0 0 var(--p-primary-600, #5F78B8);
 }
 
 /* Row-level error state. Class mirrors baps-tree-table's .baps-tree-row-error

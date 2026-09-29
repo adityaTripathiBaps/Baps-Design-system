@@ -104,6 +104,7 @@ import { BapsAvatar } from '../avatar/avatar.component';
           class="menu-item__avatar"
           [brand]="brand"
           size="s"
+          shape="circle"
           [variant]="avatarIcon ? 'secondary' : 'primary'"
           [label]="avatarIcon ? undefined : avatarLabel"
         >
@@ -391,10 +392,10 @@ export class BapsMenuItem {
   @Input() disabled = false;
 
   /**
-   * Visual skin. Defaults to 'sampark' — this row came from the Sampark
-   * Portal Figma; 'mybky' re-points the palette for the BKY events product.
+   * Visual skin. Defaults to 'mybky' (the default design system brand); 
+   * 'sampark' re-points the palette for the Sampark Portal.
    */
-  @Input() brand: 'mybky' | 'sampark' = 'sampark';
+  @Input() brand: 'mybky' | 'sampark' = 'mybky';
 
   /** Emitted on click / Enter / Space when not disabled. */
   @Output() activated = new EventEmitter<void>();

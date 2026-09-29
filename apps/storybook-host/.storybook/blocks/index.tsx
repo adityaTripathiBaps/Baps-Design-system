@@ -17,7 +17,8 @@
  * and the brand switcher without knowing either exists.
  */
 import React, { useEffect, useState } from 'react';
-import { Canvas, Controls, Source } from '@storybook/blocks';
+import { Canvas, Controls, Source, useOf } from '@storybook/blocks';
+import { useRegisterSnippets } from './prompt';
 
 /** Source only accepts the languages Prism is loaded for, so mirror its type. */
 type SourceLanguage = React.ComponentProps<typeof Source>['language'];
@@ -118,6 +119,7 @@ export const DemoCard = ({
           <Canvas of={of as never} sourceState="none" />
           {controls ? <Controls of={of as never} /> : null}
           <FrameworkTabs of={of} snippets={snippets} />
+          <RegisterSnippets of={of} snippets={snippets} />
         </>
       ) : (
         <>
@@ -130,6 +132,15 @@ export const DemoCard = ({
     )}
   </section>
 );
+
+/* Hands this example's authored React / Next.js / Custom markup to the Copy
+   prompt action on its Canvas, so a React prompt copied from "Sizes" carries
+   the Sizes React snippet. Renders nothing. */
+const RegisterSnippets = ({ of, snippets }: { of: unknown; snippets: SnippetSet }) => {
+  const resolved = useOf(of as never) as { type?: string; story?: { id: string } };
+  useRegisterSnippets(resolved.type === 'story' ? resolved.story?.id : undefined, snippets);
+  return null;
+};
 
 /* ── CodeBlock ─────────────────────────────────────────────────────────────
    Storybook's <Source> with a filename strip above it. The strip is what makes
@@ -533,3 +544,5 @@ export const FrameworkTabs = ({
   );
 };
 export * from './foundations';
+// CopyPrompt, ComponentGallery, ThemePreview — see the header of showcase.tsx.
+export * from './showcase';

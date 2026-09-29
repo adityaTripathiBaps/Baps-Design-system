@@ -9,7 +9,7 @@ import {
 import { DOCS_RENDERED, STORY_RENDERED } from 'storybook/internal/core-events';
 import { IconButton, WithTooltip, Separator } from 'storybook/internal/components';
 import { DARK_MODE_EVENT_NAME, UPDATE_DARK_MODE_EVENT_NAME } from 'storybook-dark-mode';
-import { CHROME_THEMES, CHROME_ACCENT, type ChromeBrand } from './chrome-theme';
+import { CHROME_THEMES, CHROME_ACCENT, CHROME_SELECTION, type ChromeBrand } from './chrome-theme';
 
 /**
  * Dark mode (Theme mode action) — handled by storybook-dark-mode. It owns the
@@ -319,6 +319,9 @@ const BrandFilter: React.FC = () => {
       // and Docs keep their own story entries, since those pages ARE the
       // stories rather than examples of one component.
       if (item.type === 'story' && item.id.startsWith('components-')) return false;
+      // Same one-page rule for Foundations › Theme Preview: its Components
+      // story exists to be framed by that page, not browsed on its own.
+      if (item.type === 'story' && item.id.startsWith('foundations-theme-preview--')) return false;
       if (tags.includes('ds:comparison')) return showComparison;
       if (!tags.some((t) => t.startsWith('ds:'))) return true;
       return tags.includes(`ds:${brand}`);
@@ -350,6 +353,13 @@ const ThemeSync: React.FC = () => {
     const root = document.documentElement;
     root.dataset['bapsBrand'] = brand;
     root.dataset['bapsMode'] = mode;
+
+    // The selected-item pill (manager-head.html) — values Storybook's theme
+    // object has no key for, published as custom properties so the stylesheet
+    // follows brand and mode without holding a colour of its own.
+    const selection = CHROME_SELECTION[brand][mode];
+    root.style.setProperty('--baps-chrome-selected-bg', selection.bg);
+    root.style.setProperty('--baps-chrome-selected-text', selection.text);
   }, [api, brand, dark]);
 
   return null;

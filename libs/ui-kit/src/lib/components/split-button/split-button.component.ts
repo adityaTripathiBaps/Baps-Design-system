@@ -189,6 +189,20 @@ import { MenuItem, PrimeTemplate } from 'primeng/api';
       background: var(--button-mybky-secondary-disabled, #f8fafb);
       border-color: var(--button-mybky-secondary-border, #e4ecf1);
     }
+    
+    /* Internal Padding & Radius Specifications */
+    baps-split-button:not(.baps-sampark) .p-splitbutton {
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    baps-split-button:not(.baps-sampark) .p-splitbutton .p-button:first-child {
+      padding: 8px 16px 8px 16px;
+      gap: 4px;
+    }
+    baps-split-button:not(.baps-sampark) .p-splitbutton .p-splitbutton-dropdown {
+      padding: 8px 16px 8px 12px;
+      gap: 4px;
+    }
 
     /* ── Geometry: explicit heights (28/32/36/42), 4px outer radius ── */
     :is(baps-split-button.baps-sampark, .baps-ds-sampark baps-split-button) .p-splitbutton .p-button {

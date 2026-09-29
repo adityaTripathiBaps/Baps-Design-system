@@ -145,6 +145,10 @@
   transition: background-color 150ms ease;
 }
 
+.p-listbox-option {
+  min-height: 48px !important;
+}
+
 .p-select-option::before,
 .p-multiselect-option::before,
 .p-listbox-option::before,

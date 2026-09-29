@@ -234,7 +234,9 @@ body.baps-dark {
 }
 
 /* ── The strip ── */
-.sbdocs-wrapper .sbdocs-preview .docs-story > div:has(> .docblock-code-toggle) {
+/* Matched on the Copy prompt action too: a DemoCard with framework snippets
+   has no Show code toggle, and its strip must still be a strip. */
+.sbdocs-wrapper .sbdocs-preview .docs-story > div:has(> :is(.docblock-code-toggle, .baps-docs-canvas-prompt)) {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -245,7 +247,7 @@ body.baps-dark {
   background: var(--baps-docs-code-ground);
 }
 
-.sbdocs-wrapper .sbdocs-preview .docs-story > div:has(> .docblock-code-toggle)::before {
+.sbdocs-wrapper .sbdocs-preview .docs-story > div:has(> :is(.docblock-code-toggle, .baps-docs-canvas-prompt))::before {
   content: 'Preview';
   font-family: var(--font-family-mono, ui-monospace, monospace);
   font-size: 0.6875rem;
@@ -729,4 +731,899 @@ body.baps-ds-sampark {
     white-space: normal !important;
     overflow-wrap: anywhere;
   }
+}
+
+/* ── Showcase: 21st.dev-inspired pass ───────────────────────────────────────
+   Styles for the three blocks in .storybook/blocks/showcase.tsx (CopyPrompt,
+   ComponentGallery, ThemePreview), plus one change to existing pages: a
+   faint dot grid behind every Canvas, the way 21st.dev sets a component on
+   its preview plate.
+
+   Same contract as the rest of this file: colours from the --baps-docs-* tier,
+   radius / space / motion from tokens, and every selector under
+   .sbdocs-wrapper, so none of it can match inside a story iframe (the visual
+   baselines). The 21st.dev values were mapped onto the nearest token, not
+   copied: its 300ms cubic-bezier(0.23, 1, 0.32, 1) is --motion-easing-calm at
+   --motion-duration-ui-transition; its 1px ring + soft drop is the brand's
+   card-hover shadow. */
+
+/* One new tier property: the lift a card gets on hover. Dark mode drops the
+   shadow (it disappears on a dark ground anyway) and relies on the divider. */
+body {
+  --baps-docs-lift: var(--shadow-mybky-card-hover, 0 2px 12px rgba(0, 0, 0, 0.08));
+}
+body.baps-ds-sampark {
+  --baps-docs-lift: var(--shadow-sampark-l1, 0 4px 6px -2px rgba(16, 24, 40, 0.16));
+}
+body.baps-dark,
+body.baps-dark.baps-ds-sampark {
+  --baps-docs-lift: none;
+}
+
+.sbdocs-wrapper .baps-docs-muted {
+  color: var(--baps-docs-muted);
+}
+
+/* ── Canvas plate: dot grid ──
+   Decorative only. Drawn in the divider tier, so it follows brand and mode
+   and stays below the contrast of anything a component draws. */
+.sbdocs-wrapper .sbdocs-preview .docs-story > div:first-child {
+  background-color: var(--baps-docs-ground);
+  background-image: radial-gradient(var(--baps-docs-divider) 1px, transparent 1px);
+  background-size: var(--space-4, 1rem) var(--space-4, 1rem);
+}
+
+/* ── CopyPrompt ── */
+.sbdocs-wrapper .baps-docs-prompt {
+  position: relative;
+  display: inline-flex;
+  margin: 0 0 var(--space-6, 1.5rem);
+}
+
+.sbdocs-wrapper .baps-docs-prompt button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2, 0.5rem);
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+}
+
+.sbdocs-wrapper .baps-docs-prompt__main,
+.sbdocs-wrapper .baps-docs-prompt__more {
+  height: 2.25rem;
+  /* The link tier, not the accent: white 14px text on the brand default is
+     4.37:1 on MyBKY and 3.42:1 on Sampark, under WCAG's 4.5. The link step is
+     the brand's hover shade in light and the light accent in dark, where the
+     ground-coloured text still clears it. */
+  background: var(--baps-docs-link, var(--baps-docs-accent));
+  color: var(--baps-docs-ground);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: opacity var(--motion-duration-base, 150ms) var(--motion-easing-standard, ease);
+}
+
+.sbdocs-wrapper .baps-docs-prompt__main {
+  padding: 0 var(--space-4, 1rem);
+  border-radius: var(--radius-mybky-md, 0.5rem) 0 0 var(--radius-mybky-md, 0.5rem);
+}
+
+.sbdocs-wrapper .baps-docs-prompt__more {
+  padding: 0 var(--space-2, 0.5rem);
+  border-radius: 0 var(--radius-mybky-md, 0.5rem) var(--radius-mybky-md, 0.5rem) 0;
+  /* A hairline in the button's own text colour separates the two halves. */
+  box-shadow: inset 1px 0 0 color-mix(in srgb, var(--baps-docs-ground) 30%, transparent);
+}
+
+.baps-ds-sampark .sbdocs-wrapper .baps-docs-prompt__main {
+  border-radius: var(--radius-sampark-default, 0.25rem) 0 0 var(--radius-sampark-default, 0.25rem);
+}
+.baps-ds-sampark .sbdocs-wrapper .baps-docs-prompt__more {
+  border-radius: 0 var(--radius-sampark-default, 0.25rem) var(--radius-sampark-default, 0.25rem) 0;
+}
+
+.sbdocs-wrapper .baps-docs-prompt button:hover {
+  opacity: 0.88;
+}
+
+.sbdocs-wrapper .baps-docs-prompt button:focus-visible {
+  outline: 2px solid var(--baps-docs-accent);
+  outline-offset: 2px;
+}
+
+.sbdocs-wrapper .baps-docs-prompt--sm {
+  margin: 0;
+}
+.sbdocs-wrapper .baps-docs-prompt--sm .baps-docs-prompt__main,
+.sbdocs-wrapper .baps-docs-prompt--sm .baps-docs-prompt__more {
+  height: 1.75rem;
+  font-size: 0.75rem;
+}
+.sbdocs-wrapper .baps-docs-prompt--sm .baps-docs-prompt__main {
+  padding: 0 var(--space-2-5, 0.625rem);
+}
+
+/* In a gallery row header the prompt sits beside "View all", so it drops to
+   an outline control rather than competing with the cards as a filled one.
+   The control border tier: the outline is the only cue it is a button. */
+.sbdocs-wrapper .baps-docs-prompt--sm :is(.baps-docs-prompt__main, .baps-docs-prompt__more) {
+  background: transparent;
+  color: var(--baps-docs-text);
+  box-shadow: inset 0 0 0 1px var(--baps-docs-control);
+}
+.sbdocs-wrapper .baps-docs-prompt--sm .baps-docs-prompt__more {
+  box-shadow:
+    inset 0 0 0 1px var(--baps-docs-control),
+    inset 1px 0 0 var(--baps-docs-control);
+  margin-left: -1px;
+}
+.sbdocs-wrapper .baps-docs-prompt--sm :is(.baps-docs-prompt__main, .baps-docs-prompt__more):hover {
+  opacity: 1;
+  background: var(--baps-docs-raised);
+  color: var(--baps-docs-heading);
+}
+.sbdocs-wrapper .baps-docs-prompt--sm .baps-docs-prompt__fw {
+  border-left-color: var(--baps-docs-divider);
+  color: var(--baps-docs-muted);
+}
+
+.sbdocs-wrapper .baps-docs-prompt__menu {
+  position: absolute;
+  top: calc(100% + var(--space-1-5, 0.375rem));
+  right: 0;
+  z-index: 5;
+  min-width: 12rem;
+  padding: var(--space-1-5, 0.375rem);
+  border: 1px solid var(--baps-docs-divider);
+  border-radius: var(--radius-mybky-md, 0.5rem);
+  background: var(--baps-docs-ground);
+  box-shadow: var(--shadow-sampark-dropdown, 0 12px 40px rgba(0, 0, 0, 0.15));
+}
+
+.sbdocs-wrapper .baps-docs-prompt__menu button {
+  width: 100%;
+  padding: var(--space-2, 0.5rem) var(--space-2-5, 0.625rem);
+  border-radius: var(--radius-mybky-sm, 0.375rem);
+  background: transparent;
+  color: var(--baps-docs-text);
+  font-size: 0.8125rem;
+  text-align: left;
+}
+
+.sbdocs-wrapper .baps-docs-prompt__menu button {
+  justify-content: space-between;
+}
+
+.sbdocs-wrapper .baps-docs-prompt__menu button[aria-checked='true'] {
+  color: var(--baps-docs-heading);
+  font-weight: 500;
+}
+
+.sbdocs-wrapper .baps-docs-prompt__divider {
+  display: block;
+  height: 1px;
+  margin: var(--space-1-5, 0.375rem) 0;
+  background: var(--baps-docs-divider);
+}
+
+/* The framework the main button will copy for, e.g. "Copy prompt · React". */
+.sbdocs-wrapper .baps-docs-prompt__fw {
+  padding-left: var(--space-2, 0.5rem);
+  margin-left: var(--space-0-5, 0.125rem);
+  border-left: 1px solid color-mix(in srgb, var(--baps-docs-ground) 35%, transparent);
+  font-weight: 400;
+  opacity: 0.85;
+}
+
+.sbdocs-wrapper .baps-docs-prompt__menu button:hover {
+  opacity: 1;
+  background: var(--baps-docs-raised);
+  color: var(--baps-docs-heading);
+}
+
+.sbdocs-wrapper .baps-docs-prompt__label {
+  display: block;
+  padding: var(--space-2, 0.5rem) var(--space-2-5, 0.625rem) var(--space-1, 0.25rem);
+  color: var(--baps-docs-muted);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ── Preview frame (shared by the gallery and the theme preview) ── */
+.sbdocs-wrapper .baps-docs-frame {
+  position: relative;
+  overflow: hidden;
+  background: var(--baps-docs-ground);
+}
+
+.sbdocs-wrapper .baps-docs-frame iframe {
+  display: block;
+  width: 100%;
+  border: 0;
+  opacity: 0;
+  transition: opacity var(--motion-duration-ui-transition, 220ms) var(--motion-easing-standard, ease);
+}
+
+.sbdocs-wrapper .baps-docs-frame iframe.is-ready {
+  opacity: 1;
+}
+
+.sbdocs-wrapper .baps-docs-frame__skeleton {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    var(--baps-docs-raised) 0%,
+    var(--baps-docs-ground) 50%,
+    var(--baps-docs-raised) 100%
+  );
+  background-size: 200% 100%;
+  animation: baps-docs-shimmer 1.4s linear infinite;
+}
+
+@keyframes baps-docs-shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+/* Theme preview: full-size screen. The iframe's height is set inline from the
+   story's own scroll height once it loads; this is the floor before that. */
+.sbdocs-wrapper .baps-docs-frame--fit {
+  min-height: 20rem;
+}
+.sbdocs-wrapper .baps-docs-frame--fit iframe {
+  min-height: 20rem;
+}
+
+/* ── ComponentGallery ──
+   21st.dev's category rows: a header (name, count, "View all"), then a
+   horizontal track of cells that share hairline borders rather than floating
+   as separate cards, with a round arrow button over the right edge. */
+.sbdocs-wrapper .baps-docs-gallery h2 .baps-docs-card__count {
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+
+.sbdocs-wrapper .baps-docs-row {
+  margin: 0 0 var(--space-8, 2rem);
+}
+
+.sbdocs-wrapper .baps-docs-row__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3, 0.75rem);
+  margin: 0 0 var(--space-3, 0.75rem);
+}
+
+/* The row title reads as a label, not a document heading. */
+.sbdocs-wrapper .baps-docs-row__head h3 {
+  margin: 0 !important;
+  font-size: 0.9375rem !important;
+  font-weight: 500 !important;
+}
+
+.sbdocs-wrapper .baps-docs-row__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3, 0.75rem);
+}
+
+.sbdocs-wrapper .baps-docs-row__all {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1, 0.25rem);
+  color: var(--baps-docs-muted) !important;
+  font-size: 0.875rem;
+  text-decoration: none !important;
+  transition: color var(--motion-duration-base, 150ms) var(--motion-easing-standard, ease);
+}
+
+.sbdocs-wrapper .baps-docs-row__all:hover {
+  color: var(--baps-docs-heading) !important;
+}
+
+.sbdocs-wrapper .baps-docs-row__all:focus-visible {
+  outline: 2px solid var(--baps-docs-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-mybky-sm, 0.375rem);
+}
+
+.sbdocs-wrapper .baps-docs-row__viewport {
+  position: relative;
+}
+
+.sbdocs-wrapper .baps-docs-row__track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(15rem, calc((100% - 2px) / 3));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  border-top: 1px solid var(--baps-docs-divider);
+  border-bottom: 1px solid var(--baps-docs-divider);
+  border-left: 1px solid var(--baps-docs-divider);
+}
+
+.sbdocs-wrapper .baps-docs-row__track::-webkit-scrollbar {
+  display: none;
+}
+
+.sbdocs-wrapper .baps-docs-card {
+  margin: 0;
+  overflow: hidden;
+  scroll-snap-align: start;
+  border-right: 1px solid var(--baps-docs-divider);
+  background: var(--baps-docs-raised);
+}
+
+.sbdocs-wrapper .baps-docs-card__link {
+  display: block;
+  padding: var(--space-5, 1.25rem);
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
+.sbdocs-wrapper .baps-docs-card__link:focus-visible {
+  outline: 2px solid var(--baps-docs-accent);
+  outline-offset: -2px;
+}
+
+/* At rest the stack sits one meta-row low, so the name row is clipped by the
+   cell; hover or keyboard focus slides it up into view. */
+.sbdocs-wrapper .baps-docs-card__stack {
+  display: block;
+  transform: translateY(var(--space-4, 1rem));
+  transition: transform var(--motion-duration-ui-transition, 220ms) var(--motion-easing-calm, ease);
+}
+
+.sbdocs-wrapper .baps-docs-card:is(:hover, :focus-within) .baps-docs-card__stack {
+  transform: translateY(0);
+}
+
+.sbdocs-wrapper .baps-docs-card .baps-docs-frame {
+  aspect-ratio: 4 / 3;
+  border: 1px solid var(--baps-docs-divider);
+  border-radius: var(--radius-mybky-sm, 0.375rem);
+  transition: box-shadow var(--motion-duration-ui-transition, 220ms) var(--motion-easing-calm, ease);
+}
+
+.baps-ds-sampark .sbdocs-wrapper .baps-docs-card .baps-docs-frame {
+  border-radius: var(--radius-sampark-default, 0.25rem);
+}
+
+.sbdocs-wrapper .baps-docs-card:is(:hover, :focus-within) .baps-docs-frame {
+  box-shadow: var(--baps-docs-lift);
+}
+
+.sbdocs-wrapper .baps-docs-card__meta {
+  display: flex;
+  align-items: center;
+  min-height: 2rem;
+  padding-top: var(--space-2, 0.5rem);
+  opacity: 0;
+  transition: opacity var(--motion-duration-moderate, 200ms) var(--motion-easing-standard, ease);
+}
+
+.sbdocs-wrapper .baps-docs-card:is(:hover, :focus-within) .baps-docs-card__meta {
+  opacity: 1;
+}
+
+.sbdocs-wrapper .baps-docs-card__name {
+  overflow: hidden;
+  color: var(--baps-docs-heading);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sbdocs-wrapper .baps-docs-card__count {
+  margin-left: var(--space-1-5, 0.375rem);
+  color: var(--baps-docs-muted);
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+
+/* The round arrow over the track's edge. The control border tier, not the
+   divider: the outline is what says the button is there (WCAG 1.4.11). */
+.sbdocs-wrapper .baps-docs-row__arrow {
+  position: absolute;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border: 1px solid var(--baps-docs-control);
+  border-radius: 50%;
+  background: var(--baps-docs-ground);
+  color: var(--baps-docs-heading);
+  box-shadow: var(--baps-docs-lift);
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition: background var(--motion-duration-base, 150ms) var(--motion-easing-standard, ease);
+}
+
+.sbdocs-wrapper .baps-docs-row__arrow--next {
+  right: var(--space-3, 0.75rem);
+}
+
+.sbdocs-wrapper .baps-docs-row__arrow--prev {
+  left: var(--space-3, 0.75rem);
+}
+
+.sbdocs-wrapper .baps-docs-row__arrow:hover {
+  background: var(--baps-docs-raised);
+}
+
+.sbdocs-wrapper .baps-docs-row__arrow:focus-visible {
+  outline: 2px solid var(--baps-docs-accent);
+  outline-offset: 2px;
+}
+
+@media (max-width: 767px) {
+  .sbdocs-wrapper .baps-docs-row__track {
+    grid-auto-columns: 80%;
+  }
+  .sbdocs-wrapper .baps-docs-row__arrow {
+    display: none;
+  }
+}
+
+/* Card frame: the story at half scale, anchored top-left.
+
+   The still image is the story's Playwright baseline — a 1248px-wide crop of
+   the story root with the component in its top-left corner. Fitted whole into
+   a 15rem card it would shrink ~5x and an avatar would be a few pixels, so
+   instead both the still and the live story are shown at 0.5x from the
+   top-left: the card becomes a window onto a ~480 x 360 slice of the story,
+   and swapping the still for the live frame on hover does not jump. */
+.sbdocs-wrapper .baps-docs-card .baps-docs-frame {
+  --baps-docs-zoom: 0.5;
+}
+
+.sbdocs-wrapper .baps-docs-frame__poster {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(1248px * var(--baps-docs-zoom));
+  max-width: none;
+  height: auto;
+  transition: opacity var(--motion-duration-ui-transition, 220ms) var(--motion-easing-standard, ease);
+}
+
+.sbdocs-wrapper .baps-docs-frame__plate {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--baps-docs-muted);
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.sbdocs-wrapper .baps-docs-frame.is-live :is(.baps-docs-frame__poster, .baps-docs-frame__plate) {
+  opacity: 0;
+}
+
+/* A preview is a picture of the component; clicks go to the card link. */
+.sbdocs-wrapper .baps-docs-card .baps-docs-frame iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(100% / var(--baps-docs-zoom));
+  height: calc(100% / var(--baps-docs-zoom));
+  transform: scale(var(--baps-docs-zoom));
+  transform-origin: 0 0;
+  pointer-events: none;
+}
+
+/* ── ThemePreview: theme gallery + theme sheet ──
+   21st.dev's themes page. The grid is the same hairline-cell grid as the
+   gallery; each card paints itself in its own theme (inline token vars from
+   showcase.tsx), so these rules carry layout only, plus the docs-tier chrome
+   around the cards. */
+.sbdocs-wrapper .baps-docs-themes__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  margin: var(--space-4, 1rem) 0 var(--space-10, 2.5rem);
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--baps-docs-divider);
+  border-left: 1px solid var(--baps-docs-divider);
+}
+
+.sbdocs-wrapper .baps-docs-theme {
+  display: grid;
+  gap: var(--space-2, 0.5rem);
+  margin: 0;
+  padding: var(--space-5, 1.25rem);
+  border-right: 1px solid var(--baps-docs-divider);
+  border-bottom: 1px solid var(--baps-docs-divider);
+  background: var(--baps-docs-raised);
+}
+
+.sbdocs-wrapper .baps-docs-theme__card {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: 9rem;
+  padding: var(--space-5, 1.25rem);
+  border: 0;
+  border-radius: var(--radius-mybky-sm, 0.375rem);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 10%, transparent);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    transform var(--motion-duration-ui-transition, 220ms) var(--motion-easing-calm, ease),
+    box-shadow var(--motion-duration-ui-transition, 220ms) var(--motion-easing-calm, ease);
+}
+
+.sbdocs-wrapper .baps-docs-theme__card:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, currentColor 10%, transparent),
+    var(--baps-docs-lift);
+}
+
+.sbdocs-wrapper .baps-docs-theme__card:focus-visible {
+  outline: 2px solid var(--baps-docs-accent);
+  outline-offset: 2px;
+}
+
+.sbdocs-wrapper .baps-docs-theme__name {
+  font-size: 1.375rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+/* The swatch row: overlapping dots, top right. */
+.sbdocs-wrapper .baps-docs-theme__dots {
+  position: absolute;
+  top: var(--space-3, 0.75rem);
+  right: var(--space-3, 0.75rem);
+  display: flex;
+}
+
+.sbdocs-wrapper .baps-docs-theme__dots span {
+  position: relative;
+  width: 1.625rem;
+  height: 1.625rem;
+  margin-left: calc(var(--space-2, 0.5rem) * -1);
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px color-mix(in srgb, currentColor 8%, transparent);
+}
+
+.sbdocs-wrapper .baps-docs-theme__note {
+  color: var(--baps-docs-muted);
+  font-size: 0.75rem;
+}
+
+.sbdocs-wrapper .baps-docs-theme--awaiting .baps-docs-theme__card {
+  cursor: not-allowed;
+  opacity: 0.55;
+  box-shadow: none;
+  outline: 1px dashed var(--baps-docs-control);
+  outline-offset: -1px;
+}
+
+/* ── The sheet (modal) ── */
+.sbdocs-wrapper .baps-docs-sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  grid-template-columns: auto minmax(0, 60rem) auto;
+  grid-template-rows: minmax(0, 1fr) auto;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-3, 0.75rem) var(--space-4, 1rem);
+  padding: var(--space-6, 1.5rem);
+  background: color-mix(in srgb, var(--color-mybky-mono-900, #181b1d) 72%, transparent);
+}
+
+.sbdocs-wrapper .baps-docs-sheet__panel {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: stretch;
+  display: grid;
+  align-content: start;
+  gap: var(--space-6, 1.5rem);
+  overflow-y: auto;
+  padding: var(--space-6, 1.5rem);
+  border-radius: var(--radius-mybky-md, 0.5rem);
+  outline: none;
+}
+
+.sbdocs-wrapper .baps-docs-sheet__card {
+  overflow: hidden;
+  border: 1px solid;
+  border-radius: var(--radius-mybky-md, 0.5rem);
+}
+
+.sbdocs-wrapper .baps-docs-sheet__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3, 0.75rem);
+  padding: var(--space-5, 1.25rem);
+  border-bottom: 1px solid;
+}
+
+.sbdocs-wrapper .baps-docs-sheet__mark {
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: none;
+}
+
+.sbdocs-wrapper .baps-docs-sheet__title {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.sbdocs-wrapper .baps-docs-sheet__sub {
+  font-size: 0.8125rem;
+}
+
+.sbdocs-wrapper .baps-docs-sheet__badge {
+  margin-left: auto;
+  padding: var(--space-1, 0.25rem) var(--space-2-5, 0.625rem);
+  border-radius: var(--radius-mybky-sm, 0.375rem);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.sbdocs-wrapper .baps-docs-sheet__grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr;
+  border-bottom: 1px solid;
+}
+
+.sbdocs-wrapper .baps-docs-sheet__cell {
+  padding: var(--space-5, 1.25rem);
+  border-left: 1px solid;
+}
+
+.sbdocs-wrapper .baps-docs-sheet__cell:first-child {
+  border-left: 0;
+}
+
+.sbdocs-wrapper .baps-docs-sheet__label {
+  margin: 0 0 var(--space-3, 0.75rem);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.sbdocs-wrapper .baps-docs-sheet__label--pad {
+  margin: 0;
+  padding: var(--space-5, 1.25rem) var(--space-5, 1.25rem) 0;
+}
+
+.sbdocs-wrapper .baps-docs-sheet__swatches {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-3, 0.75rem) var(--space-2, 0.5rem);
+}
+
+.sbdocs-wrapper .baps-docs-sheet__swatch {
+  display: grid;
+  gap: var(--space-1, 0.25rem);
+  font-size: 0.6875rem;
+}
+
+.sbdocs-wrapper .baps-docs-sheet__swatch span:first-child {
+  height: 2rem;
+  border: 1px solid;
+}
+
+.sbdocs-wrapper .baps-docs-sheet__h {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.sbdocs-wrapper .baps-docs-sheet__s {
+  margin-top: var(--space-1, 0.25rem);
+  font-size: 1rem;
+}
+
+.sbdocs-wrapper .baps-docs-sheet__b {
+  margin-top: var(--space-2, 0.5rem);
+  font-size: 0.8125rem;
+}
+
+.sbdocs-wrapper .baps-docs-sheet__radii {
+  display: flex;
+  gap: var(--space-2, 0.5rem);
+}
+
+.sbdocs-wrapper .baps-docs-sheet__radii span {
+  width: 2rem;
+  height: 2rem;
+  border: 2px solid;
+}
+
+.sbdocs-wrapper .baps-docs-sheet__screen {
+  display: grid;
+}
+
+/* Frames inside the sheet take the theme's card surface, not the docs one. */
+.sbdocs-wrapper .baps-docs-sheet .baps-docs-frame {
+  background: transparent;
+}
+
+.sbdocs-wrapper .baps-docs-sheet__step {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--color-mybky-mono-0, #ffffff) 14%, transparent);
+  color: var(--color-mybky-mono-0, #ffffff);
+  cursor: pointer;
+}
+
+.sbdocs-wrapper .baps-docs-sheet__step--prev {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.sbdocs-wrapper .baps-docs-sheet__step--next {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+.sbdocs-wrapper .baps-docs-sheet__step:hover {
+  background: color-mix(in srgb, var(--color-mybky-mono-0, #ffffff) 24%, transparent);
+}
+
+.sbdocs-wrapper .baps-docs-sheet__actions {
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  justify-content: center;
+  gap: var(--space-3, 0.75rem);
+}
+
+.sbdocs-wrapper .baps-docs-sheet__btn {
+  height: 2.5rem;
+  padding: 0 var(--space-5, 1.25rem);
+  border: 0;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-mybky-mono-0, #ffffff) 14%, transparent);
+  color: var(--color-mybky-mono-0, #ffffff);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.sbdocs-wrapper .baps-docs-sheet__btn--primary {
+  background: var(--baps-docs-link, var(--baps-docs-accent));
+  color: var(--color-mybky-mono-0, #ffffff);
+}
+
+.sbdocs-wrapper .baps-docs-sheet :is(.baps-docs-sheet__step, .baps-docs-sheet__btn):focus-visible {
+  outline: 2px solid var(--color-mybky-mono-0, #ffffff);
+  outline-offset: 2px;
+}
+
+@media (max-width: 767px) {
+  .sbdocs-wrapper .baps-docs-sheet {
+    grid-template-columns: minmax(0, 1fr);
+    padding: var(--space-3, 0.75rem);
+  }
+  .sbdocs-wrapper .baps-docs-sheet__panel,
+  .sbdocs-wrapper .baps-docs-sheet__actions {
+    grid-column: 1;
+  }
+  .sbdocs-wrapper .baps-docs-sheet__step {
+    display: none;
+  }
+  .sbdocs-wrapper .baps-docs-sheet__grid {
+    grid-template-columns: 1fr;
+  }
+  .sbdocs-wrapper .baps-docs-sheet__cell {
+    border-left: 0;
+    border-top: 1px solid;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sbdocs-wrapper :is(.baps-docs-card__stack, .baps-docs-card__meta, .baps-docs-frame, .baps-docs-frame iframe, .baps-docs-frame__poster, .baps-docs-theme__card) {
+    transition: none;
+  }
+  .sbdocs-wrapper .baps-docs-frame__skeleton {
+    animation: none;
+  }
+}
+
+/* ── Copy prompt on every Canvas ──
+   Storybook's additionalActions button (blocks/prompt.tsx, canvasPromptAction),
+   sitting in each example's strip beside "Show code". Styled as the same quiet
+   strip control as the code toggle, so the strip reads
+   PREVIEW · COPY PROMPT | REACT ▾ · SHOW CODE. */
+.sbdocs-wrapper .baps-docs-canvas-prompt {
+  position: static !important;
+  margin: 0 !important;
+  padding: 0.125rem var(--space-2, 0.5rem) !important;
+  border: 0 !important;
+  border-radius: var(--radius-mybky-sm, 0.375rem) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--baps-docs-muted) !important;
+  font-family: var(--font-family-mono, ui-monospace, monospace) !important;
+  font-size: 0.6875rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.sbdocs-wrapper .baps-docs-canvas-prompt:hover {
+  background: var(--baps-docs-raised) !important;
+  color: var(--baps-docs-heading) !important;
+}
+
+.sbdocs-wrapper .baps-docs-canvas-prompt:focus-visible {
+  outline: 2px solid var(--baps-docs-accent);
+  outline-offset: 1px;
+}
+
+/* A strip with only the prompt (no Show code) keeps it on the right. */
+.sbdocs-wrapper .baps-docs-canvas-prompt:first-child {
+  margin-left: auto !important;
+}
+
+.sbdocs-wrapper .baps-docs-canvas-prompt__inner {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1-5, 0.375rem);
+}
+
+.sbdocs-wrapper .baps-docs-canvas-prompt__fw {
+  padding-left: var(--space-1-5, 0.375rem);
+  border-left: 1px solid var(--baps-docs-divider);
+  color: var(--baps-docs-link, var(--baps-docs-accent));
+}
+
+.sbdocs-wrapper .baps-docs-canvas-prompt__chevron {
+  display: inline-grid;
+  place-items: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: calc(var(--space-1, 0.25rem) * -1);
+  border-radius: var(--radius-mybky-sm, 0.375rem);
+}
+
+.sbdocs-wrapper .baps-docs-canvas-prompt__chevron:hover {
+  background: var(--baps-docs-divider);
+}
+
+/* The framework menu opened from a Canvas strip floats at the button. */
+.sbdocs-wrapper .baps-docs-prompt__menu--floating {
+  position: fixed;
+  top: auto;
+  z-index: 20;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.sbdocs-wrapper .baps-docs-prompt__menu--floating button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2, 0.5rem);
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.8125rem;
 }

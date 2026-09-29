@@ -103,3 +103,32 @@
   --button-sampark-secondary-default: var(--color-sampark-dark-surface-card, #2c2c2a);
   --button-sampark-secondary-border: var(--color-sampark-dark-border-control, #94928f);
 }
+
+
+/* MyBKY's BUTTON alias tier — same gap as the Sampark block above.
+ *
+ * tokens.css declares `--button-mybky-secondary-*` and the ghost texts from raw
+ * mono steps (`mono-0`, `mono-300`, `mono-900`), not the colour aliases, so the
+ * first block never reached them. baps-button's partial and baps-split-button
+ * read these vars and outrank the preset, so the dark secondary the preset
+ * already defines (baps.theme.ts `button.colorScheme.dark`) never painted: a
+ * secondary split button stayed a white pill with near-black ink on the dark
+ * page.
+ *
+ * Values are the preset's own dark ones, restated, not new colours. Primary,
+ * danger and warn are left alone: the preset pins those to the light gradients
+ * in dark too, and white ink still reads on them.
+ */
+.baps-dark {
+  --button-mybky-secondary-default: var(--color-mybky-dark-surface-card, #2b2f32);
+  --button-mybky-secondary-hover: var(--color-mybky-dark-surface-hover, #3d4144);
+  --button-mybky-secondary-border: var(--color-mybky-dark-border-divider, #3d4144);
+  --button-mybky-secondary-text: var(--color-mybky-dark-text-primary, #f8fafb);
+  /* Light is mono-50, a pale pill. Same translucent step as Sampark's. */
+  --button-mybky-secondary-disabled: rgba(255, 255, 255, 0.06);
+
+  --button-mybky-primary-ghost-text: var(--color-mybky-blue-300, #aebade);
+  --button-mybky-primary-ghost-hover: rgba(255, 255, 255, 0.08);
+  --button-mybky-secondary-ghost-text: var(--color-mybky-mono-100, #eff1f3);
+  --button-mybky-secondary-ghost-hover: rgba(255, 255, 255, 0.08);
+}
