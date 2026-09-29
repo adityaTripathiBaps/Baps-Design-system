@@ -46,15 +46,15 @@ export interface BapsListboxOption {
       [optionDisabled]="optionDisabled"
       [multiple]="multiple"
       [metaKeySelection]="metaKeySelection"
-      [filter]="filter"
-      [filterFields]="filterFields"
+      [filter]="filter || false"
+      [filterFields]="filterFields!"
       [filterPlaceHolder]="filterPlaceholder"
-      [checkbox]="checkbox"
-      [disabled]="disabled"
-      [readonly]="readonly"
-      [group]="group"
-      [optionGroupLabel]="optionGroupLabel"
-      [optionGroupChildren]="optionGroupChildren"
+      [checkbox]="checkbox || false"
+      [disabled]="disabled || false"
+      [readonly]="readonly || false"
+      [group]="group || false"
+      [optionGroupLabel]="optionGroupLabel!"
+      [optionGroupChildren]="optionGroupChildren!"
       [style]="style"
       [styleClass]="styleClass"
       (onChange)="onModelChange($event.value)"
@@ -128,16 +128,6 @@ export interface BapsListboxOption {
       box-shadow: none;
     }
 
-    baps-listbox .p-listbox-header {
-      padding: 8px 12px;
-      border-bottom: 1px solid
-        var(--listbox-border, var(--color-sampark-border-default, #e1e0e0));
-      background: var(--listbox-bg, var(--color-sampark-mono-0, #ffffff));
-    }
-
-    baps-listbox .p-listbox-filter {
-      width: 100%;
-    }
 
     baps-listbox .p-listbox-list-container {
       max-height: var(--listbox-max-height, 320px);

@@ -951,7 +951,8 @@ p-datepicker.p-datepicker:has(.p-datepicker-panel-inline) {
    The header wraps the filter row and the select-all checkbox in a column.
    The filter container sits on top with the grey background; the checkbox
    row sits below on white. */
-.p-multiselect-header {
+.p-multiselect-header,
+.p-listbox-header {
   display: flex !important;
   flex-direction: column !important;
   padding: 0 !important;
@@ -959,7 +960,8 @@ p-datepicker.p-datepicker:has(.p-datepicker-panel-inline) {
   border-bottom: none !important;
 }
 
-.p-multiselect-filter-container {
+.p-multiselect-filter-container,
+.p-listbox-header > .p-iconfield {
   display: flex !important;
   width: 100% !important;
   order: -1 !important;
@@ -970,12 +972,14 @@ p-datepicker.p-datepicker:has(.p-datepicker-panel-inline) {
 }
 
 .p-select-filter-icon,
-.p-multiselect-filter-icon {
+.p-multiselect-filter-icon,
+.p-listbox-filter-icon {
   /* Do not hide search icons by default in MyBKY */
 }
 
 .p-select-filter,
-.p-multiselect-filter {
+.p-multiselect-filter,
+.p-listbox-filter {
   height: var(--select-filter-height, 2.5rem) !important;
   border-radius: var(--select-filter-radius, 0.5rem) !important; /* 8px rectangle */
   background: var(--select-filter-bg, #ffffff) !important;
@@ -986,13 +990,15 @@ p-datepicker.p-datepicker:has(.p-datepicker-panel-inline) {
 }
 
 .p-select-filter::placeholder,
-.p-multiselect-filter::placeholder {
+.p-multiselect-filter::placeholder,
+.p-listbox-filter::placeholder {
   color: var(--input-text-placeholder, #6f777d) !important;
   opacity: 1 !important;
 }
 
 .p-select-filter.p-inputtext:focus,
-.p-multiselect-filter.p-inputtext:focus {
+.p-multiselect-filter.p-inputtext:focus,
+.p-listbox-filter.p-inputtext:focus {
   border-color: var(--input-border-hover) !important;
   box-shadow: none !important; /* no ring inside a floating panel */
 }
@@ -1003,7 +1009,9 @@ p-datepicker.p-datepicker:has(.p-datepicker-panel-inline) {
    list options so everything aligns on one vertical rail. */
 .p-multiselect-header > .p-checkbox,
 .p-multiselect-header > p-checkbox,
-.p-multiselect-header-checkbox {
+.p-multiselect-header-checkbox,
+.p-listbox-header > .p-checkbox,
+.p-listbox-header > p-checkbox {
   order: 0 !important;
   display: flex !important;
   align-items: center !important;
@@ -1020,7 +1028,9 @@ p-datepicker.p-datepicker:has(.p-datepicker-panel-inline) {
 /* When there is no filter input, the checkbox is the first child and needs rounded top corners */
 .p-multiselect-header > .p-checkbox:first-child,
 .p-multiselect-header > p-checkbox:first-child,
-.p-multiselect-header-checkbox:first-child {
+.p-multiselect-header-checkbox:first-child,
+.p-listbox-header > .p-checkbox:first-child,
+.p-listbox-header > p-checkbox:first-child {
   border-top-left-radius: var(--select-overlay-radius, 1rem) !important;
   border-top-right-radius: var(--select-overlay-radius, 1rem) !important;
 }
@@ -1028,7 +1038,9 @@ p-datepicker.p-datepicker:has(.p-datepicker-panel-inline) {
 /* Label for the checkbox row */
 .p-multiselect-header > .p-checkbox::after,
 .p-multiselect-header > p-checkbox::after,
-.p-multiselect-header-checkbox::after {
+.p-multiselect-header-checkbox::after,
+.p-listbox-header > .p-checkbox::after,
+.p-listbox-header > p-checkbox::after {
   content: "Select All";
   margin-inline-start: 0.5rem;
   font-size: 0.875rem;
