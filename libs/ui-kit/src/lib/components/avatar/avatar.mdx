@@ -1,6 +1,7 @@
 import { Meta, Canvas } from '@storybook/blocks';
-import { BrandOnly } from '@baps/docs-blocks';
+import { BrandOnly, FrameworkTabs } from '@baps/docs-blocks';
 import * as AvatarStories from './avatar.stories';
+import { avatarSnippets } from './avatar.snippets';
 
 <Meta of={AvatarStories} />
 
@@ -45,9 +46,25 @@ Represents a user or entity as initials, an icon, or an image. The BAPS wrapper 
 
 <Canvas of={AvatarStories.Playground} />
 
+Avatar wraps PrimeNG. The MyBKY initials example also has a standalone HTML/CSS
+implementation verified against the Angular render and styled by the shared
+token-driven stylesheet. Sampark and the unshown variants remain Angular-only.
+
+<FrameworkTabs of={AvatarStories.Playground} snippets={avatarSnippets.Playground} />
+
+### HTML/CSS Preview
+
+<Canvas of={AvatarStories.HtmlCss} />
+
 ### Types
 
 <Canvas of={AvatarStories.Types} />
+
+<FrameworkTabs of={AvatarStories.Types} snippets={avatarSnippets.Types} />
+
+### HTML/CSS Types Preview
+
+<Canvas of={AvatarStories.HtmlCssTypes} />
 
 ### Sizes
 

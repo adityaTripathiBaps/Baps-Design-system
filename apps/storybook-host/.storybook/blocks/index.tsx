@@ -332,13 +332,17 @@ export const BrandOnly = ({
 };
 
 /* ── FrameworkTabs ─────────────────────────────────────────────────────────
-   One use-case, four frameworks, one tab strip.
+   One use-case, several frameworks, one tab strip.
 
-   The Custom tab is NOT authored. It renders Storybook's own source for the
-   story, which means it stays correct for free: change the story and the
-   snippet changes with it. The other three are written by hand in the
-   component's `*.snippets.ts` and keyed by story export name — see
-   `SnippetSet` below.
+   Angular source is the live Storybook render of the Angular component, so it is
+   never hand-authored. It stays correct by default: change the story and the
+   snippet changes with it. The other tabs are authored in a component's
+   `*.snippets.ts` and keyed by story export name — see `SnippetSet` below.
+
+   HTML/CSS is only shown when the component has a verified standalone
+   implementation using the repo's existing design tokens and shared styles.
+   Unsupported components stay Angular-only and the tabs do not invent a custom
+   implementation.
 
    Why hand-authored at all: decision D1 is a code-only viewer. There is no
    React build of this design system, so React/Next snippets are documentation
@@ -347,49 +351,49 @@ export const BrandOnly = ({
    classes and tokens rather than raw hex.
 
    Tab order runs least-familiar to most: a reader who came for React finds it
-   first, and the two Angular flavours sit together at the end. */
+   first, then the Angular variants, then any verified HTML/CSS implementation. */
 export type SnippetSet = {
   react?: string;
   next?: string;
   primeng?: string;
+  htmlcss?: string;
 };
 
-const TAB_LABELS: Array<[keyof SnippetSet | 'custom', string]> = [
+const TAB_LABELS: Array<[keyof SnippetSet | 'angular', string]> = [
   ['react', 'React'],
   ['next', 'Next.js'],
   ['primeng', 'PrimeNG-Angular'],
-  ['custom', 'Custom'],
+  ['angular', 'Angular source'],
+  ['htmlcss', 'HTML/CSS'],
 ];
 
 const LANGUAGE: Record<string, SourceLanguage> = {
   react: 'jsx',
   next: 'jsx',
   primeng: 'html',
-  custom: 'html',
+  angular: 'html',
+  htmlcss: 'html',
 };
 
 export const FrameworkTabs = ({ of, snippets }: { of: unknown; snippets?: SnippetSet }) => {
-  const [active, setActive] = useState<string>('react');
-  // The Custom tab has no authored string to copy, so Copy reads the rendered
-  // source out of the DOM — scoped to THIS strip. A document-wide query would
-  // hand every strip on the page the first block on it.
+  const [active, setActive] = useState<string>('angular');
+  // The Angular source tab has no authored string to copy, so Copy reads the
+  // rendered source out of the DOM — scoped to THIS strip. A document-wide
+  // query would hand every strip on the page the first block on it.
   const wrap = React.useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState(false);
 
-  const available = TAB_LABELS.filter(([key]) => key === 'custom' || snippets?.[key as keyof SnippetSet]);
-  // A use-case with no authored snippets is not a broken tab strip — it is a
-  // use-case that has only its live Angular source, so show that alone rather
-  // than a strip with one tab.
-  const current = available.some(([k]) => k === active) ? active : 'custom';
-  const code = current === 'custom' ? null : (snippets?.[current as keyof SnippetSet] ?? '');
+  const available = TAB_LABELS.filter(
+    ([key]) => key === 'angular' || Boolean(snippets?.[key as keyof SnippetSet]),
+  );
+  const current = available.some(([k]) => k === active) ? active : 'angular';
+  const code = current === 'angular' ? null : (snippets?.[current as keyof SnippetSet] ?? '');
 
   useEffect(() => {
     if (!copied) return undefined;
     const id = setTimeout(() => setCopied(false), 1600);
     return () => clearTimeout(id);
   }, [copied]);
-
-  if (available.length < 2) return <Source of={of as never} />;
 
   return (
     <div ref={wrap} style={{ margin: '0 0 1.5rem' }}>
@@ -443,7 +447,7 @@ export const FrameworkTabs = ({ of, snippets }: { of: unknown; snippets?: Snippe
           {copied ? 'Copied' : 'Copy'}
         </button>
       </div>
-      {current === 'custom' ? (
+      {current === 'angular' ? (
         <Source of={of as never} />
       ) : (
         <Source code={code ?? ''} language={LANGUAGE[current]} />

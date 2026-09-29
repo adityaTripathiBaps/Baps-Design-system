@@ -87,6 +87,7 @@
    in the docs code viewer, where no Angular component rendered it. Identical
    rules either way, so nothing shifts — the visual baseline is the check. */
 @use '../../../libs/ui-kit/src/lib/styles/components/card/card';
+@use '../../../libs/ui-kit/src/lib/styles/components/avatar/avatar';
 
 html {
   font-size: 16px;                     /* Figma standard: 1rem = 16px */

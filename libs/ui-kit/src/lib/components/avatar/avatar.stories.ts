@@ -80,6 +80,40 @@ type Story = StoryObj<BapsAvatar>;
 
 export const Playground: Story = {};
 
+export const HtmlCss: Story = {
+  name: 'HTML/CSS — MyBKY',
+  render: () => ({
+    template: `
+      <span
+        class="baps-avatar-html baps-avatar-html--m baps-avatar-html--circle"
+        role="img"
+        aria-label="Aditya Tripathi"
+      >AT</span>
+    `,
+  }),
+};
+
+export const HtmlCssTypes: Story = {
+  name: 'HTML/CSS Types — MyBKY',
+  render: () => ({
+    template: `
+      <div style="display: flex; gap: var(--space-4); align-items: center">
+        <span
+          class="baps-avatar-html baps-avatar-html--m baps-avatar-html--circle"
+          role="img"
+          aria-label="Aditya Tripathi"
+        >AT</span>
+        <span class="baps-avatar-html baps-avatar-html--m baps-avatar-html--circle" aria-hidden="true">
+          ${USER_ICON_SVG}
+        </span>
+        <span class="baps-avatar-html baps-avatar-html--m baps-avatar-html--circle">
+          <img src="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" alt="Amy Elsner">
+        </span>
+      </div>
+    `,
+  }),
+};
+
 /**
  * The three content modes: initials (label), icon, and image. MyBKY's default
  * avatar background is blue.50 with blue.800 text (set in the preset), so

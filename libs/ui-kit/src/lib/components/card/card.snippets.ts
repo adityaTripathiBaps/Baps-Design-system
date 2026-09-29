@@ -1,8 +1,8 @@
 /**
  * Framework snippets for the Card docs page, keyed by story export name.
  *
- * The Custom tab is not in here — it renders Storybook's own source for the
- * story, so the Angular markup on that tab is always the live one.
+ * The Angular source tab is not in here — it renders Storybook's own source
+ * for the story, so that markup is always the live one.
  *
  * ## Why these are not fiction
  *
