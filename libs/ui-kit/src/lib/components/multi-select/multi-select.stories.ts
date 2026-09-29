@@ -70,7 +70,7 @@ export const Default: Story = {
     options: CITIES,
   },
   render: (args) => ({
-    props: { ...args, model: [] },
+    props: { ...args, model: null },
     template: `
       <div style="max-width: 20rem">
         <baps-multi-select
@@ -124,7 +124,7 @@ export const Chips: Story = {
  */
 export const FilterAndSelectAll: Story = {
   render: () => ({
-    props: { options: CITIES, model: [] },
+    props: { options: CITIES, model: null },
     template: `
       <div style="max-width: 20rem">
         <baps-multi-select
@@ -155,7 +155,7 @@ export const Grouped: Story = {
         { region: 'UK', cities: [{ name: 'London' }, { name: 'Leicester' }] },
         { region: 'North America', cities: [{ name: 'Toronto' }, { name: 'New Jersey' }] },
       ],
-      model: [],
+      model: null,
     },
     template: `
       <div style="max-width: 20rem">
@@ -183,11 +183,11 @@ export const Sizes: Story = {
     template: `
       <div style="max-width: 20rem; display: grid; gap: 0.75rem">
         <baps-multi-select
-          ariaLabel="Select cities" size="small" optionLabel="name" placeholder="Small" [options]="options" [(ngModel)]="a"></baps-multi-select>
+          ariaLabel="Select cities" appendTo="body" size="small" optionLabel="name" placeholder="Small" [options]="options" [(ngModel)]="a"></baps-multi-select>
         <baps-multi-select
-          ariaLabel="Select cities" optionLabel="name" placeholder="Default" [options]="options" [(ngModel)]="b"></baps-multi-select>
+          ariaLabel="Select cities" appendTo="body" optionLabel="name" placeholder="Default" [options]="options" [(ngModel)]="b"></baps-multi-select>
         <baps-multi-select
-          ariaLabel="Select cities" size="large" optionLabel="name" placeholder="Large" [options]="options" [(ngModel)]="c"></baps-multi-select>
+          ariaLabel="Select cities" appendTo="body" size="large" optionLabel="name" placeholder="Large" [options]="options" [(ngModel)]="c"></baps-multi-select>
       </div>
     `,
   }),
@@ -202,9 +202,9 @@ export const Brands: Story = {
     template: `
       <div style="max-width: 20rem; display: grid; gap: 0.75rem">
         <baps-multi-select
-          ariaLabel="Select cities" brand="mybky" optionLabel="name" placeholder="MyBKY" [options]="options" [(ngModel)]="a"></baps-multi-select>
+          ariaLabel="Select cities" appendTo="body" brand="mybky" optionLabel="name" placeholder="MyBKY" [options]="options" [(ngModel)]="a"></baps-multi-select>
         <baps-multi-select
-          ariaLabel="Select cities" brand="sampark" optionLabel="name" placeholder="Sampark" [options]="options" [(ngModel)]="b"></baps-multi-select>
+          ariaLabel="Select cities" appendTo="body" brand="sampark" optionLabel="name" placeholder="Sampark" [options]="options" [(ngModel)]="b"></baps-multi-select>
       </div>
     `,
   }),
@@ -243,7 +243,7 @@ export const MultiSelectInteraction: Story = {
   name: 'Interaction — select several, panel stays open',
   args: { placeholder: 'Select cities', optionLabel: 'name', options: CITIES },
   render: (args) => ({
-    props: { ...args, model: [] },
+    props: { ...args, model: null },
     template: `
       <div style="max-width: 20rem">
         <baps-multi-select

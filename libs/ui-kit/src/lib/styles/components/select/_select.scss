@@ -266,6 +266,15 @@ p-datepicker.p-datepicker {
 /* Label region — v21 renders the value inside .p-*-label; the container
    owns the border so the label must stay chromeless (mirrors 8e in
    _input.scss where inner .p-inputtext is stripped). */
+.p-select-label-container,
+.p-multiselect-label-container,
+.p-cascadeselect-label-container,
+.p-treeselect-label-container {
+  flex: 1 1 auto !important;
+  overflow: hidden !important;
+  display: flex !important;
+  align-items: center !important;
+}
 .p-select .p-select-label,
 .p-multiselect .p-multiselect-label,
 .p-cascadeselect .p-cascadeselect-label,
@@ -281,10 +290,17 @@ p-datepicker.p-datepicker {
 
 /* Placeholder shown when no value selected */
 .p-select .p-select-label.p-placeholder,
+.p-select .p-select-label.p-select-label-empty,
+.p-select [data-pc-section="label"][data-p-placeholder="true"],
 .p-multiselect .p-multiselect-label.p-placeholder,
+.p-multiselect .p-multiselect-label.p-multiselect-label-empty,
+.p-multiselect [data-pc-section="label"][data-p-placeholder="true"],
 .p-cascadeselect .p-cascadeselect-label.p-placeholder,
 .p-treeselect .p-treeselect-label.p-placeholder {
   color: var(--input-text-placeholder) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
 }
 
 /* ── Size modifiers — mirror .p-inputtext-sm/-lg steps ── */
@@ -470,8 +486,6 @@ p-datepicker.p-datepicker {
   display: flex !important;
   align-items: center !important;
   gap: 0.25rem !important; /* 4px between chips */
-  padding-top: 0.25rem !important;
-  padding-bottom: 0.25rem !important;
   flex-wrap: wrap !important;
   min-width: 0 !important;
   overflow: hidden !important;
@@ -505,6 +519,8 @@ p-datepicker.p-datepicker {
 .p-multiselect-chip .p-multiselect-token {
   /* Anchor for the absolutely positioned remove glyph below. */
   position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
   height: var(--select-chip-height) !important;
   border-radius: var(--select-chip-radius) !important;
   background: var(--select-chip-bg) !important;
@@ -948,7 +964,7 @@ p-datepicker.p-datepicker:has(.p-datepicker-panel-inline) {
   width: 100% !important;
   order: -1 !important;
   padding: 0.5rem !important;
-  background: var(--select-header-bg, transparent) !important;
+  background: var(--select-header-bg, var(--color-mybky-mono-200, #e4ecf1)) !important;
   border-top-left-radius: var(--select-overlay-radius, 1rem) !important;
   border-top-right-radius: var(--select-overlay-radius, 1rem) !important;
 }
@@ -994,9 +1010,19 @@ p-datepicker.p-datepicker:has(.p-datepicker-panel-inline) {
   width: 100% !important;
   min-height: 3rem !important; /* 48px */
   padding: 0 var(--select-option-padding-x, 0.75rem) !important;
+  margin: 0 !important;
   background: var(--select-overlay-bg, #ffffff) !important;
   border-bottom: 1px solid var(--select-overlay-border, #e4ecf1) !important;
+  border-radius: 0 !important;
   box-sizing: border-box !important;
+}
+
+/* When there is no filter input, the checkbox is the first child and needs rounded top corners */
+.p-multiselect-header > .p-checkbox:first-child,
+.p-multiselect-header > p-checkbox:first-child,
+.p-multiselect-header-checkbox:first-child {
+  border-top-left-radius: var(--select-overlay-radius, 1rem) !important;
+  border-top-right-radius: var(--select-overlay-radius, 1rem) !important;
 }
 
 /* Label for the checkbox row */
