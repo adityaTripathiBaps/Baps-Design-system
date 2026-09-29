@@ -173,28 +173,27 @@ export type BapsAvatarSize = 'xs' | 's' | 'm' | 'l' | 'xl' | '2xl' | 'normal' | 
     }
 
     baps-avatar.baps-avatar-primary .p-avatar {
-      background: var(--color-mybky-blue-50, #f4f7fe);
+      background: var(--avatar-mybky-background, var(--color-mybky-blue-50, #f4f7fe));
       border: 1px solid var(--color-mybky-blue-tint, #93b7ec);
-      color: var(--color-mybky-blue-400, #5f78b8);
+      color: var(--avatar-mybky-text, var(--color-mybky-mono-900, #181b1d));
       --baps-avatar-border-hover: var(--color-mybky-blue-400, #5f78b8);
     }
-
     baps-avatar.baps-avatar-secondary .p-avatar {
       background: var(--color-mybky-mono-50, #f8fafb);
       border: 1px solid var(--color-mybky-mono-450, #8d9ba5);
-      color: var(--color-mybky-mono-900, #181b1d);
+      color: var(--avatar-mybky-text, var(--color-mybky-mono-900, #181b1d));
       --baps-avatar-border-hover: var(--color-mybky-mono-500, #6f777d);
     }
     baps-avatar.baps-avatar-success .p-avatar {
       background: var(--color-mybky-success-surface, #ebfff5);
       border: 1px solid var(--color-mybky-success-tint, #93ecbb);
-      color: var(--color-mybky-success-400, #40bf84);
+      color: var(--avatar-mybky-text, var(--color-mybky-mono-900, #181b1d));
       --baps-avatar-border-hover: var(--color-mybky-success-400, #40bf84);
     }
     baps-avatar.baps-avatar-error .p-avatar {
       background: var(--color-mybky-error-surface, #ffebeb);
       border: 1px solid var(--color-mybky-error-tint, #ec9394);
-      color: var(--color-mybky-error-80, #e05255);
+      color: var(--avatar-mybky-text, var(--color-mybky-mono-900, #181b1d));
       --baps-avatar-border-hover: var(--color-mybky-error-80, #e05255);
     }
     baps-avatar.baps-avatar-warning .p-avatar {
@@ -202,14 +201,14 @@ export type BapsAvatarSize = 'xs' | 's' | 'm' | 'l' | 'xl' | '2xl' | 'normal' | 
       border: 1px solid var(--color-mybky-warning-tint, #ecc893);
       /* warning-60 is the sheet's Warning/80 — the repo ramp is one step
          offset from the Figma labels, see the tint tokens' own comments. */
-      color: var(--color-mybky-warning-60, #e0a652);
+      color: var(--avatar-mybky-text, var(--color-mybky-mono-900, #181b1d));
       --baps-avatar-border-hover: var(--color-mybky-warning-60, #e0a652);
     }
     baps-avatar.baps-avatar-info .p-avatar {
       background: var(--color-mybky-info-surface, #ebf3ff);
       border: 1px solid var(--color-mybky-info-tint, #93b7ec);
       /* info-60 is the sheet's Info/80 — same one-step offset as warning. */
-      color: var(--color-mybky-info-60, #528de0);
+      color: var(--avatar-mybky-text, var(--color-mybky-mono-900, #181b1d));
       --baps-avatar-border-hover: var(--color-mybky-info-60, #528de0);
     }
 
@@ -232,12 +231,6 @@ export type BapsAvatarSize = 'xs' | 's' | 'm' | 'l' | 'xl' | '2xl' | 'normal' | 
        the dark message severities make — see dark.scheme.ts).
 
        Placed before the Sampark scope so that block still wins for Sampark. */
-    .baps-dark baps-avatar.baps-avatar-primary .p-avatar {
-      background: color-mix(in srgb, var(--color-mybky-blue-400, #5f78b8), transparent 84%);
-      border-color: color-mix(in srgb, var(--color-mybky-blue-tint, #93b7ec), transparent 84%);
-      color: var(--color-mybky-blue-tint, #93b7ec);
-      --baps-avatar-border-hover: var(--color-mybky-blue-400, #5f78b8);
-    }
     .baps-dark baps-avatar.baps-avatar-secondary .p-avatar {
       background: var(--color-mybky-dark-surface-hover, #3d4144);
       border-color: var(--color-mybky-dark-border-control, #6f777d);
