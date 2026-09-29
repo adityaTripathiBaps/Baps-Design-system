@@ -165,8 +165,12 @@ export type BapsAvatarSize = 'xs' | 's' | 'm' | 'l' | 'xl' | '2xl' | 'normal' | 
        Sampark block below simply overrides what it needs. ── */
 
     baps-avatar .p-avatar {
+      font-weight: 500;
       --baps-avatar-border-hover: var(--color-mybky-blue-400, #9fadd9);
       transition: border-color 150ms ease;
+    }
+    baps-avatar.baps-avatar-2xl .p-avatar {
+      font-weight: 400;
     }
     baps-avatar:hover .p-avatar {
       border-color: var(--baps-avatar-border-hover) !important;
