@@ -70,17 +70,11 @@ const OVERLAP: Record<'xs' | 's' | 'm' | 'l' | 'xl' | '2xl', number> = {
     }
 
     /* PrimeNG's own group rule pulls every avatar after the first left by a
-       fixed -1rem. We replace this because a fixed pull is wrong at five of six sizes.
-       We also enforce the solid surface border to cut into the previous avatar,
-       which replaces the avatar's own variant border in a group context. */
+       fixed -1rem and adds a 2px white ring. Both are replaced: the ring is
+       not in either sheet, and a fixed pull is wrong at five of six sizes. */
     baps-avatargroup :is(.p-avatar-group, .p-avatargroup) > baps-avatar + baps-avatar,
     baps-avatargroup :is(.p-avatar-group, .p-avatargroup) > .p-avatar + .p-avatar {
       margin-left: calc(-1 * var(--baps-avatargroup-overlap, 10px));
-    }
-
-    baps-avatargroup :is(.p-avatar-group, .p-avatargroup) > baps-avatar .p-avatar,
-    baps-avatargroup :is(.p-avatar-group, .p-avatargroup) > .p-avatar {
-      border: 2px solid var(--avatar-group-border-color, var(--color-mybky-mono-0, #ffffff)) !important;
     }
 
     /* Later avatars sit ON TOP of earlier ones — the sheets stack left-over-
