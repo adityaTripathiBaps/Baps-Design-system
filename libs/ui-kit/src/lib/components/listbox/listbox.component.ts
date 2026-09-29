@@ -122,7 +122,7 @@ export interface BapsListboxOption {
     baps-listbox .p-listbox {
       border: 1px solid
         var(--listbox-border, var(--color-sampark-border-default, #e1e0e0));
-      border-radius: var(--listbox-radius, 10px);
+      border-radius: var(--select-overlay-radius, 1rem) !important;
       background: var(--listbox-bg, var(--color-sampark-mono-0, #ffffff));
       overflow: hidden;
       box-shadow: none;
