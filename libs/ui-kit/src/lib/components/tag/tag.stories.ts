@@ -321,3 +321,50 @@ export const IconOnlyAxis: Story = {
     `,
   }),
 };
+
+const TAG_SEVERITIES = [undefined, 'contrast', 'secondary', 'info', 'warn', 'danger', 'success'] as const;
+const TAG_SIZES = ['xs', 's', 'm', 'l'] as const;
+
+/**
+ * The full Figma frame: every severity down, every size across, each crossed
+ * with four content shapes — label + chevron, label + action, icon + chevron,
+ * icon only — plus a disabled row at the bottom.
+ *
+ * This story keeps its loops deliberately: 112+ tags written longhand would be
+ * unreadable. Reach for the focused stories above when you want paste-ready markup.
+ */
+export const FullMatrix: Story = {
+  name: 'Full Matrix',
+  render: () => ({
+    props: { severities: TAG_SEVERITIES, sizes: TAG_SIZES },
+    template: `
+      <div style="display:flex; flex-direction:column; gap:1.25rem">
+        @for (s of severities; track s) {
+          <div>
+            <div style="font:500 11px/1.3 var(--font-family-mono, monospace); letter-spacing:.06em;
+                        text-transform:uppercase; color:#6f777d; margin-bottom:.5rem">{{ s ?? 'grey' }}</div>
+            <div style="display:flex; flex-wrap:wrap; gap:.75rem; align-items:center">
+              @for (z of sizes; track z) {
+                <baps-tag [severity]="s" [size]="z" value="Badge Text"></baps-tag>
+                <baps-tag [severity]="s" [size]="z" value="Badge Text" [chevron]="true"></baps-tag>
+                <baps-tag [severity]="s" [size]="z" icon="pi pi-clock" [chevron]="true"></baps-tag>
+                <baps-tag [severity]="s" [size]="z" icon="pi pi-clock"></baps-tag>
+              }
+            </div>
+          </div>
+        }
+        <div>
+          <div style="font:500 11px/1.3 var(--font-family-mono, monospace); letter-spacing:.06em;
+                      text-transform:uppercase; color:#6f777d; margin-bottom:.5rem">disabled</div>
+          <div style="display:flex; flex-wrap:wrap; gap:.75rem; align-items:center">
+            @for (z of sizes; track z) {
+              <baps-tag [size]="z" value="Badge Text" [disabled]="true"></baps-tag>
+              <baps-tag [size]="z" icon="pi pi-clock" [chevron]="true" [disabled]="true"></baps-tag>
+              <baps-tag [size]="z" icon="pi pi-clock" [disabled]="true"></baps-tag>
+            }
+          </div>
+        </div>
+      </div>
+    `,
+  }),
+};
