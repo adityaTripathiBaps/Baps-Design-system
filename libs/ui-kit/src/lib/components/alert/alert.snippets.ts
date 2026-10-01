@@ -180,7 +180,7 @@ export const alertSnippets: Record<string, SnippetSet> = {
     </div>
   </baps-alert>
 </div>`,
-    react: `\${SETUP}
+    react: `${SETUP}
 
 const ICONS = {
   info: 'pi-info-circle',
@@ -317,7 +317,7 @@ export function Example() {
 }`,
     next: `'use client';
 
-\${SETUP}
+${SETUP}
 
 const ICONS = {
   info: 'pi-info-circle',
@@ -654,7 +654,7 @@ export default function Example() {
     </div>
   </baps-alert>
 </div>`,
-    react: `\${SETUP}
+    react: `${SETUP}
 
 const ICONS = {
   info: 'pi-info-circle',
@@ -816,7 +816,7 @@ export function Example() {
 }`,
     next: `'use client';
 
-\${SETUP}
+${SETUP}
 
 const ICONS = {
   info: 'pi-info-circle',
@@ -1007,7 +1007,7 @@ export default function Example() {
     </button>
   </div>
 </baps-alert>`,
-    react: `\${SETUP}
+    react: `${SETUP}
 
 import { useState } from 'react';
 
@@ -1040,7 +1040,7 @@ export function Example() {
 }`,
     next: `'use client';
 
-\${SETUP}
+${SETUP}
 
 import { useState } from 'react';
 
@@ -1116,7 +1116,7 @@ export default function Example() {
     </div>
   </baps-alert>
 </div>`,
-    react: `\${SETUP}
+    react: `${SETUP}
 
 const SEVERITIES = [
   ['info', 'pi-info-circle', 'This is an info alert.'],
@@ -1144,7 +1144,7 @@ export function SamparkAlerts() {
     </div>
   );
 }`,
-    next: `\${SETUP}
+    next: `${SETUP}
 
 /* No 'use client': nothing here has state or a handler, so this renders as a
    Server Component. The brand is a class, which is why it costs nothing. */

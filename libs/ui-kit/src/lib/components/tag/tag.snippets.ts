@@ -74,7 +74,7 @@ export const tagSnippets: Record<string, SnippetSet> = {
   <baps-tag value="Disabled" [action]="true" actionLabel="Open Disabled" [disabled]="true" />
   <baps-tag brand="sampark" value="Sampark" severity="danger" [action]="true" actionLabel="Open Sampark" />
 </div>`,
-    react: `\${SETUP}
+    react: `${SETUP}
 
 /* The action is a real <button> with its own accessible name — never a
    decorative glyph, and never the tag itself made clickable. The tag stays a
@@ -118,7 +118,7 @@ export function TrailingAction({ onAction }) {
 }`,
     next: `'use client';
 
-\${SETUP}
+${SETUP}
 
 /* The action is a real <button> with its own accessible name — never a
    decorative glyph, and never the tag itself made clickable. The tag stays a
@@ -191,7 +191,7 @@ export default function TrailingAction({ onAction }) {
   <baps-tag value="Filter" severity="contrast" icon="pi pi-filter" [action]="true" actionIcon="pi pi-times" actionLabel="Remove filter" />
   <baps-tag value="Disabled" [action]="true" actionLabel="Open Disabled" [disabled]="true" />
 </div>`,
-    react: `\${SETUP}
+    react: `${SETUP}
 
 /* The action is a real <button> with its own accessible name — never a
    decorative glyph, and never the tag itself made clickable. The tag stays a
@@ -235,7 +235,7 @@ export function TrailingActionAxis({ onAction }) {
 }`,
     next: `'use client';
 
-\${SETUP}
+${SETUP}
 
 /* The action is a real <button> with its own accessible name — never a
    decorative glyph, and never the tag itself made clickable. The tag stays a
@@ -302,7 +302,7 @@ export default function TrailingActionAxis({ onAction }) {
     </div>
   }
 </div>`,
-    react: `\${SETUP}
+    react: `${SETUP}
 
 /* Severity "grey" is the unqualified tag; the Angular side reaches Figma's
    navy "Primary" chip through PrimeNG's contrast slot, which is why the class
@@ -326,7 +326,7 @@ export function FullMatrix() {
     </div>
   );
 }`,
-    next: `\${SETUP}
+    next: `${SETUP}
 
 const SEVERITIES = ['grey', 'primary', 'secondary', 'info', 'warning', 'error', 'success'];
 const SIZES = ['baps-tag--xs', '', 'baps-tag--m', 'baps-tag--l'];
@@ -373,7 +373,7 @@ export default function FullMatrix() {
   <span class="baps-tag baps-tag--disabled"><span class="baps-tag__label">Disabled</span><span class="baps-tag-chevron pi pi-chevron-down" aria-hidden="true"></span></span>
   <span class="baps-tag baps-sampark baps-tag--success"><span class="baps-tag__label">Sampark</span><span class="baps-tag-chevron pi pi-chevron-down" aria-hidden="true"></span></span>
 </div>`,
-    react: `\${SETUP}
+    react: `${SETUP}
 
 export function Chevron() {
   return (
@@ -406,7 +406,7 @@ export function Chevron() {
     </div>
   );
 }`,
-    next: `\${SETUP}
+    next: `${SETUP}
 
 export default function Chevron() {
   return (
@@ -463,7 +463,7 @@ export default function Chevron() {
   <span class="baps-tag baps-sampark baps-tag--grey baps-tag--icon-only"><span class="baps-tag__icon pi pi-user" aria-hidden="true"></span></span>
   <span class="baps-tag baps-sampark baps-tag--grey baps-tag--icon-only baps-tag--l"><span class="baps-tag__icon pi pi-user" aria-hidden="true"></span></span>
 </div>`,
-    react: `\${SETUP}
+    react: `${SETUP}
 
 export function IconOnly() {
   return (
@@ -490,7 +490,7 @@ export function IconOnly() {
     </div>
   );
 }`,
-    next: `\${SETUP}
+    next: `${SETUP}
 
 export default function IconOnly() {
   return (
@@ -541,7 +541,7 @@ export default function IconOnly() {
   <span class="baps-tag baps-tag--info"><span class="baps-tag__icon pi pi-user" aria-hidden="true"></span><span class="baps-tag__label">With icon</span><span class="baps-tag-chevron pi pi-chevron-down" aria-hidden="true"></span></span>
   <span class="baps-tag baps-tag--disabled"><span class="baps-tag__label">Disabled</span><span class="baps-tag-chevron pi pi-chevron-down" aria-hidden="true"></span></span>
 </div>`,
-    react: `\${SETUP}
+    react: `${SETUP}
 
 export function ChevronAxis() {
   return (
@@ -570,7 +570,7 @@ export function ChevronAxis() {
     </div>
   );
 }`,
-    next: `\${SETUP}
+    next: `${SETUP}
 
 export default function ChevronAxis() {
   return (
@@ -621,7 +621,7 @@ export default function ChevronAxis() {
   <span class="baps-tag baps-tag--grey baps-tag--icon-only baps-tag--l"><span class="baps-tag__icon pi pi-user" aria-hidden="true"></span></span>
   <span class="baps-tag baps-tag--grey baps-tag--icon-only"><span class="baps-tag__icon pi pi-user" aria-hidden="true"></span><span class="baps-tag-chevron pi pi-chevron-down" aria-hidden="true"></span></span>
 </div>`,
-    react: `\${SETUP}
+    react: `${SETUP}
 
 export function IconOnlyAxis() {
   return (
@@ -642,7 +642,7 @@ export function IconOnlyAxis() {
     </div>
   );
 }`,
-    next: `\${SETUP}
+    next: `${SETUP}
 
 export default function IconOnlyAxis() {
   return (
@@ -671,7 +671,7 @@ export default function IconOnlyAxis() {
   Playground: {
     primeng: `<baps-tag value="Registered" />`,
     custom: `<span class="baps-tag baps-tag--grey"><span class="baps-tag__label">Registered</span></span>`,
-    react: `\${SETUP}
+    react: `${SETUP}
 
 export function Example() {
   return (
@@ -680,7 +680,7 @@ export function Example() {
     </span>
   );
 }`,
-    next: `\${SETUP}
+    next: `${SETUP}
 
 /* No 'use client': a tag is markup. */
 export default function Example() {
@@ -718,7 +718,7 @@ export default function Example() {
   <span class="baps-tag baps-sampark baps-tag--success"><span class="baps-tag__label">Success</span></span>
   <span class="baps-tag baps-sampark baps-tag--disabled"><span class="baps-tag__label">Disabled</span></span>
 </div>`,
-    react: `\${SETUP}
+    react: `${SETUP}
 
 const SEVERITIES = ['grey', 'primary', 'secondary', 'info', 'warning', 'error', 'success'];
 
@@ -736,7 +736,7 @@ export function SamparkSeverities() {
     </div>
   );
 }`,
-    next: `\${SETUP}
+    next: `${SETUP}
 
 const SEVERITIES = ['grey', 'primary', 'secondary', 'info', 'warning', 'error', 'success'];
 
@@ -772,7 +772,7 @@ export default function SamparkSeverities() {
   <span class="baps-tag baps-sampark baps-tag--m"><span class="baps-tag__label">Medium</span></span>
   <span class="baps-tag baps-sampark baps-tag--l"><span class="baps-tag__icon pi pi-clock" aria-hidden="true"></span><span class="baps-tag__label">Large</span></span>
 </div>`,
-    react: `\${SETUP}
+    react: `${SETUP}
 
 export function SamparkSizes() {
   return (
@@ -793,7 +793,7 @@ export function SamparkSizes() {
     </div>
   );
 }`,
-    next: `\${SETUP}
+    next: `${SETUP}
 
 export default function SamparkSizes() {
   return (

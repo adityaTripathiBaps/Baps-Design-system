@@ -186,7 +186,7 @@ export const cardSnippets: Record<string, SnippetSet> = {
     <div card-footer>Updated 12 April 2026</div>
   </baps-card>
 </div>`,
-    react: `\${SETUP}
+    react: `${SETUP}
 
 export function Example() {
   return (
@@ -207,7 +207,7 @@ export function Example() {
     </div>
   );
 }`,
-    next: `\${SETUP}
+    next: `${SETUP}
 
 /* No 'use client': a card is markup. The slots are plain attributes, which is
    why they are written card-title="" in JSX — a bare attribute is boolean
@@ -268,7 +268,7 @@ export default function Example() {
     <div card-footer>Updated 12 April 2026</div>
   </baps-card>
 </div>`,
-    react: `\${SETUP}
+    react: `${SETUP}
 
 export function Example() {
   return (
@@ -289,7 +289,7 @@ export function Example() {
     </div>
   );
 }`,
-    next: `\${SETUP}
+    next: `${SETUP}
 
 /* No 'use client': a card is markup. The slots are plain attributes, which is
    why they are written card-title="" in JSX — a bare attribute is boolean
@@ -360,7 +360,7 @@ export default function Example() {
     </div>
   </baps-card>
 </div>`,
-    react: `\${SETUP}
+    react: `${SETUP}
 
 const CARDS = [
   ['Yuva Sabha', '3 May, 4:00 PM', 'Open', 'success'],
@@ -393,7 +393,7 @@ export function Interactive({ onOpen }) {
 }`,
     next: `'use client';
 
-\${SETUP}
+${SETUP}
 
 /* 'use client' because the card takes a click and a keypress. A card that only
    links somewhere is better written as an <a> and stays a Server Component. */
