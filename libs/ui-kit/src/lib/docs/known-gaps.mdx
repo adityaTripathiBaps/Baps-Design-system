@@ -12,6 +12,86 @@ Accessibility findings live on their own page, [Guidelines →
 Accessibility](?path=/docs/guidelines-accessibility--docs), because they are
 checked by a different tool and read by a different audience.
 
+## Tokens that are read but never defined, so a literal fallback renders instead
+
+**Measured, not fixed.** A `var(--name, literal)` whose `--name` is defined
+nowhere always paints the literal. Nothing fails: no build error, no console
+warning, and the value even looks right — it just stops following the theme,
+because there is no variable left to re-point.
+
+Avatar's primary border was the one that surfaced this. It read
+`--color-mybky-primary-40`, a name that appears in no token file, so it painted
+its fallback `#9fadd9` under every accent, brand and mode. The real token is
+`--color-mybky-blue-400`, whose own comment in `tokens.css` reads
+*"Figma Primary/40"* — same value, so the fix changed nothing visually and the
+border now follows the accent. Verified in the browser: at `accent:rose`,
+`--color-mybky-blue-400` is `#f6637d` and the border computes
+`rgb(246, 99, 125)`; at `accent:brand` both are the original `#9fadd9`.
+
+Sweeping every `var()` in `libs/ui-kit/src` against every place a custom
+property is declared: **837 properties read, 42 BAPS-owned names never
+defined.** The PrimeNG `--p-*` names in the raw count are not included —
+those are declared by the preset at runtime, and so are the ramp steps the
+accent theme writes from a prefix.
+
+The ones most likely to matter, because they read like tokens that should
+exist:
+
+| Token | Read at | Paints instead |
+| --- | --- | --- |
+| `--color-mybky-success-default` | `toast.component.ts:82` | `#178251` |
+| `--color-mybky-info-default` | toast | `#2265c3` |
+| `--color-mybky-warning-default` | toast | `#c38222` |
+| `--color-mybky-error-default` | toast | `#c32226` |
+| `--avatar-sampark-info-background` / `-border` / `-border-hover` | `avatar.component.ts:357-359` | `#e6f0fe` / `#83b5fc` / `#3889fa` |
+| `--avatar-mybky-radius-square` / `-xl-square` / `-2xl-square` | avatar | `4px` / `6px` / `8px` |
+| `--card-background` | `_select.scss:597` | `#ffffff` |
+| `--input-text` | input | `#181b1d` |
+| `--table-mybky-header-bg` | table | `#ffffff` |
+| `--font-size-base`, `--font-family-mono` | card, docs | `1rem`, `monospace` |
+| `--baps-chip-icon-size`, `--baps-chip-gap`, `--tag-max-width`, `--listbox-max-height`, `--slider-tooltip-*`, `--select-option-*`, `--stepper-mybky-connector-lend`, `--red-500` | various | their literals |
+
+Eight more names resolve to nothing at all rather than to a literal, but every
+one of them turned out to be inside a comment or an MDX prose example —
+`--white` and `--other` are quoted in comments explaining a bug, `--border-1`
+and `--radius-lg` sit in a getting-started snippet, and
+`--color-sampark-secondary-NN` is a placeholder in `accent.theme.ts`. None is
+live CSS.
+
+Not fixed here because each one is a design question — whether the token should
+exist, and at what value — rather than a rename. Avatar's was safe only because
+an existing token already held the identical value.
+
+## Avatar's primary border follows the accent, but not Sampark or dark
+
+The rename above fixed the accent. It did **not** fix the other two scopes,
+and that is worth stating plainly so the next person does not assume it did.
+
+Measured on `components-avatar--shapes`, which carries no brand pin, by adding
+the scope class to `documentElement` and `body`:
+
+| Scope | Border | Background | Text |
+| --- | --- | --- | --- |
+| MyBKY (default) | `rgb(159, 173, 217)` | `rgb(238, 240, 248)` | `rgb(56, 72, 113)` |
+| `.baps-ds-sampark` | unchanged | unchanged | `rgb(89, 86, 86)` |
+| `.baps-dark` | unchanged | unchanged | unchanged |
+
+Two separate causes:
+
+- **Sampark** re-points only the text. `--color-mybky-blue-400` is a MyBKY ramp
+  step, and the Sampark scope has no rule overriding the primary variant's
+  border or background.
+- **Dark** has rules only for the severity variants —
+  `.baps-dark baps-avatar.baps-avatar-secondary/.success/.error/.warning/.info`.
+  The base and primary avatars have no dark rule at all.
+
+The raw `.baps-avatar-html` partial is worse: it carries **0** Sampark rules and
+**0** dark rules against the component's 36 and 8.
+
+Both belong to the Figma-parity work, which needs the real values first —
+Sampark avatar `PKHWEQTVUKl6FAeQSIkXMW` node `483:17570`, MyBKY avatar
+`yY5bmcEifXbcCwhauoiy6Y` node `22465:97983`.
+
 ## Button icon sizes are one step behind Figma from M upwards
 
 **Not fixed here.** The fix lands on its own branch, `fix/button-icon-size`,
