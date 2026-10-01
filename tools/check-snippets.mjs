@@ -119,7 +119,16 @@ for (const dir of list(COMPONENTS).sort()) {
   }
 
   // ── 2. every example maps to a story export ───────────────────────────────
-  const examples = [...src.matchAll(/^\s{2}(\w+):\s*\{/gm)].map((m) => m[1]);
+  const exampleMatches = [...src.matchAll(/^\s{2}(\w+):\s*\{/gm)];
+  const examples = exampleMatches.map((m) => m[1]);
+  // How many of them actually carry a Custom tab. Not the same as how many
+  // have snippets: tag has 13 sets and 10 Custom blocks, because three of its
+  // shapes have no standalone rule. The status page needs the narrower number
+  // or it reports a column complete when a quarter of it is missing.
+  const customCount = exampleMatches.filter((m, n) => {
+    const to = exampleMatches[n + 1]?.index ?? src.length;
+    return /^\s{4}custom:/m.test(src.slice(m.index, to));
+  }).length;
   for (const ex of examples) {
     if (!storyExports.has(ex)) {
       fail(
@@ -236,10 +245,49 @@ for (const dir of list(COMPONENTS).sort()) {
     examples: exampleCount,
     covered: examples.length,
     keys: keysUsed,
+    // Whether ANY set on the page declares itself markup-only, and whether a
+    // drift guard backs the Custom tab. Both feed the Component status page,
+    // which is generated rather than written, so neither can drift from here.
+    customCount,
+    interactive: /interactive:\s*true/.test(src),
+    drift: existsSync(`${TOOLS}/check-${dir}-drift.mjs`),
   });
 }
 
 // ── output ──────────────────────────────────────────────────────────────────
+//
+// --json exists so the Component status page can be GENERATED from this run
+// rather than hand-maintained beside it. A table typed out by a person drifts
+// from the repository the first time a snippet is added and nobody edits the
+// page; one written by tools/gen-component-status.mjs cannot.
+if (process.argv.includes('--json')) {
+  console.log(
+    JSON.stringify(
+      report
+        .filter(
+          (r) => r.component !== '_template' && !r.component.includes('.'),
+        )
+        .sort(
+          (a, b) =>
+            b.covered - a.covered || a.component.localeCompare(b.component),
+        )
+        .map((r) => ({
+          component: r.component,
+          wrapper: r.wrapper,
+          examples: r.examples,
+          covered: r.covered,
+          keys: [...r.keys],
+          customCount: r.customCount ?? 0,
+          interactive: !!r.interactive,
+          drift: !!r.drift,
+        })),
+      null,
+      2,
+    ),
+  );
+  process.exit(findings.length ? 1 : 0);
+}
+
 if (process.argv.includes('--report')) {
   const mark = (row, key) =>
     row.keys.has(key) ? (row.wrapper && key === 'custom' ? '◐' : '✅') : '—';

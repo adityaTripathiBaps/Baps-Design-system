@@ -1,0 +1,129 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Guidelines/Component status" />
+
+{/* GENERATED FILE — do not edit by hand.
+    Run: node tools/gen-component-status.mjs
+    CI:  node tools/gen-component-status.mjs --check */}
+
+# Component status
+
+Which components can be used outside Angular, and how far.
+
+This table is generated from `node tools/check-snippets.mjs --json`, which
+reads the `*.snippets.ts` files themselves. It is not maintained by hand and
+cannot drift from the repository: `node tools/gen-component-status.mjs --check`
+fails if it is out of date.
+
+**7 of 47 components** have snippets;
+**59 of 248 examples** are covered.
+
+| Component | Examples | Interactive | React | Next.js | PrimeNG-Angular | Custom |
+| --- | --- | --- | --- | --- | --- | --- |
+| avatar | 13 / 15 | no | ✅ | ✅ | ✅ | — |
+| tag | 13 / 13 | yes | ◐ | ◐ | ✅ | ◐ |
+| button | 10 / 10 | no | ✅ | ✅ | ✅ | ✅ |
+| alert | 8 / 8 | yes | ◐ | ◐ | ✅ | ✅ |
+| card | 7 / 7 | yes | ◐ | ◐ | ✅ | ◐ |
+| link | 4 / 4 | no | ✅ | ✅ | ✅ | ✅ |
+| spinner | 4 / 4 | no | ✅ | ✅ | ✅ | ✅ |
+| accordion | 0 / 6 | no | — | — | — | — |
+| badge | 0 / 6 | no | — | — | — | — |
+| breadcrumb | 0 / 1 | no | — | — | — | — |
+| checkbox | 0 / 4 | no | — | — | — | — |
+| chip | 0 / 5 | no | — | — | — | — |
+| datepicker | 0 / 5 | no | — | — | — | — |
+| dialog | 0 / 4 | no | — | — | — | — |
+| divider | 0 / 2 | no | — | — | — | — |
+| drawer | 0 / 4 | no | — | — | — | — |
+| file-upload | 0 / 2 | no | — | — | — | — |
+| form-field | 0 / 14 | no | — | — | — | — |
+| icon | 0 / 5 | no | — | — | — | — |
+| indicator | 0 / 5 | no | — | — | — | — |
+| input-group | 0 / 4 | no | — | — | — | — |
+| internal-navbar | 0 / 3 | no | — | — | — | — |
+| listbox | 0 / 7 | no | — | — | — | — |
+| menu-item | 0 / 3 | no | — | — | — | — |
+| multi-select | 0 / 7 | no | — | — | — | — |
+| navbar | 0 / 7 | no | — | — | — | — |
+| pagination | 0 / 5 | no | — | — | — | — |
+| popover | 0 / 3 | no | — | — | — | — |
+| progress-bar | 0 / 4 | no | — | — | — | — |
+| radio | 0 / 4 | no | — | — | — | — |
+| segmented | 0 / 6 | no | — | — | — | — |
+| select | 0 / 1 | no | — | — | — | — |
+| skeleton | 0 / 5 | no | — | — | — | — |
+| slider | 0 / 3 | no | — | — | — | — |
+| split-button | 0 / 4 | no | — | — | — | — |
+| stepper | 0 / 10 | no | — | — | — | — |
+| table | 0 / 11 | no | — | — | — | — |
+| table-column-config | 0 / 3 | no | — | — | — | — |
+| table-sort-config | 0 / 4 | no | — | — | — | — |
+| tabs | 0 / 4 | no | — | — | — | — |
+| toast | 0 / 2 | no | — | — | — | — |
+| toggle-switch | 0 / 6 | no | — | — | — | — |
+| toolbar | 0 / 2 | no | — | — | — | — |
+| tooltip | 0 / 2 | no | — | — | — | — |
+| tree-select | 0 / 6 | no | — | — | — | — |
+| tree-table | 0 / 3 | no | — | — | — | — |
+| users-dropdown | 0 / 5 | no | — | — | — | — |
+
+## What the columns mean
+
+**React** and **Next.js** carry the same markup, so they carry the same
+status. ✅ means the snippet uses real BAPS classes over semantic HTML
+and renders correctly once `@org/tokens/css` and `@org/ui-kit/styles` are
+imported.
+
+**PrimeNG-Angular** is paste-ready `<baps-*>` markup for an Angular app. This
+is the only column that gives you a working component rather than a picture of
+one.
+
+**Custom** is standalone HTML — no framework at all. For a component that does
+not wrap PrimeNG it is the component's own template, so it is correct by
+construction. For a wrapper it is hand-authored and only counts when a drift
+guard renders both and compares them property by property; without that guard
+the column reads — however good the markup looks.
+
+## What ◐ means
+
+**Markup and styles only.** The classes are real and the thing looks right.
+What is missing is behaviour: opening and closing, focus management, focus
+trapping, positioning, keyboard navigation, sorting, paging. An Angular
+component receives all of that from Angular and PrimeNG, and CSS carries none
+of it into React. Those examples show a visible note saying so, and the Copy
+prompt sends the same sentence.
+
+A ◐ in the Custom column means something narrower: some of that
+component's examples have verified standalone markup and some do not, usually
+because one shape has no rule in the standalone partial.
+
+## What — means
+
+No support yet, and the reason is almost always the same. A PrimeNG wrapper's
+design is not in a stylesheet: the tokens go through `definePreset` and
+**PrimeNG builds the CSS in the browser at runtime**, so there is no file to
+ship. Making one means authoring a `baps-*` partial from tokens and proving it
+with a drift guard. Where the tokens for that do not exist, the work is a
+design task before it is an implementation one.
+
+## Standalone CSS packaging
+
+Shipping today, and measured:
+
+| Import | What it carries |
+| --- | --- |
+| `@org/tokens/css` | Every design token as a CSS custom property |
+| `@org/ui-kit/styles` | All component stylesheets, the Inter `@font-face`, `--font-family`, the Sampark scopes, the dark scope |
+| `@org/ui-kit/styles/<name>` | One component — **no** `@font-face` and **no** `--font-family` |
+| `@org/ui-kit/icons` | The glyph registry as plain data; needs a bundler |
+
+Setup for each route is on the **Installation** page.
+
+## App Sell
+
+App Sell appears in the brand toolbar and has no palette, no tokens and no
+preset, so choosing it currently renders MyBKY. Creating that palette is a
+design task and no colour is invented for it here. The architecture is ready
+for it: a brand is a token set plus a scope class, and no component markup
+changes to add a third.
