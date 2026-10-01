@@ -4,9 +4,23 @@ import { Meta } from '@storybook/blocks';
 
 # Installation
 
-Setting up the BAPS design system in an Angular application.
+Four routes, in the order they were built and verified.
 
-## Download
+| Route                                      | What you get                                       |
+| ------------------------------------------ | -------------------------------------------------- |
+| [Angular / PrimeNG](#angular--primeng)     | The components themselves, with behaviour          |
+| [React with Vite](#react-with-vite)        | Tokens, component CSS and the glyph registry       |
+| [Next.js (App Router)](#nextjs-app-router) | The same, with the server/client split spelled out |
+| [Custom / plain HTML](#custom--plain-html) | A \<link\> tag and nothing else                    |
+
+Only the Angular route gives you working components. The other three give you
+the design — colour, type, spacing, both brands, dark mode — over markup you
+write yourself. Which components that covers is at the bottom of this page,
+and the Component status page keeps the live list.
+
+## Angular / PrimeNG
+
+### Download
 
 Inside this Nx workspace there is nothing to install — the library resolves through
 the TypeScript path alias in `tsconfig.base.json`:
@@ -25,14 +39,14 @@ The peer dependencies are already present at the workspace root:
 pnpm add primeng@21.1.3 @primeuix/themes@2.0.3 primeicons@^7.0.0
 ```
 
-| Dependency | Version |
-|---|---|
+| Dependency                         | Version   |
+| ---------------------------------- | --------- |
 | `@angular/core`, `@angular/common` | `^21.2.0` |
-| `primeng` | `21.1.3` |
-| `@primeuix/themes` | `2.0.3` |
-| `primeicons` | `^7.0.0` |
+| `primeng`                          | `21.1.3`  |
+| `@primeuix/themes`                 | `2.0.3`   |
+| `primeicons`                       | `^7.0.0`  |
 
-## Provider
+### Provider
 
 Add `providePrimeNG` to the list of providers in your `app.config.ts`:
 
@@ -42,19 +56,14 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { providePrimeNG } from 'primeng/config';
 
 export const appConfig: ApplicationConfig = {
-  providers: [
-    provideAnimationsAsync(),
-    providePrimeNG({
-      /* Configuration */
-    }),
-  ],
+  providers: [provideAnimationsAsync(), providePrimeNG({/* Configuration */})],
 };
 ```
 
 Use `provideAnimationsAsync()` (from `@angular/platform-browser/animations/async`),
 not `provideAnimations()`.
 
-## Theme
+### Theme
 
 The design system ships its own PrimeNG preset, `MyBky`. Register it in the
 `providePrimeNG` configuration — this is the same setup Storybook uses, so components
@@ -118,7 +127,7 @@ text for 14, 21px page padding for 24. Nothing looks broken; everything is sligh
 small. If an app genuinely wants smaller text, set a `font-size` on `body` — do not
 move the rem baseline out from under the tokens.
 
-## Verify
+### Verify
 
 Import a component into a standalone component and render it. If the button renders
 32px tall in the MyBKY blue (`#5f78b8` — the preset maps `primary` to the bkymsBlue
@@ -139,6 +148,205 @@ export class AppComponent {}
 
 If something looks off, check the troubleshooting table in
 **Getting Started → Using the components in your project**.
+
+## React with Vite
+
+### Install
+
+The design system is not published to a registry yet. A project outside this
+monorepo depends on the built output by path, which is what
+`baps-app-shell` already does:
+
+```json
+"dependencies": {
+  "@org/ui-kit": "file:../baps-design-system/dist/libs/ui-kit",
+  "@org/tokens": "file:../baps-design-system/dist/libs/tokens",
+  "primeicons": "^7.0.0"
+}
+```
+
+Build the design system first — `npx nx build ui-kit` — or the path resolves
+to nothing.
+
+```bash
+pnpm add primeicons
+```
+
+`primeicons` is the icon font the `pi-*` glyphs come from. It is not PrimeNG:
+no component code comes with it. Skip it if you use the BAPS glyph registry
+instead (below).
+
+### Global CSS
+
+In `main.tsx`, before your own styles:
+
+```ts
+import '@org/tokens/css';
+import '@org/ui-kit/styles';
+import 'primeicons/primeicons.css'; // only if you use pi-* glyphs
+import './index.css';
+```
+
+`@org/ui-kit/styles` is the whole kit: 26 component stylesheets, the Inter
+`@font-face`, `--font-family`, the Sampark scopes and the dark scope.
+
+To load one component instead:
+
+```ts
+import '@org/ui-kit/styles/button';
+```
+
+That path carries button's rules **only**. Measured over the built CSS,
+`button.css` contains zero `@font-face` rules and zero `--font-family`
+declarations while `index.css` contains one of each — so a page that imports
+only the per-component path gets every colour, border, radius and padding
+right and the browser's default typeface. Use it when your app already owns
+its typography.
+
+### The rules your app owns
+
+No ui-kit partial sets a rem baseline or applies the font, and none should.
+In `index.css`:
+
+```css
+html {
+  font-size: 16px;
+  font-family: var(--font-family);
+  font-feature-settings: var(--font-feature-settings);
+}
+button,
+input,
+textarea,
+select {
+  font-feature-settings: inherit;
+}
+```
+
+Both `font-feature-settings` lines are load-bearing and not obviously so.
+Inter's OpenType set changes glyph advance widths: without them every label
+measures about 1px narrower per word, so a button comes out narrow while every
+colour, border, radius and padding still matches exactly. A `<button>` does not
+inherit the features from `html` on its own, which is why the second rule names
+form elements. Found by `tools/check-button-drift.mjs`, not by reading.
+
+### Brands and dark mode
+
+Classes, exactly as in the Angular app shell. Nothing is imported per brand.
+
+```tsx
+<body className="baps-ds-sampark">   {/* whole page in Sampark */}
+<span className="baps-tag baps-sampark">…</span>   {/* one instance */}
+<body className="baps-dark">          {/* dark mode */}
+```
+
+MyBKY is the default and needs no class. A future third brand is a token set
+plus a scope class; nothing about the markup changes.
+
+### Icons
+
+```tsx
+import { BAPS_ICONS } from '@org/ui-kit/icons';
+
+function Glyph({ name, size = 18 }) {
+  return (
+    <baps-icon style={{ '--baps-icon-size': size + 'px' }}>
+      <span
+        className="baps-icon__glyph"
+        aria-hidden="true"
+        dangerouslySetInnerHTML={{
+          __html:
+            '<svg viewBox="0 0 24 24" fill="none" focusable="false">' +
+            BAPS_ICONS[name] +
+            '</svg>',
+        }}
+      />
+    </baps-icon>
+  );
+}
+```
+
+The registry is plain data — measured, zero references to Angular in the built
+file, and 2.29 MB bundled with 545 glyphs. It needs a bundler: ng-packagr
+writes extensionless relative imports, which Vite, Next and webpack resolve and
+bare Node does not.
+
+## Next.js (App Router)
+
+Everything in the React section applies. Three differences.
+
+**Where the CSS goes.** `app/layout.tsx`, not `main.tsx`:
+
+```tsx
+import '@org/tokens/css';
+import '@org/ui-kit/styles';
+import 'primeicons/primeicons.css';
+import './globals.css';
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <body className="baps-ds-sampark">{children}</body>
+    </html>
+  );
+}
+```
+
+**`'use client'`.** Markup needs none of it — a tag, a card, an alert without a
+close button and a static avatar all render as Server Components. Add it when a
+snippet has state or a handler: a dismissible alert, an interactive card, a
+spinner whose value moves. Each snippet on a component's Next.js tab says which
+it is and why.
+
+**The glyph registry is 2.3 MB.** Import it in one shared client component
+rather than per route, so it lands in a single chunk.
+
+## Custom / plain HTML
+
+No bundler, no framework. Two stylesheets:
+
+```html
+<link rel="stylesheet" href="node_modules/@org/tokens/build/css/tokens.css" />
+<link rel="stylesheet" href="node_modules/@org/ui-kit/styles/index.css" />
+```
+
+Then the same `html { … }` rules as the React section, and the same brand
+classes. This path is verified: `libs/ui-kit/src/lib/docs/examples/plain-html.html`
+renders Button, Tag and Card under MyBKY, Sampark and dark with no Angular, no
+PrimeNG and no Storybook, and the measurements are recorded in that file's own
+header.
+
+The glyph registry is a JavaScript module, so this route either inlines its own
+SVG or uses the PrimeIcons font.
+
+## Which components work outside Angular
+
+Proven against the live component, property by property, on a bare page:
+
+| Component                  | Proof                                             |
+| -------------------------- | ------------------------------------------------- |
+| button                     | 838 properties across 40 buttons, 10 stories      |
+| tag                        | 882 properties across 49 tags, 10 stories         |
+| card, alert, link, spinner | Non-wrappers — the Angular template IS the markup |
+
+Everything else is one of two things. **Markup and styles only** means the
+React and Next tabs show real BAPS classes but the component's behaviour —
+opening, closing, focus management, focus trapping, positioning, keyboard
+navigation, sorting, paging — comes from Angular and PrimeNG, and CSS carries
+none of it across. Those examples carry a visible note saying so. **Not yet**
+means no standalone CSS exists at all: the design is generated at runtime by
+the PrimeNG preset, so there is no stylesheet to ship and one has to be
+authored from tokens first.
+
+The live list is on the Component status page, generated from
+`node tools/check-snippets.mjs --report`. Do not take this table as the
+whole truth — take that page.
+
+### App Sell
+
+App Sell appears in the brand toolbar and has no palette, no tokens and no
+preset. Choosing it currently renders MyBKY. Creating that palette is a design
+task; no colour is invented for it here. The architecture is ready: a third
+brand is a token set plus a scope class, and no component markup changes.
 
 ## Examples
 
