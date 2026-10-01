@@ -17,9 +17,16 @@ Represents a user or entity as initials, an icon, or an image. The BAPS wrapper 
 
 <!-- Icon — projected SVG (Lucide, stroke-width 1.75), not a PrimeNG icon string -->
 <baps-avatar shape="circle" size="l">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
-       stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="8" r="5" /><path d="M20 21a8 8 0 0 0-16 0" />
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.75"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <circle cx="12" cy="8" r="5" />
+    <path d="M20 21a8 8 0 0 0-16 0" />
   </svg>
 </baps-avatar>
 
@@ -45,12 +52,14 @@ Represents a user or entity as initials, an icon, or an image. The BAPS wrapper 
 ### Playground
 
 <BrandOnly brand="mybky">
-<Canvas of={AvatarStories.MyBkyPlayground} />
-<Controls of={AvatarStories.MyBkyPlayground} />
+  <Canvas of={AvatarStories.MyBkyPlayground} />
+  <Controls of={AvatarStories.MyBkyPlayground} />
 </BrandOnly>
 
 <BrandOnly brand="sampark">
-<Canvas of={AvatarStories.SamparkPlayground} />
+<Canvas of={AvatarStories.SamparkPlayground} sourceState="none" />
+
+<FrameworkTabs of={AvatarStories.SamparkPlayground} snippets={avatarSnippets.SamparkPlayground} hideCustom />
 <Controls of={AvatarStories.SamparkPlayground} />
 </BrandOnly>
 
@@ -60,7 +69,11 @@ Avatar wraps PrimeNG. The MyBKY initials example also has a standalone HTML/CSS
 implementation verified against the Angular render and styled by the shared
 token-driven stylesheet. Sampark and the unshown variants remain Angular-only.
 
-<FrameworkTabs of={AvatarStories.MyBkyPlayground} snippets={avatarSnippets.MyBkyPlayground} hideCustom />
+<FrameworkTabs
+  of={AvatarStories.MyBkyPlayground}
+  snippets={avatarSnippets.MyBkyPlayground}
+  hideCustom
+/>
 
 ### HTML/CSS Preview
 
@@ -70,7 +83,11 @@ token-driven stylesheet. Sampark and the unshown variants remain Angular-only.
 
 <Canvas of={AvatarStories.Types} />
 
-<FrameworkTabs of={AvatarStories.Types} snippets={avatarSnippets.Types} hideCustom />
+<FrameworkTabs
+  of={AvatarStories.Types}
+  snippets={avatarSnippets.Types}
+  hideCustom
+/>
 
 ### HTML/CSS Types Preview
 
@@ -78,7 +95,13 @@ token-driven stylesheet. Sampark and the unshown variants remain Angular-only.
 
 ### Sizes
 
-<Canvas of={AvatarStories.Sizes} />
+<Canvas of={AvatarStories.Sizes} sourceState="none" />
+
+<FrameworkTabs
+  of={AvatarStories.Sizes}
+  snippets={avatarSnippets.Sizes}
+  hideCustom
+/>
 
 </BrandOnly>
 
@@ -86,34 +109,70 @@ token-driven stylesheet. Sampark and the unshown variants remain Angular-only.
 
 ### Sampark Variants
 
-<Canvas of={AvatarStories.SamparkVariants} />
+<Canvas of={AvatarStories.SamparkVariants} sourceState="none" />
+
+<FrameworkTabs
+  of={AvatarStories.SamparkVariants}
+  snippets={avatarSnippets.SamparkVariants}
+  hideCustom
+/>
 
 ### Sampark Sizes
 
-<Canvas of={AvatarStories.SamparkSizes} />
+<Canvas of={AvatarStories.SamparkSizes} sourceState="none" />
+
+<FrameworkTabs
+  of={AvatarStories.SamparkSizes}
+  snippets={avatarSnippets.SamparkSizes}
+  hideCustom
+/>
 
 ### Sampark Indicators
 
-<Canvas of={AvatarStories.SamparkIndicators} />
+<Canvas of={AvatarStories.SamparkIndicators} sourceState="none" />
+
+<FrameworkTabs
+  of={AvatarStories.SamparkIndicators}
+  snippets={avatarSnippets.SamparkIndicators}
+  hideCustom
+/>
 
 </BrandOnly>
 
 ### Shapes
 
-<Canvas of={AvatarStories.Shapes} />
+<Canvas of={AvatarStories.Shapes} sourceState="none" />
+
+<FrameworkTabs
+  of={AvatarStories.Shapes}
+  snippets={avatarSnippets.Shapes}
+  hideCustom
+/>
 
 <BrandOnly brand="mybky">
 
 ### Group
 
-<Canvas of={AvatarStories.MyBkyGroup} />
+<Canvas of={AvatarStories.MyBkyGroup} sourceState="none" />
+
+<FrameworkTabs
+  of={AvatarStories.MyBkyGroup}
+  snippets={avatarSnippets.MyBkyGroup}
+  hideCustom
+/>
 
 ### Group Sizes
 
 A stack takes the size of its members: the overlap and the "+n" counter scale
 with them.
 
-<Canvas of={AvatarStories.MyBkyGroupSizes} />
+<Canvas of={AvatarStories.MyBkyGroupSizes} sourceState="none" />
+
+<FrameworkTabs
+  of={AvatarStories.MyBkyGroupSizes}
+  snippets={avatarSnippets.MyBkyGroupSizes}
+  hideCustom
+/>
 
 </BrandOnly>
 
@@ -121,14 +180,26 @@ with them.
 
 ### Group
 
-<Canvas of={AvatarStories.SamparkGroup} />
+<Canvas of={AvatarStories.SamparkGroup} sourceState="none" />
+
+<FrameworkTabs
+  of={AvatarStories.SamparkGroup}
+  snippets={avatarSnippets.SamparkGroup}
+  hideCustom
+/>
 
 ### Group Sizes
 
 A stack takes the size of its members: the overlap and the "+n" counter scale
 with them.
 
-<Canvas of={AvatarStories.SamparkGroupSizes} />
+<Canvas of={AvatarStories.SamparkGroupSizes} sourceState="none" />
+
+<FrameworkTabs
+  of={AvatarStories.SamparkGroupSizes}
+  snippets={avatarSnippets.SamparkGroupSizes}
+  hideCustom
+/>
 
 </BrandOnly>
 
@@ -139,7 +210,13 @@ with them.
 The MyBKY status ring — online, away, busy, offline — drawn on the avatar
 rather than beside it.
 
-<Canvas of={AvatarStories.MyBkyStatuses} />
+<Canvas of={AvatarStories.MyBkyStatuses} sourceState="none" />
+
+<FrameworkTabs
+  of={AvatarStories.MyBkyStatuses}
+  snippets={avatarSnippets.MyBkyStatuses}
+  hideCustom
+/>
 
 </BrandOnly>
 
@@ -151,13 +228,13 @@ Inputs, outputs and their types, read from the component's own source.
 
 ## When Not to Use
 
-| Need | Use | Not this |
-| --- | --- | --- |
-| A count or status chip anchored to an icon/button | `baps-overlaybadge` | Avatar — it has no value slot |
-| A status expressed in words ("Active", "Pending") | `baps-tag` | Avatar with initials |
-| A presence dot under the MyBKY brand | `baps-overlaybadge` | `statusDot` / `iconBadge` — both are Sampark-only and inert under `brand="mybky"` |
-| A logo or decorative illustration | a plain `<img>` | Avatar — it forces a fixed square/circle box and, under MyBKY, stretches the image |
-| A clickable user-menu trigger | `baps-users-dropdown`, or a `baps-button` wrapping the avatar | Avatar alone — it renders no button, has no focus state and no click handling |
+| Need                                              | Use                                                           | Not this                                                                           |
+| ------------------------------------------------- | ------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| A count or status chip anchored to an icon/button | `baps-overlaybadge`                                           | Avatar — it has no value slot                                                      |
+| A status expressed in words ("Active", "Pending") | `baps-tag`                                                    | Avatar with initials                                                               |
+| A presence dot under the MyBKY brand              | `baps-overlaybadge`                                           | `statusDot` / `iconBadge` — both are Sampark-only and inert under `brand="mybky"`  |
+| A logo or decorative illustration                 | a plain `<img>`                                               | Avatar — it forces a fixed square/circle box and, under MyBKY, stretches the image |
+| A clickable user-menu trigger                     | `baps-users-dropdown`, or a `baps-button` wrapping the avatar | Avatar alone — it renders no button, has no focus state and no click handling      |
 
 ## Accessibility
 
