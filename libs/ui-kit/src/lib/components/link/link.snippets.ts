@@ -42,6 +42,68 @@ const anchor = (cls: string, text: string, href = '#') =>
   `  <baps-link class="${cls}"><a class="baps-link__anchor" href="${href}">${text}</a></baps-link>`;
 
 export const linkSnippets: Record<string, SnippetSet> = {
+  // The meta's own args: one primary link opening in a new tab. Two attributes
+  // on the raw side are added by the component rather than typed by its caller,
+  // and both are load-bearing rather than cosmetic:
+  //
+  //   rel="noopener noreferrer"   bound to target === '_blank'. Without it the
+  //                               opened page gets a window.opener handle back
+  //                               into yours.
+  //   tabindex="0"                bound to the disabled state; an <a href> is
+  //                               already focusable, so this matters for the
+  //                               disabled case, where it becomes -1.
+  //
+  // Outside Angular nothing adds them for you, so they are written out here.
+  Default: {
+    custom: `<baps-link class="baps-link--primary">
+  <a
+    class="baps-link__anchor"
+    href="https://example.com"
+    target="_blank"
+    rel="noopener noreferrer"
+    tabindex="0"
+    >Click here to view more details</a
+  >
+</baps-link>`,
+    react: `${SETUP}
+
+export function Example() {
+  return (
+    <baps-link className="baps-link--primary">
+      <a
+        className="baps-link__anchor"
+        href="https://example.com"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Click here to view more details
+      </a>
+    </baps-link>
+  );
+}`,
+    next: `import Link from 'next/link';
+
+${SETUP}
+
+/* next/link renders the <a>, so the design-system class goes on it directly
+   and the baps-link element stays the wrapper the stylesheet is anchored to.
+   An external href like this one gains nothing from next/link's prefetching —
+   a plain <a> is the better choice here, and Link is shown because an internal
+   route is the common case. */
+export default function Example() {
+  return (
+    <baps-link className="baps-link--primary">
+      <Link className="baps-link__anchor" href="/details">
+        Click here to view more details
+      </Link>
+    </baps-link>
+  );
+}`,
+    primeng: `<baps-link href="https://example.com" target="_blank" variant="primary">
+  Click here to view more details
+</baps-link>`,
+  },
+
   Variants: {
     primeng: `<div style="display:flex; gap:32px;">
   <baps-link href="#" variant="primary">Primary link</baps-link>
