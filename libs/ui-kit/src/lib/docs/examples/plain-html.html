@@ -1,0 +1,152 @@
+<!--
+  Plain HTML consumer — no Angular, no PrimeNG runtime, no Storybook.
+
+  This page exists to answer one question with measurements rather than a
+  claim: can an app outside this monorepo render BAPS components from the
+  packaged CSS alone? It loads exactly what a React or Next.js app would:
+
+      import '@org/tokens/css';
+      import '@org/ui-kit/styles';
+
+  (as <link>s here, since the page has no bundler), plus the one base rule a
+  consuming app owns — html { font-size: 16px; font-family: var(--font-family) }
+  — which no ui-kit partial applies.
+
+  Serve the repo root over HTTP and open this file; the relative paths reach
+  the real token build and the real dist output, so what renders is what a
+  consumer installs. Run  first if dist is empty.
+
+  Measured against Storybook, every property matching:
+
+    button  height 36px · radius 99px · linear-gradient(135deg, rgb(95,120,184) 0%…)
+            · text rgb(255,255,255) · 14px/400
+    tag     height 22px · radius 99px · rgba(43,47,50,0.02) · border rgb(228,236,241)
+            · 12px/500
+    card    rgb(255,255,255) · 1px rgb(228,236,241) · radius 8px · padding 24px
+
+  The Sampark section proves the brand scope travels: the same markup under
+  .baps-ds-sampark renders a 32px maroon rgb(201,104,104) button at radius 4px.
+  The dark section proves .baps-dark does too: card rgb(27,27,27) with a
+  rgba(255,255,255,0.12) border.
+
+  Note the button classes: baps-button baps-button--primary. The base class
+  alone is geometry without a fill — the first version of this page used it and
+  looked broken for a reason that was the page's fault, not the CSS's.
+-->
+<!doctype html>
+<meta charset="utf-8" />
+<title>BAPS design system — plain HTML consumer</title>
+
+<!-- Exactly what a React or Next.js app would import, in the same order:
+       import '@org/tokens/css';
+       import '@org/ui-kit/styles';
+     Here they are <link>s because this page has no bundler. Nothing else is
+     loaded: no Angular, no PrimeNG runtime, no Storybook. -->
+<link rel="stylesheet" href="../../../../../tokens/build/css/tokens.css" />
+<link rel="stylesheet" href="../../../../../../node_modules/primeicons/primeicons.css" />
+<link rel="stylesheet" href="../../../../../../dist/libs/ui-kit/styles/index.css" />
+
+<!-- The one rule a consuming app owns, copied from
+     apps/storybook-host/src/styles.scss. No ui-kit partial applies it. -->
+<style>
+  html {
+    font-size: 16px;
+    font-family: var(--font-family);
+    font-feature-settings: var(--font-feature-settings);
+    line-height: normal;
+  }
+  body {
+    margin: 0;
+    padding: 24px;
+    background: #fff;
+  }
+  section {
+    margin-bottom: 32px;
+  }
+  h2 {
+    font: 600 13px/1.4 var(--font-family);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #6f777d;
+    margin: 0 0 12px;
+  }
+  .row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+  .baps-dark {
+    background: #1b1b1b;
+    padding: 16px;
+    border-radius: 8px;
+  }
+</style>
+
+<body>
+  <section id="mybky">
+    <h2>MyBKY — unscoped, the default brand</h2>
+
+    <div class="row">
+      <button class="baps-button baps-button--primary" type="button">Primary</button>
+      <button class="baps-button baps-button--primary baps-button--s" type="button">Small</button>
+      <button class="baps-button baps-button--primary baps-button--l" type="button">Large</button>
+      <button class="baps-button baps-button--danger" type="button">Danger</button>
+      <button class="baps-button baps-button--primary" type="button" disabled>Disabled</button>
+    </div>
+
+    <div class="row">
+      <span class="baps-tag">Grey</span>
+      <span class="baps-tag baps-tag--info">Info</span>
+      <span class="baps-tag baps-tag--error">Error</span>
+    </div>
+
+    <baps-card id="mybky-card">
+      <div class="baps-card__header">
+        <span card-title="">Registrations this week</span>
+        <span card-subtitle="">Yuva Sabha — 3 May</span>
+      </div>
+      <div class="baps-card__body">128 members have registered so far.</div>
+    </baps-card>
+  </section>
+
+  <section id="sampark" class="baps-ds-sampark">
+    <h2>Sampark — the whole section scoped with .baps-ds-sampark</h2>
+
+    <div class="row">
+      <button class="baps-button baps-button--primary" type="button">Primary</button>
+      <button class="baps-button baps-button--primary baps-button--s" type="button">Small</button>
+      <button class="baps-button baps-button--primary baps-button--l" type="button">Large</button>
+    </div>
+
+    <div class="row">
+      <span class="baps-tag">Grey</span>
+      <span class="baps-tag baps-tag--info">Info</span>
+    </div>
+
+    <baps-card id="sampark-card">
+      <div class="baps-card__header"><span card-title="">Sampark card</span></div>
+      <div class="baps-card__body">Same markup, scoped brand.</div>
+    </baps-card>
+  </section>
+
+  <section id="dark" class="baps-dark">
+    <h2 style="color: #e6e6e6">Dark — .baps-dark</h2>
+
+    <div class="row">
+      <button class="baps-button baps-button--primary" type="button">Primary</button>
+      <button class="baps-button baps-button--danger" type="button">Danger</button>
+    </div>
+
+    <div class="row">
+      <span class="baps-tag">Grey</span>
+      <span class="baps-tag baps-tag--info">Info</span>
+    </div>
+
+    <baps-card id="dark-card">
+      <div class="baps-card__header"><span card-title="">Dark card</span></div>
+      <div class="baps-card__body">Surfaces follow the dark scope.</div>
+    </baps-card>
+  </section>
+</body>
