@@ -174,23 +174,22 @@
    measured 33 / 35 / 37, so a button was a pixel or two off its own token and
    an icon-only button could not be square.
 
-   The padding-y literals stay: they still set the text's optical position
-   inside the box, and no token carries them. check-button-drift.mjs is what
-   keeps them honest. */
+   The vertical padding goes to 0 with the height, matching the Angular side:
+   once the box has a fixed height the flex centring places the label, and a
+   leftover paddingY only fights it. check-button-drift.mjs compares the two
+   renders property by property and is what caught this. */
 .baps-button {
   height: var(--button-mybky-height-m, 2.25rem);
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .baps-button--s {
   height: var(--button-mybky-height-s, 2rem);
-  padding-top: 7px;
-  padding-bottom: 7px;
 }
 
 .baps-button--l {
   height: var(--button-mybky-height-l, 2.25rem);
-  padding-top: 7.6px;
-  padding-bottom: 7.6px;
   font-size: 16px;
 }
 
