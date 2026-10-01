@@ -12,6 +12,39 @@ Accessibility findings live on their own page, [Guidelines →
 Accessibility](?path=/docs/guidelines-accessibility--docs), because they are
 checked by a different tool and read by a different audience.
 
+## Breaking change — `baps-chip` lost `severity`, `size`, `count` and `chevron`
+
+**Deliberate and approved, 30 September 2026.** This is not a defect; it is here
+because there is no changelog page yet, and a consuming app has no other way to
+find out. Until one exists, every breaking change gets an entry on this page.
+
+`baps-tag` already carried all four, so chip went back to being the plain
+label-and-remove atom. The four inputs, the seven stories that drove them
+(`Severities`, `Sizes`, `States`, `WithChevron`, `IconOnly`, `WithCount`,
+`Matrix`) and their styles were removed in `cc05ead`.
+
+How a consuming app finds out depends on how it wrote the attribute, and the
+two halves behave in opposite ways. Measured with `ngc -p
+libs/ui-kit/tsconfig.lib.json` against a probe component carrying both forms,
+under `strictTemplates: true`:
+
+| How the app wrote it | What happens |
+| --- | --- |
+| Bound — `[severity]="x"`, `[count]="8"`, `[chevron]="true"` | Build fails: `NG8002: Can't bind to 'severity' since it isn't a known property of 'baps-chip'`, one error per input. Loud, and easy to fix |
+| Literal — `severity="warning"`, `size="m"`, `count="8"` | **No error at all.** Angular leaves an unrecognised static attribute on the element, so the app builds and the chip silently renders plain and grey |
+
+The literal form is the dangerous one: nothing in the build, nothing in the
+console, just a chip that lost its colour and its count. An app that wants to
+find these has to grep its own templates — `strictTemplates` cannot help.
+
+The value map, including the three severities that are renamed rather than
+dropped, is on the [Chip
+page](?path=/docs/components-chip--docs#migration--four-inputs-moved-out-30-september-2026).
+
+`primary` is the one value with no like-for-like replacement name: tag calls it
+`contrast`. `count` moves to a different component entirely, `baps-badge` with
+`type="counts"`.
+
 ## Stepper rail visual baselines capture the rail as empty
 
 **Screenshot harness limitation. Runtime is fine.** The 11 `Components/Organisms/Stepper`
