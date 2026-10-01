@@ -18,7 +18,12 @@ A bordered content container — the generic block dashboard tiles, form section
   <span card-title>Registrations this week</span>
   <span card-subtitle>Yuva Sabha — 3 May</span>
   <div card-actions>
-    <baps-button label="Export" severity="secondary" [text]="true" brand="sampark" />
+    <baps-button
+      label="Export"
+      severity="secondary"
+      [text]="true"
+      brand="sampark"
+    />
   </div>
 
   <p style="margin: 0">128 members have registered so far.</p>
@@ -31,9 +36,11 @@ A bordered content container — the generic block dashboard tiles, form section
 
 ### Playground
 
-<Canvas of={CardStories.Playground} />
+<Canvas of={CardStories.Playground} sourceState="none" />
 
 <Controls of={CardStories.Playground} />
+
+<FrameworkTabs of={CardStories.Playground} snippets={cardSnippets.Playground} />
 
 ### Body Only
 
@@ -43,27 +50,46 @@ A bordered content container — the generic block dashboard tiles, form section
 
 ### Divided
 
-<Canvas of={CardStories.Divided} />
+<Canvas of={CardStories.Divided} sourceState="none" />
+
+<FrameworkTabs of={CardStories.Divided} snippets={cardSnippets.Divided} />
 
 ### Padding Steps
 
 <Canvas of={CardStories.PaddingSteps} sourceState="none" />
 
-<FrameworkTabs of={CardStories.PaddingSteps} snippets={cardSnippets.PaddingSteps} />
+<FrameworkTabs
+  of={CardStories.PaddingSteps}
+  snippets={cardSnippets.PaddingSteps}
+/>
 
 ### Rest Vs Raised
 
 <Canvas of={CardStories.RestVsRaised} sourceState="none" />
 
-<FrameworkTabs of={CardStories.RestVsRaised} snippets={cardSnippets.RestVsRaised} />
+<FrameworkTabs
+  of={CardStories.RestVsRaised}
+  snippets={cardSnippets.RestVsRaised}
+/>
 
 ### Interactive
 
-<Canvas of={CardStories.Interactive} />
+<Canvas of={CardStories.Interactive} sourceState="none" />
+
+<FrameworkTabs
+  of={CardStories.Interactive}
+  snippets={cardSnippets.Interactive}
+/>
 
 ### Dashboard Tiles
 
-<Canvas of={CardStories.DashboardTiles} />
+<Canvas of={CardStories.DashboardTiles} sourceState="none" />
+
+<FrameworkTabs
+  of={CardStories.DashboardTiles}
+  snippets={cardSnippets.DashboardTiles}
+  hideCustom
+/>
 
 ## API
 
@@ -73,13 +99,13 @@ Inputs, outputs and their types, read from the component's own source.
 
 ## When Not to Use
 
-| Need | Use | Not this |
-| --- | --- | --- |
-| A panel that overlays the page | `baps-drawer` (or a dialog) | A `raised` card positioned by hand |
-| Tabular data with sorting/paging | `baps-table` — wrap it in a `padding="none"` card if you want the frame | A card filled with row divs |
-| A single rule between two sections | `baps-divider` | An empty card used as a separator |
-| Status or feedback messaging | `baps-alert`, or `baps-message` for field-level | A card styled to look like an alert |
-| A row of page-level actions | `baps-toolbar` | A card containing only buttons |
+| Need                               | Use                                                                     | Not this                            |
+| ---------------------------------- | ----------------------------------------------------------------------- | ----------------------------------- |
+| A panel that overlays the page     | `baps-drawer` (or a dialog)                                             | A `raised` card positioned by hand  |
+| Tabular data with sorting/paging   | `baps-table` — wrap it in a `padding="none"` card if you want the frame | A card filled with row divs         |
+| A single rule between two sections | `baps-divider`                                                          | An empty card used as a separator   |
+| Status or feedback messaging       | `baps-alert`, or `baps-message` for field-level                         | A card styled to look like an alert |
+| A row of page-level actions        | `baps-toolbar`                                                          | A card containing only buttons      |
 
 For internal hairlines use `[divided]="true"` rather than dropping a `baps-divider` between the slots — the card already draws them at the correct full-bleed width.
 
