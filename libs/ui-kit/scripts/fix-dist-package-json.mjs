@@ -44,7 +44,11 @@ const WORKSPACE_DEPS = { '@org/tokens': 'libs/tokens/package.json' };
 const pkg = JSON.parse(readFileSync(DIST, 'utf8'));
 const patched = [];
 
-for (const field of ['dependencies', 'peerDependencies', 'optionalDependencies']) {
+for (const field of [
+  'dependencies',
+  'peerDependencies',
+  'optionalDependencies',
+]) {
   const block = pkg[field];
   if (!block) continue;
 
@@ -102,11 +106,43 @@ for (const field of ['dependencies', 'peerDependencies', 'optionalDependencies']
 //     import '@org/tokens/css';
 //     import '@org/ui-kit/styles';          // everything
 //     import '@org/ui-kit/styles/button';   // or one component
+// ── The glyph registry, for consumers that are not Angular ─────────────────
+//
+// The CSS above styles a <baps-icon>; it cannot supply what goes inside one.
+// The component builds that from BAPS_ICONS, a generated map of 24x24
+// currentColor path bodies, and injects it as
+//
+//     <svg viewBox="0 0 24 24" fill="none" xmlns="..." focusable="false">${body}</svg>
+//
+// That map is plain data. Measured on the built output: 0 occurrences of
+// "@angular" in esm2022/lib/components/icon/icon-set.js, so importing it costs
+// a React app nothing but its own 2.3 MB of path data. Without this entry the
+// only way to reach it is through "." — the package root, which does pull
+// Angular in — so a React consumer's realistic option was to hand-draw every
+// glyph. The subpath is the difference between documenting an icon button and
+// documenting a box where an icon would go.
+//
+//     import { BAPS_ICONS } from '@org/ui-kit/icons';
+//
+// One caveat, measured rather than assumed. ng-packagr writes esm2022 with
+// EXTENSIONLESS relative imports ('./icon-set-extra'), which Node's own ESM
+// loader rejects — `node -e "import('.../icon-set.js')"` fails with
+// ERR_MODULE_NOT_FOUND on a file that is sitting right next to it. Every
+// bundler resolves it: esbuild bundles this entry to 2,293,769 bytes
+// containing 545 glyphs and 0 occurrences of "@angular". So the subpath serves
+// React, Next and Vite, which is who it is for, and not a bare Node script.
+//
+// Deliberately NOT re-exported from './styles/*': these are two different
+// kinds of artifact and collapsing them would make the CSS entry resolve a .js.
 pkg.exports = {
   ...pkg.exports,
   './src/*': { default: './src/*' },
   './styles': { default: './styles/index.css' },
   './styles/*': { default: './styles/*.css' },
+  './icons': {
+    types: './lib/components/icon/icon-set.d.ts',
+    default: './esm2022/lib/components/icon/icon-set.js',
+  },
 };
 
 writeFileSync(DIST, JSON.stringify(pkg, null, 2) + '\n');
@@ -115,7 +151,9 @@ console.log(
     ? `[ui-kit] resolved workspace protocol — ${patched.join(', ')}`
     : '[ui-kit] no workspace: ranges to resolve',
 );
-console.log('[ui-kit] exported ./src/* so the raw SCSS stays reachable via pkg:');
+console.log(
+  '[ui-kit] exported ./src/* (raw SCSS via pkg:), ./styles (compiled CSS) and ./icons (glyph data)',
+);
 
 // ── Publish: stage -> live ──────────────────────────────────────────────────
 // Atomic per-file, skipping unchanged files, then pruning. See
