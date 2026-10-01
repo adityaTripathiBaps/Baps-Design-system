@@ -34,9 +34,9 @@ export const SAMPARK_BUTTON_TOKENS = {
     light: {
       root: {
         primary: {
-          background: '{primary.color}',
-          hoverBackground: '{primary.hover.color}',
-          activeBackground: '{primary.active.color}',
+          background: 'var(--color-sampark-primary-default)',
+          hoverBackground: 'var(--color-sampark-primary-hover)',
+          activeBackground: 'var(--color-sampark-primary-100)',
           borderColor: 'transparent',
           hoverBorderColor: 'transparent',
           activeBorderColor: 'transparent',
@@ -66,9 +66,9 @@ export const SAMPARK_BUTTON_TOKENS = {
       },
       text: {
         primary: {
-          hoverBackground: '{primary.50}',
-          activeBackground: '{primary.100}',
-          color: '{primary.color}',
+          hoverBackground: 'var(--color-sampark-primary-0)',
+          activeBackground: 'var(--color-sampark-primary-10)',
+          color: 'var(--color-sampark-primary-default)',
         },
         // Secondary Ghost — Figma node 13197:91897 rows "Button=⚫️ Secondary
         // Ghost". Eight of the frame's 44 cells had no Sampark path at all:
@@ -83,9 +83,9 @@ export const SAMPARK_BUTTON_TOKENS = {
         },
       },
       link: {
-        color: '{primary.color}',
-        hoverColor: '{primary.hover.color}',
-        activeColor: '{primary.active.color}',
+        color: 'var(--color-sampark-primary-default)',
+        hoverColor: 'var(--color-sampark-primary-hover)',
+        activeColor: 'var(--color-sampark-primary-100)',
       },
     },
     // Dark mode. Primary is RESTATED with the same clay tokens as light — left to
@@ -96,9 +96,9 @@ export const SAMPARK_BUTTON_TOKENS = {
     dark: {
       root: {
         primary: {
-          background: '{primary.color}',
-          hoverBackground: '{primary.hover.color}',
-          activeBackground: '{primary.active.color}',
+          background: 'var(--color-sampark-primary-default)',
+          hoverBackground: 'var(--color-sampark-primary-hover)',
+          activeBackground: 'var(--color-sampark-primary-100)',
           borderColor: 'transparent',
           hoverBorderColor: 'transparent',
           activeBorderColor: 'transparent',
@@ -157,7 +157,7 @@ export const SAMPARK_BUTTON_TOKENS = {
         primary: {
           hoverBackground: 'rgba(255, 255, 255, 0.08)',
           activeBackground: 'rgba(255, 255, 255, 0.12)',
-          color: '{primary.color}',
+          color: 'var(--color-sampark-primary-default)',
         },
         secondary: {
           hoverBackground: 'rgba(255, 255, 255, 0.08)',
@@ -166,9 +166,9 @@ export const SAMPARK_BUTTON_TOKENS = {
         },
       },
       link: {
-        color: '{primary.color}',
-        hoverColor: '{primary.hover.color}',
-        activeColor: '{primary.active.color}',
+        color: 'var(--color-sampark-primary-default)',
+        hoverColor: 'var(--color-sampark-primary-hover)',
+        activeColor: 'var(--color-sampark-primary-100)',
       },
     },
   },
@@ -267,7 +267,7 @@ export const SAMPARK_PROGRESSBAR_TOKENS = {
     background: tokens.ColorSamparkMono20,
   },
   value: {
-    background: '{primary.color}',
+    background: 'var(--color-sampark-primary-default)',
   },
   label: {
     color: tokens.ColorSamparkMono0,
@@ -314,7 +314,7 @@ export const SAMPARK_CHECKBOX_TOKENS = {
         // itself in the disabled ink, so enabled and disabled read almost the
         // same. The two steps are #9f9c9c and #bcb9b9.
         borderColor: tokens.ColorSamparkMono60,
-        hoverBorderColor: '{primary.hover.color}',
+        hoverBorderColor: 'var(--color-sampark-primary-hover)',
         // The defining rule of this frame: a checked box stays WHITE. Colour
         // is carried by the border and the tick, never by a fill.
         //
@@ -323,17 +323,17 @@ export const SAMPARK_CHECKBOX_TOKENS = {
         // checked checkbox in both brands rendered as a solid maroon/blue
         // square instead of the outlined box Figma draws.
         checkedBackground: tokens.ColorSamparkMono0,
-        checkedBorderColor: '{primary.color}',
+        checkedBorderColor: 'var(--color-sampark-primary-default)',
         // Stays white on hover too; only the border darkens to Primary/80.
         checkedHoverBackground: tokens.ColorSamparkMono0,
-        checkedHoverBorderColor: '{primary.hover.color}',
+        checkedHoverBorderColor: 'var(--color-sampark-primary-hover)',
         disabledBackground: tokens.ColorSamparkMono20,
       },
       icon: {
-        checkedColor: '{primary.color}',
+        checkedColor: 'var(--color-sampark-primary-default)',
         // The tick does NOT darken with the border on hover — Figma keeps it
         // at Primary/60 in both checked rows.
-        checkedHoverColor: '{primary.color}',
+        checkedHoverColor: 'var(--color-sampark-primary-default)',
         // Disabled+checked is the one state that does fill (Mono/40), so its
         // tick goes white for contrast. The fill has no token; see the
         // component's CSS.
@@ -391,10 +391,10 @@ export const SAMPARK_CHECKBOX_TOKENS = {
  */
 export const SAMPARK_SLIDER_TOKENS = {
   track: { borderRadius: tokens.RadiusSamparkDefault },
-  range: { background: '{primary.color}' },
+  range: { background: 'var(--color-sampark-primary-default)' },
   handle: {
-    background: '{primary.color}',
-    hoverBackground: '{primary.hover.color}',
+    background: 'var(--color-sampark-primary-default)',
+    hoverBackground: 'var(--color-sampark-primary-hover)',
   },
   colorScheme: {
     // Sampark has no dark palette yet — the track borrows the mybky mono
@@ -430,16 +430,16 @@ export const SAMPARK_RADIO_TOKENS = {
         // Mono/60, same correction as the checkbox — this was the Mono/40
         // "Disable Item" step.
         borderColor: tokens.ColorSamparkMono60,
-        hoverBorderColor: '{primary.hover.color}',
+        hoverBorderColor: 'var(--color-sampark-primary-hover)',
         // Checked stays white: ring + dot carry the colour.
         checkedBackground: tokens.ColorSamparkMono0,
-        checkedBorderColor: '{primary.color}',
+        checkedBorderColor: 'var(--color-sampark-primary-default)',
         // THE ONE PLACE THE TWO CONTROLS DIVERGE. A checked radio under the
         // pointer fills solid Primary/80 and flips its dot to white; a checked
         // checkbox never fills. This is deliberate in the Sampark spec — do
         // not "tidy" it into consistency with the checkbox.
-        checkedHoverBackground: '{primary.hover.color}',
-        checkedHoverBorderColor: '{primary.hover.color}',
+        checkedHoverBackground: 'var(--color-sampark-primary-hover)',
+        checkedHoverBorderColor: 'var(--color-sampark-primary-hover)',
         // Disabled UNCHECKED: Mono/20 fill, Mono/40 ring.
         disabledBackground: tokens.ColorSamparkMono20,
         checkedDisabledBorderColor: tokens.ColorSamparkMono40,
@@ -447,7 +447,7 @@ export const SAMPARK_RADIO_TOKENS = {
       icon: {
         // 6px dot in a 16px box — Sampark runs a tighter dot than MyBKY's 8px.
         size: '6px',
-        checkedColor: '{primary.color}',
+        checkedColor: 'var(--color-sampark-primary-default)',
         // White, because this is the one hover state with a solid fill under it.
         checkedHoverColor: tokens.ColorSamparkMono0,
         // Disabled+checked fills Mono/40, so the dot is white on top of it.
