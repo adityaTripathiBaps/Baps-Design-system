@@ -76,6 +76,19 @@
   padding-right: 4px;
 }
 
+/* …and Sampark takes it back off. The Angular skin says
+   `:is(baps-tag.baps-sampark, …) .p-tag .p-tag-label { padding: 0 !important }`
+   and this file never got the matching rule, so every Sampark tag measured
+   exactly 8px wider than the component — 4px each side, the same on a
+   four-letter label and a seven-letter one, which is what made it a padding
+   bug rather than a font one. Caught by check-tag-drift.mjs the moment the
+   Sampark stories joined it. */
+.baps-tag.baps-sampark .baps-tag__label,
+.baps-ds-sampark .baps-tag .baps-tag__label {
+  padding-left: 0;
+  padding-right: 0;
+}
+
 /* ── Severities ───────────────────────────────────────────────────────────
    Seven fills plus disabled, each a background / border / text triple. Grey is
    what a tag with no `severity` renders. */
@@ -111,7 +124,10 @@
    guard as the thing that notices. */
 .baps-tag--primary {
   background-color: #eef0f8; /* = TagMybkyPrimaryBackground, baked like the preset */
-  border-color: var(--tag-mybky-primary-border, #5f78b833); /* sink 2 — follows */
+  border-color: var(
+    --tag-mybky-primary-border,
+    #5f78b833
+  ); /* sink 2 — follows */
   color: #384871; /* = TagMybkyPrimaryText, baked like the preset */
 }
 
@@ -200,24 +216,48 @@
   text-align: center;
 }
 
-/* Icon-only is square on its step rather than a chip collapsed to its glyph. */
+/* The chevron does NOT inherit, unlike the leading icon directly above.
+   Measured on the component: 8px at xs, 10px at s and m, 12px at l — declared
+   as --baps-tag-chevron-size inside tag.component.ts's own styles block, whose
+   Figma note reads "8px at XS, 10px at S, 12px at L (Mob)". tokens.css has no
+   --tag-*-chevron-size at all, so the three literals below are the component's
+   own declarations reproduced rather than new design values, and the missing
+   tokens are recorded as a design task. Without this the chevron inherited the
+   label's font-size and every chevron tag measured exactly 2px too wide at s. */
+.baps-tag .baps-tag-chevron {
+  font-size: var(--tag-mybky-chevron-size-s, 0.625rem);
+}
+
+.baps-tag--xs .baps-tag-chevron {
+  font-size: var(--tag-mybky-chevron-size-xs, 0.5rem);
+}
+
+.baps-tag--l .baps-tag-chevron {
+  font-size: var(--tag-mybky-chevron-size-l, 0.75rem);
+}
+
+/* The component says `min-width: var(--baps-tag-height); justify-content:
+   center` and leaves the padding alone — a square FLOOR, so an icon plus a
+   chevron can still grow past it. What stood here used a fixed `width` and
+   zeroed the padding, which forced the box square and came out 4px narrower
+   than the component at every step: measured 22px against 26px at s, with 0px
+   padding against 6px. The tokens are unchanged; only width/min-width and the
+   padding do. */
 .baps-tag--icon-only {
   justify-content: center;
-  padding-left: 0;
-  padding-right: 0;
-  width: var(--tag-mybky-height-s, 1.375rem);
+  min-width: var(--tag-mybky-height-s, 1.375rem);
 }
 
 .baps-tag--icon-only.baps-tag--xs {
-  width: var(--tag-mybky-height-xs, 1.125rem);
+  min-width: var(--tag-mybky-height-xs, 1.125rem);
 }
 
 .baps-tag--icon-only.baps-tag--m {
-  width: var(--tag-mybky-height-m, 1.625rem);
+  min-width: var(--tag-mybky-height-m, 1.625rem);
 }
 
 .baps-tag--icon-only.baps-tag--l {
-  width: var(--tag-mybky-height-l, 2rem);
+  min-width: var(--tag-mybky-height-l, 2rem);
 }
 
 /* ── Sampark ──────────────────────────────────────────────────────────────
@@ -231,6 +271,15 @@
   border-radius: var(--tag-sampark-radius, 0.25rem);
   font-size: var(--tag-sampark-font-size-s, 0.75rem);
   font-weight: var(--tag-sampark-font-weight, 500);
+  /* Grey is what a tag with no severity renders, so the base carries it —
+     the same way the MyBKY base above does. Without this a raw
+     <span class="baps-tag baps-sampark"> kept the MyBKY grey triple and
+     measured #2b2f32 ink on an #e4ecf1 border, while the component rendered
+     #595656 on #e1e0e0. The severity rule below still names .baps-tag--grey
+     so that writing it explicitly is also correct. */
+  background-color: var(--tag-sampark-grey-background);
+  border-color: var(--tag-sampark-grey-border);
+  color: var(--tag-sampark-grey-text);
 }
 
 .baps-tag.baps-sampark.baps-tag--grey,
@@ -297,18 +346,63 @@
 }
 
 /* Sampark declares no `m` step — tokens.css has --tag-mybky-height-m and no
-   --tag-sampark-height-m. The m geometry is shared, so this defers to the
-   MyBKY token rather than inventing a Sampark one. */
-.baps-tag.baps-sampark.baps-tag--m,
-.baps-ds-sampark .baps-tag.baps-tag--m {
-  height: var(--tag-mybky-height-m, 1.625rem);
-  padding: var(--tag-mybky-padding-m, 0.25rem 0.375rem);
-  font-size: var(--tag-mybky-font-size-m, 0.875rem);
-}
+   --tag-sampark-height-m. What stood here deferred to the MyBKY token on the
+   reasoning that "the m geometry is shared". It is not: measured on the
+   component, a Sampark tag at size="m" renders 22px tall with the Sampark
+   small padding and font-size, because the Angular skin has no m rule either
+   and the Sampark base simply applies. Deferring to MyBKY made the raw tag
+   26px. So there is no rule here at all — the base above is the answer, and
+   the missing token is not a gap to fill. */
 
+/* The l step is the one where Sampark departs from its own base on three
+   properties at once, and tokens.css already says so in its comments:
+
+     --tag-sampark-radius-l     0.375rem  "6px — l only"
+     --tag-sampark-gap-l        0.25rem   "4px — l"
+     --tag-sampark-icon-size-l  1rem      "16px — outgrows the 14px label"
+
+   This rule never read any of them, so a raw Sampark l tag kept the base's
+   4px radius and 2px gap and sized its glyph off the label. Measured against
+   the component: radius 6 vs 4, gap 4 vs 2, and 4px too wide overall. Nothing
+   is invented here — the three tokens existed, already documented for exactly
+   this step, and were simply not referenced.
+
+   The two fallbacks below were also wrong (2rem and 1rem against tokens of
+   1.75rem and 0.875rem); a fallback that contradicts its token is a silent
+   bug the day the token moves. */
 .baps-tag.baps-sampark.baps-tag--l,
 .baps-ds-sampark .baps-tag.baps-tag--l {
-  height: var(--tag-sampark-height-l, 2rem);
+  height: var(--tag-sampark-height-l, 1.75rem);
   padding: var(--tag-sampark-padding-l, 0.25rem 0.5rem);
-  font-size: var(--tag-sampark-font-size-l, 1rem);
+  font-size: var(--tag-sampark-font-size-l, 0.875rem);
+  border-radius: var(--tag-sampark-radius-l, 0.375rem);
+  column-gap: var(--tag-sampark-gap-l, 0.25rem);
+}
+
+.baps-tag.baps-sampark.baps-tag--l .baps-tag__icon,
+.baps-tag.baps-sampark.baps-tag--l .baps-tag-chevron,
+.baps-ds-sampark .baps-tag.baps-tag--l .baps-tag__icon,
+.baps-ds-sampark .baps-tag.baps-tag--l .baps-tag-chevron {
+  font-size: var(--tag-sampark-icon-size-l, 1rem);
+}
+
+/* ── Icon-only, Sampark ───────────────────────────────────────────────────
+   There was no Sampark rule here at all, so a Sampark icon-only tag took the
+   MyBKY floor: min-width --tag-mybky-height-l (32px) at the l step, against
+   the component's 30px. Every other Sampark size rule in this file re-points
+   at the Sampark token set and this one was simply missing. No `m` step, for
+   the same reason the size rules have none — Sampark does not declare one. */
+.baps-tag.baps-sampark.baps-tag--icon-only,
+.baps-ds-sampark .baps-tag.baps-tag--icon-only {
+  min-width: var(--tag-sampark-height-s, 1.375rem);
+}
+
+.baps-tag.baps-sampark.baps-tag--icon-only.baps-tag--xs,
+.baps-ds-sampark .baps-tag.baps-tag--icon-only.baps-tag--xs {
+  min-width: var(--tag-sampark-height-xs, 1.125rem);
+}
+
+.baps-tag.baps-sampark.baps-tag--icon-only.baps-tag--l,
+.baps-ds-sampark .baps-tag.baps-tag--icon-only.baps-tag--l {
+  min-width: var(--tag-sampark-height-l, 1.75rem);
 }

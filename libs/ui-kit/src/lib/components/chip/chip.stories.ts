@@ -108,8 +108,14 @@ export const Group: Story = {
   }),
 };
 
-/** Brand comparison. Flip the toolbar's Design system switch to compare. */
+/**
+ * Both brands side by side, for comparing them in one view. The story renders
+ * MyBKY and Sampark itself, so it is tagged `ds:comparison` and stays hidden
+ * until the toolbar's Comparison toggle is on — a story showing two brands at
+ * once would otherwise appear under each single brand.
+ */
 export const Brands: Story = {
+  tags: ['ds:comparison'],
   render: () => ({
     template: `
       <div style="display:flex; flex-direction:column; gap:1.25rem">

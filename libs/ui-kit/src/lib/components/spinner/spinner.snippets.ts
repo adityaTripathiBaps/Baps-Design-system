@@ -47,20 +47,13 @@
  * nothing useful, and a status with a value announces a number that never
  * changes.
  */
-export type SnippetSet = { react?: string; next?: string; primeng?: string; custom?: string };
+import { setupFor, type SnippetSet } from '../../docs/snippet-setup';
+
+/** Re-exported so the .mdx and the docs blocks keep importing it from here. */
+export type { SnippetSet };
 
 /** Stated once; the same loads sit behind every snippet on this page. */
-const SETUP = `/* Once, at your app's entry. Paths are relative because no package export
-   exists yet — see card.snippets.ts for the packaging note.
-
-     import '<repo>/libs/tokens/build/css/tokens.css';
-
-   in your global stylesheet:
-
-     @use '<repo>/libs/ui-kit/src/lib/styles/layout/fonts';
-     @use '<repo>/libs/ui-kit/src/lib/styles/layout/common';
-     @use '<repo>/libs/ui-kit/src/lib/styles/components/spinner/spinner';
-*/`;
+const SETUP = setupFor('spinner');
 
 /** The circle pair, identical in every example bar the dash attributes. */
 const svg = (arr: string, off: string) =>
@@ -78,6 +71,81 @@ ${svg(C, offset)}
   </baps-spinner>`;
 
 export const spinnerSnippets: Record<string, SnippetSet> = {
+  // One ring at 75%, at the meta's small size. The offset is not a magic
+  // number: offset = C * (100 - value) / 100 with C = 2 * PI * 14, so 75 gives
+  // 21.99114857512855. Anything driven by real data computes it — see the
+  // helper in the React block, which is the same arithmetic.
+  //
+  // role="progressbar" with aria-valuenow is what makes this announce as
+  // progress; the indeterminate ring uses role="status" instead, because
+  // there is no value to announce.
+  Determinate: {
+    custom: `${determinate(75, '21.99114857512855', 'baps-spinner-small')}`,
+    react: `${SETUP}
+
+const C = 2 * Math.PI * 14;
+const offsetFor = (value) => (C * (100 - value)) / 100;
+
+export function Determinate({ value = 75 }) {
+  return (
+    <baps-spinner
+      className="baps-spinner-small"
+      role="progressbar"
+      aria-label="Loading"
+      aria-valuenow={value}
+      aria-valuemin={0}
+      aria-valuemax={100}
+    >
+      <svg className="baps-spinner-svg" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+        <circle className="baps-spinner-track" cx="16" cy="16" r="14" />
+        <circle
+          className="baps-spinner-arc"
+          cx="16"
+          cy="16"
+          r="14"
+          strokeDasharray={C}
+          strokeDashoffset={offsetFor(value)}
+        />
+      </svg>
+    </baps-spinner>
+  );
+}`,
+    next: `'use client';
+
+${SETUP}
+
+/* 'use client' because the value moves. A fixed progress ring rendered once on
+   the server needs no directive — drop it then. */
+const C = 2 * Math.PI * 14;
+const offsetFor = (value) => (C * (100 - value)) / 100;
+
+export default function Determinate({ value = 75 }) {
+  return (
+    <baps-spinner
+      className="baps-spinner-small"
+      role="progressbar"
+      aria-label="Loading"
+      aria-valuenow={value}
+      aria-valuemin={0}
+      aria-valuemax={100}
+    >
+      <svg className="baps-spinner-svg" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+        <circle className="baps-spinner-track" cx="16" cy="16" r="14" />
+        <circle
+          className="baps-spinner-arc"
+          cx="16"
+          cy="16"
+          r="14"
+          strokeDasharray={C}
+          strokeDashoffset={offsetFor(value)}
+        />
+      </svg>
+    </baps-spinner>
+  );
+}`,
+    primeng: `<baps-spinner size="small" [value]="75" />`,
+  },
+
   Indeterminate: {
     primeng: `<baps-spinner size="small" />`,
     custom: `<!-- No value means indeterminate: role="status", a quarter-circle arc, and
@@ -116,7 +184,7 @@ export default function Indeterminate() {
   DeterminateSteps: {
     primeng: `<!-- The dark ground is the story's own, not the component's — the arc is
      drawn in the brand colour and the track is translucent. -->
-<div style="display: flex; gap: 1.25rem; align-items: center; background: #333; padding: 1.25rem">
+<div style="display: flex; gap: 1.25rem; align-items: center; background: var(--color-mybky-mono-900); padding: 1.25rem">
   <baps-spinner [value]="0" />
   <baps-spinner [value]="25" />
   <baps-spinner [value]="50" />
@@ -127,7 +195,7 @@ export default function Indeterminate() {
     custom: `<!-- stroke-dashoffset is the progress. offset = C * (100 - value) / 100,
      with C = 2 * PI * 14 = 87.96459430051421. Driving this from real data
      means computing the offset, not copying these numbers. -->
-<div style="display: flex; gap: 1.25rem; align-items: center; background: #333; padding: 1.25rem">
+<div style="display: flex; gap: 1.25rem; align-items: center; background: var(--color-mybky-mono-900); padding: 1.25rem">
 ${determinate(0, C)}
 ${determinate(25, '65.97344572538566')}
 ${determinate(50, '43.982297150257104')}
@@ -142,7 +210,7 @@ const offsetFor = (value) => (C * (100 - value)) / 100;
 
 export function DeterminateSteps() {
   return (
-    <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', background: '#333', padding: '1.25rem' }}>
+    <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', background: 'var(--color-mybky-mono-900)', padding: '1.25rem' }}>
       {[0, 25, 50, 75, 90, 100].map((value) => (
         <baps-spinner key={value} role="progressbar" aria-label="Loading" aria-valuenow={value} aria-valuemin={0} aria-valuemax={100}>
           <svg className="baps-spinner-svg" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
@@ -163,7 +231,7 @@ const offsetFor = (value) => (C * (100 - value)) / 100;
 
 export default function DeterminateSteps() {
   return (
-    <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', background: '#333', padding: '1.25rem' }}>
+    <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', background: 'var(--color-mybky-mono-900)', padding: '1.25rem' }}>
       {[0, 25, 50, 75, 90, 100].map((value) => (
         <baps-spinner key={value} role="progressbar" aria-label="Loading" aria-valuenow={value} aria-valuemin={0} aria-valuemax={100}>
           <svg className="baps-spinner-svg" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
@@ -178,7 +246,7 @@ export default function DeterminateSteps() {
   },
 
   Sizes: {
-    primeng: `<div style="display: flex; gap: 1.25rem; align-items: center; background: #333; padding: 1.25rem">
+    primeng: `<div style="display: flex; gap: 1.25rem; align-items: center; background: var(--color-mybky-mono-900); padding: 1.25rem">
   <baps-spinner size="small" brand="mybky" />
   <baps-spinner size="large" brand="mybky" />
   <baps-spinner size="small" brand="sampark" />
@@ -187,7 +255,7 @@ export default function DeterminateSteps() {
     custom: `<!-- "large" is the default: there is no baps-spinner-large class, only the
      small modifier. brand="sampark" becomes .baps-sampark. All four are
      indeterminate, so all four carry role="status". -->
-<div style="display: flex; gap: 1.25rem; align-items: center; background: #333; padding: 1.25rem">
+<div style="display: flex; gap: 1.25rem; align-items: center; background: var(--color-mybky-mono-900); padding: 1.25rem">
   <baps-spinner class="baps-spinner-small baps-spinner-indeterminate" role="status" aria-label="Loading">
 ${svg(`${QUARTER} ${C}`, '0')}
   </baps-spinner>
@@ -214,7 +282,7 @@ const Spinner = ({ className = '' }) => (
 
 export function Sizes() {
   return (
-    <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', background: '#333', padding: '1.25rem' }}>
+    <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', background: 'var(--color-mybky-mono-900)', padding: '1.25rem' }}>
       <Spinner className="baps-spinner-small" />
       <Spinner />
       <Spinner className="baps-sampark baps-spinner-small" />
@@ -237,7 +305,7 @@ const Spinner = ({ className = '' }) => (
 
 export default function Sizes() {
   return (
-    <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', background: '#333', padding: '1.25rem' }}>
+    <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', background: 'var(--color-mybky-mono-900)', padding: '1.25rem' }}>
       <Spinner className="baps-spinner-small" />
       <Spinner />
       <Spinner className="baps-sampark baps-spinner-small" />

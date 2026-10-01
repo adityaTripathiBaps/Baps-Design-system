@@ -1,16 +1,9 @@
 import { Meta, Canvas, Controls } from '@storybook/blocks';
 import { BrandOnly } from '@baps/docs-blocks';
 
-{/*
-  Unattached on purpose — see the note in listbox.mdx. `baps-menu-item`'s three
-  stories live in form-field.stories.ts under the pinned meta id
-  `components-form-controls`, and moving them would move the visual baselines
-  keyed off those ids.
-*/}
+<Meta of={MenuItemStories} />
 
-<Meta title="Components/Molecules/Menu Item" />
-
-import * as FormControlsStories from '../form-field/form-field.stories';
+import * as MenuItemStories from './menu-item.stories';
 
 # Menu Item
 
@@ -34,14 +27,14 @@ It is a **molecule**, not an atom — it composes `baps-avatar` with its own two
 
 ### Playground
 
-<Canvas of={FormControlsStories.MenuItemPlayground} />
-<Controls of={FormControlsStories.MenuItemPlayground} />
+<Canvas of={MenuItemStories.MenuItemPlayground} />
+<Controls of={MenuItemStories.MenuItemPlayground} />
 
 <BrandOnly brand="sampark">
 
 ### All Variants
 
-<Canvas of={FormControlsStories.AllVariants} />
+<Canvas of={MenuItemStories.AllVariants} />
 
 </BrandOnly>
 
@@ -49,7 +42,7 @@ It is a **molecule**, not an atom — it composes `baps-avatar` with its own two
 
 ### All Variants (MyBKY)
 
-<Canvas of={FormControlsStories.AllVariantsMyBKY} />
+<Canvas of={MenuItemStories.AllVariantsMyBKY} />
 
 </BrandOnly>
 

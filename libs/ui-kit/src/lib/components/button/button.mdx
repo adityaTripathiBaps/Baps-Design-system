@@ -33,6 +33,7 @@ The wrapper also carries a second visual skin — `brand="sampark"` — implemen
 <baps-button label="Delete" severity="danger" />
 
 <!-- Sampark Portal skin -->
+
 <baps-button brand="sampark" label="Save" severity="primary" />
 <baps-button brand="sampark" label="Cancel" severity="secondary" [outlined]="true" />
 <baps-button brand="sampark" label="View details" [link]="true" />`}
@@ -47,6 +48,7 @@ The Playground carries the full input surface; each card after it isolates one a
   description="Every input on one button — use the controls panel to try combinations."
   of={ButtonStories.Playground}
   controls
+  snippets={buttonSnippets.Playground}
 />
 
 <DemoCard
@@ -68,6 +70,20 @@ The Playground carries the full input surface; each card after it isolates one a
   description="Hover, focus, active, disabled and loading."
   of={ButtonStories.States}
   snippets={buttonSnippets.States}
+/>
+
+<DemoCard
+  title="With Icons"
+  description="Leading, trailing, top and bottom icon placements. The glyph comes from the BAPS registry; the last one shows a PrimeIcon."
+  of={ButtonStories.WithIcons}
+  snippets={buttonSnippets.WithIcons}
+/>
+
+<DemoCard
+  title="Icon Only"
+  description="Icon-only buttons across the size steps and severities. Each is square on its own height: 32 / 36 / 36 / 42."
+  of={ButtonStories.IconOnly}
+  snippets={buttonSnippets.IconOnly}
 />
 
 <BrandOnly brand="sampark">
@@ -116,7 +132,8 @@ Unlike most components here, Button has a real component-token tier: the Sampark
       token: 'button.sampark.primary.default',
       light: '#c96868',
       dark: '#c96868',
-      description: 'Filled primary background. Deliberately the same in both modes — see below.',
+      description:
+        'Filled primary background. Deliberately the same in both modes — see below.',
     },
     {
       token: 'button.sampark.primary.hover',
@@ -146,7 +163,8 @@ Unlike most components here, Button has a real component-token tier: the Sampark
       token: 'button.sampark.height.default',
       light: '2rem',
       dark: '2rem',
-      description: 'Size steps are scheme-independent: 1.75 / 2 / 2.25 / 2.625rem.',
+      description:
+        'Size steps are scheme-independent: 1.75 / 2 / 2.25 / 2.625rem.',
     },
     {
       token: 'button.sampark.radius',
@@ -157,7 +175,7 @@ Unlike most components here, Button has a real component-token tier: the Sampark
   ]}
 />
 
-**Why primary does not change in dark.** A filled button supplies its own ground, so the white-on-maroon pair is unaffected by what is behind it — unlike a text colour that sits directly on the page. The secondary treatment *is* affected, because its background is close to the page, and it switches accordingly. This is the opposite of the gap documented on [Alert](?path=/docs/components-alert--docs), where a foreground colour was left unchanged over a ground that moved.
+**Why primary does not change in dark.** A filled button supplies its own ground, so the white-on-maroon pair is unaffected by what is behind it — unlike a text colour that sits directly on the page. The secondary treatment _is_ affected, because its background is close to the page, and it switches accordingly. This is the opposite of the gap documented on [Alert](?path=/docs/components-alert--docs), where a foreground colour was left unchanged over a ground that moved.
 
 ## Accessibility
 
@@ -180,12 +198,12 @@ Unlike most components here, Button has a real component-token tier: the Sampark
 
 ## When Not to Use
 
-| Need | Use | Not this |
-| --- | --- | --- |
-| Navigate to another route or URL | `baps-link` | `baps-button` — it renders a `<button>`, so there is no href, no middle-click, no "open in new tab" |
-| One primary action plus related secondary ones | `baps-split-button` | Two adjacent buttons |
-| A setting that applies immediately, with no submit | `baps-toggleswitch` | A button you re-label between states |
-| A choice among options inside a form | `baps-checkbox` / `baps-select` / `baps-listbox` | A row of buttons acting as a picker |
-| Laying out a row of page-level actions | `baps-toolbar` as the container | Buttons positioned with ad-hoc margins |
+| Need                                               | Use                                              | Not this                                                                                            |
+| -------------------------------------------------- | ------------------------------------------------ | --------------------------------------------------------------------------------------------------- |
+| Navigate to another route or URL                   | `baps-link`                                      | `baps-button` — it renders a `<button>`, so there is no href, no middle-click, no "open in new tab" |
+| One primary action plus related secondary ones     | `baps-split-button`                              | Two adjacent buttons                                                                                |
+| A setting that applies immediately, with no submit | `baps-toggleswitch`                              | A button you re-label between states                                                                |
+| A choice among options inside a form               | `baps-checkbox` / `baps-select` / `baps-listbox` | A row of buttons acting as a picker                                                                 |
+| Laying out a row of page-level actions             | `baps-toolbar` as the container                  | Buttons positioned with ad-hoc margins                                                              |
 
-`[link]="true"` *looks* like a link but is still a `<button>` — when the destination is a URL, use `baps-link`.
+`[link]="true"` _looks_ like a link but is still a `<button>` — when the destination is a URL, use `baps-link`.

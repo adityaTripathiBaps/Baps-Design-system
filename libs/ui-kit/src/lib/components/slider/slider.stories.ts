@@ -31,6 +31,9 @@ const meta: Meta<BapsSlider> = {
     range: false,
     showValueTooltip: false,
     step: 1,
+    // [orientation] is bound; undefined dropped p-slider-horizontal and the
+    // track collapsed to 0x0.
+    orientation: 'horizontal',
   },
   // Curated controls. Compodoc already infers every input's TYPE and doc
   // comment, so this block exists only to give the union-typed and boolean

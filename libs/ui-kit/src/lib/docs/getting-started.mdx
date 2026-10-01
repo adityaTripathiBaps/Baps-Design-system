@@ -9,16 +9,24 @@ installing the library, wiring up the theme, loading fonts and tokens, and using
 component. It applies to any Angular app inside this Nx workspace (member database,
 event management, donation management, Satsang).
 
+> **Not using Angular?** This page is the Angular route. React, Next.js and plain
+> HTML consume the design system through CSS and token packages instead of
+> components — see **Installation** for those three, and the **Component status**
+> page for which components genuinely work outside Angular. The short version:
+> `@org/tokens/css` plus `@org/ui-kit/styles` gives you the design, and the
+> components' behaviour stays with Angular.
+
 ## At a glance
 
-| | |
-|---|---|
-| Package | `@org/ui-kit` (workspace library) |
-| Framework | Angular 21, standalone components only — no NgModules |
-| Underlying UI library | PrimeNG 21 with a customized Material preset (`MyBky`) |
-| Design tokens | `@org/tokens` — Style Dictionary, generated `tokens.ts` + `tokens.css` |
-| Icons | primeicons (PrimeNG inputs) and Lucide (product UI) |
-| Selector prefix | `baps-` for components, `baps` (no hyphen) for directives |
+|                       |                                                                                 |
+| --------------------- | ------------------------------------------------------------------------------- |
+| Package               | `@org/ui-kit` (workspace library)                                               |
+| Framework             | Angular 21, standalone components only — no NgModules                           |
+| Outside Angular       | CSS + tokens only: `@org/tokens/css`, `@org/ui-kit/styles`, `@org/ui-kit/icons` |
+| Underlying UI library | PrimeNG 21 with a customized Material preset (`MyBky`)                          |
+| Design tokens         | `@org/tokens` — Style Dictionary, generated `tokens.ts` + `tokens.css`          |
+| Icons                 | primeicons (PrimeNG inputs) and Lucide (product UI)                             |
+| Selector prefix       | `baps-` for components, `baps` (no hyphen) for directives                       |
 
 ## 1. Install / reference the library
 
@@ -41,12 +49,12 @@ import { BapsButton, BapsAvatar, BapsTag, MyBky } from '@org/ui-kit';
 Your app must also have the peer dependencies available (already present at the
 workspace root):
 
-| Dependency | Version |
-|---|---|
+| Dependency                         | Version   |
+| ---------------------------------- | --------- |
 | `@angular/core`, `@angular/common` | `^21.2.0` |
-| `primeng` | `21.1.3` |
-| `@primeuix/themes` | `2.0.3` |
-| `primeicons` | `^7.0.0` |
+| `primeng`                          | `21.1.3`  |
+| `@primeuix/themes`                 | `2.0.3`   |
+| `primeicons`                       | `^7.0.0`  |
 
 ## 2. Bootstrap: register the theme
 
@@ -93,7 +101,7 @@ Notes:
 @layer app-styles {
   html {
     font-size: 14px; // rem baseline: tokens are authored at 1rem = 16px,
-                     // PrimeNG components are scaled to 14px
+    // PrimeNG components are scaled to 14px
   }
 }
 ```
@@ -133,12 +141,12 @@ Then include the layout SCSS partials from
 
 Font roles:
 
-| Font | Role |
-|---|---|
-| Inter Variable | All UI text. Weights: 400 body, 500 labels/badges, 600 headings/buttons, 700 prominent titles |
-| Roboto | PrimeNG/Material fallback only |
-| Instrument Serif | Target — editorial moments (landing H1, Satsang pull-quotes). Not yet installed |
-| JetBrains Mono | Target — receipt numbers, PAN, reference IDs. Not yet installed |
+| Font             | Role                                                                                          |
+| ---------------- | --------------------------------------------------------------------------------------------- |
+| Inter Variable   | All UI text. Weights: 400 body, 500 labels/badges, 600 headings/buttons, 700 prominent titles |
+| Roboto           | PrimeNG/Material fallback only                                                                |
+| Instrument Serif | Target — editorial moments (landing H1, Satsang pull-quotes). Not yet installed               |
+| JetBrains Mono   | Target — receipt numbers, PAN, reference IDs. Not yet installed                               |
 
 ## 4. Use the components
 
@@ -163,20 +171,20 @@ export class MemberToolbarComponent {}
 
 ### Component reference
 
-| Component | Selector | Import | Notes |
-|---|---|---|---|
-| Button | `baps-button` | `BapsButton` | `label`, `icon`, `iconPos`, `severity`, `outlined`, `text`, `raised`, `rounded`, `size`, `loading`, `disabled`, `fluid`. Projects `ng-content`. |
-| Avatar | `baps-avatar` | `BapsAvatar` | Image, icon, or label avatars |
-| Avatar group | `baps-avatar-group` | `BapsAvatarGroup` | Stacks multiple avatars |
-| Badge | `baps-badge` | `BapsBadge` | Numeric / status badge |
-| Overlay badge | `baps-overlay-badge` | `BapsOverlayBadge` | Badge anchored on another element |
-| Tag | `baps-tag` | `BapsTag` | Categorical labels |
-| Toggle switch | `baps-toggle-switch` | `BapsToggleSwitch` | Implements `ControlValueAccessor` — works with `ngModel` and reactive forms |
-| Input text | `input[bapsInputText]` | `BapsInputText` | Directive; exposes `variant`, `invalid`, `fluid` |
-| Float label | `baps-float-label` | `BapsFloatLabel` | Floating label wrapper for inputs |
-| Icon field | `baps-icon-field` | `BapsIconField` | Wraps an input with an icon |
-| Input icon | `baps-input-icon` | `BapsInputIcon` | The icon inside an icon field |
-| Message | `baps-message` | `BapsMessage` | Inline validation / info message |
+| Component     | Selector               | Import             | Notes                                                                                                                                           |
+| ------------- | ---------------------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| Button        | `baps-button`          | `BapsButton`       | `label`, `icon`, `iconPos`, `severity`, `outlined`, `text`, `raised`, `rounded`, `size`, `loading`, `disabled`, `fluid`. Projects `ng-content`. |
+| Avatar        | `baps-avatar`          | `BapsAvatar`       | Image, icon, or label avatars                                                                                                                   |
+| Avatar group  | `baps-avatar-group`    | `BapsAvatarGroup`  | Stacks multiple avatars                                                                                                                         |
+| Badge         | `baps-badge`           | `BapsBadge`        | Numeric / status badge                                                                                                                          |
+| Overlay badge | `baps-overlay-badge`   | `BapsOverlayBadge` | Badge anchored on another element                                                                                                               |
+| Tag           | `baps-tag`             | `BapsTag`          | Categorical labels                                                                                                                              |
+| Toggle switch | `baps-toggle-switch`   | `BapsToggleSwitch` | Implements `ControlValueAccessor` — works with `ngModel` and reactive forms                                                                     |
+| Input text    | `input[bapsInputText]` | `BapsInputText`    | Directive; exposes `variant`, `invalid`, `fluid`                                                                                                |
+| Float label   | `baps-float-label`     | `BapsFloatLabel`   | Floating label wrapper for inputs                                                                                                               |
+| Icon field    | `baps-icon-field`      | `BapsIconField`    | Wraps an input with an icon                                                                                                                     |
+| Input icon    | `baps-input-icon`      | `BapsInputIcon`    | The icon inside an icon field                                                                                                                   |
+| Message       | `baps-message`         | `BapsMessage`      | Inline validation / info message                                                                                                                |
 
 See the **Components** section in the sidebar for live examples, controls, and
 per-component docs.
@@ -193,7 +201,7 @@ only. Three things it cannot carry across, in the order they will bite you:
    exports from `@org/ui-kit` directly, so one import line covers any number of
    them.
 
-2. **Brackets on non-string inputs.** A plain attribute is *always* a string, so
+2. **Brackets on non-string inputs.** A plain attribute is _always_ a string, so
    `inline="true"` sets a boolean input to the string `"true"` and Angular
    rejects it with `TS2322: Type 'string' is not assignable to type 'boolean'`.
    Booleans and numbers need the bracket form — `[inline]="true"`, `[count]="8"`
@@ -202,7 +210,7 @@ only. Three things it cannot carry across, in the order they will bite you:
 
 3. **Anything the snippet references on the component.** `[(ngModel)]="date"`
    needs a `date` property and `FormsModule` in `imports`; `(click)="save()"`
-   needs a `save()` method. Angular reads these as expressions against *your*
+   needs a `save()` method. Angular reads these as expressions against _your_
    component and fails with `TS2339: Property 'date' does not exist`.
 
 All three fail at build time, and the dev server keeps serving the **last good
@@ -260,7 +268,7 @@ import {
 <!-- Validation message -->
 <input bapsInputText [invalid]="panExists" />
 @if (panExists) {
-  <baps-message severity="error" text="This PAN already exists on record" />
+<baps-message severity="error" text="This PAN already exists on record" />
 }
 ```
 
@@ -345,11 +353,11 @@ The components carry the visuals; copy rules keep the voice consistent:
 
 ## Troubleshooting
 
-| Symptom | Likely cause / fix |
-|---|---|
-| Components render unstyled | `providePrimeNG` with the `MyBky` preset is missing from `app.config.ts` |
-| Wrong font (Roboto everywhere) | `_fonts.scss` / `_common.scss` not included, or the Inter Variable TTF isn't being served |
-| Icons show as squares | `primeicons/primeicons.css` not imported |
-| Your CSS loses to PrimeNG styles | Put app styles in the `app-styles` layer (see the `cssLayer.order` in section 2) |
-| Text looks too large | Missing the 14px rem baseline: `@layer app-styles { html { font-size: 14px; } }` |
-| Animations warn or overlays misbehave | `provideAnimationsAsync()` missing from providers |
+| Symptom                               | Likely cause / fix                                                                        |
+| ------------------------------------- | ----------------------------------------------------------------------------------------- |
+| Components render unstyled            | `providePrimeNG` with the `MyBky` preset is missing from `app.config.ts`                  |
+| Wrong font (Roboto everywhere)        | `_fonts.scss` / `_common.scss` not included, or the Inter Variable TTF isn't being served |
+| Icons show as squares                 | `primeicons/primeicons.css` not imported                                                  |
+| Your CSS loses to PrimeNG styles      | Put app styles in the `app-styles` layer (see the `cssLayer.order` in section 2)          |
+| Text looks too large                  | Missing the 14px rem baseline: `@layer app-styles { html { font-size: 14px; } }`          |
+| Animations warn or overlays misbehave | `provideAnimationsAsync()` missing from providers                                         |

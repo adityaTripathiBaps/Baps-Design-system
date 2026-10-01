@@ -12,6 +12,9 @@ const meta: Meta<BapsLink> = {
   // numeric control renders live rather than as a "Set …" placeholder.
   args: {
     disabled: false,
+    // [variant] is bound in the template; without a value here the anchor lost
+    // its BAPS colour and fell back to the browser's default link blue.
+    variant: 'primary',
   },
   // Curated controls. Compodoc already infers every input's TYPE and doc
   // comment, so this block exists only to give the union-typed and boolean

@@ -1,6 +1,7 @@
 import { Component, Input, inject } from '@angular/core';
 import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata, applicationConfig } from '@storybook/angular';
+import { expect, userEvent, within } from '@storybook/test';
 import { MessageService } from 'primeng/api';
 import { BapsToast } from './toast.component';
 import { BapsButton } from '../button/button.component';
@@ -95,6 +96,29 @@ type Story = StoryObj<ToastDemo>;
 
 /** Click a button to push a message of that severity. */
 export const Default: Story = {};
+
+/**
+ * The toast is portalled: PrimeNG renders it at the document root, outside
+ * `canvasElement`, so this asserts against `document.body` rather than the
+ * canvas. A screenshot cannot tell whether the click reached the service — it
+ * only shows a toast that may have been there all along.
+ */
+export const PushInteraction: Story = {
+  name: 'Interaction — clicking Success pushes a toast',
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const successBtn = canvas.getByRole('button', { name: /Success/i });
+
+    successBtn.focus();
+    expect(successBtn).toHaveFocus();
+
+    await userEvent.click(successBtn);
+
+    const rootCanvas = within(canvasElement.ownerDocument.body);
+    const toastMessage = await rootCanvas.findByText('Template updated.');
+    expect(toastMessage).toBeTruthy();
+  },
+};
 
 /** Bottom-centre, for a screen where the top-right corner is already busy. */
 export const BottomCenter: Story = {

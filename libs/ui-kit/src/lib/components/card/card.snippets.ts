@@ -38,14 +38,15 @@
  *
  * ## What a non-Angular page has to load (all three, measured)
  *
- * 1. `libs/tokens/build/css/tokens.css` — without it the stylesheet's own
+ * 1. `@org/tokens/css` — without it the stylesheet's own
  *    fallbacks take over and the type goes off: title line-height measured
  *    20.8px instead of 19.2px, subtitle 18.2px instead of 16.8px. Geometry and
  *    colour were unaffected; only line-height drifted.
- * 2. `libs/ui-kit/src/lib/styles/components/card/_card.scss` — compiles on its
- *    own (it imports no other partial), so one `sass` run produces the whole
- *    card stylesheet. The Angular component loads the same file via
- *    `styleUrls`, which is what keeps the two from drifting apart.
+ * 2. `@org/ui-kit/styles/card`, compiled from
+ *    `libs/ui-kit/src/lib/styles/components/card/_card.scss` — that partial
+ *    imports no other, so one `sass` run produces the whole card stylesheet.
+ *    The Angular component loads the same source file via `styleUrls`, which
+ *    is what keeps the two from drifting apart.
  * 3. A base `font-family`. Nothing in ui-kit applies one — the measured page
  *    fell back to Times New Roman while the app renders Inter.
  *    `styles/layout/fonts` carries the @font-face and `styles/layout/common`
@@ -56,44 +57,377 @@
  *
  * ## Which stories are covered, and which are not
  *
- * Playground, Divided, Interactive and DashboardTiles are deliberately absent.
- * Their templates nest `baps-button`, `baps-tag`, `baps-avatar` or
- * `baps-progressbar`, and those ARE PrimeNG wrappers — a React snippet of those
- * stories could not produce the same design, only a card with the nested
- * control missing. They get snippets when those components are extracted the
- * way card was, not before.
+ * This section used to say that Playground, Divided, Interactive and
+ * DashboardTiles were all absent because their templates nest PrimeNG
+ * wrappers, and that they would get snippets once those components were
+ * extracted the way card was. Three of the four are now covered, because that
+ * is exactly what happened: button and tag each have a standalone partial
+ * built from tokens and a drift guard (tools/check-button-drift.mjs,
+ * tools/check-tag-drift.mjs), so a nested button or tag is as real in raw
+ * markup as the card around it.
  *
- * ## Known gap
+ * DashboardTiles is still PrimeNG-only, and the two reasons are specific
+ * rather than general. `baps-progressbar` has no standalone partial at all —
+ * there is no styles/components/progress-bar directory, so the packaged CSS
+ * has no progress-bar.css to import. `baps-avatar`'s partial exists but is
+ * thin: measured 0 Sampark rules and 0 dark rules against the component's 36
+ * and 8, which is why avatar's own page hides its Custom tab. That example
+ * unblocks when those two are finished; nothing about the card changes.
  *
- * There is no package path for any of this yet: `libs/ui-kit/package.json`
- * declares no `exports`, and `@org/ui-kit` resolves through a tsconfig path
- * alias rather than a `node_modules` link — verified, `sass` cannot resolve
- * `@org/ui-kit/.../card`. Inside this repo the files are reachable by relative
- * path (which is how `apps/storybook-host/src/styles.scss` consumes them).
- * A React app in another repo would need a real styles export first; that is a
- * packaging decision and has not been made.
+ * ## Packaging — the gap this file used to record is closed
+ *
+ * These styles no longer need a relative path. `libs/ui-kit/package.json` now
+ * declares `exports` for `./styles` and `./styles/*`, and
+ * `libs/ui-kit/scripts/build-styles.mjs` compiles the partials to
+ * `dist/libs/ui-kit/styles/*.css` as part of the library build, so a React or
+ * Next app in another repo imports `@org/ui-kit/styles`. What each path does
+ * and does not carry is measured in `libs/ui-kit/src/lib/docs/snippet-setup.ts`,
+ * which is also where the setup block below comes from.
  */
-export type SnippetSet = { react?: string; next?: string; primeng?: string; custom?: string };
+import { setupFor, type SnippetSet } from '../../docs/snippet-setup';
+
+/** Re-exported so the .mdx and the docs blocks keep importing it from here. */
+export type { SnippetSet };
 
 /** Stated once; the same loads behind every snippet on this page. */
-const SETUP = `/* Once, at your app's entry. Paths are relative because no package export
-   exists yet — see card.snippets.ts.
-
-     import '<repo>/libs/tokens/build/css/tokens.css';   // the import preview.ts uses
-
-   in your global stylesheet:
-
-     @use '<repo>/libs/ui-kit/src/lib/styles/layout/fonts';   // Inter @font-face
-     @use '<repo>/libs/ui-kit/src/lib/styles/layout/common';  // --font-family et al
-     @use '<repo>/libs/ui-kit/src/lib/styles/components/card/card';
-
-   and the base rule, which is the app's own (copied from
-   apps/storybook-host/src/styles.scss) — no ui-kit partial applies it:
-
-     html { font-size: 16px; font-family: var(--font-family); }
-*/`;
+const SETUP = setupFor('card');
 
 export const cardSnippets: Record<string, SnippetSet> = {
+  // PrimeNG-Angular only, and the omission is the finding.
+  //
+  // The card itself is standalone — every other example on this page proves
+  // that. What this one nests is not:
+  //
+  //   baps-progressbar   no standalone partial exists at all. There is no
+  //                      styles/components/progress-bar directory, so the
+  //                      packaged CSS has no progress-bar.css to import and
+  //                      raw markup for it would render unstyled.
+  //   baps-avatar        the partial exists but is thin: measured 0 Sampark
+  //                      rules and 0 dark rules against the component's 36 and
+  //                      8, which is why avatar's own page hides its Custom
+  //                      tab. An avatar group inside a card would inherit that
+  //                      same gap silently.
+  //
+  // So a React, Next or Custom block here would be a tile with two holes in
+  // it, or a tile drawn with invented CSS. Neither is worth showing, and
+  // hideCustom on the DemoCard keeps the Custom tab from falling back to the
+  // live Angular source, which outside Angular is three empty elements.
+  //
+  // This unblocks the moment progressbar gets a partial and avatar's is
+  // completed; nothing about the card has to change.
+  DashboardTiles: {
+    primeng: `<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem">
+  <baps-card>
+    <span style="display:block; margin-bottom:0.5rem">Registrations this week</span>
+    <div style="font-size:1.75rem; font-weight:700; margin-bottom:0.75rem">128</div>
+    <baps-progressbar [value]="72" severity="success" />
+    <p style="margin:0.5rem 0 0; font-size:0.875rem; color:var(--card-sampark-subtitle-color)">
+      72% of the Yuva Sabha capacity
+    </p>
+  </baps-card>
+
+  <baps-card>
+    <span style="display:block; margin-bottom:0.5rem">Donations this month</span>
+    <div style="font-size:1.75rem; font-weight:700; margin-bottom:0.75rem">₹ 3,42,600</div>
+    <div style="display:flex; gap:0.5rem">
+      <baps-tag value="Annadan Seva" severity="contrast" />
+      <baps-tag value="General Fund" />
+    </div>
+  </baps-card>
+
+  <baps-card>
+    <span style="display:block; margin-bottom:0.5rem">Seva volunteers</span>
+    <baps-avatargroup>
+      <baps-avatar label="NP" size="s" />
+      <baps-avatar label="PS" size="s" />
+      <baps-avatar label="RT" size="s" />
+      <baps-avatar label="+9" size="s" />
+    </baps-avatargroup>
+    <p style="margin:0.5rem 0 0; font-size:0.875rem; color:var(--card-sampark-subtitle-color)">
+      12 volunteers active today
+    </p>
+  </baps-card>
+</div>`,
+  },
+
+  // The meta's own args: a default card with a title, subtitle, an action, body
+  // text and a footer. The smallest complete card, and the right first thing to
+  // copy.
+  Playground: {
+    primeng: `<div style="max-width: 420px">
+  <baps-card>
+    <span card-title>Registrations this week</span>
+    <span card-subtitle>Yuva Sabha — 3 May</span>
+    <div card-actions>
+    <baps-button label="Export" severity="secondary" [text]="true" />
+    </div>
+
+    <p style="margin: 0">128 members have registered so far. Capacity closes on 1 May.</p>
+
+    <div card-footer>Updated 12 April 2026</div>
+  </baps-card>
+</div>`,
+    custom: `<!-- The action slot nests a button. That used to be the reason these
+     examples had no snippets; button now has its own standalone partial and a
+     drift guard, so the nested control is as real here as the card is.
+     severity="secondary" + [text]="true" -> class="baps-button--ghost-secondary" -->
+<div style="max-width: 420px">
+  <baps-card>
+    <span card-title>Registrations this week</span>
+    <span card-subtitle>Yuva Sabha — 3 May</span>
+    <div card-actions>
+    <button type="button" class="baps-button baps-button--ghost-secondary">
+      <span class="baps-button__label">Export</span>
+    </button>
+    </div>
+
+    <p style="margin: 0">128 members have registered so far. Capacity closes on 1 May.</p>
+
+    <div card-footer>Updated 12 April 2026</div>
+  </baps-card>
+</div>`,
+    react: `${SETUP}
+
+export function Example() {
+  return (
+    <div style={{ maxWidth: 420 }}>
+      <baps-card>
+        <span card-title="">Registrations this week</span>
+        <span card-subtitle="">Yuva Sabha — 3 May</span>
+        <div card-actions="">
+          <button type="button" className="baps-button baps-button--ghost-secondary">
+            <span className="baps-button__label">Export</span>
+          </button>
+        </div>
+
+        <p style={{ margin: 0 }}>128 members have registered so far. Capacity closes on 1 May.</p>
+
+        <div card-footer="">Updated 12 April 2026</div>
+      </baps-card>
+    </div>
+  );
+}`,
+    next: `${SETUP}
+
+/* No 'use client': a card is markup. The slots are plain attributes, which is
+   why they are written card-title="" in JSX — a bare attribute is boolean
+   true in JSX and the stylesheet matches on the attribute's presence. */
+export default function Example() {
+  return (
+    <div style={{ maxWidth: 420 }}>
+      <baps-card>
+        <span card-title="">Registrations this week</span>
+        <span card-subtitle="">Yuva Sabha — 3 May</span>
+        <div card-actions="">
+          <button type="button" className="baps-button baps-button--ghost-secondary">
+            <span className="baps-button__label">Export</span>
+          </button>
+        </div>
+
+        <p style={{ margin: 0 }}>128 members have registered so far. Capacity closes on 1 May.</p>
+
+        <div card-footer="">Updated 12 April 2026</div>
+      </baps-card>
+    </div>
+  );
+}`,
+  },
+
+  // [divided]="true" -> class="baps-card-divided". One modifier, otherwise the
+  // Playground card unchanged — which is the point of the example.
+  Divided: {
+    primeng: `<div style="max-width: 420px">
+  <baps-card [divided]="true">
+    <span card-title>Registrations this week</span>
+    <span card-subtitle>Yuva Sabha — 3 May</span>
+    <div card-actions>
+    <baps-button label="Export" severity="secondary" [text]="true" />
+    </div>
+
+    <p style="margin: 0">128 members have registered so far. Capacity closes on 1 May.</p>
+
+    <div card-footer>Updated 12 April 2026</div>
+  </baps-card>
+</div>`,
+    custom: `<!-- The action slot nests a button. That used to be the reason these
+     examples had no snippets; button now has its own standalone partial and a
+     drift guard, so the nested control is as real here as the card is.
+     severity="secondary" + [text]="true" -> class="baps-button--ghost-secondary" -->
+<div style="max-width: 420px">
+  <baps-card class="baps-card-divided">
+    <span card-title>Registrations this week</span>
+    <span card-subtitle>Yuva Sabha — 3 May</span>
+    <div card-actions>
+    <button type="button" class="baps-button baps-button--ghost-secondary">
+      <span class="baps-button__label">Export</span>
+    </button>
+    </div>
+
+    <p style="margin: 0">128 members have registered so far. Capacity closes on 1 May.</p>
+
+    <div card-footer>Updated 12 April 2026</div>
+  </baps-card>
+</div>`,
+    react: `${SETUP}
+
+export function Example() {
+  return (
+    <div style={{ maxWidth: 420 }}>
+      <baps-card className="baps-card-divided">
+        <span card-title="">Registrations this week</span>
+        <span card-subtitle="">Yuva Sabha — 3 May</span>
+        <div card-actions="">
+          <button type="button" className="baps-button baps-button--ghost-secondary">
+            <span className="baps-button__label">Export</span>
+          </button>
+        </div>
+
+        <p style={{ margin: 0 }}>128 members have registered so far. Capacity closes on 1 May.</p>
+
+        <div card-footer="">Updated 12 April 2026</div>
+      </baps-card>
+    </div>
+  );
+}`,
+    next: `${SETUP}
+
+/* No 'use client': a card is markup. The slots are plain attributes, which is
+   why they are written card-title="" in JSX — a bare attribute is boolean
+   true in JSX and the stylesheet matches on the attribute's presence. */
+export default function Example() {
+  return (
+    <div style={{ maxWidth: 420 }}>
+      <baps-card className="baps-card-divided">
+        <span card-title="">Registrations this week</span>
+        <span card-subtitle="">Yuva Sabha — 3 May</span>
+        <div card-actions="">
+          <button type="button" className="baps-button baps-button--ghost-secondary">
+            <span className="baps-button__label">Export</span>
+          </button>
+        </div>
+
+        <p style={{ margin: 0 }}>128 members have registered so far. Capacity closes on 1 May.</p>
+
+        <div card-footer="">Updated 12 April 2026</div>
+      </baps-card>
+    </div>
+  );
+}`,
+  },
+
+  // Two interactive cards, each with a tag in its action slot. The same
+  // unblocking as Playground: tag has a standalone partial and
+  // tools/check-tag-drift.mjs, so the nested control is real markup here.
+  //
+  //   [interactive]="true" -> class="baps-card-interactive" + role/tabindex
+  //   severity="success"   -> class="baps-tag--success"
+  //   (no severity)        -> class="baps-tag--grey"
+  //
+  // role="button" and tabindex="0" are added by the component for the
+  // interactive case; outside Angular nothing adds them, and without them the
+  // card looks clickable and is unreachable by keyboard.
+  Interactive: {
+    // The card takes a click and a keypress, so the guard asks for this flag.
+    // Note: card is NOT a PrimeNG wrapper and the React block below really does
+    // implement the behaviour — see the report; the shared note overstates the
+    // limitation here, and narrowing it is a policy call, not one to make mid-run.
+    interactive: true,
+    primeng: `<div style="display: grid; gap: 1rem; max-width: 420px">
+  <baps-card [interactive]="true">
+    <span card-title>Yuva Sabha</span>
+    <span card-subtitle>3 May, 4:00 PM</span>
+    <div card-actions><baps-tag value="Open" severity="success" /></div>
+  </baps-card>
+  <baps-card [interactive]="true">
+    <span card-title>Annadan Seva</span>
+    <span card-subtitle>Ongoing</span>
+    <div card-actions><baps-tag value="Full" /></div>
+  </baps-card>
+</div>`,
+    custom: `<div style="display: grid; gap: 1rem; max-width: 420px">
+  <baps-card class="baps-card-interactive" role="button" tabindex="0">
+    <span card-title>Yuva Sabha</span>
+    <span card-subtitle>3 May, 4:00 PM</span>
+    <div card-actions>
+      <span class="baps-tag baps-tag--success"><span class="baps-tag__label">Open</span></span>
+    </div>
+  </baps-card>
+  <baps-card class="baps-card-interactive" role="button" tabindex="0">
+    <span card-title>Annadan Seva</span>
+    <span card-subtitle>Ongoing</span>
+    <div card-actions>
+      <span class="baps-tag baps-tag--grey"><span class="baps-tag__label">Full</span></span>
+    </div>
+  </baps-card>
+</div>`,
+    react: `${SETUP}
+
+const CARDS = [
+  ['Yuva Sabha', '3 May, 4:00 PM', 'Open', 'success'],
+  ['Annadan Seva', 'Ongoing', 'Full', 'grey'],
+];
+
+export function Interactive({ onOpen }) {
+  return (
+    <div style={{ display: 'grid', gap: '1rem', maxWidth: 420 }}>
+      {CARDS.map(([title, subtitle, tag, severity]) => (
+        <baps-card
+          key={title}
+          className="baps-card-interactive"
+          role="button"
+          tabIndex={0}
+          onClick={() => onOpen(title)}
+          onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onOpen(title)}
+        >
+          <span card-title="">{title}</span>
+          <span card-subtitle="">{subtitle}</span>
+          <div card-actions="">
+            <span className={\`baps-tag baps-tag--\${severity}\`}>
+              <span className="baps-tag__label">{tag}</span>
+            </span>
+          </div>
+        </baps-card>
+      ))}
+    </div>
+  );
+}`,
+    next: `'use client';
+
+${SETUP}
+
+/* 'use client' because the card takes a click and a keypress. A card that only
+   links somewhere is better written as an <a> and stays a Server Component. */
+const CARDS = [
+  ['Yuva Sabha', '3 May, 4:00 PM', 'Open', 'success'],
+  ['Annadan Seva', 'Ongoing', 'Full', 'grey'],
+];
+
+export default function Interactive({ onOpen }) {
+  return (
+    <div style={{ display: 'grid', gap: '1rem', maxWidth: 420 }}>
+      {CARDS.map(([title, subtitle, tag, severity]) => (
+        <baps-card
+          key={title}
+          className="baps-card-interactive"
+          role="button"
+          tabIndex={0}
+          onClick={() => onOpen(title)}
+          onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onOpen(title)}
+        >
+          <span card-title="">{title}</span>
+          <span card-subtitle="">{subtitle}</span>
+          <div card-actions="">
+            <span className={\`baps-tag baps-tag--\${severity}\`}>
+              <span className="baps-tag__label">{tag}</span>
+            </span>
+          </div>
+        </baps-card>
+      ))}
+    </div>
+  );
+}`,
+  },
+
   // The story writes `class="eyebrow"` on the label; that class is defined
   // nowhere in the repo — checked — so it is dropped here rather than copied
   // into documentation. The inline styles are what actually render.

@@ -12,6 +12,183 @@ Accessibility findings live on their own page, [Guidelines →
 Accessibility](?path=/docs/guidelines-accessibility--docs), because they are
 checked by a different tool and read by a different audience.
 
+## Tokens that are read but never defined, so a literal fallback renders instead
+
+**Measured, not fixed.** A `var(--name, literal)` whose `--name` is defined
+nowhere always paints the literal. Nothing fails: no build error, no console
+warning, and the value even looks right — it just stops following the theme,
+because there is no variable left to re-point.
+
+Avatar's primary border was the one that surfaced this. It read
+`--color-mybky-primary-40`, a name that appears in no token file, so it painted
+its fallback `#9fadd9` under every accent, brand and mode. The real token is
+`--color-mybky-blue-400`, whose own comment in `tokens.css` reads
+*"Figma Primary/40"* — same value, so the fix changed nothing visually and the
+border now follows the accent. Verified in the browser: at `accent:rose`,
+`--color-mybky-blue-400` is `#f6637d` and the border computes
+`rgb(246, 99, 125)`; at `accent:brand` both are the original `#9fadd9`.
+
+Sweeping every `var()` in `libs/ui-kit/src` against every place a custom
+property is declared: **837 properties read, 42 BAPS-owned names never
+defined.** The PrimeNG `--p-*` names in the raw count are not included —
+those are declared by the preset at runtime, and so are the ramp steps the
+accent theme writes from a prefix.
+
+The ones most likely to matter, because they read like tokens that should
+exist:
+
+| Token | Read at | Paints instead |
+| --- | --- | --- |
+| `--color-mybky-success-default` | `toast.component.ts:82` | `#178251` |
+| `--color-mybky-info-default` | toast | `#2265c3` |
+| `--color-mybky-warning-default` | toast | `#c38222` |
+| `--color-mybky-error-default` | toast | `#c32226` |
+| `--avatar-sampark-info-background` / `-border` / `-border-hover` | `avatar.component.ts:357-359` | `#e6f0fe` / `#83b5fc` / `#3889fa` |
+| `--avatar-mybky-radius-square` / `-xl-square` / `-2xl-square` | avatar | `4px` / `6px` / `8px` |
+| `--card-background` | `_select.scss:597` | `#ffffff` |
+| `--input-text` | input | `#181b1d` |
+| `--table-mybky-header-bg` | table | `#ffffff` |
+| `--font-size-base`, `--font-family-mono` | card, docs | `1rem`, `monospace` |
+| `--baps-chip-icon-size`, `--baps-chip-gap`, `--tag-max-width`, `--listbox-max-height`, `--slider-tooltip-*`, `--select-option-*`, `--stepper-mybky-connector-lend`, `--red-500` | various | their literals |
+
+Eight more names resolve to nothing at all rather than to a literal, but every
+one of them turned out to be inside a comment or an MDX prose example —
+`--white` and `--other` are quoted in comments explaining a bug, `--border-1`
+and `--radius-lg` sit in a getting-started snippet, and
+`--color-sampark-secondary-NN` is a placeholder in `accent.theme.ts`. None is
+live CSS.
+
+Not fixed here because each one is a design question — whether the token should
+exist, and at what value — rather than a rename. Avatar's was safe only because
+an existing token already held the identical value.
+
+## Avatar's primary border follows the accent, but not Sampark or dark
+
+The rename above fixed the accent. It did **not** fix the other two scopes,
+and that is worth stating plainly so the next person does not assume it did.
+
+Measured on `components-avatar--shapes`, which carries no brand pin, by adding
+the scope class to `documentElement` and `body`:
+
+| Scope | Border | Background | Text |
+| --- | --- | --- | --- |
+| MyBKY (default) | `rgb(159, 173, 217)` | `rgb(238, 240, 248)` | `rgb(56, 72, 113)` |
+| `.baps-ds-sampark` | unchanged | unchanged | `rgb(89, 86, 86)` |
+| `.baps-dark` | unchanged | unchanged | unchanged |
+
+Two separate causes:
+
+- **Sampark** re-points only the text. `--color-mybky-blue-400` is a MyBKY ramp
+  step, and the Sampark scope has no rule overriding the primary variant's
+  border or background.
+- **Dark** has rules only for the severity variants —
+  `.baps-dark baps-avatar.baps-avatar-secondary/.success/.error/.warning/.info`.
+  The base and primary avatars have no dark rule at all.
+
+The raw `.baps-avatar-html` partial is worse: it carries **0** Sampark rules and
+**0** dark rules against the component's 36 and 8.
+
+Both belong to the Figma-parity work, which needs the real values first —
+Sampark avatar `PKHWEQTVUKl6FAeQSIkXMW` node `483:17570`, MyBKY avatar
+`yY5bmcEifXbcCwhauoiy6Y` node `22465:97983`.
+
+## Button icon sizes are one step behind Figma from M upwards
+
+**Not fixed here.** The fix lands on its own branch, `fix/button-icon-size`,
+because `iconSize` is shared by both brands and the change moves baselines for
+button, split button and every action icon that reads it.
+
+`button.component.ts` decides the icon size in TypeScript, not from a token:
+
+```ts
+get iconSize(): BapsIconSize | number {
+  if (this.size === 'small') return 'sm';   // 16
+  if (this.size === 'large') return 18;
+  if (this.size === 'xlarge') return 'md';  // 20
+  return 'sm';                              // 16 — same as small
+}
+```
+
+Figma gives the same icon ramp for both brands — only the button heights differ:
+
+| Step | MyBKY height | Sampark height | Figma icon | Code icon |
+| --- | --- | --- | --- | --- |
+| S | 32 | 28 | 16 | 16 |
+| M | 36 | 32 | 18 | **16** |
+| L | 36 (mobile) | 36 | 20 | **18** |
+| XL | 42 | 42 | 24 | **20** |
+
+Chevron is 10 / 10 / 12 / 12 and the notification count 16 / 16 / 16 / 20 in
+both files; neither is wired to the size step at all today.
+
+So from M upwards every icon is one step small, and `small` and the default
+step render the same 16px icon. `18` is also not a step on the icon scale
+(`xs 12 · sm 16 · md 20 · lg 24 · xl 32`), which is a hint that the ramp was
+guessed rather than read. Rounding it onto the icon scale would be the wrong
+fix: 18 is what Figma specifies.
+
+There is no `--button-*-icon-size` token in the generated CSS — 63 button
+tokens, none for the icon. The fix therefore needs a token, and a **shared**
+one: the ramp is identical across brands, so a per-brand token would encode a
+difference that does not exist.
+
+Sources, because two Sampark files are in play:
+
+- Values measured from **PKHWEQTVUKl6FAeQSIkXMW** ("🟢 Component Library"),
+  Button node `151:361` — S `178:9645`, M `178:7885`, L `151:343`,
+  XL `7624:77233`.
+- MyBKY from **yY5bmcEifXbcCwhauoiy6Y**, Button node `22465:93605` — the same
+  node `tokens.css` already cites — S `22465:93606`, M `22465:93630`,
+  L `22465:93654`, XL `22465:93678`.
+- The button stories still point at the older Sampark Portal file,
+  **xc0L2xnREMgjyb5XcKyLIz** node `13197:91897`. Repointing them is a separate
+  Sampark-Figma task, not part of this branch.
+
+### MyBKY button heights are written as tokens but only XL applies
+
+A second finding from the same measurement, with the same fix branch.
+`tokens.css` carries `--button-mybky-height-s|m|l|xl` = 32 / 36 / 36 / 42, but
+`_button.scss` only applies the XL one. The other three steps fall out of
+padding plus the font's line box, so the rendered heights are **33 / 35 / 37** —
+the partial's own comment says so. Sampark does set all four explicitly
+(28 / 32 / 36 / 42) and matches its Figma exactly.
+
+The practical effect: a MyBKY button is a pixel or two off its own token, and
+nothing fails, because no test compares the two.
+
+## Breaking change — `baps-chip` lost `severity`, `size`, `count` and `chevron`
+
+**Deliberate and approved, 30 September 2026.** This is not a defect; it is here
+because there is no changelog page yet, and a consuming app has no other way to
+find out. Until one exists, every breaking change gets an entry on this page.
+
+`baps-tag` already carried all four, so chip went back to being the plain
+label-and-remove atom. The four inputs, the seven stories that drove them
+(`Severities`, `Sizes`, `States`, `WithChevron`, `IconOnly`, `WithCount`,
+`Matrix`) and their styles were removed in `cc05ead`.
+
+How a consuming app finds out depends on how it wrote the attribute, and the
+two halves behave in opposite ways. Measured with `ngc -p
+libs/ui-kit/tsconfig.lib.json` against a probe component carrying both forms,
+under `strictTemplates: true`:
+
+| How the app wrote it | What happens |
+| --- | --- |
+| Bound — `[severity]="x"`, `[count]="8"`, `[chevron]="true"` | Build fails: `NG8002: Can't bind to 'severity' since it isn't a known property of 'baps-chip'`, one error per input. Loud, and easy to fix |
+| Literal — `severity="warning"`, `size="m"`, `count="8"` | **No error at all.** Angular leaves an unrecognised static attribute on the element, so the app builds and the chip silently renders plain and grey |
+
+The literal form is the dangerous one: nothing in the build, nothing in the
+console, just a chip that lost its colour and its count. An app that wants to
+find these has to grep its own templates — `strictTemplates` cannot help.
+
+The value map, including the three severities that are renamed rather than
+dropped, is on the [Chip
+page](?path=/docs/components-chip--docs#migration--four-inputs-moved-out-30-september-2026).
+
+`primary` is the one value with no like-for-like replacement name: tag calls it
+`contrast`. `count` moves to a different component entirely, `baps-badge` with
+`type="counts"`.
+
 ## Stepper rail visual baselines capture the rail as empty
 
 **Screenshot harness limitation. Runtime is fine.** The 11 `Components/Organisms/Stepper`
@@ -837,8 +1014,8 @@ action.
 ### What this affects
 
 The pages where it currently shows: `components-indicator--docs` ("Icon Badge"),
-`components-alert--docs` ("Card"), `components-molecules-menu-item--docs`
-("Playground") and `components-molecules-listbox--docs` ("Custom Templates
+`components-alert--docs` ("Card"), `components-menuitem--docs`
+("Playground") and `components-listbox--docs` ("Custom Templates
 Using P Template", and the Sampark side of "Rich Template Panel List"). A MyBKY
 user reaches all of these from the MyBKY sidebar and sees maroon.
 

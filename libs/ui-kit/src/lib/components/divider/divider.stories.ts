@@ -40,7 +40,11 @@ export default meta;
 export const Default: StoryObj<BapsDivider> = {
   args: {
     layout: 'horizontal',
-    align: 'center'
+    align: 'center',
+    // [size] and [type] are bound; undefined produced the literal class
+    // p-divider-undefined and no rule at all.
+    size: 'default',
+    type: 'solid',
   },
 };
 

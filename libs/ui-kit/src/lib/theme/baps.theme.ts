@@ -152,8 +152,15 @@ export const MyBky = definePreset(Material, {
         // both at the same 16px/8px padding as the default M size. PrimeNG has no direct
         // height token — paddingY is tuned here to land on the Figma-reported heights given
         // each size's line-height, rather than reusing the root 8px value verbatim.
-        sm: { fontSize: '14px', paddingX: tokens.ButtonMybkyPaddingX, paddingY: '0.4375rem' },
-        lg: { fontSize: '16px', paddingX: tokens.ButtonMybkyPaddingX, paddingY: '0.475rem' },
+        sm: { fontSize: '14px', paddingX: tokens.ButtonMybkyPaddingX, paddingY: '0.4375rem', iconOnlyWidth: tokens.ButtonMybkyHeightS },
+        lg: { fontSize: '16px', paddingX: tokens.ButtonMybkyPaddingX, paddingY: '0.475rem', iconOnlyWidth: tokens.ButtonMybkyHeightL },
+        // An icon-only button is a SQUARE: its width is its height. PrimeNG's own
+        // defaults are 40 / 48 / 56, none of which match a MyBKY height, so an
+        // icon-only button measured 40x33, 48x35 and 56x37 — never square, and
+        // xlarge came out NARROWER than large because it falls through to the
+        // root value. Sampark already did this; MyBKY simply never set it.
+        iconOnlyWidth: tokens.ButtonMybkyHeightM,
+
       },
       colorScheme: {
         light: {

@@ -26,7 +26,8 @@
     "build": {
       "executor": "nx:run-commands",
       "dependsOn": [
-        "compile"
+        "compile",
+        "build-styles"
       ],
       "outputs": [],
       "cache": false,
@@ -46,6 +47,17 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint"
+    },
+    "build-styles": {
+      "executor": "nx:run-commands",
+      "dependsOn": [
+        "compile"
+      ],
+      "outputs": [],
+      "cache": false,
+      "options": {
+        "command": "node libs/ui-kit/scripts/build-styles.mjs"
+      }
     }
   }
 }

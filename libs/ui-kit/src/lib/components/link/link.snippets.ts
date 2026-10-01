@@ -30,33 +30,80 @@
  * the Sizes example sets `font-size: 20px` on its container and one link reads
  * "inherits 20px".
  */
-export type SnippetSet = { react?: string; next?: string; primeng?: string; custom?: string };
+import { setupFor, type SnippetSet } from '../../docs/snippet-setup';
+
+/** Re-exported so the .mdx and the docs blocks keep importing it from here. */
+export type { SnippetSet };
 
 /** Stated once; the same loads sit behind every snippet on this page. */
-const SETUP = `/* Once, at your app's entry. Paths are relative because no package export
-   exists yet — see card.snippets.ts for the packaging note.
-
-     import '<repo>/libs/tokens/build/css/tokens.css';
-
-   in your global stylesheet:
-
-     @use '<repo>/libs/ui-kit/src/lib/styles/layout/fonts';
-     @use '<repo>/libs/ui-kit/src/lib/styles/layout/common';
-     @use '<repo>/libs/ui-kit/src/lib/styles/components/link/link';
-
-   and the base rules, which are the app's own:
-
-     html {
-       font-size: 16px;
-       font-family: var(--font-family);
-       font-feature-settings: var(--font-feature-settings);
-     }
-*/`;
+const SETUP = setupFor('link');
 
 const anchor = (cls: string, text: string, href = '#') =>
   `  <baps-link class="${cls}"><a class="baps-link__anchor" href="${href}">${text}</a></baps-link>`;
 
 export const linkSnippets: Record<string, SnippetSet> = {
+  // The meta's own args: one primary link opening in a new tab. Two attributes
+  // on the raw side are added by the component rather than typed by its caller,
+  // and both are load-bearing rather than cosmetic:
+  //
+  //   rel="noopener noreferrer"   bound to target === '_blank'. Without it the
+  //                               opened page gets a window.opener handle back
+  //                               into yours.
+  //   tabindex="0"                bound to the disabled state; an <a href> is
+  //                               already focusable, so this matters for the
+  //                               disabled case, where it becomes -1.
+  //
+  // Outside Angular nothing adds them for you, so they are written out here.
+  Default: {
+    custom: `<baps-link class="baps-link--primary">
+  <a
+    class="baps-link__anchor"
+    href="https://example.com"
+    target="_blank"
+    rel="noopener noreferrer"
+    tabindex="0"
+    >Click here to view more details</a
+  >
+</baps-link>`,
+    react: `${SETUP}
+
+export function Example() {
+  return (
+    <baps-link className="baps-link--primary">
+      <a
+        className="baps-link__anchor"
+        href="https://example.com"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Click here to view more details
+      </a>
+    </baps-link>
+  );
+}`,
+    next: `import Link from 'next/link';
+
+${SETUP}
+
+/* next/link renders the <a>, so the design-system class goes on it directly
+   and the baps-link element stays the wrapper the stylesheet is anchored to.
+   An external href like this one gains nothing from next/link's prefetching —
+   a plain <a> is the better choice here, and Link is shown because an internal
+   route is the common case. */
+export default function Example() {
+  return (
+    <baps-link className="baps-link--primary">
+      <Link className="baps-link__anchor" href="/details">
+        Click here to view more details
+      </Link>
+    </baps-link>
+  );
+}`,
+    primeng: `<baps-link href="https://example.com" target="_blank" variant="primary">
+  Click here to view more details
+</baps-link>`,
+  },
+
   Variants: {
     primeng: `<div style="display:flex; gap:32px;">
   <baps-link href="#" variant="primary">Primary link</baps-link>

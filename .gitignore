@@ -61,7 +61,12 @@ storybook-static
 # apps/storybook-host/visual/stories.spec.ts-snapshots ARE committed — they are
 # the reference the suite compares against and are useless if ignored. Only the
 # per-run diff/actual images and the HTML report are transient.
-apps/storybook-host/visual/test-results/
+# Playwright resolves its default outputDir from the nearest package.json
+# (apps/storybook-host/package.json), NOT from the config folder, so the run
+# output lands one level above visual/. The old rule pointed at
+# visual/test-results/, a path that never existed, and 65 artifacts were
+# committed before anyone noticed.
+apps/storybook-host/test-results/
 apps/storybook-host/visual/visual-report/
 
 # Compodoc metadata, regenerated on every Storybook start (compodoc: true in

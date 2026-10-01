@@ -51,7 +51,7 @@ compatibility: `baps-inputicon` and `baps-toggleswitch`. Do not add more.
 
 | Kind | Convention | Example |
 | --- | --- | --- |
-| Component-owned element | `baps-<component>__<part>` | `.baps-chip__count` |
+| Component-owned element | `baps-<component>__<part>` | `.baps-paginator__page` |
 | Brand scope, per instance | `baps-<brand>` | `.baps-sampark` |
 | Brand scope, page-wide | `baps-ds-<brand>` | `.baps-ds-sampark` |
 | Mode | `baps-<mode>` | `.baps-dark`, `.baps-light` |

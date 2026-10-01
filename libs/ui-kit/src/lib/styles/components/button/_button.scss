@@ -70,7 +70,8 @@
   column-gap: var(--button-mybky-gap, 0.25rem);
   border: 1px solid transparent;
   border-radius: var(--button-mybky-radius, 99px);
-  padding: var(--button-mybky-padding-y, 0.5rem) var(--button-mybky-padding-x, 1rem);
+  padding: var(--button-mybky-padding-y, 0.5rem)
+    var(--button-mybky-padding-x, 1rem);
   font-family: inherit;
   font-size: 14px;
   /* 400 on the BOX, measured. The semibold that --button-mybky-font-weight
@@ -168,20 +169,28 @@
 }
 
 /* ── MyBKY sizes ───────────────────────────────────────────────────────────
-   MyBKY sets no height: it falls out of padding plus the font's line box,
-   which is why the measured steps are 33 / 35 / 37 rather than the round
-   numbers the story labels use. The sm and lg padding-y values are literals
-   because no token carries them — they come from PrimeNG's own size scale and
-   were read off the rendered component (7px at sm, 7.6px at lg).
-   check-button-drift.mjs is what keeps them honest. */
+   Heights come from the tokens now. They always existed —
+   --button-mybky-height-s|m|l|xl = 32 / 36 / 36 / 42 — but only XL applied
+   them; the other three fell out of padding plus the font's line box and
+   measured 33 / 35 / 37, so a button was a pixel or two off its own token and
+   an icon-only button could not be square.
+
+   The vertical padding goes to 0 with the height, matching the Angular side:
+   once the box has a fixed height the flex centring places the label, and a
+   leftover paddingY only fights it. check-button-drift.mjs compares the two
+   renders property by property and is what caught this. */
+.baps-button {
+  height: var(--button-mybky-height-m, 2.25rem);
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
 .baps-button--s {
-  padding-top: 7px;
-  padding-bottom: 7px;
+  height: var(--button-mybky-height-s, 2rem);
 }
 
 .baps-button--l {
-  padding-top: 7.6px;
-  padding-bottom: 7.6px;
+  height: var(--button-mybky-height-l, 2.25rem);
   font-size: 16px;
 }
 
@@ -190,6 +199,36 @@
 .baps-button--xl {
   height: var(--button-mybky-height-xl, 2.625rem);
   font-size: 16px;
+}
+
+/* ── Icon-only is square on the height scale, MyBKY ────────────────────────
+   Measured on the component: 32 / 36 / 36 / 42 across s / m / l / xl, which is
+   each step's own height. The component gets that from the preset's
+   `iconOnlyWidth` (baps.theme.ts); raw markup has no preset, so the same four
+   tokens are read directly here.
+
+   What stood here before was a single rule selecting
+   `.baps-button--xl.p-button-icon-only` — a PrimeNG class raw markup
+   never carries, so it matched nothing and every MyBKY icon-only button
+   collapsed to its glyph: measured 20px wide inside a 36px-tall box. It was
+   the only `.p-button-*` selector left in this file, which is a useful smell:
+   this partial styles markup PrimeNG never touched. The Sampark side already
+   had its widths (below) and so was never wrong, which is why no story caught
+   it — check-button-drift.mjs covers IconOnly now. */
+.baps-button--icon-only {
+  width: var(--button-mybky-height-m, 2.25rem);
+}
+
+.baps-button--icon-only.baps-button--s {
+  width: var(--button-mybky-height-s, 2rem);
+}
+
+.baps-button--icon-only.baps-button--l {
+  width: var(--button-mybky-height-l, 2.25rem);
+}
+
+.baps-button--icon-only.baps-button--xl {
+  width: var(--button-mybky-height-xl, 2.625rem);
 }
 
 /* ── Disabled / loading, MyBKY ─────────────────────────────────────────────
@@ -267,7 +306,8 @@
 }
 
 .baps-button.baps-sampark.baps-button--ghost-secondary:hover:not(:disabled),
-.baps-ds-sampark .baps-button.baps-button--ghost-secondary:hover:not(:disabled) {
+.baps-ds-sampark
+  .baps-button.baps-button--ghost-secondary:hover:not(:disabled) {
   background-color: var(--button-sampark-secondary-ghost-hover);
 }
 

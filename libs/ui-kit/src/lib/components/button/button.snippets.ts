@@ -57,51 +57,203 @@
  * The three Interaction stories get no snippets — they assert behaviour
  * through a `play` function and have no markup worth copying.
  *
- * ## Known gap
+ * ## Packaging — the gap this file used to record is closed
  *
- * There is still no package path for any of this — `libs/ui-kit/package.json`
- * declares no `exports` and `@org/ui-kit` resolves through a tsconfig alias, so
- * `sass` cannot resolve a `@org/ui-kit/...` import. Inside this repo the files
- * are reachable by relative path, which is how apps/storybook-host/src/
- * styles.scss consumes them. A React app in another repo needs a real styles
- * export first; that is a packaging decision and has not been made. Same gap
- * card.snippets.ts records.
+ * These styles no longer need a relative path. `libs/ui-kit/package.json` now
+ * declares `exports` for `./styles` and `./styles/*`, and
+ * `libs/ui-kit/scripts/build-styles.mjs` compiles the partials to
+ * `dist/libs/ui-kit/styles/*.css` as part of the library build, so a React or
+ * Next app in another repo imports `@org/ui-kit/styles`. What each path does
+ * and does not carry is measured in `libs/ui-kit/src/lib/docs/snippet-setup.ts`,
+ * which is also where the setup block below comes from.
  */
-export type SnippetSet = { react?: string; next?: string; primeng?: string; custom?: string };
+import { setupFor, type SnippetSet } from '../../docs/snippet-setup';
+
+/** Re-exported so the .mdx and the docs blocks keep importing it from here. */
+export type { SnippetSet };
 
 /** Stated once; the same loads sit behind every snippet on this page. */
-const SETUP = `/* Once, at your app's entry. Paths are relative because no package export
-   exists yet — see button.snippets.ts.
-
-     import '<repo>/libs/tokens/build/css/tokens.css';   // the import preview.ts uses
-     import 'primeicons/primeicons.css';                 // only if you use icons
-
-   in your global stylesheet:
-
-     @use '<repo>/libs/ui-kit/src/lib/styles/layout/fonts';    // Inter @font-face
-     @use '<repo>/libs/ui-kit/src/lib/styles/layout/common';   // --font-family et al
-     @use '<repo>/libs/ui-kit/src/lib/styles/components/button/button';
-
-   and the base rules, which are the app's own (copied from
-   apps/storybook-host/src/styles.scss) — no ui-kit partial applies them:
-
-     html {
-       font-size: 16px;
-       font-family: var(--font-family);
-       font-feature-settings: var(--font-feature-settings);
-     }
-     button, input, textarea, select { font-feature-settings: inherit; }
-
-   Both feature-settings lines are load-bearing, and not obviously so. Inter's
-   OpenType set (case, cpsp, salt, ss01/03/04, cv01-11) changes glyph advance
-   widths: without them every label measures about 1px narrower per word, so
-   the button comes out narrow while every colour, border, radius and padding
-   still matches exactly. A <button> does not inherit the features from html on
-   its own, which is why the second rule exists. Found by
-   tools/check-button-drift.mjs, not by reading.
-*/`;
+const SETUP = setupFor('button', true);
 
 export const buttonSnippets: Record<string, SnippetSet> = {
+  // The Playground carries no render function: it is the meta's own args, which
+  // default to label "Button" and severity "primary" and nothing else. So this
+  // is the smallest true button in the library, and the right first thing a
+  // reader copies.
+  Playground: {
+    custom: `<button type="button" class="baps-button baps-button--primary">
+  <span class="baps-button__label">Button</span>
+</button>`,
+    react: `${SETUP}
+
+export function Example() {
+  return (
+    <button type="button" className="baps-button baps-button--primary">
+      <span className="baps-button__label">Button</span>
+    </button>
+  );
+}`,
+    next: `'use client';
+
+${SETUP}
+
+export default function Example() {
+  return (
+    <button type="button" className="baps-button baps-button--primary">
+      <span className="baps-button__label">Button</span>
+    </button>
+  );
+}`,
+    primeng: `<baps-button label="Button" severity="primary" />`,
+  },
+
+  // Four of the story's eight. The other four are not representable and the
+  // reason is the same one the header gives for success and info: no
+  // `--button-*` token exists for them. Measured on the component, the info
+  // button's fill comes back rgb(3, 169, 244) — PrimeNG's own blue, reached
+  // through the generic preset, not a BAPS value — and the two vertical
+  // buttons need a column layout the standalone partial has no rule for.
+  // tools/check-button-drift.mjs compares indices [0, 2, 3, 4] for exactly this
+  // reason, so the four shown here are verified against the component and the
+  // four left out are named rather than faked.
+  //
+  // The glyph slot is a comment, not a path. The registry is data, not CSS:
+  // `import { BAPS_ICONS } from '@org/ui-kit/icons'` and inject
+  // `<svg viewBox="0 0 24 24" fill="none">{BAPS_ICONS[name]}</svg>`, which is
+  // what the Angular component does. The box does not depend on it — measured,
+  // baps-icon is 18x18 whether the slot holds a path or nothing, which is why
+  // the drift check still proves these buttons.
+  WithIcons: {
+    custom: `<!-- Leading icon: the glyph comes FIRST, the label second. Trailing is the
+     same markup with the two swapped — the row is a flex container, so
+     placement is source order and needs no modifier class. -->
+<div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center">
+  <button type="button" class="baps-button baps-button--primary">
+    <baps-icon style="--baps-icon-size: 18px"><span class="baps-icon__glyph" aria-hidden="true"><!-- BAPS_ICONS['add-to-filter'] --></span></baps-icon>
+    <span class="baps-button__label">Add Filter</span>
+  </button>
+  <button type="button" class="baps-button baps-button--primary">
+    <baps-icon style="--baps-icon-size: 18px"><span class="baps-icon__glyph" aria-hidden="true"><!-- BAPS_ICONS['plus'] --></span></baps-icon>
+    <span class="baps-button__label">Create</span>
+  </button>
+  <button type="button" class="baps-button baps-button--secondary">
+    <baps-icon style="--baps-icon-size: 18px"><span class="baps-icon__glyph" aria-hidden="true"><!-- BAPS_ICONS['search-2'] --></span></baps-icon>
+    <span class="baps-button__label">Search</span>
+  </button>
+  <button type="button" class="baps-button baps-button--danger">
+    <baps-icon style="--baps-icon-size: 18px"><span class="baps-icon__glyph" aria-hidden="true"><!-- BAPS_ICONS['trash'] --></span></baps-icon>
+    <span class="baps-button__label">Delete</span>
+  </button>
+</div>`,
+    react: `${SETUP}
+
+import { BAPS_ICONS } from '@org/ui-kit/icons';
+
+/* The glyph registry is plain data — measured, 0 references to Angular in the
+   built file — so it is the one piece of the design system a React app can
+   import directly. The wrapper below is byte for byte what the Angular icon
+   component injects. */
+function Glyph({ name, size = 18 }) {
+  return (
+    <baps-icon style={{ '--baps-icon-size': size + 'px' }}>
+      <span
+        className="baps-icon__glyph"
+        aria-hidden="true"
+        dangerouslySetInnerHTML={{
+          __html:
+            '<svg viewBox="0 0 24 24" fill="none" focusable="false">' + BAPS_ICONS[name] + '</svg>',
+        }}
+      />
+    </baps-icon>
+  );
+}
+
+export function WithIcons() {
+  return (
+    <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
+      <button type="button" className="baps-button baps-button--primary">
+        <Glyph name="add-to-filter" />
+        <span className="baps-button__label">Add Filter</span>
+      </button>
+      <button type="button" className="baps-button baps-button--primary">
+        <Glyph name="plus" />
+        <span className="baps-button__label">Create</span>
+      </button>
+      <button type="button" className="baps-button baps-button--secondary">
+        <Glyph name="search-2" />
+        <span className="baps-button__label">Search</span>
+      </button>
+      <button type="button" className="baps-button baps-button--danger">
+        <Glyph name="trash" />
+        <span className="baps-button__label">Delete</span>
+      </button>
+    </div>
+  );
+}`,
+    next: `'use client';
+
+${SETUP}
+
+import { BAPS_ICONS } from '@org/ui-kit/icons';
+
+/* 'use client' is required, and not for interactivity — there is none here.
+   dangerouslySetInnerHTML is fine on the server, but the inline
+   style={{ '--baps-icon-size': … }} custom property and the unknown
+   <baps-icon> element are both things to keep out of a Server Component's
+   output. Lift the registry import into a shared client component if several
+   routes use icons; it is 2.3 MB of path data and belongs in one chunk. */
+function Glyph({ name, size = 18 }) {
+  return (
+    <baps-icon style={{ '--baps-icon-size': size + 'px' }}>
+      <span
+        className="baps-icon__glyph"
+        aria-hidden="true"
+        dangerouslySetInnerHTML={{
+          __html:
+            '<svg viewBox="0 0 24 24" fill="none" focusable="false">' + BAPS_ICONS[name] + '</svg>',
+        }}
+      />
+    </baps-icon>
+  );
+}
+
+export default function WithIcons() {
+  return (
+    <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
+      <button type="button" className="baps-button baps-button--primary">
+        <Glyph name="add-to-filter" />
+        <span className="baps-button__label">Add Filter</span>
+      </button>
+      <button type="button" className="baps-button baps-button--primary">
+        <Glyph name="plus" />
+        <span className="baps-button__label">Create</span>
+      </button>
+      <button type="button" className="baps-button baps-button--secondary">
+        <Glyph name="search-2" />
+        <span className="baps-button__label">Search</span>
+      </button>
+      <button type="button" className="baps-button baps-button--danger">
+        <Glyph name="trash" />
+        <span className="baps-button__label">Delete</span>
+      </button>
+    </div>
+  );
+}`,
+    primeng: `<!-- Angular resolves the glyph by name; iconPos moves it. The two severities
+     the story also shows, success and info, are PrimeNG's own and carry no
+     BAPS button token — they render through the generic preset. -->
+<div style="display:flex; gap: 12px; flex-wrap: wrap; align-items: center;">
+  <baps-button label="Add Filter" icon="add-to-filter" severity="primary" />
+  <baps-button label="Add to Filter" icon="add-to-filter" iconPos="right" severity="success" />
+  <baps-button label="Create" icon="plus" severity="primary" />
+  <baps-button label="Search" icon="search-2" severity="secondary" />
+  <baps-button label="Delete" icon="trash" severity="danger" />
+  <baps-button label="PrimeIcon" icon="pi pi-check" iconPos="right" severity="info" />
+  <baps-button label="Top Icon" icon="settings" iconPos="top" severity="secondary" [outlined]="true" />
+  <baps-button label="Bottom Icon" icon="download" iconPos="bottom" severity="secondary" [outlined]="true" />
+</div>`,
+  },
+
   AllVariants: {
     custom: `<!-- MyBKY severities. The filled three are gradients; the two ghosts are
      transparent with coloured ink. -->
@@ -150,6 +302,185 @@ export default function AllVariants() {
   <baps-button label="Warning" severity="warn" />
   <baps-button label="Primary Ghost" severity="primary" [text]="true" />
   <baps-button label="Secondary Ghost" severity="secondary" [text]="true" />
+</div>`,
+  },
+
+  // The story's first five, which are the four size steps plus one more
+  // primary. The remaining four are outlined, rounded, and a text danger —
+  // none of which has a `--button-*` token, and the rounded pair measures
+  // border-radius 50% straight from PrimeNG's generic preset. Inventing those
+  // colours to fill the tab out would be the one thing this file must not do,
+  // so check-button-drift.mjs compares indices [0, 1, 2, 3, 4] and the rest are
+  // named here.
+  //
+  // aria-label is not optional on any of them: with no visible label there is
+  // nothing for a screen reader to announce, and the glyph is aria-hidden.
+  //
+  // The width is the news. Each step is square on its own height — measured
+  // 32 / 36 / 36 / 42 — and until this example existed the standalone partial
+  // got that wrong: its only icon-only width rule named .p-button-icon-only, a
+  // class raw markup never carries, so a MyBKY icon-only button collapsed to
+  // its 20px glyph. Fixed in _button.scss, and this is the example that holds
+  // it in place.
+  IconOnly: {
+    custom: `<div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center">
+  <button type="button" class="baps-button baps-button--primary baps-button--icon-only baps-button--s" aria-label="Add to filter">
+    <baps-icon style="--baps-icon-size: 16px"><span class="baps-icon__glyph" aria-hidden="true"><!-- BAPS_ICONS['add-to-filter'] --></span></baps-icon>
+  </button>
+  <button type="button" class="baps-button baps-button--primary baps-button--icon-only" aria-label="Add to filter">
+    <baps-icon style="--baps-icon-size: 18px"><span class="baps-icon__glyph" aria-hidden="true"><!-- BAPS_ICONS['add-to-filter'] --></span></baps-icon>
+  </button>
+  <button type="button" class="baps-button baps-button--primary baps-button--icon-only baps-button--l" aria-label="Add to filter">
+    <baps-icon style="--baps-icon-size: 20px"><span class="baps-icon__glyph" aria-hidden="true"><!-- BAPS_ICONS['add-to-filter'] --></span></baps-icon>
+  </button>
+  <button type="button" class="baps-button baps-button--primary baps-button--icon-only baps-button--xl" aria-label="Add to filter">
+    <baps-icon style="--baps-icon-size: 24px"><span class="baps-icon__glyph" aria-hidden="true"><!-- BAPS_ICONS['add-to-filter'] --></span></baps-icon>
+  </button>
+  <button type="button" class="baps-button baps-button--primary baps-button--icon-only" aria-label="Add">
+    <baps-icon style="--baps-icon-size: 18px"><span class="baps-icon__glyph" aria-hidden="true"><!-- BAPS_ICONS['plus'] --></span></baps-icon>
+  </button>
+</div>`,
+    react: `${SETUP}
+
+import { BAPS_ICONS } from '@org/ui-kit/icons';
+
+/* Same Glyph as the With Icons example; keep one copy in your own code. The
+   size steps are not decoration — the icon shrinks and grows with the button,
+   16 / 18 / 20 / 24 against heights of 32 / 36 / 36 / 42. */
+function Glyph({ name, size = 18 }) {
+  return (
+    <baps-icon style={{ '--baps-icon-size': size + 'px' }}>
+      <span
+        className="baps-icon__glyph"
+        aria-hidden="true"
+        dangerouslySetInnerHTML={{
+          __html:
+            '<svg viewBox="0 0 24 24" fill="none" focusable="false">' + BAPS_ICONS[name] + '</svg>',
+        }}
+      />
+    </baps-icon>
+  );
+}
+
+export function IconOnly() {
+  return (
+    <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
+      <button
+        type="button"
+        className="baps-button baps-button--primary baps-button--icon-only baps-button--s"
+        aria-label="Add to filter"
+      >
+        <Glyph name="add-to-filter" size={16} />
+      </button>
+      <button
+        type="button"
+        className="baps-button baps-button--primary baps-button--icon-only"
+        aria-label="Add to filter"
+      >
+        <Glyph name="add-to-filter" size={18} />
+      </button>
+      <button
+        type="button"
+        className="baps-button baps-button--primary baps-button--icon-only baps-button--l"
+        aria-label="Add to filter"
+      >
+        <Glyph name="add-to-filter" size={20} />
+      </button>
+      <button
+        type="button"
+        className="baps-button baps-button--primary baps-button--icon-only baps-button--xl"
+        aria-label="Add to filter"
+      >
+        <Glyph name="add-to-filter" size={24} />
+      </button>
+      <button
+        type="button"
+        className="baps-button baps-button--primary baps-button--icon-only"
+        aria-label="Add"
+      >
+        <Glyph name="plus" size={18} />
+      </button>
+    </div>
+  );
+}`,
+    next: `'use client';
+
+${SETUP}
+
+import { BAPS_ICONS } from '@org/ui-kit/icons';
+
+function Glyph({ name, size = 18 }) {
+  return (
+    <baps-icon style={{ '--baps-icon-size': size + 'px' }}>
+      <span
+        className="baps-icon__glyph"
+        aria-hidden="true"
+        dangerouslySetInnerHTML={{
+          __html:
+            '<svg viewBox="0 0 24 24" fill="none" focusable="false">' + BAPS_ICONS[name] + '</svg>',
+        }}
+      />
+    </baps-icon>
+  );
+}
+
+export default function IconOnly() {
+  return (
+    <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
+      <button
+        type="button"
+        className="baps-button baps-button--primary baps-button--icon-only baps-button--s"
+        aria-label="Add to filter"
+      >
+        <Glyph name="add-to-filter" size={16} />
+      </button>
+      <button
+        type="button"
+        className="baps-button baps-button--primary baps-button--icon-only"
+        aria-label="Add to filter"
+      >
+        <Glyph name="add-to-filter" size={18} />
+      </button>
+      <button
+        type="button"
+        className="baps-button baps-button--primary baps-button--icon-only baps-button--l"
+        aria-label="Add to filter"
+      >
+        <Glyph name="add-to-filter" size={20} />
+      </button>
+      <button
+        type="button"
+        className="baps-button baps-button--primary baps-button--icon-only baps-button--xl"
+        aria-label="Add to filter"
+      >
+        <Glyph name="add-to-filter" size={24} />
+      </button>
+      <button
+        type="button"
+        className="baps-button baps-button--primary baps-button--icon-only"
+        aria-label="Add"
+      >
+        <Glyph name="plus" size={18} />
+      </button>
+    </div>
+  );
+}`,
+    primeng: `<!-- Omit label, set ariaLabel. The icon size follows the button size on its
+     own — the component maps small/default/large/xlarge to 16/18/20/24. -->
+<div style="display:flex; flex-direction:column; gap: 16px;">
+  <div style="display:flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+    <baps-button icon="add-to-filter" ariaLabel="Add to filter" size="small" />
+    <baps-button icon="add-to-filter" ariaLabel="Add to filter" />
+    <baps-button icon="add-to-filter" ariaLabel="Add to filter" size="large" />
+    <baps-button icon="add-to-filter" ariaLabel="Add to filter" size="xlarge" />
+  </div>
+  <div style="display:flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+    <baps-button icon="plus" ariaLabel="Add" severity="primary" />
+    <baps-button icon="edit" ariaLabel="Edit" severity="secondary" [outlined]="true" />
+    <baps-button icon="trash" ariaLabel="Delete" severity="danger" [text]="true" />
+    <baps-button icon="search-2" ariaLabel="Search" severity="info" [rounded]="true" />
+    <baps-button icon="notification" ariaLabel="Notifications" severity="warn" [rounded]="true" [outlined]="true" />
+  </div>
 </div>`,
   },
 

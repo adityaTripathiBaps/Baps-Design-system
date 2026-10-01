@@ -93,6 +93,50 @@ Inputs, outputs and their types, read from the component's own source.
 
 <PropsTable of={ChipStories} />
 
+## Migration — four inputs moved out, 30 September 2026
+
+Chip used to carry a severity ramp, a size ramp, a count disc and a trailing
+chevron. Those belong to `baps-tag`, which already had all four, so chip is now
+the plain label-and-remove atom it started as.
+
+This is a breaking change, and how your app finds out depends on how the
+attribute was written. Measured under `strictTemplates: true`: a **bound** input
+(`[count]="8"`) fails the build with `NG8002: Can't bind to 'count' since it
+isn't a known property of 'baps-chip'`, while a **literal** attribute
+(`severity="warning"`) produces no error at all — Angular leaves the unknown
+attribute on the element, so the app builds and the chip quietly renders plain
+and grey. Grep your templates for the literal form; the compiler will not find
+it for you.
+
+| Removed from `baps-chip` | Use instead |
+| --- | --- |
+| `severity` | `baps-tag` `severity` — see the value map below |
+| `size="xs \| s \| m \| l"` | `baps-tag` `size` — same four steps, same heights (18 / 22 / 26 / 32px), so the value carries over unchanged |
+| `count` | `baps-badge` with `type="counts"` and the number in `value`. A different component with its own vocabulary, not a renamed input |
+| `chevron` | `baps-tag` `chevron` — same boolean |
+
+Severity values do not carry over one for one, because tag names its severities
+the way PrimeNG does:
+
+| Old chip `severity` | New `baps-tag` |
+| --- | --- |
+| `grey` (the default) | leave `severity` unset — grey is tag's base, not a modifier |
+| `primary` | `severity="contrast"` — tag's own note records that Figma's navy "Primary" chip is `contrast` |
+| `secondary` | `severity="secondary"` |
+| `info` | `severity="info"` |
+| `success` | `severity="success"` |
+| `warning` | `severity="warn"` |
+| `error` | `severity="danger"` |
+
+```html
+<!-- Before -->
+<baps-chip label="Pending" severity="warning" size="m" [count]="8" />
+
+<!-- After -->
+<baps-tag value="Pending" severity="warn" size="m" />
+<baps-badge type="counts" [value]="8" />
+```
+
 ## When Not to Use
 
 - **A status label with a severity.** Use [`baps-tag`](/docs/components-tag--docs)

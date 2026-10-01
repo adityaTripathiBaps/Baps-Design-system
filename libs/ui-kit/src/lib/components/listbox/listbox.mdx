@@ -1,26 +1,14 @@
 import { Meta, Canvas, Controls } from '@storybook/blocks';
 
-{/*
-  Unattached on purpose (`title=`, not `of=`).
+<Meta of={ListboxStories} />
 
-  `baps-listbox` has no stories file of its own — its seven stories live in
-  form-field.stories.ts, whose meta pins `id: 'components-form-controls'`.
-  Moving them into a new CSF file would change every one of their story ids,
-  and the Playwright baselines in apps/storybook-host/visual are keyed by id.
-  An unattached page renders the same stories through `of={…}` while leaving
-  those ids exactly where they are, so Listbox gets its own sidebar entry at
-  zero cost to the visual suite.
-*/}
-
-<Meta title="Components/Molecules/Listbox" />
-
-import * as FormControlsStories from '../form-field/form-field.stories';
+import * as ListboxStories from './listbox.stories';
 
 # Listbox
 
 The BAPS Design System **Listbox** (`baps-listbox`) is a standalone Angular wrapper around PrimeNG's `p-listbox` component. It provides single or multiple selection of values from a list of options. It is customized for both the **MyBKY** (pill radius, soft blue selections) and **Sampark** (flat corners, maroon branding, selected left accent bar indicator) styles.
 
-Rows are rendered by [`baps-menu-item`](?path=/docs/components-molecules-menu-item--docs); the field variants of the same control are documented on [Input](?path=/docs/components-form-controls--docs).
+Rows are rendered by [`baps-menu-item`](?path=/docs/components-menuitem--docs); the field variants of the same control are documented on [Input](?path=/docs/components-form-controls--docs).
 
 ## Usage
 
@@ -37,32 +25,32 @@ Rows are rendered by [`baps-menu-item`](?path=/docs/components-molecules-menu-it
 
 ### Playground
 
-<Canvas of={FormControlsStories.ListboxPlayground} />
-<Controls of={FormControlsStories.ListboxPlayground} />
+<Canvas of={ListboxStories.ListboxPlayground} />
+<Controls of={ListboxStories.ListboxPlayground} />
 
 ### Multi Select With Checkboxes
 
-<Canvas of={FormControlsStories.MultiSelectWithCheckboxes} />
+<Canvas of={ListboxStories.MultiSelectWithCheckboxes} />
 
 ### With Filtering
 
-<Canvas of={FormControlsStories.WithFiltering} />
+<Canvas of={ListboxStories.WithFiltering} />
 
 ### Grouped
 
-<Canvas of={FormControlsStories.Grouped} />
+<Canvas of={ListboxStories.Grouped} />
 
 ### Rich Template Panel List
 
-<Canvas of={FormControlsStories.RichTemplatePanelList} />
+<Canvas of={ListboxStories.RichTemplatePanelList} />
 
 ### Custom Templates Using P Template
 
-<Canvas of={FormControlsStories.CustomTemplatesUsingPTemplate} />
+<Canvas of={ListboxStories.CustomTemplatesUsingPTemplate} />
 
 ### Disabled And Invalid
 
-<Canvas of={FormControlsStories.DisabledAndInvalid} />
+<Canvas of={ListboxStories.DisabledAndInvalid} />
 
 ## When Not to Use
 

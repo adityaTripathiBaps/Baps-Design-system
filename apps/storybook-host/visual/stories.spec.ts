@@ -170,7 +170,7 @@ const PER_STORY_SCREENSHOT_OPTIONS: Record<
   'components-table--karyakar-assignments': { threshold: 0, maxDiffPixelRatio: 0 },
   'components-table--loading': { threshold: 0, maxDiffPixelRatio: 0 },
   'components-table--empty': { threshold: 0, maxDiffPixelRatio: 0 },
-  'components-form-controls--rich-template-panel-list': { threshold: 0, maxDiffPixelRatio: 0 },
+  'components-listbox--rich-template-panel-list': { threshold: 0, maxDiffPixelRatio: 0 },
   'components-avatar--group-sizes': { threshold: 0, maxDiffPixelRatio: 0 },
   'components-breadcrumb--default': { threshold: 0, maxDiffPixelRatio: 0 },
   'components-tablesortconfig--default': { threshold: 0, maxDiffPixelRatio: 0 },

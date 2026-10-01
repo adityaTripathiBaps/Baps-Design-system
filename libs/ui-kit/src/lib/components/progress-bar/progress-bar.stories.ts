@@ -15,6 +15,9 @@ const meta: Meta<BapsProgressBar> = {
     style: {},
     showValue: false,
     value: 0,
+    // The template binds [mode], so leaving this out passed undefined and lost
+    // the component's own 'determinate' default — PrimeNG then rendered no fill.
+    mode: 'determinate',
   },
   // Curated controls. Compodoc already infers every input's TYPE and doc
   // comment, so this block exists only to give the union-typed and boolean

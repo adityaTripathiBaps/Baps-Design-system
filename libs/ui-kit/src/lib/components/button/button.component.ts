@@ -33,7 +33,7 @@ import { SAMPARK_BUTTON_TOKENS } from '../../theme/sampark.theme';
       @if (isBapsIcon) {
         <ng-template #icon let-iconClass="class">
           <baps-icon
-            [name]="$any(icon)"
+            [name]="$any(bapsIconName)"
             [size]="iconSize"
             [class]="iconClass"
           />
@@ -54,9 +54,48 @@ import { SAMPARK_BUTTON_TOKENS } from '../../theme/sampark.theme';
        .baps-button-xl host class; the :not() keeps it out of both Sampark
        scopes, whose own xl rules below carry the Sampark height (also 42px —
        both brands specify 42 at XL, they just reach it via different tokens). */
-    baps-button.baps-button-xl:not(.baps-sampark, .baps-ds-sampark baps-button) .p-button {
+    baps-button.baps-button-xl:not(.baps-sampark, .baps-ds-sampark baps-button) .p-button:not(.p-button-vertical) {
       height: var(--button-mybky-height-xl, 2.625rem);
       font-size: 16px;
+    }
+
+    /* MyBKY heights, the same way Sampark does it below. Stacked buttons
+       (iconPos top/bottom, PrimeNG class .p-button-vertical) are excluded: they
+       lay their icon over their label in a column, so a one-row height clips
+       them — measured scrollHeight 37 inside a 36px box. The tokens always
+       existed — 32 / 36 / 36 / 42 — but only XL applied them. The other three
+       steps fell out of paddingY plus the font's line box and measured
+       33 / 35 / 37, so a button was a pixel or two off its own token and an
+       icon-only button could never be square: measured 40x33, 48x35, 56x37,
+       with xlarge coming out NARROWER than large because it has no PrimeNG
+       size of its own and fell through to the root width. */
+    baps-button:not(.baps-sampark, .baps-ds-sampark baps-button) .p-button:not(.p-button-vertical) {
+      height: var(--button-mybky-height-m, 2.25rem);
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+    baps-button:not(.baps-sampark, .baps-ds-sampark baps-button) .p-button-sm:not(.p-button-vertical) {
+      height: var(--button-mybky-height-s, 2rem);
+    }
+    baps-button:not(.baps-sampark, .baps-ds-sampark baps-button) .p-button-lg:not(.p-button-vertical) {
+      height: var(--button-mybky-height-l, 2.25rem);
+    }
+
+    /* Icon-only is a square: width equals height. sm / default / lg widths come
+       from the preset's iconOnlyWidth (baps.theme.ts); XL needs CSS because
+       primeSize returns undefined for it, so the preset's root value applies
+       instead of an xl one. */
+    baps-button.baps-button-xl:not(.baps-sampark, .baps-ds-sampark baps-button) .p-button-icon-only {
+      width: var(--button-mybky-height-xl, 2.625rem);
+    }
+
+    /* PrimeNG zeroes the inline padding on .p-button-icon-only, but its own
+       size classes set padding-inline again and win on order, so sm and lg kept
+       16px either side. That padding is the button's min-content width, which
+       is why small measured 34px against a 32px width token — the box could not
+       shrink to the value it was given. */
+    baps-button:not(.baps-sampark, .baps-ds-sampark baps-button) .p-button-icon-only {
+      padding-inline: 0;
     }
 
     /* Every rule below matches under either Sampark scope: a single instance
@@ -193,15 +232,30 @@ export class BapsButton {
     return this.icon in BAPS_ICONS || !this.icon.includes(' ');
   }
 
+  get bapsIconName(): string | undefined {
+    return this.icon;
+  }
+
   get primeIcon(): string | undefined {
     return this.isBapsIcon ? undefined : this.icon;
   }
 
+  /**
+   * The Figma icon ramp, identical in both brands: S 16 / M 18 / L 20 / XL 24
+   * (MyBKY node 22465:93605, Sampark node 151:361). Only the button heights
+   * differ between the brands, not the icons, so one ramp serves both.
+   *
+   * This used to return sm / sm / 18 / md — 16 / 16 / 18 / 20 — which left
+   * `small` and the default step drawing the same icon and every step from M
+   * upwards one size short. 18 and 24 are not steps on the icon scale
+   * (xs 12 · sm 16 · md 20 · lg 24 · xl 32), and that is fine: the scale is the
+   * artwork's own ramp, while these are the sizes the button frames specify.
+   */
   get iconSize(): BapsIconSize | number {
-    if (this.size === 'small') return 'sm';
-    if (this.size === 'large') return 18;
-    if (this.size === 'xlarge') return 'md';
-    return 'sm';
+    if (this.size === 'small') return 16;
+    if (this.size === 'large') return 20;
+    if (this.size === 'xlarge') return 24;
+    return 18;
   }
 
   get primeSize(): 'small' | 'large' | undefined {
