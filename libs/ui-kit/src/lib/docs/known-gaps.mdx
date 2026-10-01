@@ -12,6 +12,70 @@ Accessibility findings live on their own page, [Guidelines →
 Accessibility](?path=/docs/guidelines-accessibility--docs), because they are
 checked by a different tool and read by a different audience.
 
+## Button icon sizes are one step behind Figma from M upwards
+
+**Not fixed here.** The fix lands on its own branch, `fix/button-icon-size`,
+because `iconSize` is shared by both brands and the change moves baselines for
+button, split button and every action icon that reads it.
+
+`button.component.ts` decides the icon size in TypeScript, not from a token:
+
+```ts
+get iconSize(): BapsIconSize | number {
+  if (this.size === 'small') return 'sm';   // 16
+  if (this.size === 'large') return 18;
+  if (this.size === 'xlarge') return 'md';  // 20
+  return 'sm';                              // 16 — same as small
+}
+```
+
+Figma gives the same icon ramp for both brands — only the button heights differ:
+
+| Step | MyBKY height | Sampark height | Figma icon | Code icon |
+| --- | --- | --- | --- | --- |
+| S | 32 | 28 | 16 | 16 |
+| M | 36 | 32 | 18 | **16** |
+| L | 36 (mobile) | 36 | 20 | **18** |
+| XL | 42 | 42 | 24 | **20** |
+
+Chevron is 10 / 10 / 12 / 12 and the notification count 16 / 16 / 16 / 20 in
+both files; neither is wired to the size step at all today.
+
+So from M upwards every icon is one step small, and `small` and the default
+step render the same 16px icon. `18` is also not a step on the icon scale
+(`xs 12 · sm 16 · md 20 · lg 24 · xl 32`), which is a hint that the ramp was
+guessed rather than read. Rounding it onto the icon scale would be the wrong
+fix: 18 is what Figma specifies.
+
+There is no `--button-*-icon-size` token in the generated CSS — 63 button
+tokens, none for the icon. The fix therefore needs a token, and a **shared**
+one: the ramp is identical across brands, so a per-brand token would encode a
+difference that does not exist.
+
+Sources, because two Sampark files are in play:
+
+- Values measured from **PKHWEQTVUKl6FAeQSIkXMW** ("🟢 Component Library"),
+  Button node `151:361` — S `178:9645`, M `178:7885`, L `151:343`,
+  XL `7624:77233`.
+- MyBKY from **yY5bmcEifXbcCwhauoiy6Y**, Button node `22465:93605` — the same
+  node `tokens.css` already cites — S `22465:93606`, M `22465:93630`,
+  L `22465:93654`, XL `22465:93678`.
+- The button stories still point at the older Sampark Portal file,
+  **xc0L2xnREMgjyb5XcKyLIz** node `13197:91897`. Repointing them is a separate
+  Sampark-Figma task, not part of this branch.
+
+### MyBKY button heights are written as tokens but only XL applies
+
+A second finding from the same measurement, with the same fix branch.
+`tokens.css` carries `--button-mybky-height-s|m|l|xl` = 32 / 36 / 36 / 42, but
+`_button.scss` only applies the XL one. The other three steps fall out of
+padding plus the font's line box, so the rendered heights are **33 / 35 / 37** —
+the partial's own comment says so. Sampark does set all four explicitly
+(28 / 32 / 36 / 42) and matches its Figma exactly.
+
+The practical effect: a MyBKY button is a pixel or two off its own token, and
+nothing fails, because no test compares the two.
+
 ## Breaking change — `baps-chip` lost `severity`, `size`, `count` and `chevron`
 
 **Deliberate and approved, 30 September 2026.** This is not a defect; it is here
