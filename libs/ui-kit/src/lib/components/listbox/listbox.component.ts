@@ -39,6 +39,7 @@ export interface BapsListboxOption {
   ],
   template: `
     <p-listbox
+      [ariaLabel]="ariaLabel"
       [(ngModel)]="value"
       [options]="options"
       [optionLabel]="optionLabel"
@@ -316,6 +317,7 @@ export interface BapsListboxOption {
 })
 export class BapsListbox implements ControlValueAccessor {
   @Input() options: any[] = [];
+  @Input() ariaLabel?: string;
   @Input() optionLabel?: string;
   @Input() optionValue?: string;
   @Input() optionDisabled?: string;
