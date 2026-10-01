@@ -57,6 +57,11 @@ const STORIES = {
   SamparkSizes: 'components-tag--sampark-sizes',
   ChevronAxis: 'components-tag--chevron-axis',
   IconOnlyAxis: 'components-tag--icon-only-axis',
+  // The two ds:comparison stories: the same shapes with a Sampark sample
+  // pinned on the end, which exercises .baps-sampark beside unscoped tags in
+  // one row — the mixed case the per-instance class exists for.
+  Chevron: 'components-tag--chevron',
+  IconOnly: 'components-tag--icon-only',
 };
 
 const PROPS = [

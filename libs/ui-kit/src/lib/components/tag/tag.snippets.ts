@@ -44,6 +44,481 @@ export type { SnippetSet };
 const SETUP = setupFor('tag', true);
 
 export const tagSnippets: Record<string, SnippetSet> = {
+  // Route B: React, Next and PrimeNG-Angular, no Custom tab.
+  //
+  // The trailing action is the one tag shape the standalone partial cannot
+  // render. Measured: _tag.scss contains the string "action" zero times, and
+  // tokens.css has no --tag-*-action-* of any kind. Everything the action
+  // needs lives in tag.component.ts's own styles block as component-local
+  // custom properties — --baps-tag-action-size: 1.25rem base, 1rem at xs,
+  // 1.5rem at l — together with the hover plate Figma keeps at opacity 0 until
+  // hover. Those are literals in a component, not design tokens, so authoring
+  // a partial from them would mean writing design values this system has not
+  // declared.
+  //
+  // So the React and Next blocks below show the SHAPE and the semantics — a
+  // real <button> with its own accessible name, not a glyph — and say plainly
+  // that the styling for it is not published yet. hideCustom on the strip
+  // keeps the Custom tab from falling back to the live Angular source, which
+  // outside Angular is an empty <baps-tag> element.
+  //
+  // This unblocks the day --tag-*-action-* tokens exist; nothing else has to
+  // change.
+  TrailingAction: {
+    interactive: true,
+    primeng: `<div style="display:flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+  <baps-tag value="Extra small" size="xs" [action]="true" actionLabel="Open Extra small" (actionClick)="onAction($event)" />
+  <baps-tag value="Small" [action]="true" actionLabel="Open Small" (actionClick)="onAction($event)" />
+  <baps-tag value="Large" size="l" [action]="true" actionLabel="Open Large" (actionClick)="onAction($event)" />
+  <baps-tag value="Filter" severity="contrast" icon="pi pi-filter" [action]="true" actionIcon="pi pi-times" actionLabel="Remove filter" />
+  <baps-tag value="Disabled" [action]="true" actionLabel="Open Disabled" [disabled]="true" />
+  <baps-tag brand="sampark" value="Sampark" severity="danger" [action]="true" actionLabel="Open Sampark" />
+</div>`,
+    react: `\${SETUP}
+
+/* The action is a real <button> with its own accessible name — never a
+   decorative glyph, and never the tag itself made clickable. The tag stays a
+   <span>; only the trailing control takes the press.
+
+   The className below is deliberately incomplete: baps-tag-action has no
+   published rule yet (see the note above the snippet), so this renders an
+   unstyled button inside a correctly styled tag. The SEMANTICS are the part
+   worth copying. */
+const TAGS = [
+  ['Extra small', 'baps-tag--xs', 'Open Extra small'],
+  ['Small', '', 'Open Small'],
+  ['Large', 'baps-tag--l', 'Open Large'],
+];
+
+function TagWithAction({ label, size, actionLabel, onAction }) {
+  return (
+    <span className={\`baps-tag baps-tag--grey \${size}\`}>
+      <span className="baps-tag__label">{label}</span>
+      <button type="button" className="baps-tag-action" aria-label={actionLabel} onClick={onAction}>
+        <span className="pi pi-times" aria-hidden="true" />
+      </button>
+    </span>
+  );
+}
+
+export function TrailingAction({ onAction }) {
+  return (
+    <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+      {TAGS.map(([label, size, actionLabel]) => (
+        <TagWithAction
+          key={label}
+          label={label}
+          size={size}
+          actionLabel={actionLabel}
+          onAction={onAction}
+        />
+      ))}
+    </div>
+  );
+}`,
+    next: `'use client';
+
+\${SETUP}
+
+/* The action is a real <button> with its own accessible name — never a
+   decorative glyph, and never the tag itself made clickable. The tag stays a
+   <span>; only the trailing control takes the press.
+
+   The className below is deliberately incomplete: baps-tag-action has no
+   published rule yet (see the note above the snippet), so this renders an
+   unstyled button inside a correctly styled tag. The SEMANTICS are the part
+   worth copying. */
+const TAGS = [
+  ['Extra small', 'baps-tag--xs', 'Open Extra small'],
+  ['Small', '', 'Open Small'],
+  ['Large', 'baps-tag--l', 'Open Large'],
+];
+
+function TagWithAction({ label, size, actionLabel, onAction }) {
+  return (
+    <span className={\`baps-tag baps-tag--grey \${size}\`}>
+      <span className="baps-tag__label">{label}</span>
+      <button type="button" className="baps-tag-action" aria-label={actionLabel} onClick={onAction}>
+        <span className="pi pi-times" aria-hidden="true" />
+      </button>
+    </span>
+  );
+}
+
+export default function TrailingAction({ onAction }) {
+  return (
+    <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+      {TAGS.map(([label, size, actionLabel]) => (
+        <TagWithAction
+          key={label}
+          label={label}
+          size={size}
+          actionLabel={actionLabel}
+          onAction={onAction}
+        />
+      ))}
+    </div>
+  );
+}`,
+  },
+
+  // Route B: React, Next and PrimeNG-Angular, no Custom tab.
+  //
+  // The trailing action is the one tag shape the standalone partial cannot
+  // render. Measured: _tag.scss contains the string "action" zero times, and
+  // tokens.css has no --tag-*-action-* of any kind. Everything the action
+  // needs lives in tag.component.ts's own styles block as component-local
+  // custom properties — --baps-tag-action-size: 1.25rem base, 1rem at xs,
+  // 1.5rem at l — together with the hover plate Figma keeps at opacity 0 until
+  // hover. Those are literals in a component, not design tokens, so authoring
+  // a partial from them would mean writing design values this system has not
+  // declared.
+  //
+  // So the React and Next blocks below show the SHAPE and the semantics — a
+  // real <button> with its own accessible name, not a glyph — and say plainly
+  // that the styling for it is not published yet. hideCustom on the strip
+  // keeps the Custom tab from falling back to the live Angular source, which
+  // outside Angular is an empty <baps-tag> element.
+  //
+  // This unblocks the day --tag-*-action-* tokens exist; nothing else has to
+  // change.
+  TrailingActionAxis: {
+    interactive: true,
+    primeng: `<div style="display:flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+  <baps-tag value="Extra small" size="xs" [action]="true" actionLabel="Open Extra small" (actionClick)="onAction($event)" />
+  <baps-tag value="Small" [action]="true" actionLabel="Open Small" (actionClick)="onAction($event)" />
+  <baps-tag value="Large" size="l" [action]="true" actionLabel="Open Large" (actionClick)="onAction($event)" />
+  <baps-tag value="Filter" severity="contrast" icon="pi pi-filter" [action]="true" actionIcon="pi pi-times" actionLabel="Remove filter" />
+  <baps-tag value="Disabled" [action]="true" actionLabel="Open Disabled" [disabled]="true" />
+</div>`,
+    react: `\${SETUP}
+
+/* The action is a real <button> with its own accessible name — never a
+   decorative glyph, and never the tag itself made clickable. The tag stays a
+   <span>; only the trailing control takes the press.
+
+   The className below is deliberately incomplete: baps-tag-action has no
+   published rule yet (see the note above the snippet), so this renders an
+   unstyled button inside a correctly styled tag. The SEMANTICS are the part
+   worth copying. */
+const TAGS = [
+  ['Extra small', 'baps-tag--xs', 'Open Extra small'],
+  ['Small', '', 'Open Small'],
+  ['Large', 'baps-tag--l', 'Open Large'],
+];
+
+function TagWithAction({ label, size, actionLabel, onAction }) {
+  return (
+    <span className={\`baps-tag baps-tag--grey \${size}\`}>
+      <span className="baps-tag__label">{label}</span>
+      <button type="button" className="baps-tag-action" aria-label={actionLabel} onClick={onAction}>
+        <span className="pi pi-times" aria-hidden="true" />
+      </button>
+    </span>
+  );
+}
+
+export function TrailingActionAxis({ onAction }) {
+  return (
+    <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+      {TAGS.map(([label, size, actionLabel]) => (
+        <TagWithAction
+          key={label}
+          label={label}
+          size={size}
+          actionLabel={actionLabel}
+          onAction={onAction}
+        />
+      ))}
+    </div>
+  );
+}`,
+    next: `'use client';
+
+\${SETUP}
+
+/* The action is a real <button> with its own accessible name — never a
+   decorative glyph, and never the tag itself made clickable. The tag stays a
+   <span>; only the trailing control takes the press.
+
+   The className below is deliberately incomplete: baps-tag-action has no
+   published rule yet (see the note above the snippet), so this renders an
+   unstyled button inside a correctly styled tag. The SEMANTICS are the part
+   worth copying. */
+const TAGS = [
+  ['Extra small', 'baps-tag--xs', 'Open Extra small'],
+  ['Small', '', 'Open Small'],
+  ['Large', 'baps-tag--l', 'Open Large'],
+];
+
+function TagWithAction({ label, size, actionLabel, onAction }) {
+  return (
+    <span className={\`baps-tag baps-tag--grey \${size}\`}>
+      <span className="baps-tag__label">{label}</span>
+      <button type="button" className="baps-tag-action" aria-label={actionLabel} onClick={onAction}>
+        <span className="pi pi-times" aria-hidden="true" />
+      </button>
+    </span>
+  );
+}
+
+export default function TrailingActionAxis({ onAction }) {
+  return (
+    <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+      {TAGS.map(([label, size, actionLabel]) => (
+        <TagWithAction
+          key={label}
+          label={label}
+          size={size}
+          actionLabel={actionLabel}
+          onAction={onAction}
+        />
+      ))}
+    </div>
+  );
+}`,
+  },
+
+  // Route B, and the reason is the content rather than the CSS.
+  //
+  // This story crosses every severity with every size and four content shapes,
+  // one of which is label + trailing action — the shape with no standalone
+  // rule (see TrailingAction above). A Custom tab could render three quarters
+  // of the matrix and would be a tab that quietly stops being true a quarter
+  // of the way across. The focused stories above each show one shape with a
+  // verified Custom tab; this one is the overview.
+  //
+  // React and Next keep the story's own loops rather than 112 tags written
+  // longhand, which is the same call the story itself makes.
+  FullMatrix: {
+    primeng: `<!-- The story builds this with @for over the two arrays; the Angular you
+     would write in an app is the same loop. -->
+<div style="display:grid; gap: 16px;">
+  @for (severity of severities; track severity) {
+    <div style="display:flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+      @for (size of sizes; track size) {
+        <baps-tag [value]="severity ?? 'Grey'" [severity]="severity" [size]="size" [chevron]="true" />
+      }
+    </div>
+  }
+</div>`,
+    react: `\${SETUP}
+
+/* Severity "grey" is the unqualified tag; the Angular side reaches Figma's
+   navy "Primary" chip through PrimeNG's contrast slot, which is why the class
+   is baps-tag--primary while the input is severity="contrast". */
+const SEVERITIES = ['grey', 'primary', 'secondary', 'info', 'warning', 'error', 'success'];
+const SIZES = ['baps-tag--xs', '', 'baps-tag--m', 'baps-tag--l'];
+
+export function FullMatrix() {
+  return (
+    <div style={{ display: 'grid', gap: 16 }}>
+      {SEVERITIES.map((severity) => (
+        <div key={severity} style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+          {SIZES.map((size) => (
+            <span key={size} className={\`baps-tag baps-tag--\${severity} \${size}\`}>
+              <span className="baps-tag__label">{severity}</span>
+              <span className="baps-tag-chevron pi pi-chevron-down" aria-hidden="true" />
+            </span>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}`,
+    next: `\${SETUP}
+
+const SEVERITIES = ['grey', 'primary', 'secondary', 'info', 'warning', 'error', 'success'];
+const SIZES = ['baps-tag--xs', '', 'baps-tag--m', 'baps-tag--l'];
+
+export default function FullMatrix() {
+  return (
+    <div style={{ display: 'grid', gap: 16 }}>
+      {SEVERITIES.map((severity) => (
+        <div key={severity} style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+          {SIZES.map((size) => (
+            <span key={size} className={\`baps-tag baps-tag--\${severity} \${size}\`}>
+              <span className="baps-tag__label">{severity}</span>
+              <span className="baps-tag-chevron pi pi-chevron-down" aria-hidden="true" />
+            </span>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}`,
+  },
+
+  // ChevronAxis plus one Sampark sample on the end, which is why this story is
+  // tagged ds:comparison — the sample is LABELLED "Sampark", so unpinning it
+  // would render a tag saying Sampark in the MyBKY skin.
+  //
+  // In raw markup the pin is the same class the Angular host adds:
+  // brand="sampark" -> baps-sampark on that one element, with the rest of the
+  // row left to follow whatever scope the page is in.
+  Chevron: {
+    primeng: `<div style="display:flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+  <baps-tag value="Extra small" size="xs" [chevron]="true" />
+  <baps-tag value="Small" [chevron]="true" />
+  <baps-tag value="Large" size="l" [chevron]="true" />
+  <baps-tag value="With icon" severity="info" icon="pi pi-user" [chevron]="true" />
+  <baps-tag value="Disabled" [chevron]="true" [disabled]="true" />
+  <baps-tag brand="sampark" value="Sampark" severity="success" [chevron]="true" />
+</div>`,
+    custom: `<div style="display:flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+  <span class="baps-tag baps-tag--grey baps-tag--xs"><span class="baps-tag__label">Extra small</span><span class="baps-tag-chevron pi pi-chevron-down" aria-hidden="true"></span></span>
+  <span class="baps-tag baps-tag--grey"><span class="baps-tag__label">Small</span><span class="baps-tag-chevron pi pi-chevron-down" aria-hidden="true"></span></span>
+  <span class="baps-tag baps-tag--grey baps-tag--l"><span class="baps-tag__label">Large</span><span class="baps-tag-chevron pi pi-chevron-down" aria-hidden="true"></span></span>
+  <span class="baps-tag baps-tag--info"><span class="baps-tag__icon pi pi-user" aria-hidden="true"></span><span class="baps-tag__label">With icon</span><span class="baps-tag-chevron pi pi-chevron-down" aria-hidden="true"></span></span>
+  <span class="baps-tag baps-tag--disabled"><span class="baps-tag__label">Disabled</span><span class="baps-tag-chevron pi pi-chevron-down" aria-hidden="true"></span></span>
+  <span class="baps-tag baps-sampark baps-tag--success"><span class="baps-tag__label">Sampark</span><span class="baps-tag-chevron pi pi-chevron-down" aria-hidden="true"></span></span>
+</div>`,
+    react: `\${SETUP}
+
+export function Chevron() {
+  return (
+    <div style={ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }>
+      <span className="baps-tag baps-tag--grey baps-tag--xs">
+        <span className="baps-tag__label">Extra small</span>
+        <span className="baps-tag-chevron pi pi-chevron-down" aria-hidden="true" />
+      </span>
+      <span className="baps-tag baps-tag--grey">
+        <span className="baps-tag__label">Small</span>
+        <span className="baps-tag-chevron pi pi-chevron-down" aria-hidden="true" />
+      </span>
+      <span className="baps-tag baps-tag--grey baps-tag--l">
+        <span className="baps-tag__label">Large</span>
+        <span className="baps-tag-chevron pi pi-chevron-down" aria-hidden="true" />
+      </span>
+      <span className="baps-tag baps-tag--info">
+        <span className="baps-tag__icon pi pi-user" aria-hidden="true" />
+        <span className="baps-tag__label">With icon</span>
+        <span className="baps-tag-chevron pi pi-chevron-down" aria-hidden="true" />
+      </span>
+      <span className="baps-tag baps-tag--disabled">
+        <span className="baps-tag__label">Disabled</span>
+        <span className="baps-tag-chevron pi pi-chevron-down" aria-hidden="true" />
+      </span>
+      <span className="baps-tag baps-sampark baps-tag--success">
+        <span className="baps-tag__label">Sampark</span>
+        <span className="baps-tag-chevron pi pi-chevron-down" aria-hidden="true" />
+      </span>
+    </div>
+  );
+}`,
+    next: `\${SETUP}
+
+export default function Chevron() {
+  return (
+    <div style={ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }>
+      <span className="baps-tag baps-tag--grey baps-tag--xs">
+        <span className="baps-tag__label">Extra small</span>
+        <span className="baps-tag-chevron pi pi-chevron-down" aria-hidden="true" />
+      </span>
+      <span className="baps-tag baps-tag--grey">
+        <span className="baps-tag__label">Small</span>
+        <span className="baps-tag-chevron pi pi-chevron-down" aria-hidden="true" />
+      </span>
+      <span className="baps-tag baps-tag--grey baps-tag--l">
+        <span className="baps-tag__label">Large</span>
+        <span className="baps-tag-chevron pi pi-chevron-down" aria-hidden="true" />
+      </span>
+      <span className="baps-tag baps-tag--info">
+        <span className="baps-tag__icon pi pi-user" aria-hidden="true" />
+        <span className="baps-tag__label">With icon</span>
+        <span className="baps-tag-chevron pi pi-chevron-down" aria-hidden="true" />
+      </span>
+      <span className="baps-tag baps-tag--disabled">
+        <span className="baps-tag__label">Disabled</span>
+        <span className="baps-tag-chevron pi pi-chevron-down" aria-hidden="true" />
+      </span>
+      <span className="baps-tag baps-sampark baps-tag--success">
+        <span className="baps-tag__label">Sampark</span>
+        <span className="baps-tag-chevron pi pi-chevron-down" aria-hidden="true" />
+      </span>
+    </div>
+  );
+}`,
+  },
+
+  // IconOnlyAxis plus two Sampark samples. Same pinning as Chevron.
+  //
+  // Each of these still needs an accessible name in a real page — the glyph is
+  // aria-hidden and there is no label to fall back on. They are sample markup
+  // for the shape, not a pattern to paste with the name left off.
+  IconOnly: {
+    primeng: `<div style="display:flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+  <baps-tag icon="pi pi-user" size="xs" />
+  <baps-tag icon="pi pi-user" />
+  <baps-tag icon="pi pi-user" size="l" />
+  <baps-tag icon="pi pi-user" [chevron]="true" />
+  <baps-tag brand="sampark" icon="pi pi-user" />
+  <baps-tag brand="sampark" icon="pi pi-user" size="l" />
+</div>`,
+    custom: `<div style="display:flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+  <span class="baps-tag baps-tag--grey baps-tag--icon-only baps-tag--xs"><span class="baps-tag__icon pi pi-user" aria-hidden="true"></span></span>
+  <span class="baps-tag baps-tag--grey baps-tag--icon-only"><span class="baps-tag__icon pi pi-user" aria-hidden="true"></span></span>
+  <span class="baps-tag baps-tag--grey baps-tag--icon-only baps-tag--l"><span class="baps-tag__icon pi pi-user" aria-hidden="true"></span></span>
+  <span class="baps-tag baps-tag--grey baps-tag--icon-only"><span class="baps-tag__icon pi pi-user" aria-hidden="true"></span><span class="baps-tag-chevron pi pi-chevron-down" aria-hidden="true"></span></span>
+  <span class="baps-tag baps-sampark baps-tag--grey baps-tag--icon-only"><span class="baps-tag__icon pi pi-user" aria-hidden="true"></span></span>
+  <span class="baps-tag baps-sampark baps-tag--grey baps-tag--icon-only baps-tag--l"><span class="baps-tag__icon pi pi-user" aria-hidden="true"></span></span>
+</div>`,
+    react: `\${SETUP}
+
+export function IconOnly() {
+  return (
+    <div style={ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }>
+      <span className="baps-tag baps-tag--grey baps-tag--icon-only baps-tag--xs">
+        <span className="baps-tag__icon pi pi-user" aria-hidden="true" />
+      </span>
+      <span className="baps-tag baps-tag--grey baps-tag--icon-only">
+        <span className="baps-tag__icon pi pi-user" aria-hidden="true" />
+      </span>
+      <span className="baps-tag baps-tag--grey baps-tag--icon-only baps-tag--l">
+        <span className="baps-tag__icon pi pi-user" aria-hidden="true" />
+      </span>
+      <span className="baps-tag baps-tag--grey baps-tag--icon-only">
+        <span className="baps-tag__icon pi pi-user" aria-hidden="true" />
+        <span className="baps-tag-chevron pi pi-chevron-down" aria-hidden="true" />
+      </span>
+      <span className="baps-tag baps-sampark baps-tag--grey baps-tag--icon-only">
+        <span className="baps-tag__icon pi pi-user" aria-hidden="true" />
+      </span>
+      <span className="baps-tag baps-sampark baps-tag--grey baps-tag--icon-only baps-tag--l">
+        <span className="baps-tag__icon pi pi-user" aria-hidden="true" />
+      </span>
+    </div>
+  );
+}`,
+    next: `\${SETUP}
+
+export default function IconOnly() {
+  return (
+    <div style={ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }>
+      <span className="baps-tag baps-tag--grey baps-tag--icon-only baps-tag--xs">
+        <span className="baps-tag__icon pi pi-user" aria-hidden="true" />
+      </span>
+      <span className="baps-tag baps-tag--grey baps-tag--icon-only">
+        <span className="baps-tag__icon pi pi-user" aria-hidden="true" />
+      </span>
+      <span className="baps-tag baps-tag--grey baps-tag--icon-only baps-tag--l">
+        <span className="baps-tag__icon pi pi-user" aria-hidden="true" />
+      </span>
+      <span className="baps-tag baps-tag--grey baps-tag--icon-only">
+        <span className="baps-tag__icon pi pi-user" aria-hidden="true" />
+        <span className="baps-tag-chevron pi pi-chevron-down" aria-hidden="true" />
+      </span>
+      <span className="baps-tag baps-sampark baps-tag--grey baps-tag--icon-only">
+        <span className="baps-tag__icon pi pi-user" aria-hidden="true" />
+      </span>
+      <span className="baps-tag baps-sampark baps-tag--grey baps-tag--icon-only baps-tag--l">
+        <span className="baps-tag__icon pi pi-user" aria-hidden="true" />
+      </span>
+    </div>
+  );
+}`,
+  },
+
   // The chevron is decorative: a caret after the label, aria-hidden, not a
   // button and not announced. [chevron]="true" renders
   // <span class="baps-tag-chevron pi pi-chevron-down">, which is what the raw

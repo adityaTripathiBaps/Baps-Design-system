@@ -385,3 +385,24 @@
 .baps-ds-sampark .baps-tag.baps-tag--l .baps-tag-chevron {
   font-size: var(--tag-sampark-icon-size-l, 1rem);
 }
+
+/* ── Icon-only, Sampark ───────────────────────────────────────────────────
+   There was no Sampark rule here at all, so a Sampark icon-only tag took the
+   MyBKY floor: min-width --tag-mybky-height-l (32px) at the l step, against
+   the component's 30px. Every other Sampark size rule in this file re-points
+   at the Sampark token set and this one was simply missing. No `m` step, for
+   the same reason the size rules have none — Sampark does not declare one. */
+.baps-tag.baps-sampark.baps-tag--icon-only,
+.baps-ds-sampark .baps-tag.baps-tag--icon-only {
+  min-width: var(--tag-sampark-height-s, 1.375rem);
+}
+
+.baps-tag.baps-sampark.baps-tag--icon-only.baps-tag--xs,
+.baps-ds-sampark .baps-tag.baps-tag--icon-only.baps-tag--xs {
+  min-width: var(--tag-sampark-height-xs, 1.125rem);
+}
+
+.baps-tag.baps-sampark.baps-tag--icon-only.baps-tag--l,
+.baps-ds-sampark .baps-tag.baps-tag--icon-only.baps-tag--l {
+  min-width: var(--tag-sampark-height-l, 1.75rem);
+}
