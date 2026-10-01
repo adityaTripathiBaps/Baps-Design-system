@@ -104,7 +104,9 @@ export const DemoCard = ({
   controls?: boolean;
   /* Authored React/Next snippets for this use-case. Supplying them swaps the
      canvas's own SHOW CODE toggle for the framework tab strip, whose Custom tab
-     renders the same Angular source — one code viewer per example, not two. */
+     renders the same Angular source — one code viewer per example, not two.
+     FrameworkTabs also registers them with the Copy prompt, so the prompt and
+     the visible tab always carry the same code. */
   snippets?: SnippetSet;
   children?: React.ReactNode;
 }) => (
@@ -119,7 +121,6 @@ export const DemoCard = ({
           <Canvas of={of as never} sourceState="none" />
           {controls ? <Controls of={of as never} /> : null}
           <FrameworkTabs of={of} snippets={snippets} />
-          <RegisterSnippets of={of} snippets={snippets} />
         </>
       ) : (
         <>
@@ -132,15 +133,6 @@ export const DemoCard = ({
     )}
   </section>
 );
-
-/* Hands this example's authored React / Next.js / Custom markup to the Copy
-   prompt action on its Canvas, so a React prompt copied from "Sizes" carries
-   the Sizes React snippet. Renders nothing. */
-const RegisterSnippets = ({ of, snippets }: { of: unknown; snippets: SnippetSet }) => {
-  const resolved = useOf(of as never) as { type?: string; story?: { id: string } };
-  useRegisterSnippets(resolved.type === 'story' ? resolved.story?.id : undefined, snippets);
-  return null;
-};
 
 /* ── CodeBlock ─────────────────────────────────────────────────────────────
    Storybook's <Source> with a filename strip above it. The strip is what makes
@@ -473,6 +465,18 @@ export const FrameworkTabs = ({
      selector and ships globally, so the live source IS copyable. */
   hideCustom?: boolean;
 }) => {
+  /* Registering here, not in DemoCard, is what makes the Copy prompt work for
+     every example rather than most of them. It used to live in a sibling
+     <RegisterSnippets> that only DemoCard rendered, so a page written as
+     <Canvas> + <FrameworkTabs> — spinner's four examples, and others — showed
+     the tab strip and handed the Copy prompt nothing, with no symptom on the
+     page to say so. Both call sites end up here now, so the two cannot drift.
+
+     useOf returns the resolved doc entry; a non-story target registers
+     nothing, which is also what happens when snippets is undefined. */
+  const resolved = useOf(of as never) as { type?: string; story?: { id: string } };
+  useRegisterSnippets(resolved.type === 'story' ? resolved.story?.id : undefined, snippets);
+
   const [active, setActive] = useState<string>('react');
   // The Custom tab has no authored string to copy, so Copy reads the rendered
   // source out of the DOM — scoped to THIS strip. A document-wide query would
@@ -495,7 +499,7 @@ export const FrameworkTabs = ({
   const code =
     current === 'custom'
       ? (snippets?.custom ?? null)
-      : //  is a flag on the same object, never a tab's code
+      : // `interactive` is a flag on the same object, never a tab’s code
         ((snippets?.[current as 'react' | 'next' | 'primeng' | 'custom'] as string | undefined) ?? '');
 
   useEffect(() => {
