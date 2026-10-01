@@ -127,7 +127,7 @@ for (const dir of list(COMPONENTS).sort()) {
     .replace(/<!--[\s\S]*?-->/g, '')
     .replace(/\/\*[\s\S]*?\*\//g, '')
     .replace(/^\s*\/\/.*$/gm, '');
-  for (const m of snippetStrings.matchAll(/#[0-9a-fA-F]{3,8}\b|rgba?\([^)]*\)|hsla?\([^)]*\)/g)) {
+  for (const m of snippetCode.matchAll(/#[0-9a-fA-F]{3,8}\b|rgba?\([^)]*\)|hsla?\([^)]*\)/g)) {
     fail(dir, 'colour', `${m[0]} is written into a snippet — use a token`);
   }
 

@@ -391,10 +391,32 @@ export const BrandOnly = ({
 
    Tab order runs least-familiar to most: a reader who came for React finds it
    first, and the two Angular flavours sit together at the end. */
+/**
+ * One sentence, in one place, for every React and Next example whose component
+ * gets its behaviour from Angular. Written once here rather than on each docs
+ * page so the wording cannot drift, and exported so the Copy prompt sends the
+ * same text a reader sees.
+ */
+export const INTERACTIVE_NOTE =
+  'Markup and styles only — opening, keyboard and focus need a React implementation (not provided yet).';
+
 export type SnippetSet = {
   react?: string;
   next?: string;
   primeng?: string;
+  /* The React and Next snippets reproduce the look, not the behaviour.
+   *
+   * An interactive component gets opening and closing, focus management, focus
+   * trapping, positioning, keyboard navigation and state from Angular and
+   * PrimeNG. CSS carries none of that across, so a reader who pastes the markup
+   * gets something that looks right and does nothing.
+   *
+   * Setting this renders one shared sentence under the tab, and sends the same
+   * sentence to the Copy prompt, so the warning cannot drift from page to page
+   * the way a hand-written note on each would.
+   * tools/check-snippets.mjs fails a set whose markup carries behaviour —
+   * onClick, useState, aria-expanded, role="dialog" — without it. */
+  interactive?: boolean;
   /* Overrides the Custom tab.
    *
    * Left unset (Card, Alert), the Custom tab renders Storybook's own source for
@@ -473,7 +495,8 @@ export const FrameworkTabs = ({
   const code =
     current === 'custom'
       ? (snippets?.custom ?? null)
-      : (snippets?.[current as keyof SnippetSet] ?? '');
+      : //  is a flag on the same object, never a tab's code
+        ((snippets?.[current as 'react' | 'next' | 'primeng' | 'custom'] as string | undefined) ?? '');
 
   useEffect(() => {
     if (!copied) return undefined;
@@ -539,6 +562,20 @@ export const FrameworkTabs = ({
         <Source of={of as never} />
       ) : (
         <Source code={code} language={LANGUAGE[current]} />
+      )}
+      {snippets?.interactive && (current === 'react' || current === 'next') && (
+        <p
+          style={{
+            margin: '-0.5rem 0 0',
+            padding: '0.5rem 0.75rem',
+            borderRadius: 4,
+            background: 'var(--baps-docs-note-bg, rgba(43, 47, 50, 0.04))',
+            color: 'var(--baps-docs-muted)',
+            font: `400 0.8125rem/1.4 ${mono}`,
+          }}
+        >
+          {INTERACTIVE_NOTE}
+        </p>
       )}
     </div>
   );

@@ -116,7 +116,7 @@ export default function Indeterminate() {
   DeterminateSteps: {
     primeng: `<!-- The dark ground is the story's own, not the component's — the arc is
      drawn in the brand colour and the track is translucent. -->
-<div style="display: flex; gap: 1.25rem; align-items: center; background: #333; padding: 1.25rem">
+<div style="display: flex; gap: 1.25rem; align-items: center; background: var(--color-mybky-mono-900); padding: 1.25rem">
   <baps-spinner [value]="0" />
   <baps-spinner [value]="25" />
   <baps-spinner [value]="50" />
@@ -127,7 +127,7 @@ export default function Indeterminate() {
     custom: `<!-- stroke-dashoffset is the progress. offset = C * (100 - value) / 100,
      with C = 2 * PI * 14 = 87.96459430051421. Driving this from real data
      means computing the offset, not copying these numbers. -->
-<div style="display: flex; gap: 1.25rem; align-items: center; background: #333; padding: 1.25rem">
+<div style="display: flex; gap: 1.25rem; align-items: center; background: var(--color-mybky-mono-900); padding: 1.25rem">
 ${determinate(0, C)}
 ${determinate(25, '65.97344572538566')}
 ${determinate(50, '43.982297150257104')}
@@ -142,7 +142,7 @@ const offsetFor = (value) => (C * (100 - value)) / 100;
 
 export function DeterminateSteps() {
   return (
-    <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', background: '#333', padding: '1.25rem' }}>
+    <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', background: 'var(--color-mybky-mono-900)', padding: '1.25rem' }}>
       {[0, 25, 50, 75, 90, 100].map((value) => (
         <baps-spinner key={value} role="progressbar" aria-label="Loading" aria-valuenow={value} aria-valuemin={0} aria-valuemax={100}>
           <svg className="baps-spinner-svg" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
@@ -163,7 +163,7 @@ const offsetFor = (value) => (C * (100 - value)) / 100;
 
 export default function DeterminateSteps() {
   return (
-    <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', background: '#333', padding: '1.25rem' }}>
+    <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', background: 'var(--color-mybky-mono-900)', padding: '1.25rem' }}>
       {[0, 25, 50, 75, 90, 100].map((value) => (
         <baps-spinner key={value} role="progressbar" aria-label="Loading" aria-valuenow={value} aria-valuemin={0} aria-valuemax={100}>
           <svg className="baps-spinner-svg" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
@@ -178,7 +178,7 @@ export default function DeterminateSteps() {
   },
 
   Sizes: {
-    primeng: `<div style="display: flex; gap: 1.25rem; align-items: center; background: #333; padding: 1.25rem">
+    primeng: `<div style="display: flex; gap: 1.25rem; align-items: center; background: var(--color-mybky-mono-900); padding: 1.25rem">
   <baps-spinner size="small" brand="mybky" />
   <baps-spinner size="large" brand="mybky" />
   <baps-spinner size="small" brand="sampark" />
@@ -187,7 +187,7 @@ export default function DeterminateSteps() {
     custom: `<!-- "large" is the default: there is no baps-spinner-large class, only the
      small modifier. brand="sampark" becomes .baps-sampark. All four are
      indeterminate, so all four carry role="status". -->
-<div style="display: flex; gap: 1.25rem; align-items: center; background: #333; padding: 1.25rem">
+<div style="display: flex; gap: 1.25rem; align-items: center; background: var(--color-mybky-mono-900); padding: 1.25rem">
   <baps-spinner class="baps-spinner-small baps-spinner-indeterminate" role="status" aria-label="Loading">
 ${svg(`${QUARTER} ${C}`, '0')}
   </baps-spinner>
@@ -214,7 +214,7 @@ const Spinner = ({ className = '' }) => (
 
 export function Sizes() {
   return (
-    <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', background: '#333', padding: '1.25rem' }}>
+    <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', background: 'var(--color-mybky-mono-900)', padding: '1.25rem' }}>
       <Spinner className="baps-spinner-small" />
       <Spinner />
       <Spinner className="baps-sampark baps-spinner-small" />
@@ -237,7 +237,7 @@ const Spinner = ({ className = '' }) => (
 
 export default function Sizes() {
   return (
-    <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', background: '#333', padding: '1.25rem' }}>
+    <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', background: 'var(--color-mybky-mono-900)', padding: '1.25rem' }}>
       <Spinner className="baps-spinner-small" />
       <Spinner />
       <Spinner className="baps-sampark baps-spinner-small" />

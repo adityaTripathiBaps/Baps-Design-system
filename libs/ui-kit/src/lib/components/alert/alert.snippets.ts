@@ -73,7 +73,15 @@
  * the partial is reachable by relative path, the way
  * `apps/storybook-host/src/styles.scss` loads it.
  */
-export type SnippetSet = { react?: string; next?: string; primeng?: string; custom?: string };
+export type SnippetSet = {
+  react?: string;
+  next?: string;
+  primeng?: string;
+  custom?: string;
+  /** Renders the shared "markup and styles only" note under the React and Next
+   *  tabs — see INTERACTIVE_NOTE in the docs blocks. */
+  interactive?: boolean;
+};
 
 const SETUP = `/* Once, at your app's entry. Paths are relative because no package export
    exists yet — see alert.snippets.ts.
@@ -333,6 +341,9 @@ export default function WithTitle() {
   // dismissal state belongs to the consumer. That is the whole point of the
   // story, and it survives the translation unchanged.
   Dismissible: {
+    // The close button needs React state; the markup alone renders an alert
+    // that cannot be dismissed, so the shared note belongs on this example.
+    interactive: true,
     primeng: `<!-- The parent owns the state. baps-alert only emits (closed) - it never
      removes itself, so a dismissal you need to remember stays yours to store. -->
 <div style="display:flex; flex-direction:column; gap:12px;">
