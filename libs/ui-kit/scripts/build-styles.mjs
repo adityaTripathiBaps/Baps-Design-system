@@ -25,7 +25,15 @@
 //
 // Sass comes from the workspace (`sass` is already a devDependency); nothing
 // new is installed.
-import { readdirSync, existsSync, mkdirSync, writeFileSync, readFileSync, statSync } from 'node:fs';
+import {
+  readdirSync,
+  existsSync,
+  mkdirSync,
+  writeFileSync,
+  readFileSync,
+  copyFileSync,
+  statSync,
+} from 'node:fs';
 import { join, posix } from 'node:path';
 import * as sass from 'sass';
 
@@ -43,11 +51,14 @@ const compile = (entryScss, label) => {
     // A partial that imports nothing else still resolves its siblings through
     // the load path, which is how `@use 'layout/common'` works below.
   });
-  if (!result.css.trim()) throw new Error(`[ui-kit styles] ${label} compiled to nothing`);
+  if (!result.css.trim())
+    throw new Error(`[ui-kit styles] ${label} compiled to nothing`);
   return result.css;
 };
 
-const componentDirs = readdirSync(join(SRC, 'components'), { withFileTypes: true })
+const componentDirs = readdirSync(join(SRC, 'components'), {
+  withFileTypes: true,
+})
   .filter((e) => e.isDirectory())
   .map((e) => e.name)
   .sort();
@@ -65,7 +76,10 @@ for (const name of componentDirs) {
   // into a base file plus a brand skin (_select.scss + _select-sampark.scss),
   // and a consumer asking for "select" wants both.
   const entry = partials
-    .map((f) => `@use '${posix.join('components', name, f.replace(/^_/, '').replace(/\.scss$/, ''))}';`)
+    .map(
+      (f) =>
+        `@use '${posix.join('components', name, f.replace(/^_/, '').replace(/\.scss$/, ''))}';`,
+    )
     .join('\n');
 
   const css = compile(entry, `components/${name}`);
@@ -80,12 +94,40 @@ const bundleEntry = [
     const dir = join(SRC, 'components', name);
     return readdirSync(dir)
       .filter((f) => f.endsWith('.scss'))
-      .map((f) => `@use '${posix.join('components', name, f.replace(/^_/, '').replace(/\.scss$/, ''))}';`);
+      .map(
+        (f) =>
+          `@use '${posix.join('components', name, f.replace(/^_/, '').replace(/\.scss$/, ''))}';`,
+      );
   }),
 ].join('\n');
 
 const bundle = compile(bundleEntry, 'index');
 writeFileSync(join(STAGE, 'index.css'), bundle);
+
+// ── the font the @font-face points at ───────────────────────────────────────
+//
+// index.css declares `src: url("./fonts/Inter-VariableFont_opsz,wght.ttf")`,
+// and until now the package shipped the declaration without the file. Vite
+// resolved the rest of the stylesheet and left that one url alone; Next's
+// webpack css-loader refused the build outright with
+//
+//   Cannot find module './fonts/Inter-VariableFont_opsz,wght.ttf'
+//
+// which is the better failure of the two — the silent one ships an app whose
+// every measurement is right and whose typeface is the browser's default.
+// Found by building a real Next.js app against the package, not by reading.
+const FONT_SRC = `${SRC}/layout/fonts`;
+const FONT_OUT = join(STAGE, 'fonts');
+mkdirSync(FONT_OUT, { recursive: true });
+const fonts = readdirSync(FONT_SRC).filter((n) =>
+  /.(ttf|woff2?|otf)$/i.test(n),
+);
+if (fonts.length === 0) {
+  throw new Error(
+    `[ui-kit styles] ${FONT_SRC} has no font files, but index.css declares an @font-face that points there`,
+  );
+}
+for (const n of fonts) copyFileSync(join(FONT_SRC, n), join(FONT_OUT, n));
 
 // ── the token values must NOT be baked in ───────────────────────────────────
 //
@@ -101,6 +143,6 @@ if (varCount < 100) {
 
 const total = statSync(join(STAGE, 'index.css')).size;
 console.log(
-  `[ui-kit styles] ${written.length} component files + index.css ` +
+  `[ui-kit styles] ${fonts.length} font file(s) copied;  ${written.length} component files + index.css ` +
     `(${(total / 1024).toFixed(1)} kB, ${varCount} token references kept)`,
 );
