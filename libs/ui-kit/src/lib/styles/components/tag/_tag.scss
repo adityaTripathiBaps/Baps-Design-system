@@ -216,24 +216,48 @@
   text-align: center;
 }
 
-/* Icon-only is square on its step rather than a chip collapsed to its glyph. */
+/* The chevron does NOT inherit, unlike the leading icon directly above.
+   Measured on the component: 8px at xs, 10px at s and m, 12px at l — declared
+   as --baps-tag-chevron-size inside tag.component.ts's own styles block, whose
+   Figma note reads "8px at XS, 10px at S, 12px at L (Mob)". tokens.css has no
+   --tag-*-chevron-size at all, so the three literals below are the component's
+   own declarations reproduced rather than new design values, and the missing
+   tokens are recorded as a design task. Without this the chevron inherited the
+   label's font-size and every chevron tag measured exactly 2px too wide at s. */
+.baps-tag .baps-tag-chevron {
+  font-size: var(--tag-mybky-chevron-size-s, 0.625rem);
+}
+
+.baps-tag--xs .baps-tag-chevron {
+  font-size: var(--tag-mybky-chevron-size-xs, 0.5rem);
+}
+
+.baps-tag--l .baps-tag-chevron {
+  font-size: var(--tag-mybky-chevron-size-l, 0.75rem);
+}
+
+/* The component says `min-width: var(--baps-tag-height); justify-content:
+   center` and leaves the padding alone — a square FLOOR, so an icon plus a
+   chevron can still grow past it. What stood here used a fixed `width` and
+   zeroed the padding, which forced the box square and came out 4px narrower
+   than the component at every step: measured 22px against 26px at s, with 0px
+   padding against 6px. The tokens are unchanged; only width/min-width and the
+   padding do. */
 .baps-tag--icon-only {
   justify-content: center;
-  padding-left: 0;
-  padding-right: 0;
-  width: var(--tag-mybky-height-s, 1.375rem);
+  min-width: var(--tag-mybky-height-s, 1.375rem);
 }
 
 .baps-tag--icon-only.baps-tag--xs {
-  width: var(--tag-mybky-height-xs, 1.125rem);
+  min-width: var(--tag-mybky-height-xs, 1.125rem);
 }
 
 .baps-tag--icon-only.baps-tag--m {
-  width: var(--tag-mybky-height-m, 1.625rem);
+  min-width: var(--tag-mybky-height-m, 1.625rem);
 }
 
 .baps-tag--icon-only.baps-tag--l {
-  width: var(--tag-mybky-height-l, 2rem);
+  min-width: var(--tag-mybky-height-l, 2rem);
 }
 
 /* ── Sampark ──────────────────────────────────────────────────────────────

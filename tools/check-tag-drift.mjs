@@ -55,6 +55,8 @@ const STORIES = {
   // markup. The standalone Sampark rules are the 25 inside _tag.scss itself.
   SamparkSeverities: 'components-tag--sampark-severities',
   SamparkSizes: 'components-tag--sampark-sizes',
+  ChevronAxis: 'components-tag--chevron-axis',
+  IconOnlyAxis: 'components-tag--icon-only-axis',
 };
 
 const PROPS = [

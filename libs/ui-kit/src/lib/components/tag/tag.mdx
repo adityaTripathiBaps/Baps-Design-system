@@ -78,7 +78,9 @@ A decorative disclosure caret after the label — 8px at `xs`, 10px at `s`, 12px
 at `l`. Not interactive and not announced, so it hints that something opens
 without claiming to be the control that opens it.
 
-<Canvas of={TagStories.ChevronAxis} />
+<Canvas of={TagStories.ChevronAxis} sourceState="none" />
+
+<FrameworkTabs of={TagStories.ChevronAxis} snippets={tagSnippets.ChevronAxis} />
 
 ### Trailing Action
 
@@ -95,7 +97,12 @@ without one it is announced as nothing.
 Figma's `Text=False` column: a square icon box (20 / 22 / 28), not a chip
 collapsed to its icon. Chevron-only and icon + chevron grow past the square.
 
-<Canvas of={TagStories.IconOnlyAxis} />
+<Canvas of={TagStories.IconOnlyAxis} sourceState="none" />
+
+<FrameworkTabs
+  of={TagStories.IconOnlyAxis}
+  snippets={tagSnippets.IconOnlyAxis}
+/>
 
 <BrandOnly brand="comparison">
 

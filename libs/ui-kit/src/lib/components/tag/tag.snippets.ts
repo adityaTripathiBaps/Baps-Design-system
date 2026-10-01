@@ -44,6 +44,152 @@ export type { SnippetSet };
 const SETUP = setupFor('tag', true);
 
 export const tagSnippets: Record<string, SnippetSet> = {
+  // The chevron is decorative: a caret after the label, aria-hidden, not a
+  // button and not announced. [chevron]="true" renders
+  // <span class="baps-tag-chevron pi pi-chevron-down">, which is what the raw
+  // markup writes out.
+  //
+  // This story and the brand-pinned Chevron below render the same five tags;
+  // Chevron adds one Sampark sample on the end.
+  ChevronAxis: {
+    primeng: `<div style="display:flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+  <baps-tag value="Extra small" size="xs" [chevron]="true" />
+  <baps-tag value="Small" [chevron]="true" />
+  <baps-tag value="Large" size="l" [chevron]="true" />
+  <baps-tag value="With icon" severity="info" icon="pi pi-user" [chevron]="true" />
+  <baps-tag value="Disabled" [chevron]="true" [disabled]="true" />
+</div>`,
+    custom: `<div style="display:flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+  <span class="baps-tag baps-tag--grey baps-tag--xs"><span class="baps-tag__label">Extra small</span><span class="baps-tag-chevron pi pi-chevron-down" aria-hidden="true"></span></span>
+  <span class="baps-tag baps-tag--grey"><span class="baps-tag__label">Small</span><span class="baps-tag-chevron pi pi-chevron-down" aria-hidden="true"></span></span>
+  <span class="baps-tag baps-tag--grey baps-tag--l"><span class="baps-tag__label">Large</span><span class="baps-tag-chevron pi pi-chevron-down" aria-hidden="true"></span></span>
+  <span class="baps-tag baps-tag--info"><span class="baps-tag__icon pi pi-user" aria-hidden="true"></span><span class="baps-tag__label">With icon</span><span class="baps-tag-chevron pi pi-chevron-down" aria-hidden="true"></span></span>
+  <span class="baps-tag baps-tag--disabled"><span class="baps-tag__label">Disabled</span><span class="baps-tag-chevron pi pi-chevron-down" aria-hidden="true"></span></span>
+</div>`,
+    react: `\${SETUP}
+
+export function ChevronAxis() {
+  return (
+    <div style={ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }>
+      <span className="baps-tag baps-tag--grey baps-tag--xs">
+        <span className="baps-tag__label">Extra small</span>
+        <span className="baps-tag-chevron pi pi-chevron-down" aria-hidden="true" />
+      </span>
+      <span className="baps-tag baps-tag--grey">
+        <span className="baps-tag__label">Small</span>
+        <span className="baps-tag-chevron pi pi-chevron-down" aria-hidden="true" />
+      </span>
+      <span className="baps-tag baps-tag--grey baps-tag--l">
+        <span className="baps-tag__label">Large</span>
+        <span className="baps-tag-chevron pi pi-chevron-down" aria-hidden="true" />
+      </span>
+      <span className="baps-tag baps-tag--info">
+        <span className="baps-tag__icon pi pi-user" aria-hidden="true" />
+        <span className="baps-tag__label">With icon</span>
+        <span className="baps-tag-chevron pi pi-chevron-down" aria-hidden="true" />
+      </span>
+      <span className="baps-tag baps-tag--disabled">
+        <span className="baps-tag__label">Disabled</span>
+        <span className="baps-tag-chevron pi pi-chevron-down" aria-hidden="true" />
+      </span>
+    </div>
+  );
+}`,
+    next: `\${SETUP}
+
+export default function ChevronAxis() {
+  return (
+    <div style={ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }>
+      <span className="baps-tag baps-tag--grey baps-tag--xs">
+        <span className="baps-tag__label">Extra small</span>
+        <span className="baps-tag-chevron pi pi-chevron-down" aria-hidden="true" />
+      </span>
+      <span className="baps-tag baps-tag--grey">
+        <span className="baps-tag__label">Small</span>
+        <span className="baps-tag-chevron pi pi-chevron-down" aria-hidden="true" />
+      </span>
+      <span className="baps-tag baps-tag--grey baps-tag--l">
+        <span className="baps-tag__label">Large</span>
+        <span className="baps-tag-chevron pi pi-chevron-down" aria-hidden="true" />
+      </span>
+      <span className="baps-tag baps-tag--info">
+        <span className="baps-tag__icon pi pi-user" aria-hidden="true" />
+        <span className="baps-tag__label">With icon</span>
+        <span className="baps-tag-chevron pi pi-chevron-down" aria-hidden="true" />
+      </span>
+      <span className="baps-tag baps-tag--disabled">
+        <span className="baps-tag__label">Disabled</span>
+        <span className="baps-tag-chevron pi pi-chevron-down" aria-hidden="true" />
+      </span>
+    </div>
+  );
+}`,
+  },
+
+  // An icon with no label. The component derives the icon-only state from the
+  // ABSENCE of a value — host binding '[class.baps-tag-icon-only]': '!value' —
+  // so outside Angular you state it: baps-tag--icon-only, which is the
+  // standalone partial's spelling of that same host class.
+  //
+  // Each one still needs an accessible name in a real page. These are sample
+  // markup for the shape, not a pattern to paste with the name left off.
+  IconOnlyAxis: {
+    primeng: `<div style="display:flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+  <baps-tag icon="pi pi-user" size="xs" />
+  <baps-tag icon="pi pi-user" />
+  <baps-tag icon="pi pi-user" size="l" />
+  <baps-tag icon="pi pi-user" [chevron]="true" />
+</div>`,
+    custom: `<div style="display:flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+  <span class="baps-tag baps-tag--grey baps-tag--icon-only baps-tag--xs"><span class="baps-tag__icon pi pi-user" aria-hidden="true"></span></span>
+  <span class="baps-tag baps-tag--grey baps-tag--icon-only"><span class="baps-tag__icon pi pi-user" aria-hidden="true"></span></span>
+  <span class="baps-tag baps-tag--grey baps-tag--icon-only baps-tag--l"><span class="baps-tag__icon pi pi-user" aria-hidden="true"></span></span>
+  <span class="baps-tag baps-tag--grey baps-tag--icon-only"><span class="baps-tag__icon pi pi-user" aria-hidden="true"></span><span class="baps-tag-chevron pi pi-chevron-down" aria-hidden="true"></span></span>
+</div>`,
+    react: `\${SETUP}
+
+export function IconOnlyAxis() {
+  return (
+    <div style={ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }>
+      <span className="baps-tag baps-tag--grey baps-tag--icon-only baps-tag--xs">
+        <span className="baps-tag__icon pi pi-user" aria-hidden="true" />
+      </span>
+      <span className="baps-tag baps-tag--grey baps-tag--icon-only">
+        <span className="baps-tag__icon pi pi-user" aria-hidden="true" />
+      </span>
+      <span className="baps-tag baps-tag--grey baps-tag--icon-only baps-tag--l">
+        <span className="baps-tag__icon pi pi-user" aria-hidden="true" />
+      </span>
+      <span className="baps-tag baps-tag--grey baps-tag--icon-only">
+        <span className="baps-tag__icon pi pi-user" aria-hidden="true" />
+        <span className="baps-tag-chevron pi pi-chevron-down" aria-hidden="true" />
+      </span>
+    </div>
+  );
+}`,
+    next: `\${SETUP}
+
+export default function IconOnlyAxis() {
+  return (
+    <div style={ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }>
+      <span className="baps-tag baps-tag--grey baps-tag--icon-only baps-tag--xs">
+        <span className="baps-tag__icon pi pi-user" aria-hidden="true" />
+      </span>
+      <span className="baps-tag baps-tag--grey baps-tag--icon-only">
+        <span className="baps-tag__icon pi pi-user" aria-hidden="true" />
+      </span>
+      <span className="baps-tag baps-tag--grey baps-tag--icon-only baps-tag--l">
+        <span className="baps-tag__icon pi pi-user" aria-hidden="true" />
+      </span>
+      <span className="baps-tag baps-tag--grey baps-tag--icon-only">
+        <span className="baps-tag__icon pi pi-user" aria-hidden="true" />
+        <span className="baps-tag-chevron pi pi-chevron-down" aria-hidden="true" />
+      </span>
+    </div>
+  );
+}`,
+  },
+
   // The meta's own args: one grey tag at the default size. Grey is what an
   // unqualified tag renders, which is why the class is spelled out here while
   // the Angular side leaves severity unset.
