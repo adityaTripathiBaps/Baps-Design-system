@@ -48,6 +48,7 @@ An inline notification banner: a coloured accent bar, a severity icon, text, and
   description="Text only, info severity — the smallest useful alert."
   of={AlertStories.Default}
   controls
+  snippets={alertSnippets.Default}
 />
 
 <DemoCard
@@ -82,12 +83,14 @@ An inline notification banner: a coloured accent bar, a severity icon, text, and
   title="Card"
   description="The card layout: avatar or icon, timestamp, and its own actions."
   of={AlertStories.Card}
+  snippets={alertSnippets.Card}
 />
 
 <DemoCard
   title="Card Parts"
   description="Each card part is optional — progress, actions and timestamp can all be dropped."
   of={AlertStories.CardParts}
+  snippets={alertSnippets.CardParts}
 />
 
 <BrandOnly brand="sampark">
@@ -96,6 +99,7 @@ An inline notification banner: a coloured accent bar, a severity icon, text, and
   title="Sampark"
   description="The same component under the Sampark brand."
   of={AlertStories.Sampark}
+  snippets={alertSnippets.Sampark}
 />
 
 </BrandOnly>
@@ -114,7 +118,8 @@ Alert consumes primitive colour tokens directly — it has no `--alert-*` compon
       token: 'color.mybky.info.60',
       light: '#2265c3',
       dark: '#2265c3',
-      description: 'Info text and icon. Same value in both modes — see the gap below.',
+      description:
+        'Info text and icon. Same value in both modes — see the gap below.',
     },
     {
       token: 'color.mybky.success.400',
@@ -138,21 +143,22 @@ Alert consumes primitive colour tokens directly — it has no `--alert-*` compon
       token: 'color.mybky.info.20',
       light: '#d8e7fd',
       dark: 'rgba(56,137,250,0.1)',
-      description: 'Info fill. The fill does switch for dark; the text above it does not.',
+      description:
+        'Info fill. The fill does switch for dark; the text above it does not.',
     },
   ]}
 />
 
 ### Known dark-mode gap
 
-The component ships twelve dark-mode rules and every one of them changes a *background* to a 10% tint. None changes a text colour, so in dark mode the light-mode saturated foreground sits on a near-black ground. Measured against the composited dark fill:
+The component ships twelve dark-mode rules and every one of them changes a _background_ to a 10% tint. None changes a text colour, so in dark mode the light-mode saturated foreground sits on a near-black ground. Measured against the composited dark fill:
 
-| Severity | Contrast in dark | Verdict |
-| --- | --- | --- |
-| Info | 2.71:1 | Fails AA |
-| Error | 2.80:1 | Fails AA |
-| Success | 4.33:1 | Large text only |
-| Warning | 4.48:1 | Large text only |
+| Severity | Contrast in dark | Verdict         |
+| -------- | ---------------- | --------------- |
+| Info     | 2.71:1           | Fails AA        |
+| Error    | 2.80:1           | Fails AA        |
+| Success  | 4.33:1           | Large text only |
+| Warning  | 4.48:1           | Large text only |
 
 Fixing this means editing the component's own stylesheet, which is outside a documentation pass — it is recorded here rather than quietly patched.
 
@@ -170,7 +176,11 @@ Fixing this means editing the component's own stylesheet, which is outside a doc
 
 <KeyboardTable
   rows={[
-    { key: 'Tab', action: 'Move to the close button, and to any action buttons in the card layout' },
+    {
+      key: 'Tab',
+      action:
+        'Move to the close button, and to any action buttons in the card layout',
+    },
     { key: 'Enter', action: 'Activate the focused button' },
     { key: 'Space', action: 'Activate the focused button' },
   ]}
@@ -182,11 +192,11 @@ An alert with no close button and no actions has nothing focusable, which is cor
 
 `baps-alert` is one of four feedback surfaces and picking the wrong one is the most common mistake with it:
 
-| Need | Use | Not this |
-| --- | --- | --- |
-| Transient confirmation of an action that already finished ("Saved") | Toast | Alert — it persists and accumulates |
-| A decision that must block the workflow ("Delete this record?") | Dialog | Alert — it can't capture a response |
-| Which specific field is wrong, next to that field | `baps-message` | Alert — too far from the input to be useful |
-| Site-wide announcement above the app chrome | Banner (app shell) | Alert — it's scoped to page content |
+| Need                                                                | Use                | Not this                                    |
+| ------------------------------------------------------------------- | ------------------ | ------------------------------------------- |
+| Transient confirmation of an action that already finished ("Saved") | Toast              | Alert — it persists and accumulates         |
+| A decision that must block the workflow ("Delete this record?")     | Dialog             | Alert — it can't capture a response         |
+| Which specific field is wrong, next to that field                   | `baps-message`     | Alert — too far from the input to be useful |
+| Site-wide announcement above the app chrome                         | Banner (app shell) | Alert — it's scoped to page content         |
 
 Also don't use it for loading or progress — that's `baps-progressbar`.
