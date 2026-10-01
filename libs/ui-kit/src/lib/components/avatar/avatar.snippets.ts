@@ -1,60 +1,124 @@
-export interface AvatarSnippetSet {
-  htmlcss?: string;
-}
+/**
+ * Framework snippets for the Avatar docs page.
+ *
+ * ## No Custom tab — a measured decision, not an omission
+ *
+ * Avatar is a PrimeNG wrapper, and an earlier version of this file carried a
+ * third implementation of the design under `.baps-avatar-html` so a Custom tab
+ * could show standalone markup. That partial was measured against the
+ * component and does not match where it matters:
+ *
+ *   .baps-avatar-html   0 Sampark rules, 0 dark rules
+ *   baps-avatar         36 Sampark rules, 8 dark rules
+ *
+ * Raw markup therefore renders the same under MyBKY, under
+ * `.baps-ds-sampark` and under `.baps-dark` — measured in a browser, all three
+ * identical — while the component changes. A Custom tab there would be a tab
+ * claiming to BE the component, so the page hides it (`hideCustom`) and this
+ * file offers the three tabs that document intent honestly.
+ *
+ * The key this file used to use, `htmlcss`, was not a framework key the docs
+ * blocks ever read, so those two examples rendered no tab strip at all.
+ * tools/check-snippets.mjs now rejects it.
+ *
+ * ## Inputs to markup
+ *
+ * React and Next show the same `<baps-avatar>` element the Angular template
+ * does, because the element name is what the CSS keys off. The inputs map
+ * straight across as attributes:
+ *
+ *   label="AT"                initials; the component renders them as text
+ *   image="…"                 a photo; the component renders an <img> inside
+ *   shape="circle | square"   default is circle under MyBKY
+ *   size="xs | s | m | l | xl | 2xl"
+ *   variant="primary | secondary | warning | success | error | info"
+ *   brand="sampark"           one instance in the other brand; a whole page
+ *                             uses the .baps-ds-sampark scope instead
+ *
+ * Accessibility stays with the markup, not the framework: an avatar that
+ * identifies a person is an image with a name (`role="img"` plus
+ * `aria-label`), and one sitting beside that person's name is decorative
+ * (`aria-hidden="true"`), or the name is announced twice.
+ */
 
-const MYBKY_SETUP = `<!-- Load the generated token stylesheet in the page head. -->
-<link rel="stylesheet" href="/assets/tokens.css">
+export type SnippetSet = { react?: string; next?: string; primeng?: string; custom?: string };
 
-<!-- In the consuming app's global Sass entry (compile with Sass):
-@use '<repo>/libs/ui-kit/src/lib/styles/layout/fonts';
-@use '<repo>/libs/ui-kit/src/lib/styles/layout/common';
-@use '<repo>/libs/ui-kit/src/lib/styles/components/avatar/avatar';
+const SETUP = `/* Once, at your app's entry:
+     import '@org/tokens/css';
+     import '@org/ui-kit/styles/avatar';   // or '@org/ui-kit/styles' for all of them
 
-The Avatar stylesheet is source-only and is not published as a CSS package yet.
-Use the shared partial above; do not copy or recreate its styles.
+   and the base rule the app owns:
+     html { font-size: 16px; font-family: var(--font-family); }
+*/`;
 
-Apply the same app typography as the Angular page if it is not already set:
-html {
-  font-family: var(--font-family);
-  font-feature-settings: var(--font-feature-settings);
-}
--->`;
+export const avatarSnippets: Record<string, SnippetSet> = {
+  MyBkyPlayground: {
+    react: `${SETUP}
 
-export const avatarSnippets: Record<string, AvatarSnippetSet> = {
-  Playground: {
-    htmlcss: `${MYBKY_SETUP}
+export function Example() {
+  return (
+    <baps-avatar label="AT" shape="circle" role="img" aria-label="Aditya Tripathi" />
+  );
+}`,
+    next: `'use client';
 
-<!-- page.html: MyBKY primary avatar; keep the full name available to assistive technology. -->
-<span
-  class="baps-avatar-html baps-avatar-html--m baps-avatar-html--circle"
-  role="img"
-  aria-label="Aditya Tripathi"
->AT</span>`,
+${SETUP}
+
+export default function Example() {
+  return (
+    <baps-avatar label="AT" shape="circle" role="img" aria-label="Aditya Tripathi" />
+  );
+}`,
+    primeng: `<baps-avatar label="AT" shape="circle" ariaLabel="Aditya Tripathi" />`,
   },
+
   Types: {
-    htmlcss: `${MYBKY_SETUP}
+    react: `export function AvatarTypes() {
+  return (
+    <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+      {/* initials, named for assistive technology */}
+      <baps-avatar label="AT" shape="circle" role="img" aria-label="Aditya Tripathi" />
 
-<!-- page.html: initials, decorative icon beside a labeled name, and a meaningful image. -->
-<span
-  class="baps-avatar-html baps-avatar-html--m baps-avatar-html--circle"
-  role="img"
-  aria-label="Aditya Tripathi"
->AT</span>
+      {/* icon beside a visible name — decorative, or the name is read twice */}
+      <baps-avatar shape="circle" aria-hidden="true" />
+      <span>Aditya Tripathi</span>
 
-<span
-  class="baps-avatar-html baps-avatar-html--m baps-avatar-html--circle"
-  aria-hidden="true"
->
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
-       stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="8" r="5" />
-    <path d="M20 21a8 8 0 0 0-16 0" />
-  </svg>
-</span>
-<span>Aditya Tripathi</span>
+      {/* photo; the alt text lives on the image the component renders */}
+      <baps-avatar
+        image="/assets/users/aditya.png"
+        shape="circle"
+        role="img"
+        aria-label="Aditya Tripathi"
+      />
+    </div>
+  );
+}`,
+    next: `'use client';
 
-<span class="baps-avatar-html baps-avatar-html--m baps-avatar-html--circle">
-  <img src="/assets/users/aditya.png" alt="Aditya Tripathi">
-</span>`,
+export default function AvatarTypes() {
+  return (
+    <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+      <baps-avatar label="AT" shape="circle" role="img" aria-label="Aditya Tripathi" />
+
+      <baps-avatar shape="circle" aria-hidden="true" />
+      <span>Aditya Tripathi</span>
+
+      <baps-avatar
+        image="/assets/users/aditya.png"
+        shape="circle"
+        role="img"
+        aria-label="Aditya Tripathi"
+      />
+    </div>
+  );
+}`,
+    primeng: `<div style="display: flex; gap: 16px; align-items: center">
+  <baps-avatar label="AT" shape="circle" ariaLabel="Aditya Tripathi" />
+
+  <baps-avatar shape="circle" aria-hidden="true" />
+  <span>Aditya Tripathi</span>
+
+  <baps-avatar image="/assets/users/aditya.png" shape="circle" ariaLabel="Aditya Tripathi" />
+</div>`,
   },
 };
