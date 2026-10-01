@@ -166,7 +166,7 @@ export type BapsAvatarSize = 'xs' | 's' | 'm' | 'l' | 'xl' | '2xl' | 'normal' | 
 
     baps-avatar .p-avatar {
       font-weight: 500;
-      --baps-avatar-border-hover: var(--color-mybky-blue-400, #9fadd9);
+      --baps-avatar-border-hover: var(--color-mybky-blue-400);
       transition: border-color 150ms ease;
     }
     baps-avatar.baps-avatar-2xl .p-avatar {
@@ -178,9 +178,9 @@ export type BapsAvatarSize = 'xs' | 's' | 'm' | 'l' | 'xl' | '2xl' | 'normal' | 
 
     baps-avatar.baps-avatar-primary .p-avatar {
       background: var(--avatar-mybky-background, var(--color-mybky-blue-50, #f4f7fe));
-      border: 1px solid var(--color-mybky-primary-40, #9fadd9);
+      border: 1px solid var(--color-mybky-blue-400);
       color: var(--avatar-mybky-text, var(--color-mybky-mono-900, #181b1d));
-      --baps-avatar-border-hover: var(--color-mybky-primary-60, #5f78b8);
+      --baps-avatar-border-hover: var(--color-mybky-blue-600);
     }
     baps-avatar.baps-avatar-primary:hover .p-avatar {
       box-shadow: 0 1px 4px 0 rgba(16, 24, 40, 0.12), 0 2px 4px 0 rgba(16, 24, 40, 0.06);
