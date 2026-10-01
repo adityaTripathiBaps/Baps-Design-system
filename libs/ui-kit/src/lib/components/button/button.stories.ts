@@ -207,7 +207,7 @@ export const WithIcons: Story = {
           <baps-button label="Add Filter" icon="add-to-filter" severity="primary" />
           <baps-button label="Add to Filter" icon="add-to-filter" iconPos="right" severity="success" />
           <baps-button label="Create" icon="plus" severity="primary" />
-          <baps-button label="Search" icon="search" severity="secondary" />
+          <baps-button label="Search" icon="search-2" severity="secondary" />
           <baps-button label="Delete" icon="trash" severity="danger" />
           <baps-button label="PrimeIcon" icon="pi pi-check" iconPos="right" severity="info" />
         </div>
@@ -238,7 +238,7 @@ export const IconOnly: Story = {
           <baps-button icon="plus" ariaLabel="Add" severity="primary" />
           <baps-button icon="edit" ariaLabel="Edit" severity="secondary" [outlined]="true" />
           <baps-button icon="trash" ariaLabel="Delete" severity="danger" [text]="true" />
-          <baps-button icon="search" ariaLabel="Search" severity="info" [rounded]="true" />
+          <baps-button icon="search-2" ariaLabel="Search" severity="info" [rounded]="true" />
           <baps-button icon="notification" ariaLabel="Notifications" severity="warn" [rounded]="true" [outlined]="true" />
         </div>
       </div>
