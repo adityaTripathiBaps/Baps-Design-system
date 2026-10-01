@@ -88,9 +88,25 @@ for (const field of ['dependencies', 'peerDependencies', 'optionalDependencies']
 // Scoped to `./src/*` rather than `./*`: the apps only ever reach for the raw
 // source tree, and a blanket `./*` would also re-expose the compiled output
 // under a second set of paths.
+// ── Compiled CSS, for consumers that do not run Sass ───────────────────────
+//
+// The `./src/*` entry above serves an Angular app, which pulls the SCSS through
+// Sass's pkg: importer. A React or Next.js app imports CSS instead, and without
+// these two entries it gets the Angular components and no styling at all —
+// which is exactly why the library reads as "Angular only" from outside.
+//
+// Written by libs/ui-kit/scripts/build-styles.mjs into the same stage
+// directory. Both keep their var(--…) references, so @org/tokens/css remains
+// the single source for the values.
+//
+//     import '@org/tokens/css';
+//     import '@org/ui-kit/styles';          // everything
+//     import '@org/ui-kit/styles/button';   // or one component
 pkg.exports = {
   ...pkg.exports,
   './src/*': { default: './src/*' },
+  './styles': { default: './styles/index.css' },
+  './styles/*': { default: './styles/*.css' },
 };
 
 writeFileSync(DIST, JSON.stringify(pkg, null, 2) + '\n');
