@@ -32,7 +32,12 @@
  *   node tools/check-button-drift.mjs --verbose        # print every property
  */
 import { chromium } from '@playwright/test';
-import { readFileSync, writeFileSync, mkdtempSync, copyFileSync } from 'node:fs';
+import {
+  readFileSync,
+  writeFileSync,
+  mkdtempSync,
+  copyFileSync,
+} from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
@@ -50,15 +55,36 @@ const PARTIAL = 'libs/ui-kit/src/lib/styles/components/button/_button.scss';
    border and padding matches. It is one of the three loads button.snippets.ts
    tells a consumer to make. */
 const COMMON = 'libs/ui-kit/src/lib/styles/layout/_common.scss';
+/* The glyph's own partial. baps-icon is NOT a PrimeNG wrapper — its CSS is
+   anchored to the element name so raw markup works unchanged — but the SVG
+   inside it comes from a TypeScript registry, so raw markup inlines its own.
+   What this file verifies about an icon button is therefore the BOX: the
+   glyph slot is 18px either way, and the stand-in path below proves the
+   button around it measures the same as the component's. */
+const ICON = 'libs/ui-kit/src/lib/styles/components/icon/_icon.scss';
 const TOKENS = 'libs/tokens/build/css/tokens.css';
-const FONT = 'libs/ui-kit/src/lib/styles/layout/fonts/Inter-VariableFont_opsz,wght.ttf';
+const FONT =
+  'libs/ui-kit/src/lib/styles/layout/fonts/Inter-VariableFont_opsz,wght.ttf';
 // The icon font, for exactly the reason button.snippets.ts's SETUP block tells
 // a consumer to load it: without it a "pi" glyph has no width, and every
 // icon-only and loading button measures narrower than the component does.
 const PRIMEICONS = 'node_modules/primeicons/primeicons.css';
 
-/** Story export name -> story id. Only the stories that carry a `custom` block. */
+/**
+ * Story export name -> story id, or { id, indices }.
+ *
+ * `indices` names WHICH of the story's buttons the Custom tab reproduces, in
+ * order. Two examples need it, for the same honest reason. WithIcons renders
+ * a success and an info button; IconOnly renders outlined, rounded and a text
+ * danger. None of those carry a `--button-*` token in this design system —
+ * measured, the info fill comes back rgb(3, 169, 244), PrimeNG's generic blue,
+ * not a BAPS value — so no class is invented for them and the Custom tab shows
+ * the subset that is real. Without this the count check would fail, and the
+ * only ways to pass it would be to invent the missing colours or to drop the
+ * tab entirely; both are worse than showing four true buttons and saying so.
+ */
 const STORIES = {
+  Playground: 'components-button--playground',
   AllVariants: 'components-button--all-variants',
   AllSizes: 'components-button--all-sizes',
   States: 'components-button--states',
@@ -66,6 +92,16 @@ const STORIES = {
   SamparkSizes: 'components-button--sampark-sizes',
   SamparkIconOnly: 'components-button--sampark-icon-only',
   SamparkStates: 'components-button--sampark-states',
+  WithIcons: { id: 'components-button--with-icons', indices: [0, 2, 3, 4] },
+  IconOnly: { id: 'components-button--icon-only', indices: [0, 1, 2, 3, 4] },
+};
+
+/** ``components-button--x`` or `{ id, indices }` -> the id. */
+const idOf = (v) => (typeof v === 'string' ? v : v.id);
+/** The buttons a story's Custom markup claims to reproduce, in order. */
+const pick = (name, list) => {
+  const spec = STORIES[name];
+  return typeof spec === 'string' ? list : spec.indices.map((i) => list[i]);
 };
 
 /**
@@ -115,10 +151,12 @@ const readCustomBlocks = () => {
     const start = src.indexOf(`\n  ${name}: {`);
     if (start === -1) throw new Error(`${SNIPPETS}: no entry for ${name}`);
     const key = src.indexOf('custom: `', start);
-    if (key === -1) throw new Error(`${SNIPPETS}: ${name} has no \`custom\` block`);
+    if (key === -1)
+      throw new Error(`${SNIPPETS}: ${name} has no \`custom\` block`);
     const from = key + 'custom: `'.length;
     const end = src.indexOf('`,', from);
-    if (end === -1) throw new Error(`${SNIPPETS}: ${name}'s custom block is unterminated`);
+    if (end === -1)
+      throw new Error(`${SNIPPETS}: ${name}'s custom block is unterminated`);
     out[name] = src.slice(from, end);
   }
   return out;
@@ -132,8 +170,12 @@ const extract = (page, selector) =>
         const r = el.getBoundingClientRect();
         return {
           text: (el.textContent || '').trim() || '(icon only)',
-          css: Object.fromEntries(props.map((k) => [k, cs.getPropertyValue(k)])),
-          box: Object.fromEntries(box.map((k) => [k, Math.round(r[k] * 100) / 100])),
+          css: Object.fromEntries(
+            props.map((k) => [k, cs.getPropertyValue(k)]),
+          ),
+          box: Object.fromEntries(
+            box.map((k) => [k, Math.round(r[k] * 100) / 100]),
+          ),
         };
       }),
     { selector, props: PROPS, box: BOX },
@@ -149,6 +191,7 @@ const buildRawPage = (blocks) => {
   for (const [src, dest] of [
     [PARTIAL, 'button.css'],
     [COMMON, 'common.css'],
+    [ICON, 'icon.css'],
   ]) {
     execFileSync('npx', ['sass', '--no-source-map', src, join(dir, dest)], {
       stdio: 'pipe',
@@ -157,7 +200,13 @@ const buildRawPage = (blocks) => {
   }
   copyFileSync(TOKENS, join(dir, 'tokens.css'));
   copyFileSync(PRIMEICONS, join(dir, 'primeicons.css'));
-  for (const f of ['primeicons.ttf', 'primeicons.woff2', 'primeicons.woff', 'primeicons.eot', 'primeicons.svg']) {
+  for (const f of [
+    'primeicons.ttf',
+    'primeicons.woff2',
+    'primeicons.woff',
+    'primeicons.eot',
+    'primeicons.svg',
+  ]) {
     try {
       copyFileSync(join('node_modules/primeicons', f), join(dir, f));
     } catch {
@@ -167,7 +216,9 @@ const buildRawPage = (blocks) => {
   const fontUrl = pathToFileURL(resolve(FONT)).href;
 
   const sections = Object.entries(blocks)
-    .map(([name, html]) => `<section data-story="${name}">\n${html}\n</section>`)
+    .map(
+      ([name, html]) => `<section data-story="${name}">\n${html}\n</section>`,
+    )
     .join('\n');
 
   const page = `<!doctype html>
@@ -175,6 +226,7 @@ const buildRawPage = (blocks) => {
 <link rel="stylesheet" href="./tokens.css">
 <link rel="stylesheet" href="./common.css">
 <link rel="stylesheet" href="./button.css">
+<link rel="stylesheet" href="./icon.css">
 <link rel="stylesheet" href="./primeicons.css">
 <style>
   /* The app's own base rule — no ui-kit partial applies one. Copied from
@@ -213,8 +265,8 @@ const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1400, height: 900 } });
 
 const angular = {};
-for (const [name, id] of Object.entries(STORIES)) {
-  await page.goto(`${BASE}/iframe.html?viewMode=story&id=${id}`, {
+for (const [name, spec] of Object.entries(STORIES)) {
+  await page.goto(`${BASE}/iframe.html?viewMode=story&id=${idOf(spec)}`, {
     waitUntil: 'commit',
     timeout: 120000,
   });
@@ -240,10 +292,13 @@ let checked = 0;
 const failures = [];
 
 for (const name of Object.keys(STORIES)) {
-  const a = angular[name];
+  const a = pick(name, angular[name]);
   const b = raw[name];
   if (a.length !== b.length) {
-    failures.push(`${name}: Angular renders ${a.length} buttons, the Custom tab markup ${b.length}`);
+    failures.push(
+      `${name}: the Custom tab markup renders ${b.length} buttons, but it claims ` +
+        `${a.length} of the story's ${angular[name].length}`,
+    );
     continue;
   }
   a.forEach((ang, i) => {
@@ -261,7 +316,9 @@ for (const name of Object.keys(STORIES)) {
       // `block`, say — still fails.
       const norm = (v) => (k === 'display' && v === 'flex' ? 'inline-flex' : v);
       if (norm(ang.css[k]) !== norm(rw.css[k])) {
-        failures.push(`${label}  ${k}\n      angular: ${ang.css[k]}\n      custom : ${rw.css[k]}`);
+        failures.push(
+          `${label}  ${k}\n      angular: ${ang.css[k]}\n      custom : ${rw.css[k]}`,
+        );
       }
     }
     for (const k of BOX) {
@@ -278,7 +335,9 @@ for (const name of Object.keys(STORIES)) {
       // Sub-pixel: text metrics land a hair apart between a <span> label and a
       // bare text node. A tenth of a pixel is not a design change.
       if (Math.abs(ang.box[k] - rw.box[k]) > 0.5) {
-        failures.push(`${label}  ${k}\n      angular: ${ang.box[k]}px\n      custom : ${rw.box[k]}px`);
+        failures.push(
+          `${label}  ${k}\n      angular: ${ang.box[k]}px\n      custom : ${rw.box[k]}px`,
+        );
       }
     }
     if (VERBOSE) {
@@ -289,13 +348,18 @@ for (const name of Object.keys(STORIES)) {
   });
 }
 
-const buttons = Object.values(angular).reduce((n, v) => n + v.length, 0);
+const buttons = Object.keys(STORIES).reduce(
+  (n, k) => n + pick(k, angular[k]).length,
+  0,
+);
 console.log(
   `\nchecked ${checked} properties across ${buttons} buttons in ${Object.keys(STORIES).length} stories`,
 );
 
 if (failures.length) {
-  console.error(`\n${failures.length} drift(s) between the Angular component and the Custom tab:\n`);
+  console.error(
+    `\n${failures.length} drift(s) between the Angular component and the Custom tab:\n`,
+  );
   for (const f of failures) console.error(`  ${f}`);
   console.error(
     `\nThe Custom tab now hands readers code that does not match the component.\n` +
@@ -304,4 +368,6 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log('button drift OK — the Custom tab renders identically to the component');
+console.log(
+  'button drift OK — the Custom tab renders identically to the component',
+);

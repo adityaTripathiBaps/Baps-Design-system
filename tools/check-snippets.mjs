@@ -31,7 +31,8 @@ const SHARED_PARTIALS = [
 
 const findings = [];
 const report = [];
-const fail = (component, rule, detail) => findings.push({ component, rule, detail });
+const fail = (component, rule, detail) =>
+  findings.push({ component, rule, detail });
 
 const read = (p) => readFileSync(p, 'utf8');
 const list = (dir) => (existsSync(dir) ? readdirSync(dir) : []);
@@ -73,30 +74,47 @@ for (const dir of list(COMPONENTS).sort()) {
   const componentFile = `${COMPONENTS}/${dir}/${dir}.component.ts`;
 
   const componentSrc = existsSync(componentFile) ? read(componentFile) : '';
-  const isWrapper = /from 'primeng\//.test(componentSrc) || /<p-[a-z]/.test(componentSrc);
+  const isWrapper =
+    /from 'primeng\//.test(componentSrc) || /<p-[a-z]/.test(componentSrc);
   const storiesSrc = existsSync(storiesFile) ? read(storiesFile) : '';
   const storyExports = new Set(
     [...storiesSrc.matchAll(/^export const (\w+)/gm)].map((m) => m[1]),
   );
   const exampleCount = [...storyExports].filter((s) => {
     const nameMatch = storiesSrc.match(
-      new RegExp(`export const ${s}[^=]*=\\s*\\{[\\s\\S]{0,400}?name:\\s*'([^']+)'`),
+      new RegExp(
+        `export const ${s}[^=]*=\\s*\\{[\\s\\S]{0,400}?name:\\s*'([^']+)'`,
+      ),
     );
-    return !/^Interaction( |—)/.test(nameMatch?.[1] ?? s) && !/Interaction$/.test(s);
+    return (
+      !/^Interaction( |—)/.test(nameMatch?.[1] ?? s) && !/Interaction$/.test(s)
+    );
   }).length;
 
   if (!existsSync(snippetFile)) {
-    report.push({ component: dir, wrapper: isWrapper, examples: exampleCount, covered: 0, keys: new Set() });
+    report.push({
+      component: dir,
+      wrapper: isWrapper,
+      examples: exampleCount,
+      covered: 0,
+      keys: new Set(),
+    });
     continue;
   }
 
   const src = read(snippetFile);
 
   // ── 1. keys ───────────────────────────────────────────────────────────────
-  const keysUsed = new Set([...src.matchAll(/^\s{4}(\w+):\s*[`'"]/gm)].map((m) => m[1]));
+  const keysUsed = new Set(
+    [...src.matchAll(/^\s{4}(\w+):\s*[`'"]/gm)].map((m) => m[1]),
+  );
   for (const key of keysUsed) {
     if (!ALLOWED_KEYS.includes(key)) {
-      fail(dir, 'key', `"${key}" is not a framework key — allowed: ${ALLOWED_KEYS.join(', ')}`);
+      fail(
+        dir,
+        'key',
+        `"${key}" is not a framework key — allowed: ${ALLOWED_KEYS.join(', ')}`,
+      );
     }
   }
 
@@ -104,7 +122,11 @@ for (const dir of list(COMPONENTS).sort()) {
   const examples = [...src.matchAll(/^\s{2}(\w+):\s*\{/gm)].map((m) => m[1]);
   for (const ex of examples) {
     if (!storyExports.has(ex)) {
-      fail(dir, 'story', `example "${ex}" has no matching export in ${dir}.stories.ts`);
+      fail(
+        dir,
+        'story',
+        `example "${ex}" has no matching export in ${dir}.stories.ts`,
+      );
     }
   }
 
@@ -116,7 +138,11 @@ for (const dir of list(COMPONENTS).sort()) {
   // spans in the file's own doc comment, which is how a header sentence
   // explaining that card nests `baps-avatar` was reported as card using an
   // undefined class.
-  const snippetStrings = [...src.matchAll(/\b(?:react|next|primeng|custom|htmlcss):\s*`([\s\S]*?)`,?\s*$/gm)]
+  const snippetStrings = [
+    ...src.matchAll(
+      /\b(?:react|next|primeng|custom|htmlcss):\s*`([\s\S]*?)`,?\s*$/gm,
+    ),
+  ]
     .map((m) => m[1])
     .join('\n');
 
@@ -127,15 +153,25 @@ for (const dir of list(COMPONENTS).sort()) {
     .replace(/<!--[\s\S]*?-->/g, '')
     .replace(/\/\*[\s\S]*?\*\//g, '')
     .replace(/^\s*\/\/.*$/gm, '');
-  for (const m of snippetCode.matchAll(/#[0-9a-fA-F]{3,8}\b|rgba?\([^)]*\)|hsla?\([^)]*\)/g)) {
+  for (const m of snippetCode.matchAll(
+    /#[0-9a-fA-F]{3,8}\b|rgba?\([^)]*\)|hsla?\([^)]*\)/g,
+  )) {
     fail(dir, 'colour', `${m[0]} is written into a snippet — use a token`);
   }
 
   // ── 4/5. utility-class frameworks ─────────────────────────────────────────
   for (const m of snippetStrings.matchAll(/class(?:Name)?="([^"]*)"/g)) {
     for (const cls of m[1].split(/\s+/).filter(Boolean)) {
-      if (/^(bg|text|p|px|py|m|mx|my|w|h|flex|grid|gap|rounded|shadow|border)-[a-z0-9[\]./-]+$/.test(cls)) {
-        fail(dir, 'utility', `"${cls}" looks like a Tailwind utility — use the design system's classes`);
+      if (
+        /^(bg|text|p|px|py|m|mx|my|w|h|flex|grid|gap|rounded|shadow|border)-[a-z0-9[\]./-]+$/.test(
+          cls,
+        )
+      ) {
+        fail(
+          dir,
+          'utility',
+          `"${cls}" looks like a Tailwind utility — use the design system's classes`,
+        );
       }
     }
   }
@@ -145,13 +181,23 @@ for (const dir of list(COMPONENTS).sort()) {
     const cls = m[1];
     // element names (<baps-card>, <baps-avatar>) are not classes
     if (new RegExp(`<${cls}[\\s/>]`).test(snippetCode)) continue;
+    // a CSS custom property is not a class either.  matches between the
+    // second dash and the b of --baps-icon-size, so without this the size
+    // custom property every raw <baps-icon> has to set reads as six uses of
+    // an undefined class — which is what it reported the first time an icon
+    // snippet was written.
+    if (snippetCode[m.index - 1] === '-') continue;
     // a name completed at runtime — `baps-alert--${severity}` — cannot be
     // checked against a stylesheet, and its stem is not a class on its own
     // the `\` is there because the snippet is itself inside a template literal,
     // so its interpolations are written escaped
     if (/^\\?\$\{/.test(snippetCode.slice(m.index + cls.length))) continue;
     if (!definedClasses.has(cls)) {
-      fail(dir, 'class', `"${cls}" appears in a snippet but no stylesheet defines it`);
+      fail(
+        dir,
+        'class',
+        `"${cls}" appears in a snippet but no stylesheet defines it`,
+      );
     }
   }
 
@@ -159,13 +205,21 @@ for (const dir of list(COMPONENTS).sort()) {
   if (keysUsed.has('custom') && isWrapper) {
     const guard = `${TOOLS}/check-${dir}-drift.mjs`;
     if (!existsSync(guard)) {
-      fail(dir, 'drift', `authored Custom markup on a PrimeNG wrapper with no ${guard}`);
+      fail(
+        dir,
+        'drift',
+        `authored Custom markup on a PrimeNG wrapper with no ${guard}`,
+      );
     }
   }
 
   // ── 8. interactive sets must say so ───────────────────────────────────────
-  const INTERACTIVE = /\b(onClick|onChange|useState|aria-expanded|role="dialog"|role="menu")/;
-  if ((keysUsed.has('react') || keysUsed.has('next')) && INTERACTIVE.test(snippetStrings)) {
+  const INTERACTIVE =
+    /\b(onClick|onChange|useState|aria-expanded|role="dialog"|role="menu")/;
+  if (
+    (keysUsed.has('react') || keysUsed.has('next')) &&
+    INTERACTIVE.test(snippetStrings)
+  ) {
     if (!/interactive:\s*true/.test(src)) {
       fail(
         dir,
@@ -187,10 +241,15 @@ for (const dir of list(COMPONENTS).sort()) {
 
 // ── output ──────────────────────────────────────────────────────────────────
 if (process.argv.includes('--report')) {
-  const mark = (row, key) => (row.keys.has(key) ? (row.wrapper && key === 'custom' ? '◐' : '✅') : '—');
-  console.log('component            kind       examples  covered  react  next  primeng  custom');
+  const mark = (row, key) =>
+    row.keys.has(key) ? (row.wrapper && key === 'custom' ? '◐' : '✅') : '—';
+  console.log(
+    'component            kind       examples  covered  react  next  primeng  custom',
+  );
   console.log('-'.repeat(84));
-  for (const r of report.sort((a, b) => b.covered - a.covered || a.component.localeCompare(b.component))) {
+  for (const r of report.sort(
+    (a, b) => b.covered - a.covered || a.component.localeCompare(b.component),
+  )) {
     console.log(
       r.component.padEnd(20),
       (r.wrapper ? 'wrapper' : 'standalone').padEnd(10),
@@ -212,9 +271,16 @@ if (process.argv.includes('--report')) {
 }
 
 if (findings.length) {
-  console.error(`\n${findings.length} snippet finding${findings.length === 1 ? '' : 's'}:\n`);
-  for (const f of findings) console.error(`  ${f.component.padEnd(14)} ${f.rule.padEnd(12)} ${f.detail}`);
+  console.error(
+    `\n${findings.length} snippet finding${findings.length === 1 ? '' : 's'}:\n`,
+  );
+  for (const f of findings)
+    console.error(
+      `  ${f.component.padEnd(14)} ${f.rule.padEnd(12)} ${f.detail}`,
+    );
   process.exitCode = 1;
 } else {
-  console.log(`snippets OK — ${report.filter((r) => r.covered > 0).length} snippet files checked`);
+  console.log(
+    `snippets OK — ${report.filter((r) => r.covered > 0).length} snippet files checked`,
+  );
 }
