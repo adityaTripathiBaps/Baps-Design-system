@@ -168,18 +168,27 @@
 }
 
 /* ── MyBKY sizes ───────────────────────────────────────────────────────────
-   MyBKY sets no height: it falls out of padding plus the font's line box,
-   which is why the measured steps are 33 / 35 / 37 rather than the round
-   numbers the story labels use. The sm and lg padding-y values are literals
-   because no token carries them — they come from PrimeNG's own size scale and
-   were read off the rendered component (7px at sm, 7.6px at lg).
-   check-button-drift.mjs is what keeps them honest. */
+   Heights come from the tokens now. They always existed —
+   --button-mybky-height-s|m|l|xl = 32 / 36 / 36 / 42 — but only XL applied
+   them; the other three fell out of padding plus the font's line box and
+   measured 33 / 35 / 37, so a button was a pixel or two off its own token and
+   an icon-only button could not be square.
+
+   The padding-y literals stay: they still set the text's optical position
+   inside the box, and no token carries them. check-button-drift.mjs is what
+   keeps them honest. */
+.baps-button {
+  height: var(--button-mybky-height-m, 2.25rem);
+}
+
 .baps-button--s {
+  height: var(--button-mybky-height-s, 2rem);
   padding-top: 7px;
   padding-bottom: 7px;
 }
 
 .baps-button--l {
+  height: var(--button-mybky-height-l, 2.25rem);
   padding-top: 7.6px;
   padding-bottom: 7.6px;
   font-size: 16px;
@@ -190,6 +199,13 @@
 .baps-button--xl {
   height: var(--button-mybky-height-xl, 2.625rem);
   font-size: 16px;
+}
+
+/* XL has no PrimeNG size of its own —  returns undefined for it —
+   so the preset's iconOnlyWidth lands on the default 36px while the height is
+   42px. Square it here, where the XL height is already set. */
+.baps-button--xl.p-button-icon-only {
+  width: var(--button-mybky-height-xl, 2.625rem);
 }
 
 /* ── Disabled / loading, MyBKY ─────────────────────────────────────────────
