@@ -70,7 +70,8 @@
   column-gap: var(--button-mybky-gap, 0.25rem);
   border: 1px solid transparent;
   border-radius: var(--button-mybky-radius, 99px);
-  padding: var(--button-mybky-padding-y, 0.5rem) var(--button-mybky-padding-x, 1rem);
+  padding: var(--button-mybky-padding-y, 0.5rem)
+    var(--button-mybky-padding-x, 1rem);
   font-family: inherit;
   font-size: 14px;
   /* 400 on the BOX, measured. The semibold that --button-mybky-font-weight
@@ -200,10 +201,33 @@
   font-size: 16px;
 }
 
-/* XL has no PrimeNG size of its own —  returns undefined for it —
-   so the preset's iconOnlyWidth lands on the default 36px while the height is
-   42px. Square it here, where the XL height is already set. */
-.baps-button--xl.p-button-icon-only {
+/* ── Icon-only is square on the height scale, MyBKY ────────────────────────
+   Measured on the component: 32 / 36 / 36 / 42 across s / m / l / xl, which is
+   each step's own height. The component gets that from the preset's
+   `iconOnlyWidth` (baps.theme.ts); raw markup has no preset, so the same four
+   tokens are read directly here.
+
+   What stood here before was a single rule selecting
+   `.baps-button--xl.p-button-icon-only` — a PrimeNG class raw markup
+   never carries, so it matched nothing and every MyBKY icon-only button
+   collapsed to its glyph: measured 20px wide inside a 36px-tall box. It was
+   the only `.p-button-*` selector left in this file, which is a useful smell:
+   this partial styles markup PrimeNG never touched. The Sampark side already
+   had its widths (below) and so was never wrong, which is why no story caught
+   it — check-button-drift.mjs covers IconOnly now. */
+.baps-button--icon-only {
+  width: var(--button-mybky-height-m, 2.25rem);
+}
+
+.baps-button--icon-only.baps-button--s {
+  width: var(--button-mybky-height-s, 2rem);
+}
+
+.baps-button--icon-only.baps-button--l {
+  width: var(--button-mybky-height-l, 2.25rem);
+}
+
+.baps-button--icon-only.baps-button--xl {
   width: var(--button-mybky-height-xl, 2.625rem);
 }
 
@@ -282,7 +306,8 @@
 }
 
 .baps-button.baps-sampark.baps-button--ghost-secondary:hover:not(:disabled),
-.baps-ds-sampark .baps-button.baps-button--ghost-secondary:hover:not(:disabled) {
+.baps-ds-sampark
+  .baps-button.baps-button--ghost-secondary:hover:not(:disabled) {
   background-color: var(--button-sampark-secondary-ghost-hover);
 }
 
