@@ -109,10 +109,10 @@ not a preference — it cost one reader six consecutive build failures.
 
 ```html
 <!-- CORRECT — literal attributes -->
-<baps-chip severity="info" label="info" [count]="8" />
+<baps-tag value="Open" severity="info" size="m" />
 
 <!-- WRONG — `s` is the story's loop variable, not a property of the app -->
-<baps-chip [severity]="s" [count]="8" />
+<baps-tag [value]="s" [severity]="s" />
 ```
 
 Loop-based stories emit their loop variables into Show code. Pasted into an app,
