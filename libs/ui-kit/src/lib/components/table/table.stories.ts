@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
+import { expect, within } from '@storybook/test';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from 'primeng/api';
 import { TableModule } from 'primeng/table';
@@ -458,6 +459,27 @@ export const Default: StoryObj<BapsTable> = {
       </baps-table>
     `,
   }),
+};
+
+/**
+ * Row actions have to be reachable from the keyboard, which a screenshot of the
+ * table cannot show. Spreads `Default` so there is one table definition, not
+ * two that can drift.
+ */
+export const RowActionFocusInteraction: StoryObj<BapsTable> = {
+  ...Default,
+  name: 'Interaction — a row action takes keyboard focus',
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const firstRowText = canvas.getByText('Diwali New Year Prasad - 2025');
+    expect(firstRowText).toBeTruthy();
+
+    const editBtns = canvas.getAllByRole('button', { name: /Edit template/i });
+    expect(editBtns.length).toBeGreaterThan(0);
+    editBtns[0].focus();
+    expect(editBtns[0]).toHaveFocus();
+  },
 };
 
 /**

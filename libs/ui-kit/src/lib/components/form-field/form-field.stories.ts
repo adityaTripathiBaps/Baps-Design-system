@@ -115,17 +115,23 @@ export const Playground: Story = {
       </div>
     `,
   }),
+};
+
+/**
+ * Two things a screenshot of an empty field cannot show: that the label is
+ * really associated with the input (queried by label text, so a missing `for`
+ * fails here), and that tabbing reaches it before typing does anything.
+ */
+export const LabelAndTypingInteraction: Story = {
+  ...Playground,
+  name: 'Interaction — the label focuses its input and typing lands',
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
-    // Find the input field by label
     const input = canvas.getByLabelText(/Email/i);
-    
-    // Verify keyboard focus
+
     await userEvent.tab();
     expect(input).toHaveFocus();
-    
-    // Click and change behavior
+
     await userEvent.type(input, 'test@baps.dev');
     expect(input).toHaveValue('test@baps.dev');
   },

@@ -63,21 +63,25 @@ export const MenuItemPlayground: Story = {
       </div>
     `,
   }),
+};
+
+/**
+ * Queried by role, not by class: `menuitem` is the semantic the wrapper has to
+ * expose for a menu to be navigable at all, and the focus it takes is a state
+ * no screenshot of the resting row can show.
+ */
+export const FocusInteraction: Story = {
+  ...MenuItemPlayground,
+  name: 'Interaction — the row exposes role=menuitem and takes focus',
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
-    // Check render
-    const optionText = canvas.getByText('Option');
-    expect(optionText).toBeTruthy();
-    
-    // Check keyboard focus (p-menuitem renders a menuitem role)
+
     const menuItem = canvas.getByRole('menuitem');
     expect(menuItem).toBeTruthy();
-    
+
     menuItem.focus();
     expect(menuItem).toHaveFocus();
-    
-    // Click behavior
+
     await userEvent.click(menuItem);
   },
 };

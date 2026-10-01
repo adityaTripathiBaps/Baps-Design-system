@@ -187,6 +187,7 @@
     "stories": [
       "Dropdowns",
       "FloatLabelExample",
+      "LabelAndTypingInteraction",
       "Playground",
       "SamparkDropdownSizes",
       "SamparkDropdowns",
@@ -271,6 +272,7 @@
     "stories": [
       "AllVariants",
       "AllVariantsMyBKY",
+      "FocusInteraction",
       "MenuItemPlayground"
     ]
   },
@@ -439,6 +441,7 @@
       "GroupedProjects",
       "KaryakarAssignments",
       "Loading",
+      "RowActionFocusInteraction",
       "SortableStickyPaginated",
       "TreeLevels",
       "WithColumnConfig",
@@ -504,7 +507,8 @@
     "stories": [
       "BottomCenter",
       "Default",
-      "NoDuplicates"
+      "NoDuplicates",
+      "PushInteraction"
     ]
   },
   "toggle-switch": {
