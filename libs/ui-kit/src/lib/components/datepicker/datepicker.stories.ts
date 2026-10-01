@@ -90,6 +90,11 @@ export default meta;
  * for a generic example.
  */
 export const Default: StoryObj<BapsDatepicker> = {
+  // The story showed an inline calendar until 3c10bc3 replaced the literal
+  // inline="true" with [inline]="inline", which reads the meta's inline: false.
+  // The example is the calendar, so the value is restored here rather than in
+  // the meta, where it would open every other datepicker story too.
+  args: { inline: true },
   render: (args) => ({
     props: { ...args, date: new Date(2025, 0, 10) },
     template: `
