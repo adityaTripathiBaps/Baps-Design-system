@@ -44,6 +44,157 @@ export type { SnippetSet };
 const SETUP = setupFor('tag', true);
 
 export const tagSnippets: Record<string, SnippetSet> = {
+  // The meta's own args: one grey tag at the default size. Grey is what an
+  // unqualified tag renders, which is why the class is spelled out here while
+  // the Angular side leaves severity unset.
+  Playground: {
+    primeng: `<baps-tag value="Registered" />`,
+    custom: `<span class="baps-tag baps-tag--grey"><span class="baps-tag__label">Registered</span></span>`,
+    react: `\${SETUP}
+
+export function Example() {
+  return (
+    <span className="baps-tag baps-tag--grey">
+      <span className="baps-tag__label">Registered</span>
+    </span>
+  );
+}`,
+    next: `\${SETUP}
+
+/* No 'use client': a tag is markup. */
+export default function Example() {
+  return (
+    <span className="baps-tag baps-tag--grey">
+      <span className="baps-tag__label">Registered</span>
+    </span>
+  );
+}`,
+  },
+
+  // The same seven severities plus disabled, under the second brand. The only
+  // difference from Severities is the scope class: brand="sampark" on one
+  // instance becomes baps-sampark on that element. A whole page switches by
+  // putting baps-ds-sampark on an ancestor and dropping the per-tag class —
+  // the stylesheet carries both selectors.
+  SamparkSeverities: {
+    primeng: `<div style="display:flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+  <baps-tag brand="sampark" value="Grey" />
+  <baps-tag brand="sampark" value="Primary" severity="contrast" />
+  <baps-tag brand="sampark" value="Secondary" severity="secondary" />
+  <baps-tag brand="sampark" value="Info" severity="info" />
+  <baps-tag brand="sampark" value="Warning" severity="warn" />
+  <baps-tag brand="sampark" value="Error" severity="danger" />
+  <baps-tag brand="sampark" value="Success" severity="success" />
+  <baps-tag brand="sampark" value="Disabled" [disabled]="true" />
+</div>`,
+    custom: `<div style="display:flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+  <span class="baps-tag baps-sampark baps-tag--grey"><span class="baps-tag__label">Grey</span></span>
+  <span class="baps-tag baps-sampark baps-tag--primary"><span class="baps-tag__label">Primary</span></span>
+  <span class="baps-tag baps-sampark baps-tag--secondary"><span class="baps-tag__label">Secondary</span></span>
+  <span class="baps-tag baps-sampark baps-tag--info"><span class="baps-tag__label">Info</span></span>
+  <span class="baps-tag baps-sampark baps-tag--warning"><span class="baps-tag__label">Warning</span></span>
+  <span class="baps-tag baps-sampark baps-tag--error"><span class="baps-tag__label">Error</span></span>
+  <span class="baps-tag baps-sampark baps-tag--success"><span class="baps-tag__label">Success</span></span>
+  <span class="baps-tag baps-sampark baps-tag--disabled"><span class="baps-tag__label">Disabled</span></span>
+</div>`,
+    react: `\${SETUP}
+
+const SEVERITIES = ['grey', 'primary', 'secondary', 'info', 'warning', 'error', 'success'];
+
+export function SamparkSeverities() {
+  return (
+    <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+      {SEVERITIES.map((s) => (
+        <span key={s} className={\`baps-tag baps-sampark baps-tag--\${s}\`}>
+          <span className="baps-tag__label">{s[0].toUpperCase() + s.slice(1)}</span>
+        </span>
+      ))}
+      <span className="baps-tag baps-sampark baps-tag--disabled">
+        <span className="baps-tag__label">Disabled</span>
+      </span>
+    </div>
+  );
+}`,
+    next: `\${SETUP}
+
+const SEVERITIES = ['grey', 'primary', 'secondary', 'info', 'warning', 'error', 'success'];
+
+export default function SamparkSeverities() {
+  return (
+    <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+      {SEVERITIES.map((s) => (
+        <span key={s} className={\`baps-tag baps-sampark baps-tag--\${s}\`}>
+          <span className="baps-tag__label">{s[0].toUpperCase() + s.slice(1)}</span>
+        </span>
+      ))}
+      <span className="baps-tag baps-sampark baps-tag--disabled">
+        <span className="baps-tag__label">Disabled</span>
+      </span>
+    </div>
+  );
+}`,
+  },
+
+  // Sampark boxes. "s" is the default and carries no class; the component's
+  // host binds only xs, m and l. The large one also carries an icon, which
+  // inherits the label's colour and font-size and so needs neither of its own.
+  SamparkSizes: {
+    primeng: `<div style="display:flex; gap: 12px; align-items: center;">
+  <baps-tag brand="sampark" value="Extra small" size="xs" />
+  <baps-tag brand="sampark" value="Small" />
+  <baps-tag brand="sampark" value="Medium" size="m" />
+  <baps-tag brand="sampark" value="Large" size="l" icon="pi pi-clock" />
+</div>`,
+    custom: `<div style="display:flex; gap: 12px; align-items: center;">
+  <span class="baps-tag baps-sampark baps-tag--xs"><span class="baps-tag__label">Extra small</span></span>
+  <span class="baps-tag baps-sampark"><span class="baps-tag__label">Small</span></span>
+  <span class="baps-tag baps-sampark baps-tag--m"><span class="baps-tag__label">Medium</span></span>
+  <span class="baps-tag baps-sampark baps-tag--l"><span class="baps-tag__icon pi pi-clock" aria-hidden="true"></span><span class="baps-tag__label">Large</span></span>
+</div>`,
+    react: `\${SETUP}
+
+export function SamparkSizes() {
+  return (
+    <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+      <span className="baps-tag baps-sampark baps-tag--xs">
+        <span className="baps-tag__label">Extra small</span>
+      </span>
+      <span className="baps-tag baps-sampark">
+        <span className="baps-tag__label">Small</span>
+      </span>
+      <span className="baps-tag baps-sampark baps-tag--m">
+        <span className="baps-tag__label">Medium</span>
+      </span>
+      <span className="baps-tag baps-sampark baps-tag--l">
+        <span className="baps-tag__icon pi pi-clock" aria-hidden="true" />
+        <span className="baps-tag__label">Large</span>
+      </span>
+    </div>
+  );
+}`,
+    next: `\${SETUP}
+
+export default function SamparkSizes() {
+  return (
+    <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+      <span className="baps-tag baps-sampark baps-tag--xs">
+        <span className="baps-tag__label">Extra small</span>
+      </span>
+      <span className="baps-tag baps-sampark">
+        <span className="baps-tag__label">Small</span>
+      </span>
+      <span className="baps-tag baps-sampark baps-tag--m">
+        <span className="baps-tag__label">Medium</span>
+      </span>
+      <span className="baps-tag baps-sampark baps-tag--l">
+        <span className="baps-tag__icon pi pi-clock" aria-hidden="true" />
+        <span className="baps-tag__label">Large</span>
+      </span>
+    </div>
+  );
+}`,
+  },
+
   Severities: {
     primeng: `<div style="display:flex; gap: 12px; align-items: center; flex-wrap: wrap;">
   <baps-tag value="Grey" />

@@ -32,31 +32,43 @@ A labelled status or category chip — event status, member group, role code. Th
 
 ### Playground
 
-<Canvas of={TagStories.Playground} />
+<Canvas of={TagStories.Playground} sourceState="none" />
 
 <Controls of={TagStories.Playground} />
+
+<FrameworkTabs of={TagStories.Playground} snippets={tagSnippets.Playground} />
 
 ### Severities
 
 <Canvas of={TagStories.Severities} sourceState="none" />
 
-<FrameworkTabs of={TagStories.Severities} snippets={tagSnippets.Severities} hideCustom />
+<FrameworkTabs of={TagStories.Severities} snippets={tagSnippets.Severities} />
 
 ### Sizes
 
 <Canvas of={TagStories.Sizes} sourceState="none" />
 
-<FrameworkTabs of={TagStories.Sizes} snippets={tagSnippets.Sizes} hideCustom />
+<FrameworkTabs of={TagStories.Sizes} snippets={tagSnippets.Sizes} />
 
 <BrandOnly brand="sampark">
 
 ### Sampark Severities
 
-<Canvas of={TagStories.SamparkSeverities} />
+<Canvas of={TagStories.SamparkSeverities} sourceState="none" />
+
+<FrameworkTabs
+  of={TagStories.SamparkSeverities}
+  snippets={tagSnippets.SamparkSeverities}
+/>
 
 ### Sampark Sizes
 
-<Canvas of={TagStories.SamparkSizes} />
+<Canvas of={TagStories.SamparkSizes} sourceState="none" />
+
+<FrameworkTabs
+  of={TagStories.SamparkSizes}
+  snippets={tagSnippets.SamparkSizes}
+/>
 
 </BrandOnly>
 
@@ -109,7 +121,7 @@ brands at once.
 
 <Canvas of={TagStories.WithIcon} sourceState="none" />
 
-<FrameworkTabs of={TagStories.WithIcon} snippets={tagSnippets.WithIcon} hideCustom />
+<FrameworkTabs of={TagStories.WithIcon} snippets={tagSnippets.WithIcon} />
 
 ### Full Matrix
 
@@ -125,27 +137,27 @@ Inputs, outputs and their types, read from the component's own source.
 
 ## When Not to Use
 
-`baps-tag`, `baps-badge` and `baps-overlaybadge` all render small coloured chips and are the most-confused trio in the kit. The distinction is what the chip *is*, not how it looks:
+`baps-tag`, `baps-badge` and `baps-overlaybadge` all render small coloured chips and are the most-confused trio in the kit. The distinction is what the chip _is_, not how it looks:
 
-| | `baps-tag` | `baps-badge` | `baps-overlaybadge` |
-| --- | --- | --- | --- |
-| **What it is** | A **labelled chip** naming a category or status | A **count or dot indicator** annotating something else | The same badge, positioned over projected content |
-| Content | A word or short phrase (`value` + optional `icon`) | A number, or **empty for a dot** | Same as Badge |
-| Geometry | Sized to its text; fixed height only | A circle/capsule with equal `height`/`minWidth` (18/22/32px) | Absolutely positioned on the corner of its child |
-| Placement | Inline, in the flow of content | Attached to a host — a nav item, a tab, a label | Wraps a `<ng-content>` host (icon, avatar) |
-| Extras | 1px tinted border + hover ring, four sizes, `disabled` | No border, no hover, no disabled fill | No `brand` input at all — page-wide toggle only |
-| Reads as | "This record **is** Registered" | "There **are** 5 of these" | "There are 5 of these, on *that*" |
+|                | `baps-tag`                                             | `baps-badge`                                                 | `baps-overlaybadge`                               |
+| -------------- | ------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------- |
+| **What it is** | A **labelled chip** naming a category or status        | A **count or dot indicator** annotating something else       | The same badge, positioned over projected content |
+| Content        | A word or short phrase (`value` + optional `icon`)     | A number, or **empty for a dot**                             | Same as Badge                                     |
+| Geometry       | Sized to its text; fixed height only                   | A circle/capsule with equal `height`/`minWidth` (18/22/32px) | Absolutely positioned on the corner of its child  |
+| Placement      | Inline, in the flow of content                         | Attached to a host — a nav item, a tab, a label              | Wraps a `<ng-content>` host (icon, avatar)        |
+| Extras         | 1px tinted border + hover ring, four sizes, `disabled` | No border, no hover, no disabled fill                        | No `brand` input at all — page-wide toggle only   |
+| Reads as       | "This record **is** Registered"                        | "There **are** 5 of these"                                   | "There are 5 of these, on _that_"                 |
 
 **One-line rule: a badge counts, a tag names.** If you can't put a number in it, it isn't a badge; if the text isn't a label you'd read aloud as part of the row, it isn't a tag.
 
 Beyond that trio:
 
-| Need | Use | Not this |
-| --- | --- | --- |
-| A clickable filter chip or removable token | `baps-button` (`size="small"`, `[rounded]`) | Tag has no click output, no `tabindex`, no remove control |
-| A sentence explaining a state, not just naming it | `baps-alert` or `baps-message` | A chip has no room for a reason |
-| An unread/notification count on an icon or avatar | `baps-overlaybadge` | Tag can't position itself over another element |
-| The identity of a person | `baps-avatar` / `baps-avatargroup` | |
+| Need                                              | Use                                         | Not this                                                  |
+| ------------------------------------------------- | ------------------------------------------- | --------------------------------------------------------- |
+| A clickable filter chip or removable token        | `baps-button` (`size="small"`, `[rounded]`) | Tag has no click output, no `tabindex`, no remove control |
+| A sentence explaining a state, not just naming it | `baps-alert` or `baps-message`              | A chip has no room for a reason                           |
+| An unread/notification count on an icon or avatar | `baps-overlaybadge`                         | Tag can't position itself over another element            |
+| The identity of a person                          | `baps-avatar` / `baps-avatargroup`          |                                                           |
 
 ## Accessibility
 

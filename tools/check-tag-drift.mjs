@@ -21,7 +21,12 @@
  *   node tools/check-tag-drift.mjs --verbose
  */
 import { chromium } from '@playwright/test';
-import { readFileSync, writeFileSync, mkdtempSync, copyFileSync } from 'node:fs';
+import {
+  readFileSync,
+  writeFileSync,
+  mkdtempSync,
+  copyFileSync,
+} from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
@@ -34,13 +39,22 @@ const SNIPPETS = 'libs/ui-kit/src/lib/components/tag/tag.snippets.ts';
 const PARTIAL = 'libs/ui-kit/src/lib/styles/components/tag/_tag.scss';
 const COMMON = 'libs/ui-kit/src/lib/styles/layout/_common.scss';
 const TOKENS = 'libs/tokens/build/css/tokens.css';
-const FONT = 'libs/ui-kit/src/lib/styles/layout/fonts/Inter-VariableFont_opsz,wght.ttf';
+const FONT =
+  'libs/ui-kit/src/lib/styles/layout/fonts/Inter-VariableFont_opsz,wght.ttf';
 const PRIMEICONS = 'node_modules/primeicons/primeicons.css';
 
 const STORIES = {
+  Playground: 'components-tag--playground',
   Severities: 'components-tag--severities',
   Sizes: 'components-tag--sizes',
   WithIcon: 'components-tag--with-icon',
+  // The Sampark pair. Only _tag.scss is compiled onto the raw page and that is
+  // deliberate: _tag-sampark.scss exists but every selector in it is
+  // `:is(baps-tag.baps-sampark, .baps-ds-sampark baps-tag) .p-tag` — it skins
+  // the PrimeNG markup under a Sampark scope, so it can never reach raw
+  // markup. The standalone Sampark rules are the 25 inside _tag.scss itself.
+  SamparkSeverities: 'components-tag--sampark-severities',
+  SamparkSizes: 'components-tag--sampark-sizes',
 };
 
 const PROPS = [
@@ -70,10 +84,13 @@ const readCustomBlocks = () => {
     const start = src.indexOf('\n  ' + name + ': {');
     if (start === -1) throw new Error(SNIPPETS + ': no entry for ' + name);
     const key = src.indexOf('custom: ', start);
-    if (key === -1) throw new Error(SNIPPETS + ': ' + name + ' has no custom block');
-    const from = src.indexOf('\n', key) === -1 ? key : key + 'custom: '.length + 1;
+    if (key === -1)
+      throw new Error(SNIPPETS + ': ' + name + ' has no custom block');
+    const from =
+      src.indexOf('\n', key) === -1 ? key : key + 'custom: '.length + 1;
     const end = src.indexOf('\n    react:', from);
-    if (end === -1) throw new Error(SNIPPETS + ': ' + name + ' custom block unterminated');
+    if (end === -1)
+      throw new Error(SNIPPETS + ': ' + name + ' custom block unterminated');
     // Trim the trailing backtick-comma the template literal ends with.
     out[name] = src.slice(from, end).replace(/[`,\s]+$/, '');
   }
@@ -102,10 +119,14 @@ const buildRawPage = (blocks) => {
     [COMMON, 'common.css'],
   ];
   for (const pair of pairs) {
-    execFileSync('npx', ['sass', '--no-source-map', pair[0], join(dir, pair[1])], {
-      stdio: 'pipe',
-      shell: process.platform === 'win32',
-    });
+    execFileSync(
+      'npx',
+      ['sass', '--no-source-map', pair[0], join(dir, pair[1])],
+      {
+        stdio: 'pipe',
+        shell: process.platform === 'win32',
+      },
+    );
   }
   copyFileSync(TOKENS, join(dir, 'tokens.css'));
   copyFileSync(PRIMEICONS, join(dir, 'primeicons.css'));
@@ -119,7 +140,10 @@ const buildRawPage = (blocks) => {
   const fontUrl = pathToFileURL(resolve(FONT)).href;
 
   const sections = Object.keys(blocks)
-    .map((name) => '<section data-story="' + name + '">\n' + blocks[name] + '\n</section>')
+    .map(
+      (name) =>
+        '<section data-story="' + name + '">\n' + blocks[name] + '\n</section>',
+    )
     .join('\n');
 
   const style = [
@@ -173,7 +197,10 @@ await page.waitForTimeout(500);
 
 const raw = {};
 for (const name of Object.keys(STORIES)) {
-  raw[name] = await extract(page, 'section[data-story="' + name + '"] .baps-tag');
+  raw[name] = await extract(
+    page,
+    'section[data-story="' + name + '"] .baps-tag',
+  );
 }
 await browser.close();
 
@@ -184,7 +211,13 @@ for (const name of Object.keys(STORIES)) {
   const a = angular[name];
   const b = raw[name];
   if (a.length !== b.length) {
-    failures.push(name + ': Angular renders ' + a.length + ' tags, the Custom tab markup ' + b.length);
+    failures.push(
+      name +
+        ': Angular renders ' +
+        a.length +
+        ' tags, the Custom tab markup ' +
+        b.length,
+    );
     continue;
   }
   for (let i = 0; i < a.length; i++) {
@@ -199,13 +232,30 @@ for (const name of Object.keys(STORIES)) {
       // to `block` would still fail.
       const norm = (v) => (k === 'display' && v === 'flex' ? 'inline-flex' : v);
       if (norm(ang.css[k]) !== norm(rw.css[k])) {
-        failures.push(label + '  ' + k + '\n      angular: ' + ang.css[k] + '\n      custom : ' + rw.css[k]);
+        failures.push(
+          label +
+            '  ' +
+            k +
+            '\n      angular: ' +
+            ang.css[k] +
+            '\n      custom : ' +
+            rw.css[k],
+        );
       }
     }
     for (const k of BOX) {
       checked++;
       if (Math.abs(ang.box[k] - rw.box[k]) > 0.5) {
-        failures.push(label + '  ' + k + '\n      angular: ' + ang.box[k] + 'px\n      custom : ' + rw.box[k] + 'px');
+        failures.push(
+          label +
+            '  ' +
+            k +
+            '\n      angular: ' +
+            ang.box[k] +
+            'px\n      custom : ' +
+            rw.box[k] +
+            'px',
+        );
       }
     }
     if (VERBOSE) {
@@ -218,17 +268,33 @@ for (const name of Object.keys(STORIES)) {
 let tags = 0;
 for (const name of Object.keys(angular)) tags += angular[name].length;
 console.log(
-  '\nchecked ' + checked + ' properties across ' + tags + ' tags in ' + Object.keys(STORIES).length + ' stories',
+  '\nchecked ' +
+    checked +
+    ' properties across ' +
+    tags +
+    ' tags in ' +
+    Object.keys(STORIES).length +
+    ' stories',
 );
 
 if (failures.length) {
-  console.error('\n' + failures.length + ' drift(s) between the Angular component and the Custom tab:\n');
+  console.error(
+    '\n' +
+      failures.length +
+      ' drift(s) between the Angular component and the Custom tab:\n',
+  );
   for (const f of failures) console.error('  ' + f);
   console.error(
     '\nThe Custom tab now hands readers code that does not match the component.\n' +
-      'Fix ' + PARTIAL + ' (or the markup in ' + SNIPPETS + ') so both render the same.',
+      'Fix ' +
+      PARTIAL +
+      ' (or the markup in ' +
+      SNIPPETS +
+      ') so both render the same.',
   );
   process.exit(1);
 }
 
-console.log('tag drift OK — the Custom tab renders identically to the component');
+console.log(
+  'tag drift OK — the Custom tab renders identically to the component',
+);
