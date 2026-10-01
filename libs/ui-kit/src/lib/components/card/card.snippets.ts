@@ -38,14 +38,15 @@
  *
  * ## What a non-Angular page has to load (all three, measured)
  *
- * 1. `libs/tokens/build/css/tokens.css` — without it the stylesheet's own
+ * 1. `@org/tokens/css` — without it the stylesheet's own
  *    fallbacks take over and the type goes off: title line-height measured
  *    20.8px instead of 19.2px, subtitle 18.2px instead of 16.8px. Geometry and
  *    colour were unaffected; only line-height drifted.
- * 2. `libs/ui-kit/src/lib/styles/components/card/_card.scss` — compiles on its
- *    own (it imports no other partial), so one `sass` run produces the whole
- *    card stylesheet. The Angular component loads the same file via
- *    `styleUrls`, which is what keeps the two from drifting apart.
+ * 2. `@org/ui-kit/styles/card`, compiled from
+ *    `libs/ui-kit/src/lib/styles/components/card/_card.scss` — that partial
+ *    imports no other, so one `sass` run produces the whole card stylesheet.
+ *    The Angular component loads the same source file via `styleUrls`, which
+ *    is what keeps the two from drifting apart.
  * 3. A base `font-family`. Nothing in ui-kit applies one — the measured page
  *    fell back to Times New Roman while the app renders Inter.
  *    `styles/layout/fonts` carries the @font-face and `styles/layout/common`
@@ -63,35 +64,23 @@
  * control missing. They get snippets when those components are extracted the
  * way card was, not before.
  *
- * ## Known gap
+ * ## Packaging — the gap this file used to record is closed
  *
- * There is no package path for any of this yet: `libs/ui-kit/package.json`
- * declares no `exports`, and `@org/ui-kit` resolves through a tsconfig path
- * alias rather than a `node_modules` link — verified, `sass` cannot resolve
- * `@org/ui-kit/.../card`. Inside this repo the files are reachable by relative
- * path (which is how `apps/storybook-host/src/styles.scss` consumes them).
- * A React app in another repo would need a real styles export first; that is a
- * packaging decision and has not been made.
+ * These styles no longer need a relative path. `libs/ui-kit/package.json` now
+ * declares `exports` for `./styles` and `./styles/*`, and
+ * `libs/ui-kit/scripts/build-styles.mjs` compiles the partials to
+ * `dist/libs/ui-kit/styles/*.css` as part of the library build, so a React or
+ * Next app in another repo imports `@org/ui-kit/styles`. What each path does
+ * and does not carry is measured in `libs/ui-kit/src/lib/docs/snippet-setup.ts`,
+ * which is also where the setup block below comes from.
  */
-export type SnippetSet = { react?: string; next?: string; primeng?: string; custom?: string };
+import { setupFor, type SnippetSet } from '../../docs/snippet-setup';
+
+/** Re-exported so the .mdx and the docs blocks keep importing it from here. */
+export type { SnippetSet };
 
 /** Stated once; the same loads behind every snippet on this page. */
-const SETUP = `/* Once, at your app's entry. Paths are relative because no package export
-   exists yet — see card.snippets.ts.
-
-     import '<repo>/libs/tokens/build/css/tokens.css';   // the import preview.ts uses
-
-   in your global stylesheet:
-
-     @use '<repo>/libs/ui-kit/src/lib/styles/layout/fonts';   // Inter @font-face
-     @use '<repo>/libs/ui-kit/src/lib/styles/layout/common';  // --font-family et al
-     @use '<repo>/libs/ui-kit/src/lib/styles/components/card/card';
-
-   and the base rule, which is the app's own (copied from
-   apps/storybook-host/src/styles.scss) — no ui-kit partial applies it:
-
-     html { font-size: 16px; font-family: var(--font-family); }
-*/`;
+const SETUP = setupFor('card');
 
 export const cardSnippets: Record<string, SnippetSet> = {
   // The story writes `class="eyebrow"` on the label; that class is defined

@@ -57,49 +57,23 @@
  * The three Interaction stories get no snippets — they assert behaviour
  * through a `play` function and have no markup worth copying.
  *
- * ## Known gap
+ * ## Packaging — the gap this file used to record is closed
  *
- * There is still no package path for any of this — `libs/ui-kit/package.json`
- * declares no `exports` and `@org/ui-kit` resolves through a tsconfig alias, so
- * `sass` cannot resolve a `@org/ui-kit/...` import. Inside this repo the files
- * are reachable by relative path, which is how apps/storybook-host/src/
- * styles.scss consumes them. A React app in another repo needs a real styles
- * export first; that is a packaging decision and has not been made. Same gap
- * card.snippets.ts records.
+ * These styles no longer need a relative path. `libs/ui-kit/package.json` now
+ * declares `exports` for `./styles` and `./styles/*`, and
+ * `libs/ui-kit/scripts/build-styles.mjs` compiles the partials to
+ * `dist/libs/ui-kit/styles/*.css` as part of the library build, so a React or
+ * Next app in another repo imports `@org/ui-kit/styles`. What each path does
+ * and does not carry is measured in `libs/ui-kit/src/lib/docs/snippet-setup.ts`,
+ * which is also where the setup block below comes from.
  */
-export type SnippetSet = { react?: string; next?: string; primeng?: string; custom?: string };
+import { setupFor, type SnippetSet } from '../../docs/snippet-setup';
+
+/** Re-exported so the .mdx and the docs blocks keep importing it from here. */
+export type { SnippetSet };
 
 /** Stated once; the same loads sit behind every snippet on this page. */
-const SETUP = `/* Once, at your app's entry. Paths are relative because no package export
-   exists yet — see button.snippets.ts.
-
-     import '<repo>/libs/tokens/build/css/tokens.css';   // the import preview.ts uses
-     import 'primeicons/primeicons.css';                 // only if you use icons
-
-   in your global stylesheet:
-
-     @use '<repo>/libs/ui-kit/src/lib/styles/layout/fonts';    // Inter @font-face
-     @use '<repo>/libs/ui-kit/src/lib/styles/layout/common';   // --font-family et al
-     @use '<repo>/libs/ui-kit/src/lib/styles/components/button/button';
-
-   and the base rules, which are the app's own (copied from
-   apps/storybook-host/src/styles.scss) — no ui-kit partial applies them:
-
-     html {
-       font-size: 16px;
-       font-family: var(--font-family);
-       font-feature-settings: var(--font-feature-settings);
-     }
-     button, input, textarea, select { font-feature-settings: inherit; }
-
-   Both feature-settings lines are load-bearing, and not obviously so. Inter's
-   OpenType set (case, cpsp, salt, ss01/03/04, cv01-11) changes glyph advance
-   widths: without them every label measures about 1px narrower per word, so
-   the button comes out narrow while every colour, border, radius and padding
-   still matches exactly. A <button> does not inherit the features from html on
-   its own, which is why the second rule exists. Found by
-   tools/check-button-drift.mjs, not by reading.
-*/`;
+const SETUP = setupFor('button', true);
 
 export const buttonSnippets: Record<string, SnippetSet> = {
   AllVariants: {

@@ -53,10 +53,11 @@
  *
  * ## What a non-Angular page has to load (four, measured)
  *
- * 1. `libs/tokens/build/css/tokens.css` — the palette and type scale.
- * 2. `libs/ui-kit/src/lib/styles/components/alert/_alert.scss` — compiles on
- *    its own; the Angular component loads the same file via `styleUrls`, which
- *    is what stops the two from drifting.
+ * 1. `@org/tokens/css` — the palette and type scale.
+ * 2. `@org/ui-kit/styles/alert`, compiled from
+ *    `libs/ui-kit/src/lib/styles/components/alert/_alert.scss` — that partial
+ *    imports no other; the Angular component loads the same source file via
+ *    `styleUrls`, which is what stops the two from drifting.
  * 3. `styles/layout/fonts` + `styles/layout/common`, plus the app's own
  *    `html { font-size: 16px; font-family: var(--font-family) }` rule — nothing
  *    in ui-kit applies a base font; without it the page falls back to a serif.
@@ -65,40 +66,22 @@
  *    font, and this is the one dependency card did not have. PrimeIcons is the
  *    icon font, not PrimeNG: no component code comes with it.
  *
- * ## Known gap
+ * ## Packaging — the gap this file used to record is closed
  *
- * Same as card: `libs/ui-kit/package.json` declares no `exports` and
- * `@org/ui-kit` resolves through a tsconfig path alias, not a node_modules
- * link, so there is no package path for the stylesheet yet. Inside this repo
- * the partial is reachable by relative path, the way
- * `apps/storybook-host/src/styles.scss` loads it.
+ * These styles no longer need a relative path. `libs/ui-kit/package.json` now
+ * declares `exports` for `./styles` and `./styles/*`, and
+ * `libs/ui-kit/scripts/build-styles.mjs` compiles the partials to
+ * `dist/libs/ui-kit/styles/*.css` as part of the library build, so a React or
+ * Next app in another repo imports `@org/ui-kit/styles`. What each path does
+ * and does not carry is measured in `libs/ui-kit/src/lib/docs/snippet-setup.ts`,
+ * which is also where the setup block below comes from.
  */
-export type SnippetSet = {
-  react?: string;
-  next?: string;
-  primeng?: string;
-  custom?: string;
-  /** Renders the shared "markup and styles only" note under the React and Next
-   *  tabs — see INTERACTIVE_NOTE in the docs blocks. */
-  interactive?: boolean;
-};
+import { setupFor, type SnippetSet } from '../../docs/snippet-setup';
 
-const SETUP = `/* Once, at your app's entry. Paths are relative because no package export
-   exists yet — see alert.snippets.ts.
+/** Re-exported so the .mdx and the docs blocks keep importing it from here. */
+export type { SnippetSet };
 
-     import '<repo>/libs/tokens/build/css/tokens.css';
-     import 'primeicons/primeicons.css';        // the pi-* glyphs below
-
-   in your global stylesheet:
-
-     @use '<repo>/libs/ui-kit/src/lib/styles/layout/fonts';
-     @use '<repo>/libs/ui-kit/src/lib/styles/layout/common';
-     @use '<repo>/libs/ui-kit/src/lib/styles/components/alert/alert';
-
-   and the base rule, which is the app's own — no ui-kit partial applies it:
-
-     html { font-size: 16px; font-family: var(--font-family); }
-*/`;
+const SETUP = setupFor('alert', true);
 
 export const alertSnippets: Record<string, SnippetSet> = {
   Severities: {

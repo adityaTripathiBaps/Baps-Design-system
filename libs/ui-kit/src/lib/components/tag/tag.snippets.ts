@@ -35,24 +35,13 @@
  * bucket B migrates tag off the preset literals, these two lines become token
  * references again and the drift guard is what notices.
  */
-export type SnippetSet = { react?: string; next?: string; primeng?: string; custom?: string };
+import { setupFor, type SnippetSet } from '../../docs/snippet-setup';
+
+/** Re-exported so the .mdx and the docs blocks keep importing it from here. */
+export type { SnippetSet };
 
 /** Stated once; the same loads sit behind every snippet on this page. */
-const SETUP = `/* Once, at your app's entry. Paths are relative because no package export
-   exists yet — see card.snippets.ts for the packaging note.
-
-     import '<repo>/libs/tokens/build/css/tokens.css';
-     import 'primeicons/primeicons.css';          // only if you use icons
-
-   in your global stylesheet:
-
-     @use '<repo>/libs/ui-kit/src/lib/styles/layout/fonts';
-     @use '<repo>/libs/ui-kit/src/lib/styles/layout/common';
-     @use '<repo>/libs/ui-kit/src/lib/styles/components/tag/tag';
-
-   and the app's own base rules — font-feature-settings included, or every
-   label measures narrower than the component. See button.snippets.ts.
-*/`;
+const SETUP = setupFor('tag', true);
 
 export const tagSnippets: Record<string, SnippetSet> = {
   Severities: {

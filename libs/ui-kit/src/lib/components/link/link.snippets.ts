@@ -30,28 +30,13 @@
  * the Sizes example sets `font-size: 20px` on its container and one link reads
  * "inherits 20px".
  */
-export type SnippetSet = { react?: string; next?: string; primeng?: string; custom?: string };
+import { setupFor, type SnippetSet } from '../../docs/snippet-setup';
+
+/** Re-exported so the .mdx and the docs blocks keep importing it from here. */
+export type { SnippetSet };
 
 /** Stated once; the same loads sit behind every snippet on this page. */
-const SETUP = `/* Once, at your app's entry. Paths are relative because no package export
-   exists yet — see card.snippets.ts for the packaging note.
-
-     import '<repo>/libs/tokens/build/css/tokens.css';
-
-   in your global stylesheet:
-
-     @use '<repo>/libs/ui-kit/src/lib/styles/layout/fonts';
-     @use '<repo>/libs/ui-kit/src/lib/styles/layout/common';
-     @use '<repo>/libs/ui-kit/src/lib/styles/components/link/link';
-
-   and the base rules, which are the app's own:
-
-     html {
-       font-size: 16px;
-       font-family: var(--font-family);
-       font-feature-settings: var(--font-feature-settings);
-     }
-*/`;
+const SETUP = setupFor('link');
 
 const anchor = (cls: string, text: string, href = '#') =>
   `  <baps-link class="${cls}"><a class="baps-link__anchor" href="${href}">${text}</a></baps-link>`;

@@ -47,20 +47,13 @@
  * nothing useful, and a status with a value announces a number that never
  * changes.
  */
-export type SnippetSet = { react?: string; next?: string; primeng?: string; custom?: string };
+import { setupFor, type SnippetSet } from '../../docs/snippet-setup';
+
+/** Re-exported so the .mdx and the docs blocks keep importing it from here. */
+export type { SnippetSet };
 
 /** Stated once; the same loads sit behind every snippet on this page. */
-const SETUP = `/* Once, at your app's entry. Paths are relative because no package export
-   exists yet — see card.snippets.ts for the packaging note.
-
-     import '<repo>/libs/tokens/build/css/tokens.css';
-
-   in your global stylesheet:
-
-     @use '<repo>/libs/ui-kit/src/lib/styles/layout/fonts';
-     @use '<repo>/libs/ui-kit/src/lib/styles/layout/common';
-     @use '<repo>/libs/ui-kit/src/lib/styles/components/spinner/spinner';
-*/`;
+const SETUP = setupFor('spinner');
 
 /** The circle pair, identical in every example bar the dash attributes. */
 const svg = (arr: string, off: string) =>

@@ -41,15 +41,12 @@
  * (`aria-hidden="true"`), or the name is announced twice.
  */
 
-export type SnippetSet = { react?: string; next?: string; primeng?: string; custom?: string };
+import { setupFor, type SnippetSet } from '../../docs/snippet-setup';
 
-const SETUP = `/* Once, at your app's entry:
-     import '@org/tokens/css';
-     import '@org/ui-kit/styles/avatar';   // or '@org/ui-kit/styles' for all of them
+/** Re-exported so the .mdx and the docs blocks keep importing it from here. */
+export type { SnippetSet };
 
-   and the base rule the app owns:
-     html { font-size: 16px; font-family: var(--font-family); }
-*/`;
+const SETUP = setupFor('avatar');
 
 export const avatarSnippets: Record<string, SnippetSet> = {
   MyBkyPlayground: {
