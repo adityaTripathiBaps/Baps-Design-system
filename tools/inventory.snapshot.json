@@ -31,11 +31,16 @@
     "title": "Components/Atoms/Avatar",
     "id": "components-avatar",
     "stories": [
-      "Group",
-      "GroupSizes",
+      "HtmlCss",
+      "HtmlCssTypes",
+      "MyBkyGroup",
+      "MyBkyGroupSizes",
+      "MyBkyPlayground",
       "MyBkyStatuses",
-      "Playground",
+      "SamparkGroup",
+      "SamparkGroupSizes",
       "SamparkIndicators",
+      "SamparkPlayground",
       "SamparkSizes",
       "SamparkVariants",
       "Shapes",
@@ -70,13 +75,15 @@
       "AllVariants",
       "ClickInteraction",
       "DisabledInteraction",
+      "IconOnly",
       "KeyboardInteraction",
       "Playground",
       "SamparkIconOnly",
       "SamparkSizes",
       "SamparkStates",
       "SamparkVariants",
-      "States"
+      "States",
+      "WithIcons"
     ]
   },
   "card": {
@@ -112,14 +119,7 @@
       "Brands",
       "Default",
       "Group",
-      "IconOnly",
-      "Matrix",
       "Removable",
-      "Severities",
-      "Sizes",
-      "States",
-      "WithChevron",
-      "WithCount",
       "WithIcon"
     ]
   },
@@ -185,18 +185,9 @@
     "title": "Components/Molecules/Input",
     "id": "components-form-controls",
     "stories": [
-      "AllVariants",
-      "AllVariantsMyBKY",
-      "CustomTemplatesUsingPTemplate",
-      "DisabledAndInvalid",
       "Dropdowns",
       "FloatLabelExample",
-      "Grouped",
-      "ListboxPlayground",
-      "MenuItemPlayground",
-      "MultiSelectWithCheckboxes",
       "Playground",
-      "RichTemplatePanelList",
       "SamparkDropdownSizes",
       "SamparkDropdowns",
       "SamparkFloatLabel",
@@ -207,7 +198,6 @@
       "Sizes",
       "States",
       "TextareaExample",
-      "WithFiltering",
       "WithIcon"
     ]
   },
@@ -260,6 +250,28 @@
       "Disabled",
       "Sizes",
       "Variants"
+    ]
+  },
+  "listbox": {
+    "title": "Components/Molecules/Listbox",
+    "id": "components-listbox",
+    "stories": [
+      "CustomTemplatesUsingPTemplate",
+      "DisabledAndInvalid",
+      "Grouped",
+      "ListboxPlayground",
+      "MultiSelectWithCheckboxes",
+      "RichTemplatePanelList",
+      "WithFiltering"
+    ]
+  },
+  "menu-item": {
+    "title": "Components/Molecules/Menu Item",
+    "id": "components-menuitem",
+    "stories": [
+      "AllVariants",
+      "AllVariantsMyBKY",
+      "MenuItemPlayground"
     ]
   },
   "multi-select": {
@@ -473,6 +485,7 @@
     "stories": [
       "Chevron",
       "ChevronAxis",
+      "FullMatrix",
       "IconOnly",
       "IconOnlyAxis",
       "Playground",
