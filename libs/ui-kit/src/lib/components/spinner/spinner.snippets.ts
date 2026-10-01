@@ -71,6 +71,81 @@ ${svg(C, offset)}
   </baps-spinner>`;
 
 export const spinnerSnippets: Record<string, SnippetSet> = {
+  // One ring at 75%, at the meta's small size. The offset is not a magic
+  // number: offset = C * (100 - value) / 100 with C = 2 * PI * 14, so 75 gives
+  // 21.99114857512855. Anything driven by real data computes it — see the
+  // helper in the React block, which is the same arithmetic.
+  //
+  // role="progressbar" with aria-valuenow is what makes this announce as
+  // progress; the indeterminate ring uses role="status" instead, because
+  // there is no value to announce.
+  Determinate: {
+    custom: `${determinate(75, '21.99114857512855', 'baps-spinner-small')}`,
+    react: `${SETUP}
+
+const C = 2 * Math.PI * 14;
+const offsetFor = (value) => (C * (100 - value)) / 100;
+
+export function Determinate({ value = 75 }) {
+  return (
+    <baps-spinner
+      className="baps-spinner-small"
+      role="progressbar"
+      aria-label="Loading"
+      aria-valuenow={value}
+      aria-valuemin={0}
+      aria-valuemax={100}
+    >
+      <svg className="baps-spinner-svg" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+        <circle className="baps-spinner-track" cx="16" cy="16" r="14" />
+        <circle
+          className="baps-spinner-arc"
+          cx="16"
+          cy="16"
+          r="14"
+          strokeDasharray={C}
+          strokeDashoffset={offsetFor(value)}
+        />
+      </svg>
+    </baps-spinner>
+  );
+}`,
+    next: `'use client';
+
+${SETUP}
+
+/* 'use client' because the value moves. A fixed progress ring rendered once on
+   the server needs no directive — drop it then. */
+const C = 2 * Math.PI * 14;
+const offsetFor = (value) => (C * (100 - value)) / 100;
+
+export default function Determinate({ value = 75 }) {
+  return (
+    <baps-spinner
+      className="baps-spinner-small"
+      role="progressbar"
+      aria-label="Loading"
+      aria-valuenow={value}
+      aria-valuemin={0}
+      aria-valuemax={100}
+    >
+      <svg className="baps-spinner-svg" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+        <circle className="baps-spinner-track" cx="16" cy="16" r="14" />
+        <circle
+          className="baps-spinner-arc"
+          cx="16"
+          cy="16"
+          r="14"
+          strokeDasharray={C}
+          strokeDashoffset={offsetFor(value)}
+        />
+      </svg>
+    </baps-spinner>
+  );
+}`,
+    primeng: `<baps-spinner size="small" [value]="75" />`,
+  },
+
   Indeterminate: {
     primeng: `<baps-spinner size="small" />`,
     custom: `<!-- No value means indeterminate: role="status", a quarter-circle arc, and
