@@ -111,7 +111,22 @@ for (const dir of list(COMPONENTS).sort()) {
   // ── 3. raw colours ────────────────────────────────────────────────────────
   // Only inside the snippet strings, not the file's prose: a header that
   // records a MEASURED value ("border #e4ecf1") is evidence, not styling.
-  const snippetStrings = [...src.matchAll(/`([^`]*)`/g)].map((m) => m[1]).join('\n');
+  // Only the template literals that ARE snippets: the ones assigned to a
+  // framework key. Matching every backtick pair also swept up the inline code
+  // spans in the file's own doc comment, which is how a header sentence
+  // explaining that card nests `baps-avatar` was reported as card using an
+  // undefined class.
+  const snippetStrings = [...src.matchAll(/\b(?:react|next|primeng|custom|htmlcss):\s*`([\s\S]*?)`,?\s*$/gm)]
+    .map((m) => m[1])
+    .join('\n');
+
+  // Comments inside a snippet are prose for the reader, not markup. A snippet
+  // that says "there is no baps-spinner-large class" is being accurate, and the
+  // first version of this guard flagged it for naming the class it warns about.
+  const snippetCode = snippetStrings
+    .replace(/<!--[\s\S]*?-->/g, '')
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/^\s*\/\/.*$/gm, '');
   for (const m of snippetStrings.matchAll(/#[0-9a-fA-F]{3,8}\b|rgba?\([^)]*\)|hsla?\([^)]*\)/g)) {
     fail(dir, 'colour', `${m[0]} is written into a snippet — use a token`);
   }
@@ -126,10 +141,15 @@ for (const dir of list(COMPONENTS).sort()) {
   }
 
   // ── 6. BAPS classes must exist ────────────────────────────────────────────
-  for (const m of snippetStrings.matchAll(/\b(baps-[a-z0-9_-]+)/g)) {
+  for (const m of snippetCode.matchAll(/\b(baps-[a-z0-9_-]+)/g)) {
     const cls = m[1];
-    // element names (<baps-card>) are not classes
-    if (new RegExp(`<${cls}[\\s/>]`).test(snippetStrings)) continue;
+    // element names (<baps-card>, <baps-avatar>) are not classes
+    if (new RegExp(`<${cls}[\\s/>]`).test(snippetCode)) continue;
+    // a name completed at runtime — `baps-alert--${severity}` — cannot be
+    // checked against a stylesheet, and its stem is not a class on its own
+    // the `\` is there because the snippet is itself inside a template literal,
+    // so its interpolations are written escaped
+    if (/^\\?\$\{/.test(snippetCode.slice(m.index + cls.length))) continue;
     if (!definedClasses.has(cls)) {
       fail(dir, 'class', `"${cls}" appears in a snippet but no stylesheet defines it`);
     }
