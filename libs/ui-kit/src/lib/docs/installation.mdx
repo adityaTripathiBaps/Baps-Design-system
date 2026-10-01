@@ -203,6 +203,19 @@ only the per-component path gets every colour, border, radius and padding
 right and the browser's default typeface. Use it when your app already owns
 its typography.
 
+> **The per-component paths are not self-sufficient.** Some component
+> stylesheets read custom properties that another component's stylesheet
+> defines, and a missing custom property falls back silently rather than
+> failing. Measured: `_file-upload.scss` reads
+> `var(--input-border-default, #e1e0e0)`, and that property is declared in the
+> **input** stylesheet, not in `@org/tokens/css`. Import
+> `@org/ui-kit/styles/file-upload` on its own and the drop zone draws
+> `rgb(225, 224, 224)` where the component draws `rgb(228, 236, 241)`. Nothing
+> warns you.
+>
+> `@org/ui-kit/styles` has no such problem, because every stylesheet is
+> present. Prefer it unless you have measured the component you are importing.
+
 ### The rules your app owns
 
 No ui-kit partial sets a rem baseline or applies the font, and none should.
