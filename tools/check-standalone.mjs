@@ -159,6 +159,15 @@ ${links}
     line-height: normal;
   }
   button, input, textarea, select { font-feature-settings: inherit; }
+  /* The third rule a consumer owns, and the one nothing documented until this
+     file measured it. Every partial in the design system is written against
+     border-box — Storybook's own reset supplies it, and no ui-kit partial
+     does. Without it a bordered component is exactly its border wider than
+     the component: internal-navbar reported four "differences" that were all
+     one pixel, on the one element with a border-right, and every box inside
+     it inherited the shift. Invisible on screen, and the kind of thing a
+     consumer would never think to check. */
+  *, *::before, *::after { box-sizing: border-box; }
   body { margin: 16px; }
   section { margin-bottom: 24px; }
 </style>

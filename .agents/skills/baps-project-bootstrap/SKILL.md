@@ -165,6 +165,12 @@ copied into an app drifts and that page cannot.
 
 ## Step 4 — verify, do not assume
 
+The host page owes the design system four things before any of this renders
+correctly, and none of them fails loudly:
+[`.agents/rules/app-shell-host-page.md`](../../rules/app-shell-host-page.md).
+Copy that rule into the consumer and work its checklist — `box-sizing`, the
+rem baseline and font features, the brand scope, and the favicon.
+
 ```bash
 # The five things that actually break, checked in order:
 grep -n "cssLayer" src/app/app.config.ts            # 1
