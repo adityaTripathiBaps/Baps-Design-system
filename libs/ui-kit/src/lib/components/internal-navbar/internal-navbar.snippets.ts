@@ -31,6 +31,12 @@
  *   collapsed       class="baps-internal-nav--collapsed" on the nav
  *   brand="sampark" class="baps-sampark" on the HOST element
  *
+ * One more lives in the items array rather than the template. An item's
+ * `icon` is a PrimeIcons name and renders `<i class="… pi pi-cog">`, while
+ * `iconName` is a BAPS glyph and renders `<baps-icon>`. Both are supported and
+ * the stories below use `icon`, so the raw markup does too — reading only the
+ * story template would not tell you which.
+ *
  * Every row is a real `<button type="button">`, not a div with a click
  * handler: it has to be reachable by keyboard and announced as actionable,
  * and the native element does both without help.
@@ -39,9 +45,10 @@
  *
  * `className` does not reach a custom element's class attribute in React 18.
  * Measured in a real app: `<baps-icon className="baps-internal-nav__icon">`
- * rendered with `class = null` while its inline `style` landed fine. The brand
- * class on `<baps-internal-navbar>` and the icon's layout class therefore go
- * on through a ref callback.
+ * rendered with `class = null` while its inline `style` landed fine. The host
+ * `<baps-internal-navbar>` is a custom element, so its brand class goes on
+ * through a ref callback. The rows below are plain `<li>`, `<button>` and
+ * `<i>`, where `className` behaves normally.
  *
  * Nothing warns you. The component still renders — it just renders in the
  * wrong skin, or without the layout rule, and looks close enough to pass.
@@ -51,9 +58,325 @@ import { setupFor, type SnippetSet } from '../../docs/snippet-setup';
 /** Re-exported so the .mdx and the docs blocks keep importing it from here. */
 export type { SnippetSet };
 
-const SETUP = setupFor('internal-navbar');
+const SETUP = setupFor('internal-navbar', true);
 
 export const internalNavbarSnippets: Record<string, SnippetSet> = {
+  // Nesting is not a mode you switch on: it activates because some item has
+  // `children`. That one fact changes every row, including the flat ones —
+  // once any item nests, EVERY row grows a chevron slot (empty on leaves, so
+  // labels stay aligned) and an aria-level. A flat items array renders with
+  // no chevrons at all.
+  //
+  // Only expanded branches contribute rows. At rest nothing is expanded, so
+  // the children below are absent from the DOM rather than hidden — which is
+  // why the raw markup has five rows and the items array has eleven entries.
+  //
+  // data-level is omitted at level 0 (the component writes `row.level || null`)
+  // and carries 1, 2, 3 below that; the 18px-per-level indent is keyed off it.
+  // aria-level is the same number plus one, because ARIA counts from 1.
+  Nested: {
+    primeng: `<baps-internal-navbar [items]="items" activeItem="Dashboard" title="Navigation" />
+
+<!-- On the component — nesting comes from a children array, nothing else:
+     items = [
+       { label: 'Dashboard', icon: 'pi-th-large' },
+       { label: 'Events', icon: 'pi-calendar', children: [
+         { label: 'Seminars', children: [
+           { label: 'Regional', children: [{ label: 'North Zone' }, { label: 'South Zone' }] },
+           { label: 'National' },
+         ] },
+         { label: 'Workshops', badge: 4 },
+       ] },
+       { label: 'Members', icon: 'pi-users', children: [{ label: 'Karyakars' }, { label: 'Volunteers' }] },
+       { separator: true, label: 'sep-1' },
+       { label: 'Settings', icon: 'pi-cog' },
+     ] -->`,
+    custom: `<!-- The five rows the component renders AT REST. Events and Members hold
+     children, but nothing is expanded yet, so those children have no elements
+     here at all — expanding is what creates them.
+
+     Every row carries a chevron because one item nests; Dashboard and Settings
+     get the --empty variant, which holds the same width so their labels line
+     up with Events and Members. Drop the chevron spans entirely and the labels
+     shift left by the chevron's width.
+
+     data-level is absent at level 0 and appears as data-level="1" and up on
+     expanded children, carrying the 18px-per-level indent. -->
+<baps-internal-navbar>
+  <nav class="baps-internal-nav" aria-label="Section navigation">
+    <div class="baps-internal-nav__header">
+      <span class="baps-internal-nav__title">Navigation</span>
+    </div>
+    <ul class="baps-internal-nav__list">
+      <li class="baps-internal-nav__item baps-internal-nav__item--active" aria-level="1">
+        <button type="button" class="baps-internal-nav__link" aria-current="page">
+          <span class="baps-internal-nav__bar" aria-hidden="true"></span>
+          <span class="baps-internal-nav__chevron baps-internal-nav__chevron--empty" aria-hidden="true">
+            <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3.5 1.5 3.5 3.5-3.5 3.5" /></svg>
+          </span>
+          <i class="baps-internal-nav__icon pi pi-th-large" aria-hidden="true"></i>
+          <span class="baps-internal-nav__label">Dashboard</span>
+        </button>
+      </li>
+      <li class="baps-internal-nav__item" aria-level="1">
+        <button type="button" class="baps-internal-nav__link" aria-expanded="false">
+          <span class="baps-internal-nav__bar" aria-hidden="true"></span>
+          <span class="baps-internal-nav__chevron" aria-hidden="true">
+            <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3.5 1.5 3.5 3.5-3.5 3.5" /></svg>
+          </span>
+          <i class="baps-internal-nav__icon pi pi-calendar" aria-hidden="true"></i>
+          <span class="baps-internal-nav__label">Events</span>
+        </button>
+      </li>
+      <li class="baps-internal-nav__item" aria-level="1">
+        <button type="button" class="baps-internal-nav__link" aria-expanded="false">
+          <span class="baps-internal-nav__bar" aria-hidden="true"></span>
+          <span class="baps-internal-nav__chevron" aria-hidden="true">
+            <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3.5 1.5 3.5 3.5-3.5 3.5" /></svg>
+          </span>
+          <i class="baps-internal-nav__icon pi pi-users" aria-hidden="true"></i>
+          <span class="baps-internal-nav__label">Members</span>
+        </button>
+      </li>
+      <li class="baps-internal-nav__separator"></li>
+      <li class="baps-internal-nav__item" aria-level="1">
+        <button type="button" class="baps-internal-nav__link">
+          <span class="baps-internal-nav__bar" aria-hidden="true"></span>
+          <span class="baps-internal-nav__chevron baps-internal-nav__chevron--empty" aria-hidden="true">
+            <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3.5 1.5 3.5 3.5-3.5 3.5" /></svg>
+          </span>
+          <i class="baps-internal-nav__icon pi pi-cog" aria-hidden="true"></i>
+          <span class="baps-internal-nav__label">Settings</span>
+        </button>
+      </li>
+    </ul>
+    <div class="baps-internal-nav__footer"></div>
+  </nav>
+</baps-internal-navbar>`,
+    react: `${SETUP}
+
+import { useState } from 'react';
+
+const ITEMS = [
+  { label: 'Dashboard', icon: 'pi-th-large' },
+  { label: 'Events', icon: 'pi-calendar', children: [
+    { label: 'Seminars', children: [
+      { label: 'Regional', children: [{ label: 'North Zone' }, { label: 'South Zone' }] },
+      { label: 'National' },
+    ] },
+    { label: 'Workshops', badge: 4 },
+  ] },
+  { label: 'Members', icon: 'pi-users', children: [{ label: 'Karyakars' }, { label: 'Volunteers' }] },
+  { separator: true, label: 'sep-1' },
+  { label: 'Settings', icon: 'pi-cog' },
+];
+
+/* The component flattens the tree into rows, and so does this: only an
+   expanded branch contributes its children, so a collapsed branch's rows are
+   absent from the DOM rather than hidden. Same reason the raw markup above
+   has five rows for eleven items. */
+function toRows(items, expanded, level = 0, out = []) {
+  for (const item of items) {
+    out.push({ item, level });
+    if (item.children && expanded.has(item.label)) {
+      toRows(item.children, expanded, level + 1, out);
+    }
+  }
+  return out;
+}
+
+const Chevron = ({ open, empty }) => (
+  <span
+    className={
+      'baps-internal-nav__chevron' +
+      (open ? ' baps-internal-nav__chevron--open' : '') +
+      (empty ? ' baps-internal-nav__chevron--empty' : '')
+    }
+    aria-hidden="true"
+  >
+    <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="m3.5 1.5 3.5 3.5-3.5 3.5" />
+    </svg>
+  </span>
+);
+
+export  function NestedNav() {
+  const [expanded, setExpanded] = useState(() => new Set());
+  const [active, setActive] = useState('Dashboard');
+
+  const toggle = (label) =>
+    setExpanded((prev) => {
+      const next = new Set(prev);
+      next.has(label) ? next.delete(label) : next.add(label);
+      return next;
+    });
+
+  return (
+    <baps-internal-navbar>
+      <nav className="baps-internal-nav" aria-label="Section navigation">
+        <div className="baps-internal-nav__header">
+          <span className="baps-internal-nav__title">Navigation</span>
+        </div>
+        <ul className="baps-internal-nav__list">
+          {toRows(ITEMS, expanded).map(({ item, level }, i) =>
+            item.separator ? (
+              <li key={item.label} className="baps-internal-nav__separator" />
+            ) : (
+              <li
+                key={item.label + i}
+                className={
+                  'baps-internal-nav__item' +
+                  (active === item.label ? ' baps-internal-nav__item--active' : '')
+                }
+                /* omitted at level 0, exactly as the component writes
+                   [attr.data-level]="row.level || null" — the indent rule keys
+                   off this attribute, so a literal 0 would indent the top row */
+                data-level={level || undefined}
+                aria-level={level + 1}
+              >
+                <button
+                  type="button"
+                  className="baps-internal-nav__link"
+                  aria-current={active === item.label ? 'page' : undefined}
+                  aria-expanded={item.children ? expanded.has(item.label) : undefined}
+                  onClick={() =>
+                    item.children ? toggle(item.label) : setActive(item.label)
+                  }
+                >
+                  <span className="baps-internal-nav__bar" aria-hidden="true" />
+                  <Chevron open={expanded.has(item.label)} empty={!item.children} />
+                  {item.icon && (
+                    <i className={'baps-internal-nav__icon pi ' + item.icon} aria-hidden="true" />
+                  )}
+                  <span className="baps-internal-nav__label">{item.label}</span>
+                  {item.badge && (
+                    <span className="baps-internal-nav__badge">{item.badge}</span>
+                  )}
+                </button>
+              </li>
+            ),
+          )}
+        </ul>
+        <div className="baps-internal-nav__footer" />
+      </nav>
+    </baps-internal-navbar>
+  );
+}`,
+    next: `'use client';
+
+${SETUP}
+
+import { useState } from 'react';
+
+/* 'use client' because the expand state is the component — a server component
+   cannot hold it. The rows themselves are plain markup. */
+const ITEMS = [
+  { label: 'Dashboard', icon: 'pi-th-large' },
+  { label: 'Events', icon: 'pi-calendar', children: [
+    { label: 'Seminars', children: [
+      { label: 'Regional', children: [{ label: 'North Zone' }, { label: 'South Zone' }] },
+      { label: 'National' },
+    ] },
+    { label: 'Workshops', badge: 4 },
+  ] },
+  { label: 'Members', icon: 'pi-users', children: [{ label: 'Karyakars' }, { label: 'Volunteers' }] },
+  { separator: true, label: 'sep-1' },
+  { label: 'Settings', icon: 'pi-cog' },
+];
+
+/* The component flattens the tree into rows, and so does this: only an
+   expanded branch contributes its children, so a collapsed branch's rows are
+   absent from the DOM rather than hidden. Same reason the raw markup above
+   has five rows for eleven items. */
+function toRows(items, expanded, level = 0, out = []) {
+  for (const item of items) {
+    out.push({ item, level });
+    if (item.children && expanded.has(item.label)) {
+      toRows(item.children, expanded, level + 1, out);
+    }
+  }
+  return out;
+}
+
+const Chevron = ({ open, empty }) => (
+  <span
+    className={
+      'baps-internal-nav__chevron' +
+      (open ? ' baps-internal-nav__chevron--open' : '') +
+      (empty ? ' baps-internal-nav__chevron--empty' : '')
+    }
+    aria-hidden="true"
+  >
+    <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="m3.5 1.5 3.5 3.5-3.5 3.5" />
+    </svg>
+  </span>
+);
+
+export default function NestedNav() {
+  const [expanded, setExpanded] = useState(() => new Set());
+  const [active, setActive] = useState('Dashboard');
+
+  const toggle = (label) =>
+    setExpanded((prev) => {
+      const next = new Set(prev);
+      next.has(label) ? next.delete(label) : next.add(label);
+      return next;
+    });
+
+  return (
+    <baps-internal-navbar>
+      <nav className="baps-internal-nav" aria-label="Section navigation">
+        <div className="baps-internal-nav__header">
+          <span className="baps-internal-nav__title">Navigation</span>
+        </div>
+        <ul className="baps-internal-nav__list">
+          {toRows(ITEMS, expanded).map(({ item, level }, i) =>
+            item.separator ? (
+              <li key={item.label} className="baps-internal-nav__separator" />
+            ) : (
+              <li
+                key={item.label + i}
+                className={
+                  'baps-internal-nav__item' +
+                  (active === item.label ? ' baps-internal-nav__item--active' : '')
+                }
+                /* omitted at level 0, exactly as the component writes
+                   [attr.data-level]="row.level || null" — the indent rule keys
+                   off this attribute, so a literal 0 would indent the top row */
+                data-level={level || undefined}
+                aria-level={level + 1}
+              >
+                <button
+                  type="button"
+                  className="baps-internal-nav__link"
+                  aria-current={active === item.label ? 'page' : undefined}
+                  aria-expanded={item.children ? expanded.has(item.label) : undefined}
+                  onClick={() =>
+                    item.children ? toggle(item.label) : setActive(item.label)
+                  }
+                >
+                  <span className="baps-internal-nav__bar" aria-hidden="true" />
+                  <Chevron open={expanded.has(item.label)} empty={!item.children} />
+                  {item.icon && (
+                    <i className={'baps-internal-nav__icon pi ' + item.icon} aria-hidden="true" />
+                  )}
+                  <span className="baps-internal-nav__label">{item.label}</span>
+                  {item.badge && (
+                    <span className="baps-internal-nav__badge">{item.badge}</span>
+                  )}
+                </button>
+              </li>
+            ),
+          )}
+        </ul>
+        <div className="baps-internal-nav__footer" />
+      </nav>
+    </baps-internal-navbar>
+  );
+}`,
+  },
+
   // The Sampark rail: dark 72px tiles, icon over label, from the Sampark
   // Portal Figma (node 13197:89998). This is the shape both app shells use
   // for their sidebar.
@@ -81,14 +404,14 @@ export const internalNavbarSnippets: Record<string, SnippetSet> = {
       <li class="baps-internal-nav__item">
         <button type="button" class="baps-internal-nav__link">
           <span class="baps-internal-nav__bar" aria-hidden="true"></span>
-          <baps-icon class="baps-internal-nav__icon"><span class="baps-icon__glyph" aria-hidden="true"><!-- BAPS_ICONS['pi-th-large'] --></span></baps-icon>
+          <i class="baps-internal-nav__icon pi pi-th-large" aria-hidden="true"></i>
           <span class="baps-internal-nav__label">Dashboard</span>
         </button>
       </li>
       <li class="baps-internal-nav__item">
         <button type="button" class="baps-internal-nav__link">
           <span class="baps-internal-nav__bar" aria-hidden="true"></span>
-          <baps-icon class="baps-internal-nav__icon"><span class="baps-icon__glyph" aria-hidden="true"><!-- BAPS_ICONS['pi-chart-bar'] --></span></baps-icon>
+          <i class="baps-internal-nav__icon pi pi-chart-bar" aria-hidden="true"></i>
           <span class="baps-internal-nav__label">Reports</span>
           <span class="baps-internal-nav__status-dot" aria-hidden="true"></span>
         </button>
@@ -96,7 +419,7 @@ export const internalNavbarSnippets: Record<string, SnippetSet> = {
       <li class="baps-internal-nav__item baps-internal-nav__item--active">
         <button type="button" class="baps-internal-nav__link" aria-current="page">
           <span class="baps-internal-nav__bar" aria-hidden="true"></span>
-          <baps-icon class="baps-internal-nav__icon"><span class="baps-icon__glyph" aria-hidden="true"><!-- BAPS_ICONS['pi-cog'] --></span></baps-icon>
+          <i class="baps-internal-nav__icon pi pi-cog" aria-hidden="true"></i>
           <span class="baps-internal-nav__label">Settings</span>
         </button>
       </li>
@@ -147,7 +470,7 @@ export function SamparkRail({ active = 'Settings', onSelect }) {
                 onClick={() => onSelect(item.label)}
               >
                 <span className="baps-internal-nav__bar" aria-hidden="true" />
-                <Glyph name={item.icon} className="baps-internal-nav__icon" />
+                <i className={'baps-internal-nav__icon pi ' + item.icon} aria-hidden="true" />
                 <span className="baps-internal-nav__label">{item.label}</span>
                 {item.notification && (
                   <span className="baps-internal-nav__status-dot" aria-hidden="true" />
@@ -208,7 +531,7 @@ export default function SamparkRail() {
                   onClick={() => router.push(item.href)}
                 >
                   <span className="baps-internal-nav__bar" aria-hidden="true" />
-                  <Glyph name={item.icon} className="baps-internal-nav__icon" />
+                  <i className={'baps-internal-nav__icon pi ' + item.icon} aria-hidden="true" />
                   <span className="baps-internal-nav__label">{item.label}</span>
                   {item.notification && (
                     <span className="baps-internal-nav__status-dot" aria-hidden="true" />
