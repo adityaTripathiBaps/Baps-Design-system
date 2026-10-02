@@ -31,11 +31,17 @@
  *   collapsed       class="baps-internal-nav--collapsed" on the nav
  *   brand="sampark" class="baps-sampark" on the HOST element
  *
- * One more lives in the items array rather than the template. An item's
- * `icon` is a PrimeIcons name and renders `<i class="… pi pi-cog">`, while
- * `iconName` is a BAPS glyph and renders `<baps-icon>`. Both are supported and
- * the stories below use `icon`, so the raw markup does too — reading only the
- * story template would not tell you which.
+ * One more lives in the items array rather than the template, and it decides
+ * which ELEMENT the row's icon is:
+ *
+ *   iconName  a BAPS glyph, drawn as an SVG by <baps-icon>
+ *   icon      a PrimeIcons class string, drawn as <i class="… pi pi-cog">
+ *
+ * These snippets use `iconName` throughout, and so do all three app shells.
+ * `icon` is back-compat the component's own docstring tells you not to prefer;
+ * it also costs a consumer the whole primeicons font package for glyphs the
+ * BAPS set already has. Reading a story template alone would not tell you
+ * which is in play — the fact is in the items array.
  *
  * Every row is a real `<button type="button">`, not a div with a click
  * handler: it has to be reachable by keyboard and announced as actionable,
@@ -47,8 +53,11 @@
  * Measured in a real app: `<baps-icon className="baps-internal-nav__icon">`
  * rendered with `class = null` while its inline `style` landed fine. The host
  * `<baps-internal-navbar>` is a custom element, so its brand class goes on
- * through a ref callback. The rows below are plain `<li>`, `<button>` and
- * `<i>`, where `className` behaves normally.
+ * through a ref callback, and so does the glyph's layout class — which is why
+ * the rows below render icons through `<Glyph>` (the helper the icon page
+ * defines) rather than putting `className` on `<baps-icon>` directly. The
+ * `<li>` and `<button>` around them are ordinary elements, where `className`
+ * behaves normally.
  *
  * Nothing warns you. The component still renders — it just renders in the
  * wrong skin, or without the layout rule, and looks close enough to pass.
@@ -58,7 +67,7 @@ import { setupFor, type SnippetSet } from '../../docs/snippet-setup';
 /** Re-exported so the .mdx and the docs blocks keep importing it from here. */
 export type { SnippetSet };
 
-const SETUP = setupFor('internal-navbar', true);
+const SETUP = setupFor('internal-navbar');
 
 export const internalNavbarSnippets: Record<string, SnippetSet> = {
   // Nesting is not a mode you switch on: it activates because some item has
@@ -79,17 +88,17 @@ export const internalNavbarSnippets: Record<string, SnippetSet> = {
 
 <!-- On the component — nesting comes from a children array, nothing else:
      items = [
-       { label: 'Dashboard', icon: 'pi-th-large' },
-       { label: 'Events', icon: 'pi-calendar', children: [
+       { label: 'Dashboard', iconName: 'widget' },
+       { label: 'Events', iconName: 'calendar', children: [
          { label: 'Seminars', children: [
            { label: 'Regional', children: [{ label: 'North Zone' }, { label: 'South Zone' }] },
            { label: 'National' },
          ] },
          { label: 'Workshops', badge: 4 },
        ] },
-       { label: 'Members', icon: 'pi-users', children: [{ label: 'Karyakars' }, { label: 'Volunteers' }] },
+       { label: 'Members', iconName: 'users-2', children: [{ label: 'Karyakars' }, { label: 'Volunteers' }] },
        { separator: true, label: 'sep-1' },
-       { label: 'Settings', icon: 'pi-cog' },
+       { label: 'Settings', iconName: 'settings' },
      ] -->`,
     custom: `<!-- The five rows the component renders AT REST. Events and Members hold
      children, but nothing is expanded yet, so those children have no elements
@@ -114,7 +123,7 @@ export const internalNavbarSnippets: Record<string, SnippetSet> = {
           <span class="baps-internal-nav__chevron baps-internal-nav__chevron--empty" aria-hidden="true">
             <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3.5 1.5 3.5 3.5-3.5 3.5" /></svg>
           </span>
-          <i class="baps-internal-nav__icon pi pi-th-large" aria-hidden="true"></i>
+          <baps-icon class="baps-internal-nav__icon"><span class="baps-icon__glyph" aria-hidden="true"><!-- BAPS_ICONS['widget'] --></span></baps-icon>
           <span class="baps-internal-nav__label">Dashboard</span>
         </button>
       </li>
@@ -124,7 +133,7 @@ export const internalNavbarSnippets: Record<string, SnippetSet> = {
           <span class="baps-internal-nav__chevron" aria-hidden="true">
             <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3.5 1.5 3.5 3.5-3.5 3.5" /></svg>
           </span>
-          <i class="baps-internal-nav__icon pi pi-calendar" aria-hidden="true"></i>
+          <baps-icon class="baps-internal-nav__icon"><span class="baps-icon__glyph" aria-hidden="true"><!-- BAPS_ICONS['calendar'] --></span></baps-icon>
           <span class="baps-internal-nav__label">Events</span>
         </button>
       </li>
@@ -134,7 +143,7 @@ export const internalNavbarSnippets: Record<string, SnippetSet> = {
           <span class="baps-internal-nav__chevron" aria-hidden="true">
             <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3.5 1.5 3.5 3.5-3.5 3.5" /></svg>
           </span>
-          <i class="baps-internal-nav__icon pi pi-users" aria-hidden="true"></i>
+          <baps-icon class="baps-internal-nav__icon"><span class="baps-icon__glyph" aria-hidden="true"><!-- BAPS_ICONS['users-2'] --></span></baps-icon>
           <span class="baps-internal-nav__label">Members</span>
         </button>
       </li>
@@ -145,7 +154,7 @@ export const internalNavbarSnippets: Record<string, SnippetSet> = {
           <span class="baps-internal-nav__chevron baps-internal-nav__chevron--empty" aria-hidden="true">
             <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3.5 1.5 3.5 3.5-3.5 3.5" /></svg>
           </span>
-          <i class="baps-internal-nav__icon pi pi-cog" aria-hidden="true"></i>
+          <baps-icon class="baps-internal-nav__icon"><span class="baps-icon__glyph" aria-hidden="true"><!-- BAPS_ICONS['settings'] --></span></baps-icon>
           <span class="baps-internal-nav__label">Settings</span>
         </button>
       </li>
@@ -158,17 +167,17 @@ export const internalNavbarSnippets: Record<string, SnippetSet> = {
 import { useState } from 'react';
 
 const ITEMS = [
-  { label: 'Dashboard', icon: 'pi-th-large' },
-  { label: 'Events', icon: 'pi-calendar', children: [
+  { label: 'Dashboard', iconName: 'widget' },
+  { label: 'Events', iconName: 'calendar', children: [
     { label: 'Seminars', children: [
       { label: 'Regional', children: [{ label: 'North Zone' }, { label: 'South Zone' }] },
       { label: 'National' },
     ] },
     { label: 'Workshops', badge: 4 },
   ] },
-  { label: 'Members', icon: 'pi-users', children: [{ label: 'Karyakars' }, { label: 'Volunteers' }] },
+  { label: 'Members', iconName: 'users-2', children: [{ label: 'Karyakars' }, { label: 'Volunteers' }] },
   { separator: true, label: 'sep-1' },
-  { label: 'Settings', icon: 'pi-cog' },
+  { label: 'Settings', iconName: 'settings' },
 ];
 
 /* The component flattens the tree into rows, and so does this: only an
@@ -245,8 +254,8 @@ export  function NestedNav() {
                 >
                   <span className="baps-internal-nav__bar" aria-hidden="true" />
                   <Chevron open={expanded.has(item.label)} empty={!item.children} />
-                  {item.icon && (
-                    <i className={'baps-internal-nav__icon pi ' + item.icon} aria-hidden="true" />
+                  {item.iconName && (
+                    <Glyph name={item.iconName} className="baps-internal-nav__icon" />
                   )}
                   <span className="baps-internal-nav__label">{item.label}</span>
                   {item.badge && (
@@ -271,17 +280,17 @@ import { useState } from 'react';
 /* 'use client' because the expand state is the component — a server component
    cannot hold it. The rows themselves are plain markup. */
 const ITEMS = [
-  { label: 'Dashboard', icon: 'pi-th-large' },
-  { label: 'Events', icon: 'pi-calendar', children: [
+  { label: 'Dashboard', iconName: 'widget' },
+  { label: 'Events', iconName: 'calendar', children: [
     { label: 'Seminars', children: [
       { label: 'Regional', children: [{ label: 'North Zone' }, { label: 'South Zone' }] },
       { label: 'National' },
     ] },
     { label: 'Workshops', badge: 4 },
   ] },
-  { label: 'Members', icon: 'pi-users', children: [{ label: 'Karyakars' }, { label: 'Volunteers' }] },
+  { label: 'Members', iconName: 'users-2', children: [{ label: 'Karyakars' }, { label: 'Volunteers' }] },
   { separator: true, label: 'sep-1' },
-  { label: 'Settings', icon: 'pi-cog' },
+  { label: 'Settings', iconName: 'settings' },
 ];
 
 /* The component flattens the tree into rows, and so does this: only an
@@ -358,8 +367,8 @@ export default function NestedNav() {
                 >
                   <span className="baps-internal-nav__bar" aria-hidden="true" />
                   <Chevron open={expanded.has(item.label)} empty={!item.children} />
-                  {item.icon && (
-                    <i className={'baps-internal-nav__icon pi ' + item.icon} aria-hidden="true" />
+                  {item.iconName && (
+                    <Glyph name={item.iconName} className="baps-internal-nav__icon" />
                   )}
                   <span className="baps-internal-nav__label">{item.label}</span>
                   {item.badge && (
@@ -394,9 +403,9 @@ export default function NestedNav() {
 
 <!-- On the component:
      items = [
-       { label: 'Dashboard', icon: 'pi-th-large' },
-       { label: 'Reports', icon: 'pi-chart-bar', notification: true },
-       { label: 'Settings', icon: 'pi-cog' },
+       { label: 'Dashboard', iconName: 'widget' },
+       { label: 'Reports', iconName: 'bar-chart', notification: true },
+       { label: 'Settings', iconName: 'settings' },
      ] -->`,
     custom: `<baps-internal-navbar class="baps-sampark">
   <nav class="baps-internal-nav baps-internal-nav--collapsed" aria-label="Section navigation">
@@ -404,14 +413,14 @@ export default function NestedNav() {
       <li class="baps-internal-nav__item">
         <button type="button" class="baps-internal-nav__link">
           <span class="baps-internal-nav__bar" aria-hidden="true"></span>
-          <i class="baps-internal-nav__icon pi pi-th-large" aria-hidden="true"></i>
+          <baps-icon class="baps-internal-nav__icon"><span class="baps-icon__glyph" aria-hidden="true"><!-- BAPS_ICONS['widget'] --></span></baps-icon>
           <span class="baps-internal-nav__label">Dashboard</span>
         </button>
       </li>
       <li class="baps-internal-nav__item">
         <button type="button" class="baps-internal-nav__link">
           <span class="baps-internal-nav__bar" aria-hidden="true"></span>
-          <i class="baps-internal-nav__icon pi pi-chart-bar" aria-hidden="true"></i>
+          <baps-icon class="baps-internal-nav__icon"><span class="baps-icon__glyph" aria-hidden="true"><!-- BAPS_ICONS['bar-chart'] --></span></baps-icon>
           <span class="baps-internal-nav__label">Reports</span>
           <span class="baps-internal-nav__status-dot" aria-hidden="true"></span>
         </button>
@@ -419,7 +428,7 @@ export default function NestedNav() {
       <li class="baps-internal-nav__item baps-internal-nav__item--active">
         <button type="button" class="baps-internal-nav__link" aria-current="page">
           <span class="baps-internal-nav__bar" aria-hidden="true"></span>
-          <i class="baps-internal-nav__icon pi pi-cog" aria-hidden="true"></i>
+          <baps-icon class="baps-internal-nav__icon"><span class="baps-icon__glyph" aria-hidden="true"><!-- BAPS_ICONS['settings'] --></span></baps-icon>
           <span class="baps-internal-nav__label">Settings</span>
         </button>
       </li>
@@ -432,9 +441,9 @@ export default function NestedNav() {
 import { useCallback } from 'react';
 
 const NAV = [
-  { label: 'Dashboard', icon: 'pi-th-large' },
-  { label: 'Reports', icon: 'pi-chart-bar', notification: true },
-  { label: 'Settings', icon: 'pi-cog' },
+  { label: 'Dashboard', iconName: 'widget' },
+  { label: 'Reports', iconName: 'bar-chart', notification: true },
+  { label: 'Settings', iconName: 'settings' },
 ];
 
 export function SamparkRail({ active = 'Settings', onSelect }) {
@@ -470,7 +479,7 @@ export function SamparkRail({ active = 'Settings', onSelect }) {
                 onClick={() => onSelect(item.label)}
               >
                 <span className="baps-internal-nav__bar" aria-hidden="true" />
-                <i className={'baps-internal-nav__icon pi ' + item.icon} aria-hidden="true" />
+                <Glyph name={item.iconName} className="baps-internal-nav__icon" />
                 <span className="baps-internal-nav__label">{item.label}</span>
                 {item.notification && (
                   <span className="baps-internal-nav__status-dot" aria-hidden="true" />
@@ -494,9 +503,9 @@ import { usePathname, useRouter } from 'next/navigation';
 /* 'use client' for two reasons only: usePathname marks the active row, and
    the brand class needs a ref. The markup itself is static. */
 const NAV = [
-  { label: 'Dashboard', href: '/dashboard', icon: 'pi-th-large' },
-  { label: 'Reports', href: '/reports', icon: 'pi-chart-bar', notification: true },
-  { label: 'Settings', href: '/settings', icon: 'pi-cog' },
+  { label: 'Dashboard', href: '/dashboard', iconName: 'widget' },
+  { label: 'Reports', href: '/reports', iconName: 'bar-chart', notification: true },
+  { label: 'Settings', href: '/settings', iconName: 'settings' },
 ];
 
 export default function SamparkRail() {
@@ -531,7 +540,7 @@ export default function SamparkRail() {
                   onClick={() => router.push(item.href)}
                 >
                   <span className="baps-internal-nav__bar" aria-hidden="true" />
-                  <i className={'baps-internal-nav__icon pi ' + item.icon} aria-hidden="true" />
+                  <Glyph name={item.iconName} className="baps-internal-nav__icon" />
                   <span className="baps-internal-nav__label">{item.label}</span>
                   {item.notification && (
                     <span className="baps-internal-nav__status-dot" aria-hidden="true" />

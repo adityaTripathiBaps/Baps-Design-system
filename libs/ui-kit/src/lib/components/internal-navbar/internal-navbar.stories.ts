@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { action } from '@storybook/addon-actions';
-import { BapsInternalNavbar, InternalNavItem } from './internal-navbar.component';
+import {
+  BapsInternalNavbar,
+  InternalNavItem,
+} from './internal-navbar.component';
 
 const meta: Meta<BapsInternalNavbar> = {
   title: 'Components/Organisms/Internal Navbar',
@@ -20,7 +23,10 @@ const meta: Meta<BapsInternalNavbar> = {
   // option list instead of a free-text box that accepts nonsense.
   argTypes: {
     itemClick: { control: false },
-    brand: { control: 'inline-radio', options: [undefined, 'mybky', 'sampark'] },
+    brand: {
+      control: 'inline-radio',
+      options: [undefined, 'mybky', 'sampark'],
+    },
     collapsed: { control: 'boolean' },
     activeItem: { control: 'text' },
     title: { control: 'text' },
@@ -29,7 +35,10 @@ const meta: Meta<BapsInternalNavbar> = {
   parameters: {
     // Design tab — the Figma frame this component implements, node 13197:89998.
     // Harvested from internal-navbar.stories.ts, where it was already recorded as a comment.
-    design: { type: 'figma', url: 'https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/?node-id=13197-89998' },
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/?node-id=13197-89998',
+    },
   },
   component: BapsInternalNavbar,
   render: (args) => ({
@@ -50,9 +59,9 @@ export default meta;
 export const Default: StoryObj<BapsInternalNavbar> = {};
 
 const RAIL_ITEMS: InternalNavItem[] = [
-  { label: 'Dashboard', icon: 'pi-th-large' },
-  { label: 'Reports', icon: 'pi-chart-bar', notification: true },
-  { label: 'Settings', icon: 'pi-cog' },
+  { label: 'Dashboard', iconName: 'widget' },
+  { label: 'Reports', iconName: 'bar-chart', notification: true },
+  { label: 'Settings', iconName: 'settings' },
 ];
 
 /**
@@ -74,10 +83,10 @@ export const SamparkRail: StoryObj<BapsInternalNavbar> = {
 };
 
 const NESTED_ITEMS: InternalNavItem[] = [
-  { label: 'Dashboard', icon: 'pi-th-large' },
+  { label: 'Dashboard', iconName: 'widget' },
   {
     label: 'Events',
-    icon: 'pi-calendar',
+    iconName: 'calendar',
     children: [
       {
         label: 'Seminars',
@@ -92,9 +101,13 @@ const NESTED_ITEMS: InternalNavItem[] = [
       { label: 'Workshops', badge: 4 },
     ],
   },
-  { label: 'Members', icon: 'pi-users', children: [{ label: 'Karyakars' }, { label: 'Volunteers' }] },
+  {
+    label: 'Members',
+    iconName: 'users-2',
+    children: [{ label: 'Karyakars' }, { label: 'Volunteers' }],
+  },
   { separator: true, label: 'sep-1' },
-  { label: 'Settings', icon: 'pi-cog' },
+  { label: 'Settings', iconName: 'settings' },
 ];
 
 /**

@@ -1,7 +1,10 @@
 import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { BapsInternalNavbar, InternalNavItem } from './internal-navbar.component';
+import {
+  BapsInternalNavbar,
+  InternalNavItem,
+} from './internal-navbar.component';
 
 /**
  * `baps-internal-navbar` is hand-rolled — no PrimeNG underneath — so nothing
@@ -71,8 +74,10 @@ async function setup(overrides: Overrides = {}) {
   const fixture = TestBed.createComponent(Host);
   const host = fixture.componentInstance;
   if (overrides.items) host.items.set(overrides.items);
-  if (overrides.activeItem !== undefined) host.activeItem.set(overrides.activeItem);
-  if (overrides.collapsed !== undefined) host.collapsed.set(overrides.collapsed);
+  if (overrides.activeItem !== undefined)
+    host.activeItem.set(overrides.activeItem);
+  if (overrides.collapsed !== undefined)
+    host.collapsed.set(overrides.collapsed);
   if (overrides.brand) host.brand.set(overrides.brand);
   await fixture.whenStable();
   fixture.detectChanges();
@@ -81,7 +86,9 @@ async function setup(overrides: Overrides = {}) {
 }
 
 function links(el: HTMLElement): HTMLButtonElement[] {
-  return [...el.querySelectorAll<HTMLButtonElement>('.baps-internal-nav__link')];
+  return [
+    ...el.querySelectorAll<HTMLButtonElement>('.baps-internal-nav__link'),
+  ];
 }
 
 describe('BapsInternalNavbar', () => {
@@ -90,7 +97,9 @@ describe('BapsInternalNavbar', () => {
       const fixture = await setup();
       links(fixture.nativeElement)[1].click();
       await fixture.whenStable();
-      expect(fixture.componentInstance.clicked.map((i) => i.label)).toEqual(['Members']);
+      expect(fixture.componentInstance.clicked.map((i) => i.label)).toEqual([
+        'Members',
+      ]);
     });
 
     it('runs an item command as well as emitting', async () => {
@@ -99,7 +108,9 @@ describe('BapsInternalNavbar', () => {
       links(fixture.nativeElement)[0].click();
       await fixture.whenStable();
       expect(command).toHaveBeenCalledTimes(1);
-      expect(fixture.componentInstance.clicked.map((i) => i.label)).toEqual(['Run']);
+      expect(fixture.componentInstance.clicked.map((i) => i.label)).toEqual([
+        'Run',
+      ]);
     });
 
     it('does not emit for a disabled item, even when invoked directly', async () => {
@@ -126,7 +137,9 @@ describe('BapsInternalNavbar', () => {
       expect(el.querySelector('[href]')).toBeNull();
       links(el)[0].click();
       await fixture.whenStable();
-      expect(fixture.componentInstance.clicked[0].routerLink).toBe('/dashboard');
+      expect(fixture.componentInstance.clicked[0].routerLink).toBe(
+        '/dashboard',
+      );
     });
   });
 
@@ -153,7 +166,9 @@ describe('BapsInternalNavbar', () => {
     it('highlights nothing when activeItem matches no item', async () => {
       const fixture = await setup({ activeItem: 'Nope' });
       const el = fixture.nativeElement as HTMLElement;
-      expect(el.querySelectorAll('.baps-internal-nav__item--active').length).toBe(0);
+      expect(
+        el.querySelectorAll('.baps-internal-nav__item--active').length,
+      ).toBe(0);
     });
   });
 
@@ -187,14 +202,18 @@ describe('BapsInternalNavbar', () => {
       const fixture = await setup({ collapsed: true, brand: 'sampark' });
       const el = fixture.nativeElement as HTMLElement;
       expect(el.querySelectorAll('.baps-internal-nav__label').length).toBe(3);
-      expect(links(el).every((b) => b.getAttribute('aria-label') === null)).toBe(true);
+      expect(
+        links(el).every((b) => b.getAttribute('aria-label') === null),
+      ).toBe(true);
     });
 
     it('expanded: no aria-label and a visible label under either brand', async () => {
       for (const brand of ['mybky', 'sampark'] as const) {
         const fixture = await setup({ brand });
         const el = fixture.nativeElement as HTMLElement;
-        expect(links(el).every((b) => b.getAttribute('aria-label') === null)).toBe(true);
+        expect(
+          links(el).every((b) => b.getAttribute('aria-label') === null),
+        ).toBe(true);
         expect(el.querySelectorAll('.baps-internal-nav__label').length).toBe(3);
       }
     });
@@ -244,11 +263,22 @@ describe('BapsInternalNavbar', () => {
 
       links(el)[0].click(); // Events
       await fixture.whenStable();
-      expect(labels(el)).toEqual(['Events', 'Seminars', 'Workshops', 'Settings']);
+      expect(labels(el)).toEqual([
+        'Events',
+        'Seminars',
+        'Workshops',
+        'Settings',
+      ]);
 
       links(el)[1].click(); // Seminars
       await fixture.whenStable();
-      expect(labels(el)).toEqual(['Events', 'Seminars', 'Regional', 'Workshops', 'Settings']);
+      expect(labels(el)).toEqual([
+        'Events',
+        'Seminars',
+        'Regional',
+        'Workshops',
+        'Settings',
+      ]);
 
       links(el)[0].click(); // collapse Events — the whole subtree goes with it
       await fixture.whenStable();
@@ -259,7 +289,9 @@ describe('BapsInternalNavbar', () => {
       const fixture = await setup({ items: NESTED, activeItem: undefined });
       links(fixture.nativeElement)[0].click();
       await fixture.whenStable();
-      expect(fixture.componentInstance.clicked.map((i) => i.label)).toEqual(['Events']);
+      expect(fixture.componentInstance.clicked.map((i) => i.label)).toEqual([
+        'Events',
+      ]);
     });
 
     it('tags each row with its depth (18px-per-level indent hook)', async () => {
@@ -284,7 +316,10 @@ describe('BapsInternalNavbar', () => {
       const fixture = await setup({ items: NESTED, activeItem: undefined });
       const el = fixture.nativeElement as HTMLElement;
 
-      expect(links(el).map((b) => b.getAttribute('aria-expanded'))).toEqual(['false', null]);
+      expect(links(el).map((b) => b.getAttribute('aria-expanded'))).toEqual([
+        'false',
+        null,
+      ]);
 
       links(el)[0].click();
       await fixture.whenStable();
@@ -296,7 +331,12 @@ describe('BapsInternalNavbar', () => {
       ]);
 
       const rows = [...el.querySelectorAll('.baps-internal-nav__item')];
-      expect(rows.map((r) => r.getAttribute('aria-level'))).toEqual(['1', '2', '2', '1']);
+      expect(rows.map((r) => r.getAttribute('aria-level'))).toEqual([
+        '1',
+        '2',
+        '2',
+        '1',
+      ]);
     });
 
     it('gives leaves an empty chevron slot so labels stay aligned', async () => {
@@ -304,7 +344,9 @@ describe('BapsInternalNavbar', () => {
       const el = fixture.nativeElement as HTMLElement;
       // Both rows get a slot; only the leaf's is the hidden variant.
       expect(el.querySelectorAll('.baps-internal-nav__chevron').length).toBe(2);
-      expect(el.querySelectorAll('.baps-internal-nav__chevron--empty').length).toBe(1);
+      expect(
+        el.querySelectorAll('.baps-internal-nav__chevron--empty').length,
+      ).toBe(1);
     });
 
     it('leaves a flat menu byte-identical: no chevron slot, no aria-level', async () => {
@@ -313,11 +355,17 @@ describe('BapsInternalNavbar', () => {
       expect(el.querySelector('.baps-internal-nav__chevron')).toBeNull();
       expect(el.querySelector('[aria-level]')).toBeNull();
       expect(el.querySelector('[data-level]')).toBeNull();
-      expect(links(el).every((b) => b.getAttribute('aria-expanded') === null)).toBe(true);
+      expect(
+        links(el).every((b) => b.getAttribute('aria-expanded') === null),
+      ).toBe(true);
     });
 
     it('never nests while collapsed, and keeps the aria-label fix intact there', async () => {
-      const fixture = await setup({ items: NESTED, activeItem: undefined, collapsed: true });
+      const fixture = await setup({
+        items: NESTED,
+        activeItem: undefined,
+        collapsed: true,
+      });
       const el = fixture.nativeElement as HTMLElement;
 
       links(el)[0].click(); // clicking a parent cannot expand a 56px rail
@@ -325,18 +373,67 @@ describe('BapsInternalNavbar', () => {
       expect(links(el).length).toBe(2);
       expect(el.querySelector('.baps-internal-nav__chevron')).toBeNull();
       // The collapsed-label a11y fix still applies to nested data.
-      expect(links(el).map((b) => b.getAttribute('aria-label'))).toEqual(['Events', 'Settings']);
+      expect(links(el).map((b) => b.getAttribute('aria-label'))).toEqual([
+        'Events',
+        'Settings',
+      ]);
     });
   });
 
   describe('brand host class (§40)', () => {
     it('is absent for mybky and present for sampark', async () => {
       const fixture = await setup();
-      const host = (fixture.nativeElement as HTMLElement).querySelector('baps-internal-navbar')!;
+      const host = (fixture.nativeElement as HTMLElement).querySelector(
+        'baps-internal-navbar',
+      )!;
       expect(host.classList.contains('baps-sampark')).toBe(false);
       fixture.componentInstance.brand.set('sampark');
       await fixture.whenStable();
       expect(host.classList.contains('baps-sampark')).toBe(true);
+    });
+  });
+
+  // `iconName` is the input the component's own docstring says to prefer and
+  // the one all three app shells pass, yet every case above exercises the
+  // back-compat `icon` instead — so until now the preferred path had no test
+  // at all and the deprecated one had three. Both branches are pinned here,
+  // including the precedence rule, which is the one that fails quietly: set
+  // both and the wrong resolution stacks two glyphs in a single slot rather
+  // than throwing.
+  describe('icon inputs', () => {
+    const iconsIn = (el: HTMLElement) => ({
+      svg: el.querySelectorAll('baps-icon.baps-internal-nav__icon').length,
+      font: el.querySelectorAll('i.baps-internal-nav__icon').length,
+    });
+
+    it('draws iconName through baps-icon and no PrimeIcons element', async () => {
+      const fixture = await setup({
+        items: [{ label: 'Dashboard', iconName: 'widget' }],
+      });
+      expect(iconsIn(fixture.nativeElement)).toEqual({ svg: 1, font: 0 });
+    });
+
+    it('still draws the back-compat icon as a PrimeIcons class string', async () => {
+      const fixture = await setup({
+        items: [{ label: 'Dashboard', icon: 'pi-home' }],
+      });
+      const el = fixture.nativeElement as HTMLElement;
+      expect(iconsIn(el)).toEqual({ svg: 0, font: 1 });
+      expect(
+        el.querySelector('i.baps-internal-nav__icon')?.className,
+      ).toContain('pi-home');
+    });
+
+    it('lets iconName win when both are set, drawing one glyph not two', async () => {
+      const fixture = await setup({
+        items: [{ label: 'Dashboard', icon: 'pi-home', iconName: 'widget' }],
+      });
+      expect(iconsIn(fixture.nativeElement)).toEqual({ svg: 1, font: 0 });
+    });
+
+    it('draws no icon element at all when the item carries neither', async () => {
+      const fixture = await setup({ items: [{ label: 'Dashboard' }] });
+      expect(iconsIn(fixture.nativeElement)).toEqual({ svg: 0, font: 0 });
     });
   });
 });
