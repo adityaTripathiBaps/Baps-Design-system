@@ -170,6 +170,22 @@ pkg.exports = {
     types: './lib/theme/accent.theme.d.ts',
     default: './esm2022/lib/theme/accent.theme.js',
   },
+  // ── The ramp builder alone, with no dependencies at all ───────────────────
+  //
+  // './theme' above is the full accent engine, and it imports
+  // @primeuix/themes for definePreset and the rest — which an Angular consumer
+  // already has and a React one has no use for.
+  //
+  // A non-Angular app shell needs exactly one thing from that engine: turning
+  // an accent colour into a 50-950 ramp. ramp.ts does that and imports
+  // nothing, so this entry lets a React or Next shell theme itself with no
+  // PrimeNG package in its package.json at all.
+  //
+  //     import { buildRamp } from '@org/ui-kit/ramp';
+  './ramp': {
+    types: './lib/theme/ramp.d.ts',
+    default: './esm2022/lib/theme/ramp.js',
+  },
 };
 
 writeFileSync(DIST, JSON.stringify(pkg, null, 2) + '\n');
@@ -179,7 +195,7 @@ console.log(
     : '[ui-kit] no workspace: ranges to resolve',
 );
 console.log(
-  '[ui-kit] exported ./src/* (raw SCSS via pkg:), ./styles (compiled CSS), ./icons (glyph data) and ./theme (accent engine)',
+  '[ui-kit] exported ./src/* (raw SCSS via pkg:), ./styles (compiled CSS), ./icons (glyph data) ./theme (accent engine) and ./ramp (no deps)',
 );
 
 // ── Publish: stage -> live ──────────────────────────────────────────────────
