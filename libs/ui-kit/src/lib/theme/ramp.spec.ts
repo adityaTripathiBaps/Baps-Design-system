@@ -1,7 +1,10 @@
 import { palette } from '@primeuix/themes';
-import { describe, expect, it } from 'vitest';
 
 import { buildRamp } from './ramp';
+
+// describe/it/expect come from the global test environment, the way every
+// other spec in this library uses them — tsconfig.spec.json declares the
+// types and importing them from 'vitest' fails there.
 
 /**
  * buildRamp exists so a non-Angular consumer does not have to install
