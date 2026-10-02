@@ -35,10 +35,36 @@ const COMMON = `${STYLES}/layout/_common.scss`;
 const TOKENS = 'libs/tokens/build/css/tokens.css';
 const FONT = `${STYLES}/layout/fonts/Inter-VariableFont_opsz,wght.ttf`;
 
+/**
+ * story export -> its Storybook id, or { id, indices } when the Custom tab
+ * deliberately covers a SUBSET of the switches the story renders.
+ *
+ * SamparkSizes is the case that needs it. The story shows xs, sm, md and lg,
+ * but xs has no standalone rule: the partial defines --s and --l only, and xs
+ * lives in _switch-sampark.scss as baps-toggleswitch.baps-sampark.baps-switch-xs
+ * — anchored to the Angular element and PrimeNG's class, which is the wrapper
+ * path. Writing an xs row in raw markup would render at md size while looking
+ * deliberate, so the Custom tab shows three rows and this maps them onto the
+ * Angular side's last three.
+ *
+ * The alternative — dropping the story from the guard — would leave sm, md and
+ * lg unchecked as well, which is the wrong trade.
+ */
 const STORIES = {
+  Playground: 'components-toggleswitch--playground',
   States: 'components-toggleswitch--states',
+  Sizes: 'components-toggleswitch--sizes',
   SamparkStates: 'components-toggleswitch--sampark-states',
+  SamparkSizes: {
+    id: 'components-toggleswitch--sampark-sizes',
+    indices: [1, 2, 3],
+  },
+  WithLabel: 'components-toggleswitch--with-label',
 };
+
+/** Accepts either form above. */
+const idOf = (v) => (typeof v === 'string' ? v : v.id);
+const indicesOf = (v) => (typeof v === 'string' ? null : v.indices);
 
 /**
  * A switch is two boxes: the track, and the thumb riding in it. Both are
@@ -177,7 +203,8 @@ const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1400, height: 900 } });
 
 const angular = {};
-for (const [name, id] of Object.entries(STORIES)) {
+for (const [name, entry] of Object.entries(STORIES)) {
+  const id = idOf(entry);
   await page.goto(`${BASE}/iframe.html?viewMode=story&id=${id}`, {
     waitUntil: 'commit',
     timeout: 120000,
@@ -207,7 +234,10 @@ let checked = 0;
 const failures = [];
 
 for (const name of Object.keys(STORIES)) {
-  const a = angular[name];
+  // When the story declares indices, compare only those Angular switches —
+  // the Custom tab is a subset on purpose and a length mismatch is expected.
+  const picked = indicesOf(STORIES[name]);
+  const a = picked ? picked.map((i) => angular[name][i]) : angular[name];
   const b = raw[name];
   if (a.length !== b.length) {
     failures.push(

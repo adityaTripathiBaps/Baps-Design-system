@@ -88,6 +88,388 @@ const sw = (
 const ROW = 'display:flex; gap: 24px; align-items: center;';
 
 export const toggleSwitchSnippets: Record<string, SnippetSet> = {
+  // A labelled switch, which the component treats as the norm rather than the
+  // exception — a bare track beside loose text is the thing that needs a
+  // reason.
+  //
+  // The label's TYPOGRAPHY is the one piece raw markup does not inherit.
+  // Measured: the rule is `baps-toggleswitch .p-toggleswitch-label`, anchored
+  // to the Angular element and PrimeNG's class name, so it is part of the
+  // wrapper path and not the standalone one. The markup below therefore wraps
+  // the switch in a real <label> and leaves its type to the app, which is what
+  // a consumer wants anyway — their form labels already have a style.
+  //
+  // Wrapping in <label> rather than using [for] is deliberate: it needs no id,
+  // so it survives being rendered twice on a page, and clicking the text still
+  // toggles the switch.
+  WithLabel: {
+    primeng: `<div style="display:flex; flex-direction:column; gap:12px; align-items:flex-start;">
+  <baps-toggleswitch [(ngModel)]="notifications" label="Email notifications" />
+  <baps-toggleswitch [(ngModel)]="sms" label="SMS notifications" />
+  <baps-toggleswitch [(ngModel)]="locked" label="Managed by your admin" [disabled]="true" />
+</div>`,
+    custom: `<div style="display:flex; flex-direction:column; gap:12px; align-items:flex-start;">
+  <label style="display:flex; align-items:center; gap:8px;">
+    <span class="baps-toggle-switch">
+      <input type="checkbox" role="switch" class="baps-toggle-switch__input" checked />
+      <span class="baps-toggle-switch__track" aria-hidden="true">
+        <span class="baps-toggle-switch__thumb"></span>
+      </span>
+    </span>
+    Email notifications
+  </label>
+  <label style="display:flex; align-items:center; gap:8px;">
+    <span class="baps-toggle-switch">
+      <input type="checkbox" role="switch" class="baps-toggle-switch__input" />
+      <span class="baps-toggle-switch__track" aria-hidden="true">
+        <span class="baps-toggle-switch__thumb"></span>
+      </span>
+    </span>
+    SMS notifications
+  </label>
+  <label style="display:flex; align-items:center; gap:8px;">
+    <span class="baps-toggle-switch">
+      <input type="checkbox" role="switch" class="baps-toggle-switch__input" checked disabled />
+      <span class="baps-toggle-switch__track" aria-hidden="true">
+        <span class="baps-toggle-switch__thumb"></span>
+      </span>
+    </span>
+    Managed by your admin
+  </label>
+</div>`,
+    react: `${SETUP}
+
+import { useState } from 'react';
+
+const ROWS = [
+  { label: 'Email notifications', initial: true },
+  { label: 'SMS notifications', initial: false },
+  { label: 'Managed by your admin', initial: true, disabled: true },
+];
+
+export function LabelledSwitches() {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 12, alignItems: 'flex-start' }}>
+      {ROWS.map((r) => (
+        <Row key={r.label} {...r} />
+      ))}
+    </div>
+  );
+}
+
+function Row({ label, initial, disabled = false }) {
+  const [on, setOn] = useState(initial);
+
+  /* The <label> wraps the input, so no id and no htmlFor — one less thing to
+     keep unique when the row renders more than once on a page. */
+  return (
+    <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+      <span className="baps-toggle-switch">
+        <input
+          type="checkbox"
+          role="switch"
+          className="baps-toggle-switch__input"
+          checked={on}
+          disabled={disabled}
+          onChange={(e) => setOn(e.target.checked)}
+        />
+        <span className="baps-toggle-switch__track" aria-hidden="true">
+          <span className="baps-toggle-switch__thumb" />
+        </span>
+      </span>
+      {label}
+    </label>
+  );
+}`,
+    next: `'use client';
+
+${SETUP}
+
+/* Each row owns a boolean, so this is a client component. Lift the values to
+   a form action if the server needs them on submit — the markup does not
+   change. */
+export { LabelledSwitches as default } from './LabelledSwitches';`,
+  },
+
+  // Sampark runs one size SMALLER than MyBKY, so the rail starts at xs — and
+  // xs is the one step with no standalone rule. Measured: the partial defines
+  // --s and --l only, while xs lives in _switch-sampark.scss as
+  // `baps-toggleswitch.baps-sampark.baps-switch-xs`, anchored to the Angular
+  // element and PrimeNG's class rather than the BEM block.
+  //
+  // So the Custom tab below shows sm, md and lg and stops there. Writing an
+  // xs row would render at md size while looking deliberate, which is worse
+  // than three honest rows. The drift guard checks indices 1-3 for the same
+  // reason. Giving xs a standalone rule is a design decision, not a
+  // mechanical one.
+  SamparkSizes: {
+    primeng: `<div style="display:flex; gap: 24px; align-items: center;">
+  <baps-toggleswitch brand="sampark" size="xs" [(ngModel)]="a" />
+  <baps-toggleswitch brand="sampark" size="sm" [(ngModel)]="b" />
+  <baps-toggleswitch brand="sampark" [(ngModel)]="c" />
+  <baps-toggleswitch brand="sampark" size="lg" [(ngModel)]="d" />
+</div>`,
+    custom: `<!-- sm, md and lg. xs is omitted deliberately — see the note above. -->
+<div style="display:flex; gap: 24px; align-items: center;">
+  <label style="display:flex; flex-direction:column; gap:8px; align-items:center">
+    sm
+    <span class="baps-toggle-switch baps-sampark baps-toggle-switch--s">
+      <input type="checkbox" role="switch" class="baps-toggle-switch__input" checked />
+      <span class="baps-toggle-switch__track" aria-hidden="true">
+        <span class="baps-toggle-switch__thumb"></span>
+      </span>
+    </span>
+  </label>
+  <label style="display:flex; flex-direction:column; gap:8px; align-items:center">
+    md
+    <span class="baps-toggle-switch baps-sampark">
+      <input type="checkbox" role="switch" class="baps-toggle-switch__input" checked />
+      <span class="baps-toggle-switch__track" aria-hidden="true">
+        <span class="baps-toggle-switch__thumb"></span>
+      </span>
+    </span>
+  </label>
+  <label style="display:flex; flex-direction:column; gap:8px; align-items:center">
+    lg
+    <span class="baps-toggle-switch baps-sampark baps-toggle-switch--l">
+      <input type="checkbox" role="switch" class="baps-toggle-switch__input" checked />
+      <span class="baps-toggle-switch__track" aria-hidden="true">
+        <span class="baps-toggle-switch__thumb"></span>
+      </span>
+    </span>
+  </label>
+</div>`,
+    react: `${SETUP}
+
+import { useState } from 'react';
+
+/* Three sizes, not four: xs has no standalone rule. The brand is a class on
+   the BEM block here, not a wrapper — baps-sampark sits beside
+   baps-toggle-switch, so no ref is needed and className works normally. */
+const SIZES = [
+  ['sm', ' baps-toggle-switch--s'],
+  ['md', ''],
+  ['lg', ' baps-toggle-switch--l'],
+];
+
+export function SamparkSizes() {
+  return (
+    <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
+      {SIZES.map(([name, cls]) => (
+        <Switch key={name} label={name} sizeClass={cls} />
+      ))}
+    </div>
+  );
+}
+
+function Switch({ label, sizeClass }) {
+  const [on, setOn] = useState(true);
+
+  return (
+    <label style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center' }}>
+      {label}
+      <span className={'baps-toggle-switch baps-sampark' + sizeClass}>
+        <input
+          type="checkbox"
+          role="switch"
+          className="baps-toggle-switch__input"
+          checked={on}
+          onChange={(e) => setOn(e.target.checked)}
+        />
+        <span className="baps-toggle-switch__track" aria-hidden="true">
+          <span className="baps-toggle-switch__thumb" />
+        </span>
+      </span>
+    </label>
+  );
+}`,
+    next: `'use client';
+
+${SETUP}
+
+/* Identical to the React version — only the state makes this a client
+   component. Import it rather than keeping a copy that can drift. */
+export { SamparkSizes as default } from './SamparkSizes';`,
+  },
+
+  // One switch, nothing set. Worth having because it is the shape every other
+  // example varies: a native checkbox with role="switch", a track, a thumb.
+  //
+  // role="switch" rather than a plain checkbox is what makes a screen reader
+  // say "on"/"off" instead of "checked"/"unchecked". Keyboard support — Space
+  // to toggle, Tab to reach — comes from the native input and needs no code.
+  Playground: {
+    primeng: `<baps-toggleswitch [(ngModel)]="checked" />`,
+    custom: `  <label style="display:flex; flex-direction:column; gap:8px; align-items:center">
+    Off
+    <span class="baps-toggle-switch">
+      <input type="checkbox" role="switch" class="baps-toggle-switch__input" />
+      <span class="baps-toggle-switch__track" aria-hidden="true">
+        <span class="baps-toggle-switch__thumb"></span>
+      </span>
+    </span>
+  </label>`,
+    react: `${SETUP}
+
+import { useState } from 'react';
+
+/* The checked state lives on the input, not in a class: a sibling selector
+   moves the thumb and repaints the track, so there is nothing to toggle. That
+   makes a controlled React switch a plain checkbox with role="switch". */
+export function ToggleSwitch() {
+  const [on, setOn] = useState(false);
+
+  return (
+      <span className={'baps-toggle-switch' + ''}>
+        <input
+          type="checkbox"
+          role="switch"
+          className="baps-toggle-switch__input"
+          checked={on}
+          onChange={(e) => setOn(e.target.checked)}
+        />
+        <span className="baps-toggle-switch__track" aria-hidden="true">
+          <span className="baps-toggle-switch__thumb" />
+        </span>
+      </span>
+  );
+}`,
+    next: `'use client';
+
+${SETUP}
+
+import { useState } from 'react';
+
+/* The checked state lives on the input, not in a class: a sibling selector
+   moves the thumb and repaints the track, so there is nothing to toggle. That
+   makes a controlled React switch a plain checkbox with role="switch". */
+export default function ToggleSwitch() {
+  const [on, setOn] = useState(false);
+
+  return (
+      <span className={'baps-toggle-switch' + ''}>
+        <input
+          type="checkbox"
+          role="switch"
+          className="baps-toggle-switch__input"
+          checked={on}
+          onChange={(e) => setOn(e.target.checked)}
+        />
+        <span className="baps-toggle-switch__track" aria-hidden="true">
+          <span className="baps-toggle-switch__thumb" />
+        </span>
+      </span>
+  );
+}`,
+  },
+
+  // Three sizes. md is the default and carries no modifier, which is the part
+  // worth noticing — the ramp is --s, nothing, --l, not three classes.
+  Sizes: {
+    primeng: `<div style="display:flex; gap: 24px; align-items: center;">
+  <baps-toggleswitch size="sm" [(ngModel)]="a" />
+  <baps-toggleswitch [(ngModel)]="b" />
+  <baps-toggleswitch size="lg" [(ngModel)]="c" />
+</div>`,
+    custom: `<div style="display:flex; gap: 24px; align-items: center;">
+  <label style="display:flex; flex-direction:column; gap:8px; align-items:center">
+    sm
+    <span class="baps-toggle-switch baps-toggle-switch--s">
+      <input type="checkbox" role="switch" class="baps-toggle-switch__input" checked />
+      <span class="baps-toggle-switch__track" aria-hidden="true">
+        <span class="baps-toggle-switch__thumb"></span>
+      </span>
+    </span>
+  </label>
+  <label style="display:flex; flex-direction:column; gap:8px; align-items:center">
+    md
+    <span class="baps-toggle-switch">
+      <input type="checkbox" role="switch" class="baps-toggle-switch__input" checked />
+      <span class="baps-toggle-switch__track" aria-hidden="true">
+        <span class="baps-toggle-switch__thumb"></span>
+      </span>
+    </span>
+  </label>
+  <label style="display:flex; flex-direction:column; gap:8px; align-items:center">
+    lg
+    <span class="baps-toggle-switch baps-toggle-switch--l">
+      <input type="checkbox" role="switch" class="baps-toggle-switch__input" checked />
+      <span class="baps-toggle-switch__track" aria-hidden="true">
+        <span class="baps-toggle-switch__thumb"></span>
+      </span>
+    </span>
+  </label>
+</div>`,
+    react: `${SETUP}
+
+import { useState } from 'react';
+
+/* The checked state lives on the input, not in a class: a sibling selector
+   moves the thumb and repaints the track, so there is nothing to toggle. That
+   makes a controlled React switch a plain checkbox with role="switch". */
+export function Sizes() {
+  const SIZES = [
+    ['sm', ' baps-toggle-switch--s'],
+    ['md', ''],
+    ['lg', ' baps-toggle-switch--l'],
+  ];
+
+  return (
+    <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
+      {SIZES.map(([name, cls]) => (
+        <Switch key={name} label={name} sizeClass={cls} />
+      ))}
+    </div>
+  );
+}
+
+function Switch({ label, sizeClass }) {
+  const [on, setOn] = useState(true);
+
+  return (
+    <label style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center' }}>
+      {label}
+      <span className={'baps-toggle-switch' + sizeClass}>
+        <input
+          type="checkbox"
+          role="switch"
+          className="baps-toggle-switch__input"
+          checked={on}
+          onChange={(e) => setOn(e.target.checked)}
+        />
+        <span className="baps-toggle-switch__track" aria-hidden="true">
+          <span className="baps-toggle-switch__thumb" />
+        </span>
+      </span>
+    </label>
+  );
+}`,
+    next: `'use client';
+
+${SETUP}
+
+import { useState } from 'react';
+
+/* The checked state lives on the input, not in a class: a sibling selector
+   moves the thumb and repaints the track, so there is nothing to toggle. That
+   makes a controlled React switch a plain checkbox with role="switch". */
+export default function Sizes() {
+  const SIZES = [
+    ['sm', ' baps-toggle-switch--s'],
+    ['md', ''],
+    ['lg', ' baps-toggle-switch--l'],
+  ];
+
+  return (
+    <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
+      {SIZES.map(([name, cls]) => (
+        <Switch key={name} label={name} sizeClass={cls} />
+      ))}
+    </div>
+  );
+}`,
+  },
+
   States: {
     primeng: `<div style="${ROW}">
   <baps-toggleswitch [(ngModel)]="off" />
