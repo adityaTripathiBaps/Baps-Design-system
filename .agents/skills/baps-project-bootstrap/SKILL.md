@@ -41,8 +41,16 @@ CLAUDE.md                     ← thin, points at AGENTS.md
     app-architecture.md       ← routes, features, state — local to this app
     <symlink or copy of the DS rules that apply>
   skills/
+    baps-app-page/SKILL.md    ← how to build a screen in THIS app, see step 6
     <the nx skills, if this repo is an Nx workspace>
+src/<app>/theme/app-shell.theme.ts   ← brand + accent at runtime, see step 7
 ```
+
+`.agents/skills/` is NOT optional, and the earlier wording that made it
+conditional on Nx was wrong. The Nx skills are conditional; a consumer skill is
+not. Without one, the next agent to open the repo reads eleven rule files and
+still has to work out which components it may use — which is the only question
+that actually blocks a screen.
 
 **Which DS rules apply to a consumer:**
 
@@ -135,6 +143,26 @@ It must cover:
 5. **Pasting from Storybook** — the import, brackets on non-string inputs, and
    anything the snippet references on the component.
 
+## Step 3b — the consumer may not be Angular
+
+`consuming-ui-kit.md` in `.agents/templates/` is written for an Angular app,
+and four of its five sections do not exist outside one. Do not copy it into a
+React or Next consumer and leave the Angular parts in — write the five that
+actually apply:
+
+| Angular section | React / Next replacement |
+| --- | --- |
+| `cssLayer` in `app.config.ts` | **Import order.** `@org/tokens/css` then `@org/ui-kit/styles`, once, at the entry. Reversed, every `var(--…)` falls back silently. |
+| Style partials via `pkg:` | **Use the bundle, not the per-component paths.** They are not self-sufficient: some stylesheets read custom properties another declares, and a miss falls back silently — measured, `_file-upload.scss` reads `--input-border-default`, declared in the input stylesheet. |
+| What hot-reloads / `.angular/cache` | Vite and Next both reload CSS; the design system has to be REBUILT (`nx build ui-kit`) because the dependency is a `file:` path into `dist/`. Wire that into `predev`. |
+| Pasting from Storybook | **Take the React tab, not PrimeNG-Angular.** Drop the `brand` input — it feeds PrimeNG `dt` tokens and does nothing outside Angular. Inputs become classes. |
+| The brand scope | Unchanged: `baps-ds-sampark`, `baps-sampark`, `baps-dark`. This is the one section that carries verbatim. |
+
+And add the section the Angular template has no reason to carry: **which
+components may be used at all.** Most may not. Point at the generated
+**Guidelines › Component status** page rather than listing them, because a list
+copied into an app drifts and that page cannot.
+
 ## Step 4 — verify, do not assume
 
 ```bash
@@ -161,6 +189,51 @@ in `app-architecture.md`, generated from
 `<ds>/.agents/templates/app-architecture.md`. **Not** into a copied library
 rule: if you find yourself editing a copied rule, the change belongs in the
 design system.
+
+## Step 6 — the consumer skill
+
+Rules say what is forbidden. A skill says what to DO, and for a consuming app
+there is exactly one question worth answering: **which components may I use,
+and what do I do about the one I need that is missing?**
+
+`.agents/skills/baps-app-page/SKILL.md` answers it:
+
+1. Check the generated status report first — `node tools/check-snippets.mjs --report`
+   in the design system. Never a list copied into the app; that drifts.
+2. Available: take the React tab, drop `brand`, map inputs to classes, keep
+   the semantics.
+3. Missing, in this order: build the screen from what IS available → if it is
+   layout chrome, plain HTML plus tokens with **no hex fallbacks** → if it is
+   genuinely the component, fix it in the design system → if it has no tokens,
+   **stop**.
+
+That last rung is the one that matters. A component with no tokens is a design
+decision nobody has made yet, and inventing the colours in an app is how a
+design system dies quietly — quietly, because it still looks right.
+
+## Step 7 — the theme file
+
+Every app shell gets `src/<app>/theme/app-shell.theme.ts`. The Angular one is
+`baps-app-shell/src/app/theme/app-sell.theme.ts`; it does two things, and only
+one of them carries:
+
+1. writes the brand's primary ramp onto `document.documentElement` as CSS
+   custom properties — **pure DOM, carries everywhere**, and
+2. hands a matching preset to PrimeNG through `usePreset()` — **Angular only.**
+
+A React or Next consumer has no PrimeNG components for a preset to re-skin, so
+importing `@primeuix/themes` there adds a dependency to drive machinery with
+no output. Write step 1 alone.
+
+Copy the step mapping from `DS_RAMPS` in `libs/ui-kit/src/lib/theme/accent.theme.ts`
+verbatim — `--color-sampark-primary-{0,10,20,40,60,80,100}` from ramp steps
+`{50,100,200,400,600,700,800}` — so the two cannot disagree. Keep the list of
+written properties so the next call can undo it exactly; calling with no ramp
+must remove the inline properties rather than write the defaults back, or the
+stylesheet's own values never apply again.
+
+Brand and dark mode belong in the same file, because they are the same
+mechanism: `baps-ds-sampark` and `baps-dark` as classes, and nothing else.
 
 ## Rules to add WHEN the app gains the concern
 
@@ -190,4 +263,7 @@ it in `app-architecture.md` so the next person knows.
 - [ ] Copied DS rules carry the "do not edit here" provenance header
 - [ ] `cssLayer`, brand scope, and style partials verified by command
 - [ ] One component's computed style measured to confirm the brand
-- [ ] `npx ng serve` clean
+- [ ] `.agents/skills/baps-app-page/SKILL.md` — the which-components decision procedure
+- [ ] `theme/app-shell.theme.ts` — brand, dark mode, and the accent ramp
+- [ ] Non-Angular consumer: step 3b's five sections written, not the Angular ones copied
+- [ ] Build clean (`ng serve` / `vite build` / `next build`), 0 errors
