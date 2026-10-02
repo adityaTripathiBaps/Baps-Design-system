@@ -1,0 +1,284 @@
+/* baps-toggle-switch — the STANDALONE switch.
+ *
+ * ## Why this file exists beside _switch.scss
+ *
+ * _switch.scss is the Angular-side skin: every selector in it reads
+ * `baps-toggleswitch … .p-toggleswitch`, so it styles the DOM PrimeNG renders
+ * and can never reach markup written by hand. Measured, toggle-switch.css in
+ * the packaged CSS carries 33 `.p-*` selectors against 28 `.baps-*` ones.
+ *
+ * So a React or plain-HTML page importing `@org/ui-kit/styles/toggle-switch`
+ * got rules that match nothing it can write. This file is the other half,
+ * built the way _button.scss and _tag.scss were: from the published tokens,
+ * against values MEASURED on the live component rather than guessed.
+ *
+ * ## What was measured, and what it matched
+ *
+ * components-toggleswitch--states, MyBKY, default size:
+ *
+ *   track   36 x 20, radius 99px
+ *   off     rgb(141, 155, 165)   = --toggle-switch-mybky-track-off  #8d9ba5
+ *   on      rgb(95, 120, 184)    = --toggle-switch-mybky-track-on
+ *   thumb   17 x 17, white, radius 50%
+ *
+ * Every one of those is a token that already existed, documented for exactly
+ * this purpose. Nothing here is invented; where a value has no token it is a
+ * layout consequence (the thumb's travel is width - thumb - 2 * gap) rather
+ * than a design decision.
+ *
+ * ## The markup
+ *
+ *   <span class="baps-toggle-switch">
+ *     <input type="checkbox" role="switch" class="baps-toggle-switch__input">
+ *     <span class="baps-toggle-switch__track" aria-hidden="true">
+ *       <span class="baps-toggle-switch__thumb"></span>
+ *     </span>
+ *   </span>
+ *
+ * A real <input type="checkbox"> carries the state, the focus and the keyboard
+ * behaviour, so the control works before a line of JavaScript is written —
+ * which is the one thing CSS cannot hand a React consumer and the native
+ * element can. `role="switch"` is what makes it announce as a switch rather
+ * than a checkbox. The input is visually hidden, not display:none: a
+ * display:none input is unfocusable and drops out of the tab order.
+ *
+ * Size: add `baps-toggle-switch--s` or `--l`. Brand: `baps-sampark` on the
+ * wrapper, or `.baps-ds-sampark` on an ancestor, as everywhere else.
+ */
+
+.baps-toggle-switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  vertical-align: middle;
+}
+
+/* Visually hidden, still focusable and still the thing a label points at.
+   Stretched over the track so a pointer press lands on the input itself. */
+.baps-toggle-switch__input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.baps-toggle-switch__input:disabled {
+  cursor: default;
+}
+
+/* ── MyBKY ─────────────────────────────────────────────────────────────── */
+
+.baps-toggle-switch__track {
+  display: block;
+  box-sizing: border-box;
+  width: var(--toggle-switch-mybky-track-width, 2.25rem);
+  height: var(--toggle-switch-mybky-track-height, 1.25rem);
+  /* 99px, the pill. MyBKY declares no switch radius token — the measured
+     value is the shared pill, so it reads the one that exists rather than a
+     number typed here. */
+  border-radius: var(--radius-mybky-pill, 99px);
+  background-color: var(--toggle-switch-mybky-track-off, #8d9ba5);
+  transition: background-color 150ms ease;
+}
+
+.baps-toggle-switch__thumb {
+  position: absolute;
+  top: 50%;
+  left: var(--toggle-switch-mybky-gap, 0.09375rem);
+  width: var(--toggle-switch-mybky-thumb-size, 1.0625rem);
+  height: var(--toggle-switch-mybky-thumb-size, 1.0625rem);
+  border-radius: 50%;
+  background-color: var(--toggle-switch-mybky-thumb-bg, #fff);
+  transform: translateY(-50%);
+  transition: left 150ms ease;
+  pointer-events: none;
+}
+
+.baps-toggle-switch__input:checked ~ .baps-toggle-switch__track {
+  background-color: var(--toggle-switch-mybky-track-on);
+}
+
+/* The travel is the track minus the thumb minus the inset at both ends. It is
+   arithmetic, not a design value, which is why it is calc() over the same
+   three tokens rather than a fourth token holding the answer. */
+.baps-toggle-switch__input:checked
+  ~ .baps-toggle-switch__track
+  .baps-toggle-switch__thumb {
+  left: calc(
+    var(--toggle-switch-mybky-track-width, 2.25rem) - var(
+        --toggle-switch-mybky-thumb-size,
+        1.0625rem
+      ) - var(--toggle-switch-mybky-gap, 0.09375rem)
+  );
+}
+
+.baps-toggle-switch__input:disabled ~ .baps-toggle-switch__track {
+  background-color: var(--toggle-switch-mybky-track-off-disabled);
+}
+
+.baps-toggle-switch__input:disabled:checked ~ .baps-toggle-switch__track {
+  background-color: var(--toggle-switch-mybky-track-on-disabled);
+}
+
+/* Keyboard focus has to stay visible: the input it belongs to is invisible, so
+   the ring is drawn on the track instead. */
+.baps-toggle-switch__input:focus-visible ~ .baps-toggle-switch__track {
+  outline: 2px solid var(--toggle-switch-mybky-track-on);
+  outline-offset: 2px;
+}
+
+/* ── MyBKY sizes ───────────────────────────────────────────────────────── */
+
+.baps-toggle-switch--s .baps-toggle-switch__track {
+  width: var(--toggle-switch-mybky-track-width-sm, 1.75rem);
+  height: var(--toggle-switch-mybky-track-height-sm, 1rem);
+}
+
+.baps-toggle-switch--s .baps-toggle-switch__thumb {
+  width: var(--toggle-switch-mybky-thumb-size-sm, 0.8125rem);
+  height: var(--toggle-switch-mybky-thumb-size-sm, 0.8125rem);
+}
+
+.baps-toggle-switch--s
+  .baps-toggle-switch__input:checked
+  ~ .baps-toggle-switch__track
+  .baps-toggle-switch__thumb {
+  left: calc(
+    var(--toggle-switch-mybky-track-width-sm, 1.75rem) - var(
+        --toggle-switch-mybky-thumb-size-sm,
+        0.8125rem
+      ) - var(--toggle-switch-mybky-gap, 0.09375rem)
+  );
+}
+
+.baps-toggle-switch--l .baps-toggle-switch__track {
+  width: var(--toggle-switch-mybky-track-width-lg, 2.5rem);
+  height: var(--toggle-switch-mybky-track-height-lg, 1.5rem);
+}
+
+.baps-toggle-switch--l .baps-toggle-switch__thumb {
+  width: var(--toggle-switch-mybky-thumb-size-lg, 1.3125rem);
+  height: var(--toggle-switch-mybky-thumb-size-lg, 1.3125rem);
+}
+
+.baps-toggle-switch--l
+  .baps-toggle-switch__input:checked
+  ~ .baps-toggle-switch__track
+  .baps-toggle-switch__thumb {
+  left: calc(
+    var(--toggle-switch-mybky-track-width-lg, 2.5rem) - var(
+        --toggle-switch-mybky-thumb-size-lg,
+        1.3125rem
+      ) - var(--toggle-switch-mybky-gap, 0.09375rem)
+  );
+}
+
+/* ── Sampark ───────────────────────────────────────────────────────────────
+   A different shape, not a recolour: the track is SQUARE (4px radius, 3px at
+   the small steps) with an inset shadow, and the thumb is a 2px-radius square
+   rather than a circle. Scoped the two ways every other component is. */
+
+.baps-toggle-switch.baps-sampark .baps-toggle-switch__track,
+.baps-ds-sampark .baps-toggle-switch .baps-toggle-switch__track {
+  width: var(--toggle-switch-sampark-track-md-width, 2.25rem);
+  height: var(--toggle-switch-sampark-track-md-height, 1.375rem);
+  border-radius: var(--toggle-switch-sampark-radius, 0.25rem);
+  box-shadow: var(--toggle-switch-sampark-shadow-track);
+}
+
+.baps-toggle-switch.baps-sampark .baps-toggle-switch__thumb,
+.baps-ds-sampark .baps-toggle-switch .baps-toggle-switch__thumb {
+  left: var(--toggle-switch-sampark-gap, 2px);
+  width: var(--toggle-switch-sampark-thumb-md, 1.125rem);
+  height: var(--toggle-switch-sampark-thumb-md, 1.125rem);
+  border-radius: var(--toggle-switch-sampark-thumb-radius, 0.125rem);
+}
+
+.baps-toggle-switch.baps-sampark
+  .baps-toggle-switch__input:checked
+  ~ .baps-toggle-switch__track
+  .baps-toggle-switch__thumb,
+.baps-ds-sampark
+  .baps-toggle-switch
+  .baps-toggle-switch__input:checked
+  ~ .baps-toggle-switch__track
+  .baps-toggle-switch__thumb {
+  left: calc(
+    var(--toggle-switch-sampark-track-md-width, 2.25rem) - var(
+        --toggle-switch-sampark-thumb-md,
+        1.125rem
+      ) - var(--toggle-switch-sampark-gap, 2px)
+  );
+}
+
+.baps-toggle-switch.baps-sampark
+  .baps-toggle-switch__input:disabled
+  ~ .baps-toggle-switch__track,
+.baps-ds-sampark
+  .baps-toggle-switch
+  .baps-toggle-switch__input:disabled
+  ~ .baps-toggle-switch__track {
+  box-shadow: var(--toggle-switch-sampark-shadow-track-disabled);
+}
+
+/* Sampark colours. Measured on components-toggleswitch--sampark-states:
+   off rgb(188, 185, 185), on rgb(201, 104, 104), disabled rgb(243, 242, 242).
+   All three already had tokens — Sampark publishes no track-on/track-off pair
+   of its own, so these read the mono and primary ramps the measurement
+   resolved to rather than a new name invented here. */
+.baps-toggle-switch.baps-sampark .baps-toggle-switch__track,
+.baps-ds-sampark .baps-toggle-switch .baps-toggle-switch__track {
+  background-color: var(--color-sampark-mono-40);
+}
+
+.baps-toggle-switch.baps-sampark
+  .baps-toggle-switch__input:checked
+  ~ .baps-toggle-switch__track,
+.baps-ds-sampark
+  .baps-toggle-switch
+  .baps-toggle-switch__input:checked
+  ~ .baps-toggle-switch__track {
+  background-color: var(--color-sampark-primary-default);
+}
+
+.baps-toggle-switch.baps-sampark
+  .baps-toggle-switch__input:disabled
+  ~ .baps-toggle-switch__track,
+.baps-ds-sampark
+  .baps-toggle-switch
+  .baps-toggle-switch__input:disabled
+  ~ .baps-toggle-switch__track {
+  background-color: var(--color-sampark-mono-20);
+}
+
+.baps-toggle-switch.baps-sampark
+  .baps-toggle-switch__input:focus-visible
+  ~ .baps-toggle-switch__track,
+.baps-ds-sampark
+  .baps-toggle-switch
+  .baps-toggle-switch__input:focus-visible
+  ~ .baps-toggle-switch__track {
+  outline-color: var(--color-sampark-primary-default);
+}
+
+/* Disabled AND checked is its own colour under Sampark, not the grey the
+   unchecked disabled track takes: measured rgb(233, 195, 195), which is
+   --color-sampark-primary-20 — the brand maroon at its lightest step, so a
+   disabled switch still reads as on. The rule above has to come first and this
+   one after it, because both match and the later one wins. MyBKY already
+   publishes its own pair of disabled tokens; Sampark publishes neither, which
+   is why these two read the ramps the measurement resolved to. */
+.baps-toggle-switch.baps-sampark
+  .baps-toggle-switch__input:disabled:checked
+  ~ .baps-toggle-switch__track,
+.baps-ds-sampark
+  .baps-toggle-switch
+  .baps-toggle-switch__input:disabled:checked
+  ~ .baps-toggle-switch__track {
+  background-color: var(--color-sampark-primary-20);
+}

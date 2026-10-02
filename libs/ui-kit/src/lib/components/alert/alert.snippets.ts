@@ -89,7 +89,6 @@ export const alertSnippets: Record<string, SnippetSet> = {
   CardParts: {
     // Every button here needs a handler. The markup alone renders a card whose
     // close and actions do nothing.
-    interactive: true,
     primeng: `<div style="display:flex; flex-direction:column; gap:20px; padding:8px;">
   <baps-alert
     appearance="card"
@@ -462,7 +461,6 @@ export default function Example() {
   Card: {
     // Every button here needs a handler. The markup alone renders a card whose
     // close and actions do nothing.
-    interactive: true,
     primeng: `<div style="display:flex; flex-direction:column; gap:20px; padding:8px;">
   <baps-alert
     appearance="card"
@@ -985,7 +983,6 @@ export default function Example() {
   Default: {
     // The close button needs React state, same as Dismissible: the markup
     // alone renders an alert whose X does nothing.
-    interactive: true,
     primeng: `<baps-alert
   severity="info"
   appearance="inline"
@@ -1418,7 +1415,6 @@ export default function WithTitle() {
   Dismissible: {
     // The close button needs React state; the markup alone renders an alert
     // that cannot be dismissed, so the shared note belongs on this example.
-    interactive: true,
     primeng: `<!-- The parent owns the state. baps-alert only emits (closed) - it never
      removes itself, so a dismissal you need to remember stays yours to store. -->
 <div style="display:flex; flex-direction:column; gap:12px;">

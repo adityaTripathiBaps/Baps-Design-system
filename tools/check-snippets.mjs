@@ -222,19 +222,38 @@ for (const dir of list(COMPONENTS).sort()) {
     }
   }
 
-  // ── 8. interactive sets must say so ───────────────────────────────────────
-  const INTERACTIVE =
-    /\b(onClick|onChange|useState|aria-expanded|role="dialog"|role="menu")/;
+  // ── 8. markup-only sets must say so ───────────────────────────────────────
+  //
+  // The shared note says behaviour "needs a React implementation (not provided
+  // yet)". That is true of a component whose opening, focus trapping and
+  // keyboard handling come from Angular and PrimeNG, and false of one whose
+  // React block actually implements them — so the test is not "does this
+  // markup look interactive" but "is the behaviour missing".
+  //
+  // The first version asked the looser question and was wrong three times:
+  // alert Dismissible, card Interactive and toggle-switch all implement their
+  // behaviour in the React block, and all three were made to display a note
+  // telling the reader it was not provided. Toggle switch is the starkest —
+  // its control is a native <input type="checkbox">, so Space, Tab and the
+  // focus ring come from the platform and would work with no JavaScript at
+  // all.
+  //
+  // So: behaviour is MISSING when the markup carries the ARIA of an
+  // interactive widget and nothing in the block implements it. State or a
+  // handler means it is implemented.
+  const BEHAVIOUR_MARKUP =
+    /aria-expanded|aria-selected|role="dialog"|role="menu"|role="listbox"|role="tab"/;
+  const IMPLEMENTED = /useState|useReducer|on[A-Z][a-zA-Z]+={/;
   if (
     (keysUsed.has('react') || keysUsed.has('next')) &&
-    INTERACTIVE.test(snippetStrings)
+    BEHAVIOUR_MARKUP.test(snippetStrings) &&
+    !IMPLEMENTED.test(snippetStrings)
   ) {
     if (!/interactive:\s*true/.test(src)) {
       fail(
         dir,
         'interactive',
-        'React/Next markup carries behaviour but the set does not set `interactive: true`, ' +
-          'so the shared "markup and styles only" note cannot render',
+        'React/Next markup carries an interactive widget\'s ARIA but implements none of its behaviour, and the set does not set `interactive: true`, so the shared "markup and styles only" note cannot render',
       );
     }
   }

@@ -1,6 +1,7 @@
 import { Meta, Canvas, Controls } from '@storybook/blocks';
-import { BrandOnly, PropsTable } from '@baps/docs-blocks';
+import { BrandOnly, FrameworkTabs, PropsTable } from '@baps/docs-blocks';
 import * as ToggleSwitchStories from './toggle-switch.stories';
+import { toggleSwitchSnippets } from './toggle-switch.snippets';
 
 <Meta of={ToggleSwitchStories} />
 
@@ -37,7 +38,12 @@ An instant on/off control — the change takes effect immediately, with no separ
 
 ### States
 
-<Canvas of={ToggleSwitchStories.States} />
+<Canvas of={ToggleSwitchStories.States} sourceState="none" />
+
+<FrameworkTabs
+  of={ToggleSwitchStories.States}
+  snippets={toggleSwitchSnippets.States}
+/>
 
 ### Sizes
 
@@ -47,7 +53,12 @@ An instant on/off control — the change takes effect immediately, with no separ
 
 ### Sampark States
 
-<Canvas of={ToggleSwitchStories.SamparkStates} />
+<Canvas of={ToggleSwitchStories.SamparkStates} sourceState="none" />
+
+<FrameworkTabs
+  of={ToggleSwitchStories.SamparkStates}
+  snippets={toggleSwitchSnippets.SamparkStates}
+/>
 
 ### Sampark Sizes
 
@@ -79,6 +90,7 @@ native control in either forms API.
 ```ts
 form = new FormGroup({ value: new FormControl(false) });
 ```
+
 ## API
 
 Inputs, outputs and their types, read from the component's own source.
@@ -87,13 +99,13 @@ Inputs, outputs and their types, read from the component's own source.
 
 ## When Not to Use
 
-| Need | Use instead | Why not a switch |
-| --- | --- | --- |
-| A value staged now and committed later by Save/Submit | `baps-checkbox` | See [Toggle vs. Checkbox](#toggle-vs-checkbox) below — the distinction is immediacy, and it is the mistake this control invites most often |
-| One choice out of three or more | `baps-select`, or `baps-listbox` when the options should stay visible | A switch only has two positions |
-| A value on a continuum | `baps-slider` | |
-| State the user cannot change | `baps-tag`, or `baps-badge` for a count | A switch that does nothing when tapped is a broken affordance, and `disabled` still reads as "temporarily unavailable" rather than "read-only display" |
-| Firing an action rather than storing a state | `baps-button` / `baps-split-button` | A switch implies a persisted setting you can return to |
+| Need                                                  | Use instead                                                           | Why not a switch                                                                                                                                       |
+| ----------------------------------------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| A value staged now and committed later by Save/Submit | `baps-checkbox`                                                       | See [Toggle vs. Checkbox](#toggle-vs-checkbox) below — the distinction is immediacy, and it is the mistake this control invites most often             |
+| One choice out of three or more                       | `baps-select`, or `baps-listbox` when the options should stay visible | A switch only has two positions                                                                                                                        |
+| A value on a continuum                                | `baps-slider`                                                         |                                                                                                                                                        |
+| State the user cannot change                          | `baps-tag`, or `baps-badge` for a count                               | A switch that does nothing when tapped is a broken affordance, and `disabled` still reads as "temporarily unavailable" rather than "read-only display" |
+| Firing an action rather than storing a state          | `baps-button` / `baps-split-button`                                   | A switch implies a persisted setting you can return to                                                                                                 |
 
 ## Accessibility
 
@@ -106,7 +118,7 @@ Inputs, outputs and their types, read from the component's own source.
 
 ### Keyboard Support
 
-| Key | Function |
-| --- | --- |
-| <kbd>Tab</kbd> | Moves focus to the switch. |
-| <kbd>Space / Enter</kbd> | Toggles it. |
+| Key                      | Function                   |
+| ------------------------ | -------------------------- |
+| <kbd>Tab</kbd>           | Moves focus to the switch. |
+| <kbd>Space / Enter</kbd> | Toggles it.                |

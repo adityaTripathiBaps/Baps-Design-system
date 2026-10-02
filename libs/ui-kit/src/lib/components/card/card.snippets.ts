@@ -331,7 +331,6 @@ export default function Example() {
     // Note: card is NOT a PrimeNG wrapper and the React block below really does
     // implement the behaviour — see the report; the shared note overstates the
     // limitation here, and narrowing it is a policy call, not one to make mid-run.
-    interactive: true,
     primeng: `<div style="display: grid; gap: 1rem; max-width: 420px">
   <baps-card [interactive]="true">
     <span card-title>Yuva Sabha</span>
