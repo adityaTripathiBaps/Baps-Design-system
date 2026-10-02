@@ -59,6 +59,15 @@ const CASES = [
     story: 'components-internalnavbar--default',
     selector: 'baps-internal-navbar',
   },
+  // navbar imports primeng/ripple, which makes check-snippets call it a
+  // wrapper — but ripple is a behaviour directive with no skin, and the
+  // emitted navbar.css carries 0 `.p-` selectors. The classifier cannot see
+  // that difference, so this case is what settles it by measurement.
+  {
+    name: 'navbar',
+    story: 'components-organisms-navbar--my-bky',
+    selector: 'baps-navbar',
+  },
 ];
 
 /**

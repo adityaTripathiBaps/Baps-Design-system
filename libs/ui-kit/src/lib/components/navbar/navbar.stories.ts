@@ -3,6 +3,7 @@ import { action } from '@storybook/addon-actions';
 import { moduleMetadata } from '@storybook/angular';
 import { BapsNavbar } from './navbar.component';
 import { BapsAvatar } from '../avatar/avatar.component';
+import { BapsIcon } from '../icon/icon.component';
 
 /**
  * Navbar — the top application bar.
@@ -40,7 +41,8 @@ const USER_BLOCK_CSS = `
 `;
 
 /** The component's inputs plus the output spies these stories bind. */
-type Args = BapsNavbar & Record<'onMenuToggle' | 'onMobileMenuToggle', (event?: unknown) => void>;
+type Args = BapsNavbar &
+  Record<'onMenuToggle' | 'onMobileMenuToggle', (event?: unknown) => void>;
 
 const meta: Meta<Args> = {
   title: 'Components/Organisms/Navbar',
@@ -49,7 +51,7 @@ const meta: Meta<Args> = {
   id: 'components-navbar',
   component: BapsNavbar,
   tags: ['ds:mybky', 'ds:sampark'],
-  decorators: [moduleMetadata({ imports: [BapsNavbar, BapsAvatar] })],
+  decorators: [moduleMetadata({ imports: [BapsNavbar, BapsAvatar, BapsIcon] })],
   argTypes: {
     menuToggle: { control: false },
     mobileMenuToggle: { control: false },
@@ -71,7 +73,11 @@ const meta: Meta<Args> = {
     mobileMenuOpen: false,
   },
   render: (args) => ({
-    props: { ...args, onMenuToggle: action('menuToggle'), onMobileMenuToggle: action('mobileMenuToggle') },
+    props: {
+      ...args,
+      onMenuToggle: action('menuToggle'),
+      onMobileMenuToggle: action('mobileMenuToggle'),
+    },
     template: `
       <baps-navbar
         [brand]="brand"
@@ -214,10 +220,10 @@ export const SamparkMobile: Story = {
       <div class="baps-ds-sampark">
         <baps-navbar brand="sampark" title="Sampark" version="DEV" [menuButton]="true" [mobileMenuOpen]="true">
           <button navbar-end type="button" aria-label="Notifications">
-            <i class="pi pi-bell"></i>
+            <baps-icon name="notification"></baps-icon>
           </button>
           <button navbar-end type="button" aria-label="Settings">
-            <i class="pi pi-cog"></i>
+            <baps-icon name="settings"></baps-icon>
           </button>
         </baps-navbar>
       </div>
@@ -235,7 +241,7 @@ export const MyBky: Story = {
       <baps-navbar brand="mybky" title="Member Database">
         <button navbar-end type="button" aria-label="Notifications"
                 style="border:none;background:transparent;cursor:pointer;">
-          <i class="pi pi-bell"></i>
+          <baps-icon name="notification"></baps-icon>
         </button>
       </baps-navbar>
     `,

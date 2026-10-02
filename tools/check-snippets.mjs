@@ -211,13 +211,28 @@ for (const dir of list(COMPONENTS).sort()) {
   }
 
   // ── 7. an authored Custom tab on a wrapper needs a drift guard ────────────
+  //
+  // Two things count as that guard, because there are two ways to earn the
+  // claim. A check-<name>-drift.mjs diffs the raw markup against the live
+  // component property by property. A case in check-standalone.mjs goes
+  // further: it replays the markup on a bare page with only the kit's CSS,
+  // which proves the component needs no Angular at all. Standalone is the
+  // stronger claim, so it satisfies this rule too.
+  //
+  // The distinction matters for a component like navbar, which imports
+  // primeng/ripple — a behaviour directive with no skin. `isWrapper` is a
+  // text match and cannot tell that from a real PrimeNG skin; the standalone
+  // run can, and did.
   if (keysUsed.has('custom') && isWrapper) {
-    const guard = `${TOOLS}/check-${dir}-drift.mjs`;
-    if (!existsSync(guard)) {
+    const drift = `${TOOLS}/check-${dir}-drift.mjs`;
+    const standaloneFile = `${TOOLS}/check-standalone.mjs`;
+    const standalone = existsSync(standaloneFile) ? read(standaloneFile) : '';
+    const proven = new RegExp(`name: '${dir}'`).test(standalone);
+    if (!existsSync(drift) && !proven) {
       fail(
         dir,
         'drift',
-        `authored Custom markup on a PrimeNG wrapper with no ${guard}`,
+        `authored Custom markup on a PrimeNG wrapper with no ${drift} and no case in check-standalone.mjs`,
       );
     }
   }
