@@ -5,6 +5,8 @@ this repository. They are the single source of truth: `CLAUDE.md` and
 `AGENTS.md` point here rather than restating them, so Claude, Cursor, Codex,
 Gemini and OpenCode all read the same rules instead of four drifting copies.
 
+- [`app-shell-theme.md`](app-shell-theme.md) — the theme file every app shell carries, and which of its three sinks exist outside Angular.
+
 ## Read order
 
 Start with the rule that matches what you are about to touch. Read

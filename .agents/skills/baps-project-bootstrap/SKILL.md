@@ -213,6 +213,10 @@ design system dies quietly — quietly, because it still looks right.
 
 ## Step 7 — the theme file
 
+Full contract: [`.agents/rules/app-shell-theme.md`](../../rules/app-shell-theme.md).
+Copy that rule into the consumer like any other. The summary below is what the
+bootstrap itself has to get right.
+
 Every app shell gets `src/<app>/theme/app-shell.theme.ts`. The Angular one is
 `baps-app-shell/src/app/theme/app-sell.theme.ts`; it does two things, and only
 one of them carries:
@@ -224,6 +228,10 @@ one of them carries:
 A React or Next consumer has no PrimeNG components for a preset to re-skin, so
 importing `@primeuix/themes` there adds a dependency to drive machinery with
 no output. Write step 1 alone.
+
+Build the ramp with `buildRamp` from `@org/ui-kit/theme` — no dependencies, and
+`ramp.spec.ts` asserts it matches `palette()` exactly on eleven colours. A
+consumer outside Angular therefore needs no PrimeNG package at all.
 
 Copy the step mapping from `DS_RAMPS` in `libs/ui-kit/src/lib/theme/accent.theme.ts`
 verbatim — `--color-sampark-primary-{0,10,20,40,60,80,100}` from ramp steps

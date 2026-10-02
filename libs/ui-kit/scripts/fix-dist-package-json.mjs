@@ -143,6 +143,33 @@ pkg.exports = {
     types: './lib/components/icon/icon-set.d.ts',
     default: './esm2022/lib/components/icon/icon-set.js',
   },
+  // ── The theme engine, for consumers that are not Angular ──────────────────
+  //
+  // app-sell.theme.ts in every app shell does three things with an accent
+  // colour: builds a 50-950 ramp from it, merges that into a PrimeNG preset,
+  // and writes the design system's own --color-<brand>-primary-* custom
+  // properties onto documentElement. Only the middle one is Angular's; the
+  // ramp and the custom properties are what a React or Next app needs to theme
+  // itself the same way, and without this entry the only route to them is "."
+  // — the package root, which pulls Angular in.
+  //
+  // Measured on the built output, the whole theme tree is Angular-free:
+  //
+  //   accent.theme.js    0 occurrences of "@angular"
+  //   baps.theme.js      0
+  //   sampark.theme.js   0
+  //
+  // Its only external imports are @org/tokens and @primeuix/themes, and
+  // @primeuix/themes declares no peer dependencies and no Angular of its own —
+  // it is PrimeNG's theming utility, not PrimeNG. A consumer therefore adds
+  // that one package and gets rampFor, applyThemeToDesignSystem and
+  // applyNavTheme working exactly as they do in the Angular shell.
+  //
+  //     import { rampFor, applyThemeToDesignSystem } from '@org/ui-kit/theme';
+  './theme': {
+    types: './lib/theme/accent.theme.d.ts',
+    default: './esm2022/lib/theme/accent.theme.js',
+  },
 };
 
 writeFileSync(DIST, JSON.stringify(pkg, null, 2) + '\n');
@@ -152,7 +179,7 @@ console.log(
     : '[ui-kit] no workspace: ranges to resolve',
 );
 console.log(
-  '[ui-kit] exported ./src/* (raw SCSS via pkg:), ./styles (compiled CSS) and ./icons (glyph data)',
+  '[ui-kit] exported ./src/* (raw SCSS via pkg:), ./styles (compiled CSS), ./icons (glyph data) and ./theme (accent engine)',
 );
 
 // ── Publish: stage -> live ──────────────────────────────────────────────────
