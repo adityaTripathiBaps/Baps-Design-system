@@ -1,6 +1,7 @@
 import { Meta, Canvas, Controls } from '@storybook/blocks';
-import { PropsTable } from '@baps/docs-blocks';
+import { FrameworkTabs, PropsTable } from '@baps/docs-blocks';
 import * as IndicatorStories from './indicator.stories';
+import { indicatorSnippets } from './indicator.snippets';
 
 <Meta of={IndicatorStories} />
 
@@ -18,24 +19,49 @@ A small status mark — a dot, a count, or an icon badge. `baps-indicator` rende
 
 ### Playground
 
-<Canvas of={IndicatorStories.Playground} />
+<Canvas of={IndicatorStories.Playground} sourceState="none" />
+
+<FrameworkTabs
+  of={IndicatorStories.Playground}
+  snippets={indicatorSnippets.Playground}
+/>
 <Controls of={IndicatorStories.Playground} />
 
 ### Status Dot
 
-<Canvas of={IndicatorStories.StatusDot} />
+<Canvas of={IndicatorStories.StatusDot} sourceState="none" />
+
+<FrameworkTabs
+  of={IndicatorStories.StatusDot}
+  snippets={indicatorSnippets.StatusDot}
+/>
 
 ### Notification Counts
 
-<Canvas of={IndicatorStories.NotificationCounts} />
+<Canvas of={IndicatorStories.NotificationCounts} sourceState="none" />
+
+<FrameworkTabs
+  of={IndicatorStories.NotificationCounts}
+  snippets={indicatorSnippets.NotificationCounts}
+/>
 
 ### Icon Badge
 
-<Canvas of={IndicatorStories.IconBadge} />
+<Canvas of={IndicatorStories.IconBadge} sourceState="none" />
+
+<FrameworkTabs
+  of={IndicatorStories.IconBadge}
+  snippets={indicatorSnippets.IconBadge}
+/>
 
 ### With Ring
 
-<Canvas of={IndicatorStories.WithRing} />
+<Canvas of={IndicatorStories.WithRing} sourceState="none" />
+
+<FrameworkTabs
+  of={IndicatorStories.WithRing}
+  snippets={indicatorSnippets.WithRing}
+/>
 
 ## API
 
@@ -45,11 +71,11 @@ Inputs, outputs and their types, read from the component's own source.
 
 ## When Not to Use
 
-| Need | Use | Not this |
-| --- | --- | --- |
-| A status word the user reads | `baps-tag` | A dot the reader has to decode |
-| A count on a nav item or avatar | `baps-indicator` | A hand-positioned span |
-| Progress toward a total | `baps-progressbar` | A count that only goes up |
+| Need                            | Use                | Not this                       |
+| ------------------------------- | ------------------ | ------------------------------ |
+| A status word the user reads    | `baps-tag`         | A dot the reader has to decode |
+| A count on a nav item or avatar | `baps-indicator`   | A hand-positioned span         |
+| Progress toward a total         | `baps-progressbar` | A count that only goes up      |
 
 ## Accessibility
 
