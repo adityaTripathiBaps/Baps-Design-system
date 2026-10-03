@@ -279,9 +279,24 @@ export type BapsAvatarSize = 'xs' | 's' | 'm' | 'l' | 'xl' | '2xl' | 'normal' | 
        spm-ui _avatar.scss + variables.css --avatar-* (Figma 13197:90187). ── */
 
     /* Base (type=primary, size=m): 1px border, hover darkens the border only,
-       Inter 500 initials. bg/text/radius/box flow from SAMPARK_AVATAR_TOKENS. */
+       Inter 500 initials. bg/text/radius/box flow from SAMPARK_AVATAR_TOKENS. 
+       Note: We override border-radius here with !important to defeat .p-avatar-circle
+       which gets added by computedShape defaulting to 'circle'. If the user EXPLICITLY
+       requested a circle, .baps-avatar-explicit-circle will prevent this override. */
+    :is(baps-avatar.baps-sampark, .baps-ds-sampark baps-avatar):not(.baps-avatar-explicit-circle) .p-avatar {
+      border-radius: var(--avatar-sampark-radius, 4px) !important;
+    }
+
     :is(baps-avatar.baps-sampark, .baps-ds-sampark baps-avatar) .p-avatar {
       box-sizing: border-box;
+      /* Background MUST be restated here — same reason as color below: the
+         MyBKY variant rules (.baps-avatar-primary etc.) set background via
+         CSS declarations, which beat PrimeNG dt-token-derived values. Without
+         this, a Sampark avatar with variant="primary" kept MyBKY's blue-50
+         fill (#f4f7fe) instead of Sampark's maroon-tinted #fbf4f4. The
+         Sampark type variants (secondary/warning/…) further down override
+         this with their own fills. */
+      background: var(--avatar-sampark-background, #fbf4f4);
       border: var(--avatar-sampark-border-width, 1px) solid var(--avatar-sampark-border, #e9c3c3);
       --baps-avatar-border-hover: var(--avatar-sampark-border-hover, #d48787);
       font-weight: var(--avatar-sampark-font-weight, 500);
@@ -411,8 +426,8 @@ export type BapsAvatarSize = 'xs' | 's' | 'm' | 'l' | 'xl' | '2xl' | 'normal' | 
     :is(baps-avatar.baps-sampark, .baps-ds-sampark baps-avatar) .p-avatar.p-avatar-xl {
       border-width: var(--avatar-sampark-border-width-l, 1.5px);
     }
-    :is(baps-avatar.baps-sampark, .baps-ds-sampark baps-avatar) .p-avatar.p-avatar-xl:not(.p-avatar-circle) {
-      border-radius: var(--avatar-sampark-radius-xl, 0.375rem);
+    :is(baps-avatar.baps-sampark, .baps-ds-sampark baps-avatar):not(.baps-avatar-explicit-circle) .p-avatar.p-avatar-xl {
+      border-radius: var(--avatar-sampark-radius-xl, 0.375rem) !important;
     }
     :is(baps-avatar.baps-sampark, .baps-ds-sampark baps-avatar) .p-avatar.p-avatar-xl .p-avatar-icon {
       font-size: var(--avatar-sampark-icon-size-xl, 2.25rem);
@@ -428,8 +443,8 @@ export type BapsAvatarSize = 'xs' | 's' | 'm' | 'l' | 'xl' | '2xl' | 'normal' | 
       font-weight: var(--avatar-sampark-font-weight2xl, 400);
       border-width: var(--avatar-sampark-border-width-l, 1.5px);
     }
-    :is(baps-avatar.baps-sampark, .baps-ds-sampark baps-avatar).baps-avatar-2xl .p-avatar:not(.p-avatar-circle) {
-      border-radius: var(--avatar-sampark-radius2xl, 0.5rem);
+    :is(baps-avatar.baps-sampark, .baps-ds-sampark baps-avatar):not(.baps-avatar-explicit-circle).baps-avatar-2xl .p-avatar {
+      border-radius: var(--avatar-sampark-radius2xl, 0.5rem) !important;
     }
     :is(baps-avatar.baps-sampark, .baps-ds-sampark baps-avatar).baps-avatar-2xl .p-avatar .p-avatar-icon {
       font-size: var(--avatar-sampark-icon-size-2xl, 3rem);
@@ -509,6 +524,7 @@ export type BapsAvatarSize = 'xs' | 's' | 'm' | 'l' | 'xl' | '2xl' | 'normal' | 
     '[class.baps-avatar-dot]': 'statusDot',
     '[class.baps-avatar-icon-badge]': 'iconBadge',
     '[class.baps-sampark]': "brand === 'sampark'",
+    '[class.baps-avatar-explicit-circle]': "shape === 'circle'",
   },
 })
 export class BapsAvatar {

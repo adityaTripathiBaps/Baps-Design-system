@@ -1,6 +1,7 @@
 import { Meta, Canvas, Controls } from '@storybook/blocks';
-import { PropsTable } from '@baps/docs-blocks';
+import { FrameworkTabs, PropsTable } from '@baps/docs-blocks';
 import * as TableStories from './table.stories';
+import { tableSnippets } from './table.snippets';
 
 <Meta of={TableStories} />
 
@@ -46,6 +47,8 @@ Data table with sorting, filtering, pagination, selection, and row grouping. `ba
 ### With Column Config
 
 <Canvas of={TableStories.WithColumnConfig} />
+
+<FrameworkTabs of={TableStories.WithColumnConfig} snippets={tableSnippets.WithColumnConfig} />
 
 ### With Pagination
 

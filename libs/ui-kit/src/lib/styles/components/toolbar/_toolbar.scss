@@ -1,0 +1,76 @@
+/* baps-toolbar — standalone styles for the Custom/React/Next.js tabs.
+ *
+ * This file replaces PrimeNG's `.p-toolbar` classes with BEM classes
+ * (.baps-toolbar, .baps-toolbar__start, .baps-toolbar__end) so that raw
+ * HTML can render identically to the Angular component.
+ */
+
+.baps-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: var(--toolbar-sampark-gap, 0.5rem);
+  padding: var(--toolbar-sampark-padding, 0.5rem);
+  background: var(--toolbar-sampark-background, #ffffff);
+  border: none;
+  border-bottom: 1px solid var(--toolbar-sampark-border, #e1e0e0);
+}
+
+.baps-toolbar__start {
+  display: flex;
+  align-items: center;
+  gap: var(--toolbar-sampark-section-gap, 0.25rem);
+  flex: 1;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.baps-toolbar__end {
+  display: flex;
+  align-items: center;
+  flex: none;
+  flex-wrap: nowrap;
+  gap: var(--toolbar-sampark-gap, 0.5rem);
+}
+
+.baps-toolbar__search {
+  width: var(--toolbar-sampark-search-width, 16rem);
+}
+
+.baps-toolbar__title {
+  font-size: var(--toolbar-sampark-title-font-size, 1.25rem);
+  font-weight: var(--toolbar-sampark-title-font-weight, 600);
+  line-height: var(--toolbar-sampark-title-line-height, 1.5);
+  color: var(--toolbar-sampark-title-color, #151414);
+  letter-spacing: 0;
+  margin: 0;
+}
+
+/* ── Mobile (<=767px) ── */
+@media (max-width: 767px) {
+  .baps-toolbar {
+    flex-wrap: wrap;
+  }
+
+  .baps-toolbar__end {
+    flex: 1 1 auto;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    min-width: 0;
+  }
+
+  .baps-toolbar__search {
+    width: 100%;
+  }
+}
+
+/* ── Dark ── */
+.baps-dark .baps-toolbar {
+  background: var(--color-sampark-dark-surface-card, #2c2c2a);
+  border-bottom-color: var(--color-sampark-dark-border-divider, #4a4947);
+}
+
+.baps-dark .baps-toolbar__title {
+  color: var(--color-sampark-dark-text-primary, #f8f7f7);
+}

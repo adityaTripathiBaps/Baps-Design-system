@@ -104,7 +104,6 @@ import { BapsAvatar } from '../avatar/avatar.component';
           class="menu-item__avatar"
           [brand]="brand"
           size="s"
-          shape="circle"
           [variant]="avatarIcon ? 'secondary' : 'primary'"
           [label]="avatarIcon ? undefined : avatarLabel"
         >

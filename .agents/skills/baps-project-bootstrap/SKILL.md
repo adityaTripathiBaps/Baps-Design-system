@@ -157,6 +157,7 @@ actually apply:
 | What hot-reloads / `.angular/cache` | Vite and Next both reload CSS; the design system has to be REBUILT (`nx build ui-kit`) because the dependency is a `file:` path into `dist/`. Wire that into `predev`. |
 | Pasting from Storybook | **Take the React tab, not PrimeNG-Angular.** Drop the `brand` input — it feeds PrimeNG `dt` tokens and does nothing outside Angular. Inputs become classes. |
 | The brand scope | Unchanged: `baps-ds-sampark`, `baps-sampark`, `baps-dark`. This is the one section that carries verbatim. |
+| Font & FS Allow (Vite) | **Allow outside assets.** Vite blocks assets from outside the project root by default. Set `server: { fs: { allow: ['..'] } }` in `vite.config.ts`, or the `@org/ui-kit` font file `.ttf` will fail to load. Also, ensure `font-family: var(--font-family)` is set on `body`, and `table, th, td` inherit `font-feature-settings` in your global CSS. |
 
 And add the section the Angular template has no reason to carry: **which
 components may be used at all.** Most may not. Point at the generated
@@ -235,9 +236,14 @@ A React or Next consumer has no PrimeNG components for a preset to re-skin, so
 importing `@primeuix/themes` there adds a dependency to drive machinery with
 no output. Write step 1 alone.
 
-Build the ramp with `buildRamp` from `@org/ui-kit/theme` — no dependencies, and
+Build the ramp with `buildRamp` from `@org/ui-kit/ramp` — no dependencies, and
 `ramp.spec.ts` asserts it matches `palette()` exactly on eleven colours. A
 consumer outside Angular therefore needs no PrimeNG package at all.
+
+**Important**: The theme file must support resolving standard CSS color names and 
+swatch names (e.g., 'emerald', 'blue') just like the Angular reference. It must 
+include a `NAMED_COLORS` dictionary and a `resolveColorHex` function that handles 
+hex codes, `NAMED_COLORS`, and canvas-based browser runtime color resolution.
 
 Copy the step mapping from `DS_RAMPS` in `libs/ui-kit/src/lib/theme/accent.theme.ts`
 verbatim — `--color-sampark-primary-{0,10,20,40,60,80,100}` from ramp steps
