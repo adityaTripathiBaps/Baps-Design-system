@@ -263,20 +263,57 @@
   color: var(--button-sampark-primary-text, #ffffff);
 }
 
+/* `background-image: none` is the load-bearing line, not the colour.
+ *
+ * MyBKY's primary is a GRADIENT, carried on background-image, and a gradient
+ * paints over background-color. The Sampark block above resets the image once
+ * on `.baps-ds-sampark .baps-button`, which is specificity (0,2,0) — but the
+ * MyBKY hover rule is `.baps-button--primary:hover:not(:disabled)`, (0,3,0),
+ * so on hover the blue gradient came back and sat on top of the Sampark
+ * maroon. Measured in the React shell:
+ *
+ *     background-color  rgb(180, 65, 65)                      correct
+ *     background-image  linear-gradient(135deg, #384871, …)   MyBKY's
+ *
+ * The button was the right colour underneath and blue on screen. Setting the
+ * colour alone can never fix this; the image has to be cleared at a matching
+ * specificity. Same for :active below. */
 .baps-button.baps-sampark.baps-button--primary:hover:not(:disabled),
 .baps-ds-sampark .baps-button.baps-button--primary:hover:not(:disabled) {
   background-color: var(--button-sampark-primary-hover);
+  background-image: none;
 }
 
 .baps-button.baps-sampark.baps-button--primary:active:not(:disabled),
 .baps-ds-sampark .baps-button.baps-button--primary:active:not(:disabled) {
   background-color: var(--button-sampark-primary-active);
+  background-image: none;
 }
 
-/* Sampark's secondary is OUTLINED — transparent ground, mono border. */
+/* Sampark's secondary: white ground, mono border.
+ *
+ * This read `background-color: transparent` with a comment calling the button
+ * outlined. It disagreed with the Angular render, and the disagreement only
+ * shows on a tinted page: on white the two are indistinguishable, and on the
+ * app shell's #f8f7f7 ground the transparent version shows the page through
+ * the button and the :hover to #f3f2f2 becomes almost invisible.
+ *
+ * Which value is right is settled by what Angular actually paints.
+ * `<baps-button>` renders `<p-button>`, and this file only adds a delta on top
+ * of PrimeNG's generated rules — it never sets a background on .p-button — so
+ * the preset IS the render. sampark.theme.ts:
+ *
+ *     secondary: { background: tokens.ButtonSamparkSecondaryDefault, ... }
+ *
+ * and --button-sampark-secondary-default resolves to #ffffff. So Angular paints
+ * white and the raw markup painted nothing.
+ *
+ * The old comment is left on the record rather than deleted: it asserted an
+ * outlined button, which is a design intent that no token backs. Flagged in
+ * meeting-summary.md for design to confirm. */
 .baps-button.baps-sampark.baps-button--secondary,
 .baps-ds-sampark .baps-button.baps-button--secondary {
-  background-color: transparent;
+  background-color: var(--button-sampark-secondary-default, #ffffff);
   border-color: var(--button-sampark-secondary-border, #e1e0e0);
   color: var(--button-sampark-secondary-text, #151414);
 }

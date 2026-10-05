@@ -1,0 +1,276 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   Pagination — standalone partial for non-Angular consumers.
+
+   Every rule below is identical to what lives inline in
+   pagination.component.ts. It is duplicated into this partial so that the
+   build-styles.mjs pipeline compiles it into index.css and pagination.css,
+   making the paginator's class vocabulary available to React and Next.js apps.
+
+   The Angular component does not import this file — its styles are still
+   inline, ViewEncapsulation.None, so they render identically in Storybook and
+   the two consuming apps. This file exists solely to feed the CSS build.
+
+   If you change the styles in pagination.component.ts, you MUST mirror the
+   change here, or React/Next.js consumers will see stale pagination.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── Host display ──────────────────────────────────────────────────── */
+baps-paginator {
+  display: block;
+}
+
+/* ── Strip layout ──────────────────────────────────────────────────── */
+.baps-paginator {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  justify-content: safe flex-end;
+  flex-wrap: nowrap;
+  gap: 0.25rem;
+  overflow-x: auto;
+}
+
+.baps-paginator > * {
+  flex: none;
+}
+
+/* ── Rows-per-page sizing ──────────────────────────────────────────── */
+.baps-paginator .baps-paginator__rpp.p-select {
+  width: fit-content !important;
+  flex: none;
+}
+
+.baps-paginator .baps-paginator__rpp .p-select-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   MyBKY (default)
+   ══════════════════════════════════════════════════════════════════════ */
+baps-paginator .baps-paginator {
+  gap: 0.25rem;
+  font-size: 0.875rem;
+}
+
+baps-paginator .baps-paginator__report {
+  margin-inline-end: 0.25rem;
+  color: var(--color-mybky-mono-900, #181b1d);
+  white-space: nowrap;
+}
+
+baps-paginator .baps-paginator__rpp {
+  margin-inline-end: 0.25rem;
+}
+
+baps-paginator .baps-paginator__rpp .p-select {
+  height: 1.875rem;
+}
+
+baps-paginator .baps-paginator__nav,
+baps-paginator .baps-paginator__page {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.875rem;
+  height: 1.875rem;
+  padding: 0 0.375rem;
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-mybky-pill, 9999px);
+  color: var(--color-mybky-mono-800, #2b2f32);
+  font-family: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+baps-paginator .baps-paginator__nav:hover:not(:disabled),
+baps-paginator .baps-paginator__page:hover:not(.baps-paginator__page--active) {
+  background: var(--color-mybky-mono-50, #f8fafb);
+  color: var(--color-mybky-mono-900, #181b1d);
+}
+
+baps-paginator .baps-paginator__nav:disabled {
+  color: var(--color-mybky-mono-400, #b6b6af);
+  cursor: default;
+}
+
+baps-paginator .baps-paginator__page--active {
+  background: var(--color-mybky-mono-100, rgba(43, 47, 50, 0.04));
+  color: var(--color-mybky-mono-900, #181b1d);
+  font-weight: 600;
+}
+
+baps-paginator :is(.baps-paginator__nav, .baps-paginator__page):focus-visible {
+  outline: 2px solid var(--color-mybky-blue-600, #5f78b8);
+  outline-offset: -2px;
+}
+
+baps-paginator .baps-paginator__gap {
+  display: inline-flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-width: 1.25rem;
+  height: 1.875rem;
+  padding-bottom: 0.25rem;
+  color: var(--color-mybky-mono-500, #6f777d);
+  user-select: none;
+}
+
+baps-paginator .baps-paginator__jump {
+  display: inline-flex;
+  align-items: stretch;
+  height: 1.875rem;
+  margin-inline-start: 0.25rem;
+  background: var(--color-mybky-mono-0, #ffffff);
+  border: 1px solid var(--color-mybky-mono-300, #e4ecf1);
+  border-radius: var(--radius-mybky-pill, 9999px);
+  overflow: hidden;
+}
+
+baps-paginator .baps-paginator__jump-label {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 0.75rem;
+  background: var(--color-mybky-mono-100, rgba(43, 47, 50, 0.04));
+  border-inline-end: 1px solid var(--color-mybky-mono-300, #e4ecf1);
+  color: var(--color-mybky-mono-900, #181b1d);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+baps-paginator .baps-paginator__jump-input {
+  width: 2.5rem;
+  padding: 0 0.25rem;
+  background: transparent;
+  border: 0;
+  color: var(--color-mybky-mono-900, #181b1d);
+  font-family: inherit;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+baps-paginator .baps-paginator__jump-input:focus {
+  outline: none;
+}
+baps-paginator .baps-paginator__jump:focus-within {
+  border-color: var(--color-mybky-blue-600, #5f78b8);
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   SAMPARK — Figma 17512:73228
+   ══════════════════════════════════════════════════════════════════════ */
+:is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator, .baps-ds-sampark) .baps-paginator {
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.3;
+}
+
+:is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator, .baps-ds-sampark) .baps-paginator__report {
+  color: var(--color-sampark-text-secondary, #595656);
+  white-space: nowrap;
+}
+
+:is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator, .baps-ds-sampark) .baps-paginator__rpp .p-select {
+  height: var(--form-field-sampark-height-default, 2rem);
+}
+:is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator, .baps-ds-sampark) .baps-paginator__rpp .p-select-label {
+  display: flex;
+  align-items: center;
+  padding-inline-end: 0.25rem;
+  font-size: 0.875rem;
+}
+
+:is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator, .baps-ds-sampark) .baps-paginator__nav,
+:is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator, .baps-ds-sampark) .baps-paginator__page {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--form-field-sampark-height-default, 2rem);
+  height: var(--form-field-sampark-height-default, 2rem);
+  padding: 0 0.375rem;
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-sampark-default, 0.25rem);
+  color: var(--color-sampark-text-secondary, #595656);
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.3;
+  cursor: pointer;
+  transition: background-color 120ms cubic-bezier(0.16, 1, 0.3, 1), color 120ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator, .baps-ds-sampark) .baps-paginator__nav:hover:not(:disabled),
+:is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator, .baps-ds-sampark) .baps-paginator__page:hover:not(.baps-paginator__page--active) {
+  background: var(--color-sampark-secondary-0, #f8f7f7);
+  color: var(--color-sampark-text-primary, #151414);
+}
+
+:is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator, .baps-ds-sampark) .baps-paginator__nav:disabled {
+  color: var(--color-sampark-text-disabled, #bcb9b9);
+  cursor: default;
+}
+
+:is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator, .baps-ds-sampark) .baps-paginator__page--active {
+  background: var(--color-sampark-mono-alpha4, rgba(21, 20, 20, 0.04));
+  color: var(--color-sampark-text-primary, #151414);
+  font-weight: 600;
+}
+
+:is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator, .baps-ds-sampark) :is(.baps-paginator__nav, .baps-paginator__page):focus-visible {
+  outline: 2px solid var(--color-sampark-primary-default, #c96868);
+  outline-offset: -2px;
+}
+
+:is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator, .baps-ds-sampark) .baps-paginator__gap {
+  display: inline-flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-width: 1.25rem;
+  height: var(--form-field-sampark-height-default, 2rem);
+  padding-bottom: 0.375rem;
+  color: var(--color-sampark-text-secondary, #595656);
+  user-select: none;
+}
+
+:is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator, .baps-ds-sampark) .baps-paginator__jump {
+  display: inline-flex;
+  align-items: stretch;
+  height: var(--form-field-sampark-height-default, 2rem);
+  margin-inline-start: 0.25rem;
+  background: var(--color-sampark-surface-card, #ffffff);
+  border: 1px solid var(--color-sampark-border-default, #e1e0e0);
+  border-radius: var(--radius-sampark-default, 0.25rem);
+  overflow: hidden;
+}
+
+:is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator, .baps-ds-sampark) .baps-paginator__jump-label {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 0.75rem;
+  border-inline-end: 1px solid var(--color-sampark-border-default, #e1e0e0);
+  color: var(--color-sampark-text-primary, #151414);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+:is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator, .baps-ds-sampark) .baps-paginator__jump-input {
+  width: 2.5rem;
+  padding: 0 0.25rem;
+  background: transparent;
+  border: 0;
+  color: var(--color-sampark-text-primary, #151414);
+  font-family: inherit;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+:is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator, .baps-ds-sampark) .baps-paginator__jump-input:focus {
+  outline: none;
+}
+:is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator, .baps-ds-sampark) .baps-paginator__jump:focus-within {
+  border-color: var(--color-sampark-primary-default, #c96868);
+}

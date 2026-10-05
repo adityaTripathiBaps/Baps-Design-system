@@ -106,18 +106,18 @@ import { SAMPARK_BUTTON_TOKENS } from '../../theme/sampark.theme';
     /* Sampark sizes an explicit height per step (28/32/36/42) instead of
        deriving it from paddingY like the MyBKY preset — heights come from
        the --button-sampark-height-* CSS variables (libs/tokens build/css). */
-    :is(baps-button.baps-sampark, .baps-ds-sampark baps-button) .p-button {
+    :is(baps-button.baps-sampark, .baps-ds-sampark baps-button) .p-button:not(.p-button-vertical) {
       height: var(--button-sampark-height-default, 2rem);
       padding-top: 0;
       padding-bottom: 0;
     }
-    :is(baps-button.baps-sampark, .baps-ds-sampark baps-button) .p-button-sm {
+    :is(baps-button.baps-sampark, .baps-ds-sampark baps-button) .p-button-sm:not(.p-button-vertical) {
       height: var(--button-sampark-height-sm, 1.75rem);
     }
-    :is(baps-button.baps-sampark, .baps-ds-sampark baps-button) .p-button-lg {
+    :is(baps-button.baps-sampark, .baps-ds-sampark baps-button) .p-button-lg:not(.p-button-vertical) {
       height: var(--button-sampark-height-lg, 2.25rem);
     }
-    :is(baps-button.baps-sampark, .baps-ds-sampark baps-button).baps-button-xl .p-button {
+    :is(baps-button.baps-sampark, .baps-ds-sampark baps-button).baps-button-xl .p-button:not(.p-button-vertical) {
       height: var(--button-sampark-height-xl, 2.625rem);
     }
 

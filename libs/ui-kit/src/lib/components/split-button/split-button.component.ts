@@ -204,6 +204,26 @@ import { MenuItem, PrimeTemplate } from 'primeng/api';
       gap: 4px;
     }
 
+    /* ── Sampark container: 4px radius, no gap, clipped ── */
+    :is(baps-split-button.baps-sampark, .baps-ds-sampark baps-split-button) .p-splitbutton {
+      border-radius: var(--button-sampark-radius, 0.25rem);
+      overflow: hidden;
+      /* PrimeNG v21's .p-splitbutton is display:flex with a default gap that
+         separates the two button segments visually. Reset to 0 so they sit
+         flush like one control. */
+      gap: 0;
+    }
+
+    /* Sampark split-button internal padding — matches MyBKY's pattern. */
+    :is(baps-split-button.baps-sampark, .baps-ds-sampark baps-split-button) .p-splitbutton .p-button:first-child {
+      padding: 0 0.5rem;
+      gap: 0.25rem;
+    }
+    :is(baps-split-button.baps-sampark, .baps-ds-sampark baps-split-button) .p-splitbutton .p-splitbutton-dropdown {
+      padding: 0 0.5rem 0 0.375rem;
+      gap: 0.25rem;
+    }
+
     /* ── Geometry: explicit heights (28/32/36/42), 4px outer radius ── */
     :is(baps-split-button.baps-sampark, .baps-ds-sampark baps-split-button) .p-splitbutton .p-button {
       height: var(--button-sampark-height-default, 2rem);
@@ -235,10 +255,14 @@ import { MenuItem, PrimeTemplate } from 'primeng/api';
        Excludes every severity class PrimeNG applies for the others (danger/
        warn/success/info/help/contrast have no Sampark override — same gap
        Button itself has, see button.component.ts — so they fall through to
-       PrimeNG's own severity colors instead of being force-painted maroon). */
+       PrimeNG's own severity colors instead of being force-painted maroon).
+
+       Uses full 'border' shorthand, not just 'border-color': PrimeNG Material
+       may set 'border: none' on primary buttons, so 'border-color' alone has
+       no visible effect (border-width stays 0). */
     :is(baps-split-button.baps-sampark, .baps-ds-sampark baps-split-button) .p-splitbutton .p-button:not(.p-button-secondary):not(.p-button-danger):not(.p-button-warn):not(.p-button-success):not(.p-button-info):not(.p-button-help):not(.p-button-contrast):not(:disabled) {
       background: var(--button-sampark-primary-default, #c96868);
-      border-color: var(--button-sampark-primary-default, #c96868);
+      border: 1px solid var(--button-sampark-primary-default, #c96868);
       color: var(--button-sampark-primary-text, #ffffff);
     }
     :is(baps-split-button.baps-sampark, .baps-ds-sampark baps-split-button) .p-splitbutton .p-button:not(.p-button-secondary):not(.p-button-danger):not(.p-button-warn):not(.p-button-success):not(.p-button-info):not(.p-button-help):not(.p-button-contrast):not(:disabled):hover {
@@ -249,9 +273,10 @@ import { MenuItem, PrimeTemplate } from 'primeng/api';
       background: var(--button-sampark-primary-active, #873030);
       border-color: var(--button-sampark-primary-active, #873030);
     }
-    /* Hairline divider between the label and chevron segments. */
-    :is(baps-split-button.baps-sampark, .baps-ds-sampark baps-split-button) .p-splitbutton .p-splitbutton-dropdown:not(.p-button-secondary) {
-      border-inline-start: 1px solid rgba(21, 20, 20, 0.16);
+    /* Hairline divider between the label and chevron segments.
+       Specificity must beat the primary rule above, which has 7 :not() classes. */
+    :is(baps-split-button.baps-sampark, .baps-ds-sampark baps-split-button) .p-splitbutton .p-splitbutton-dropdown.p-button:not(.p-button-secondary):not(.p-button-danger):not(.p-button-warn):not(.p-button-success):not(.p-button-info):not(.p-button-help):not(.p-button-contrast) {
+      border-inline-start: 1px solid rgba(255, 255, 255, 0.24);
     }
 
     /* ── Secondary: white, 1px border, grey hover ── */
@@ -270,7 +295,7 @@ import { MenuItem, PrimeTemplate } from 'primeng/api';
     /* ── Disabled: distinct fills, not PrimeNG's opacity dim ── */
     :is(baps-split-button.baps-sampark, .baps-ds-sampark baps-split-button) .p-splitbutton .p-button:disabled {
       background: var(--button-sampark-disabled-background, #f3eaea);
-      border-color: var(--button-sampark-disabled-border, #e1e0e0);
+      border: 1px solid var(--button-sampark-disabled-border, #e1e0e0);
       color: var(--button-sampark-disabled-text, #bcb9b9);
       opacity: 1;
     }

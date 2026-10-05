@@ -1,6 +1,14 @@
-import { Meta, Canvas, Controls } from '@storybook/blocks';
-import { BrandOnly, PropsTable } from '@baps/docs-blocks';
+import { Meta } from '@storybook/blocks';
+import {
+  BrandOnly,
+  ResourceTabs,
+  DemoCard,
+  CodeBlock,
+  PropsTable,
+  KeyboardTable,
+} from '@baps/docs-blocks';
 import * as PaginationStories from './pagination.stories';
+import { paginationSnippets } from './pagination.snippets';
 
 <Meta of={PaginationStories} />
 
@@ -10,10 +18,14 @@ Table / list pagination controls — record count, rows-per-page, first/prev/nex
 
 Unlike every other component in this library, this one **does not wrap** PrimeNG's `p-paginator`. The Figma spec calls for a truncated page-link list (`1 2 … 24 25` instead of one button per page) with the rows-per-page dropdown and a "Go to" field in a specific DOM order. PrimeNG's `Paginator` renders a fixed window of `pageLinkSize` consecutive links with no ellipsis, no first/last anchoring, and no template hook that reaches inside the link row (`paginatorleft`/`paginatorright` only bracket it) — there is no configuration of `p-paginator` that produces this layout. Same call as `bapsTabs` (see the design system's "When NOT to wrap" rule): where PrimeNG can't express the design, the markup is owned outright rather than fought. The public API is still kept `p-paginator`-shaped (`rows`, `first`, `totalRecords`, a `pageChange` event whose payload mirrors PrimeNG's `PageEvent`) so call sites read the same. The rows-per-page control itself **is** a real `p-select`, so it still inherits the shared select skin instead of a hand-rolled dropdown.
 
+<ResourceTabs />
+
 ## Usage
 
-```html
-<baps-paginator
+<CodeBlock
+  filename="karyakar-list.component.html"
+  language="html"
+  code={`<baps-paginator
   [totalRecords]="250"
   [rows]="rows"
   [first]="first"
@@ -22,36 +34,51 @@ Unlike every other component in this library, this one **does not wrap** PrimeNG
   [showJumpToPage]="true"
   brand="sampark"
   (pageChange)="onPageChange($event)"
+/>`}
 />
-```
 
 ## Examples
 
-### Default
-
-<Canvas of={PaginationStories.Default} />
-
-<Controls of={PaginationStories.Default} />
+<DemoCard
+  title="Default"
+  description="The full strip exactly as the Figma draws it — count, page size, first / prev, truncated links, next / last, and 'Go to'."
+  of={PaginationStories.Default}
+  controls
+  snippets={paginationSnippets.Default}
+/>
 
 <BrandOnly brand="mybky">
 
 ### My BKY
 
-<Canvas of={PaginationStories.MyBKY} />
+<DemoCard
+  title="MyBKY"
+  description="Same strip under brand='mybky' (the input's own default) — 30×30 pill nav/page buttons, filled Mono/100 active page."
+  of={PaginationStories.MyBKY}
+/>
 
 </BrandOnly>
 
-### Mid Range
+<DemoCard
+  title="Mid Range"
+  description="Opened to the middle of the range, which is where the truncation earns its keep: 1 2 ... 12 13 14 ... 24 25 instead of twenty-five buttons."
+  of={PaginationStories.MidRange}
+  snippets={paginationSnippets.MidRange}
+/>
 
-<Canvas of={PaginationStories.MidRange} />
+<DemoCard
+  title="Few Pages"
+  description="Under six pages there is nothing to elide, so every page is listed and no '...' appears."
+  of={PaginationStories.FewPages}
+  snippets={paginationSnippets.FewPages}
+/>
 
-### Few Pages
-
-<Canvas of={PaginationStories.FewPages} />
-
-### Compact
-
-<Canvas of={PaginationStories.Compact} />
+<DemoCard
+  title="Compact"
+  description="Just the arrows and links. Use this under a short list where the record count and page-size control would be more chrome than the list itself."
+  of={PaginationStories.Compact}
+  snippets={paginationSnippets.Compact}
+/>
 
 ## API
 
