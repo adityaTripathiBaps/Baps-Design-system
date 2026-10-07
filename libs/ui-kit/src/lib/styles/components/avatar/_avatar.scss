@@ -117,6 +117,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: inherit;
   }
 
   svg {
@@ -159,118 +160,100 @@
   border: var(--avatar-sampark-border-width) solid var(--avatar-sampark-border);
 }
 
-.baps-avatar-html.baps-sampark,
-.baps-ds-sampark .baps-avatar-html {
-  &--xs {
-    width: var(--avatar-sampark-size-xs);
-    height: var(--avatar-sampark-size-xs);
-    font-size: var(--avatar-sampark-font-size-xs);
-  }
+.baps-avatar-html--xs.baps-sampark,
+.baps-ds-sampark .baps-avatar-html--xs {
+  width: var(--avatar-sampark-size-xs);
+  height: var(--avatar-sampark-size-xs);
+  font-size: var(--avatar-sampark-font-size-xs);
 }
 
-.baps-avatar-html.baps-sampark,
-.baps-ds-sampark .baps-avatar-html {
-  &--s {
-    width: var(--avatar-sampark-size-s);
-    height: var(--avatar-sampark-size-s);
-    font-size: var(--avatar-sampark-font-size-s);
-  }
+.baps-avatar-html--s.baps-sampark,
+.baps-ds-sampark .baps-avatar-html--s {
+  width: var(--avatar-sampark-size-s);
+  height: var(--avatar-sampark-size-s);
+  font-size: var(--avatar-sampark-font-size-s);
 }
 
-.baps-avatar-html.baps-sampark,
-.baps-ds-sampark .baps-avatar-html {
-  &--m {
-    width: var(--avatar-sampark-size-m);
-    height: var(--avatar-sampark-size-m);
-    font-size: var(--avatar-sampark-font-size-m);
-  }
+.baps-avatar-html--m.baps-sampark,
+.baps-ds-sampark .baps-avatar-html--m {
+  width: var(--avatar-sampark-size-m);
+  height: var(--avatar-sampark-size-m);
+  font-size: var(--avatar-sampark-font-size-m);
 }
 
-.baps-avatar-html.baps-sampark,
-.baps-ds-sampark .baps-avatar-html {
-  &--l {
-    width: var(--avatar-sampark-size-l);
-    height: var(--avatar-sampark-size-l);
-    font-size: var(--avatar-sampark-font-size-l);
-  }
+.baps-avatar-html--l.baps-sampark,
+.baps-ds-sampark .baps-avatar-html--l {
+  width: var(--avatar-sampark-size-l);
+  height: var(--avatar-sampark-size-l);
+  font-size: var(--avatar-sampark-font-size-l);
 }
 
 /* xl and 2xl carry their own radius; every smaller step shares --radius. */
-.baps-avatar-html.baps-sampark,
-.baps-ds-sampark .baps-avatar-html {
-  &--xl {
-    width: var(--avatar-sampark-size-xl);
-    height: var(--avatar-sampark-size-xl);
-    font-size: var(--avatar-sampark-font-size-xl);
-    border-radius: var(--avatar-sampark-radius-xl);
-    border-width: var(--avatar-sampark-border-width-l);
-  }
-
-  &--2xl {
-    width: var(--avatar-sampark-size-2xl);
-    height: var(--avatar-sampark-size-2xl);
-    font-size: var(--avatar-sampark-font-size-2xl);
-    font-weight: var(--avatar-sampark-font-weight2xl);
-    border-radius: var(--avatar-sampark-radius2xl);
-    border-width: var(--avatar-sampark-border-width-l);
-  }
-
-  /* --circle is the one place Sampark and MyBKY agree on intent and differ on
-     value: both mean "fully round", and Sampark's radius token is 4px because
-     its default avatar is a rounded square. A circle has to say so. */
-  &--circle {
-    border-radius: 50%;
-  }
+.baps-avatar-html--xl.baps-sampark,
+.baps-ds-sampark .baps-avatar-html--xl {
+  width: var(--avatar-sampark-size-xl);
+  height: var(--avatar-sampark-size-xl);
+  font-size: var(--avatar-sampark-font-size-xl);
+  border-radius: var(--avatar-sampark-radius-xl);
+  border-width: var(--avatar-sampark-border-width-l);
 }
 
-.baps-avatar-html.baps-sampark,
-.baps-ds-sampark .baps-avatar-html {
-  &--primary {
-    border-color: var(--avatar-sampark-border);
-    background: var(--avatar-sampark-background);
-    color: var(--avatar-sampark-text);
-    --baps-avatar-border-hover: var(--avatar-sampark-border-hover);
-  }
+.baps-avatar-html--2xl.baps-sampark,
+.baps-ds-sampark .baps-avatar-html--2xl {
+  width: var(--avatar-sampark-size-2xl);
+  height: var(--avatar-sampark-size-2xl);
+  font-size: var(--avatar-sampark-font-size-2xl);
+  font-weight: var(--avatar-sampark-font-weight2xl);
+  border-radius: var(--avatar-sampark-radius2xl);
+  border-width: var(--avatar-sampark-border-width-l);
 }
 
-.baps-avatar-html.baps-sampark,
-.baps-ds-sampark .baps-avatar-html {
-  &--secondary {
-    border-color: var(--avatar-sampark-secondary-border);
-    background: var(--avatar-sampark-secondary-background);
-    color: var(--avatar-sampark-text);
-    --baps-avatar-border-hover: var(--avatar-sampark-secondary-border-hover);
-  }
+/* --circle is the one place Sampark and MyBKY agree on intent and differ on
+   value: both mean "fully round", and Sampark's radius token is 4px because
+   its default avatar is a rounded square. A circle has to say so. */
+.baps-avatar-html--circle.baps-sampark,
+.baps-ds-sampark .baps-avatar-html--circle {
+  border-radius: 50%;
 }
 
-.baps-avatar-html.baps-sampark,
-.baps-ds-sampark .baps-avatar-html {
-  &--success {
-    border-color: var(--avatar-sampark-success-border);
-    background: var(--avatar-sampark-success-background);
-    color: var(--avatar-sampark-text);
-    --baps-avatar-border-hover: var(--avatar-sampark-success-border-hover);
-  }
+.baps-avatar-html--primary.baps-sampark,
+.baps-ds-sampark .baps-avatar-html--primary {
+  border-color: var(--avatar-sampark-border);
+  background: var(--avatar-sampark-background);
+  color: var(--avatar-sampark-text);
+  --baps-avatar-border-hover: var(--avatar-sampark-border-hover);
 }
 
-.baps-avatar-html.baps-sampark,
-.baps-ds-sampark .baps-avatar-html {
-  &--error {
-    border-color: var(--avatar-sampark-error-border);
-    background: var(--avatar-sampark-error-background);
-    color: var(--avatar-sampark-text);
-    --baps-avatar-border-hover: var(--avatar-sampark-error-border-hover);
-  }
+.baps-avatar-html--secondary.baps-sampark,
+.baps-ds-sampark .baps-avatar-html--secondary {
+  border-color: var(--avatar-sampark-secondary-border);
+  background: var(--avatar-sampark-secondary-background);
+  color: var(--avatar-sampark-text);
+  --baps-avatar-border-hover: var(--avatar-sampark-secondary-border-hover);
 }
 
-.baps-avatar-html.baps-sampark,
-.baps-ds-sampark .baps-avatar-html {
-  &--warning {
-    border-color: var(--avatar-sampark-warning-border);
-    background: var(--avatar-sampark-warning-background);
-    color: var(--avatar-sampark-text);
-    --baps-avatar-border-hover: var(--avatar-sampark-warning-border-hover);
-  }
+.baps-avatar-html--success.baps-sampark,
+.baps-ds-sampark .baps-avatar-html--success {
+  border-color: var(--avatar-sampark-success-border);
+  background: var(--avatar-sampark-success-background);
+  color: var(--avatar-sampark-text);
+  --baps-avatar-border-hover: var(--avatar-sampark-success-border-hover);
+}
+
+.baps-avatar-html--error.baps-sampark,
+.baps-ds-sampark .baps-avatar-html--error {
+  border-color: var(--avatar-sampark-error-border);
+  background: var(--avatar-sampark-error-background);
+  color: var(--avatar-sampark-text);
+  --baps-avatar-border-hover: var(--avatar-sampark-error-border-hover);
+}
+
+.baps-avatar-html--warning.baps-sampark,
+.baps-ds-sampark .baps-avatar-html--warning {
+  border-color: var(--avatar-sampark-warning-border);
+  background: var(--avatar-sampark-warning-background);
+  color: var(--avatar-sampark-text);
+  --baps-avatar-border-hover: var(--avatar-sampark-warning-border-hover);
 }
 
 .baps-avatar-html.baps-sampark,
@@ -304,118 +287,6 @@
   }
 }
 
-/* Explicit compound selectors are intentional. The older nested form above
-   compiles `.baps-sampark--xs`; brand and size are separate classes. */
-.baps-avatar-html.baps-sampark {
-  &.baps-avatar-html--xs {
-    width: var(--avatar-sampark-size-xs);
-    height: var(--avatar-sampark-size-xs);
-    font-size: var(--avatar-sampark-font-size-xs);
-  }
-
-  &.baps-avatar-html--s {
-    width: var(--avatar-sampark-size-s);
-    height: var(--avatar-sampark-size-s);
-    font-size: var(--avatar-sampark-font-size-s);
-  }
-
-  &.baps-avatar-html--l {
-    width: var(--avatar-sampark-size-l);
-    height: var(--avatar-sampark-size-l);
-    border-width: var(--avatar-sampark-border-width-l);
-    font-size: var(--avatar-sampark-font-size-l);
-  }
-
-  &.baps-avatar-html--xl {
-    width: var(--avatar-sampark-size-xl);
-    height: var(--avatar-sampark-size-xl);
-    border-width: var(--avatar-sampark-border-width-l);
-    border-radius: var(--avatar-sampark-radius-xl);
-    font-size: var(--avatar-sampark-font-size-xl);
-  }
-
-  &.baps-avatar-html--2xl {
-    width: var(--avatar-sampark-size-2xl);
-    height: var(--avatar-sampark-size-2xl);
-    border-width: var(--avatar-sampark-border-width-l);
-    border-radius: var(--avatar-sampark-radius2xl);
-    font-size: var(--avatar-sampark-font-size-2xl);
-    font-weight: var(--avatar-sampark-font-weight2xl);
-  }
-
-  &.baps-avatar-html--circle {
-    border-radius: 50%;
-  }
-
-  &.baps-avatar-html--primary {
-    border-color: var(--avatar-sampark-border);
-    background: var(--avatar-sampark-background);
-    color: var(--avatar-sampark-text);
-    --baps-avatar-border-hover: var(--avatar-sampark-border-hover);
-  }
-
-  &.baps-avatar-html--secondary {
-    border-color: var(--avatar-sampark-secondary-border);
-    background: var(--avatar-sampark-secondary-background);
-    color: var(--avatar-sampark-text);
-    --baps-avatar-border-hover: var(--avatar-sampark-secondary-border-hover);
-  }
-
-  &.baps-avatar-html--success {
-    border-color: var(--avatar-sampark-success-border);
-    background: var(--avatar-sampark-success-background);
-    color: var(--avatar-sampark-text);
-    --baps-avatar-border-hover: var(--avatar-sampark-success-border-hover);
-  }
-
-  &.baps-avatar-html--error {
-    border-color: var(--avatar-sampark-error-border);
-    background: var(--avatar-sampark-error-background);
-    color: var(--avatar-sampark-text);
-    --baps-avatar-border-hover: var(--avatar-sampark-error-border-hover);
-  }
-
-  &.baps-avatar-html--warning {
-    border-color: var(--avatar-sampark-warning-border);
-    background: var(--avatar-sampark-warning-background);
-    color: var(--avatar-sampark-text);
-    --baps-avatar-border-hover: var(--avatar-sampark-warning-border-hover);
-  }
-
-  &.baps-avatar-html--info {
-    border-color: var(--color-sampark-info-40);
-    background: var(--color-sampark-info-10);
-    color: var(--avatar-sampark-text);
-    --baps-avatar-border-hover: var(--color-sampark-info-60);
-  }
-
-  img {
-    width: var(--avatar-sampark-icon-size-m);
-    height: var(--avatar-sampark-icon-size-m);
-    border-radius: 0;
-    object-fit: contain;
-  }
-
-  &.baps-avatar-html--xs img {
-    width: var(--avatar-sampark-icon-size-xs);
-    height: var(--avatar-sampark-icon-size-xs);
-  }
-
-  &.baps-avatar-html--s img {
-    width: var(--avatar-sampark-icon-size-s);
-    height: var(--avatar-sampark-icon-size-s);
-  }
-
-  &.baps-avatar-html--l img {
-    width: var(--avatar-sampark-icon-size-l);
-    height: var(--avatar-sampark-icon-size-l);
-  }
-
-  &:is(.baps-avatar-html--xl, .baps-avatar-html--2xl) img {
-    width: var(--avatar-sampark-icon-size-xl);
-    height: var(--avatar-sampark-icon-size-xl);
-  }
-}
 
 .baps-dark {
   .baps-avatar-html--secondary {

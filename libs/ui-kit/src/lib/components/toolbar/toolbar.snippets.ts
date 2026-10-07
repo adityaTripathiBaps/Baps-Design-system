@@ -34,68 +34,76 @@ export const toolbarSnippets: Record<string, SnippetSet> = {
 </header>`,
     react: `${SETUP}
 
+import { BapsToolbar } from '@org/ui-kit-react';
+
 export function Example() {
   return (
-    <header className="baps-toolbar">
-      <div className="baps-toolbar__start">
+    <BapsToolbar
+      title="Robbinsville"
+      left={
         <div className="baps-overlaybadge" data-badge="3" data-severity="danger">
           <button type="button" className="baps-button baps-sampark baps-button--ghost-secondary" aria-label="Region">
             <i className="pi pi-globe" aria-hidden="true" />
             <i className="pi pi-chevron-down" style={{ fontSize: '0.65rem' }} aria-hidden="true" />
           </button>
         </div>
-        <h1 className="baps-toolbar__title">Robbinsville</h1>
-      </div>
-      <div className="baps-toolbar__end">
-        <input type="text" className="baps-toolbar__search" placeholder="Search" aria-label="Search" />
-        <button type="button" className="baps-button baps-sampark baps-button--primary">
-          <i className="pi pi-plus" aria-hidden="true" />
-          <span className="baps-button__label">Create Project</span>
-        </button>
-        <div className="baps-overlaybadge" data-badge="3" data-severity="danger">
-          <button type="button" className="baps-button baps-sampark baps-button--ghost-secondary baps-button--icon-only" aria-label="Filter">
-            <i className="pi pi-filter" aria-hidden="true" />
+      }
+      right={
+        <>
+          <input type="text" className="search-input" placeholder="Search" aria-label="Search" />
+          <button type="button" className="baps-button baps-sampark baps-button--primary">
+            <i className="pi pi-plus" aria-hidden="true" />
+            <span className="baps-button__label">Create Project</span>
           </button>
-        </div>
-        <button type="button" className="baps-button baps-sampark baps-button--ghost-secondary baps-button--icon-only" aria-label="Sort">
-          <i className="pi pi-sort-alt" aria-hidden="true" />
-        </button>
-      </div>
-    </header>
+          <div className="baps-overlaybadge" data-badge="3" data-severity="danger">
+            <button type="button" className="baps-button baps-sampark baps-button--ghost-secondary baps-button--icon-only" aria-label="Filter">
+              <i className="pi pi-filter" aria-hidden="true" />
+            </button>
+          </div>
+          <button type="button" className="baps-button baps-sampark baps-button--ghost-secondary baps-button--icon-only" aria-label="Sort">
+            <i className="pi pi-sort-alt" aria-hidden="true" />
+          </button>
+        </>
+      }
+    />
   );
 }`,
     next: `'use client';
 
 ${SETUP}
 
+import { BapsToolbar } from '@org/ui-kit-react';
+
 export default function Example() {
   return (
-    <header className="baps-toolbar">
-      <div className="baps-toolbar__start">
+    <BapsToolbar
+      title="Robbinsville"
+      left={
         <div className="baps-overlaybadge" data-badge="3" data-severity="danger">
           <button type="button" className="baps-button baps-sampark baps-button--ghost-secondary" aria-label="Region">
             <i className="pi pi-globe" aria-hidden="true" />
             <i className="pi pi-chevron-down" style={{ fontSize: '0.65rem' }} aria-hidden="true" />
           </button>
         </div>
-        <h1 className="baps-toolbar__title">Robbinsville</h1>
-      </div>
-      <div className="baps-toolbar__end">
-        <input type="text" className="baps-toolbar__search" placeholder="Search" aria-label="Search" />
-        <button type="button" className="baps-button baps-sampark baps-button--primary">
-          <i className="pi pi-plus" aria-hidden="true" />
-          <span className="baps-button__label">Create Project</span>
-        </button>
-        <div className="baps-overlaybadge" data-badge="3" data-severity="danger">
-          <button type="button" className="baps-button baps-sampark baps-button--ghost-secondary baps-button--icon-only" aria-label="Filter">
-            <i className="pi pi-filter" aria-hidden="true" />
+      }
+      right={
+        <>
+          <input type="text" className="search-input" placeholder="Search" aria-label="Search" />
+          <button type="button" className="baps-button baps-sampark baps-button--primary">
+            <i className="pi pi-plus" aria-hidden="true" />
+            <span className="baps-button__label">Create Project</span>
           </button>
-        </div>
-        <button type="button" className="baps-button baps-sampark baps-button--ghost-secondary baps-button--icon-only" aria-label="Sort">
-          <i className="pi pi-sort-alt" aria-hidden="true" />
-        </button>
-      </div>
-    </header>
+          <div className="baps-overlaybadge" data-badge="3" data-severity="danger">
+            <button type="button" className="baps-button baps-sampark baps-button--ghost-secondary baps-button--icon-only" aria-label="Filter">
+              <i className="pi pi-filter" aria-hidden="true" />
+            </button>
+          </div>
+          <button type="button" className="baps-button baps-sampark baps-button--ghost-secondary baps-button--icon-only" aria-label="Sort">
+            <i className="pi pi-sort-alt" aria-hidden="true" />
+          </button>
+        </>
+      }
+    />
   );
 }`,
     primeng: `<baps-toolbar title="Robbinsville">
@@ -126,34 +134,40 @@ export default function Example() {
 </header>`,
     react: `${SETUP}
 
+import { BapsToolbar } from '@org/ui-kit-react';
+
 export function SearchOnly() {
   return (
-    <header className="baps-toolbar">
-      <div className="baps-toolbar__start"></div>
-      <div className="baps-toolbar__end">
-        <input type="text" className="baps-toolbar__search" placeholder="Search karyakars" aria-label="Search karyakars" />
-        <button type="button" className="baps-button baps-sampark baps-button--primary">
-          <span className="baps-button__label">Save</span>
-        </button>
-      </div>
-    </header>
+    <BapsToolbar
+      right={
+        <>
+          <input type="text" className="search-input" placeholder="Search karyakars" aria-label="Search karyakars" />
+          <button type="button" className="baps-button baps-sampark baps-button--primary">
+            <span className="baps-button__label">Save</span>
+          </button>
+        </>
+      }
+    />
   );
 }`,
     next: `'use client';
 
 ${SETUP}
 
+import { BapsToolbar } from '@org/ui-kit-react';
+
 export default function SearchOnly() {
   return (
-    <header className="baps-toolbar">
-      <div className="baps-toolbar__start"></div>
-      <div className="baps-toolbar__end">
-        <input type="text" className="baps-toolbar__search" placeholder="Search karyakars" aria-label="Search karyakars" />
-        <button type="button" className="baps-button baps-sampark baps-button--primary">
-          <span className="baps-button__label">Save</span>
-        </button>
-      </div>
-    </header>
+    <BapsToolbar
+      right={
+        <>
+          <input type="text" className="search-input" placeholder="Search karyakars" aria-label="Search karyakars" />
+          <button type="button" className="baps-button baps-sampark baps-button--primary">
+            <span className="baps-button__label">Save</span>
+          </button>
+        </>
+      }
+    />
   );
 }`,
     primeng: `<baps-toolbar>

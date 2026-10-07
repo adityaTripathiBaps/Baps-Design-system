@@ -379,13 +379,6 @@ export type BapsAvatarSize = 'xs' | 's' | 'm' | 'l' | 'xl' | '2xl' | 'normal' | 
     :is(baps-avatar.baps-sampark, .baps-ds-sampark baps-avatar) .p-avatar .p-avatar-icon {
       font-size: var(--avatar-sampark-icon-size-m, 1.5rem);
     }
-    :is(baps-avatar.baps-sampark, .baps-ds-sampark baps-avatar) .p-avatar.p-avatar-image img {
-      width: var(--avatar-sampark-icon-size-m, 1.5rem);
-      height: var(--avatar-sampark-icon-size-m, 1.5rem);
-      object-fit: contain;
-      border-radius: 0;
-    }
-
     /* Sizes. m/l/xl boxes+fonts flow from the dt tokens; the border weight
        step (1.5px from l up), the xl/2xl radius bumps and the icon slots are
        CSS-only. Circle avatars keep PrimeNG's 50% radius. */
@@ -397,10 +390,6 @@ export type BapsAvatarSize = 'xs' | 's' | 'm' | 'l' | 'xl' | '2xl' | 'normal' | 
     :is(baps-avatar.baps-sampark, .baps-ds-sampark baps-avatar).baps-avatar-xs .p-avatar .p-avatar-icon {
       font-size: var(--avatar-sampark-icon-size-xs, 1.125rem);
     }
-    :is(baps-avatar.baps-sampark, .baps-ds-sampark baps-avatar).baps-avatar-xs .p-avatar.p-avatar-image img {
-      width: var(--avatar-sampark-icon-size-xs, 1.125rem);
-      height: var(--avatar-sampark-icon-size-xs, 1.125rem);
-    }
     :is(baps-avatar.baps-sampark, .baps-ds-sampark baps-avatar).baps-avatar-s .p-avatar {
       width: var(--avatar-sampark-size-s, 2rem);
       height: var(--avatar-sampark-size-s, 2rem);
@@ -409,19 +398,11 @@ export type BapsAvatarSize = 'xs' | 's' | 'm' | 'l' | 'xl' | '2xl' | 'normal' | 
     :is(baps-avatar.baps-sampark, .baps-ds-sampark baps-avatar).baps-avatar-s .p-avatar .p-avatar-icon {
       font-size: var(--avatar-sampark-icon-size-s, 1.25rem);
     }
-    :is(baps-avatar.baps-sampark, .baps-ds-sampark baps-avatar).baps-avatar-s .p-avatar.p-avatar-image img {
-      width: var(--avatar-sampark-icon-size-s, 1.25rem);
-      height: var(--avatar-sampark-icon-size-s, 1.25rem);
-    }
     :is(baps-avatar.baps-sampark, .baps-ds-sampark baps-avatar) .p-avatar.p-avatar-lg {
       border-width: var(--avatar-sampark-border-width-l, 1.5px);
     }
     :is(baps-avatar.baps-sampark, .baps-ds-sampark baps-avatar) .p-avatar.p-avatar-lg .p-avatar-icon {
       font-size: var(--avatar-sampark-icon-size-l, 2rem);
-    }
-    :is(baps-avatar.baps-sampark, .baps-ds-sampark baps-avatar) .p-avatar.p-avatar-lg.p-avatar-image img {
-      width: var(--avatar-sampark-icon-size-l, 2rem);
-      height: var(--avatar-sampark-icon-size-l, 2rem);
     }
     :is(baps-avatar.baps-sampark, .baps-ds-sampark baps-avatar) .p-avatar.p-avatar-xl {
       border-width: var(--avatar-sampark-border-width-l, 1.5px);
@@ -431,10 +412,6 @@ export type BapsAvatarSize = 'xs' | 's' | 'm' | 'l' | 'xl' | '2xl' | 'normal' | 
     }
     :is(baps-avatar.baps-sampark, .baps-ds-sampark baps-avatar) .p-avatar.p-avatar-xl .p-avatar-icon {
       font-size: var(--avatar-sampark-icon-size-xl, 2.25rem);
-    }
-    :is(baps-avatar.baps-sampark, .baps-ds-sampark baps-avatar) .p-avatar.p-avatar-xl.p-avatar-image img {
-      width: var(--avatar-sampark-icon-size-xl, 2.25rem);
-      height: var(--avatar-sampark-icon-size-xl, 2.25rem);
     }
     :is(baps-avatar.baps-sampark, .baps-ds-sampark baps-avatar).baps-avatar-2xl .p-avatar {
       width: var(--avatar-sampark-size-2xl, 5rem);
@@ -448,10 +425,6 @@ export type BapsAvatarSize = 'xs' | 's' | 'm' | 'l' | 'xl' | '2xl' | 'normal' | 
     }
     :is(baps-avatar.baps-sampark, .baps-ds-sampark baps-avatar).baps-avatar-2xl .p-avatar .p-avatar-icon {
       font-size: var(--avatar-sampark-icon-size-2xl, 3rem);
-    }
-    :is(baps-avatar.baps-sampark, .baps-ds-sampark baps-avatar).baps-avatar-2xl .p-avatar.p-avatar-image img {
-      width: var(--avatar-sampark-icon-size-2xl, 3rem);
-      height: var(--avatar-sampark-icon-size-2xl, 3rem);
     }
 
     /* Status dot — green presence dot, top-right, white ring. 6px on xs,

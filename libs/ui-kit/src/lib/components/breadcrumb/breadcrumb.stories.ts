@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { BapsBreadcrumb } from './breadcrumb.component';
+import { breadcrumbSnippets } from './breadcrumb.snippets';
 
 const meta: Meta<BapsBreadcrumb> = {
   title: 'Components/Molecules/Breadcrumb',
@@ -17,6 +18,9 @@ const meta: Meta<BapsBreadcrumb> = {
     styleClass: { control: 'text' },
   },
   component: BapsBreadcrumb,
+  parameters: {
+    snippets: breadcrumbSnippets,
+  },
   render: (args) => ({
     props: args,
     template: `

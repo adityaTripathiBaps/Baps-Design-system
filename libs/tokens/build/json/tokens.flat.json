@@ -5702,6 +5702,84 @@
     "comment": "#bcb9b9 Mono/40 'Disable Item'"
   },
   {
+    "name": "AvatarGroupOverlapXs",
+    "path": [
+      "avatar",
+      "group",
+      "overlap",
+      "xs"
+    ],
+    "value": "0.375rem",
+    "original": "0.375rem",
+    "legacyMapping": {},
+    "comment": "6px measured overlap for 24px avatars"
+  },
+  {
+    "name": "AvatarGroupOverlapS",
+    "path": [
+      "avatar",
+      "group",
+      "overlap",
+      "s"
+    ],
+    "value": "0.625rem",
+    "original": "0.625rem",
+    "legacyMapping": {},
+    "comment": "10px measured overlap for 32px avatars"
+  },
+  {
+    "name": "AvatarGroupOverlapM",
+    "path": [
+      "avatar",
+      "group",
+      "overlap",
+      "m"
+    ],
+    "value": "0.625rem",
+    "original": "0.625rem",
+    "legacyMapping": {},
+    "comment": "10px measured overlap for 36px avatars"
+  },
+  {
+    "name": "AvatarGroupOverlapL",
+    "path": [
+      "avatar",
+      "group",
+      "overlap",
+      "l"
+    ],
+    "value": "0.75rem",
+    "original": "0.75rem",
+    "legacyMapping": {},
+    "comment": "12px measured overlap for 48px avatars"
+  },
+  {
+    "name": "AvatarGroupOverlapXl",
+    "path": [
+      "avatar",
+      "group",
+      "overlap",
+      "xl"
+    ],
+    "value": "1rem",
+    "original": "1rem",
+    "legacyMapping": {},
+    "comment": "16px measured overlap for 60px avatars"
+  },
+  {
+    "name": "AvatarGroupOverlap2xl",
+    "path": [
+      "avatar",
+      "group",
+      "overlap",
+      "2xl"
+    ],
+    "value": "1.25rem",
+    "original": "1.25rem",
+    "legacyMapping": {},
+    "comment": "20px measured overlap for 80px avatars"
+  },
+  {
     "name": "AvatarMybkyRadius",
     "path": [
       "avatar",
@@ -6251,6 +6329,71 @@
     "comment": "10px — xl/2xl"
   },
   {
+    "name": "AvatarSamparkStatusDotOffset",
+    "path": [
+      "avatar",
+      "sampark",
+      "statusDot",
+      "offset"
+    ],
+    "value": "0.1875rem",
+    "original": "0.1875rem",
+    "legacyMapping": {},
+    "comment": "3px outward offset — s/m/l"
+  },
+  {
+    "name": "AvatarSamparkStatusDotOffsetXs",
+    "path": [
+      "avatar",
+      "sampark",
+      "statusDot",
+      "offsetXs"
+    ],
+    "value": "0.125rem",
+    "original": "0.125rem",
+    "legacyMapping": {},
+    "comment": "2px outward offset — xs"
+  },
+  {
+    "name": "AvatarSamparkStatusDotOffsetXl",
+    "path": [
+      "avatar",
+      "sampark",
+      "statusDot",
+      "offsetXl"
+    ],
+    "value": "0.25rem",
+    "original": "0.25rem",
+    "legacyMapping": {},
+    "comment": "4px outward offset — xl/2xl"
+  },
+  {
+    "name": "AvatarSamparkStatusDotRingWidth",
+    "path": [
+      "avatar",
+      "sampark",
+      "statusDot",
+      "ringWidth"
+    ],
+    "value": "0.09375rem",
+    "original": "0.09375rem",
+    "legacyMapping": {},
+    "comment": "1.5px white separation ring — xs/s/m/l"
+  },
+  {
+    "name": "AvatarSamparkStatusDotRingWidthXl",
+    "path": [
+      "avatar",
+      "sampark",
+      "statusDot",
+      "ringWidthXl"
+    ],
+    "value": "0.125rem",
+    "original": "0.125rem",
+    "legacyMapping": {},
+    "comment": "2px white separation ring — xl/2xl"
+  },
+  {
     "name": "AvatarSamparkIconBadgeBackground",
     "path": [
       "avatar",
@@ -6303,6 +6446,45 @@
     "original": "1.125rem",
     "legacyMapping": {},
     "comment": "18px — xl/2xl"
+  },
+  {
+    "name": "AvatarSamparkIconBadgeOffset",
+    "path": [
+      "avatar",
+      "sampark",
+      "iconBadge",
+      "offset"
+    ],
+    "value": "0.25rem",
+    "original": "0.25rem",
+    "legacyMapping": {},
+    "comment": "4px outward offset — s/m/l"
+  },
+  {
+    "name": "AvatarSamparkIconBadgeOffsetXs",
+    "path": [
+      "avatar",
+      "sampark",
+      "iconBadge",
+      "offsetXs"
+    ],
+    "value": "0.1875rem",
+    "original": "0.1875rem",
+    "legacyMapping": {},
+    "comment": "3px outward offset — xs"
+  },
+  {
+    "name": "AvatarSamparkIconBadgeOffsetXl",
+    "path": [
+      "avatar",
+      "sampark",
+      "iconBadge",
+      "offsetXl"
+    ],
+    "value": "0.375rem",
+    "original": "0.375rem",
+    "legacyMapping": {},
+    "comment": "6px outward offset — xl/2xl"
   },
   {
     "name": "AvatarSamparkSizeXs",
@@ -7599,6 +7781,741 @@
     "original": "{font.weight.semibold}",
     "legacyMapping": {},
     "comment": "An expanded parent gets weight only — no background change."
+  },
+  {
+    "name": "SkeletonMybkyRadius",
+    "path": [
+      "skeleton",
+      "mybky",
+      "radius"
+    ],
+    "value": "0.375rem",
+    "original": "{radius.mybky.sm}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "SkeletonMybkyBackground",
+    "path": [
+      "skeleton",
+      "mybky",
+      "background"
+    ],
+    "value": "#eff1f3",
+    "original": "{color.mybky.mono.100}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "SkeletonMybkyShimmer",
+    "path": [
+      "skeleton",
+      "mybky",
+      "shimmer"
+    ],
+    "value": "#ffffff",
+    "original": "{color.mybky.mono.0}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "SkeletonSamparkRadius",
+    "path": [
+      "skeleton",
+      "sampark",
+      "radius"
+    ],
+    "value": "0.25rem",
+    "original": "{radius.sampark.default}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "SkeletonSamparkBackground",
+    "path": [
+      "skeleton",
+      "sampark",
+      "background"
+    ],
+    "value": "#f3f2f2",
+    "original": "{color.sampark.mono.20}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "SkeletonSamparkShimmer",
+    "path": [
+      "skeleton",
+      "sampark",
+      "shimmer"
+    ],
+    "value": "#ffffff",
+    "original": "{color.sampark.mono.0}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ProgressBarMybkyTrackHeight",
+    "path": [
+      "progressBar",
+      "mybky",
+      "trackHeight"
+    ],
+    "value": "0.5rem",
+    "original": "0.5rem",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ProgressBarMybkyLabelledHeight",
+    "path": [
+      "progressBar",
+      "mybky",
+      "labelledHeight"
+    ],
+    "value": "1.25rem",
+    "original": "1.25rem",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ProgressBarMybkyTrackRadius",
+    "path": [
+      "progressBar",
+      "mybky",
+      "trackRadius"
+    ],
+    "value": "99px",
+    "original": "{radius.mybky.pill}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ProgressBarMybkyTrackBackground",
+    "path": [
+      "progressBar",
+      "mybky",
+      "trackBackground"
+    ],
+    "value": "#e4ecf1",
+    "original": "{color.mybky.mono.300}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ProgressBarMybkyValueBackground",
+    "path": [
+      "progressBar",
+      "mybky",
+      "valueBackground"
+    ],
+    "value": "#5f78b8",
+    "original": "{color.mybky.blue.600}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ProgressBarMybkyLabelColor",
+    "path": [
+      "progressBar",
+      "mybky",
+      "labelColor"
+    ],
+    "value": "#ffffff",
+    "original": "{color.mybky.mono.0}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ProgressBarMybkyLabelFontSize",
+    "path": [
+      "progressBar",
+      "mybky",
+      "labelFontSize"
+    ],
+    "value": "0.625rem",
+    "original": "{font.size.2xs}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ProgressBarMybkyLabelFontWeight",
+    "path": [
+      "progressBar",
+      "mybky",
+      "labelFontWeight"
+    ],
+    "value": "600",
+    "original": "{font.weight.semibold}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ProgressBarSamparkTrackHeight",
+    "path": [
+      "progressBar",
+      "sampark",
+      "trackHeight"
+    ],
+    "value": "0.5rem",
+    "original": "0.5rem",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ProgressBarSamparkLabelledHeight",
+    "path": [
+      "progressBar",
+      "sampark",
+      "labelledHeight"
+    ],
+    "value": "1.25rem",
+    "original": "1.25rem",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ProgressBarSamparkTrackRadius",
+    "path": [
+      "progressBar",
+      "sampark",
+      "trackRadius"
+    ],
+    "value": "0.25rem",
+    "original": "{radius.sampark.default}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ProgressBarSamparkTrackBackground",
+    "path": [
+      "progressBar",
+      "sampark",
+      "trackBackground"
+    ],
+    "value": "#f3f2f2",
+    "original": "{color.sampark.mono.20}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ProgressBarSamparkValueBackground",
+    "path": [
+      "progressBar",
+      "sampark",
+      "valueBackground"
+    ],
+    "value": "#c96868",
+    "original": "{color.sampark.primary.60}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ProgressBarSamparkLabelColor",
+    "path": [
+      "progressBar",
+      "sampark",
+      "labelColor"
+    ],
+    "value": "#ffffff",
+    "original": "{color.sampark.mono.0}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ProgressBarSamparkLabelFontSize",
+    "path": [
+      "progressBar",
+      "sampark",
+      "labelFontSize"
+    ],
+    "value": "0.625rem",
+    "original": "{font.size.2xs}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "ProgressBarSamparkLabelFontWeight",
+    "path": [
+      "progressBar",
+      "sampark",
+      "labelFontWeight"
+    ],
+    "value": "600",
+    "original": "{font.weight.semibold}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "DividerMybkyBorderWidth",
+    "path": [
+      "divider",
+      "mybky",
+      "borderWidth"
+    ],
+    "value": "1px",
+    "original": "1px",
+    "legacyMapping": {}
+  },
+  {
+    "name": "DividerMybkyBorderColor",
+    "path": [
+      "divider",
+      "mybky",
+      "borderColor"
+    ],
+    "value": "#e4ecf1",
+    "original": "{color.mybky.border.default}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "DividerMybkyContentBackground",
+    "path": [
+      "divider",
+      "mybky",
+      "contentBackground"
+    ],
+    "value": "#ffffff",
+    "original": "{color.mybky.surface.card}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "DividerMybkyContentColor",
+    "path": [
+      "divider",
+      "mybky",
+      "contentColor"
+    ],
+    "value": "#6f777d",
+    "original": "{color.mybky.text.muted}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "DividerMybkyContentPaddingX",
+    "path": [
+      "divider",
+      "mybky",
+      "contentPaddingX"
+    ],
+    "value": "0.5rem",
+    "original": "{space.2}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "DividerMybkyHorizontalMargin",
+    "path": [
+      "divider",
+      "mybky",
+      "horizontalMargin"
+    ],
+    "value": "1rem",
+    "original": "{space.4}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "DividerMybkyVerticalMargin",
+    "path": [
+      "divider",
+      "mybky",
+      "verticalMargin"
+    ],
+    "value": "1rem",
+    "original": "{space.4}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "DividerMybkyCompactHeight",
+    "path": [
+      "divider",
+      "mybky",
+      "compactHeight"
+    ],
+    "value": "1rem",
+    "original": "{space.4}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "DividerSamparkBorderWidth",
+    "path": [
+      "divider",
+      "sampark",
+      "borderWidth"
+    ],
+    "value": "1px",
+    "original": "1px",
+    "legacyMapping": {}
+  },
+  {
+    "name": "DividerSamparkBorderColor",
+    "path": [
+      "divider",
+      "sampark",
+      "borderColor"
+    ],
+    "value": "#e1e0e0",
+    "original": "{color.sampark.border.default}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "DividerSamparkContentBackground",
+    "path": [
+      "divider",
+      "sampark",
+      "contentBackground"
+    ],
+    "value": "#ffffff",
+    "original": "{color.sampark.surface.card}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "DividerSamparkContentColor",
+    "path": [
+      "divider",
+      "sampark",
+      "contentColor"
+    ],
+    "value": "#9f9c9c",
+    "original": "{color.sampark.text.muted}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "DividerSamparkContentPaddingX",
+    "path": [
+      "divider",
+      "sampark",
+      "contentPaddingX"
+    ],
+    "value": "0.75rem",
+    "original": "{space.3}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "DividerSamparkContentRadius",
+    "path": [
+      "divider",
+      "sampark",
+      "contentRadius"
+    ],
+    "value": "0.25rem",
+    "original": "{radius.sampark.default}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "InputGroupHeight",
+    "path": [
+      "inputGroup",
+      "height"
+    ],
+    "value": "2rem",
+    "original": "{formField.sampark.heightDefault}",
+    "legacyMapping": {},
+    "comment": "32px group height from Figma node 17512:82916"
+  },
+  {
+    "name": "InputGroupRadius",
+    "path": [
+      "inputGroup",
+      "radius"
+    ],
+    "value": "0.25rem",
+    "original": "{radius.sampark.default}",
+    "legacyMapping": {},
+    "comment": "4px shared group corner radius"
+  },
+  {
+    "name": "InputGroupBorderWidth",
+    "path": [
+      "inputGroup",
+      "borderWidth"
+    ],
+    "value": "1px",
+    "original": "1px",
+    "legacyMapping": {}
+  },
+  {
+    "name": "InputGroupAddonMinWidth",
+    "path": [
+      "inputGroup",
+      "addonMinWidth"
+    ],
+    "value": "2rem",
+    "original": "{space.8}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "InputGroupFocusRingWidth",
+    "path": [
+      "inputGroup",
+      "focusRingWidth"
+    ],
+    "value": "0.1875rem",
+    "original": "0.1875rem",
+    "legacyMapping": {}
+  },
+  {
+    "name": "InputGroupAddonPaddingX",
+    "path": [
+      "inputGroup",
+      "addonPaddingX"
+    ],
+    "value": "0.625rem",
+    "original": "0.625rem",
+    "legacyMapping": {}
+  },
+  {
+    "name": "InputGroupAddonFontSize",
+    "path": [
+      "inputGroup",
+      "addonFontSize"
+    ],
+    "value": "0.875rem",
+    "original": "{font.size.sm}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "InputGroupAddonFontWeight",
+    "path": [
+      "inputGroup",
+      "addonFontWeight"
+    ],
+    "value": "400",
+    "original": "{font.weight.regular}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "InputGroupAddonLineHeight",
+    "path": [
+      "inputGroup",
+      "addonLineHeight"
+    ],
+    "value": "1.3",
+    "original": "1.3",
+    "legacyMapping": {}
+  },
+  {
+    "name": "SegmentedContainerHeight",
+    "path": [
+      "segmented",
+      "containerHeight"
+    ],
+    "value": "2rem",
+    "original": "{space.8}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "SegmentedContainerPadding",
+    "path": [
+      "segmented",
+      "containerPadding"
+    ],
+    "value": "0.125rem",
+    "original": "{space.0.5}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "SegmentedContainerGap",
+    "path": [
+      "segmented",
+      "containerGap"
+    ],
+    "value": "0.125rem",
+    "original": "{space.0.5}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "SegmentedContainerRadius",
+    "path": [
+      "segmented",
+      "containerRadius"
+    ],
+    "value": "0.375rem",
+    "original": "0.375rem",
+    "legacyMapping": {}
+  },
+  {
+    "name": "SegmentedPillHeight",
+    "path": [
+      "segmented",
+      "pillHeight"
+    ],
+    "value": "1.75rem",
+    "original": "{space.7}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "SegmentedPillMinWidth",
+    "path": [
+      "segmented",
+      "pillMinWidth"
+    ],
+    "value": "1.75rem",
+    "original": "{space.7}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "SegmentedPillRadius",
+    "path": [
+      "segmented",
+      "pillRadius"
+    ],
+    "value": "0.25rem",
+    "original": "{radius.sampark.default}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "SegmentedPillGap",
+    "path": [
+      "segmented",
+      "pillGap"
+    ],
+    "value": "0.25rem",
+    "original": "{space.1}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "SegmentedPillPaddingX",
+    "path": [
+      "segmented",
+      "pillPaddingX"
+    ],
+    "value": "0.5rem",
+    "original": "{space.2}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "SegmentedBorderWidth",
+    "path": [
+      "segmented",
+      "borderWidth"
+    ],
+    "value": "1px",
+    "original": "1px",
+    "legacyMapping": {}
+  },
+  {
+    "name": "SegmentedSelectedBorderWidth",
+    "path": [
+      "segmented",
+      "selectedBorderWidth"
+    ],
+    "value": "0.09375rem",
+    "original": "0.09375rem",
+    "legacyMapping": {}
+  },
+  {
+    "name": "SegmentedFontSize",
+    "path": [
+      "segmented",
+      "fontSize"
+    ],
+    "value": "0.875rem",
+    "original": "{font.size.sm}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "SegmentedFontWeight",
+    "path": [
+      "segmented",
+      "fontWeight"
+    ],
+    "value": "500",
+    "original": "{font.weight.medium}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "SegmentedSelectedFontWeight",
+    "path": [
+      "segmented",
+      "selectedFontWeight"
+    ],
+    "value": "600",
+    "original": "{font.weight.semibold}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "SegmentedLineHeight",
+    "path": [
+      "segmented",
+      "lineHeight"
+    ],
+    "value": "1.3",
+    "original": "1.3",
+    "legacyMapping": {}
+  },
+  {
+    "name": "SegmentedFocusRingWidth",
+    "path": [
+      "segmented",
+      "focusRingWidth"
+    ],
+    "value": "0.125rem",
+    "original": "{space.0.5}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "SegmentedFocusRingOffset",
+    "path": [
+      "segmented",
+      "focusRingOffset"
+    ],
+    "value": "-1px",
+    "original": "-1px",
+    "legacyMapping": {}
+  },
+  {
+    "name": "SegmentedMultipleGap",
+    "path": [
+      "segmented",
+      "multipleGap"
+    ],
+    "value": "0.5rem",
+    "original": "{space.2}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "SegmentedMultipleMinWidth",
+    "path": [
+      "segmented",
+      "multipleMinWidth"
+    ],
+    "value": "2.125rem",
+    "original": "2.125rem",
+    "legacyMapping": {}
+  },
+  {
+    "name": "SegmentedMultipleHeight",
+    "path": [
+      "segmented",
+      "multipleHeight"
+    ],
+    "value": "2rem",
+    "original": "{space.8}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "OverlayListMybkyHoverBackground",
+    "path": [
+      "overlayList",
+      "mybky",
+      "hoverBackground"
+    ],
+    "value": "#eef0f8",
+    "original": "{color.mybky.blue.50}",
+    "legacyMapping": {}
+  },
+  {
+    "name": "OverlayListMybkyBarWidth",
+    "path": [
+      "overlayList",
+      "mybky",
+      "barWidth"
+    ],
+    "value": "0.1875rem",
+    "original": "0.1875rem",
+    "legacyMapping": {},
+    "comment": "3px selection accent measured in the MyBKY list treatment"
+  },
+  {
+    "name": "OverlayListSamparkHoverBackground",
+    "path": [
+      "overlayList",
+      "sampark",
+      "hoverBackground"
+    ],
+    "value": "#f6f5f5",
+    "original": "#f6f5f5",
+    "legacyMapping": {},
+    "comment": "Measured Sampark overlay-row hover surface"
+  },
+  {
+    "name": "OverlayListSamparkBarWidth",
+    "path": [
+      "overlayList",
+      "sampark",
+      "barWidth"
+    ],
+    "value": "0.25rem",
+    "original": "{space.1}",
+    "legacyMapping": {},
+    "comment": "4px selection accent measured in the Sampark list treatment"
   },
   {
     "name": "StepperMybkyRailBackground",

@@ -165,6 +165,7 @@ export const internalNavbarSnippets: Record<string, SnippetSet> = {
     react: `${SETUP}
 
 import { useState } from 'react';
+import { BapsInternalNavbar } from '@org/ui-kit-react';
 
 const ITEMS = [
   { label: 'Dashboard', iconName: 'widget' },
@@ -180,95 +181,16 @@ const ITEMS = [
   { label: 'Settings', iconName: 'settings' },
 ];
 
-/* The component flattens the tree into rows, and so does this: only an
-   expanded branch contributes its children, so a collapsed branch's rows are
-   absent from the DOM rather than hidden. Same reason the raw markup above
-   has five rows for eleven items. */
-function toRows(items, expanded, level = 0, out = []) {
-  for (const item of items) {
-    out.push({ item, level });
-    if (item.children && expanded.has(item.label)) {
-      toRows(item.children, expanded, level + 1, out);
-    }
-  }
-  return out;
-}
-
-const Chevron = ({ open, empty }) => (
-  <span
-    className={
-      'baps-internal-nav__chevron' +
-      (open ? ' baps-internal-nav__chevron--open' : '') +
-      (empty ? ' baps-internal-nav__chevron--empty' : '')
-    }
-    aria-hidden="true"
-  >
-    <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="m3.5 1.5 3.5 3.5-3.5 3.5" />
-    </svg>
-  </span>
-);
-
-export  function NestedNav() {
-  const [expanded, setExpanded] = useState(() => new Set());
+export function NestedNav() {
   const [active, setActive] = useState('Dashboard');
 
-  const toggle = (label) =>
-    setExpanded((prev) => {
-      const next = new Set(prev);
-      next.has(label) ? next.delete(label) : next.add(label);
-      return next;
-    });
-
   return (
-    <baps-internal-navbar>
-      <nav className="baps-internal-nav" aria-label="Section navigation">
-        <div className="baps-internal-nav__header">
-          <span className="baps-internal-nav__title">Navigation</span>
-        </div>
-        <ul className="baps-internal-nav__list">
-          {toRows(ITEMS, expanded).map(({ item, level }, i) =>
-            item.separator ? (
-              <li key={item.label} className="baps-internal-nav__separator" />
-            ) : (
-              <li
-                key={item.label + i}
-                className={
-                  'baps-internal-nav__item' +
-                  (active === item.label ? ' baps-internal-nav__item--active' : '')
-                }
-                /* omitted at level 0, exactly as the component writes
-                   [attr.data-level]="row.level || null" — the indent rule keys
-                   off this attribute, so a literal 0 would indent the top row */
-                data-level={level || undefined}
-                aria-level={level + 1}
-              >
-                <button
-                  type="button"
-                  className="baps-internal-nav__link"
-                  aria-current={active === item.label ? 'page' : undefined}
-                  aria-expanded={item.children ? expanded.has(item.label) : undefined}
-                  onClick={() =>
-                    item.children ? toggle(item.label) : setActive(item.label)
-                  }
-                >
-                  <span className="baps-internal-nav__bar" aria-hidden="true" />
-                  <Chevron open={expanded.has(item.label)} empty={!item.children} />
-                  {item.iconName && (
-                    <Glyph name={item.iconName} className="baps-internal-nav__icon" />
-                  )}
-                  <span className="baps-internal-nav__label">{item.label}</span>
-                  {item.badge && (
-                    <span className="baps-internal-nav__badge">{item.badge}</span>
-                  )}
-                </button>
-              </li>
-            ),
-          )}
-        </ul>
-        <div className="baps-internal-nav__footer" />
-      </nav>
-    </baps-internal-navbar>
+    <BapsInternalNavbar
+      title="Navigation"
+      items={ITEMS}
+      activeItem={active}
+      onItemClick={(item) => !item.children && setActive(item.label)}
+    />
   );
 }`,
     next: `'use client';
@@ -276,9 +198,8 @@ export  function NestedNav() {
 ${SETUP}
 
 import { useState } from 'react';
+import { BapsInternalNavbar } from '@org/ui-kit-react';
 
-/* 'use client' because the expand state is the component — a server component
-   cannot hold it. The rows themselves are plain markup. */
 const ITEMS = [
   { label: 'Dashboard', iconName: 'widget' },
   { label: 'Events', iconName: 'calendar', children: [
@@ -293,95 +214,16 @@ const ITEMS = [
   { label: 'Settings', iconName: 'settings' },
 ];
 
-/* The component flattens the tree into rows, and so does this: only an
-   expanded branch contributes its children, so a collapsed branch's rows are
-   absent from the DOM rather than hidden. Same reason the raw markup above
-   has five rows for eleven items. */
-function toRows(items, expanded, level = 0, out = []) {
-  for (const item of items) {
-    out.push({ item, level });
-    if (item.children && expanded.has(item.label)) {
-      toRows(item.children, expanded, level + 1, out);
-    }
-  }
-  return out;
-}
-
-const Chevron = ({ open, empty }) => (
-  <span
-    className={
-      'baps-internal-nav__chevron' +
-      (open ? ' baps-internal-nav__chevron--open' : '') +
-      (empty ? ' baps-internal-nav__chevron--empty' : '')
-    }
-    aria-hidden="true"
-  >
-    <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="m3.5 1.5 3.5 3.5-3.5 3.5" />
-    </svg>
-  </span>
-);
-
 export default function NestedNav() {
-  const [expanded, setExpanded] = useState(() => new Set());
   const [active, setActive] = useState('Dashboard');
 
-  const toggle = (label) =>
-    setExpanded((prev) => {
-      const next = new Set(prev);
-      next.has(label) ? next.delete(label) : next.add(label);
-      return next;
-    });
-
   return (
-    <baps-internal-navbar>
-      <nav className="baps-internal-nav" aria-label="Section navigation">
-        <div className="baps-internal-nav__header">
-          <span className="baps-internal-nav__title">Navigation</span>
-        </div>
-        <ul className="baps-internal-nav__list">
-          {toRows(ITEMS, expanded).map(({ item, level }, i) =>
-            item.separator ? (
-              <li key={item.label} className="baps-internal-nav__separator" />
-            ) : (
-              <li
-                key={item.label + i}
-                className={
-                  'baps-internal-nav__item' +
-                  (active === item.label ? ' baps-internal-nav__item--active' : '')
-                }
-                /* omitted at level 0, exactly as the component writes
-                   [attr.data-level]="row.level || null" — the indent rule keys
-                   off this attribute, so a literal 0 would indent the top row */
-                data-level={level || undefined}
-                aria-level={level + 1}
-              >
-                <button
-                  type="button"
-                  className="baps-internal-nav__link"
-                  aria-current={active === item.label ? 'page' : undefined}
-                  aria-expanded={item.children ? expanded.has(item.label) : undefined}
-                  onClick={() =>
-                    item.children ? toggle(item.label) : setActive(item.label)
-                  }
-                >
-                  <span className="baps-internal-nav__bar" aria-hidden="true" />
-                  <Chevron open={expanded.has(item.label)} empty={!item.children} />
-                  {item.iconName && (
-                    <Glyph name={item.iconName} className="baps-internal-nav__icon" />
-                  )}
-                  <span className="baps-internal-nav__label">{item.label}</span>
-                  {item.badge && (
-                    <span className="baps-internal-nav__badge">{item.badge}</span>
-                  )}
-                </button>
-              </li>
-            ),
-          )}
-        </ul>
-        <div className="baps-internal-nav__footer" />
-      </nav>
-    </baps-internal-navbar>
+    <BapsInternalNavbar
+      title="Navigation"
+      items={ITEMS}
+      activeItem={active}
+      onItemClick={(item) => !item.children && setActive(item.label)}
+    />
   );
 }`,
   },
@@ -438,7 +280,7 @@ export default function NestedNav() {
 </baps-internal-navbar>`,
     react: `${SETUP}
 
-import { useCallback } from 'react';
+import { BapsInternalNavbar } from '@org/ui-kit-react';
 
 const NAV = [
   { label: 'Dashboard', iconName: 'widget' },
@@ -447,61 +289,23 @@ const NAV = [
 ];
 
 export function SamparkRail({ active = 'Settings', onSelect }) {
-  /* className does NOT reach a custom element's class attribute in React 18 —
-     measured: the class came back null while an inline style landed fine. The
-     Sampark rail CSS is scoped under baps-internal-navbar.baps-sampark, so
-     without this the rail renders in the generic skin and nothing says so. */
-  const brandRef = useCallback((el) => {
-    if (el) el.setAttribute('class', 'baps-sampark');
-  }, []);
-
   return (
-    <baps-internal-navbar ref={brandRef}>
-      <nav
-        className="baps-internal-nav baps-internal-nav--collapsed"
-        aria-label="Section navigation"
-      >
-        <ul className="baps-internal-nav__list">
-          {NAV.map((item) => (
-            <li
-              key={item.label}
-              className={
-                'baps-internal-nav__item' +
-                (active === item.label ? ' baps-internal-nav__item--active' : '')
-              }
-            >
-              {/* A real button: reachable by keyboard and announced as
-                  actionable, both for free. */}
-              <button
-                type="button"
-                className="baps-internal-nav__link"
-                aria-current={active === item.label ? 'page' : undefined}
-                onClick={() => onSelect(item.label)}
-              >
-                <span className="baps-internal-nav__bar" aria-hidden="true" />
-                <Glyph name={item.iconName} className="baps-internal-nav__icon" />
-                <span className="baps-internal-nav__label">{item.label}</span>
-                {item.notification && (
-                  <span className="baps-internal-nav__status-dot" aria-hidden="true" />
-                )}
-              </button>
-            </li>
-          ))}
-        </ul>
-        <div className="baps-internal-nav__footer" />
-      </nav>
-    </baps-internal-navbar>
+    <BapsInternalNavbar
+      brand="sampark"
+      collapsed
+      items={NAV}
+      activeItem={active}
+      onItemClick={(item) => onSelect(item.label)}
+    />
   );
 }`,
     next: `'use client';
 
 ${SETUP}
 
-import { useCallback } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
+import { BapsInternalNavbar } from '@org/ui-kit-react';
 
-/* 'use client' for two reasons only: usePathname marks the active row, and
-   the brand class needs a ref. The markup itself is static. */
 const NAV = [
   { label: 'Dashboard', href: '/dashboard', iconName: 'widget' },
   { label: 'Reports', href: '/reports', iconName: 'bar-chart', notification: true },
@@ -512,47 +316,19 @@ export default function SamparkRail() {
   const pathname = usePathname();
   const router = useRouter();
 
-  const brandRef = useCallback((el) => {
-    if (el) el.setAttribute('class', 'baps-sampark');
-  }, []);
+  const currentItem = NAV.find(item => item.href === pathname);
 
   return (
-    <baps-internal-navbar ref={brandRef}>
-      <nav
-        className="baps-internal-nav baps-internal-nav--collapsed"
-        aria-label="Section navigation"
-      >
-        <ul className="baps-internal-nav__list">
-          {NAV.map((item) => {
-            const active = pathname === item.href;
-            return (
-              <li
-                key={item.href}
-                className={
-                  'baps-internal-nav__item' +
-                  (active ? ' baps-internal-nav__item--active' : '')
-                }
-              >
-                <button
-                  type="button"
-                  className="baps-internal-nav__link"
-                  aria-current={active ? 'page' : undefined}
-                  onClick={() => router.push(item.href)}
-                >
-                  <span className="baps-internal-nav__bar" aria-hidden="true" />
-                  <Glyph name={item.iconName} className="baps-internal-nav__icon" />
-                  <span className="baps-internal-nav__label">{item.label}</span>
-                  {item.notification && (
-                    <span className="baps-internal-nav__status-dot" aria-hidden="true" />
-                  )}
-                </button>
-              </li>
-            );
-          })}
-        </ul>
-        <div className="baps-internal-nav__footer" />
-      </nav>
-    </baps-internal-navbar>
+    <BapsInternalNavbar
+      brand="sampark"
+      collapsed
+      items={NAV}
+      activeItem={currentItem?.label}
+      onItemClick={(item) => {
+        const route = NAV.find(n => n.label === item.label)?.href;
+        if (route) router.push(route);
+      }}
+    />
   );
 }`,
   },
@@ -585,6 +361,8 @@ export default function SamparkRail() {
 </baps-internal-navbar>`,
     react: `${SETUP}
 
+import { BapsInternalNavbar } from '@org/ui-kit-react';
+
 const LINKS = [
   ['Overview', true],
   ['Settings', false],
@@ -593,11 +371,7 @@ const LINKS = [
 
 export function Example() {
   return (
-    <baps-internal-navbar>
-      <nav className="baps-internal-nav" aria-label="Section navigation">
-        <ul className="baps-internal-nav__list" />
-        <div className="baps-internal-nav__footer" />
-      </nav>
+    <BapsInternalNavbar>
       {LINKS.map(([label, active]) => (
         <a
           key={label}
@@ -608,16 +382,14 @@ export function Example() {
           {label}
         </a>
       ))}
-    </baps-internal-navbar>
+    </BapsInternalNavbar>
   );
 }`,
     next: `${SETUP}
 
 import Link from 'next/link';
+import { BapsInternalNavbar } from '@org/ui-kit-react';
 
-/* No 'use client': the nav is markup, and next/link does the navigating.
-   Derive the active item from usePathname in a client component if you need
-   it to follow the route. */
 const LINKS = [
   ['Overview', '/overview'],
   ['Settings', '/settings'],
@@ -626,11 +398,7 @@ const LINKS = [
 
 export default function Example({ pathname = '/overview' }) {
   return (
-    <baps-internal-navbar>
-      <nav className="baps-internal-nav" aria-label="Section navigation">
-        <ul className="baps-internal-nav__list" />
-        <div className="baps-internal-nav__footer" />
-      </nav>
+    <BapsInternalNavbar>
       {LINKS.map(([label, href]) => (
         <Link
           key={href}
@@ -641,7 +409,7 @@ export default function Example({ pathname = '/overview' }) {
           {label}
         </Link>
       ))}
-    </baps-internal-navbar>
+    </BapsInternalNavbar>
   );
 }`,
   },

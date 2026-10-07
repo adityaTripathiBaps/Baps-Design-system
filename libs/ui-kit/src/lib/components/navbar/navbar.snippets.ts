@@ -99,70 +99,37 @@ export const navbarSnippets: Record<string, SnippetSet> = {
 </div>`,
     react: `${SETUP}
 
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
+import { BapsNavbar } from '@org/ui-kit-react';
 
 export function MobileBar() {
   const [mobileOpen, setMobileOpen] = useState(true);
 
-  const ref = useCallback(
-    (el) => {
-      if (el) {
-        el.setAttribute(
-          'class',
-          'baps-sampark' + (mobileOpen ? ' baps-navbar-mobile-open' : ''),
-        );
-      }
-    },
-    [mobileOpen],
-  );
-
   return (
-    <baps-navbar ref={ref}>
-      <nav className="baps-navbar" aria-label="Main navigation">
-        <div className="baps-navbar__start">
-          <span className="baps-navbar__title">Sampark</span>
-          <span className="baps-navbar__version">DEV</span>
-          <button type="button" className="baps-navbar__menu-button" aria-label="Expand menu" aria-expanded={false}>
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="m15 18-6-6 6-6" />
-            </svg>
-          </button>
-        </div>
-        <div className="baps-navbar__center" />
-        <div className="baps-navbar__end">
+    <BapsNavbar
+      brand="sampark"
+      title="Sampark"
+      version="DEV"
+      menuButton
+      mobileMenuOpen={mobileOpen}
+      onMobileMenuToggle={setMobileOpen}
+      end={
+        <>
           <button type="button" aria-label="Notifications">
             <Glyph name="notification" />
           </button>
           <button type="button" aria-label="Settings">
             <Glyph name="settings" />
           </button>
-        </div>
-        {/* Always rendered — the CSS hides it above 767px, so there is no
-            viewport check to write and nothing to keep in sync. */}
-        <button
-          type="button"
-          className="baps-navbar__mobile-button"
-          aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
-          aria-expanded={mobileOpen}
-          onClick={() => setMobileOpen((v) => !v)}
-        >
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <circle cx="12" cy="12" r="1" />
-            <circle cx="12" cy="5" r="1" />
-            <circle cx="12" cy="19" r="1" />
-          </svg>
-        </button>
-      </nav>
-    </baps-navbar>
+        </>
+      }
+    />
   );
 }`,
     next: `'use client';
 
 ${SETUP}
 
-/* Byte for byte the React component above — the only Next-specific part is
-   that the open/closed boolean needs 'use client'. Import it rather than
-   keeping a second copy that can drift. */
 export { MobileBar as default } from './MobileBar';`,
   },
 
@@ -214,81 +181,37 @@ export { MobileBar as default } from './MobileBar';`,
 </div>`,
     react: `${SETUP}
 
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
+import { BapsNavbar } from '@org/ui-kit-react';
 
 export function MenuStates() {
   const [open, setOpen] = useState(false);
 
-  /* The host class is state here, not a constant, so 'open' is in the ref's
-     dependency list — React re-runs a ref callback when its identity changes,
-     and without the dependency the bar would keep its first class forever. */
-  const ref = useCallback(
-    (el) => {
-      if (el) el.setAttribute('class', 'baps-sampark' + (open ? ' baps-navbar-menu-open' : ''));
-    },
-    [open],
-  );
-
   return (
-    <baps-navbar ref={ref}>
-      <nav className="baps-navbar" aria-label="Main navigation">
-        <div className="baps-navbar__start">
-          <span className="baps-navbar__title">Sampark</span>
-          <button
-            type="button"
-            className="baps-navbar__menu-button"
-            aria-label={open ? 'Collapse menu' : 'Expand menu'}
-            aria-expanded={open}
-            onClick={() => setOpen((v) => !v)}
-          >
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="m15 18-6-6 6-6" />
-            </svg>
-          </button>
-        </div>
-        <div className="baps-navbar__center" />
-        <div className="baps-navbar__end" />
-      </nav>
-    </baps-navbar>
+    <BapsNavbar
+      brand="sampark"
+      title="Sampark"
+      menuButton
+      menuOpen={open}
+      onMenuToggle={setOpen}
+    />
   );
 }`,
     next: `'use client';
 
 ${SETUP}
 
-import { useCallback } from 'react';
+import { BapsNavbar } from '@org/ui-kit-react';
 
-/* 'use client' because the bar reflects a boolean. Own it in the layout if
-   the sidebar needs the same value — this component only reflects it. */
 export default function MenuStates({ open, onToggle }) {
-  const ref = useCallback(
-    (el) => {
-      if (el) el.setAttribute('class', 'baps-sampark' + (open ? ' baps-navbar-menu-open' : ''));
-    },
-    [open],
-  );
-
   return (
-    <baps-navbar ref={ref}>
-      <nav className="baps-navbar" aria-label="Main navigation">
-        <div className="baps-navbar__start">
-          <span className="baps-navbar__title">Sampark</span>
-          <button
-            type="button"
-            className="baps-navbar__menu-button"
-            aria-label={open ? 'Collapse menu' : 'Expand menu'}
-            aria-expanded={open}
-            onClick={() => onToggle(!open)}
-          >
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="m15 18-6-6 6-6" />
-            </svg>
-          </button>
-        </div>
-        <div className="baps-navbar__center" />
-        <div className="baps-navbar__end" />
-      </nav>
-    </baps-navbar>
+    <BapsNavbar
+      brand="sampark"
+      title="Sampark"
+      menuButton
+      menuOpen={open}
+      onMenuToggle={onToggle}
+    />
   );
 }`,
   },
@@ -319,54 +242,23 @@ export default function MenuStates({ open, onToggle }) {
 </div>`,
     react: `${SETUP}
 
-import { useCallback } from 'react';
+import { BapsNavbar } from '@org/ui-kit-react';
 
-/* Both classes go on in one setAttribute. React 18 does not map className
-   onto a custom element, and a half-applied brand renders the wrong bar
-   silently rather than failing. */
 export function LightTopbar() {
-  const ref = useCallback((el) => {
-    if (el) el.setAttribute('class', 'baps-sampark baps-navbar-topbar-light');
-  }, []);
-
   return (
     <div className="baps-ds-sampark">
-      <baps-navbar ref={ref}>
-        <nav className="baps-navbar" aria-label="Main navigation">
-          <div className="baps-navbar__start">
-            <span className="baps-navbar__title">Sampark</span>
-            <span className="baps-navbar__version">v1.1.0</span>
-          </div>
-          <div className="baps-navbar__center" />
-          <div className="baps-navbar__end" />
-        </nav>
-      </baps-navbar>
+      <BapsNavbar brand="sampark" topbarTheme="light" title="Sampark" version="v1.1.0" />
     </div>
   );
 }`,
-    next: `'use client';
+    next: `${SETUP}
 
-${SETUP}
-
-import { useCallback } from 'react';
+import { BapsNavbar } from '@org/ui-kit-react';
 
 export default function LightTopbar() {
-  const ref = useCallback((el) => {
-    if (el) el.setAttribute('class', 'baps-sampark baps-navbar-topbar-light');
-  }, []);
-
   return (
     <div className="baps-ds-sampark">
-      <baps-navbar ref={ref}>
-        <nav className="baps-navbar" aria-label="Main navigation">
-          <div className="baps-navbar__start">
-            <span className="baps-navbar__title">Sampark</span>
-            <span className="baps-navbar__version">v1.1.0</span>
-          </div>
-          <div className="baps-navbar__center" />
-          <div className="baps-navbar__end" />
-        </nav>
-      </baps-navbar>
+      <BapsNavbar brand="sampark" topbarTheme="light" title="Sampark" version="v1.1.0" />
     </div>
   );
 }`,
@@ -417,90 +309,25 @@ export default function LightTopbar() {
 </div>`,
     react: `${SETUP}
 
-import { useCallback } from 'react';
-
-/* The whole difference between the two bars is this one class string, and it
-   has to go on through a ref: React 18 does not map className onto a custom
-   element. */
-function Bar({ hostClass, title = 'Sampark', version = 'v1.1.0' }) {
-  const ref = useCallback((el) => {
-    if (el) el.setAttribute('class', hostClass);
-  }, [hostClass]);
-
-  return (
-    <baps-navbar ref={ref}>
-      <nav className="baps-navbar" aria-label="Main navigation">
-        <div className="baps-navbar__start">
-          <span className="baps-navbar__title">{title}</span>
-          <span className="baps-navbar__version">{version}</span>
-          <button type="button" className="baps-navbar__menu-button" aria-label="Expand menu" aria-expanded={false}>
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="m15 18-6-6 6-6" />
-            </svg>
-          </button>
-        </div>
-        <div className="baps-navbar__center" />
-        <div className="baps-navbar__end" />
-      </nav>
-    </baps-navbar>
-  );
-}
-
-/* One component, one prop. The themes differ by a single class, so anything
-   more than this is ceremony. */
-const THEMES = ['baps-sampark', 'baps-sampark baps-navbar-topbar-light'];
+import { BapsNavbar } from '@org/ui-kit-react';
 
 export function TopbarThemes() {
   return (
     <div className="baps-ds-sampark" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-      {THEMES.map((cls) => (
-        <Bar key={cls} hostClass={cls} />
-      ))}
+      <BapsNavbar brand="sampark" topbarTheme="indigo" title="Sampark" version="v1.1.0" menuButton />
+      <BapsNavbar brand="sampark" topbarTheme="light" title="Sampark" version="v1.1.0" menuButton />
     </div>
   );
 }`,
     next: `${SETUP}
 
-/* Bar needs 'use client' for its ref, so it lives in its own file and this
-   page stays a server component. Shown inline here to keep the example in
-   one place. */
-import { useCallback } from 'react';
-
-/* The whole difference between the two bars is this one class string, and it
-   has to go on through a ref: React 18 does not map className onto a custom
-   element. */
-function Bar({ hostClass, title = 'Sampark', version = 'v1.1.0' }) {
-  const ref = useCallback((el) => {
-    if (el) el.setAttribute('class', hostClass);
-  }, [hostClass]);
-
-  return (
-    <baps-navbar ref={ref}>
-      <nav className="baps-navbar" aria-label="Main navigation">
-        <div className="baps-navbar__start">
-          <span className="baps-navbar__title">{title}</span>
-          <span className="baps-navbar__version">{version}</span>
-          <button type="button" className="baps-navbar__menu-button" aria-label="Expand menu" aria-expanded={false}>
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="m15 18-6-6 6-6" />
-            </svg>
-          </button>
-        </div>
-        <div className="baps-navbar__center" />
-        <div className="baps-navbar__end" />
-      </nav>
-    </baps-navbar>
-  );
-}
-
-const THEMES = ['baps-sampark', 'baps-sampark baps-navbar-topbar-light'];
+import { BapsNavbar } from '@org/ui-kit-react';
 
 export default function TopbarThemes() {
   return (
     <div className="baps-ds-sampark" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-      {THEMES.map((cls) => (
-        <Bar key={cls} hostClass={cls} />
-      ))}
+      <BapsNavbar brand="sampark" topbarTheme="indigo" title="Sampark" version="v1.1.0" menuButton />
+      <BapsNavbar brand="sampark" topbarTheme="light" title="Sampark" version="v1.1.0" menuButton />
     </div>
   );
 }`,
@@ -533,41 +360,34 @@ export default function TopbarThemes() {
 </baps-navbar>`,
     react: `${SETUP}
 
+import { BapsNavbar } from '@org/ui-kit-react';
+
 export function MyBkyTopbar() {
   return (
-    <baps-navbar>
-      <nav className="baps-navbar" aria-label="Main navigation">
-        <div className="baps-navbar__start">
-          <span className="baps-navbar__title">Member Database</span>
-        </div>
-        <div className="baps-navbar__center" />
-        <div className="baps-navbar__end">
-          <button type="button" aria-label="Notifications">
-            <Glyph name="notification" />
-          </button>
-        </div>
-      </nav>
-    </baps-navbar>
+    <BapsNavbar
+      title="Member Database"
+      end={
+        <button type="button" aria-label="Notifications">
+          <Glyph name="notification" />
+        </button>
+      }
+    />
   );
 }`,
     next: `${SETUP}
 
-/* No 'use client' — nothing here holds state. */
+import { BapsNavbar } from '@org/ui-kit-react';
+
 export default function MyBkyTopbar() {
   return (
-    <baps-navbar>
-      <nav className="baps-navbar" aria-label="Main navigation">
-        <div className="baps-navbar__start">
-          <span className="baps-navbar__title">Member Database</span>
-        </div>
-        <div className="baps-navbar__center" />
-        <div className="baps-navbar__end">
-          <button type="button" aria-label="Notifications">
-            <Glyph name="notification" />
-          </button>
-        </div>
-      </nav>
-    </baps-navbar>
+    <BapsNavbar
+      title="Member Database"
+      end={
+        <button type="button" aria-label="Notifications">
+          <Glyph name="notification" />
+        </button>
+      }
+    />
   );
 }`,
   },
@@ -614,67 +434,44 @@ export default function MyBkyTopbar() {
 </div>`,
     react: `${SETUP}
 
-import { useCallback } from 'react';
+import { BapsNavbar } from '@org/ui-kit-react';
 
 export function SamparkTopbar() {
-  /* className does not reach a custom element's class attribute in React 18 —
-     measured: the class came back null while an inline style landed fine. The
-     dark bar is scoped to baps-navbar.baps-sampark, so without this the bar
-     renders white and nothing says so. */
-  const brandRef = useCallback((el) => {
-    if (el) el.setAttribute('class', 'baps-sampark');
-  }, []);
-
   return (
     <div className="baps-ds-sampark">
-      <baps-navbar ref={brandRef}>
-        <nav className="baps-navbar" aria-label="Main navigation">
-          <div className="baps-navbar__start">
-            <span className="baps-navbar__title">Sampark</span>
-            <span className="baps-navbar__version">v1.1.0</span>
-          </div>
-          <div className="baps-navbar__center" />
-          <div className="baps-navbar__end">
-            <span>
-              <span>System Admin 8</span>
-              <span>North America</span>
-            </span>
-          </div>
-        </nav>
-      </baps-navbar>
-    </div>
-  );
-}`,
-    next: `'use client';
-
-${SETUP}
-
-import { useCallback } from 'react';
-
-/* 'use client' only for the ref that sets the brand class. If your app is
-   Sampark everywhere, put .baps-ds-sampark on <body> in the root layout and
-   this stays the one client boundary. */
-export default function SamparkTopbar() {
-  const brandRef = useCallback((el) => {
-    if (el) el.setAttribute('class', 'baps-sampark');
-  }, []);
-
-  return (
-    <baps-navbar ref={brandRef}>
-      <nav className="baps-navbar" aria-label="Main navigation">
-        <div className="baps-navbar__start">
-          <span className="baps-navbar__title">Sampark</span>
-          <span className="baps-navbar__version">v1.1.0</span>
-        </div>
-        <div className="baps-navbar__center" />
-        <div className="baps-navbar__end">
+      <BapsNavbar
+        brand="sampark"
+        title="Sampark"
+        version="v1.1.0"
+        end={
           <span>
             <span>System Admin 8</span>
             <span>North America</span>
           </span>
-        </div>
-      </nav>
-    </baps-navbar>
+        }
+      />
+    </div>
+  );
+}`,
+    next: `${SETUP}
+
+import { BapsNavbar } from '@org/ui-kit-react';
+
+export default function SamparkTopbar() {
+  return (
+    <div className="baps-ds-sampark">
+      <BapsNavbar
+        brand="sampark"
+        title="Sampark"
+        version="v1.1.0"
+        end={
+          <span>
+            <span>System Admin 8</span>
+            <span>North America</span>
+          </span>
+        }
+      />
+    </div>
   );
 }`,
   },
@@ -721,55 +518,39 @@ export default function SamparkTopbar() {
 </baps-navbar>`,
     react: `${SETUP}
 
+import { BapsNavbar } from '@org/ui-kit-react';
+
 export function Topbar({ onMenuToggle }) {
   return (
-    <baps-navbar>
-      <nav className="baps-navbar" aria-label="Main navigation">
-        <div className="baps-navbar__start">
-          <span className="baps-navbar__title">Sampark</span>
-          <span className="baps-navbar__version">v1.1.0</span>
-        </div>
-        <div className="baps-navbar__center" />
-        <div className="baps-navbar__end">
-          <span>
-            <span>System Admin 8</span>
-            <span>North America</span>
-          </span>
-        </div>
-        <button
-          type="button"
-          className="baps-navbar__mobile-button"
-          aria-label="Open menu"
-          aria-expanded={false}
-          onClick={onMenuToggle}
-        >
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="1" /><circle cx="12" cy="5" r="1" /><circle cx="12" cy="19" r="1" /></svg>
-        </button>
-      </nav>
-    </baps-navbar>
+    <BapsNavbar
+      title="Sampark"
+      version="v1.1.0"
+      onMenuToggle={onMenuToggle}
+      end={
+        <span>
+          <span>System Admin 8</span>
+          <span>North America</span>
+        </span>
+      }
+    />
   );
 }`,
     next: `${SETUP}
 
-/* No 'use client': the bar is markup. Add it only once you hang state off the
-   menu button, which the MenuStates example below does. */
+import { BapsNavbar } from '@org/ui-kit-react';
+
 export default function Topbar() {
   return (
-    <baps-navbar>
-      <nav className="baps-navbar" aria-label="Main navigation">
-        <div className="baps-navbar__start">
-          <span className="baps-navbar__title">Sampark</span>
-          <span className="baps-navbar__version">v1.1.0</span>
-        </div>
-        <div className="baps-navbar__center" />
-        <div className="baps-navbar__end">
-          <span>
-            <span>System Admin 8</span>
-            <span>North America</span>
-          </span>
-        </div>
-      </nav>
-    </baps-navbar>
+    <BapsNavbar
+      title="Sampark"
+      version="v1.1.0"
+      end={
+        <span>
+          <span>System Admin 8</span>
+          <span>North America</span>
+        </span>
+      }
+    />
   );
 }`,
   },

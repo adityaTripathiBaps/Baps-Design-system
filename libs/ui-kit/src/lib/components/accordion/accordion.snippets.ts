@@ -29,11 +29,9 @@ export const accordionSnippets: Record<string, SnippetSet> = {
   Default: {
     react: `${SETUP}
 
-import { useState } from 'react';
+import { BapsAccordion, BapsAccordionPanel } from '@org/ui-kit-react';
 
 export function Accordion() {
-  const [open, setOpen] = useState('region');
-
   const sections = [
     { value: 'region', label: 'Region', count: 3, content: 'Ahmedabad, London, Nairobi' },
     { value: 'sabha', label: 'Sabha', count: 2, content: 'Yuva Sabha, Bal Sabha' },
@@ -42,30 +40,13 @@ export function Accordion() {
 
   return (
     <div style={{ width: 452 }}>
-      {sections.map(s => (
-        <div key={s.value} className="p-accordionpanel" data-p-active={open === s.value}>
-          <button
-            type="button"
-            className="p-accordionheader"
-            aria-expanded={open === s.value}
-            onClick={() => setOpen(open === s.value ? '' : s.value)}
-          >
-            <span className="baps-accordion-count" aria-hidden="true">{s.count}</span>
-            <span className="baps-accordion-label">{s.label}</span>
-            <i className={'pi ' + (open === s.value ? 'pi-chevron-down' : 'pi-chevron-right')} aria-hidden="true" />
-          </button>
-          {open === s.value && (
-            <div className="p-accordioncontent">
-              <div className="p-accordioncontent-content">
-                <div className="baps-accordion-body">
-                  <span className="baps-accordion-divider" />
-                  <div style={{ padding: '0 0.5rem' }}>{s.content}</div>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      ))}
+      <BapsAccordion defaultValue="region">
+        {sections.map(s => (
+          <BapsAccordionPanel key={s.value} value={s.value} label={s.label} count={s.count}>
+            <div style={{ padding: '0 0.5rem' }}>{s.content}</div>
+          </BapsAccordionPanel>
+        ))}
+      </BapsAccordion>
     </div>
   );
 }`,
@@ -73,44 +54,21 @@ export function Accordion() {
   Multiple: {
     react: `${SETUP}
 
-import { useState } from 'react';
+import { BapsAccordion, BapsAccordionPanel } from '@org/ui-kit-react';
 
 export function AccordionMultiple() {
-  const [open, setOpen] = useState(['region', 'status']);
-
-  const toggle = (value) => {
-    setOpen(prev => prev.includes(value) ? prev.filter(v => v !== value) : [...prev, value]);
-  };
-
   return (
     <div style={{ width: 452 }}>
-      {[
-        { value: 'region', label: 'Region', count: 2 },
-        { value: 'status', label: 'Status', count: 2 },
-      ].map(s => (
-        <div key={s.value} className="p-accordionpanel" data-p-active={open.includes(s.value)}>
-          <button
-            type="button"
-            className="p-accordionheader"
-            aria-expanded={open.includes(s.value)}
-            onClick={() => toggle(s.value)}
-          >
-            <span className="baps-accordion-count" aria-hidden="true">{s.count}</span>
-            <span className="baps-accordion-label">{s.label}</span>
-            <i className={'pi ' + (open.includes(s.value) ? 'pi-chevron-down' : 'pi-chevron-right')} aria-hidden="true" />
-          </button>
-          {open.includes(s.value) && (
-            <div className="p-accordioncontent">
-              <div className="p-accordioncontent-content">
-                <div className="baps-accordion-body">
-                  <span className="baps-accordion-divider" />
-                  <div style={{ padding: '0 0.5rem' }}>Content for {s.label}</div>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      ))}
+      <BapsAccordion multiple defaultValue={['region', 'status']}>
+        {[
+          { value: 'region', label: 'Region', count: 2 },
+          { value: 'status', label: 'Status', count: 2 },
+        ].map(s => (
+          <BapsAccordionPanel key={s.value} value={s.value} label={s.label} count={s.count}>
+            <div style={{ padding: '0 0.5rem' }}>Content for {s.label}</div>
+          </BapsAccordionPanel>
+        ))}
+      </BapsAccordion>
     </div>
   );
 }`,
@@ -118,33 +76,16 @@ export function AccordionMultiple() {
   WithoutCount: {
     react: `${SETUP}
 
-import { useState } from 'react';
+import { BapsAccordion, BapsAccordionPanel } from '@org/ui-kit-react';
 
 export function AccordionWithoutCount() {
-  const [open, setOpen] = useState('about');
   return (
     <div style={{ width: 452 }}>
-      <div className="p-accordionpanel" data-p-active={open === 'about'}>
-        <button
-          type="button"
-          className="p-accordionheader"
-          aria-expanded={open === 'about'}
-          onClick={() => setOpen(open === 'about' ? '' : 'about')}
-        >
-          <span className="baps-accordion-label">About this project</span>
-          <i className={'pi ' + (open === 'about' ? 'pi-chevron-down' : 'pi-chevron-right')} aria-hidden="true" />
-        </button>
-        {open === 'about' && (
-          <div className="p-accordioncontent">
-            <div className="p-accordioncontent-content">
-              <div className="baps-accordion-body">
-                <span className="baps-accordion-divider" />
-                <div style={{ padding: '0 0.5rem' }}>Without the count badge the label shifts left.</div>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
+      <BapsAccordion defaultValue="about">
+        <BapsAccordionPanel value="about" label="About this project">
+          <div style={{ padding: '0 0.5rem' }}>Without the count badge the label shifts left.</div>
+        </BapsAccordionPanel>
+      </BapsAccordion>
     </div>
   );
 }`,
@@ -152,21 +93,16 @@ export function AccordionWithoutCount() {
   Disabled: {
     react: `${SETUP}
 
+import { BapsAccordion, BapsAccordionPanel } from '@org/ui-kit-react';
+
 export function AccordionDisabled() {
   return (
     <div style={{ width: 452 }}>
-      <div className="p-accordionpanel p-disabled">
-        <button
-          type="button"
-          className="p-accordionheader"
-          aria-expanded={false}
-          disabled
-        >
-          <span className="baps-accordion-count" aria-hidden="true">0</span>
-          <span className="baps-accordion-label">Locked section</span>
-          <i className="pi pi-chevron-right" aria-hidden="true" />
-        </button>
-      </div>
+      <BapsAccordion>
+        <BapsAccordionPanel value="locked" label="Locked section" count="0" disabled>
+          <div style={{ padding: '0 0.5rem' }}>This is locked.</div>
+        </BapsAccordionPanel>
+      </BapsAccordion>
     </div>
   );
 }`,
@@ -174,44 +110,28 @@ export function AccordionDisabled() {
   Brands: {
     react: `${SETUP}
 
-import { useState } from 'react';
+import { BapsAccordion, BapsAccordionPanel } from '@org/ui-kit-react';
 
 export function AccordionBrands() {
-  const [openMy, setOpenMy] = useState('a');
-  const [openSp, setOpenSp] = useState('a');
   return (
     <div style={{ display: 'flex', gap: 24 }}>
       {/* MyBKY */}
       <div style={{ width: 452 }}>
         <h4>MyBKY</h4>
-        <div className="p-accordionpanel" data-p-active={openMy === 'a'}>
-          <button type="button" className="p-accordionheader" onClick={() => setOpenMy(openMy === 'a' ? '' : 'a')}>
-            <span className="baps-accordion-count">3</span>
-            <span className="baps-accordion-label">Region</span>
-            <i className={'pi ' + (openMy === 'a' ? 'pi-chevron-down' : 'pi-chevron-right')} />
-          </button>
-          {openMy === 'a' && (
-            <div className="p-accordioncontent"><div className="p-accordioncontent-content">
-              <div className="baps-accordion-body"><span className="baps-accordion-divider" /><div style={{ padding: '0 0.5rem' }}>Content</div></div>
-            </div></div>
-          )}
-        </div>
+        <BapsAccordion brand="mybky" defaultValue="a">
+          <BapsAccordionPanel value="a" label="Region" count="3">
+            <div style={{ padding: '0 0.5rem' }}>Content</div>
+          </BapsAccordionPanel>
+        </BapsAccordion>
       </div>
       {/* Sampark */}
       <div className="baps-ds-sampark" style={{ width: 452 }}>
         <h4>Sampark</h4>
-        <div className="p-accordionpanel" data-p-active={openSp === 'a'}>
-          <button type="button" className="p-accordionheader" onClick={() => setOpenSp(openSp === 'a' ? '' : 'a')}>
-            <span className="baps-accordion-count">3</span>
-            <span className="baps-accordion-label">Region</span>
-            <i className={'pi ' + (openSp === 'a' ? 'pi-chevron-down' : 'pi-chevron-right')} />
-          </button>
-          {openSp === 'a' && (
-            <div className="p-accordioncontent"><div className="p-accordioncontent-content">
-              <div className="baps-accordion-body"><span className="baps-accordion-divider" /><div style={{ padding: '0 0.5rem' }}>Content</div></div>
-            </div></div>
-          )}
-        </div>
+        <BapsAccordion brand="sampark" defaultValue="a">
+          <BapsAccordionPanel value="a" label="Region" count="3">
+            <div style={{ padding: '0 0.5rem' }}>Content</div>
+          </BapsAccordionPanel>
+        </BapsAccordion>
       </div>
     </div>
   );

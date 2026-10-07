@@ -3,6 +3,7 @@ import { expect, userEvent, waitFor, within } from '@storybook/test';
 import { moduleMetadata } from '@storybook/angular';
 import { TabsModule } from 'primeng/tabs';
 import { BapsTabs } from './tabs.directive';
+import { tabsSnippets } from './tabs.snippets';
 
 /**
  * Tabs are raw PrimeNG `p-tabs`/`p-tablist`/`p-tab`/`p-tabpanels`/`p-tabpanel`
@@ -27,6 +28,7 @@ const meta: Meta<TabsArgs> = {
     // Design tab — the Figma frame this component implements, node 13197:90538.
     // Harvested from tabs.stories.ts, where it was already recorded as a comment.
     design: { type: 'figma', url: 'https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/?node-id=13197-90538' },
+    snippets: tabsSnippets,
   },
   component: BapsTabs,
   decorators: [

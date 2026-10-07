@@ -190,16 +190,40 @@ export function NumberedSampark() {
   Wrapper: {
     react: `${SETUP}
 
+import { useState } from 'react';
+import { BapsStepper, BapsStepList, BapsStep, BapsStepPanels, BapsStepPanel } from '@org/ui-kit-react';
+
 export function Wrapper() {
+  const [current, setCurrent] = useState(2);
+  
   return (
-    <div className="p-stepper p-component">
-        <ul className="p-stepper-nav" role="tablist">
-          <li className="p-stepper-action p-highlight" role="presentation">
-            <button className="p-stepper-action" role="tab" aria-selected={true}>
-              <span className="p-stepper-title">Wrapper</span>
-            </button>
-          </li>
-        </ul>
+    <div style={{ width: '56rem', maxWidth: '100%' }}>
+      <BapsStepper value={current} onValueChange={setCurrent} brand="mybky">
+        <BapsStepList>
+          <BapsStep value={1} label="Basic Info" icon="info-circle" status="completed" />
+          <BapsStep value={2} label="Eligibility" icon="checklist" required={true} />
+          <BapsStep value={3} label="Payment" icon="wallet-money" />
+          <BapsStep value={4} label="Promo Code" icon="bill-list" />
+          <BapsStep value={5} label="Features" icon="settings" locked={true} />
+        </BapsStepList>
+        <BapsStepPanels>
+          <BapsStepPanel value={1}>
+            <div style={{ padding: '1.5rem 0', fontSize: '0.875rem' }}>Basic Info panel</div>
+          </BapsStepPanel>
+          <BapsStepPanel value={2}>
+            <div style={{ padding: '1.5rem 0', fontSize: '0.875rem' }}>Eligibility panel</div>
+          </BapsStepPanel>
+          <BapsStepPanel value={3}>
+            <div style={{ padding: '1.5rem 0', fontSize: '0.875rem' }}>Payment panel</div>
+          </BapsStepPanel>
+          <BapsStepPanel value={4}>
+            <div style={{ padding: '1.5rem 0', fontSize: '0.875rem' }}>Promo Code panel</div>
+          </BapsStepPanel>
+          <BapsStepPanel value={5}>
+            <div style={{ padding: '1.5rem 0', fontSize: '0.875rem' }}>Features panel</div>
+          </BapsStepPanel>
+        </BapsStepPanels>
+      </BapsStepper>
     </div>
   );
 }`,
@@ -207,17 +231,32 @@ export function Wrapper() {
   WrapperNumbered: {
     react: `${SETUP}
 
+import { useState } from 'react';
+import { BapsStepper, BapsStepList, BapsStep, BapsStepPanels, BapsStepPanel } from '@org/ui-kit-react';
+
 export function WrapperNumbered() {
+  const [current, setCurrent] = useState(2);
+  
   return (
-    <div className="p-stepper p-component">
-        <ul className="p-stepper-nav" role="tablist">
-          <li className="p-stepper-action p-highlight" role="presentation">
-            <button className="p-stepper-action" role="tab" aria-selected={true}>
-              <span className="p-stepper-number">1</span>
-              <span className="p-stepper-title">Numbered Wrapper</span>
-            </button>
-          </li>
-        </ul>
+    <div style={{ width: '40rem', maxWidth: '100%' }}>
+      <BapsStepper value={current} onValueChange={setCurrent} brand="mybky">
+        <BapsStepList>
+          <BapsStep value={1} label="Details" />
+          <BapsStep value={2} label="Departments" />
+          <BapsStep value={3} label="Review" />
+        </BapsStepList>
+        <BapsStepPanels>
+          <BapsStepPanel value={1}>
+            <div style={{ padding: '1.5rem 0', fontSize: '0.875rem' }}>Name the template and pick its type.</div>
+          </BapsStepPanel>
+          <BapsStepPanel value={2}>
+            <div style={{ padding: '1.5rem 0', fontSize: '0.875rem' }}>Choose which departments it applies to.</div>
+          </BapsStepPanel>
+          <BapsStepPanel value={3}>
+            <div style={{ padding: '1.5rem 0', fontSize: '0.875rem' }}>Check everything, then publish.</div>
+          </BapsStepPanel>
+        </BapsStepPanels>
+      </BapsStepper>
     </div>
   );
 }`,

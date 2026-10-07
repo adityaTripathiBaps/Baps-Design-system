@@ -248,7 +248,7 @@ export const SamparkVariants: Story = {
           <code style="font-size:11px;">Icon Error</code>
         </div>
         <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
-          <baps-avatar brand="sampark" image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" />
+          <baps-avatar brand="sampark" image="https://picsum.photos/id/64/200/200" />
           <code style="font-size:11px;">Image</code>
         </div>
         <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
