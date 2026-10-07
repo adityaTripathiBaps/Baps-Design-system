@@ -1,6 +1,7 @@
 import { Meta, Canvas, Controls } from '@storybook/blocks';
-import { BrandOnly, PropsTable } from '@baps/docs-blocks';
+import { BrandOnly, PropsTable, FrameworkTabs } from '@baps/docs-blocks';
 import * as DatePickerStories from './datepicker.stories';
+import { datepickerSnippets } from './datepicker.snippets';
 
 <Meta of={DatePickerStories} />
 
@@ -23,29 +24,44 @@ needs no per-instance attribute at all.
 
 ### Default
 
-<Canvas of={DatePickerStories.Default} />
+<FrameworkTabs
+  of={DatePickerStories.Default}
+  snippets={datepickerSnippets.Default}
+/>
 
 <Controls of={DatePickerStories.Default} />
 
 ### Range
 
-<Canvas of={DatePickerStories.Range} />
+<FrameworkTabs
+  of={DatePickerStories.Range}
+  snippets={datepickerSnippets.Range}
+/>
 
 <BrandOnly brand="mybky">
 
 ### Range My BKY
 
-<Canvas of={DatePickerStories.RangeMyBKY} />
+<FrameworkTabs
+  of={DatePickerStories.RangeMyBKY}
+  snippets={datepickerSnippets.RangeMyBKY}
+/>
 
 </BrandOnly>
 
 ### Overlay
 
-<Canvas of={DatePickerStories.Overlay} />
+<FrameworkTabs
+  of={DatePickerStories.Overlay}
+  snippets={datepickerSnippets.Overlay}
+/>
 
 ### Constrained
 
-<Canvas of={DatePickerStories.Constrained} />
+<FrameworkTabs
+  of={DatePickerStories.Constrained}
+  snippets={datepickerSnippets.Constrained}
+/>
 
 ## Forms
 
@@ -76,11 +92,11 @@ Inputs, outputs and their types, read from the component's own source.
 
 ## When Not to Use
 
-| Need | Use | Not this |
-| --- | --- | --- |
-| A month or year only | `baps-datepicker` with `view="month"` / `view="year"` | A full day grid the user must ignore |
-| A relative period — last week, last quarter | Radios plus a range picker, as in the filter panel | A calendar for something that is not a calendar date |
-| A time without a date | *(nothing here yet)* | This component — it is date-first |
+| Need                                        | Use                                                   | Not this                                             |
+| ------------------------------------------- | ----------------------------------------------------- | ---------------------------------------------------- |
+| A month or year only                        | `baps-datepicker` with `view="month"` / `view="year"` | A full day grid the user must ignore                 |
+| A relative period — last week, last quarter | Radios plus a range picker, as in the filter panel    | A calendar for something that is not a calendar date |
+| A time without a date                       | _(nothing here yet)_                                  | This component — it is date-first                    |
 
 ## Accessibility
 
@@ -92,9 +108,9 @@ Inputs, outputs and their types, read from the component's own source.
 
 ### Keyboard Support
 
-| Key | Function |
-| --- | --- |
-| <kbd>Tab</kbd> | Moves focus to the input. |
+| Key                      | Function                                             |
+| ------------------------ | ---------------------------------------------------- |
+| <kbd>Tab</kbd>           | Moves focus to the input.                            |
 | <kbd>Space / Enter</kbd> | Opens the calendar; picks the focused day when open. |
-| <kbd>Arrow keys</kbd> | Moves a day or a week at a time. |
-| <kbd>Esc</kbd> | Closes the calendar. |
+| <kbd>Arrow keys</kbd>    | Moves a day or a week at a time.                     |
+| <kbd>Esc</kbd>           | Closes the calendar.                                 |

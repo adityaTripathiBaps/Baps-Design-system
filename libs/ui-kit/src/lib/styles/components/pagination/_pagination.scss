@@ -35,12 +35,15 @@ baps-paginator {
 }
 
 /* ── Rows-per-page sizing ──────────────────────────────────────────── */
-.baps-paginator .baps-paginator__rpp.p-select {
+.baps-paginator .baps-paginator__rpp.p-select,
+.baps-paginator .baps-paginator__rpp.p-dropdown,
+select.baps-paginator__rpp {
   width: fit-content !important;
   flex: none;
 }
 
-.baps-paginator .baps-paginator__rpp .p-select-label {
+.baps-paginator .baps-paginator__rpp .p-select-label,
+.baps-paginator .baps-paginator__rpp .p-dropdown-label {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -49,27 +52,29 @@ baps-paginator {
 /* ══════════════════════════════════════════════════════════════════════
    MyBKY (default)
    ══════════════════════════════════════════════════════════════════════ */
-baps-paginator .baps-paginator {
+.baps-paginator {
   gap: 0.25rem;
   font-size: 0.875rem;
 }
 
-baps-paginator .baps-paginator__report {
+.baps-paginator__report {
   margin-inline-end: 0.25rem;
   color: var(--color-mybky-mono-900, #181b1d);
   white-space: nowrap;
 }
 
-baps-paginator .baps-paginator__rpp {
+.baps-paginator__rpp {
   margin-inline-end: 0.25rem;
 }
 
-baps-paginator .baps-paginator__rpp .p-select {
+.baps-paginator__rpp .p-select,
+.baps-paginator__rpp .p-dropdown,
+select.baps-paginator__rpp {
   height: 1.875rem;
 }
 
-baps-paginator .baps-paginator__nav,
-baps-paginator .baps-paginator__page {
+.baps-paginator__nav,
+.baps-paginator__page {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -83,32 +88,34 @@ baps-paginator .baps-paginator__page {
   font-family: inherit;
   font-size: 0.875rem;
   cursor: pointer;
-  transition: background-color 150ms ease, color 150ms ease;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
 }
 
-baps-paginator .baps-paginator__nav:hover:not(:disabled),
-baps-paginator .baps-paginator__page:hover:not(.baps-paginator__page--active) {
+.baps-paginator__nav:hover:not(:disabled),
+.baps-paginator__page:hover:not(.baps-paginator__page--active) {
   background: var(--color-mybky-mono-50, #f8fafb);
   color: var(--color-mybky-mono-900, #181b1d);
 }
 
-baps-paginator .baps-paginator__nav:disabled {
+.baps-paginator__nav:disabled {
   color: var(--color-mybky-mono-400, #b6b6af);
   cursor: default;
 }
 
-baps-paginator .baps-paginator__page--active {
+.baps-paginator__page--active {
   background: var(--color-mybky-mono-100, rgba(43, 47, 50, 0.04));
   color: var(--color-mybky-mono-900, #181b1d);
   font-weight: 600;
 }
 
-baps-paginator :is(.baps-paginator__nav, .baps-paginator__page):focus-visible {
+:is(.baps-paginator__nav, .baps-paginator__page):focus-visible {
   outline: 2px solid var(--color-mybky-blue-600, #5f78b8);
   outline-offset: -2px;
 }
 
-baps-paginator .baps-paginator__gap {
+.baps-paginator__gap {
   display: inline-flex;
   align-items: flex-end;
   justify-content: center;
@@ -119,7 +126,7 @@ baps-paginator .baps-paginator__gap {
   user-select: none;
 }
 
-baps-paginator .baps-paginator__jump {
+.baps-paginator__jump {
   display: inline-flex;
   align-items: stretch;
   height: 1.875rem;
@@ -130,7 +137,7 @@ baps-paginator .baps-paginator__jump {
   overflow: hidden;
 }
 
-baps-paginator .baps-paginator__jump-label {
+.baps-paginator__jump-label {
   display: inline-flex;
   align-items: center;
   padding: 0 0.75rem;
@@ -141,7 +148,7 @@ baps-paginator .baps-paginator__jump-label {
   white-space: nowrap;
 }
 
-baps-paginator .baps-paginator__jump-input {
+.baps-paginator__jump-input {
   width: 2.5rem;
   padding: 0 0.25rem;
   background: transparent;
@@ -152,39 +159,42 @@ baps-paginator .baps-paginator__jump-input {
   text-align: center;
 }
 
-baps-paginator .baps-paginator__jump-input:focus {
+.baps-paginator__jump-input:focus {
   outline: none;
 }
-baps-paginator .baps-paginator__jump:focus-within {
+.baps-paginator__jump:focus-within {
   border-color: var(--color-mybky-blue-600, #5f78b8);
 }
 
 /* ══════════════════════════════════════════════════════════════════════
    SAMPARK — Figma 17512:73228
    ══════════════════════════════════════════════════════════════════════ */
-:is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator, .baps-ds-sampark) .baps-paginator {
+:is(.baps-ds-sampark) .baps-paginator {
   gap: 0.5rem;
   font-size: 0.875rem;
   line-height: 1.3;
 }
 
-:is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator, .baps-ds-sampark) .baps-paginator__report {
+:is(.baps-ds-sampark) .baps-paginator__report {
   color: var(--color-sampark-text-secondary, #595656);
   white-space: nowrap;
 }
 
-:is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator, .baps-ds-sampark) .baps-paginator__rpp .p-select {
+:is(.baps-ds-sampark) .baps-paginator__rpp .p-select,
+:is(.baps-ds-sampark) .baps-paginator__rpp .p-dropdown,
+:is(.baps-ds-sampark) select.baps-paginator__rpp {
   height: var(--form-field-sampark-height-default, 2rem);
 }
-:is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator, .baps-ds-sampark) .baps-paginator__rpp .p-select-label {
+:is(.baps-ds-sampark) .baps-paginator__rpp .p-select-label,
+:is(.baps-ds-sampark) .baps-paginator__rpp .p-dropdown-label {
   display: flex;
   align-items: center;
   padding-inline-end: 0.25rem;
   font-size: 0.875rem;
 }
 
-:is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator, .baps-ds-sampark) .baps-paginator__nav,
-:is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator, .baps-ds-sampark) .baps-paginator__page {
+:is(.baps-ds-sampark) .baps-paginator__nav,
+:is(.baps-ds-sampark) .baps-paginator__page {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -200,32 +210,36 @@ baps-paginator .baps-paginator__jump:focus-within {
   font-weight: 400;
   line-height: 1.3;
   cursor: pointer;
-  transition: background-color 120ms cubic-bezier(0.16, 1, 0.3, 1), color 120ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition:
+    background-color 120ms cubic-bezier(0.16, 1, 0.3, 1),
+    color 120ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-:is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator, .baps-ds-sampark) .baps-paginator__nav:hover:not(:disabled),
-:is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator, .baps-ds-sampark) .baps-paginator__page:hover:not(.baps-paginator__page--active) {
+:is(.baps-ds-sampark) .baps-paginator__nav:hover:not(:disabled),
+:is(.baps-ds-sampark)
+  .baps-paginator__page:hover:not(.baps-paginator__page--active) {
   background: var(--color-sampark-secondary-0, #f8f7f7);
   color: var(--color-sampark-text-primary, #151414);
 }
 
-:is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator, .baps-ds-sampark) .baps-paginator__nav:disabled {
+:is(.baps-ds-sampark) .baps-paginator__nav:disabled {
   color: var(--color-sampark-text-disabled, #bcb9b9);
   cursor: default;
 }
 
-:is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator, .baps-ds-sampark) .baps-paginator__page--active {
+:is(.baps-ds-sampark) .baps-paginator__page--active {
   background: var(--color-sampark-mono-alpha4, rgba(21, 20, 20, 0.04));
   color: var(--color-sampark-text-primary, #151414);
   font-weight: 600;
 }
 
-:is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator, .baps-ds-sampark) :is(.baps-paginator__nav, .baps-paginator__page):focus-visible {
+:is(.baps-ds-sampark)
+  :is(.baps-paginator__nav, .baps-paginator__page):focus-visible {
   outline: 2px solid var(--color-sampark-primary-default, #c96868);
   outline-offset: -2px;
 }
 
-:is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator, .baps-ds-sampark) .baps-paginator__gap {
+:is(.baps-ds-sampark) .baps-paginator__gap {
   display: inline-flex;
   align-items: flex-end;
   justify-content: center;
@@ -236,7 +250,7 @@ baps-paginator .baps-paginator__jump:focus-within {
   user-select: none;
 }
 
-:is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator, .baps-ds-sampark) .baps-paginator__jump {
+:is(.baps-ds-sampark) .baps-paginator__jump {
   display: inline-flex;
   align-items: stretch;
   height: var(--form-field-sampark-height-default, 2rem);
@@ -247,7 +261,7 @@ baps-paginator .baps-paginator__jump:focus-within {
   overflow: hidden;
 }
 
-:is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator, .baps-ds-sampark) .baps-paginator__jump-label {
+:is(.baps-ds-sampark) .baps-paginator__jump-label {
   display: inline-flex;
   align-items: center;
   padding: 0 0.75rem;
@@ -257,7 +271,7 @@ baps-paginator .baps-paginator__jump:focus-within {
   white-space: nowrap;
 }
 
-:is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator, .baps-ds-sampark) .baps-paginator__jump-input {
+:is(.baps-ds-sampark) .baps-paginator__jump-input {
   width: 2.5rem;
   padding: 0 0.25rem;
   background: transparent;
@@ -268,9 +282,9 @@ baps-paginator .baps-paginator__jump:focus-within {
   text-align: center;
 }
 
-:is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator, .baps-ds-sampark) .baps-paginator__jump-input:focus {
+:is(.baps-ds-sampark) .baps-paginator__jump-input:focus {
   outline: none;
 }
-:is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator, .baps-ds-sampark) .baps-paginator__jump:focus-within {
+:is(.baps-ds-sampark) .baps-paginator__jump:focus-within {
   border-color: var(--color-sampark-primary-default, #c96868);
 }

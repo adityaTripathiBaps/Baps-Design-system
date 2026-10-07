@@ -1,6 +1,7 @@
 import { Meta, Canvas, Controls } from '@storybook/blocks';
-import { BrandOnly } from '@baps/docs-blocks';
+import { BrandOnly, FrameworkTabs } from '@baps/docs-blocks';
 import * as FormControlsStories from './form-field.stories';
+import { formFieldSnippets } from './form-field.snippets';
 
 <Meta of={FormControlsStories} />
 
@@ -26,11 +27,11 @@ The two other controls that share this stories file have their own pages: [Listb
     aria-describedby="email-help"
   />
   @if (emailCtrl.invalid && emailCtrl.dirty) {
-    <baps-message id="email-help" severity="error" variant="simple" size="small">
-      Enter a valid email
-    </baps-message>
+  <baps-message id="email-help" severity="error" variant="simple" size="small">
+    Enter a valid email
+  </baps-message>
   } @else {
-    <small id="email-help">We'll never share your address.</small>
+  <small id="email-help">We'll never share your address.</small>
   }
 </div>
 ```
@@ -39,85 +40,127 @@ The two other controls that share this stories file have their own pages: [Listb
 
 ### Playground
 
-<Canvas of={FormControlsStories.Playground} />
+<FrameworkTabs
+  of={FormControlsStories.Playground}
+  snippets={formFieldSnippets.Playground}
+/>
 
 <Controls of={FormControlsStories.Playground} />
 
 ### States
 
-<Canvas of={FormControlsStories.States} />
+<FrameworkTabs
+  of={FormControlsStories.States}
+  snippets={formFieldSnippets.States}
+/>
 
 ### Sizes
 
-<Canvas of={FormControlsStories.Sizes} />
+<FrameworkTabs
+  of={FormControlsStories.Sizes}
+  snippets={formFieldSnippets.Sizes}
+/>
 
 ### Float Label Example
 
-<Canvas of={FormControlsStories.FloatLabelExample} />
+<FrameworkTabs
+  of={FormControlsStories.FloatLabelExample}
+  snippets={formFieldSnippets.FloatLabelExample}
+/>
 
 ### With Icon
 
-<Canvas of={FormControlsStories.WithIcon} />
+<FrameworkTabs
+  of={FormControlsStories.WithIcon}
+  snippets={formFieldSnippets.WithIcon}
+/>
 
 <BrandOnly brand="sampark">
 
 ### Sampark States
 
-<Canvas of={FormControlsStories.SamparkStates} />
+<FrameworkTabs
+  of={FormControlsStories.SamparkStates}
+  snippets={formFieldSnippets.SamparkStates}
+/>
 
 ### Sampark Sizes
 
-<Canvas of={FormControlsStories.SamparkSizes} />
+<FrameworkTabs
+  of={FormControlsStories.SamparkSizes}
+  snippets={formFieldSnippets.SamparkSizes}
+/>
 
 ### Sampark Float Label
 
-<Canvas of={FormControlsStories.SamparkFloatLabel} />
+<FrameworkTabs
+  of={FormControlsStories.SamparkFloatLabel}
+  snippets={formFieldSnippets.SamparkFloatLabel}
+/>
 
 ### Sampark With Icon
 
-<Canvas of={FormControlsStories.SamparkWithIcon} />
+<FrameworkTabs
+  of={FormControlsStories.SamparkWithIcon}
+  snippets={formFieldSnippets.SamparkWithIcon}
+/>
 
 </BrandOnly>
 
 ### Textarea Example
 
-<Canvas of={FormControlsStories.TextareaExample} />
+<FrameworkTabs
+  of={FormControlsStories.TextareaExample}
+  snippets={formFieldSnippets.TextareaExample}
+/>
 
 <BrandOnly brand="sampark">
 
 ### Sampark Textarea
 
-<Canvas of={FormControlsStories.SamparkTextarea} />
+<FrameworkTabs
+  of={FormControlsStories.SamparkTextarea}
+  snippets={formFieldSnippets.SamparkTextarea}
+/>
 
 </BrandOnly>
 
 ### Dropdowns
 
-<Canvas of={FormControlsStories.Dropdowns} />
+<FrameworkTabs
+  of={FormControlsStories.Dropdowns}
+  snippets={formFieldSnippets.Dropdowns}
+/>
 
 <BrandOnly brand="sampark">
 
 ### Sampark Dropdowns
 
-<Canvas of={FormControlsStories.SamparkDropdowns} />
+<FrameworkTabs
+  of={FormControlsStories.SamparkDropdowns}
+  snippets={formFieldSnippets.SamparkDropdowns}
+/>
 
 ### Sampark Dropdown Sizes
 
-<Canvas of={FormControlsStories.SamparkDropdownSizes} />
+<FrameworkTabs
+  of={FormControlsStories.SamparkDropdownSizes}
+  snippets={formFieldSnippets.SamparkDropdownSizes}
+/>
 
 </BrandOnly>
 
 ## When Not to Use
 
-| Need | Use | Not this |
-| --- | --- | --- |
-| A single on/off value in a form | `baps-checkbox` | A text input with "yes"/"no" |
-| A setting that applies the moment it is flipped | `baps-toggleswitch` | `baps-checkbox`, which implies a save step |
-| A number inside a known range | `baps-slider` | A numeric input with min/max validation |
-| Picking a person from the directory | `baps-users-dropdown` | `baps-listbox` of names — it has no avatar/role row |
-| A submit-level summary of everything that failed | `baps-alert` at the top of the form | A stack of `baps-message` elements standing in for one |
-| Explaining a field on hover only | `bapsTooltip` | Helper text, which is always visible and adds height |
-| Displaying a value the user cannot change | Plain text, or `baps-tag` for a status | A disabled input — disabled controls are skipped by screen readers |
+| Need                                             | Use                                    | Not this                                                           |
+| ------------------------------------------------ | -------------------------------------- | ------------------------------------------------------------------ |
+| A single on/off value in a form                  | `baps-checkbox`                        | A text input with "yes"/"no"                                       |
+| A setting that applies the moment it is flipped  | `baps-toggleswitch`                    | `baps-checkbox`, which implies a save step                         |
+| A number inside a known range                    | `baps-slider`                          | A numeric input with min/max validation                            |
+| Picking a person from the directory              | `baps-users-dropdown`                  | `baps-listbox` of names — it has no avatar/role row                |
+| A submit-level summary of everything that failed | `baps-alert` at the top of the form    | A stack of `baps-message` elements standing in for one             |
+| Explaining a field on hover only                 | `bapsTooltip`                          | Helper text, which is always visible and adds height               |
+| Displaying a value the user cannot change        | Plain text, or `baps-tag` for a status | A disabled input — disabled controls are skipped by screen readers |
 
 ## Accessibility
 

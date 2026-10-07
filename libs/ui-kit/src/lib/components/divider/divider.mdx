@@ -1,6 +1,7 @@
 import { Meta, Canvas, Controls } from '@storybook/blocks';
-import { BrandOnly, PropsTable } from '@baps/docs-blocks';
+import { BrandOnly, FrameworkTabs, PropsTable } from '@baps/docs-blocks';
 import * as DividerStories from './divider.stories';
+import { dividerSnippets } from './divider.snippets';
 
 <Meta of={DividerStories} />
 
@@ -29,8 +30,10 @@ A visual separator between content sections. `baps-divider` wraps PrimeNG's `p-d
 
 ### Default
 
-<Canvas of={DividerStories.Default} />
+<Canvas of={DividerStories.Default} sourceState="none" />
 <Controls of={DividerStories.Default} />
+
+<FrameworkTabs of={DividerStories.Default} snippets={dividerSnippets.Default} />
 
 <BrandOnly brand="sampark">
 
@@ -41,7 +44,12 @@ divider is used inside another component rather than between page sections. The
 surrounding chips are flat mark-up with literal Sampark colours, standing in for
 a toolbar this stories file cannot import.
 
-<Canvas of={DividerStories.ToolbarSeparator} />
+<Canvas of={DividerStories.ToolbarSeparator} sourceState="none" />
+
+<FrameworkTabs
+  of={DividerStories.ToolbarSeparator}
+  snippets={dividerSnippets.ToolbarSeparator}
+/>
 
 </BrandOnly>
 
@@ -53,13 +61,13 @@ Inputs, outputs and their types, read from the component's own source.
 
 ## When Not to Use
 
-| Need | Use | Not this |
-| --- | --- | --- |
-| Structure that assistive technology should perceive | A real heading element, optionally inside `baps-card` | Divider — it carries no role and its projected text is not announced as a heading |
-| Grouping content into a bounded region | `baps-card`, with `[divided]="true"` for internal hairlines | Dividers stacked above and below content to fake a box |
-| Separating rows of tabular data | `baps-table`'s own row borders | A divider per row |
-| A separator inside a menu | The menu's own separator handling around `baps-menu-item` | `baps-divider` dropped into the item list |
-| Section breaks in a page-level action bar | `baps-toolbar`'s layout slots | Vertical dividers positioned by hand |
+| Need                                                | Use                                                         | Not this                                                                          |
+| --------------------------------------------------- | ----------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| Structure that assistive technology should perceive | A real heading element, optionally inside `baps-card`       | Divider — it carries no role and its projected text is not announced as a heading |
+| Grouping content into a bounded region              | `baps-card`, with `[divided]="true"` for internal hairlines | Dividers stacked above and below content to fake a box                            |
+| Separating rows of tabular data                     | `baps-table`'s own row borders                              | A divider per row                                                                 |
+| A separator inside a menu                           | The menu's own separator handling around `baps-menu-item`   | `baps-divider` dropped into the item list                                         |
+| Section breaks in a page-level action bar           | `baps-toolbar`'s layout slots                               | Vertical dividers positioned by hand                                              |
 
 ## Accessibility
 

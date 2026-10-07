@@ -57,15 +57,13 @@
  * The three Interaction stories get no snippets — they assert behaviour
  * through a `play` function and have no markup worth copying.
  *
- * ## Packaging — the gap this file used to record is closed
+ * ## React and Next use the real package
  *
- * These styles no longer need a relative path. `libs/ui-kit/package.json` now
- * declares `exports` for `./styles` and `./styles/*`, and
- * `libs/ui-kit/scripts/build-styles.mjs` compiles the partials to
- * `dist/libs/ui-kit/styles/*.css` as part of the library build, so a React or
- * Next app in another repo imports `@org/ui-kit/styles`. What each path does
- * and does not carry is measured in `libs/ui-kit/src/lib/docs/snippet-setup.ts`,
- * which is also where the setup block below comes from.
+ * The React and Next blocks below import `BapsButton` from
+ * `@org/ui-kit-react`; only the Custom block exposes the equivalent raw HTML.
+ * The React package copies the canonical generated CSS byte-for-byte during
+ * its build, so `@org/ui-kit-react/styles` preserves the same token-driven
+ * output without importing Angular or PrimeNG runtime code.
  */
 import { setupFor, type SnippetSet } from '../../docs/snippet-setup';
 
@@ -73,7 +71,9 @@ import { setupFor, type SnippetSet } from '../../docs/snippet-setup';
 export type { SnippetSet };
 
 /** Stated once; the same loads sit behind every snippet on this page. */
-const SETUP = setupFor('button', true);
+const SETUP = `${setupFor('button', false, '@org/ui-kit-react/styles')}
+
+import { BapsButton } from '@org/ui-kit-react';`;
 
 export const buttonSnippets: Record<string, SnippetSet> = {
   // The Playground carries no render function: it is the meta's own args, which
@@ -87,22 +87,14 @@ export const buttonSnippets: Record<string, SnippetSet> = {
     react: `${SETUP}
 
 export function Example() {
-  return (
-    <button type="button" className="baps-button baps-button--primary">
-      <span className="baps-button__label">Button</span>
-    </button>
-  );
+  return <BapsButton label="Button" />;
 }`,
     next: `'use client';
 
 ${SETUP}
 
 export default function Example() {
-  return (
-    <button type="button" className="baps-button baps-button--primary">
-      <span className="baps-button__label">Button</span>
-    </button>
-  );
+  return <BapsButton label="Button" />;
 }`,
     primeng: `<baps-button label="Button" severity="primary" />`,
   },
@@ -147,46 +139,13 @@ export default function Example() {
 </div>`,
     react: `${SETUP}
 
-import { BAPS_ICONS } from '@org/ui-kit/icons';
-
-/* The glyph registry is plain data — measured, 0 references to Angular in the
-   built file — so it is the one piece of the design system a React app can
-   import directly. The wrapper below is byte for byte what the Angular icon
-   component injects. */
-function Glyph({ name, size = 18 }) {
-  return (
-    <baps-icon style={{ '--baps-icon-size': size + 'px' }}>
-      <span
-        className="baps-icon__glyph"
-        aria-hidden="true"
-        dangerouslySetInnerHTML={{
-          __html:
-            '<svg viewBox="0 0 24 24" fill="none" focusable="false">' + BAPS_ICONS[name] + '</svg>',
-        }}
-      />
-    </baps-icon>
-  );
-}
-
 export function WithIcons() {
   return (
     <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
-      <button type="button" className="baps-button baps-button--primary">
-        <Glyph name="add-to-filter" />
-        <span className="baps-button__label">Add Filter</span>
-      </button>
-      <button type="button" className="baps-button baps-button--primary">
-        <Glyph name="plus" />
-        <span className="baps-button__label">Create</span>
-      </button>
-      <button type="button" className="baps-button baps-button--secondary">
-        <Glyph name="search-2" />
-        <span className="baps-button__label">Search</span>
-      </button>
-      <button type="button" className="baps-button baps-button--danger">
-        <Glyph name="trash" />
-        <span className="baps-button__label">Delete</span>
-      </button>
+      <BapsButton label="Add Filter" icon="add-to-filter" />
+      <BapsButton label="Create" icon="plus" />
+      <BapsButton label="Search" icon="search-2" severity="secondary" />
+      <BapsButton label="Delete" icon="trash" severity="danger" />
     </div>
   );
 }`,
@@ -194,48 +153,13 @@ export function WithIcons() {
 
 ${SETUP}
 
-import { BAPS_ICONS } from '@org/ui-kit/icons';
-
-/* 'use client' is required, and not for interactivity — there is none here.
-   dangerouslySetInnerHTML is fine on the server, but the inline
-   style={{ '--baps-icon-size': … }} custom property and the unknown
-   <baps-icon> element are both things to keep out of a Server Component's
-   output. Lift the registry import into a shared client component if several
-   routes use icons; it is 2.3 MB of path data and belongs in one chunk. */
-function Glyph({ name, size = 18 }) {
-  return (
-    <baps-icon style={{ '--baps-icon-size': size + 'px' }}>
-      <span
-        className="baps-icon__glyph"
-        aria-hidden="true"
-        dangerouslySetInnerHTML={{
-          __html:
-            '<svg viewBox="0 0 24 24" fill="none" focusable="false">' + BAPS_ICONS[name] + '</svg>',
-        }}
-      />
-    </baps-icon>
-  );
-}
-
 export default function WithIcons() {
   return (
     <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
-      <button type="button" className="baps-button baps-button--primary">
-        <Glyph name="add-to-filter" />
-        <span className="baps-button__label">Add Filter</span>
-      </button>
-      <button type="button" className="baps-button baps-button--primary">
-        <Glyph name="plus" />
-        <span className="baps-button__label">Create</span>
-      </button>
-      <button type="button" className="baps-button baps-button--secondary">
-        <Glyph name="search-2" />
-        <span className="baps-button__label">Search</span>
-      </button>
-      <button type="button" className="baps-button baps-button--danger">
-        <Glyph name="trash" />
-        <span className="baps-button__label">Delete</span>
-      </button>
+      <BapsButton label="Add Filter" icon="add-to-filter" />
+      <BapsButton label="Create" icon="plus" />
+      <BapsButton label="Search" icon="search-2" severity="secondary" />
+      <BapsButton label="Delete" icon="trash" severity="danger" />
     </div>
   );
 }`,
@@ -270,12 +194,12 @@ export default function WithIcons() {
 export function AllVariants() {
   return (
     <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
-      <button type="button" className="baps-button baps-button--primary"><span className="baps-button__label">Primary</span></button>
-      <button type="button" className="baps-button baps-button--secondary"><span className="baps-button__label">Secondary</span></button>
-      <button type="button" className="baps-button baps-button--danger"><span className="baps-button__label">Danger</span></button>
-      <button type="button" className="baps-button baps-button--warn"><span className="baps-button__label">Warning</span></button>
-      <button type="button" className="baps-button baps-button--ghost-primary"><span className="baps-button__label">Primary Ghost</span></button>
-      <button type="button" className="baps-button baps-button--ghost-secondary"><span className="baps-button__label">Secondary Ghost</span></button>
+      <BapsButton label="Primary" />
+      <BapsButton label="Secondary" severity="secondary" />
+      <BapsButton label="Danger" severity="danger" />
+      <BapsButton label="Warning" severity="warn" />
+      <BapsButton label="Primary Ghost" variant="ghost" />
+      <BapsButton label="Secondary Ghost" severity="secondary" variant="ghost" />
     </div>
   );
 }`,
@@ -286,12 +210,12 @@ ${SETUP}
 export default function AllVariants() {
   return (
     <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
-      <button type="button" className="baps-button baps-button--primary"><span className="baps-button__label">Primary</span></button>
-      <button type="button" className="baps-button baps-button--secondary"><span className="baps-button__label">Secondary</span></button>
-      <button type="button" className="baps-button baps-button--danger"><span className="baps-button__label">Danger</span></button>
-      <button type="button" className="baps-button baps-button--warn"><span className="baps-button__label">Warning</span></button>
-      <button type="button" className="baps-button baps-button--ghost-primary"><span className="baps-button__label">Primary Ghost</span></button>
-      <button type="button" className="baps-button baps-button--ghost-secondary"><span className="baps-button__label">Secondary Ghost</span></button>
+      <BapsButton label="Primary" />
+      <BapsButton label="Secondary" severity="secondary" />
+      <BapsButton label="Danger" severity="danger" />
+      <BapsButton label="Warning" severity="warn" />
+      <BapsButton label="Primary Ghost" variant="ghost" />
+      <BapsButton label="Secondary Ghost" severity="secondary" variant="ghost" />
     </div>
   );
 }`,
@@ -342,64 +266,14 @@ export default function AllVariants() {
 </div>`,
     react: `${SETUP}
 
-import { BAPS_ICONS } from '@org/ui-kit/icons';
-
-/* Same Glyph as the With Icons example; keep one copy in your own code. The
-   size steps are not decoration — the icon shrinks and grows with the button,
-   16 / 18 / 20 / 24 against heights of 32 / 36 / 36 / 42. */
-function Glyph({ name, size = 18 }) {
-  return (
-    <baps-icon style={{ '--baps-icon-size': size + 'px' }}>
-      <span
-        className="baps-icon__glyph"
-        aria-hidden="true"
-        dangerouslySetInnerHTML={{
-          __html:
-            '<svg viewBox="0 0 24 24" fill="none" focusable="false">' + BAPS_ICONS[name] + '</svg>',
-        }}
-      />
-    </baps-icon>
-  );
-}
-
 export function IconOnly() {
   return (
     <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
-      <button
-        type="button"
-        className="baps-button baps-button--primary baps-button--icon-only baps-button--s"
-        aria-label="Add to filter"
-      >
-        <Glyph name="add-to-filter" size={16} />
-      </button>
-      <button
-        type="button"
-        className="baps-button baps-button--primary baps-button--icon-only"
-        aria-label="Add to filter"
-      >
-        <Glyph name="add-to-filter" size={18} />
-      </button>
-      <button
-        type="button"
-        className="baps-button baps-button--primary baps-button--icon-only baps-button--l"
-        aria-label="Add to filter"
-      >
-        <Glyph name="add-to-filter" size={20} />
-      </button>
-      <button
-        type="button"
-        className="baps-button baps-button--primary baps-button--icon-only baps-button--xl"
-        aria-label="Add to filter"
-      >
-        <Glyph name="add-to-filter" size={24} />
-      </button>
-      <button
-        type="button"
-        className="baps-button baps-button--primary baps-button--icon-only"
-        aria-label="Add"
-      >
-        <Glyph name="plus" size={18} />
-      </button>
+      <BapsButton icon="add-to-filter" size="small" aria-label="Add to filter" />
+      <BapsButton icon="add-to-filter" aria-label="Add to filter" />
+      <BapsButton icon="add-to-filter" size="large" aria-label="Add to filter" />
+      <BapsButton icon="add-to-filter" size="xlarge" aria-label="Add to filter" />
+      <BapsButton icon="plus" aria-label="Add" />
     </div>
   );
 }`,
@@ -407,61 +281,14 @@ export function IconOnly() {
 
 ${SETUP}
 
-import { BAPS_ICONS } from '@org/ui-kit/icons';
-
-function Glyph({ name, size = 18 }) {
-  return (
-    <baps-icon style={{ '--baps-icon-size': size + 'px' }}>
-      <span
-        className="baps-icon__glyph"
-        aria-hidden="true"
-        dangerouslySetInnerHTML={{
-          __html:
-            '<svg viewBox="0 0 24 24" fill="none" focusable="false">' + BAPS_ICONS[name] + '</svg>',
-        }}
-      />
-    </baps-icon>
-  );
-}
-
 export default function IconOnly() {
   return (
     <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
-      <button
-        type="button"
-        className="baps-button baps-button--primary baps-button--icon-only baps-button--s"
-        aria-label="Add to filter"
-      >
-        <Glyph name="add-to-filter" size={16} />
-      </button>
-      <button
-        type="button"
-        className="baps-button baps-button--primary baps-button--icon-only"
-        aria-label="Add to filter"
-      >
-        <Glyph name="add-to-filter" size={18} />
-      </button>
-      <button
-        type="button"
-        className="baps-button baps-button--primary baps-button--icon-only baps-button--l"
-        aria-label="Add to filter"
-      >
-        <Glyph name="add-to-filter" size={20} />
-      </button>
-      <button
-        type="button"
-        className="baps-button baps-button--primary baps-button--icon-only baps-button--xl"
-        aria-label="Add to filter"
-      >
-        <Glyph name="add-to-filter" size={24} />
-      </button>
-      <button
-        type="button"
-        className="baps-button baps-button--primary baps-button--icon-only"
-        aria-label="Add"
-      >
-        <Glyph name="plus" size={18} />
-      </button>
+      <BapsButton icon="add-to-filter" size="small" aria-label="Add to filter" />
+      <BapsButton icon="add-to-filter" aria-label="Add to filter" />
+      <BapsButton icon="add-to-filter" size="large" aria-label="Add to filter" />
+      <BapsButton icon="add-to-filter" size="xlarge" aria-label="Add to filter" />
+      <BapsButton icon="plus" aria-label="Add" />
     </div>
   );
 }`,
@@ -499,10 +326,10 @@ export default function IconOnly() {
 export function AllSizes() {
   return (
     <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-      <button type="button" className="baps-button baps-button--primary baps-button--s"><span className="baps-button__label">S (32px)</span></button>
-      <button type="button" className="baps-button baps-button--primary"><span className="baps-button__label">M (36px, default)</span></button>
-      <button type="button" className="baps-button baps-button--primary baps-button--l"><span className="baps-button__label">L (36px, larger font)</span></button>
-      <button type="button" className="baps-button baps-button--primary baps-button--xl"><span className="baps-button__label">XL (42px)</span></button>
+      <BapsButton label="S (32px)" size="small" />
+      <BapsButton label="M (36px, default)" />
+      <BapsButton label="L (36px, larger font)" size="large" />
+      <BapsButton label="XL (42px)" size="xlarge" />
     </div>
   );
 }`,
@@ -513,10 +340,10 @@ ${SETUP}
 export default function AllSizes() {
   return (
     <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-      <button type="button" className="baps-button baps-button--primary baps-button--s"><span className="baps-button__label">S (32px)</span></button>
-      <button type="button" className="baps-button baps-button--primary"><span className="baps-button__label">M (36px, default)</span></button>
-      <button type="button" className="baps-button baps-button--primary baps-button--l"><span className="baps-button__label">L (36px, larger font)</span></button>
-      <button type="button" className="baps-button baps-button--primary baps-button--xl"><span className="baps-button__label">XL (42px)</span></button>
+      <BapsButton label="S (32px)" size="small" />
+      <BapsButton label="M (36px, default)" />
+      <BapsButton label="L (36px, larger font)" size="large" />
+      <BapsButton label="XL (42px)" size="xlarge" />
     </div>
   );
 }`,
@@ -544,12 +371,9 @@ export default function AllSizes() {
 export function States() {
   return (
     <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-      <button type="button" className="baps-button baps-button--primary"><span className="baps-button__label">Default</span></button>
-      <button type="button" className="baps-button baps-button--primary" disabled><span className="baps-button__label">Disabled</span></button>
-      <button type="button" className="baps-button baps-button--primary baps-button--loading" disabled>
-        <i className="pi pi-spinner pi-spin" aria-hidden="true" />
-        <span className="baps-button__label">Loading</span>
-      </button>
+      <BapsButton label="Default" />
+      <BapsButton label="Disabled" disabled />
+      <BapsButton label="Loading" loading />
     </div>
   );
 }`,
@@ -560,12 +384,9 @@ ${SETUP}
 export default function States() {
   return (
     <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-      <button type="button" className="baps-button baps-button--primary"><span className="baps-button__label">Default</span></button>
-      <button type="button" className="baps-button baps-button--primary" disabled><span className="baps-button__label">Disabled</span></button>
-      <button type="button" className="baps-button baps-button--primary baps-button--loading" disabled>
-        <i className="pi pi-spinner pi-spin" aria-hidden="true" />
-        <span className="baps-button__label">Loading</span>
-      </button>
+      <BapsButton label="Default" />
+      <BapsButton label="Disabled" disabled />
+      <BapsButton label="Loading" loading />
     </div>
   );
 }`,
@@ -592,10 +413,10 @@ export default function States() {
 export function SamparkVariants() {
   return (
     <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
-      <button type="button" className="baps-button baps-sampark baps-button--primary"><span className="baps-button__label">Primary</span></button>
-      <button type="button" className="baps-button baps-sampark baps-button--secondary"><span className="baps-button__label">Secondary</span></button>
-      <button type="button" className="baps-button baps-sampark baps-button--ghost-primary"><span className="baps-button__label">Primary Ghost</span></button>
-      <button type="button" className="baps-button baps-sampark baps-button--link"><span className="baps-button__label">Link</span></button>
+      <BapsButton brand="sampark" label="Primary" />
+      <BapsButton brand="sampark" label="Secondary" severity="secondary" />
+      <BapsButton brand="sampark" label="Primary Ghost" variant="ghost" />
+      <BapsButton brand="sampark" label="Link" variant="link" />
     </div>
   );
 }`,
@@ -606,10 +427,10 @@ ${SETUP}
 export default function SamparkVariants() {
   return (
     <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
-      <button type="button" className="baps-button baps-sampark baps-button--primary"><span className="baps-button__label">Primary</span></button>
-      <button type="button" className="baps-button baps-sampark baps-button--secondary"><span className="baps-button__label">Secondary</span></button>
-      <button type="button" className="baps-button baps-sampark baps-button--ghost-primary"><span className="baps-button__label">Primary Ghost</span></button>
-      <button type="button" className="baps-button baps-sampark baps-button--link"><span className="baps-button__label">Link</span></button>
+      <BapsButton brand="sampark" label="Primary" />
+      <BapsButton brand="sampark" label="Secondary" severity="secondary" />
+      <BapsButton brand="sampark" label="Primary Ghost" variant="ghost" />
+      <BapsButton brand="sampark" label="Link" variant="link" />
     </div>
   );
 }`,
@@ -636,10 +457,10 @@ export default function SamparkVariants() {
 export function SamparkSizes() {
   return (
     <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-      <button type="button" className="baps-button baps-sampark baps-button--primary baps-button--s"><span className="baps-button__label">SM (28px)</span></button>
-      <button type="button" className="baps-button baps-sampark baps-button--primary"><span className="baps-button__label">Default (32px)</span></button>
-      <button type="button" className="baps-button baps-sampark baps-button--primary baps-button--l"><span className="baps-button__label">LG (36px)</span></button>
-      <button type="button" className="baps-button baps-sampark baps-button--primary baps-button--xl"><span className="baps-button__label">XL (40px)</span></button>
+      <BapsButton brand="sampark" label="SM (28px)" size="small" />
+      <BapsButton brand="sampark" label="Default (32px)" />
+      <BapsButton brand="sampark" label="LG (36px)" size="large" />
+      <BapsButton brand="sampark" label="XL (42px)" size="xlarge" />
     </div>
   );
 }`,
@@ -650,10 +471,10 @@ ${SETUP}
 export default function SamparkSizes() {
   return (
     <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-      <button type="button" className="baps-button baps-sampark baps-button--primary baps-button--s"><span className="baps-button__label">SM (28px)</span></button>
-      <button type="button" className="baps-button baps-sampark baps-button--primary"><span className="baps-button__label">Default (32px)</span></button>
-      <button type="button" className="baps-button baps-sampark baps-button--primary baps-button--l"><span className="baps-button__label">LG (36px)</span></button>
-      <button type="button" className="baps-button baps-sampark baps-button--primary baps-button--xl"><span className="baps-button__label">XL (40px)</span></button>
+      <BapsButton brand="sampark" label="SM (28px)" size="small" />
+      <BapsButton brand="sampark" label="Default (32px)" />
+      <BapsButton brand="sampark" label="LG (36px)" size="large" />
+      <BapsButton brand="sampark" label="XL (42px)" size="xlarge" />
     </div>
   );
 }`,
@@ -683,12 +504,12 @@ export default function SamparkSizes() {
 export function SamparkIconOnly() {
   return (
     <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-      <button type="button" className="baps-button baps-sampark baps-button--primary baps-button--icon-only baps-button--s" aria-label="Confirm"><i className="pi pi-check" aria-hidden="true" /></button>
-      <button type="button" className="baps-button baps-sampark baps-button--primary baps-button--icon-only" aria-label="Confirm"><i className="pi pi-check" aria-hidden="true" /></button>
-      <button type="button" className="baps-button baps-sampark baps-button--primary baps-button--icon-only baps-button--l" aria-label="Confirm"><i className="pi pi-check" aria-hidden="true" /></button>
-      <button type="button" className="baps-button baps-sampark baps-button--primary baps-button--icon-only baps-button--xl" aria-label="Confirm"><i className="pi pi-check" aria-hidden="true" /></button>
-      <button type="button" className="baps-button baps-sampark baps-button--secondary baps-button--icon-only" aria-label="Edit"><i className="pi pi-pencil" aria-hidden="true" /></button>
-      <button type="button" className="baps-button baps-sampark baps-button--ghost-primary baps-button--icon-only" aria-label="Delete"><i className="pi pi-trash" aria-hidden="true" /></button>
+      <BapsButton brand="sampark" icon="check" size="small" aria-label="Confirm" />
+      <BapsButton brand="sampark" icon="check" aria-label="Confirm" />
+      <BapsButton brand="sampark" icon="check" size="large" aria-label="Confirm" />
+      <BapsButton brand="sampark" icon="check" size="xlarge" aria-label="Confirm" />
+      <BapsButton brand="sampark" icon="edit" severity="secondary" aria-label="Edit" />
+      <BapsButton brand="sampark" icon="trash" variant="ghost" aria-label="Delete" />
     </div>
   );
 }`,
@@ -699,12 +520,12 @@ ${SETUP}
 export default function SamparkIconOnly() {
   return (
     <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-      <button type="button" className="baps-button baps-sampark baps-button--primary baps-button--icon-only baps-button--s" aria-label="Confirm"><i className="pi pi-check" aria-hidden="true" /></button>
-      <button type="button" className="baps-button baps-sampark baps-button--primary baps-button--icon-only" aria-label="Confirm"><i className="pi pi-check" aria-hidden="true" /></button>
-      <button type="button" className="baps-button baps-sampark baps-button--primary baps-button--icon-only baps-button--l" aria-label="Confirm"><i className="pi pi-check" aria-hidden="true" /></button>
-      <button type="button" className="baps-button baps-sampark baps-button--primary baps-button--icon-only baps-button--xl" aria-label="Confirm"><i className="pi pi-check" aria-hidden="true" /></button>
-      <button type="button" className="baps-button baps-sampark baps-button--secondary baps-button--icon-only" aria-label="Edit"><i className="pi pi-pencil" aria-hidden="true" /></button>
-      <button type="button" className="baps-button baps-sampark baps-button--ghost-primary baps-button--icon-only" aria-label="Delete"><i className="pi pi-trash" aria-hidden="true" /></button>
+      <BapsButton brand="sampark" icon="check" size="small" aria-label="Confirm" />
+      <BapsButton brand="sampark" icon="check" aria-label="Confirm" />
+      <BapsButton brand="sampark" icon="check" size="large" aria-label="Confirm" />
+      <BapsButton brand="sampark" icon="check" size="xlarge" aria-label="Confirm" />
+      <BapsButton brand="sampark" icon="edit" severity="secondary" aria-label="Edit" />
+      <BapsButton brand="sampark" icon="trash" variant="ghost" aria-label="Delete" />
     </div>
   );
 }`,
@@ -733,12 +554,9 @@ export default function SamparkIconOnly() {
 export function SamparkStates() {
   return (
     <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-      <button type="button" className="baps-button baps-sampark baps-button--primary"><span className="baps-button__label">Default</span></button>
-      <button type="button" className="baps-button baps-sampark baps-button--primary" disabled><span className="baps-button__label">Disabled</span></button>
-      <button type="button" className="baps-button baps-sampark baps-button--primary baps-button--loading" disabled>
-        <i className="pi pi-spinner pi-spin" aria-hidden="true" />
-        <span className="baps-button__label">Loading</span>
-      </button>
+      <BapsButton brand="sampark" label="Default" />
+      <BapsButton brand="sampark" label="Disabled" disabled />
+      <BapsButton brand="sampark" label="Loading" loading />
     </div>
   );
 }`,
@@ -749,12 +567,9 @@ ${SETUP}
 export default function SamparkStates() {
   return (
     <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-      <button type="button" className="baps-button baps-sampark baps-button--primary"><span className="baps-button__label">Default</span></button>
-      <button type="button" className="baps-button baps-sampark baps-button--primary" disabled><span className="baps-button__label">Disabled</span></button>
-      <button type="button" className="baps-button baps-sampark baps-button--primary baps-button--loading" disabled>
-        <i className="pi pi-spinner pi-spin" aria-hidden="true" />
-        <span className="baps-button__label">Loading</span>
-      </button>
+      <BapsButton brand="sampark" label="Default" />
+      <BapsButton brand="sampark" label="Disabled" disabled />
+      <BapsButton brand="sampark" label="Loading" loading />
     </div>
   );
 }`,

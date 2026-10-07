@@ -1,6 +1,7 @@
 import { Meta, Canvas, Controls } from '@storybook/blocks';
-import { BrandOnly, PropsTable } from '@baps/docs-blocks';
+import { BrandOnly, PropsTable, FrameworkTabs } from '@baps/docs-blocks';
 import * as BadgeStories from './badge.stories';
+import { badgeSnippets } from './badge.snippets';
 
 <Meta of={BadgeStories} />
 
@@ -19,7 +20,12 @@ A small count or status chip, typically overlaid on an icon/avatar or inline nex
 
 <!-- Anchored to an icon button -->
 <baps-overlaybadge [value]="unread" severity="danger">
-  <baps-button icon="pi pi-bell" [rounded]="true" [text]="true" ariaLabel="Notifications" />
+  <baps-button
+    icon="pi pi-bell"
+    [rounded]="true"
+    [text]="true"
+    ariaLabel="Notifications"
+  />
 </baps-overlaybadge>
 ```
 
@@ -27,33 +33,45 @@ A small count or status chip, typically overlaid on an icon/avatar or inline nex
 
 ### Playground
 
-<Canvas of={BadgeStories.Playground} />
+<FrameworkTabs
+  of={BadgeStories.Playground}
+  snippets={badgeSnippets.Playground}
+/>
 
 <Controls of={BadgeStories.Playground} />
 
 ### Severities
 
-<Canvas of={BadgeStories.Severities} />
+<FrameworkTabs
+  of={BadgeStories.Severities}
+  snippets={badgeSnippets.Severities}
+/>
 
 ### Sizes
 
-<Canvas of={BadgeStories.Sizes} />
+<FrameworkTabs of={BadgeStories.Sizes} snippets={badgeSnippets.Sizes} />
 
 <BrandOnly brand="sampark">
 
 ### Sampark
 
-<Canvas of={BadgeStories.Sampark} />
+<FrameworkTabs of={BadgeStories.Sampark} snippets={badgeSnippets.Sampark} />
 
 ### Sampark Types
 
-<Canvas of={BadgeStories.SamparkTypes} />
+<FrameworkTabs
+  of={BadgeStories.SamparkTypes}
+  snippets={badgeSnippets.SamparkTypes}
+/>
 
 </BrandOnly>
 
 ### Dot And Overlay
 
-<Canvas of={BadgeStories.DotAndOverlay} />
+<FrameworkTabs
+  of={BadgeStories.DotAndOverlay}
+  snippets={badgeSnippets.DotAndOverlay}
+/>
 
 ## API
 
@@ -63,13 +81,13 @@ Inputs, outputs and their types, read from the component's own source.
 
 ## When Not to Use
 
-| Need | Use | Not this |
-| --- | --- | --- |
-| A word-length status label ("Active", "Pending approval") | `baps-tag` | Badge — fixed height, no wrap or truncation handling (see below) |
-| A message the user must read or dismiss | `baps-alert`, or `baps-message` inline in a form | Badge |
-| Progress or an in-flight operation | `baps-progressbar` | Badge |
-| A per-instance Sampark skin on the anchored form | `baps-badge` positioned yourself | `baps-overlaybadge` — it exposes no `brand` input, because PrimeNG's `OverlayBadge` has no `dt` passthrough to the inner badge |
-| An interactive chip the user can click or remove | `baps-button` (or `baps-tag` beside one) | Badge — it is never a target |
+| Need                                                      | Use                                              | Not this                                                                                                                       |
+| --------------------------------------------------------- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+| A word-length status label ("Active", "Pending approval") | `baps-tag`                                       | Badge — fixed height, no wrap or truncation handling (see below)                                                               |
+| A message the user must read or dismiss                   | `baps-alert`, or `baps-message` inline in a form | Badge                                                                                                                          |
+| Progress or an in-flight operation                        | `baps-progressbar`                               | Badge                                                                                                                          |
+| A per-instance Sampark skin on the anchored form          | `baps-badge` positioned yourself                 | `baps-overlaybadge` — it exposes no `brand` input, because PrimeNG's `OverlayBadge` has no `dt` passthrough to the inner badge |
+| An interactive chip the user can click or remove          | `baps-button` (or `baps-tag` beside one)         | Badge — it is never a target                                                                                                   |
 
 ## Accessibility
 

@@ -54,14 +54,12 @@ function getPages(current, totalPages) {
 }`;
 
 export const paginationSnippets: Record<string, SnippetSet> = {
-
   /* ── Default (full strip) ──────────────────────────────────────────── */
   Default: {
     interactive: true,
     custom: `<!-- Full pagination strip: count, rows-per-page, first/prev, truncated
      page links, next/last, and "Go to". The .baps-paginator class vocabulary
      matches the Angular component's own template 1-for-1. -->
-<div class="baps-ds-sampark">
   <nav class="baps-paginator" aria-label="Pagination">
     <span class="baps-paginator__report">Showing 1-20 of 250</span>
     <select class="baps-paginator__rpp" aria-label="Rows per page">
@@ -91,8 +89,7 @@ export const paginationSnippets: Record<string, SnippetSet> = {
       <span class="baps-paginator__jump-label">Go to</span>
       <input type="text" class="baps-paginator__jump-input" inputmode="numeric" value="1" aria-label="Go to page" />
     </span>
-  </nav>
-</div>`,
+  </nav>`,
     react: `${SETUP}
 
 import { useState, useCallback } from 'react';

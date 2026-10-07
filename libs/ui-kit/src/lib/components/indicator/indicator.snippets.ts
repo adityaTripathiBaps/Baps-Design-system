@@ -42,7 +42,9 @@ import { setupFor, type SnippetSet } from '../../docs/snippet-setup';
 /** Re-exported so the .mdx and the docs blocks keep importing it from here. */
 export type { SnippetSet };
 
-const SETUP = setupFor('indicator');
+const SETUP = `${setupFor('indicator', false, '@org/ui-kit-react/styles')}
+
+import { BapsIndicator } from '@org/ui-kit-react';`;
 
 export const indicatorSnippets: Record<string, SnippetSet> = {
   // Counts rather than a bare dot: [text]="true" switches the fill to the one
@@ -76,15 +78,15 @@ export function NotificationCounts({ count = 3 }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
       {SIZES.map((size) => (
-        <Indicator
+        <BapsIndicator
           key={size}
           severity="error"
           size={size}
           text
-          label={count + ' unread notifications'}
+          aria-label={count + ' unread notifications'}
         >
           {count}
-        </Indicator>
+        </BapsIndicator>
       ))}
     </div>
   );
@@ -97,15 +99,15 @@ export default function NotificationCounts({ count = 3 }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
       {SIZES.map((size) => (
-        <Indicator
+        <BapsIndicator
           key={size}
           severity="error"
           size={size}
           text
-          label={count + ' unread notifications'}
+          aria-label={count + ' unread notifications'}
         >
           {count}
-        </Indicator>
+        </BapsIndicator>
       ))}
     </div>
   );
@@ -173,9 +175,9 @@ export function IconBadge() {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
       {SIZES.map((size) => (
-        <Indicator key={size} severity="success" size={size}>
+        <BapsIndicator key={size} severity="success" size={size}>
           <Tick />
-        </Indicator>
+        </BapsIndicator>
       ))}
     </div>
   );
@@ -201,9 +203,9 @@ export default function IconBadge() {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
       {SIZES.map((size) => (
-        <Indicator key={size} severity="success" size={size}>
+        <BapsIndicator key={size} severity="success" size={size}>
           <Tick />
-        </Indicator>
+        </BapsIndicator>
       ))}
     </div>
   );
@@ -278,7 +280,7 @@ export function StatusDot() {
       {SEVERITIES.map((severity) => (
         <div key={severity} style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           {SIZES.map((size) => (
-            <Indicator key={size} severity={severity} size={size} />
+            <BapsIndicator key={size} severity={severity} size={size} />
           ))}
           <span style={{ fontSize: 12, color: 'var(--color-sampark-mono-80)' }}>{severity}</span>
         </div>
@@ -297,7 +299,7 @@ export default function StatusDot() {
       {SEVERITIES.map((severity) => (
         <div key={severity} style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           {SIZES.map((size) => (
-            <Indicator key={size} severity={severity} size={size} />
+            <BapsIndicator key={size} severity={severity} size={size} />
           ))}
           <span style={{ fontSize: 12, color: 'var(--color-sampark-mono-80)' }}>{severity}</span>
         </div>
@@ -335,8 +337,8 @@ export function WithRing() {
         borderRadius: '0.5rem',
       }}
     >
-      <Indicator severity="success" size="l" />
-      <Indicator severity="success" size="l" ring />
+      <BapsIndicator severity="success" size="l" />
+      <BapsIndicator severity="success" size="l" ring />
     </div>
   );
 }`,
@@ -354,8 +356,8 @@ export default function WithRing() {
         borderRadius: '0.5rem',
       }}
     >
-      <Indicator severity="success" size="l" />
-      <Indicator severity="success" size="l" ring />
+      <BapsIndicator severity="success" size="l" />
+      <BapsIndicator severity="success" size="l" ring />
     </div>
   );
 }`,
@@ -393,7 +395,7 @@ function Indicator({ severity = 'error', size = 'm', ring, text, disabled, label
 }
 
 export function Example() {
-  return <Indicator severity="error" size="m" />;
+  return <BapsIndicator severity="error" size="m" />;
 }`,
     next: `${SETUP}
 
@@ -420,7 +422,7 @@ function Indicator({ severity = 'error', size = 'm', ring, text, disabled, label
 }
 
 export default function Example() {
-  return <Indicator severity="error" size="m" />;
+  return <BapsIndicator severity="error" size="m" />;
 }`,
   },
 };

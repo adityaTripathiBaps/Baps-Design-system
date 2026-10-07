@@ -1,0 +1,86 @@
+baps-input-group {
+  display: block;
+  --baps-ig-surface: var(--color-mybky-mono-0);
+  --baps-ig-border: var(--color-mybky-border-default);
+  --baps-ig-text: var(--color-mybky-text-primary);
+  --baps-ig-border-hover: var(--color-mybky-blue-400);
+  --baps-ig-ring: 0 0 0 var(--input-group-focus-ring-width)
+    var(--input-shadow-focused);
+}
+
+:is(baps-input-group.baps-sampark, .baps-ds-sampark baps-input-group) {
+  --baps-ig-surface: var(--color-sampark-mono-0);
+  --baps-ig-border: var(--color-sampark-mono-borders);
+  --baps-ig-text: var(--color-sampark-mono-100);
+  --baps-ig-border-hover: var(--color-sampark-border-hover);
+  --baps-ig-ring: var(--shadow-sampark-input-focus);
+}
+
+baps-input-group .p-inputgroup {
+  box-sizing: border-box;
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  height: var(--input-group-height) !important;
+  border: var(--input-group-border-width) solid var(--baps-ig-border);
+  border-radius: var(--input-group-radius);
+  background: var(--baps-ig-surface);
+  overflow: hidden;
+}
+
+baps-input-group .p-inputgroup:hover {
+  border-color: var(--baps-ig-border-hover);
+}
+
+baps-input-group .p-inputgroup:focus-within {
+  border-color: var(--baps-ig-border-hover);
+  box-shadow: var(--baps-ig-ring);
+}
+
+baps-input-group .p-inputgroup .p-inputtext {
+  height: 100% !important;
+  min-width: 0 !important;
+  flex: 1 1 auto;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
+  text-align: center;
+}
+
+baps-input-group .p-inputgroup > .p-inputgroupaddon {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  min-width: var(--input-group-addon-min-width);
+  border: 0;
+  border-radius: var(--input-group-radius);
+  padding: 0 var(--input-group-addon-padding-x);
+  background: var(--color-sampark-mono-alpha2);
+  color: var(--baps-ig-text);
+  font-size: var(--input-group-addon-font-size);
+  font-weight: var(--input-group-addon-font-weight);
+  line-height: var(--input-group-addon-line-height);
+  white-space: nowrap;
+}
+
+baps-input-group .p-inputgroup > .p-inputgroupaddon:first-child {
+  border-inline-end: var(--input-group-border-width) solid var(--baps-ig-border);
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+  background: var(--color-sampark-mono-alpha4);
+}
+
+baps-input-group .p-inputgroup > .p-inputgroupaddon:last-child {
+  border-inline-start: var(--input-group-border-width) solid
+    var(--baps-ig-border);
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
+}
+
+.baps-dark baps-input-group {
+  --baps-ig-surface: var(--color-mybky-mono-800);
+  --baps-ig-border: var(--color-mybky-mono-600);
+  --baps-ig-text: var(--color-mybky-mono-50);
+}

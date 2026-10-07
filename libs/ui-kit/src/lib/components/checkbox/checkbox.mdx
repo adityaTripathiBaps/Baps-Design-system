@@ -1,6 +1,7 @@
 import { Meta, Canvas, Controls } from '@storybook/blocks';
-import { BrandOnly, PropsTable } from '@baps/docs-blocks';
+import { BrandOnly, PropsTable, FrameworkTabs } from '@baps/docs-blocks';
 import * as CheckboxStories from './checkbox.stories';
+import { checkboxSnippets } from './checkbox.snippets';
 
 <Meta of={CheckboxStories} />
 
@@ -22,17 +23,20 @@ A form checkbox control. `baps-checkbox` wraps PrimeNG's `p-checkbox` and implem
 
 ### Default
 
-<Canvas of={CheckboxStories.Default} />
+<FrameworkTabs
+  of={CheckboxStories.Default}
+  snippets={checkboxSnippets.Default}
+/>
 
 <Controls of={CheckboxStories.Default} />
 
 ### Sizes
 
-<Canvas of={CheckboxStories.Sizes} />
+<FrameworkTabs of={CheckboxStories.Sizes} snippets={checkboxSnippets.Sizes} />
 
 ### States
 
-<Canvas of={CheckboxStories.States} />
+<FrameworkTabs of={CheckboxStories.States} snippets={checkboxSnippets.States} />
 
 ### Brands
 
@@ -46,7 +50,10 @@ control. Its **Disabled checked** row fills the box solid Mono/40 with a white
 tick, where MyBKY keeps the pale Mono/20 ground and greys the tick — a
 difference that is intentional in both Figma frames.
 
-<Canvas of={CheckboxStories.Sampark} />
+<FrameworkTabs
+  of={CheckboxStories.Sampark}
+  snippets={checkboxSnippets.Sampark}
+/>
 
 </BrandOnly>
 
@@ -70,6 +77,7 @@ native control in either forms API.
 ```ts
 form = new FormGroup({ value: new FormControl(false) });
 ```
+
 ## API
 
 Inputs, outputs and their types, read from the component's own source.
@@ -78,13 +86,13 @@ Inputs, outputs and their types, read from the component's own source.
 
 ## When Not to Use
 
-| Need | Use | Not this |
-| --- | --- | --- |
-| A setting that takes effect immediately, with no submit | `baps-toggleswitch` | Checkbox |
-| Exactly one choice from several options | `baps-select`, or `baps-listbox` for an inline list | A column of checkboxes |
-| Multi-select from a long or searchable list | `baps-listbox` / `baps-users-dropdown` | Dozens of individual checkboxes |
-| Row selection inside a data grid | `baps-table`'s own selection support | A `baps-checkbox` per row wired by hand |
-| A tri-state "some children selected" parent | *(nothing here yet)* | `baps-checkbox` — it exposes no `indeterminate` input; PrimeNG's underlying checkbox supports the state but the wrapper does not forward it |
+| Need                                                    | Use                                                 | Not this                                                                                                                                    |
+| ------------------------------------------------------- | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| A setting that takes effect immediately, with no submit | `baps-toggleswitch`                                 | Checkbox                                                                                                                                    |
+| Exactly one choice from several options                 | `baps-select`, or `baps-listbox` for an inline list | A column of checkboxes                                                                                                                      |
+| Multi-select from a long or searchable list             | `baps-listbox` / `baps-users-dropdown`              | Dozens of individual checkboxes                                                                                                             |
+| Row selection inside a data grid                        | `baps-table`'s own selection support                | A `baps-checkbox` per row wired by hand                                                                                                     |
+| A tri-state "some children selected" parent             | _(nothing here yet)_                                | `baps-checkbox` — it exposes no `indeterminate` input; PrimeNG's underlying checkbox supports the state but the wrapper does not forward it |
 
 ## Accessibility
 
@@ -97,7 +105,7 @@ Inputs, outputs and their types, read from the component's own source.
 
 ### Keyboard Support
 
-| Key | Function |
-| --- | --- |
-| <kbd>Tab</kbd> | Moves focus to the checkbox. |
-| <kbd>Space</kbd> | Toggles the checked state. |
+| Key              | Function                     |
+| ---------------- | ---------------------------- |
+| <kbd>Tab</kbd>   | Moves focus to the checkbox. |
+| <kbd>Space</kbd> | Toggles the checked state.   |

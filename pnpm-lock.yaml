@@ -266,6 +266,15 @@ importers:
         specifier: ^21.1.3
         version: 21.1.3(790e884151031c0912fe963c9be29edd)
 
+  packages/ui-kit-react:
+    devDependencies:
+      '@org/tokens':
+        specifier: workspace:*
+        version: link:../../libs/tokens
+      react:
+        specifier: ^19.2.7
+        version: 19.2.7
+
 packages:
 
   '@adobe/css-tools@4.5.0':

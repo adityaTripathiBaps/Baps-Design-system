@@ -608,3 +608,109 @@ export default function RestVsRaised() {
 }`,
   },
 };
+
+/* React and Next tabs use the reusable React package; the PrimeNG-Angular and
+ * Custom tabs above remain independently documented. */
+const REACT_DS_SETUP = `${setupFor('card', false, '@org/ui-kit-react/styles')}
+
+import { BapsButton, BapsCard } from '@org/ui-kit-react';`;
+
+const reactCardExample = (
+  name: string,
+  jsx: string,
+  client = false,
+): Pick<SnippetSet, 'react' | 'next'> => ({
+  react: `${client ? "'use client';\n\n" : ''}${REACT_DS_SETUP}
+
+export function ${name}() {
+  return (
+    ${jsx}
+  );
+}`,
+  next: `${client ? "'use client';\n\n" : ''}${REACT_DS_SETUP}
+
+export default function ${name}() {
+  return (
+    ${jsx}
+  );
+}`,
+});
+
+Object.assign(
+  cardSnippets['DashboardTiles'],
+  reactCardExample(
+    'DashboardTiles',
+    `<div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 16 }}>
+      <BapsCard title="Registrations">248</BapsCard>
+      <BapsCard title="Events">12</BapsCard>
+      <BapsCard title="Donations">84</BapsCard>
+    </div>`,
+  ),
+);
+
+Object.assign(
+  cardSnippets['Playground'],
+  reactCardExample(
+    'Playground',
+    `<BapsCard
+      title="Registrations this week"
+      subtitle="Yuva Sabha"
+      actions={<BapsButton label="Export" variant="link" />}
+      footer="Updated today"
+    >
+      24 registrations
+    </BapsCard>`,
+  ),
+);
+
+Object.assign(
+  cardSnippets['Divided'],
+  reactCardExample(
+    'Divided',
+    `<BapsCard title="Member details" subtitle="Personal information" footer="Updated today" divided>
+      Card body content
+    </BapsCard>`,
+  ),
+);
+
+Object.assign(
+  cardSnippets['Interactive'],
+  reactCardExample(
+    'Interactive',
+    `<BapsCard interactive onClick={() => console.log('open')} title="Open member" aria-label="Open member details">
+      Press Enter, Space, or click to open.
+    </BapsCard>`,
+    true,
+  ),
+);
+
+Object.assign(
+  cardSnippets['BodyOnly'],
+  reactCardExample(
+    'BodyOnly',
+    '<BapsCard>A body-only card has no empty header or footer spacing.</BapsCard>',
+  ),
+);
+
+Object.assign(
+  cardSnippets['PaddingSteps'],
+  reactCardExample(
+    'PaddingSteps',
+    `<div style={{ display: 'grid', gap: 16 }}>
+      <BapsCard title="Default">Default padding</BapsCard>
+      <BapsCard title="Compact" padding="compact">Compact padding</BapsCard>
+      <BapsCard title="Flush" padding="none" divided>Flush padding</BapsCard>
+    </div>`,
+  ),
+);
+
+Object.assign(
+  cardSnippets['RestVsRaised'],
+  reactCardExample(
+    'RestVsRaised',
+    `<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
+      <BapsCard title="At rest" subtitle="Hairline border, no shadow">Default card</BapsCard>
+      <BapsCard title="Raised" subtitle="Brand shadow" raised>Floating card</BapsCard>
+    </div>`,
+  ),
+);

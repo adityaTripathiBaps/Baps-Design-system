@@ -1,5 +1,16 @@
-import { Component, ElementRef, Input, ViewEncapsulation, forwardRef, inject } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
+import {
+  Component,
+  ElementRef,
+  Input,
+  ViewEncapsulation,
+  forwardRef,
+  inject,
+} from '@angular/core';
+import {
+  ControlValueAccessor,
+  NG_VALUE_ACCESSOR,
+  FormsModule,
+} from '@angular/forms';
 import { SelectButton, SelectButtonChangeEvent } from 'primeng/selectbutton';
 
 /**
@@ -102,6 +113,7 @@ const SELECTBUTTON_TOKENS = { root: { borderRadius: '4px' } };
     ></p-selectbutton>
   `,
   encapsulation: ViewEncapsulation.None,
+  styleUrls: ['../../styles/components/segmented/_segmented.scss'],
   styles: `
     /* Brand-neutral indirection. Every PrimeNG token below is written once
        against these five names; only the names get re-pointed per brand, so
@@ -144,7 +156,10 @@ const SELECTBUTTON_TOKENS = { root: { borderRadius: '4px' } };
       --p-togglebutton-border-color: transparent;
       --p-togglebutton-color: var(--baps-seg-text);
 
-      --p-togglebutton-hover-background: var(--color-sampark-mono-alpha2, rgba(21, 20, 20, 0.02));
+      --p-togglebutton-hover-background: var(
+        --color-sampark-mono-alpha2,
+        rgba(21, 20, 20, 0.02)
+      );
       --p-togglebutton-hover-color: var(--baps-seg-text);
 
       --p-togglebutton-checked-background: var(--baps-seg-surface);
@@ -265,7 +280,9 @@ const SELECTBUTTON_TOKENS = { root: { borderRadius: '4px' } };
     }
 
     /* Chips stay at a 1px ring when active — only the boxed pill thickens. */
-    baps-segmented.baps-segmented-multiple .p-selectbutton .p-togglebutton.p-togglebutton-checked {
+    baps-segmented.baps-segmented-multiple
+      .p-selectbutton
+      .p-togglebutton.p-togglebutton-checked {
       border-width: 1px;
     }
 
@@ -278,17 +295,29 @@ const SELECTBUTTON_TOKENS = { root: { borderRadius: '4px' } };
          the light accent on it, 3.79:1. Accent one step lighter, tint as a 16%
          wash of it, same pairing the rest of dark mode uses. */
       --baps-seg-accent: var(--color-mybky-dark-primary-default, #9fadd9);
-      --baps-seg-accent-tint: color-mix(in srgb, var(--color-mybky-dark-primary-default, #9fadd9), transparent 84%);
+      --baps-seg-accent-tint: color-mix(
+        in srgb,
+        var(--color-mybky-dark-primary-default, #9fadd9),
+        transparent 84%
+      );
       --baps-seg-text-disabled: var(--color-mybky-dark-text-disabled, #8d9ba5);
     }
 
-    .baps-dark :is(baps-segmented.baps-sampark, .baps-ds-sampark baps-segmented) {
+    .baps-dark
+      :is(baps-segmented.baps-sampark, .baps-ds-sampark baps-segmented) {
       --baps-seg-surface: var(--color-sampark-dark-surface-card, #2c2c2a);
       --baps-seg-border: var(--color-sampark-dark-border-divider, #4a4947);
       --baps-seg-text: var(--color-sampark-dark-text-primary, #f8f7f7);
       --baps-seg-accent: var(--color-sampark-dark-primary-default, #d48787);
-      --baps-seg-accent-tint: color-mix(in srgb, var(--color-sampark-dark-primary-default, #d48787), transparent 84%);
-      --baps-seg-text-disabled: var(--color-sampark-dark-text-disabled, #94928f);
+      --baps-seg-accent-tint: color-mix(
+        in srgb,
+        var(--color-sampark-dark-primary-default, #d48787),
+        transparent 84%
+      );
+      --baps-seg-text-disabled: var(
+        --color-sampark-dark-text-disabled,
+        #94928f
+      );
     }
   `,
   providers: [
@@ -334,8 +363,12 @@ export class BapsSegmented implements ControlValueAccessor {
   value: unknown = null;
 
   private readonly host = inject(ElementRef<HTMLElement>);
-  private onChange: (value: unknown) => void = () => { /* empty */ };
-  private onTouched: () => void = () => { /* empty */ };
+  private onChange: (value: unknown) => void = () => {
+    /* empty */
+  };
+  private onTouched: () => void = () => {
+    /* empty */
+  };
 
   /** See SELECTBUTTON_TOKENS. */
   get dt(): object {

@@ -48,3 +48,174 @@
   content: none;
   display: none;
 }
+
+baps-checkbox {
+  display: inline-block;
+  --sel-border: var(--color-mybky-border-default);
+  --sel-border-hover: var(--color-mybky-primary-active);
+  --sel-border-checked: var(--color-mybky-primary-default);
+  --sel-ring: 0 0 0 2px var(--color-mybky-mono-100);
+  --sel-background: var(--color-mybky-surface-card);
+  --sel-disabled-background: var(--color-mybky-mono-50);
+  --sel-disabled-border: var(--color-mybky-mono-450);
+  --sel-disabled-checked-bg: var(--color-mybky-mono-300);
+  --sel-disabled-checked-icon: var(--color-mybky-mono-450);
+  --sel-label: var(--color-mybky-text-primary);
+  --sel-label-disabled: var(--color-mybky-mono-450);
+}
+
+:is(baps-checkbox.baps-sampark, .baps-ds-sampark baps-checkbox) {
+  --sel-border: var(--color-sampark-border-default);
+  --sel-border-hover: var(--color-sampark-primary-hover);
+  --sel-border-checked: var(--color-sampark-primary-default);
+  --sel-ring: 0 0 0 2px var(--color-sampark-primary-10);
+  --sel-background: var(--color-sampark-surface-card);
+  --sel-disabled-background: var(--color-sampark-mono-10);
+  --sel-disabled-border: var(--color-sampark-mono-40);
+  --sel-disabled-checked-bg: var(--color-sampark-mono-40);
+  --sel-disabled-checked-icon: var(--color-sampark-mono-0);
+  --sel-label: var(--color-sampark-text-primary);
+  --sel-label-disabled: var(--color-sampark-text-disabled);
+}
+
+baps-checkbox .baps-checkbox-wrapper {
+  display: inline-flex;
+  align-items: center;
+}
+
+baps-checkbox .p-checkbox {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  width: var(--font-size-md);
+  height: var(--font-size-md);
+  user-select: none;
+}
+
+baps-checkbox .p-checkbox-input {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  cursor: pointer;
+  opacity: 0;
+}
+
+baps-checkbox .p-checkbox-box {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: var(--sel-border-checked);
+  background: var(--sel-background);
+  border: 1px solid var(--sel-border);
+  border-radius: var(--space-1);
+  transition:
+    background var(--motion-duration-base) var(--motion-easing-standard),
+    border-color var(--motion-duration-base) var(--motion-easing-standard),
+    box-shadow var(--motion-duration-base) var(--motion-easing-standard);
+}
+
+baps-checkbox .p-checkbox-icon {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  display: none;
+  max-width: 100%;
+  max-height: 100%;
+  transform: translate(-50%, -50%);
+}
+
+baps-checkbox
+  .p-checkbox-input:checked
+  + .p-checkbox-box
+  .p-checkbox-icon-check,
+baps-checkbox .p-checkbox-indeterminate .p-checkbox-icon-minus {
+  display: inline-flex;
+}
+
+baps-checkbox .p-checkbox-input:checked + .p-checkbox-box,
+baps-checkbox .p-checkbox-indeterminate .p-checkbox-box {
+  color: var(--sel-border-checked);
+  background: var(--sel-background);
+  border-color: var(--sel-border-checked);
+  border-width: 1.5px;
+}
+
+baps-checkbox .p-checkbox:not(.p-disabled):hover .p-checkbox-box,
+baps-checkbox .p-checkbox-input:focus-visible + .p-checkbox-box {
+  border-color: var(--sel-border-hover);
+  box-shadow: var(--sel-ring);
+}
+
+baps-checkbox .p-checkbox-input:focus-visible {
+  outline: 0;
+}
+
+baps-checkbox .p-checkbox.p-disabled .p-checkbox-input {
+  cursor: not-allowed;
+}
+
+baps-checkbox .p-checkbox.p-disabled .p-checkbox-box {
+  color: var(--sel-disabled-checked-icon);
+  background: var(--sel-disabled-background);
+  border-color: var(--sel-disabled-border);
+  border-width: 1px;
+  box-shadow: none;
+}
+
+baps-checkbox
+  .p-checkbox.p-disabled
+  .p-checkbox-input:checked
+  + .p-checkbox-box {
+  background: var(--sel-disabled-checked-bg);
+}
+
+baps-checkbox .p-checkbox-label {
+  margin-inline-start: var(--space-2);
+  color: var(--sel-label);
+  font-size: var(--font-size-sm);
+  line-height: var(--font-line-height-snug);
+  cursor: pointer;
+  user-select: none;
+}
+
+baps-checkbox .p-checkbox.p-disabled + .p-checkbox-label {
+  color: var(--sel-label-disabled);
+  cursor: not-allowed;
+}
+
+baps-checkbox.baps-checkbox-lg .p-checkbox {
+  width: var(--space-5-5);
+  height: var(--space-5-5);
+}
+
+baps-checkbox.baps-checkbox-lg .p-checkbox-label {
+  margin-inline-start: var(--space-2-5);
+  font-size: var(--font-size-md);
+}
+
+.baps-dark baps-checkbox {
+  --sel-border: var(--color-mybky-dark-border-control);
+  --sel-background: var(--color-mybky-dark-surface-card);
+  --sel-border-checked: var(--color-mybky-dark-primary-default);
+  --sel-ring: 0 0 0 2px var(--color-mybky-mono-700);
+  --sel-label: var(--color-mybky-dark-text-primary);
+  --sel-label-disabled: var(--color-mybky-dark-text-disabled);
+  --sel-disabled-background: var(--color-mybky-dark-surface-hover);
+  --sel-disabled-checked-bg: var(--color-mybky-dark-surface-hover);
+  --sel-disabled-checked-icon: var(--color-mybky-dark-text-disabled);
+}
+
+.baps-dark :is(baps-checkbox.baps-sampark, .baps-ds-sampark baps-checkbox),
+.baps-ds-sampark .baps-dark baps-checkbox {
+  --sel-border: var(--color-sampark-dark-border-control);
+  --sel-background: var(--color-sampark-dark-surface-card);
+  --sel-border-checked: var(--color-sampark-dark-primary-default);
+  --sel-label: var(--color-sampark-dark-text-primary);
+  --sel-label-disabled: var(--color-sampark-dark-text-disabled);
+}

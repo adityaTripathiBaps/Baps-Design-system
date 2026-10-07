@@ -1,0 +1,228 @@
+baps-floatlabel,
+baps-iconfield,
+baps-inputicon,
+baps-message {
+  display: contents;
+}
+
+baps-floatlabel .p-floatlabel {
+  position: relative;
+  display: block;
+}
+
+baps-floatlabel .p-floatlabel > label {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: var(--form-field-mybky-padding-x);
+  margin: 0 !important;
+  pointer-events: none;
+  transform: translateY(-50%);
+  transition:
+    inset-block-start var(--motion-duration-base) var(--motion-easing-standard),
+    transform var(--motion-duration-base) var(--motion-easing-standard),
+    font-size var(--motion-duration-base) var(--motion-easing-standard);
+}
+
+baps-floatlabel
+  .p-floatlabel:has(
+    input:focus,
+    input.p-filled,
+    input[placeholder],
+    textarea:focus,
+    textarea.p-filled,
+    textarea[placeholder]
+  )
+  > label {
+  inset-block-start: 0;
+  padding-inline: var(--space-1);
+  background: var(--input-bg-default);
+  font-size: var(--font-size-2xs) !important;
+  transform: translateY(-50%);
+}
+
+:is(baps-floatlabel.baps-sampark, .baps-ds-sampark baps-floatlabel)
+  .p-floatlabel
+  > label {
+  inset-inline-start: var(--form-field-sampark-padding-x, var(--space-2));
+}
+
+baps-iconfield .p-iconfield {
+  position: relative;
+  display: block;
+}
+
+baps-iconfield .p-inputicon {
+  position: absolute;
+  inset-block-start: 50%;
+  z-index: 1;
+  display: inline-flex;
+  width: var(--font-size-md);
+  height: var(--font-size-md);
+  color: var(--input-leading-icon-color);
+  line-height: 1;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+baps-iconfield .p-iconfield-left .p-inputicon {
+  inset-inline-start: var(--form-field-mybky-padding-x);
+}
+
+baps-iconfield .p-iconfield-right .p-inputicon {
+  inset-inline-end: var(--form-field-mybky-padding-x);
+}
+
+:is(baps-iconfield.baps-sampark, .baps-ds-sampark baps-iconfield)
+  :is(.p-iconfield-left, .p-iconfield-right)
+  .p-inputicon {
+  --baps-icon-field-padding: var(
+    --form-field-sampark-padding-x,
+    var(--space-2)
+  );
+}
+
+:is(baps-iconfield.baps-sampark, .baps-ds-sampark baps-iconfield)
+  .p-iconfield-left
+  .p-inputicon {
+  inset-inline-start: var(--baps-icon-field-padding);
+}
+
+:is(baps-iconfield.baps-sampark, .baps-ds-sampark baps-iconfield)
+  .p-iconfield-right
+  .p-inputicon {
+  inset-inline-end: var(--baps-icon-field-padding);
+}
+
+baps-message .p-message {
+  display: grid;
+  grid-template-rows: 1fr;
+  color: var(--input-text-filled);
+  background: var(--input-bg-default);
+  border-radius: var(--radius-mybky-sm);
+  outline: 1px solid var(--input-border-default);
+}
+
+baps-message .p-message-content {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  padding: var(--space-3) var(--space-4);
+}
+
+baps-message .p-message-icon {
+  flex: none;
+}
+
+baps-message .p-message-text {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--font-line-height-normal);
+}
+
+baps-message .p-message-sm .p-message-content {
+  padding: var(--space-2) var(--space-3);
+}
+
+baps-message .p-message-sm .p-message-text {
+  font-size: var(--font-size-xs);
+}
+
+baps-message .p-message-lg .p-message-content {
+  padding: var(--space-4) var(--space-5);
+}
+
+baps-message .p-message-lg .p-message-text {
+  font-size: var(--font-size-md);
+}
+
+baps-message .p-message-info {
+  color: var(--color-mybky-info-80);
+  background: var(--color-mybky-info-20);
+  outline-color: var(--color-mybky-info-60);
+}
+
+baps-message .p-message-success {
+  color: var(--color-mybky-success-600);
+  background: var(--color-mybky-success-50);
+  outline-color: var(--color-mybky-success-400);
+}
+
+baps-message .p-message-warn {
+  color: var(--color-mybky-warning-80);
+  background: var(--color-mybky-warning-20);
+  outline-color: var(--color-mybky-warning-60);
+}
+
+baps-message .p-message-error {
+  color: var(--color-mybky-error-100);
+  background: var(--color-mybky-error-surface);
+  outline-color: var(--color-mybky-error-80);
+}
+
+baps-message .p-message-secondary {
+  color: var(--color-mybky-mono-800);
+  background: var(--color-mybky-mono-50);
+  outline-color: var(--color-mybky-mono-300);
+}
+
+baps-message .p-message-contrast {
+  color: var(--color-mybky-mono-0);
+  background: var(--color-mybky-mono-900);
+  outline-color: var(--color-mybky-mono-900);
+}
+
+baps-message .p-message-outlined,
+baps-message .p-message-simple {
+  background: transparent;
+}
+
+baps-message .p-message-simple {
+  outline-color: transparent;
+  box-shadow: none;
+}
+
+baps-message .p-message-simple .p-message-content {
+  padding: 0;
+}
+
+:is(baps-message.baps-sampark, .baps-ds-sampark baps-message) .p-message {
+  border-radius: var(--radius-sampark-default);
+}
+
+:is(baps-message.baps-sampark, .baps-ds-sampark baps-message) .p-message-info {
+  color: var(--color-sampark-info-80);
+  background: var(--color-sampark-info-10);
+  outline-color: var(--color-sampark-info-60);
+}
+
+:is(baps-message.baps-sampark, .baps-ds-sampark baps-message)
+  .p-message-success {
+  color: var(--color-sampark-success-80);
+  background: var(--color-sampark-success-10);
+  outline-color: var(--color-sampark-success-60);
+}
+
+:is(baps-message.baps-sampark, .baps-ds-sampark baps-message) .p-message-warn {
+  color: var(--color-sampark-warning-80);
+  background: var(--color-sampark-warning-10);
+  outline-color: var(--color-sampark-warning-60);
+}
+
+:is(baps-message.baps-sampark, .baps-ds-sampark baps-message) .p-message-error {
+  color: var(--color-sampark-error-100);
+  background: var(--color-sampark-error-10);
+  outline-color: var(--color-sampark-error-80);
+}
+
+.baps-dark baps-message .p-message {
+  color: var(--color-mybky-dark-text-primary);
+  background: var(--color-mybky-dark-surface-card);
+}
+
+.baps-dark
+  :is(baps-message.baps-sampark, .baps-ds-sampark baps-message)
+  .p-message,
+.baps-ds-sampark .baps-dark baps-message .p-message {
+  color: var(--color-sampark-dark-text-primary);
+  background: var(--color-sampark-dark-surface-card);
+}

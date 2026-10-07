@@ -68,6 +68,16 @@ const CASES = [
     story: 'components-organisms-navbar--my-bky',
     selector: 'baps-navbar',
   },
+  {
+    name: 'toolbar',
+    story: 'components-toolbar--playground',
+    selector: 'baps-toolbar',
+  },
+  {
+    name: 'pagination',
+    story: 'components-pagination--my-bky',
+    selector: 'baps-paginator',
+  },
 ];
 
 /**

@@ -42,7 +42,8 @@
  * than a checkbox. The input is visually hidden, not display:none: a
  * display:none input is unfocusable and drops out of the tab order.
  *
- * Size: add `baps-toggle-switch--s` or `--l`. Brand: `baps-sampark` on the
+ * Size: add `baps-toggle-switch--xs`, `--sm` or `--lg`. The legacy authored
+ * snippet aliases `--s` and `--l` remain supported. Brand: `baps-sampark` on the
  * wrapper, or `.baps-ds-sampark` on an ancestor, as everywhere else.
  */
 
@@ -134,16 +135,28 @@
 
 /* ── MyBKY sizes ───────────────────────────────────────────────────────── */
 
+.baps-toggle-switch--xs .baps-toggle-switch__track,
+.baps-toggle-switch--sm .baps-toggle-switch__track,
 .baps-toggle-switch--s .baps-toggle-switch__track {
   width: var(--toggle-switch-mybky-track-width-sm, 1.75rem);
   height: var(--toggle-switch-mybky-track-height-sm, 1rem);
 }
 
+.baps-toggle-switch--xs .baps-toggle-switch__thumb,
+.baps-toggle-switch--sm .baps-toggle-switch__thumb,
 .baps-toggle-switch--s .baps-toggle-switch__thumb {
   width: var(--toggle-switch-mybky-thumb-size-sm, 0.8125rem);
   height: var(--toggle-switch-mybky-thumb-size-sm, 0.8125rem);
 }
 
+.baps-toggle-switch--xs
+  .baps-toggle-switch__input:checked
+  ~ .baps-toggle-switch__track
+  .baps-toggle-switch__thumb,
+.baps-toggle-switch--sm
+  .baps-toggle-switch__input:checked
+  ~ .baps-toggle-switch__track
+  .baps-toggle-switch__thumb,
 .baps-toggle-switch--s
   .baps-toggle-switch__input:checked
   ~ .baps-toggle-switch__track
@@ -156,16 +169,22 @@
   );
 }
 
+.baps-toggle-switch--lg .baps-toggle-switch__track,
 .baps-toggle-switch--l .baps-toggle-switch__track {
   width: var(--toggle-switch-mybky-track-width-lg, 2.5rem);
   height: var(--toggle-switch-mybky-track-height-lg, 1.5rem);
 }
 
+.baps-toggle-switch--lg .baps-toggle-switch__thumb,
 .baps-toggle-switch--l .baps-toggle-switch__thumb {
   width: var(--toggle-switch-mybky-thumb-size-lg, 1.3125rem);
   height: var(--toggle-switch-mybky-thumb-size-lg, 1.3125rem);
 }
 
+.baps-toggle-switch--lg
+  .baps-toggle-switch__input:checked
+  ~ .baps-toggle-switch__track
+  .baps-toggle-switch__thumb,
 .baps-toggle-switch--l
   .baps-toggle-switch__input:checked
   ~ .baps-toggle-switch__track
@@ -281,4 +300,136 @@
   .baps-toggle-switch__input:disabled:checked
   ~ .baps-toggle-switch__track {
   background-color: var(--color-sampark-primary-20);
+}
+
+/* Sampark's four-step size table differs from MyBKY, so these selectors come
+   after the shared aliases and intentionally win when both brand and size are
+   present. */
+.baps-toggle-switch.baps-sampark:is(.baps-toggle-switch--xs)
+  .baps-toggle-switch__track,
+.baps-ds-sampark
+  .baps-toggle-switch.baps-toggle-switch--xs
+  .baps-toggle-switch__track {
+  width: var(--toggle-switch-sampark-track-xs-width, 1.75rem);
+  height: var(--toggle-switch-sampark-track-xs-height, 1rem);
+  border-radius: var(--toggle-switch-sampark-radius-sm, 0.1875rem);
+}
+
+.baps-toggle-switch.baps-sampark.baps-toggle-switch--xs
+  .baps-toggle-switch__thumb,
+.baps-ds-sampark
+  .baps-toggle-switch.baps-toggle-switch--xs
+  .baps-toggle-switch__thumb {
+  width: var(--toggle-switch-sampark-thumb-xs, 0.75rem);
+  height: var(--toggle-switch-sampark-thumb-xs, 0.75rem);
+}
+
+.baps-toggle-switch.baps-sampark:is(
+    .baps-toggle-switch--sm,
+    .baps-toggle-switch--s
+  )
+  .baps-toggle-switch__track,
+.baps-ds-sampark
+  .baps-toggle-switch:is(.baps-toggle-switch--sm, .baps-toggle-switch--s)
+  .baps-toggle-switch__track {
+  width: var(--toggle-switch-sampark-track-sm-width, 2rem);
+  height: var(--toggle-switch-sampark-track-sm-height, 1.25rem);
+  border-radius: var(--toggle-switch-sampark-radius-sm, 0.1875rem);
+}
+
+.baps-toggle-switch.baps-sampark:is(
+    .baps-toggle-switch--sm,
+    .baps-toggle-switch--s
+  )
+  .baps-toggle-switch__thumb,
+.baps-ds-sampark
+  .baps-toggle-switch:is(.baps-toggle-switch--sm, .baps-toggle-switch--s)
+  .baps-toggle-switch__thumb {
+  width: var(--toggle-switch-sampark-thumb-sm, 1rem);
+  height: var(--toggle-switch-sampark-thumb-sm, 1rem);
+}
+
+.baps-toggle-switch.baps-sampark:is(
+    .baps-toggle-switch--lg,
+    .baps-toggle-switch--l
+  )
+  .baps-toggle-switch__track,
+.baps-ds-sampark
+  .baps-toggle-switch:is(.baps-toggle-switch--lg, .baps-toggle-switch--l)
+  .baps-toggle-switch__track {
+  width: var(--toggle-switch-sampark-track-lg-width, 2.5rem);
+  height: var(--toggle-switch-sampark-track-lg-height, 1.5rem);
+}
+
+.baps-toggle-switch.baps-sampark:is(
+    .baps-toggle-switch--lg,
+    .baps-toggle-switch--l
+  )
+  .baps-toggle-switch__thumb,
+.baps-ds-sampark
+  .baps-toggle-switch:is(.baps-toggle-switch--lg, .baps-toggle-switch--l)
+  .baps-toggle-switch__thumb {
+  width: var(--toggle-switch-sampark-thumb-lg, 1.25rem);
+  height: var(--toggle-switch-sampark-thumb-lg, 1.25rem);
+}
+
+.baps-toggle-switch.baps-sampark:is(
+    .baps-toggle-switch--xs,
+    .baps-toggle-switch--sm,
+    .baps-toggle-switch--s,
+    .baps-toggle-switch--lg,
+    .baps-toggle-switch--l
+  )
+  .baps-toggle-switch__input:checked
+  ~ .baps-toggle-switch__track
+  .baps-toggle-switch__thumb,
+.baps-ds-sampark
+  .baps-toggle-switch:is(
+    .baps-toggle-switch--xs,
+    .baps-toggle-switch--sm,
+    .baps-toggle-switch--s,
+    .baps-toggle-switch--lg,
+    .baps-toggle-switch--l
+  )
+  .baps-toggle-switch__input:checked
+  ~ .baps-toggle-switch__track
+  .baps-toggle-switch__thumb {
+  left: calc(
+    100% - var(--baps-toggle-switch-sampark-thumb-size) - var(
+        --toggle-switch-sampark-gap,
+        2px
+      )
+  );
+}
+
+.baps-toggle-switch.baps-sampark.baps-toggle-switch--xs,
+.baps-ds-sampark .baps-toggle-switch.baps-toggle-switch--xs {
+  --baps-toggle-switch-sampark-thumb-size: var(
+    --toggle-switch-sampark-thumb-xs,
+    0.75rem
+  );
+}
+
+.baps-toggle-switch.baps-sampark:is(
+    .baps-toggle-switch--sm,
+    .baps-toggle-switch--s
+  ),
+.baps-ds-sampark
+  .baps-toggle-switch:is(.baps-toggle-switch--sm, .baps-toggle-switch--s) {
+  --baps-toggle-switch-sampark-thumb-size: var(
+    --toggle-switch-sampark-thumb-sm,
+    1rem
+  );
+}
+
+.baps-toggle-switch.baps-sampark:is(
+    .baps-toggle-switch--lg,
+    .baps-toggle-switch--l
+  ),
+.baps-ds-sampark
+  .baps-toggle-switch:is(.baps-toggle-switch--lg, .baps-toggle-switch--l) {
+  --baps-toggle-switch-sampark-thumb-size: var(
+    --toggle-switch-sampark-thumb-lg,
+    1.25rem
+  );
 }

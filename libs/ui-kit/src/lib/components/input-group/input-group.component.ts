@@ -75,6 +75,7 @@ const ADDON_TOKENS = {
     </p-inputgroup>
   `,
   encapsulation: ViewEncapsulation.None,
+  styleUrls: ['../../styles/components/input-group/_input-group.scss'],
   styles: `
     baps-input-group {
       display: block;
@@ -82,7 +83,8 @@ const ADDON_TOKENS = {
       --baps-ig-border: var(--color-mybky-border-default, #e4ecf1);
       --baps-ig-text: var(--color-mybky-text-primary, #181b1d);
       --baps-ig-border-hover: var(--color-mybky-blue-400, #9fadd9);
-      --baps-ig-ring: 0 0 0 3px var(--input-shadow-focused, rgba(95, 120, 184, 0.35));
+      --baps-ig-ring: 0 0 0 3px
+        var(--input-shadow-focused, rgba(95, 120, 184, 0.35));
     }
 
     :is(baps-input-group.baps-sampark, .baps-ds-sampark baps-input-group) {

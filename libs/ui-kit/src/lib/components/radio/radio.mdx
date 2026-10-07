@@ -1,6 +1,7 @@
 import { Meta, Canvas, Controls } from '@storybook/blocks';
-import { BrandOnly, PropsTable } from '@baps/docs-blocks';
+import { BrandOnly, FrameworkTabs, PropsTable } from '@baps/docs-blocks';
 import * as RadioStories from './radio.stories';
+import { radioSnippets } from './radio.snippets';
 
 <Meta of={RadioStories} />
 
@@ -11,7 +12,12 @@ A single choice from a small set. `baps-radio` wraps PrimeNG’s `p-radiobutton`
 ## Usage
 
 ```html
-<baps-radio name="plan" radioValue="monthly" label="Monthly" [(ngModel)]="plan" />
+<baps-radio
+  name="plan"
+  radioValue="monthly"
+  label="Monthly"
+  [(ngModel)]="plan"
+/>
 <baps-radio name="plan" radioValue="yearly" label="Yearly" [(ngModel)]="plan" />
 ```
 
@@ -19,17 +25,23 @@ A single choice from a small set. `baps-radio` wraps PrimeNG’s `p-radiobutton`
 
 ### Default
 
-<Canvas of={RadioStories.Default} />
+<Canvas of={RadioStories.Default} sourceState="none" />
 
 <Controls of={RadioStories.Default} />
 
+<FrameworkTabs of={RadioStories.Default} snippets={radioSnippets.Default} />
+
 ### Sizes
 
-<Canvas of={RadioStories.Sizes} />
+<Canvas of={RadioStories.Sizes} sourceState="none" />
+
+<FrameworkTabs of={RadioStories.Sizes} snippets={radioSnippets.Sizes} />
 
 ### States
 
-<Canvas of={RadioStories.States} />
+<Canvas of={RadioStories.States} sourceState="none" />
+
+<FrameworkTabs of={RadioStories.States} snippets={radioSnippets.States} />
 
 ### Brands
 
@@ -42,7 +54,9 @@ This one pins `brand="sampark"` instead, which is the per-instance override.
 There is no mirror of it, because MyBKY is the global preset and so has no `dt`
 to pin.
 
-<Canvas of={RadioStories.Sampark} />
+<Canvas of={RadioStories.Sampark} sourceState="none" />
+
+<FrameworkTabs of={RadioStories.Sampark} snippets={radioSnippets.Sampark} />
 
 </BrandOnly>
 
@@ -54,13 +68,23 @@ native control in either forms API.
 ### Template Driven
 
 ```html
-<baps-radio name="plan" radioValue="monthly" label="Monthly" [(ngModel)]="value" />
+<baps-radio
+  name="plan"
+  radioValue="monthly"
+  label="Monthly"
+  [(ngModel)]="value"
+/>
 ```
 
 ### Reactive Forms
 
 ```html
-<baps-radio name="plan" radioValue="monthly" label="Monthly" formControlName="value" />
+<baps-radio
+  name="plan"
+  radioValue="monthly"
+  label="Monthly"
+  formControlName="value"
+/>
 ```
 
 ```ts
@@ -75,11 +99,11 @@ Inputs, outputs and their types, read from the component's own source.
 
 ## When Not to Use
 
-| Need | Use | Not this |
-| --- | --- | --- |
-| One choice from a long list | `baps-select` | A column of radios |
-| Independent on/off values | `baps-checkbox` | Radios — they are mutually exclusive by definition |
-| Two or three mutually exclusive views | `baps-segmented` | Radios styled as buttons |
+| Need                                  | Use              | Not this                                           |
+| ------------------------------------- | ---------------- | -------------------------------------------------- |
+| One choice from a long list           | `baps-select`    | A column of radios                                 |
+| Independent on/off values             | `baps-checkbox`  | Radios — they are mutually exclusive by definition |
+| Two or three mutually exclusive views | `baps-segmented` | Radios styled as buttons                           |
 
 ## Accessibility
 
@@ -91,8 +115,8 @@ Inputs, outputs and their types, read from the component's own source.
 
 ### Keyboard Support
 
-| Key | Function |
-| --- | --- |
-| <kbd>Tab</kbd> | Moves focus into the group, landing on the checked radio. |
+| Key                   | Function                                                  |
+| --------------------- | --------------------------------------------------------- |
+| <kbd>Tab</kbd>        | Moves focus into the group, landing on the checked radio. |
 | <kbd>Arrow keys</kbd> | Moves between radios in the group and selects as it goes. |
-| <kbd>Space</kbd> | Selects the focused radio. |
+| <kbd>Space</kbd>      | Selects the focused radio.                                |

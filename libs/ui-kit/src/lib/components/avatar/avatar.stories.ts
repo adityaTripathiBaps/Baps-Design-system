@@ -33,7 +33,10 @@ const meta: Meta<BapsAvatar> = {
   // without it the id would follow the title to components-media-avatar.
   id: 'components-avatar',
   parameters: {
-    design: { type: 'figma', url: 'https://www.figma.com/design/yY5bmcEifXbcCwhauoiy6Y/?node-id=22465-97983' },
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/yY5bmcEifXbcCwhauoiy6Y/?node-id=22465-97983',
+    },
   },
   // Design-system availability — drives the sidebar filter in .storybook/manager.ts
   tags: ['ds:mybky', 'ds:sampark'],
@@ -44,7 +47,8 @@ const meta: Meta<BapsAvatar> = {
     image: {
       control: 'select',
       options: SAMPLE_AVATAR_IMAGES,
-      description: 'Image URL: select a sample profile photo or provide an image URL.',
+      description:
+        'Image URL: select a sample profile photo or provide an image URL.',
     },
     shape: { control: 'radio', options: ['circle', 'square'] },
     size: { control: 'select', options: ['xs', 's', 'm', 'l', 'xl', '2xl'] },
@@ -89,12 +93,23 @@ const meta: Meta<BapsAvatar> = {
 export default meta;
 type Story = StoryObj<BapsAvatar>;
 
+/**
+ * Anchor story to preserve both brand tags on the docs page.
+ * Storybook 8 inherits docs tags from the primary (first) story, and hiding
+ * the Sampark brand on the first playground below was hiding the entire
+ * component from the Sampark sidebar.
+ */
+export const _DocsAnchor: Story = {};
+
 export const MyBkyPlayground: Story = {
   name: 'Playground',
   tags: ['!ds:sampark'],
   parameters: {
-    design: { type: 'figma', url: 'https://www.figma.com/design/yY5bmcEifXbcCwhauoiy6Y/?node-id=22465-97983' }
-  }
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/yY5bmcEifXbcCwhauoiy6Y/?node-id=22465-97983',
+    },
+  },
 };
 
 export const SamparkPlayground: Story = {
@@ -102,8 +117,11 @@ export const SamparkPlayground: Story = {
   tags: ['!ds:mybky'],
   args: { brand: 'sampark', variant: 'primary', shape: 'square' },
   parameters: {
-    design: { type: 'figma', url: 'https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/?node-id=13197-90187' }
-  }
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/?node-id=13197-90187',
+    },
+  },
 };
 
 export const HtmlCss: Story = {
@@ -319,7 +337,10 @@ export const MyBkyGroup: Story = {
   name: 'Group',
   tags: ['!ds:sampark'],
   parameters: {
-    design: { type: 'figma', url: 'https://www.figma.com/design/yY5bmcEifXbcCwhauoiy6Y/?node-id=22465-98596' }
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/yY5bmcEifXbcCwhauoiy6Y/?node-id=22465-98596',
+    },
   },
   render: (args) => ({
     props: args,
@@ -338,7 +359,10 @@ export const SamparkGroup: Story = {
   name: 'Group',
   tags: ['!ds:mybky'],
   parameters: {
-    design: { type: 'figma', url: 'https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/?node-id=13197-90187' }
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/?node-id=13197-90187',
+    },
   },
   render: (args) => ({
     props: args,
@@ -413,7 +437,10 @@ export const MyBkyGroupSizes: Story = {
   name: 'Group Sizes',
   tags: ['!ds:sampark'],
   parameters: {
-    design: { type: 'figma', url: 'https://www.figma.com/design/yY5bmcEifXbcCwhauoiy6Y/?node-id=22465-98596' }
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/yY5bmcEifXbcCwhauoiy6Y/?node-id=22465-98596',
+    },
   },
   render: () => ({
     template: `

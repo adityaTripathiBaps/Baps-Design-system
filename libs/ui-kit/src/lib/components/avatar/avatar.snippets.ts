@@ -35,9 +35,8 @@
  *
  * ## Inputs to markup
  *
- * React and Next show the same `<baps-avatar>` element the Angular template
- * does, because the element name is what the CSS keys off. The inputs map
- * straight across as attributes:
+ * React and Next use the typed BapsAvatar and BapsAvatarGroup exports. The
+ * PrimeNG-Angular tab keeps the existing custom-element API unchanged.
  *
  *   label="AT"                initials; the component renders them as text
  *   image="…"                 a photo; the component renders an <img> inside
@@ -58,7 +57,9 @@ import { setupFor, type SnippetSet } from '../../docs/snippet-setup';
 /** Re-exported so the .mdx and the docs blocks keep importing it from here. */
 export type { SnippetSet };
 
-const SETUP = setupFor('avatar');
+const SETUP = `${setupFor('avatar', false, '@org/ui-kit-react/styles')}
+
+import { BapsAvatar, BapsAvatarGroup } from '@org/ui-kit-react';`;
 
 export const avatarSnippets: Record<string, SnippetSet> = {
   // The stack at each step. The overlap scales with the avatars, so the group
@@ -90,13 +91,13 @@ export function MyBkyGroupSizes() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20, alignItems: 'flex-start' }}>
       {SIZES.map((size) => (
         <div key={size} style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-          <baps-avatargroup size={size}>
-            <baps-avatar size={size} shape="circle" label="RW" />
-            <baps-avatar size={size} shape="circle" label="SP" />
-            <baps-avatar size={size} shape="circle" label="DG" />
-            <baps-avatar size={size} shape="circle" label="GD" />
-            <baps-avatar size={size} shape="circle" label="+2" />
-          </baps-avatargroup>
+          <BapsAvatarGroup size={size}>
+            <BapsAvatar size={size} shape="circle" label="RW" />
+            <BapsAvatar size={size} shape="circle" label="SP" />
+            <BapsAvatar size={size} shape="circle" label="DG" />
+            <BapsAvatar size={size} shape="circle" label="GD" />
+            <BapsAvatar size={size} shape="circle" label="+2" />
+          </BapsAvatarGroup>
         </div>
       ))}
     </div>
@@ -111,13 +112,13 @@ export default function MyBkyGroupSizes() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20, alignItems: 'flex-start' }}>
       {SIZES.map((size) => (
         <div key={size} style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-          <baps-avatargroup size={size}>
-            <baps-avatar size={size} shape="circle" label="RW" />
-            <baps-avatar size={size} shape="circle" label="SP" />
-            <baps-avatar size={size} shape="circle" label="DG" />
-            <baps-avatar size={size} shape="circle" label="GD" />
-            <baps-avatar size={size} shape="circle" label="+2" />
-          </baps-avatargroup>
+          <BapsAvatarGroup size={size}>
+            <BapsAvatar size={size} shape="circle" label="RW" />
+            <BapsAvatar size={size} shape="circle" label="SP" />
+            <BapsAvatar size={size} shape="circle" label="DG" />
+            <BapsAvatar size={size} shape="circle" label="GD" />
+            <BapsAvatar size={size} shape="circle" label="+2" />
+          </BapsAvatarGroup>
         </div>
       ))}
     </div>
@@ -151,13 +152,13 @@ export function SamparkGroupSizes() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20, alignItems: 'flex-start' }}>
       {SIZES.map((size) => (
         <div key={size} style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-          <baps-avatargroup size={size}>
-            <baps-avatar brand="sampark" size={size} shape="square" label="RW" />
-            <baps-avatar brand="sampark" size={size} shape="square" label="SP" />
-            <baps-avatar brand="sampark" size={size} shape="square" label="DG" />
-            <baps-avatar brand="sampark" size={size} shape="square" label="GD" />
-            <baps-avatar brand="sampark" size={size} shape="square" label="+2" />
-          </baps-avatargroup>
+          <BapsAvatarGroup size={size} brand="sampark">
+            <BapsAvatar brand="sampark" size={size} shape="square" label="RW" />
+            <BapsAvatar brand="sampark" size={size} shape="square" label="SP" />
+            <BapsAvatar brand="sampark" size={size} shape="square" label="DG" />
+            <BapsAvatar brand="sampark" size={size} shape="square" label="GD" />
+            <BapsAvatar brand="sampark" size={size} shape="square" label="+2" />
+          </BapsAvatarGroup>
         </div>
       ))}
     </div>
@@ -172,13 +173,13 @@ export default function SamparkGroupSizes() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20, alignItems: 'flex-start' }}>
       {SIZES.map((size) => (
         <div key={size} style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-          <baps-avatargroup size={size}>
-            <baps-avatar brand="sampark" size={size} shape="square" label="RW" />
-            <baps-avatar brand="sampark" size={size} shape="square" label="SP" />
-            <baps-avatar brand="sampark" size={size} shape="square" label="DG" />
-            <baps-avatar brand="sampark" size={size} shape="square" label="GD" />
-            <baps-avatar brand="sampark" size={size} shape="square" label="+2" />
-          </baps-avatargroup>
+          <BapsAvatarGroup size={size} brand="sampark">
+            <BapsAvatar brand="sampark" size={size} shape="square" label="RW" />
+            <BapsAvatar brand="sampark" size={size} shape="square" label="SP" />
+            <BapsAvatar brand="sampark" size={size} shape="square" label="DG" />
+            <BapsAvatar brand="sampark" size={size} shape="square" label="GD" />
+            <BapsAvatar brand="sampark" size={size} shape="square" label="+2" />
+          </BapsAvatarGroup>
         </div>
       ))}
     </div>
@@ -252,17 +253,18 @@ export function MyBkyStatuses() {
         <div key={shape} style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
           {VARIANTS.map((variant) =>
             shape === 'initial' ? (
-              <baps-avatar key={variant} label="GP" variant={variant} size="l" />
+              <BapsAvatar key={variant} label="GP" variant={variant} size="l" />
             ) : shape === 'icon' ? (
-              <baps-avatar key={variant} variant={variant} size="l">
+              <BapsAvatar key={variant} variant={variant} size="l" aria-hidden>
                 <UserIcon />
-              </baps-avatar>
+              </BapsAvatar>
             ) : (
-              <baps-avatar
+              <BapsAvatar
                 key={variant}
                 variant={variant}
                 size="l"
                 image="/assets/users/amyelsner.png"
+                imageAlt="Amy Elsner"
               />
             ),
           )}
@@ -302,17 +304,18 @@ export default function MyBkyStatuses() {
         <div key={shape} style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
           {VARIANTS.map((variant) =>
             shape === 'initial' ? (
-              <baps-avatar key={variant} label="GP" variant={variant} size="l" />
+              <BapsAvatar key={variant} label="GP" variant={variant} size="l" />
             ) : shape === 'icon' ? (
-              <baps-avatar key={variant} variant={variant} size="l">
+              <BapsAvatar key={variant} variant={variant} size="l" aria-hidden>
                 <UserIcon />
-              </baps-avatar>
+              </BapsAvatar>
             ) : (
-              <baps-avatar
+              <BapsAvatar
                 key={variant}
                 variant={variant}
                 size="l"
                 image="/assets/users/amyelsner.png"
+                imageAlt="Amy Elsner"
               />
             ),
           )}
@@ -326,13 +329,14 @@ export default function MyBkyStatuses() {
   // The meta's own args at the MyBKY defaults: initials in a circle. The
   // other inputs are at their defaults and are left off rather than written
   // out — size="m" and variant="primary" are what the component already does.
+  HtmlCss: {},
   MyBkyPlayground: {
     primeng: `<baps-avatar label="AT" shape="circle" />`,
     react: `${SETUP}
 
 export function Example() {
   return (
-    <baps-avatar label="AT" shape="circle" />
+    <BapsAvatar label="AT" shape="circle" />
   );
 }`,
     next: `${SETUP}
@@ -340,7 +344,7 @@ export function Example() {
 /* No 'use client': an avatar is markup. */
 export default function Example() {
   return (
-    <baps-avatar label="AT" shape="circle" />
+    <BapsAvatar label="AT" shape="circle" />
   );
 }`,
   },
@@ -355,7 +359,7 @@ export default function Example() {
 
 export function Example() {
   return (
-    <baps-avatar brand="sampark" label="AT" variant="primary" shape="square" />
+    <BapsAvatar brand="sampark" label="AT" variant="primary" shape="square" />
   );
 }`,
     next: `${SETUP}
@@ -363,7 +367,7 @@ export function Example() {
 /* No 'use client': an avatar is markup. */
 export default function Example() {
   return (
-    <baps-avatar brand="sampark" label="AT" variant="primary" shape="square" />
+    <BapsAvatar brand="sampark" label="AT" variant="primary" shape="square" />
   );
 }`,
   },
@@ -384,12 +388,12 @@ export default function Example() {
 export function Example() {
   return (
         <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-          <baps-avatar label="AT" shape="circle" />
-          <baps-avatar shape="circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <BapsAvatar label="AT" shape="circle" />
+          <BapsAvatar shape="circle" aria-hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <circle cx="12" cy="8" r="5" />
       <path d="M20 21a8 8 0 0 0-16 0" />
-    </svg></baps-avatar>
-          <baps-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle" />
+    </svg></BapsAvatar>
+          <BapsAvatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" imageAlt="Amy Elsner" shape="circle" />
         </div>
   );
 }`,
@@ -399,12 +403,12 @@ export function Example() {
 export default function Example() {
   return (
         <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-          <baps-avatar label="AT" shape="circle" />
-          <baps-avatar shape="circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <BapsAvatar label="AT" shape="circle" />
+          <BapsAvatar shape="circle" aria-hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <circle cx="12" cy="8" r="5" />
       <path d="M20 21a8 8 0 0 0-16 0" />
-    </svg></baps-avatar>
-          <baps-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle" />
+    </svg></BapsAvatar>
+          <BapsAvatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" imageAlt="Amy Elsner" shape="circle" />
         </div>
   );
 }`,
@@ -426,12 +430,12 @@ export default function Example() {
 export function Example() {
   return (
     <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-      <baps-avatar label="XS" shape="circle" size="xs" />
-      <baps-avatar label="S" shape="circle" size="s" />
-      <baps-avatar label="M" shape="circle" />
-      <baps-avatar label="L" shape="circle" size="l" />
-      <baps-avatar label="XL" shape="circle" size="xl" />
-      <baps-avatar label="2X" shape="circle" size="2xl" />
+      <BapsAvatar label="XS" shape="circle" size="xs" />
+      <BapsAvatar label="S" shape="circle" size="s" />
+      <BapsAvatar label="M" shape="circle" />
+      <BapsAvatar label="L" shape="circle" size="l" />
+      <BapsAvatar label="XL" shape="circle" size="xl" />
+      <BapsAvatar label="2X" shape="circle" size="2xl" />
     </div>
   );
 }`,
@@ -441,12 +445,12 @@ export function Example() {
 export default function Example() {
   return (
     <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-      <baps-avatar label="XS" shape="circle" size="xs" />
-      <baps-avatar label="S" shape="circle" size="s" />
-      <baps-avatar label="M" shape="circle" />
-      <baps-avatar label="L" shape="circle" size="l" />
-      <baps-avatar label="XL" shape="circle" size="xl" />
-      <baps-avatar label="2X" shape="circle" size="2xl" />
+      <BapsAvatar label="XS" shape="circle" size="xs" />
+      <BapsAvatar label="S" shape="circle" size="s" />
+      <BapsAvatar label="M" shape="circle" />
+      <BapsAvatar label="L" shape="circle" size="l" />
+      <BapsAvatar label="XL" shape="circle" size="xl" />
+      <BapsAvatar label="2X" shape="circle" size="2xl" />
     </div>
   );
 }`,
@@ -464,8 +468,8 @@ export default function Example() {
 export function Example() {
   return (
     <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-      <baps-avatar label="AT" shape="circle" size="large" />
-      <baps-avatar label="AT" shape="square" size="large" />
+      <BapsAvatar label="AT" shape="circle" size="large" />
+      <BapsAvatar label="AT" shape="square" size="large" />
     </div>
   );
 }`,
@@ -475,8 +479,8 @@ export function Example() {
 export default function Example() {
   return (
     <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-      <baps-avatar label="AT" shape="circle" size="large" />
-      <baps-avatar label="AT" shape="square" size="large" />
+      <BapsAvatar label="AT" shape="circle" size="large" />
+      <BapsAvatar label="AT" shape="square" size="large" />
     </div>
   );
 }`,
@@ -529,40 +533,40 @@ export function Example() {
   return (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, max-content)', gap: '20px 28px', alignItems: 'center' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
-            <baps-avatar brand="sampark" label="GP" />
+            <BapsAvatar brand="sampark" label="GP" />
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
-            <baps-avatar brand="sampark" label="GP" variant="secondary" />
+            <BapsAvatar brand="sampark" label="GP" variant="secondary" />
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
-            <baps-avatar brand="sampark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <BapsAvatar brand="sampark" aria-hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <circle cx="12" cy="8" r="5" />
       <path d="M20 21a8 8 0 0 0-16 0" />
-    </svg></baps-avatar>
+    </svg></BapsAvatar>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
-            <baps-avatar brand="sampark" variant="secondary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <BapsAvatar brand="sampark" variant="secondary" aria-hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <circle cx="12" cy="8" r="5" />
       <path d="M20 21a8 8 0 0 0-16 0" />
-    </svg></baps-avatar>
+    </svg></BapsAvatar>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
-            <baps-avatar brand="sampark" variant="success"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <BapsAvatar brand="sampark" variant="success" aria-hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <circle cx="12" cy="8" r="5" />
       <path d="M20 21a8 8 0 0 0-16 0" />
-    </svg></baps-avatar>
+    </svg></BapsAvatar>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
-            <baps-avatar brand="sampark" variant="error"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <BapsAvatar brand="sampark" variant="error" aria-hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <circle cx="12" cy="8" r="5" />
       <path d="M20 21a8 8 0 0 0-16 0" />
-    </svg></baps-avatar>
+    </svg></BapsAvatar>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
-            <baps-avatar brand="sampark" image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" />
+            <BapsAvatar brand="sampark" image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" imageAlt="Amy Elsner" />
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
-            <baps-avatar brand="sampark" label="GP" variant="warning" />
+            <BapsAvatar brand="sampark" label="GP" variant="warning" />
           </div>
         </div>
   );
@@ -574,40 +578,40 @@ export default function Example() {
   return (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, max-content)', gap: '20px 28px', alignItems: 'center' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
-            <baps-avatar brand="sampark" label="GP" />
+            <BapsAvatar brand="sampark" label="GP" />
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
-            <baps-avatar brand="sampark" label="GP" variant="secondary" />
+            <BapsAvatar brand="sampark" label="GP" variant="secondary" />
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
-            <baps-avatar brand="sampark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <BapsAvatar brand="sampark" aria-hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <circle cx="12" cy="8" r="5" />
       <path d="M20 21a8 8 0 0 0-16 0" />
-    </svg></baps-avatar>
+    </svg></BapsAvatar>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
-            <baps-avatar brand="sampark" variant="secondary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <BapsAvatar brand="sampark" variant="secondary" aria-hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <circle cx="12" cy="8" r="5" />
       <path d="M20 21a8 8 0 0 0-16 0" />
-    </svg></baps-avatar>
+    </svg></BapsAvatar>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
-            <baps-avatar brand="sampark" variant="success"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <BapsAvatar brand="sampark" variant="success" aria-hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <circle cx="12" cy="8" r="5" />
       <path d="M20 21a8 8 0 0 0-16 0" />
-    </svg></baps-avatar>
+    </svg></BapsAvatar>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
-            <baps-avatar brand="sampark" variant="error"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <BapsAvatar brand="sampark" variant="error" aria-hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <circle cx="12" cy="8" r="5" />
       <path d="M20 21a8 8 0 0 0-16 0" />
-    </svg></baps-avatar>
+    </svg></BapsAvatar>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
-            <baps-avatar brand="sampark" image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" />
+            <BapsAvatar brand="sampark" image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" imageAlt="Amy Elsner" />
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
-            <baps-avatar brand="sampark" label="GP" variant="warning" />
+            <BapsAvatar brand="sampark" label="GP" variant="warning" />
           </div>
         </div>
   );
@@ -630,12 +634,12 @@ export default function Example() {
 export function Example() {
   return (
     <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-      <baps-avatar brand="sampark" label="XS" size="xs" />
-      <baps-avatar brand="sampark" label="S" size="s" />
-      <baps-avatar brand="sampark" label="GP" />
-      <baps-avatar brand="sampark" label="GP" size="l" />
-      <baps-avatar brand="sampark" label="GP" size="xl" />
-      <baps-avatar brand="sampark" label="GP" size="2xl" />
+      <BapsAvatar brand="sampark" label="XS" size="xs" />
+      <BapsAvatar brand="sampark" label="S" size="s" />
+      <BapsAvatar brand="sampark" label="GP" />
+      <BapsAvatar brand="sampark" label="GP" size="l" />
+      <BapsAvatar brand="sampark" label="GP" size="xl" />
+      <BapsAvatar brand="sampark" label="GP" size="2xl" />
     </div>
   );
 }`,
@@ -645,12 +649,12 @@ export function Example() {
 export default function Example() {
   return (
     <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-      <baps-avatar brand="sampark" label="XS" size="xs" />
-      <baps-avatar brand="sampark" label="S" size="s" />
-      <baps-avatar brand="sampark" label="GP" />
-      <baps-avatar brand="sampark" label="GP" size="l" />
-      <baps-avatar brand="sampark" label="GP" size="xl" />
-      <baps-avatar brand="sampark" label="GP" size="2xl" />
+      <BapsAvatar brand="sampark" label="XS" size="xs" />
+      <BapsAvatar brand="sampark" label="S" size="s" />
+      <BapsAvatar brand="sampark" label="GP" />
+      <BapsAvatar brand="sampark" label="GP" size="l" />
+      <BapsAvatar brand="sampark" label="GP" size="xl" />
+      <BapsAvatar brand="sampark" label="GP" size="2xl" />
     </div>
   );
 }`,
@@ -676,11 +680,11 @@ export default function Example() {
 export function Example() {
   return (
     <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-      <baps-avatar brand="sampark" label="GP" size="xs" statusDot />
-      <baps-avatar brand="sampark" label="GP" statusDot />
-      <baps-avatar brand="sampark" label="GP" iconBadge />
-      <baps-avatar brand="sampark" label="GP" statusDot iconBadge />
-      <baps-avatar brand="sampark" label="GP" size="xl" statusDot iconBadge />
+      <BapsAvatar brand="sampark" label="GP" size="xs" statusDot />
+      <BapsAvatar brand="sampark" label="GP" statusDot />
+      <BapsAvatar brand="sampark" label="GP" iconBadge />
+      <BapsAvatar brand="sampark" label="GP" statusDot iconBadge />
+      <BapsAvatar brand="sampark" label="GP" size="xl" statusDot iconBadge />
     </div>
   );
 }`,
@@ -690,11 +694,11 @@ export function Example() {
 export default function Example() {
   return (
     <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-      <baps-avatar brand="sampark" label="GP" size="xs" statusDot />
-      <baps-avatar brand="sampark" label="GP" statusDot />
-      <baps-avatar brand="sampark" label="GP" iconBadge />
-      <baps-avatar brand="sampark" label="GP" statusDot iconBadge />
-      <baps-avatar brand="sampark" label="GP" size="xl" statusDot iconBadge />
+      <BapsAvatar brand="sampark" label="GP" size="xs" statusDot />
+      <BapsAvatar brand="sampark" label="GP" statusDot />
+      <BapsAvatar brand="sampark" label="GP" iconBadge />
+      <BapsAvatar brand="sampark" label="GP" statusDot iconBadge />
+      <BapsAvatar brand="sampark" label="GP" size="xl" statusDot iconBadge />
     </div>
   );
 }`,
@@ -713,12 +717,12 @@ export default function Example() {
 
 export function Example() {
   return (
-    <baps-avatargroup [size]="size">
-      <baps-avatar [image]="image || 'https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png'" shape="circle" [variant]="variant" />
-      <baps-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/asiyajavayant.png" shape="circle" [variant]="variant" />
-      <baps-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/onyamalimba.png" shape="circle" [variant]="variant" />
-      <baps-avatar label="+3" shape="circle" [variant]="variant" />
-    </baps-avatargroup>
+    <BapsAvatarGroup size="m" aria-label="Members">
+      <BapsAvatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" imageAlt="Amy Elsner" shape="circle" />
+      <BapsAvatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/asiyajavayant.png" imageAlt="Asiya Javayant" shape="circle" />
+      <BapsAvatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/onyamalimba.png" imageAlt="Onyama Limba" shape="circle" />
+      <BapsAvatar label="+3" shape="circle" />
+    </BapsAvatarGroup>
   );
 }`,
     next: `${SETUP}
@@ -726,12 +730,12 @@ export function Example() {
 /* No 'use client': an avatar is markup. */
 export default function Example() {
   return (
-    <baps-avatargroup [size]="size">
-      <baps-avatar [image]="image || 'https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png'" shape="circle" [variant]="variant" />
-      <baps-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/asiyajavayant.png" shape="circle" [variant]="variant" />
-      <baps-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/onyamalimba.png" shape="circle" [variant]="variant" />
-      <baps-avatar label="+3" shape="circle" [variant]="variant" />
-    </baps-avatargroup>
+    <BapsAvatarGroup size="m" aria-label="Members">
+      <BapsAvatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" imageAlt="Amy Elsner" shape="circle" />
+      <BapsAvatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/asiyajavayant.png" imageAlt="Asiya Javayant" shape="circle" />
+      <BapsAvatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/onyamalimba.png" imageAlt="Onyama Limba" shape="circle" />
+      <BapsAvatar label="+3" shape="circle" />
+    </BapsAvatarGroup>
   );
 }`,
   },
@@ -749,12 +753,12 @@ export default function Example() {
 
 export function Example() {
   return (
-    <baps-avatargroup [size]="size">
-      <baps-avatar [image]="image || 'https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png'" shape="square" [variant]="variant" brand="sampark" />
-      <baps-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/asiyajavayant.png" shape="square" [variant]="variant" brand="sampark" />
-      <baps-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/onyamalimba.png" shape="square" [variant]="variant" brand="sampark" />
-      <baps-avatar label="+3" shape="square" [variant]="variant" brand="sampark" />
-    </baps-avatargroup>
+    <BapsAvatarGroup size="m" brand="sampark" aria-label="Members">
+      <BapsAvatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" imageAlt="Amy Elsner" shape="square" brand="sampark" />
+      <BapsAvatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/asiyajavayant.png" imageAlt="Asiya Javayant" shape="square" brand="sampark" />
+      <BapsAvatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/onyamalimba.png" imageAlt="Onyama Limba" shape="square" brand="sampark" />
+      <BapsAvatar label="+3" shape="square" brand="sampark" />
+    </BapsAvatarGroup>
   );
 }`,
     next: `${SETUP}
@@ -762,12 +766,12 @@ export function Example() {
 /* No 'use client': an avatar is markup. */
 export default function Example() {
   return (
-    <baps-avatargroup [size]="size">
-      <baps-avatar [image]="image || 'https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png'" shape="square" [variant]="variant" brand="sampark" />
-      <baps-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/asiyajavayant.png" shape="square" [variant]="variant" brand="sampark" />
-      <baps-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/onyamalimba.png" shape="square" [variant]="variant" brand="sampark" />
-      <baps-avatar label="+3" shape="square" [variant]="variant" brand="sampark" />
-    </baps-avatargroup>
+    <BapsAvatarGroup size="m" brand="sampark" aria-label="Members">
+      <BapsAvatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" imageAlt="Amy Elsner" shape="square" brand="sampark" />
+      <BapsAvatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/asiyajavayant.png" imageAlt="Asiya Javayant" shape="square" brand="sampark" />
+      <BapsAvatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/onyamalimba.png" imageAlt="Onyama Limba" shape="square" brand="sampark" />
+      <BapsAvatar label="+3" shape="square" brand="sampark" />
+    </BapsAvatarGroup>
   );
 }`,
   },

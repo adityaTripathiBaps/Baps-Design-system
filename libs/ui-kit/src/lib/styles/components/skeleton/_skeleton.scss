@@ -1,0 +1,80 @@
+baps-skeleton {
+  display: block;
+  --baps-skeleton-radius: var(--skeleton-mybky-radius);
+  --baps-skeleton-bg: var(--skeleton-mybky-background);
+  --baps-skeleton-shimmer: var(--skeleton-mybky-shimmer);
+}
+
+:is(baps-skeleton.baps-sampark, .baps-ds-sampark baps-skeleton) {
+  --baps-skeleton-radius: var(--skeleton-sampark-radius);
+  --baps-skeleton-bg: var(--skeleton-sampark-background);
+  --baps-skeleton-shimmer: var(--skeleton-sampark-shimmer);
+}
+
+baps-skeleton .p-skeleton {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  background: var(--baps-skeleton-bg);
+  border-radius: var(--baps-skeleton-radius);
+}
+
+baps-skeleton .p-skeleton::after {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  content: '';
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--baps-skeleton-shimmer),
+    transparent
+  );
+  animation: baps-skeleton-animation 1.2s infinite;
+  transform: translateX(-100%);
+}
+
+[dir='rtl'] baps-skeleton .p-skeleton::after {
+  animation-name: baps-skeleton-animation-rtl;
+}
+
+baps-skeleton .p-skeleton.p-skeleton-circle {
+  border-radius: 50%;
+}
+
+baps-skeleton .p-skeleton-animation-none::after {
+  animation: none;
+}
+
+.baps-dark baps-skeleton {
+  --baps-skeleton-bg: var(--color-mybky-dark-surface-hover);
+}
+
+.baps-dark :is(baps-skeleton.baps-sampark, .baps-ds-sampark baps-skeleton),
+.baps-ds-sampark .baps-dark baps-skeleton {
+  --baps-skeleton-bg: var(--color-sampark-dark-surface-hover);
+}
+
+@keyframes baps-skeleton-animation {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes baps-skeleton-animation-rtl {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  baps-skeleton .p-skeleton::after {
+    animation: none;
+  }
+}

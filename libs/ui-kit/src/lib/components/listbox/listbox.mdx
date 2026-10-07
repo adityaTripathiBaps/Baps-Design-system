@@ -1,8 +1,10 @@
-import { Meta, Canvas, Controls } from '@storybook/blocks';
-
-<Meta of={ListboxStories} />
+import { Meta, Controls } from '@storybook/blocks';
+import { FrameworkTabs } from '@baps/docs-blocks';
 
 import * as ListboxStories from './listbox.stories';
+import { listboxSnippets } from './listbox.snippets';
+
+<Meta of={ListboxStories} />
 
 # Listbox
 
@@ -25,41 +27,59 @@ Rows are rendered by [`baps-menu-item`](?path=/docs/components-menuitem--docs); 
 
 ### Playground
 
-<Canvas of={ListboxStories.ListboxPlayground} />
+<FrameworkTabs
+  of={ListboxStories.ListboxPlayground}
+  snippets={listboxSnippets.ListboxPlayground}
+/>
 <Controls of={ListboxStories.ListboxPlayground} />
 
 ### Multi Select With Checkboxes
 
-<Canvas of={ListboxStories.MultiSelectWithCheckboxes} />
+<FrameworkTabs
+  of={ListboxStories.MultiSelectWithCheckboxes}
+  snippets={listboxSnippets.MultiSelectWithCheckboxes}
+/>
 
 ### With Filtering
 
-<Canvas of={ListboxStories.WithFiltering} />
+<FrameworkTabs
+  of={ListboxStories.WithFiltering}
+  snippets={listboxSnippets.WithFiltering}
+/>
 
 ### Grouped
 
-<Canvas of={ListboxStories.Grouped} />
+<FrameworkTabs of={ListboxStories.Grouped} snippets={listboxSnippets.Grouped} />
 
 ### Rich Template Panel List
 
-<Canvas of={ListboxStories.RichTemplatePanelList} />
+<FrameworkTabs
+  of={ListboxStories.RichTemplatePanelList}
+  snippets={listboxSnippets.RichTemplatePanelList}
+/>
 
 ### Custom Templates Using P Template
 
-<Canvas of={ListboxStories.CustomTemplatesUsingPTemplate} />
+<FrameworkTabs
+  of={ListboxStories.CustomTemplatesUsingPTemplate}
+  snippets={listboxSnippets.CustomTemplatesUsingPTemplate}
+/>
 
 ### Disabled And Invalid
 
-<Canvas of={ListboxStories.DisabledAndInvalid} />
+<FrameworkTabs
+  of={ListboxStories.DisabledAndInvalid}
+  snippets={listboxSnippets.DisabledAndInvalid}
+/>
 
 ## When Not to Use
 
-| Need | Use | Not this |
-| --- | --- | --- |
-| One value from a short list, inline in a form | `baps-select` | A listbox, which always occupies its full height |
-| Several values from a long list | `baps-multiselect` | A listbox with `multiple` and no filter |
-| Picking a person from the directory | `baps-users-dropdown` | A listbox of names — it has no avatar/role row |
-| A hierarchy of options | `baps-treeselect` | A flat listbox with indented labels |
+| Need                                          | Use                   | Not this                                         |
+| --------------------------------------------- | --------------------- | ------------------------------------------------ |
+| One value from a short list, inline in a form | `baps-select`         | A listbox, which always occupies its full height |
+| Several values from a long list               | `baps-multiselect`    | A listbox with `multiple` and no filter          |
+| Picking a person from the directory           | `baps-users-dropdown` | A listbox of names — it has no avatar/role row   |
+| A hierarchy of options                        | `baps-treeselect`     | A flat listbox with indented labels              |
 
 ## Accessibility
 

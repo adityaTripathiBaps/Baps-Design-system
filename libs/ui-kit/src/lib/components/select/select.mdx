@@ -1,6 +1,7 @@
 import { Meta, Canvas, Controls } from '@storybook/blocks';
-import { PropsTable } from '@baps/docs-blocks';
+import { PropsTable, FrameworkTabs } from '@baps/docs-blocks';
 import * as SelectStories from './select.stories';
+import { selectSnippets } from './select.snippets';
 
 <Meta of={SelectStories} />
 
@@ -27,7 +28,7 @@ A dropdown / single-select form field. `baps-select` (`BapsSelect`) wraps PrimeN
 
 ### Default
 
-<Canvas of={SelectStories.Default} />
+<FrameworkTabs of={SelectStories.Default} snippets={selectSnippets.Default} />
 
 <Controls of={SelectStories.Default} />
 
@@ -39,18 +40,29 @@ native control in either forms API.
 ### Template Driven
 
 ```html
-<baps-select [options]="cities" optionLabel="name" placeholder="Select a city" [(ngModel)]="value" />
+<baps-select
+  [options]="cities"
+  optionLabel="name"
+  placeholder="Select a city"
+  [(ngModel)]="value"
+/>
 ```
 
 ### Reactive Forms
 
 ```html
-<baps-select [options]="cities" optionLabel="name" placeholder="Select a city" formControlName="value" />
+<baps-select
+  [options]="cities"
+  optionLabel="name"
+  placeholder="Select a city"
+  formControlName="value"
+/>
 ```
 
 ```ts
 form = new FormGroup({ value: new FormControl(null) });
 ```
+
 ## API
 
 Inputs, outputs and their types, read from the component's own source.
@@ -61,14 +73,14 @@ Inputs, outputs and their types, read from the component's own source.
 
 This is one of three selection surfaces in the kit and they are easy to confuse:
 
-| Need | Use | Why not `baps-select` |
-| --- | --- | --- |
-| The whole option list must stay visible, no overlay | `baps-listbox` | Select's options only exist while the panel is open |
-| Selecting **more than one** value | `baps-listbox` (`[multiple]`, `[checkbox]`) | `BapsSelect` exposes no `multiple` input at all — it is single-value only, and `p-select` has no multi mode |
-| Picking a **person**, with avatar, name and role in each row | `baps-users-dropdown` | It ships that row layout (`BapsUserOption`: `title`/`subtitle`/`avatarLabel`) and its own search; reproducing it here means a custom `<ng-template #item>` |
-| Rows that are **actions**, not values | `baps-split-button` (`model`) or `baps-menu-item` | Select emits a form value and closes; it has no per-item `command` |
-| A binary on/off | `baps-toggleswitch` or `baps-checkbox` | Two options in an overlay is two clicks for one bit |
-| Fewer than ~4 mutually exclusive options that all fit on screen | radio group / `baps-checkbox` | Hiding three options behind a click costs more than it saves |
+| Need                                                            | Use                                               | Why not `baps-select`                                                                                                                                      |
+| --------------------------------------------------------------- | ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| The whole option list must stay visible, no overlay             | `baps-listbox`                                    | Select's options only exist while the panel is open                                                                                                        |
+| Selecting **more than one** value                               | `baps-listbox` (`[multiple]`, `[checkbox]`)       | `BapsSelect` exposes no `multiple` input at all — it is single-value only, and `p-select` has no multi mode                                                |
+| Picking a **person**, with avatar, name and role in each row    | `baps-users-dropdown`                             | It ships that row layout (`BapsUserOption`: `title`/`subtitle`/`avatarLabel`) and its own search; reproducing it here means a custom `<ng-template #item>` |
+| Rows that are **actions**, not values                           | `baps-split-button` (`model`) or `baps-menu-item` | Select emits a form value and closes; it has no per-item `command`                                                                                         |
+| A binary on/off                                                 | `baps-toggleswitch` or `baps-checkbox`            | Two options in an overlay is two clicks for one bit                                                                                                        |
+| Fewer than ~4 mutually exclusive options that all fit on screen | radio group / `baps-checkbox`                     | Hiding three options behind a click costs more than it saves                                                                                               |
 
 `baps-listbox` and `baps-users-dropdown` are the two to reach for first — Select is the plain single-value form field, nothing more.
 
@@ -83,10 +95,10 @@ This is one of three selection surfaces in the kit and they are easy to confuse:
 
 ### Keyboard Support
 
-| Key | Function |
-| --- | --- |
-| <kbd>Tab</kbd> | Moves focus to the trigger. |
-| <kbd>Space / Enter</kbd> | Opens the panel; selects the highlighted option when open. |
-| <kbd>Arrow Up / Down</kbd> | Moves through the options. |
-| <kbd>Esc</kbd> | Closes the panel without changing the value. |
-| <kbd>Any character</kbd> | Typeahead — jumps to the first option starting with it. |
+| Key                        | Function                                                   |
+| -------------------------- | ---------------------------------------------------------- |
+| <kbd>Tab</kbd>             | Moves focus to the trigger.                                |
+| <kbd>Space / Enter</kbd>   | Opens the panel; selects the highlighted option when open. |
+| <kbd>Arrow Up / Down</kbd> | Moves through the options.                                 |
+| <kbd>Esc</kbd>             | Closes the panel without changing the value.               |
+| <kbd>Any character</kbd>   | Typeahead — jumps to the first option starting with it.    |

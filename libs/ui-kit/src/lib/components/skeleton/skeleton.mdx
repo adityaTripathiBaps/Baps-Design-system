@@ -1,6 +1,7 @@
 import { Meta, Canvas, Controls } from '@storybook/blocks';
-import { PropsTable } from '@baps/docs-blocks';
+import { FrameworkTabs, PropsTable } from '@baps/docs-blocks';
 import * as SkeletonStories from './skeleton.stories';
+import { skeletonSnippets } from './skeleton.snippets';
 
 <Meta of={SkeletonStories} />
 
@@ -9,9 +10,14 @@ import * as SkeletonStories from './skeleton.stories';
 A placeholder block shown while real content loads. `baps-skeleton` wraps
 PrimeNG's `p-skeleton`.
 
-<Canvas of={SkeletonStories.Default} />
+<Canvas of={SkeletonStories.Default} sourceState="none" />
 
 <Controls of={SkeletonStories.Default} />
+
+<FrameworkTabs
+  of={SkeletonStories.Default}
+  snippets={skeletonSnippets.Default}
+/>
 
 ## Usage
 
@@ -57,19 +63,30 @@ Inputs, outputs and their types, read from the component's own source.
 
 ### Circle
 
-<Canvas of={SkeletonStories.Circle} />
+<Canvas of={SkeletonStories.Circle} sourceState="none" />
+
+<FrameworkTabs of={SkeletonStories.Circle} snippets={skeletonSnippets.Circle} />
 
 ### Static
 
-<Canvas of={SkeletonStories.Static} />
+<Canvas of={SkeletonStories.Static} sourceState="none" />
+
+<FrameworkTabs of={SkeletonStories.Static} snippets={skeletonSnippets.Static} />
 
 ### List item
 
-<Canvas of={SkeletonStories.ListItem} />
+<Canvas of={SkeletonStories.ListItem} sourceState="none" />
+
+<FrameworkTabs
+  of={SkeletonStories.ListItem}
+  snippets={skeletonSnippets.ListItem}
+/>
 
 ### Card
 
-<Canvas of={SkeletonStories.Card} />
+<Canvas of={SkeletonStories.Card} sourceState="none" />
+
+<FrameworkTabs of={SkeletonStories.Card} snippets={skeletonSnippets.Card} />
 
 ## Accessibility
 
@@ -81,9 +98,9 @@ Do the announcing at the region level instead:
 ```html
 <section [attr.aria-busy]="loading" aria-live="polite">
   @if (loading) {
-    <baps-skeleton width="100%" height="1rem" />
+  <baps-skeleton width="100%" height="1rem" />
   } @else {
-    <p>{{ content }}</p>
+  <p>{{ content }}</p>
   }
 </section>
 ```

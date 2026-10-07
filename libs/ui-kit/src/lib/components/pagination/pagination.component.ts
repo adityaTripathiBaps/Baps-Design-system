@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, Output, ViewEncapsulation, computed, signal } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewEncapsulation,
+  computed,
+  signal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Select } from 'primeng/select';
 
@@ -62,7 +70,7 @@ export interface BapsPageEvent {
           [ngModel]="rows"
           (ngModelChange)="onRowsChange($event)"
           [appendTo]="'body'"
-          [panelStyleClass]="rppPanelClass"
+          [panelStyleClass]="rppPanelClass()"
           ariaLabel="Rows per page"
         />
       }
@@ -217,7 +225,8 @@ export interface BapsPageEvent {
        width: 100%. Both carry !important, so the tie-break is specificity
        alone. Measured 675px in a Sampark app with the shorter selector, which
        pushed the record count off the strip. */
-    .baps-paginator .baps-paginator__rpp.p-select {
+    .baps-paginator .baps-paginator__rpp.p-select,
+    .baps-paginator .baps-paginator__rpp.p-dropdown {
       width: fit-content !important;
       flex: none;
     }
@@ -225,7 +234,8 @@ export interface BapsPageEvent {
     /* The label must be allowed to shrink inside that box — a flex child
        defaults to min-width: auto, which refuses to go below its content and
        would push the chevron out of the control. */
-    .baps-paginator .baps-paginator__rpp .p-select-label {
+    .baps-paginator .baps-paginator__rpp .p-select-label,
+    .baps-paginator .baps-paginator__rpp .p-dropdown-label {
       min-width: 0;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -252,7 +262,8 @@ export interface BapsPageEvent {
       margin-inline-end: 0.25rem;
     }
 
-    baps-paginator .baps-paginator__rpp .p-select {
+    baps-paginator .baps-paginator__rpp .p-select,
+    baps-paginator .baps-paginator__rpp .p-dropdown {
       height: 1.875rem;
     }
 
@@ -271,11 +282,14 @@ export interface BapsPageEvent {
       font-family: inherit;
       font-size: 0.875rem;
       cursor: pointer;
-      transition: background-color 150ms ease, color 150ms ease;
+      transition:
+        background-color 150ms ease,
+        color 150ms ease;
     }
 
     baps-paginator .baps-paginator__nav:hover:not(:disabled),
-    baps-paginator .baps-paginator__page:hover:not(.baps-paginator__page--active) {
+    baps-paginator
+      .baps-paginator__page:hover:not(.baps-paginator__page--active) {
       background: var(--color-mybky-mono-50, #f8fafb);
       color: var(--color-mybky-mono-900, #181b1d);
     }
@@ -291,7 +305,8 @@ export interface BapsPageEvent {
       font-weight: 600;
     }
 
-    baps-paginator :is(.baps-paginator__nav, .baps-paginator__page):focus-visible {
+    baps-paginator
+      :is(.baps-paginator__nav, .baps-paginator__page):focus-visible {
       outline: 2px solid var(--color-mybky-blue-600, #5f78b8);
       outline-offset: -2px;
     }
@@ -354,13 +369,15 @@ export interface BapsPageEvent {
        resting text, Mono/100 #151414 for the active page, Mono/40 #bcb9b9
        for disabled, Mono/20% Black #1514140a for the active page's fill.
        ══════════════════════════════════════════════════════════════════ */
-    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator) .baps-paginator {
+    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator)
+      .baps-paginator {
       gap: 0.5rem;
       font-size: 0.875rem;
       line-height: 1.3;
     }
 
-    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator) .baps-paginator__report {
+    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator)
+      .baps-paginator__report {
       color: var(--color-sampark-text-secondary, #595656);
       white-space: nowrap;
     }
@@ -373,10 +390,20 @@ export interface BapsPageEvent {
        it to "100" plus the chevron instead. The value is 2-3 digits, so the
        min-width keeps "20" and "100" the same width and stops the strip
        shuffling sideways when the page size changes. */
-    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator) .baps-paginator__rpp .p-select {
+    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator)
+      .baps-paginator__rpp
+      .p-select,
+    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator)
+      .baps-paginator__rpp
+      .p-dropdown {
       height: var(--form-field-sampark-height-default, 2rem);
     }
-    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator) .baps-paginator__rpp .p-select-label {
+    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator)
+      .baps-paginator__rpp
+      .p-select-label,
+    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator)
+      .baps-paginator__rpp
+      .p-dropdown-label {
       display: flex;
       align-items: center;
       padding-inline-end: 0.25rem;
@@ -385,8 +412,10 @@ export interface BapsPageEvent {
 
     /* ── Nav arrows and page links ──
        Same 32px box; the arrows differ only in carrying an icon. */
-    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator) .baps-paginator__nav,
-    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator) .baps-paginator__page {
+    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator)
+      .baps-paginator__nav,
+    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator)
+      .baps-paginator__page {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -402,16 +431,21 @@ export interface BapsPageEvent {
       font-weight: 400;
       line-height: 1.3;
       cursor: pointer;
-      transition: background-color 120ms cubic-bezier(0.16, 1, 0.3, 1), color 120ms cubic-bezier(0.16, 1, 0.3, 1);
+      transition:
+        background-color 120ms cubic-bezier(0.16, 1, 0.3, 1),
+        color 120ms cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator) .baps-paginator__nav:hover:not(:disabled),
-    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator) .baps-paginator__page:hover:not(.baps-paginator__page--active) {
+    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator)
+      .baps-paginator__nav:hover:not(:disabled),
+    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator)
+      .baps-paginator__page:hover:not(.baps-paginator__page--active) {
       background: var(--color-sampark-secondary-0, #f8f7f7);
       color: var(--color-sampark-text-primary, #151414);
     }
 
-    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator) .baps-paginator__nav:disabled {
+    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator)
+      .baps-paginator__nav:disabled {
       color: var(--color-sampark-text-disabled, #bcb9b9);
       cursor: default;
     }
@@ -420,20 +454,23 @@ export interface BapsPageEvent {
        the maroon primary. Figma reads Mono/20% Black here; the accent is
        reserved for actions, and a filled maroon chip in a footer strip
        competes with the page's real primary button. */
-    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator) .baps-paginator__page--active {
+    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator)
+      .baps-paginator__page--active {
       background: var(--color-sampark-mono-alpha4, rgba(21, 20, 20, 0.04));
       color: var(--color-sampark-text-primary, #151414);
       font-weight: 600;
     }
 
-    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator) :is(.baps-paginator__nav, .baps-paginator__page):focus-visible {
+    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator)
+      :is(.baps-paginator__nav, .baps-paginator__page):focus-visible {
       outline: 2px solid var(--color-sampark-primary-default, #c96868);
       outline-offset: -2px;
     }
 
     /* Ellipsis — a label, not a control: it is not focusable and does not
        react to hover, so it must not look like the page links beside it. */
-    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator) .baps-paginator__gap {
+    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator)
+      .baps-paginator__gap {
       display: inline-flex;
       align-items: flex-end;
       justify-content: center;
@@ -447,7 +484,8 @@ export interface BapsPageEvent {
     /* ── Go to ──
        A single bordered group split by a hairline, the way the Figma draws
        it — not two adjacent controls, which would show a 2px seam. */
-    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator) .baps-paginator__jump {
+    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator)
+      .baps-paginator__jump {
       display: inline-flex;
       align-items: stretch;
       height: var(--form-field-sampark-height-default, 2rem);
@@ -458,7 +496,8 @@ export interface BapsPageEvent {
       overflow: hidden;
     }
 
-    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator) .baps-paginator__jump-label {
+    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator)
+      .baps-paginator__jump-label {
       display: inline-flex;
       align-items: center;
       padding: 0 0.75rem;
@@ -468,7 +507,8 @@ export interface BapsPageEvent {
       white-space: nowrap;
     }
 
-    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator) .baps-paginator__jump-input {
+    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator)
+      .baps-paginator__jump-input {
       width: 2.5rem;
       padding: 0 0.25rem;
       background: transparent;
@@ -479,26 +519,42 @@ export interface BapsPageEvent {
       text-align: center;
     }
 
-    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator) .baps-paginator__jump-input:focus {
+    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator)
+      .baps-paginator__jump-input:focus {
       outline: none;
     }
-    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator) .baps-paginator__jump:focus-within {
+    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator)
+      .baps-paginator__jump:focus-within {
       border-color: var(--color-sampark-primary-default, #c96868);
     }
 
     /* ── Dark mode ── */
-    .baps-dark :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator) .baps-paginator__report,
-    .baps-dark :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator) .baps-paginator__nav,
-    .baps-dark :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator) .baps-paginator__page,
-    .baps-dark :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator) .baps-paginator__gap {
+    .baps-dark
+      :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator)
+      .baps-paginator__report,
+    .baps-dark
+      :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator)
+      .baps-paginator__nav,
+    .baps-dark
+      :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator)
+      .baps-paginator__page,
+    .baps-dark
+      :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator)
+      .baps-paginator__gap {
       color: var(--color-mybky-mono-400, #b6b6af);
     }
-    .baps-dark :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator) .baps-paginator__nav:hover:not(:disabled),
-    .baps-dark :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator) .baps-paginator__page:hover:not(.baps-paginator__page--active) {
+    .baps-dark
+      :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator)
+      .baps-paginator__nav:hover:not(:disabled),
+    .baps-dark
+      :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator)
+      .baps-paginator__page:hover:not(.baps-paginator__page--active) {
       background: var(--color-mybky-mono-800, #2b2f32);
       color: var(--color-mybky-mono-50, #f8fafb);
     }
-    .baps-dark :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator) .baps-paginator__page--active {
+    .baps-dark
+      :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator)
+      .baps-paginator__page--active {
       background: rgba(255, 255, 255, 0.08);
       color: var(--color-mybky-mono-50, #f8fafb);
     }
@@ -524,7 +580,9 @@ export interface BapsPageEvent {
     }
 
     .baps-dark baps-paginator .baps-paginator__nav:hover:not(:disabled),
-    .baps-dark baps-paginator .baps-paginator__page:hover:not(.baps-paginator__page--active) {
+    .baps-dark
+      baps-paginator
+      .baps-paginator__page:hover:not(.baps-paginator__page--active) {
       background: var(--color-mybky-dark-surface-hover, #3d4144);
       color: var(--color-mybky-dark-text-primary, #f8fafb);
     }
@@ -550,7 +608,9 @@ export interface BapsPageEvent {
       border-inline-end-color: var(--color-mybky-dark-border-divider, #3d4144);
     }
 
-    .baps-dark baps-paginator :is(.baps-paginator__nav, .baps-paginator__page):focus-visible,
+    .baps-dark
+      baps-paginator
+      :is(.baps-paginator__nav, .baps-paginator__page):focus-visible,
     .baps-dark baps-paginator .baps-paginator__jump:focus-within {
       outline-color: var(--color-mybky-dark-primary-default, #9fadd9);
       border-color: var(--color-mybky-dark-primary-default, #9fadd9);
@@ -569,7 +629,11 @@ export class BapsPaginator {
    * no way to style just this one. `baps-ds-sampark` rides along because the
    * same detachment takes the panel out of any page-level brand scope.
    */
-  protected readonly rppPanelClass = 'baps-ds-sampark baps-paginator__rpp-panel';
+  protected readonly rppPanelClass = computed(() =>
+    this._brand() === 'sampark'
+      ? 'baps-ds-sampark baps-paginator__rpp-panel'
+      : 'baps-paginator__rpp-panel',
+  );
 
   /** Number of rows displayed per page. */
   @Input() set rows(v: number) {
@@ -605,23 +669,35 @@ export class BapsPaginator {
   /** The "Showing 1-20 of 250" text. */
   @Input() showCurrentPageReport = false;
   /** Placeholders: {first} {last} {totalRecords} {currentPage} {totalPages}. */
-  @Input() currentPageReportTemplate = 'Showing {first}-{last} of {totalRecords}';
+  @Input() currentPageReportTemplate =
+    'Showing {first}-{last} of {totalRecords}';
   @Input() showPageLinks = true;
   /** The trailing "Go to [ n ]" field. */
   @Input() showJumpToPage = false;
   @Input() ariaLabel = 'Pagination';
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() set brand(v: 'mybky' | 'sampark') {
+    this._brand.set(v || 'mybky');
+  }
+  get brand(): 'mybky' | 'sampark' {
+    return this._brand();
+  }
+  private readonly _brand = signal<'mybky' | 'sampark'>('mybky');
 
   /** Emitted whenever the page or the rows-per-page changes. */
   @Output() pageChange = new EventEmitter<BapsPageEvent>();
 
-  protected readonly pageCount = computed(() => Math.max(1, Math.ceil(this._total() / this._rows())));
-  protected readonly page = computed(() => Math.min(Math.floor(this._first() / this._rows()), this.pageCount() - 1));
+  protected readonly pageCount = computed(() =>
+    Math.max(1, Math.ceil(this._total() / this._rows())),
+  );
+  protected readonly page = computed(() =>
+    Math.min(Math.floor(this._first() / this._rows()), this.pageCount() - 1),
+  );
 
   protected report(): string {
     const first = this._total() === 0 ? 0 : this._first() + 1;
     const last = Math.min(this._first() + this._rows(), this._total());
-    return this.currentPageReportTemplate.replace('{first}', String(first))
+    return this.currentPageReportTemplate
+      .replace('{first}', String(first))
       .replace('{last}', String(last))
       .replace('{totalRecords}', String(this._total()))
       .replace('{currentPage}', String(this.page() + 1))
@@ -641,8 +717,18 @@ export class BapsPaginator {
   protected pages(): (number | null)[] {
     const total = this.pageCount();
     const current = this.page() + 1;
-    const keep = new Set<number>([1, 2, total - 1, total, current - 1, current, current + 1]);
-    const sorted = [...keep].filter((n) => n >= 1 && n <= total).sort((a, b) => a - b);
+    const keep = new Set<number>([
+      1,
+      2,
+      total - 1,
+      total,
+      current - 1,
+      current,
+      current + 1,
+    ]);
+    const sorted = [...keep]
+      .filter((n) => n >= 1 && n <= total)
+      .sort((a, b) => a - b);
 
     const out: (number | null)[] = [];
     let prev = 0;

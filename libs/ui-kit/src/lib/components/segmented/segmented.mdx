@@ -1,6 +1,7 @@
 import { Meta, Canvas, Controls } from '@storybook/blocks';
-import { BrandOnly, PropsTable } from '@baps/docs-blocks';
+import { BrandOnly, FrameworkTabs, PropsTable } from '@baps/docs-blocks';
 import * as SegmentedStories from './segmented.stories';
+import { segmentedSnippets } from './segmented.snippets';
 
 <Meta of={SegmentedStories} />
 
@@ -11,40 +12,73 @@ Two to five mutually exclusive options, all visible at once. `baps-segmented` wr
 ## Usage
 
 ```html
-<baps-segmented [options]="views" optionLabel="label" optionValue="value" [(ngModel)]="view" ariaLabel="View" />
+<baps-segmented
+  [options]="views"
+  optionLabel="label"
+  optionValue="value"
+  [(ngModel)]="view"
+  ariaLabel="View"
+/>
 ```
 
 ## Examples
 
 ### Default
 
-<Canvas of={SegmentedStories.Default} />
+<Canvas of={SegmentedStories.Default} sourceState="none" />
 
 <Controls of={SegmentedStories.Default} />
 
+<FrameworkTabs
+  of={SegmentedStories.Default}
+  snippets={segmentedSnippets.Default}
+/>
+
 ### Two Up
 
-<Canvas of={SegmentedStories.TwoUp} />
+<Canvas of={SegmentedStories.TwoUp} sourceState="none" />
+
+<FrameworkTabs of={SegmentedStories.TwoUp} snippets={segmentedSnippets.TwoUp} />
 
 ### Multiple
 
-<Canvas of={SegmentedStories.Multiple} />
+<Canvas of={SegmentedStories.Multiple} sourceState="none" />
+
+<FrameworkTabs
+  of={SegmentedStories.Multiple}
+  snippets={segmentedSnippets.Multiple}
+/>
 
 ### Object Options
 
-<Canvas of={SegmentedStories.ObjectOptions} />
+<Canvas of={SegmentedStories.ObjectOptions} sourceState="none" />
+
+<FrameworkTabs
+  of={SegmentedStories.ObjectOptions}
+  snippets={segmentedSnippets.ObjectOptions}
+/>
 
 <BrandOnly brand="comparison">
 
 ### Brands
 
-<Canvas of={SegmentedStories.Brands} />
+<Canvas of={SegmentedStories.Brands} sourceState="none" />
+
+<FrameworkTabs
+  of={SegmentedStories.Brands}
+  snippets={segmentedSnippets.Brands}
+/>
 
 </BrandOnly>
 
 ### Disabled
 
-<Canvas of={SegmentedStories.Disabled} />
+<Canvas of={SegmentedStories.Disabled} sourceState="none" />
+
+<FrameworkTabs
+  of={SegmentedStories.Disabled}
+  snippets={segmentedSnippets.Disabled}
+/>
 
 ## API
 
@@ -54,11 +88,11 @@ Inputs, outputs and their types, read from the component's own source.
 
 ## When Not to Use
 
-| Need | Use | Not this |
-| --- | --- | --- |
-| More than about five options | `baps-select` | A segmented control that wraps |
-| Switching between panels of content | `bapsTabs` | Segments that behave like tabs |
-| A single on/off | `baps-toggleswitch` | A two-segment control standing in for a switch |
+| Need                                | Use                 | Not this                                       |
+| ----------------------------------- | ------------------- | ---------------------------------------------- |
+| More than about five options        | `baps-select`       | A segmented control that wraps                 |
+| Switching between panels of content | `bapsTabs`          | Segments that behave like tabs                 |
+| A single on/off                     | `baps-toggleswitch` | A two-segment control standing in for a switch |
 
 ## Accessibility
 
@@ -70,8 +104,8 @@ Inputs, outputs and their types, read from the component's own source.
 
 ### Keyboard Support
 
-| Key | Function |
-| --- | --- |
-| <kbd>Tab</kbd> | Moves focus into the group. |
-| <kbd>Arrow keys</kbd> | Moves between segments. |
+| Key                      | Function                     |
+| ------------------------ | ---------------------------- |
+| <kbd>Tab</kbd>           | Moves focus into the group.  |
+| <kbd>Arrow keys</kbd>    | Moves between segments.      |
 | <kbd>Space / Enter</kbd> | Selects the focused segment. |

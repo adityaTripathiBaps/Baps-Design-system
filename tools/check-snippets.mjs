@@ -12,6 +12,7 @@
 //
 // Node only, no dependencies.
 import { readdirSync, readFileSync, existsSync } from 'node:fs';
+import ts from 'typescript';
 
 const COMPONENTS = 'libs/ui-kit/src/lib/components';
 const STYLES = 'libs/ui-kit/src/lib/styles';
@@ -35,7 +36,12 @@ const fail = (component, rule, detail) =>
   findings.push({ component, rule, detail });
 
 const read = (p) => readFileSync(p, 'utf8');
-const list = (dir) => (existsSync(dir) ? readdirSync(dir) : []);
+const list = (dir) =>
+  existsSync(dir)
+    ? readdirSync(dir, { withFileTypes: true })
+        .filter((entry) => entry.isDirectory() && !entry.name.startsWith('_'))
+        .map((entry) => entry.name)
+    : [];
 
 /** Every class name a stylesheet defines, from the whole styles tree at once. */
 const definedClasses = (() => {
@@ -77,18 +83,58 @@ for (const dir of list(COMPONENTS).sort()) {
   const isWrapper =
     /from 'primeng\//.test(componentSrc) || /<p-[a-z]/.test(componentSrc);
   const storiesSrc = existsSync(storiesFile) ? read(storiesFile) : '';
-  const storyExports = new Set(
-    [...storiesSrc.matchAll(/^export const (\w+)/gm)].map((m) => m[1]),
-  );
+  const storyExports = new Set();
+  if (storiesSrc) {
+    const sf = ts.createSourceFile(
+      storiesFile,
+      storiesSrc,
+      ts.ScriptTarget.Latest,
+      true,
+    );
+    ts.forEachChild(sf, (node) => {
+      if (
+        ts.isVariableStatement(node) &&
+        node.modifiers?.some((m) => m.kind === ts.SyntaxKind.ExportKeyword)
+      ) {
+        for (const decl of node.declarationList.declarations) {
+          if (decl.name) storyExports.add(decl.name.getText(sf));
+        }
+      }
+    });
+  }
   const exampleCount = [...storyExports].filter((s) => {
-    const nameMatch = storiesSrc.match(
-      new RegExp(
-        `export const ${s}[^=]*=\\s*\\{[\\s\\S]{0,400}?name:\\s*'([^']+)'`,
-      ),
-    );
-    return (
-      !/^Interaction( |—)/.test(nameMatch?.[1] ?? s) && !/Interaction$/.test(s)
-    );
+    let nameMatch = s;
+    if (storiesSrc) {
+      const sf = ts.createSourceFile(
+        storiesFile,
+        storiesSrc,
+        ts.ScriptTarget.Latest,
+        true,
+      );
+      ts.forEachChild(sf, (node) => {
+        if (ts.isVariableStatement(node)) {
+          for (const decl of node.declarationList.declarations) {
+            if (
+              decl.name &&
+              decl.name.getText(sf) === s &&
+              decl.initializer &&
+              ts.isObjectLiteralExpression(decl.initializer)
+            ) {
+              for (const p of decl.initializer.properties) {
+                if (
+                  p.name &&
+                  p.name.getText(sf) === 'name' &&
+                  ts.isPropertyAssignment(p)
+                ) {
+                  nameMatch = p.initializer.getText(sf).replace(/['"]/g, '');
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+    return !/^Interaction( |—)/.test(nameMatch) && !/Interaction$/.test(s);
   }).length;
 
   if (!existsSync(snippetFile)) {
@@ -105,9 +151,60 @@ for (const dir of list(COMPONENTS).sort()) {
   const src = read(snippetFile);
 
   // ── 1. keys ───────────────────────────────────────────────────────────────
-  const keysUsed = new Set(
-    [...src.matchAll(/^\s{4}(\w+):\s*[`'"]/gm)].map((m) => m[1]),
+  const keysUsed = new Set();
+  const examplesList = [];
+  let customCountAST = 0;
+  let sfSnippet = ts.createSourceFile(
+    snippetFile,
+    src,
+    ts.ScriptTarget.Latest,
+    true,
   );
+  ts.forEachChild(sfSnippet, (node) => {
+    if (
+      ts.isVariableStatement(node) &&
+      node.modifiers?.some((m) => m.kind === ts.SyntaxKind.ExportKeyword)
+    ) {
+      for (const decl of node.declarationList.declarations) {
+        if (
+          decl.initializer &&
+          ts.isObjectLiteralExpression(decl.initializer)
+        ) {
+          for (const exProp of decl.initializer.properties) {
+            if (ts.isPropertyAssignment(exProp) && exProp.name) {
+              const exName = exProp.name.getText(sfSnippet);
+              examplesList.push(exName);
+              if (ts.isObjectLiteralExpression(exProp.initializer)) {
+                let hasCustom = false;
+                for (const fwProp of exProp.initializer.properties) {
+                  if (ts.isPropertyAssignment(fwProp) && fwProp.name) {
+                    const fwKey = fwProp.name.getText(sfSnippet);
+                    if (fwKey !== 'interactive') keysUsed.add(fwKey);
+                    if (fwKey === 'custom') hasCustom = true;
+                  } else if (
+                    ts.isSpreadAssignment(fwProp) &&
+                    ts.isCallExpression(fwProp.expression) &&
+                    ts.isIdentifier(fwProp.expression.expression) &&
+                    /^(?:examples|frameworkExamples)$/.test(
+                      fwProp.expression.expression.text,
+                    )
+                  ) {
+                    // The typed helper used by React-ready snippet files
+                    // returns exactly Pick<SnippetSet, 'react' | 'next'>.
+                    // Count those authored tabs instead of reporting a false
+                    // gap merely because the object uses a spread.
+                    keysUsed.add('react');
+                    keysUsed.add('next');
+                  }
+                }
+                if (hasCustom) customCountAST++;
+              }
+            }
+          }
+        }
+      }
+    }
+  });
   for (const key of keysUsed) {
     if (!ALLOWED_KEYS.includes(key)) {
       fail(
@@ -119,16 +216,8 @@ for (const dir of list(COMPONENTS).sort()) {
   }
 
   // ── 2. every example maps to a story export ───────────────────────────────
-  const exampleMatches = [...src.matchAll(/^\s{2}(\w+):\s*\{/gm)];
-  const examples = exampleMatches.map((m) => m[1]);
-  // How many of them actually carry a Custom tab. Not the same as how many
-  // have snippets: tag has 13 sets and 10 Custom blocks, because three of its
-  // shapes have no standalone rule. The status page needs the narrower number
-  // or it reports a column complete when a quarter of it is missing.
-  const customCount = exampleMatches.filter((m, n) => {
-    const to = exampleMatches[n + 1]?.index ?? src.length;
-    return /^\s{4}custom:/m.test(src.slice(m.index, to));
-  }).length;
+  const examples = examplesList;
+  const customCount = customCountAST;
   for (const ex of examples) {
     if (!storyExports.has(ex)) {
       fail(
@@ -172,9 +261,10 @@ for (const dir of list(COMPONENTS).sort()) {
   for (const m of snippetStrings.matchAll(/class(?:Name)?="([^"]*)"/g)) {
     for (const cls of m[1].split(/\s+/).filter(Boolean)) {
       if (
-        /^(bg|text|p|px|py|m|mx|my|w|h|flex|grid|gap|rounded|shadow|border)-[a-z0-9[\]./-]+$/.test(
+        /^(?:bg|text|px|py|m|mx|my|w|h|flex|grid|gap|rounded|shadow|border)-[a-z0-9[\]./-]+$/.test(
           cls,
-        )
+        ) ||
+        /^p-(?:\d|\[)/.test(cls)
       ) {
         fail(
           dir,
@@ -354,7 +444,7 @@ if (process.argv.includes('--report')) {
 
 if (findings.length) {
   console.error(
-    `\n${findings.length} snippet finding${findings.length === 1 ? '' : 's'}:\n`,
+    `\n${findings.length} snippet blocking finding${findings.length === 1 ? '' : 's'} (CI failed):\n`,
   );
   for (const f of findings)
     console.error(
@@ -363,6 +453,6 @@ if (findings.length) {
   process.exitCode = 1;
 } else {
   console.log(
-    `snippets OK — ${report.filter((r) => r.covered > 0).length} snippet files checked`,
+    `snippets OK (no blocking findings) — ${report.filter((r) => r.covered > 0).length} snippet files checked`,
   );
 }

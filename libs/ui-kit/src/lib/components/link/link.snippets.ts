@@ -36,7 +36,9 @@ import { setupFor, type SnippetSet } from '../../docs/snippet-setup';
 export type { SnippetSet };
 
 /** Stated once; the same loads sit behind every snippet on this page. */
-const SETUP = setupFor('link');
+const SETUP = `${setupFor('link', false, '@org/ui-kit-react/styles')}
+
+import { BapsLink } from '@org/ui-kit-react';`;
 
 const anchor = (cls: string, text: string, href = '#') =>
   `  <baps-link class="${cls}"><a class="baps-link__anchor" href="${href}">${text}</a></baps-link>`;
@@ -69,34 +71,16 @@ export const linkSnippets: Record<string, SnippetSet> = {
 
 export function Example() {
   return (
-    <baps-link className="baps-link--primary">
-      <a
-        className="baps-link__anchor"
-        href="https://example.com"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Click here to view more details
-      </a>
-    </baps-link>
+    <BapsLink href="https://example.com" target="_blank">
+      Click here to view more details
+    </BapsLink>
   );
 }`,
-    next: `import Link from 'next/link';
+    next: `${SETUP}
 
-${SETUP}
-
-/* next/link renders the <a>, so the design-system class goes on it directly
-   and the baps-link element stays the wrapper the stylesheet is anchored to.
-   An external href like this one gains nothing from next/link's prefetching —
-   a plain <a> is the better choice here, and Link is shown because an internal
-   route is the common case. */
 export default function Example() {
   return (
-    <baps-link className="baps-link--primary">
-      <Link className="baps-link__anchor" href="/details">
-        Click here to view more details
-      </Link>
-    </baps-link>
+    <BapsLink href="/details">Click here to view more details</BapsLink>
   );
 }`,
     primeng: `<baps-link href="https://example.com" target="_blank" variant="primary">
@@ -121,8 +105,8 @@ ${anchor('baps-link--secondary', 'Secondary link')}
 export function Variants() {
   return (
     <div style={{ display: 'flex', gap: 32 }}>
-      <baps-link class="baps-link--primary"><a className="baps-link__anchor" href="#">Primary link</a></baps-link>
-      <baps-link class="baps-link--secondary"><a className="baps-link__anchor" href="#">Secondary link</a></baps-link>
+      <BapsLink href="#">Primary link</BapsLink>
+      <BapsLink href="#" variant="secondary">Secondary link</BapsLink>
     </div>
   );
 }`,
@@ -133,8 +117,8 @@ ${SETUP}
 export default function Variants() {
   return (
     <div style={{ display: 'flex', gap: 32 }}>
-      <baps-link class="baps-link--primary"><a className="baps-link__anchor" href="#">Primary link</a></baps-link>
-      <baps-link class="baps-link--secondary"><a className="baps-link__anchor" href="#">Secondary link</a></baps-link>
+      <BapsLink href="#">Primary link</BapsLink>
+      <BapsLink href="#" variant="secondary">Secondary link</BapsLink>
     </div>
   );
 }`,
@@ -159,10 +143,10 @@ ${anchor('', 'Unsized — inherits 20px')}
 export function Sizes() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 12, alignItems: 'flex-start', fontSize: 20 }}>
-      <baps-link class="baps-link-sm"><a className="baps-link__anchor" href="#">Small — 12px</a></baps-link>
-      <baps-link class="baps-link-lg"><a className="baps-link__anchor" href="#">Large — 14px</a></baps-link>
-      <baps-link class="baps-link-xl"><a className="baps-link__anchor" href="#">XLarge — 16px</a></baps-link>
-      <baps-link><a className="baps-link__anchor" href="#">Unsized — inherits 20px</a></baps-link>
+      <BapsLink href="#" size="small">Small — 12px</BapsLink>
+      <BapsLink href="#" size="large">Large — 14px</BapsLink>
+      <BapsLink href="#" size="xlarge">XLarge — 16px</BapsLink>
+      <BapsLink href="#">Unsized — inherits 20px</BapsLink>
     </div>
   );
 }`,
@@ -173,10 +157,10 @@ ${SETUP}
 export default function Sizes() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 12, alignItems: 'flex-start', fontSize: 20 }}>
-      <baps-link class="baps-link-sm"><a className="baps-link__anchor" href="#">Small — 12px</a></baps-link>
-      <baps-link class="baps-link-lg"><a className="baps-link__anchor" href="#">Large — 14px</a></baps-link>
-      <baps-link class="baps-link-xl"><a className="baps-link__anchor" href="#">XLarge — 16px</a></baps-link>
-      <baps-link><a className="baps-link__anchor" href="#">Unsized — inherits 20px</a></baps-link>
+      <BapsLink href="#" size="small">Small — 12px</BapsLink>
+      <BapsLink href="#" size="large">Large — 14px</BapsLink>
+      <BapsLink href="#" size="xlarge">XLarge — 16px</BapsLink>
+      <BapsLink href="#">Unsized — inherits 20px</BapsLink>
     </div>
   );
 }`,
@@ -215,12 +199,12 @@ export function Disabled() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 12, alignItems: 'flex-start' }}>
       <div style={{ display: 'flex', gap: 32 }}>
-        <baps-link class="baps-sampark baps-link--primary"><a className="baps-link__anchor baps-link--disabled" aria-disabled="true" tabIndex={-1}>Sampark primary</a></baps-link>
-        <baps-link class="baps-sampark baps-link--secondary"><a className="baps-link__anchor baps-link--disabled" aria-disabled="true" tabIndex={-1}>Sampark secondary</a></baps-link>
+        <BapsLink brand="sampark" disabled>Sampark primary</BapsLink>
+        <BapsLink brand="sampark" variant="secondary" disabled>Sampark secondary</BapsLink>
       </div>
       <div style={{ display: 'flex', gap: 32 }}>
-        <baps-link class="baps-link--primary"><a className="baps-link__anchor baps-link--disabled" aria-disabled="true" tabIndex={-1}>MyBKY primary</a></baps-link>
-        <baps-link class="baps-link--secondary"><a className="baps-link__anchor baps-link--disabled" aria-disabled="true" tabIndex={-1}>MyBKY secondary</a></baps-link>
+        <BapsLink disabled>MyBKY primary</BapsLink>
+        <BapsLink variant="secondary" disabled>MyBKY secondary</BapsLink>
       </div>
     </div>
   );
@@ -233,12 +217,12 @@ export default function Disabled() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 12, alignItems: 'flex-start' }}>
       <div style={{ display: 'flex', gap: 32 }}>
-        <baps-link class="baps-sampark baps-link--primary"><a className="baps-link__anchor baps-link--disabled" aria-disabled="true" tabIndex={-1}>Sampark primary</a></baps-link>
-        <baps-link class="baps-sampark baps-link--secondary"><a className="baps-link__anchor baps-link--disabled" aria-disabled="true" tabIndex={-1}>Sampark secondary</a></baps-link>
+        <BapsLink brand="sampark" disabled>Sampark primary</BapsLink>
+        <BapsLink brand="sampark" variant="secondary" disabled>Sampark secondary</BapsLink>
       </div>
       <div style={{ display: 'flex', gap: 32 }}>
-        <baps-link class="baps-link--primary"><a className="baps-link__anchor baps-link--disabled" aria-disabled="true" tabIndex={-1}>MyBKY primary</a></baps-link>
-        <baps-link class="baps-link--secondary"><a className="baps-link__anchor baps-link--disabled" aria-disabled="true" tabIndex={-1}>MyBKY secondary</a></baps-link>
+        <BapsLink disabled>MyBKY primary</BapsLink>
+        <BapsLink variant="secondary" disabled>MyBKY secondary</BapsLink>
       </div>
     </div>
   );

@@ -1616,3 +1616,119 @@ export default function FormValidation() {
 }`,
   },
 };
+
+/* React and Next examples use the published React component. PrimeNG-Angular
+ * and Custom remain independent documentation deliverables. */
+const REACT_DS_SETUP = `${setupFor('alert', false, '@org/ui-kit-react/styles')}
+
+import { BapsAlert } from '@org/ui-kit-react';`;
+
+const reactAlertExample = (
+  name: string,
+  jsx: string,
+  client = false,
+): Pick<SnippetSet, 'react' | 'next'> => ({
+  react: `${client ? "'use client';\n\n" : ''}${REACT_DS_SETUP}
+
+export function ${name}() {
+  return (
+    ${jsx}
+  );
+}`,
+  next: `${client ? "'use client';\n\n" : ''}${REACT_DS_SETUP}
+
+export default function ${name}() {
+  return (
+    ${jsx}
+  );
+}`,
+});
+
+Object.assign(
+  alertSnippets['CardParts'],
+  reactAlertExample(
+    'CardParts',
+    `<div style={{ display: 'grid', gap: 24 }}>
+      <BapsAlert appearance="card" severity="success" title="Saved" timestamp="1 min ago" text="No progress bar and no actions." closable />
+      <BapsAlert appearance="card" text="Text only: no title, timestamp, or close." />
+      <BapsAlert appearance="card" title="Syncing" text="Progress without actions." progress={40} progressLabel="40% complete" />
+    </div>`,
+  ),
+);
+
+Object.assign(
+  alertSnippets['Card'],
+  reactAlertExample(
+    'Card',
+    `<div style={{ display: 'grid', gap: 24 }}>
+      <BapsAlert appearance="card" title="New feature released" timestamp="2 mins ago" text="A new feature is ready." progress={60} progressLabel="60% uploaded" primaryAction="Cancel" secondaryAction="View" closable />
+      <BapsAlert appearance="card" severity="success" title="Upload complete" text="All records were saved." />
+      <BapsAlert appearance="card" severity="error" title="Upload failed" text="Try the upload again." />
+      <BapsAlert appearance="card" avatarLabel="GP" title="Ghanshyam Patel" text="Assigned you a new seva." />
+    </div>`,
+  ),
+);
+
+Object.assign(
+  alertSnippets['Default'],
+  reactAlertExample('Default', '<BapsAlert>This is an info alert.</BapsAlert>'),
+);
+
+Object.assign(
+  alertSnippets['Sampark'],
+  reactAlertExample(
+    'Sampark',
+    `<div style={{ display: 'grid', gap: 12 }}>
+      <BapsAlert brand="sampark" severity="info">This is an info alert.</BapsAlert>
+      <BapsAlert brand="sampark" severity="success">This is a success alert.</BapsAlert>
+      <BapsAlert brand="sampark" severity="warning">This is a warning alert.</BapsAlert>
+      <BapsAlert brand="sampark" severity="error">This is an error alert.</BapsAlert>
+    </div>`,
+  ),
+);
+
+Object.assign(
+  alertSnippets['Severities'],
+  reactAlertExample(
+    'Severities',
+    `<div style={{ display: 'grid', gap: 12 }}>
+      <BapsAlert severity="info">This is an info alert.</BapsAlert>
+      <BapsAlert severity="success">This is a success alert.</BapsAlert>
+      <BapsAlert severity="warning">This is a warning alert.</BapsAlert>
+      <BapsAlert severity="error">This is an error alert.</BapsAlert>
+    </div>`,
+  ),
+);
+
+Object.assign(
+  alertSnippets['WithTitle'],
+  reactAlertExample(
+    'WithTitle',
+    `<div style={{ display: 'grid', gap: 12 }}>
+      <BapsAlert severity="warning" title="Session expiring">Save your changes before continuing.</BapsAlert>
+      <BapsAlert severity="error" title="Upload failed" closable>Try the upload again.</BapsAlert>
+    </div>`,
+  ),
+);
+
+Object.assign(
+  alertSnippets['Dismissible'],
+  reactAlertExample(
+    'Dismissible',
+    `<div style={{ display: 'grid', gap: 12 }}>
+      <BapsAlert closable onClose={() => console.log('closed')}>This alert can be dismissed.</BapsAlert>
+      <BapsAlert severity="warning">Persistent alert with no close button.</BapsAlert>
+    </div>`,
+    true,
+  ),
+);
+
+Object.assign(
+  alertSnippets['FormValidation'],
+  reactAlertExample(
+    'FormValidation',
+    `<BapsAlert severity="error" title="Could not save this karyakar">
+      Name is required. Email is not a valid address.
+    </BapsAlert>`,
+  ),
+);

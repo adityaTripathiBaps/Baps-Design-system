@@ -1,0 +1,128 @@
+baps-divider {
+  display: block;
+}
+
+baps-divider .p-divider-horizontal {
+  display: flex;
+  position: relative;
+  align-items: center;
+  width: 100%;
+  margin-block: var(--divider-mybky-horizontal-margin);
+}
+
+baps-divider .p-divider-horizontal::before {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 0;
+  display: block;
+  width: 100%;
+  content: '';
+  border-block-start: var(--divider-mybky-border-width) solid
+    var(--divider-mybky-border-color);
+}
+
+baps-divider .p-divider-vertical {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  min-height: 100%;
+  margin-inline: var(--divider-mybky-vertical-margin);
+}
+
+baps-divider .p-divider-vertical::before {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 50%;
+  display: block;
+  height: 100%;
+  content: '';
+  border-inline-start: var(--divider-mybky-border-width) solid
+    var(--divider-mybky-border-color);
+}
+
+baps-divider .p-divider-content {
+  z-index: 1;
+  padding-inline: var(--divider-mybky-content-padding-x);
+  color: var(--divider-mybky-content-color);
+  background: var(--divider-mybky-content-background);
+}
+
+baps-divider .p-divider-solid::before {
+  border-style: solid;
+}
+
+baps-divider .p-divider-dashed::before {
+  border-style: dashed;
+}
+
+baps-divider .p-divider-dotted::before {
+  border-style: dotted;
+}
+
+baps-divider[data-size='compact'] {
+  display: flex;
+  flex: none;
+  align-items: center;
+  align-self: center;
+}
+
+baps-divider[data-size='compact'] .p-divider-vertical {
+  width: var(--divider-mybky-border-width);
+  min-width: 0;
+  height: var(--divider-mybky-compact-height);
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+}
+
+:is(baps-divider.baps-sampark, .baps-ds-sampark baps-divider)
+  .p-divider-horizontal::before {
+  border-block-start-color: var(--divider-sampark-border-color);
+  border-block-start-width: var(--divider-sampark-border-width);
+}
+
+:is(baps-divider.baps-sampark, .baps-ds-sampark baps-divider)
+  .p-divider-vertical::before {
+  border-inline-start-color: var(--divider-sampark-border-color);
+  border-inline-start-width: var(--divider-sampark-border-width);
+}
+
+:is(baps-divider.baps-sampark, .baps-ds-sampark baps-divider)
+  .p-divider-content {
+  padding-inline: var(--divider-sampark-content-padding-x);
+  color: var(--divider-sampark-content-color);
+  background: var(--divider-sampark-content-background);
+  border-radius: var(--divider-sampark-content-radius);
+}
+
+.baps-dark baps-divider .p-divider-horizontal::before {
+  border-block-start-color: var(--color-mybky-dark-border-divider);
+}
+
+.baps-dark baps-divider .p-divider-vertical::before {
+  border-inline-start-color: var(--color-mybky-dark-border-divider);
+}
+
+.baps-dark baps-divider .p-divider-content {
+  color: var(--color-mybky-dark-text-muted);
+  background: var(--color-mybky-dark-surface-card);
+}
+
+.baps-dark
+  :is(baps-divider.baps-sampark, .baps-ds-sampark baps-divider)
+  .p-divider-horizontal::before {
+  border-block-start-color: var(--color-sampark-dark-border-divider);
+}
+
+.baps-dark
+  :is(baps-divider.baps-sampark, .baps-ds-sampark baps-divider)
+  .p-divider-vertical::before {
+  border-inline-start-color: var(--color-sampark-dark-border-divider);
+}
+
+.baps-dark
+  :is(baps-divider.baps-sampark, .baps-ds-sampark baps-divider)
+  .p-divider-content {
+  color: var(--color-sampark-dark-text-muted);
+  background: var(--color-sampark-dark-surface-card);
+}

@@ -1,6 +1,7 @@
 import { Meta, Canvas, Controls } from '@storybook/blocks';
-import { PropsTable } from '@baps/docs-blocks';
+import { PropsTable, FrameworkTabs } from '@baps/docs-blocks';
 import * as DrawerStories from './drawer.stories';
+import { drawerSnippets } from './drawer.snippets';
 
 <Meta of={DrawerStories} />
 
@@ -11,11 +12,28 @@ A slide-in panel anchored to an edge of the screen. `baps-drawer` wraps PrimeNG 
 ## Usage
 
 ```html
-<baps-button label="Open filters" icon="pi pi-filter" brand="sampark" (click)="visible = true" />
+<baps-button
+  label="Open filters"
+  icon="pi pi-filter"
+  brand="sampark"
+  (click)="visible = true"
+/>
 
-<baps-drawer [(visible)]="visible" header="Filters" position="right" appendTo="body" brand="sampark">
+<baps-drawer
+  [(visible)]="visible"
+  header="Filters"
+  position="right"
+  appendTo="body"
+  brand="sampark"
+>
   <div drawer-actions>
-    <baps-button label="Clear All" severity="secondary" [outlined]="true" size="small" brand="sampark" />
+    <baps-button
+      label="Clear All"
+      severity="secondary"
+      [outlined]="true"
+      size="small"
+      brand="sampark"
+    />
     <baps-button label="Apply" size="small" brand="sampark" />
   </div>
 
@@ -29,25 +47,37 @@ A slide-in panel anchored to an edge of the screen. `baps-drawer` wraps PrimeNG 
 
 ### Playground
 
-<Canvas of={DrawerStories.Playground} />
+<FrameworkTabs
+  of={DrawerStories.Playground}
+  snippets={drawerSnippets.Playground}
+/>
 
 <Controls of={DrawerStories.Playground} />
 
 ### Open
 
-<Canvas of={DrawerStories.Open} />
+<FrameworkTabs of={DrawerStories.Open} snippets={drawerSnippets.Open} />
 
 ### Filter Panel
 
-<Canvas of={DrawerStories.FilterPanel} />
+<FrameworkTabs
+  of={DrawerStories.FilterPanel}
+  snippets={drawerSnippets.FilterPanel}
+/>
 
 ### Positions
 
-<Canvas of={DrawerStories.Positions} />
+<FrameworkTabs
+  of={DrawerStories.Positions}
+  snippets={drawerSnippets.Positions}
+/>
 
 ### Non Dismissible
 
-<Canvas of={DrawerStories.NonDismissible} />
+<FrameworkTabs
+  of={DrawerStories.NonDismissible}
+  snippets={drawerSnippets.NonDismissible}
+/>
 
 ## API
 
@@ -57,13 +87,13 @@ Inputs, outputs and their types, read from the component's own source.
 
 ## When Not to Use
 
-| Need | Use | Not this |
-| --- | --- | --- |
-| A decision that must be resolved before continuing ("Discard changes?") | PrimeNG `p-dialog` directly | Drawer — `dismissible` and `modal` default to true, so a stray mask click discards the task |
-| Persistent section navigation | `baps-internal-navbar` | Drawer — it is an overlay, not in-flow chrome |
-| A short menu anchored to a trigger | `baps-select`, or `baps-menu-item` rows inside `baps-listbox` | Drawer — a 500px panel plus a full-page mask for five options |
-| Choosing which table columns are visible | `baps-table-column-config` | A hand-built drawer of checkboxes |
-| Telling the user something about the current page | `baps-alert` | Drawer — it hides the thing being described |
+| Need                                                                    | Use                                                           | Not this                                                                                    |
+| ----------------------------------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| A decision that must be resolved before continuing ("Discard changes?") | PrimeNG `p-dialog` directly                                   | Drawer — `dismissible` and `modal` default to true, so a stray mask click discards the task |
+| Persistent section navigation                                           | `baps-internal-navbar`                                        | Drawer — it is an overlay, not in-flow chrome                                               |
+| A short menu anchored to a trigger                                      | `baps-select`, or `baps-menu-item` rows inside `baps-listbox` | Drawer — a 500px panel plus a full-page mask for five options                               |
+| Choosing which table columns are visible                                | `baps-table-column-config`                                    | A hand-built drawer of checkboxes                                                           |
+| Telling the user something about the current page                       | `baps-alert`                                                  | Drawer — it hides the thing being described                                                 |
 
 Also avoid it on `brand="mybky"`: there is no MyBKY skin, so the panel renders as an unstyled PrimeNG `p-drawer` and none of the responsive rules below apply.
 

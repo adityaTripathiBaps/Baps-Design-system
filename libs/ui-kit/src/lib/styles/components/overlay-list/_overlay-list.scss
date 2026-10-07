@@ -112,7 +112,11 @@
   /* The hover fill is the accent at 16% rather than a fixed pale step: over a
      near-black panel a tint composites to something readable, a pale step does
      not. */
-  --baps-list-hover-bg: color-mix(in srgb, var(--color-mybky-dark-primary-default, #9fadd9), transparent 84%);
+  --baps-list-hover-bg: color-mix(
+    in srgb,
+    var(--color-mybky-dark-primary-default, #9fadd9),
+    transparent 84%
+  );
   --baps-list-bar: var(--color-mybky-dark-primary-default, #9fadd9);
   --baps-list-muted-bg: var(--color-mybky-dark-surface-hover, #3d4144);
 }
@@ -124,7 +128,11 @@
 .baps-ds-sampark .baps-dark .p-tieredmenu-overlay,
 .baps-ds-sampark .baps-dark .p-menu-overlay,
 .baps-ds-sampark .baps-dark .p-autocomplete-overlay {
-  --baps-list-hover-bg: color-mix(in srgb, var(--color-sampark-dark-primary-default, #d48787), transparent 84%);
+  --baps-list-hover-bg: color-mix(
+    in srgb,
+    var(--color-sampark-dark-primary-default, #d48787),
+    transparent 84%
+  );
   --baps-list-bar: var(--color-sampark-dark-primary-default, #d48787);
   --baps-list-muted-bg: var(--color-sampark-dark-surface-hover, #4a4947);
 }
@@ -279,9 +287,17 @@
    hue at 16%, the ink is the tint step (5.67:1 on that fill). */
 .baps-dark .p-menu-item.baps-menu-item--danger:hover > .p-menu-item-content,
 .baps-dark .p-menu-item.baps-menu-item--danger.p-focus > .p-menu-item-content,
-.baps-dark .p-tieredmenu-item.baps-menu-item--danger:hover > .p-tieredmenu-item-content,
-.baps-dark .p-contextmenu-item.baps-menu-item--danger:hover > .p-contextmenu-item-content {
-  background: color-mix(in srgb, var(--color-mybky-error-80, #e05255), transparent 84%) !important;
+.baps-dark
+  .p-tieredmenu-item.baps-menu-item--danger:hover
+  > .p-tieredmenu-item-content,
+.baps-dark
+  .p-contextmenu-item.baps-menu-item--danger:hover
+  > .p-contextmenu-item-content {
+  background: color-mix(
+    in srgb,
+    var(--color-mybky-error-80, #e05255),
+    transparent 84%
+  ) !important;
   color: var(--color-mybky-error-tint, #ec9394) !important;
 }
 
@@ -290,4 +306,90 @@
 .baps-dark .p-tieredmenu-item.baps-menu-item--danger:hover::before,
 .baps-dark .p-contextmenu-item.baps-menu-item--danger:hover::before {
   background: var(--color-mybky-error-tint, #ec9394);
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   PrimeReact / Legacy v17 Fallbacks
+   For consumer apps (like React App Shell) that have not migrated to
+   PrimeNG v21's new class names (.p-select).
+   ══════════════════════════════════════════════════════════════════════ */
+
+.p-dropdown-panel {
+  --baps-list-hover-bg: var(--overlay-list-mybky-hover-background);
+  --baps-list-bar: var(--color-mybky-blue-600);
+  --baps-list-bar-width: var(--overlay-list-mybky-bar-width);
+  --baps-list-text: var(--color-mybky-text-primary);
+  --baps-list-muted-bg: var(--color-mybky-mono-50);
+}
+
+.baps-ds-sampark .p-dropdown-panel,
+.baps-ds-sampark.p-dropdown-panel {
+  --baps-list-hover-bg: var(--overlay-list-sampark-hover-background);
+  --baps-list-bar: var(--color-sampark-primary-default);
+  --baps-list-bar-width: var(--overlay-list-sampark-bar-width);
+  --baps-list-text: var(--color-sampark-text-primary);
+  --baps-list-muted-bg: var(--color-sampark-mono-10);
+}
+
+.baps-dark .p-dropdown-panel {
+  --baps-list-hover-bg: color-mix(
+    in srgb,
+    var(--color-mybky-dark-primary-default),
+    transparent 84%
+  );
+  --baps-list-bar: var(--color-mybky-dark-primary-default);
+  --baps-list-muted-bg: var(--color-mybky-dark-surface-hover);
+}
+
+.baps-ds-sampark .baps-dark .p-dropdown-panel {
+  --baps-list-hover-bg: color-mix(
+    in srgb,
+    var(--color-sampark-dark-primary-default),
+    transparent 84%
+  );
+  --baps-list-bar: var(--color-sampark-dark-primary-default);
+  --baps-list-muted-bg: var(--color-sampark-dark-surface-hover);
+}
+
+.p-dropdown-item {
+  position: relative;
+  transition: background-color var(--motion-duration-base)
+    var(--motion-easing-standard);
+}
+
+.p-dropdown-item::before {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: var(--baps-list-bar-width);
+  background: var(--baps-list-bar);
+  opacity: 0;
+  transition: opacity var(--motion-duration-base) var(--motion-easing-standard);
+  pointer-events: none;
+}
+
+.p-dropdown-item:not(.p-disabled):hover,
+.p-dropdown-item.p-focus:not(.p-disabled),
+.p-dropdown-item.p-highlight {
+  background: var(--baps-list-hover-bg) !important;
+  color: var(--baps-list-text);
+}
+
+.p-dropdown-item:not(.p-disabled):hover::before,
+.p-dropdown-item.p-focus:not(.p-disabled)::before,
+.p-dropdown-item.p-highlight::before {
+  opacity: 1;
+}
+
+.p-dropdown-item.p-disabled::before {
+  opacity: 0;
+}
+
+.p-dropdown-item.p-disabled:hover {
+  background: var(--baps-list-muted-bg) !important;
+}
+
+.p-dropdown-item:focus-visible {
+  background: var(--baps-list-muted-bg) !important;
 }

@@ -1,6 +1,7 @@
 import { Meta, Canvas, Controls } from '@storybook/blocks';
-import { BrandOnly, PropsTable } from '@baps/docs-blocks';
+import { BrandOnly, PropsTable, FrameworkTabs } from '@baps/docs-blocks';
 import * as StepperStories from './stepper.stories';
+import { stepperSnippets } from './stepper.snippets';
 
 <Meta of={StepperStories} />
 
@@ -51,10 +52,20 @@ import { BapsStepperWrapper, BapsStep } from '@org/ui-kit';
   imports: [BapsStepperWrapper, BapsStep],
   template: `
     <baps-stepper [(value)]="current" brand="mybky" [linear]="true">
-      <baps-step [value]="1" label="Basic Info" icon="info-circle" status="completed">
+      <baps-step
+        [value]="1"
+        label="Basic Info"
+        icon="info-circle"
+        status="completed"
+      >
         …panel content…
       </baps-step>
-      <baps-step [value]="2" label="Eligibility" icon="checklist" [required]="true">
+      <baps-step
+        [value]="2"
+        label="Eligibility"
+        icon="checklist"
+        [required]="true"
+      >
         …panel content…
       </baps-step>
       <baps-step [value]="3" label="Payment" icon="wallet-money">…</baps-step>
@@ -109,7 +120,13 @@ import { BapsStepper, BapsIcon, BapsOverlayBadge } from '@org/ui-kit';
 @Component({
   imports: [StepperModule, BapsStepper, BapsIcon, BapsOverlayBadge],
   template: `
-    <p-stepper bapsStepper #st brand="mybky" [(value)]="current" [linear]="true">
+    <p-stepper
+      bapsStepper
+      #st
+      brand="mybky"
+      [(value)]="current"
+      [linear]="true"
+    >
       <p-step-list>
         @for (s of steps; track s.index) {
           <p-step [value]="s.index">
@@ -118,7 +135,11 @@ import { BapsStepper, BapsIcon, BapsOverlayBadge } from '@org/ui-kit';
 
               <span class="baps-step">
                 <span class="baps-step__icon-wrap">
-                  <baps-overlaybadge severity="danger" badgeSize="small" [badgeDisabled]="!s.required">
+                  <baps-overlaybadge
+                    severity="danger"
+                    badgeSize="small"
+                    [badgeDisabled]="!s.required"
+                  >
                     <button
                       type="button"
                       role="tab"
@@ -175,47 +196,65 @@ Three things in that template are load-bearing and easy to lose:
 
 ### Default
 
-<Canvas of={StepperStories.Default} />
+<FrameworkTabs of={StepperStories.Default} snippets={stepperSnippets.Default} />
 
 ### States
 
-<Canvas of={StepperStories.States} />
+<FrameworkTabs of={StepperStories.States} snippets={stepperSnippets.States} />
 
 ### Active And Completed
 
-<Canvas of={StepperStories.ActiveAndCompleted} />
+<FrameworkTabs
+  of={StepperStories.ActiveAndCompleted}
+  snippets={stepperSnippets.ActiveAndCompleted}
+/>
 
 ### Required Steps
 
-<Canvas of={StepperStories.RequiredSteps} />
+<FrameworkTabs
+  of={StepperStories.RequiredSteps}
+  snippets={stepperSnippets.RequiredSteps}
+/>
 
 ### Linear
 
-<Canvas of={StepperStories.Linear} />
+<FrameworkTabs of={StepperStories.Linear} snippets={stepperSnippets.Linear} />
 
 ### First Step
 
-<Canvas of={StepperStories.FirstStep} />
+<FrameworkTabs
+  of={StepperStories.FirstStep}
+  snippets={stepperSnippets.FirstStep}
+/>
 
 ### Numbered
 
-<Canvas of={StepperStories.Numbered} />
+<FrameworkTabs
+  of={StepperStories.Numbered}
+  snippets={stepperSnippets.Numbered}
+/>
 
 <BrandOnly brand="sampark">
 
 ### Numbered Sampark
 
-<Canvas of={StepperStories.NumberedSampark} />
+<FrameworkTabs
+  of={StepperStories.NumberedSampark}
+  snippets={stepperSnippets.NumberedSampark}
+/>
 
 </BrandOnly>
 
 ### Wrapper
 
-<Canvas of={StepperStories.Wrapper} />
+<FrameworkTabs of={StepperStories.Wrapper} snippets={stepperSnippets.Wrapper} />
 
 ### Wrapper Numbered
 
-<Canvas of={StepperStories.WrapperNumbered} />
+<FrameworkTabs
+  of={StepperStories.WrapperNumbered}
+  snippets={stepperSnippets.WrapperNumbered}
+/>
 
 ## API
 

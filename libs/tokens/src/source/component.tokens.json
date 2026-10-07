@@ -1034,6 +1034,34 @@
     }
   },
   "avatar": {
+    "group": {
+      "overlap": {
+        "xs": {
+          "value": "0.375rem",
+          "comment": "6px measured overlap for 24px avatars"
+        },
+        "s": {
+          "value": "0.625rem",
+          "comment": "10px measured overlap for 32px avatars"
+        },
+        "m": {
+          "value": "0.625rem",
+          "comment": "10px measured overlap for 36px avatars"
+        },
+        "l": {
+          "value": "0.75rem",
+          "comment": "12px measured overlap for 48px avatars"
+        },
+        "xl": {
+          "value": "1rem",
+          "comment": "16px measured overlap for 60px avatars"
+        },
+        "2xl": {
+          "value": "1.25rem",
+          "comment": "20px measured overlap for 80px avatars"
+        }
+      }
+    },
     "mybky": {
       "radius": {
         "value": "{radius.mybky.pill}",
@@ -1245,6 +1273,26 @@
         "sizeXl": {
           "value": "0.625rem",
           "comment": "10px — xl/2xl"
+        },
+        "offset": {
+          "value": "0.1875rem",
+          "comment": "3px outward offset — s/m/l"
+        },
+        "offsetXs": {
+          "value": "0.125rem",
+          "comment": "2px outward offset — xs"
+        },
+        "offsetXl": {
+          "value": "0.25rem",
+          "comment": "4px outward offset — xl/2xl"
+        },
+        "ringWidth": {
+          "value": "0.09375rem",
+          "comment": "1.5px white separation ring — xs/s/m/l"
+        },
+        "ringWidthXl": {
+          "value": "0.125rem",
+          "comment": "2px white separation ring — xl/2xl"
         }
       },
       "iconBadge": {
@@ -1266,6 +1314,18 @@
         "sizeXl": {
           "value": "1.125rem",
           "comment": "18px — xl/2xl"
+        },
+        "offset": {
+          "value": "0.25rem",
+          "comment": "4px outward offset — s/m/l"
+        },
+        "offsetXs": {
+          "value": "0.1875rem",
+          "comment": "3px outward offset — xs"
+        },
+        "offsetXl": {
+          "value": "0.375rem",
+          "comment": "6px outward offset — xl/2xl"
         }
       },
       "size": {
@@ -1750,6 +1810,118 @@
       "expandedFontWeight": {
         "value": "{font.weight.semibold}",
         "comment": "An expanded parent gets weight only — no background change."
+      }
+    }
+  },
+  "skeleton": {
+    "mybky": {
+      "radius": { "value": "{radius.mybky.sm}" },
+      "background": { "value": "{color.mybky.mono.100}" },
+      "shimmer": { "value": "{color.mybky.mono.0}" }
+    },
+    "sampark": {
+      "radius": { "value": "{radius.sampark.default}" },
+      "background": { "value": "{color.sampark.mono.20}" },
+      "shimmer": { "value": "{color.sampark.mono.0}" }
+    }
+  },
+  "progressBar": {
+    "mybky": {
+      "trackHeight": { "value": "0.5rem" },
+      "labelledHeight": { "value": "1.25rem" },
+      "trackRadius": { "value": "{radius.mybky.pill}" },
+      "trackBackground": { "value": "{color.mybky.mono.300}" },
+      "valueBackground": { "value": "{color.mybky.blue.600}" },
+      "labelColor": { "value": "{color.mybky.mono.0}" },
+      "labelFontSize": { "value": "{font.size.2xs}" },
+      "labelFontWeight": { "value": "{font.weight.semibold}" }
+    },
+    "sampark": {
+      "trackHeight": { "value": "0.5rem" },
+      "labelledHeight": { "value": "1.25rem" },
+      "trackRadius": { "value": "{radius.sampark.default}" },
+      "trackBackground": { "value": "{color.sampark.mono.20}" },
+      "valueBackground": { "value": "{color.sampark.primary.60}" },
+      "labelColor": { "value": "{color.sampark.mono.0}" },
+      "labelFontSize": { "value": "{font.size.2xs}" },
+      "labelFontWeight": { "value": "{font.weight.semibold}" }
+    }
+  },
+  "divider": {
+    "mybky": {
+      "borderWidth": { "value": "1px" },
+      "borderColor": { "value": "{color.mybky.border.default}" },
+      "contentBackground": { "value": "{color.mybky.surface.card}" },
+      "contentColor": { "value": "{color.mybky.text.muted}" },
+      "contentPaddingX": { "value": "{space.2}" },
+      "horizontalMargin": { "value": "{space.4}" },
+      "verticalMargin": { "value": "{space.4}" },
+      "compactHeight": { "value": "{space.4}" }
+    },
+    "sampark": {
+      "borderWidth": { "value": "1px" },
+      "borderColor": { "value": "{color.sampark.border.default}" },
+      "contentBackground": { "value": "{color.sampark.surface.card}" },
+      "contentColor": { "value": "{color.sampark.text.muted}" },
+      "contentPaddingX": { "value": "{space.3}" },
+      "contentRadius": { "value": "{radius.sampark.default}" }
+    }
+  },
+  "inputGroup": {
+    "height": {
+      "value": "{formField.sampark.heightDefault}",
+      "comment": "32px group height from Figma node 17512:82916"
+    },
+    "radius": {
+      "value": "{radius.sampark.default}",
+      "comment": "4px shared group corner radius"
+    },
+    "borderWidth": { "value": "1px" },
+    "addonMinWidth": { "value": "{space.8}" },
+    "focusRingWidth": { "value": "0.1875rem" },
+    "addonPaddingX": { "value": "0.625rem" },
+    "addonFontSize": { "value": "{font.size.sm}" },
+    "addonFontWeight": { "value": "{font.weight.regular}" },
+    "addonLineHeight": { "value": "1.3" }
+  },
+  "segmented": {
+    "containerHeight": { "value": "{space.8}" },
+    "containerPadding": { "value": "{space.0.5}" },
+    "containerGap": { "value": "{space.0.5}" },
+    "containerRadius": { "value": "0.375rem" },
+    "pillHeight": { "value": "{space.7}" },
+    "pillMinWidth": { "value": "{space.7}" },
+    "pillRadius": { "value": "{radius.sampark.default}" },
+    "pillGap": { "value": "{space.1}" },
+    "pillPaddingX": { "value": "{space.2}" },
+    "borderWidth": { "value": "1px" },
+    "selectedBorderWidth": { "value": "0.09375rem" },
+    "fontSize": { "value": "{font.size.sm}" },
+    "fontWeight": { "value": "{font.weight.medium}" },
+    "selectedFontWeight": { "value": "{font.weight.semibold}" },
+    "lineHeight": { "value": "1.3" },
+    "focusRingWidth": { "value": "{space.0.5}" },
+    "focusRingOffset": { "value": "-1px" },
+    "multipleGap": { "value": "{space.2}" },
+    "multipleMinWidth": { "value": "2.125rem" },
+    "multipleHeight": { "value": "{space.8}" }
+  },
+  "overlayList": {
+    "mybky": {
+      "hoverBackground": { "value": "{color.mybky.blue.50}" },
+      "barWidth": {
+        "value": "0.1875rem",
+        "comment": "3px selection accent measured in the MyBKY list treatment"
+      }
+    },
+    "sampark": {
+      "hoverBackground": {
+        "value": "#f6f5f5",
+        "comment": "Measured Sampark overlay-row hover surface"
+      },
+      "barWidth": {
+        "value": "{space.1}",
+        "comment": "4px selection accent measured in the Sampark list treatment"
       }
     }
   },

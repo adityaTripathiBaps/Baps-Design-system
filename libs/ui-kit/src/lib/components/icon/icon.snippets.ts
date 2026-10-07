@@ -26,8 +26,9 @@
  *
  * **The glyph** is data, not CSS. It comes from a generated registry, and
  * `@org/ui-kit/icons` exports it Angular-free — measured, zero occurrences of
- * "@angular" in the built file, 545 glyphs, 2.29 MB bundled. The component
- * wraps the path body in exactly this, and so do the snippets below:
+ * "@angular" in the built file, 545 glyphs, 2.29 MB bundled. The React package
+ * generates its registry from that same source; only the Custom snippets need
+ * to show the raw wrapper markup below:
  *
  *     <svg viewBox="0 0 24 24" fill="none" focusable="false">{body}</svg>
  *
@@ -52,7 +53,9 @@ import { setupFor, type SnippetSet } from '../../docs/snippet-setup';
 /** Re-exported so the .mdx and the docs blocks keep importing it from here. */
 export type { SnippetSet };
 
-const SETUP = setupFor('icon');
+const SETUP = `${setupFor('icon', false, '@org/ui-kit-react/styles')}
+
+import { BapsIcon } from '@org/ui-kit-react';`;
 
 export const iconSnippets: Record<string, SnippetSet> = {
   // The accessibility axis, and the only input that decides it.
@@ -102,12 +105,12 @@ export function Labelled() {
         aria-label="Delete"
         className="baps-button baps-button--secondary baps-button--icon-only"
       >
-        <Glyph name="trash" label="Delete" />
+        <BapsIcon name="trash" label="Delete" />
       </button>
 
       {/* Decorative: no label, so it is hidden rather than read twice. */}
       <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
-        <Glyph name="user" />
+        <BapsIcon name="user" />
         Decorative, beside its own label
       </span>
     </div>
@@ -123,11 +126,11 @@ export default function Labelled() {
         aria-label="Delete"
         className="baps-button baps-button--secondary baps-button--icon-only"
       >
-        <Glyph name="trash" label="Delete" />
+        <BapsIcon name="trash" label="Delete" />
       </button>
 
       <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
-        <Glyph name="user" />
+        <BapsIcon name="user" />
         Decorative, beside its own label
       </span>
     </div>
@@ -161,7 +164,7 @@ export function Sizes() {
   return (
     <div style={{ display: 'flex', alignItems: 'flex-end', gap: '1.5rem' }}>
       {SIZES.map((size) => (
-        <Glyph key={size} name="notification" size={size} />
+        <BapsIcon key={size} name="notification" size={size} />
       ))}
     </div>
   );
@@ -174,7 +177,7 @@ export default function Sizes() {
   return (
     <div style={{ display: 'flex', alignItems: 'flex-end', gap: '1.5rem' }}>
       {SIZES.map((size) => (
-        <Glyph key={size} name="notification" size={size} />
+        <BapsIcon key={size} name="notification" size={size} />
       ))}
     </div>
   );
@@ -222,7 +225,7 @@ export function InheritsColour() {
           key={label}
           style={{ color, display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
         >
-          <Glyph name={icon} />
+          <BapsIcon name={icon} />
           {label}
         </span>
       ))}
@@ -244,7 +247,7 @@ export default function InheritsColour() {
           key={label}
           style={{ color, display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
         >
-          <Glyph name={icon} />
+          <BapsIcon name={icon} />
           {label}
         </span>
       ))}
@@ -266,58 +269,14 @@ export default function InheritsColour() {
 </baps-icon>`,
     react: `${SETUP}
 
-import { BAPS_ICONS } from '@org/ui-kit/icons';
-
-/* The registry is plain data — measured, zero references to Angular in the
-   built file — so it is the one piece of the component library a React app
-   imports directly. This wrapper is byte for byte what the Angular component
-   injects. */
-function Glyph({ name, size = 24, label }) {
-  return (
-    <baps-icon style={{ '--baps-icon-size': size + 'px' }}>
-      <span
-        className="baps-icon__glyph"
-        role={label ? 'img' : undefined}
-        aria-label={label}
-        aria-hidden={label ? undefined : true}
-        dangerouslySetInnerHTML={{
-          __html:
-            '<svg viewBox="0 0 24 24" fill="none" focusable="false">' + BAPS_ICONS[name] + '</svg>',
-        }}
-      />
-    </baps-icon>
-  );
-}
-
 export function Example() {
-  return <Glyph name="notification" />;
+  return <BapsIcon name="notification" />;
 }`,
     next: `${SETUP}
 
-import { BAPS_ICONS } from '@org/ui-kit/icons';
-
-/* No 'use client': an icon is markup. The registry is 2.3 MB of path data —
-   keep this component in ONE file and import it from there, or it lands in
-   several chunks. */
-function Glyph({ name, size = 24, label }) {
-  return (
-    <baps-icon style={{ '--baps-icon-size': size + 'px' }}>
-      <span
-        className="baps-icon__glyph"
-        role={label ? 'img' : undefined}
-        aria-label={label}
-        aria-hidden={label ? undefined : true}
-        dangerouslySetInnerHTML={{
-          __html:
-            '<svg viewBox="0 0 24 24" fill="none" focusable="false">' + BAPS_ICONS[name] + '</svg>',
-        }}
-      />
-    </baps-icon>
-  );
-}
-
+/* No 'use client': BapsIcon is server-renderable markup. */
 export default function Example() {
-  return <Glyph name="notification" />;
+  return <BapsIcon name="notification" />;
 }`,
   },
 };

@@ -1,0 +1,158 @@
+/* Framework-free badge structure. Angular's PrimeNG badge renders the same
+   classes, so both packages consume this canonical token-backed contract. */
+baps-badge {
+  display: inline-flex;
+}
+
+baps-badge .p-badge {
+  box-sizing: border-box;
+  display: inline-flex;
+  min-width: var(--badge-mybky-size-s);
+  height: var(--badge-mybky-size-s);
+  align-items: center;
+  justify-content: center;
+  gap: var(--badge-mybky-gap);
+  padding-inline: var(--space-1);
+  border: 0;
+  border-radius: var(--badge-mybky-radius);
+  background: var(--color-mybky-primary-default);
+  color: var(--color-mybky-text-inverse);
+  font-family: inherit;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+baps-badge .p-badge-sm {
+  min-width: var(--badge-mybky-size-xs);
+  height: var(--badge-mybky-size-xs);
+  font-size: var(--font-size-2xs);
+}
+
+baps-badge .p-badge-lg,
+baps-badge .p-badge-xl {
+  min-width: var(--badge-mybky-size-l);
+  height: var(--badge-mybky-size-l);
+  font-size: var(--font-size-sm);
+}
+
+baps-badge .p-badge-dot {
+  width: var(--space-2);
+  min-width: var(--space-2);
+  height: var(--space-2);
+  padding: 0;
+}
+
+baps-badge .p-badge-secondary {
+  background: var(--color-mybky-mono-600);
+}
+
+baps-badge .p-badge-success {
+  background: var(--color-mybky-state-success);
+}
+
+baps-badge .p-badge-info {
+  background: var(--color-mybky-state-info);
+}
+
+baps-badge .p-badge-warn {
+  background: var(--color-mybky-state-warning);
+}
+
+baps-badge .p-badge-danger {
+  background: var(--color-mybky-state-error);
+}
+
+baps-badge .p-badge-contrast {
+  background: var(--color-mybky-mono-900);
+}
+
+.baps-dark baps-badge .p-badge-secondary {
+  background: var(--color-mybky-dark-surface-hover);
+  color: var(--color-mybky-dark-text-primary);
+}
+
+.baps-dark baps-badge .p-badge-contrast {
+  background: var(--color-mybky-dark-text-primary);
+  color: var(--color-mybky-dark-text-inverse);
+}
+
+:is(baps-badge.baps-sampark, .baps-ds-sampark baps-badge) .p-badge {
+  min-width: var(--badge-sampark-size-m);
+  height: var(--badge-sampark-size-m);
+  border-radius: var(--badge-sampark-radius);
+  font-size: var(--badge-sampark-font-size-m);
+  font-weight: var(--font-weight-medium);
+}
+
+:is(baps-badge.baps-sampark, .baps-ds-sampark baps-badge) .p-badge-sm {
+  min-width: var(--badge-sampark-size-s);
+  height: var(--badge-sampark-size-s);
+  font-size: var(--badge-sampark-font-size-s);
+}
+
+:is(baps-badge.baps-sampark, .baps-ds-sampark baps-badge) .p-badge-lg {
+  min-width: var(--badge-sampark-size-l);
+  height: var(--badge-sampark-size-l);
+  font-size: var(--badge-sampark-font-size-l);
+}
+
+:is(baps-badge.baps-sampark, .baps-ds-sampark baps-badge) .p-badge-xl {
+  min-width: var(--badge-sampark-size-xl);
+  height: var(--badge-sampark-size-xl);
+  font-size: var(--badge-sampark-font-size-xl);
+}
+
+:is(baps-badge.baps-sampark, .baps-ds-sampark baps-badge) .p-badge-secondary {
+  background: var(--color-sampark-secondary-60);
+}
+
+:is(baps-badge.baps-sampark, .baps-ds-sampark baps-badge) .p-badge-success {
+  background: var(--color-sampark-state-success);
+}
+
+:is(baps-badge.baps-sampark, .baps-ds-sampark baps-badge) .p-badge-info {
+  background: var(--color-sampark-state-info);
+}
+
+:is(baps-badge.baps-sampark, .baps-ds-sampark baps-badge) .p-badge-warn {
+  background: var(--color-sampark-state-warning);
+}
+
+:is(baps-badge.baps-sampark, .baps-ds-sampark baps-badge) .p-badge-danger {
+  background: var(--color-sampark-state-error);
+}
+
+:is(baps-badge.baps-sampark, .baps-ds-sampark baps-badge) .p-badge-contrast {
+  background: var(--color-sampark-mono-100);
+}
+
+.p-overlay-badge {
+  position: relative;
+  display: inline-flex;
+}
+
+.p-overlay-badge > baps-badge {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  z-index: 1;
+  transform: translate(50%, -50%);
+}
+
+.baps-dark
+  :is(baps-badge.baps-sampark, .baps-ds-sampark baps-badge).baps-badge-counts
+  .p-badge {
+  border-color: var(--color-sampark-dark-border-control) !important;
+  background: var(--color-sampark-dark-surface-hover) !important;
+  color: var(--color-sampark-dark-text-primary) !important;
+}
+
+.baps-dark
+  :is(baps-badge.baps-sampark, .baps-ds-sampark baps-badge).baps-badge-disable
+  .p-badge {
+  border-color: var(--color-sampark-dark-border-divider) !important;
+  background: var(--color-sampark-dark-surface-card) !important;
+  color: var(--color-sampark-dark-text-disabled) !important;
+}

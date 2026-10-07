@@ -15,6 +15,8 @@
   background: var(--toolbar-sampark-background, #ffffff);
   border: none;
   border-bottom: 1px solid var(--toolbar-sampark-border, #e1e0e0);
+  color: var(--toolbar-sampark-title-color);
+  border-radius: var(--radius-sampark-default);
 }
 
 .baps-toolbar__start {

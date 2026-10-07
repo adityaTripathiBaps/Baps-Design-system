@@ -1,6 +1,7 @@
 import { Meta, Canvas, Controls } from '@storybook/blocks';
-import { BrandOnly, PropsTable } from '@baps/docs-blocks';
+import { BrandOnly, PropsTable, FrameworkTabs } from '@baps/docs-blocks';
 import * as ChipStories from './chip.stories';
+import { chipSnippets } from './chip.snippets';
 
 <Meta of={ChipStories} />
 
@@ -63,27 +64,27 @@ one appears.
 
 ### Default
 
-<Canvas of={ChipStories.Default} />
+<FrameworkTabs of={ChipStories.Default} snippets={chipSnippets.Default} />
 
 <Controls of={ChipStories.Default} />
 
 ### With Icon
 
-<Canvas of={ChipStories.WithIcon} />
+<FrameworkTabs of={ChipStories.WithIcon} snippets={chipSnippets.WithIcon} />
 
 ### Removable
 
-<Canvas of={ChipStories.Removable} />
+<FrameworkTabs of={ChipStories.Removable} snippets={chipSnippets.Removable} />
 
 ### Group
 
-<Canvas of={ChipStories.Group} />
+<FrameworkTabs of={ChipStories.Group} snippets={chipSnippets.Group} />
 
 <BrandOnly brand="comparison">
 
 ### Brands
 
-<Canvas of={ChipStories.Brands} />
+<FrameworkTabs of={ChipStories.Brands} snippets={chipSnippets.Brands} />
 
 </BrandOnly>
 
@@ -108,25 +109,25 @@ attribute on the element, so the app builds and the chip quietly renders plain
 and grey. Grep your templates for the literal form; the compiler will not find
 it for you.
 
-| Removed from `baps-chip` | Use instead |
-| --- | --- |
-| `severity` | `baps-tag` `severity` — see the value map below |
-| `size="xs \| s \| m \| l"` | `baps-tag` `size` — same four steps, same heights (18 / 22 / 26 / 32px), so the value carries over unchanged |
-| `count` | `baps-badge` with `type="counts"` and the number in `value`. A different component with its own vocabulary, not a renamed input |
-| `chevron` | `baps-tag` `chevron` — same boolean |
+| Removed from `baps-chip`   | Use instead                                                                                                                     |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `severity`                 | `baps-tag` `severity` — see the value map below                                                                                 |
+| `size="xs \| s \| m \| l"` | `baps-tag` `size` — same four steps, same heights (18 / 22 / 26 / 32px), so the value carries over unchanged                    |
+| `count`                    | `baps-badge` with `type="counts"` and the number in `value`. A different component with its own vocabulary, not a renamed input |
+| `chevron`                  | `baps-tag` `chevron` — same boolean                                                                                             |
 
 Severity values do not carry over one for one, because tag names its severities
 the way PrimeNG does:
 
-| Old chip `severity` | New `baps-tag` |
-| --- | --- |
-| `grey` (the default) | leave `severity` unset — grey is tag's base, not a modifier |
-| `primary` | `severity="contrast"` — tag's own note records that Figma's navy "Primary" chip is `contrast` |
-| `secondary` | `severity="secondary"` |
-| `info` | `severity="info"` |
-| `success` | `severity="success"` |
-| `warning` | `severity="warn"` |
-| `error` | `severity="danger"` |
+| Old chip `severity`  | New `baps-tag`                                                                                |
+| -------------------- | --------------------------------------------------------------------------------------------- |
+| `grey` (the default) | leave `severity` unset — grey is tag's base, not a modifier                                   |
+| `primary`            | `severity="contrast"` — tag's own note records that Figma's navy "Primary" chip is `contrast` |
+| `secondary`          | `severity="secondary"`                                                                        |
+| `info`               | `severity="info"`                                                                             |
+| `success`            | `severity="success"`                                                                          |
+| `warning`            | `severity="warn"`                                                                             |
+| `error`              | `severity="danger"`                                                                           |
 
 ```html
 <!-- Before -->
@@ -150,7 +151,7 @@ the way PrimeNG does:
 ## Accessibility
 
 - The remove control is PrimeNG's own button and keeps its keyboard behaviour.
-  It is only *visually* hidden at rest — `visibility` plus `opacity`, not
+  It is only _visually_ hidden at rest — `visibility` plus `opacity`, not
   `display: none` — so it stays in the tab order.
 - `disabled` suppresses the remove on hover as well as dimming the chip.
 - Colour is never the only channel — every chip keeps its label.

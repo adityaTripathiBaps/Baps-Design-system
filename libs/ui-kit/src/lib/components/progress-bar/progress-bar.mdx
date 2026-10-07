@@ -1,6 +1,7 @@
 import { Meta, Canvas, Controls } from '@storybook/blocks';
-import { BrandOnly, PropsTable } from '@baps/docs-blocks';
+import { BrandOnly, FrameworkTabs, PropsTable } from '@baps/docs-blocks';
 import * as ProgressBarStories from './progress-bar.stories';
+import { progressBarSnippets } from './progress-bar.snippets';
 
 <Meta of={ProgressBarStories} />
 
@@ -15,32 +16,56 @@ A determinate or indeterminate progress indicator. `baps-progressbar` (`BapsProg
 
 <baps-progressbar mode="indeterminate" brand="sampark"></baps-progressbar>
 
-<baps-progressbar [value]="score" severity="success" brand="sampark"></baps-progressbar>
+<baps-progressbar
+  [value]="score"
+  severity="success"
+  brand="sampark"
+></baps-progressbar>
 ```
 
 ## Examples
 
 ### Default
 
-<Canvas of={ProgressBarStories.Default} />
+<Canvas of={ProgressBarStories.Default} sourceState="none" />
 
 <Controls of={ProgressBarStories.Default} />
+
+<FrameworkTabs
+  of={ProgressBarStories.Default}
+  snippets={progressBarSnippets.Default}
+/>
 
 <BrandOnly brand="mybky">
 
 ### Severities My BKY
 
-<Canvas of={ProgressBarStories.SeveritiesMyBKY} />
+<Canvas of={ProgressBarStories.SeveritiesMyBKY} sourceState="none" />
+
+<FrameworkTabs
+  of={ProgressBarStories.SeveritiesMyBKY}
+  snippets={progressBarSnippets.SeveritiesMyBKY}
+/>
 
 </BrandOnly>
 
 ### Severities
 
-<Canvas of={ProgressBarStories.Severities} />
+<Canvas of={ProgressBarStories.Severities} sourceState="none" />
+
+<FrameworkTabs
+  of={ProgressBarStories.Severities}
+  snippets={progressBarSnippets.Severities}
+/>
 
 ### Table Cell Progress
 
-<Canvas of={ProgressBarStories.TableCellProgress} />
+<Canvas of={ProgressBarStories.TableCellProgress} sourceState="none" />
+
+<FrameworkTabs
+  of={ProgressBarStories.TableCellProgress}
+  snippets={progressBarSnippets.TableCellProgress}
+/>
 
 ## API
 
@@ -50,12 +75,12 @@ Inputs, outputs and their types, read from the component's own source.
 
 ## When Not to Use
 
-| Need | Use | Not this |
-| --- | --- | --- |
-| Report that the operation finished, succeeded, or failed | `baps-alert` | ProgressBar — it has no terminal state and no text |
-| Let the user *set* a value on a 0–100 track | `baps-slider` | ProgressBar — it is output-only, no `ControlValueAccessor`, no handle |
-| A static status word ("Processing", "Complete") | `baps-tag` | ProgressBar — a bar with no label communicates nothing on its own |
-| A count of pending items | `baps-badge` | ProgressBar — a count is not a fraction of a whole |
+| Need                                                     | Use           | Not this                                                              |
+| -------------------------------------------------------- | ------------- | --------------------------------------------------------------------- |
+| Report that the operation finished, succeeded, or failed | `baps-alert`  | ProgressBar — it has no terminal state and no text                    |
+| Let the user _set_ a value on a 0–100 track              | `baps-slider` | ProgressBar — it is output-only, no `ControlValueAccessor`, no handle |
+| A static status word ("Processing", "Complete")          | `baps-tag`    | ProgressBar — a bar with no label communicates nothing on its own     |
+| A count of pending items                                 | `baps-badge`  | ProgressBar — a count is not a fraction of a whole                    |
 
 Also avoid `showValue` at the shipped track height — see Responsive Behavior; the label does not fit.
 

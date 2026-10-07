@@ -85,6 +85,11 @@ reads the \`*.snippets.ts\` files themselves. It is not maintained by hand and
 cannot drift from the repository: \`node tools/gen-component-status.mjs --check\`
 fails if it is out of date.
 
+This is **documentation-snippet coverage**, not React component completion.
+A React/Next snippet never counts as a reusable React component; the typed
+\`@org/ui-kit-react\` Batch 2 implementation status is tracked separately in
+\`packages/ui-kit-react/STATUS.md\`.
+
 **${covered.length} of ${rows.length} components** have snippets;
 **${totalCovered} of ${totalExamples} examples** are covered.
 

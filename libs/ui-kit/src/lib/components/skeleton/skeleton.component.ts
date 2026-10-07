@@ -31,6 +31,7 @@ import { Skeleton } from 'primeng/skeleton';
     ></p-skeleton>
   `,
   encapsulation: ViewEncapsulation.None,
+  styleUrls: ['../../styles/components/skeleton/_skeleton.scss'],
   styles: `
     baps-skeleton {
       display: block;

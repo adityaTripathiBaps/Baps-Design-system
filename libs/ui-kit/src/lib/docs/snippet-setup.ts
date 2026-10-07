@@ -69,18 +69,23 @@ export type SnippetSet = {
 
 /**
  * @param component the kebab-case style name, e.g. `button` — the subpath of
- *                  `@org/ui-kit/styles/*`, which matches the component folder.
+ *                  the selected styles package, matching the component folder.
  * @param icons     true when the snippets on that page render `pi-*` glyphs.
+ * @param stylesPackage the framework package that owns the copied CSS output.
  */
-export const setupFor = (component: string, icons = false): string =>
+export const setupFor = (
+  component: string,
+  icons = false,
+  stylesPackage = '@org/ui-kit/styles',
+): string =>
   `/* Once, at your app's entry:
 
      import '@org/tokens/css';
-     import '@org/ui-kit/styles';${icons ? `\n     import 'primeicons/primeicons.css';   // the pi-* glyphs below` : ''}
+     import '${stylesPackage}';${icons ? `\n     import 'primeicons/primeicons.css';   // the pi-* glyphs below` : ''}
 
-   '@org/ui-kit/styles' is the whole kit. To load this component alone:
+   '${stylesPackage}' is the whole kit. To load this component alone:
 
-     import '@org/ui-kit/styles/${component}';
+     import '${stylesPackage}/${component}';
 
    — that path carries ${component}'s rules only: no Inter @font-face and no
    --font-family, so your app supplies the typeface. Measured, not assumed.

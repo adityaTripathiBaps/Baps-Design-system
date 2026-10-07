@@ -59,12 +59,17 @@
 
   &--primary {
     border: 1px solid var(--color-mybky-blue-400);
-    background: var(--avatar-mybky-background, var(--color-mybky-blue-50, #f4f7fe));
+    background: var(
+      --avatar-mybky-background,
+      var(--color-mybky-blue-50, #f4f7fe)
+    );
     color: var(--avatar-mybky-text, var(--color-mybky-mono-900, #181b1d));
     --baps-avatar-border-hover: var(--color-mybky-blue-600);
 
     &:hover {
-      box-shadow: 0 1px 4px 0 rgba(16, 24, 40, 0.12), 0 2px 4px 0 rgba(16, 24, 40, 0.06);
+      box-shadow:
+        0 1px 4px 0 rgba(16, 24, 40, 0.12),
+        0 2px 4px 0 rgba(16, 24, 40, 0.06);
     }
   }
 
@@ -120,7 +125,6 @@
     height: 1em;
   }
 }
-
 
 /* ── Sampark ────────────────────────────────────────────────────────────────
  *
@@ -272,6 +276,343 @@
 .baps-avatar-html.baps-sampark,
 .baps-ds-sampark .baps-avatar-html {
   &:hover {
-    border-color: var(--baps-avatar-border-hover, var(--avatar-sampark-border-hover));
+    border-color: var(
+      --baps-avatar-border-hover,
+      var(--avatar-sampark-border-hover)
+    );
+  }
+}
+
+/* Shared framework-free structure used by React and by the Custom tab. */
+.baps-avatar-wrap {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+}
+
+.baps-avatar-html__icon {
+  display: inline-flex;
+  width: 1em;
+  height: 1em;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+
+  > svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+/* Explicit compound selectors are intentional. The older nested form above
+   compiles `.baps-sampark--xs`; brand and size are separate classes. */
+.baps-avatar-html.baps-sampark {
+  &.baps-avatar-html--xs {
+    width: var(--avatar-sampark-size-xs);
+    height: var(--avatar-sampark-size-xs);
+    font-size: var(--avatar-sampark-font-size-xs);
+  }
+
+  &.baps-avatar-html--s {
+    width: var(--avatar-sampark-size-s);
+    height: var(--avatar-sampark-size-s);
+    font-size: var(--avatar-sampark-font-size-s);
+  }
+
+  &.baps-avatar-html--l {
+    width: var(--avatar-sampark-size-l);
+    height: var(--avatar-sampark-size-l);
+    border-width: var(--avatar-sampark-border-width-l);
+    font-size: var(--avatar-sampark-font-size-l);
+  }
+
+  &.baps-avatar-html--xl {
+    width: var(--avatar-sampark-size-xl);
+    height: var(--avatar-sampark-size-xl);
+    border-width: var(--avatar-sampark-border-width-l);
+    border-radius: var(--avatar-sampark-radius-xl);
+    font-size: var(--avatar-sampark-font-size-xl);
+  }
+
+  &.baps-avatar-html--2xl {
+    width: var(--avatar-sampark-size-2xl);
+    height: var(--avatar-sampark-size-2xl);
+    border-width: var(--avatar-sampark-border-width-l);
+    border-radius: var(--avatar-sampark-radius2xl);
+    font-size: var(--avatar-sampark-font-size-2xl);
+    font-weight: var(--avatar-sampark-font-weight2xl);
+  }
+
+  &.baps-avatar-html--circle {
+    border-radius: 50%;
+  }
+
+  &.baps-avatar-html--primary {
+    border-color: var(--avatar-sampark-border);
+    background: var(--avatar-sampark-background);
+    color: var(--avatar-sampark-text);
+    --baps-avatar-border-hover: var(--avatar-sampark-border-hover);
+  }
+
+  &.baps-avatar-html--secondary {
+    border-color: var(--avatar-sampark-secondary-border);
+    background: var(--avatar-sampark-secondary-background);
+    color: var(--avatar-sampark-text);
+    --baps-avatar-border-hover: var(--avatar-sampark-secondary-border-hover);
+  }
+
+  &.baps-avatar-html--success {
+    border-color: var(--avatar-sampark-success-border);
+    background: var(--avatar-sampark-success-background);
+    color: var(--avatar-sampark-text);
+    --baps-avatar-border-hover: var(--avatar-sampark-success-border-hover);
+  }
+
+  &.baps-avatar-html--error {
+    border-color: var(--avatar-sampark-error-border);
+    background: var(--avatar-sampark-error-background);
+    color: var(--avatar-sampark-text);
+    --baps-avatar-border-hover: var(--avatar-sampark-error-border-hover);
+  }
+
+  &.baps-avatar-html--warning {
+    border-color: var(--avatar-sampark-warning-border);
+    background: var(--avatar-sampark-warning-background);
+    color: var(--avatar-sampark-text);
+    --baps-avatar-border-hover: var(--avatar-sampark-warning-border-hover);
+  }
+
+  &.baps-avatar-html--info {
+    border-color: var(--color-sampark-info-40);
+    background: var(--color-sampark-info-10);
+    color: var(--avatar-sampark-text);
+    --baps-avatar-border-hover: var(--color-sampark-info-60);
+  }
+
+  img {
+    width: var(--avatar-sampark-icon-size-m);
+    height: var(--avatar-sampark-icon-size-m);
+    border-radius: 0;
+    object-fit: contain;
+  }
+
+  &.baps-avatar-html--xs img {
+    width: var(--avatar-sampark-icon-size-xs);
+    height: var(--avatar-sampark-icon-size-xs);
+  }
+
+  &.baps-avatar-html--s img {
+    width: var(--avatar-sampark-icon-size-s);
+    height: var(--avatar-sampark-icon-size-s);
+  }
+
+  &.baps-avatar-html--l img {
+    width: var(--avatar-sampark-icon-size-l);
+    height: var(--avatar-sampark-icon-size-l);
+  }
+
+  &:is(.baps-avatar-html--xl, .baps-avatar-html--2xl) img {
+    width: var(--avatar-sampark-icon-size-xl);
+    height: var(--avatar-sampark-icon-size-xl);
+  }
+}
+
+.baps-dark {
+  .baps-avatar-html--secondary {
+    border-color: var(--color-mybky-dark-border-control);
+    background: var(--color-mybky-dark-surface-hover);
+    color: var(--color-mybky-dark-text-primary);
+  }
+
+  .baps-avatar-html--success {
+    border-color: color-mix(
+      in srgb,
+      var(--color-mybky-success-tint),
+      transparent 84%
+    );
+    background: color-mix(
+      in srgb,
+      var(--color-mybky-success-400),
+      transparent 84%
+    );
+    color: var(--color-mybky-success-tint);
+  }
+
+  .baps-avatar-html--error {
+    border-color: color-mix(
+      in srgb,
+      var(--color-mybky-error-tint),
+      transparent 84%
+    );
+    background: color-mix(
+      in srgb,
+      var(--color-mybky-error-80),
+      transparent 84%
+    );
+    color: var(--color-mybky-error-tint);
+  }
+
+  .baps-avatar-html--warning {
+    border-color: color-mix(
+      in srgb,
+      var(--color-mybky-warning-tint),
+      transparent 84%
+    );
+    background: color-mix(
+      in srgb,
+      var(--color-mybky-warning-60),
+      transparent 84%
+    );
+    color: var(--color-mybky-warning-tint);
+  }
+
+  .baps-avatar-html--info {
+    border-color: color-mix(
+      in srgb,
+      var(--color-mybky-info-tint),
+      transparent 84%
+    );
+    background: color-mix(in srgb, var(--color-mybky-info-60), transparent 84%);
+    color: var(--color-mybky-info-tint);
+  }
+
+  .baps-avatar-html.baps-sampark {
+    border-color: color-mix(
+      in srgb,
+      var(--color-sampark-dark-primary-default),
+      transparent 64%
+    );
+    background: color-mix(
+      in srgb,
+      var(--color-sampark-dark-primary-default),
+      transparent 84%
+    );
+    color: var(--color-sampark-dark-primary-hover);
+
+    &.baps-avatar-html--secondary {
+      border-color: var(--color-sampark-dark-border-control);
+      background: var(--color-sampark-dark-surface-hover);
+    }
+
+    &.baps-avatar-html--warning {
+      border-color: var(--color-sampark-warning-40);
+      background: color-mix(
+        in srgb,
+        var(--color-sampark-warning-60),
+        transparent 84%
+      );
+    }
+
+    &.baps-avatar-html--success {
+      border-color: var(--color-sampark-success-40);
+      background: color-mix(
+        in srgb,
+        var(--color-sampark-success-60),
+        transparent 84%
+      );
+    }
+
+    &.baps-avatar-html--error {
+      border-color: var(--color-sampark-error-60);
+      background: color-mix(
+        in srgb,
+        var(--color-sampark-error-80),
+        transparent 84%
+      );
+    }
+
+    &.baps-avatar-html--info {
+      border-color: var(--color-sampark-info-40);
+      background: color-mix(
+        in srgb,
+        var(--color-sampark-info-60),
+        transparent 84%
+      );
+    }
+  }
+}
+
+.baps-avatar-wrap__markers {
+  pointer-events: none;
+}
+
+.baps-avatar-wrap__status-dot,
+.baps-avatar-wrap__icon-badge {
+  position: absolute;
+  z-index: 2;
+  box-sizing: border-box;
+  border-style: solid;
+  border-color: var(--color-sampark-mono-0);
+  border-radius: 50%;
+}
+
+.baps-avatar-wrap__status-dot {
+  top: calc(-1 * var(--avatar-sampark-status-dot-offset));
+  right: calc(-1 * var(--avatar-sampark-status-dot-offset));
+  width: var(--avatar-sampark-status-dot-size);
+  height: var(--avatar-sampark-status-dot-size);
+  border-width: var(--avatar-sampark-status-dot-ring-width);
+  background: var(--avatar-sampark-status-dot-color);
+}
+
+.baps-avatar-wrap__icon-badge {
+  right: calc(-1 * var(--avatar-sampark-icon-badge-offset));
+  bottom: calc(-1 * var(--avatar-sampark-icon-badge-offset));
+  width: var(--avatar-sampark-icon-badge-size);
+  height: var(--avatar-sampark-icon-badge-size);
+  border-width: var(--avatar-sampark-status-dot-ring-width);
+  background: var(--avatar-sampark-icon-badge-background);
+}
+
+.baps-avatar-wrap--xs {
+  .baps-avatar-wrap__status-dot {
+    top: calc(-1 * var(--avatar-sampark-status-dot-offset-xs));
+    right: calc(-1 * var(--avatar-sampark-status-dot-offset-xs));
+    width: var(--avatar-sampark-status-dot-size-xs);
+    height: var(--avatar-sampark-status-dot-size-xs);
+  }
+
+  .baps-avatar-wrap__icon-badge {
+    right: calc(-1 * var(--avatar-sampark-icon-badge-offset-xs));
+    bottom: calc(-1 * var(--avatar-sampark-icon-badge-offset-xs));
+    width: var(--avatar-sampark-icon-badge-size-xs);
+    height: var(--avatar-sampark-icon-badge-size-xs);
+  }
+}
+
+.baps-avatar-wrap:is(.baps-avatar-wrap--xl, .baps-avatar-wrap--2xl) {
+  .baps-avatar-wrap__status-dot {
+    top: calc(-1 * var(--avatar-sampark-status-dot-offset-xl));
+    right: calc(-1 * var(--avatar-sampark-status-dot-offset-xl));
+    width: var(--avatar-sampark-status-dot-size-xl);
+    height: var(--avatar-sampark-status-dot-size-xl);
+    border-width: var(--avatar-sampark-status-dot-ring-width-xl);
+  }
+
+  .baps-avatar-wrap__icon-badge {
+    right: calc(-1 * var(--avatar-sampark-icon-badge-offset-xl));
+    bottom: calc(-1 * var(--avatar-sampark-icon-badge-offset-xl));
+    width: var(--avatar-sampark-icon-badge-size-xl);
+    height: var(--avatar-sampark-icon-badge-size-xl);
+    border-width: var(--avatar-sampark-status-dot-ring-width-xl);
+  }
+}
+
+.baps-avatar-group {
+  display: inline-flex;
+  align-items: center;
+
+  > .baps-avatar-wrap {
+    position: relative;
+  }
+
+  > .baps-avatar-wrap + .baps-avatar-wrap {
+    margin-left: calc(-1 * var(--avatar-group-overlap-m));
+  }
+}
+
+@each $size in xs, s, m, l, xl, 2xl {
+  .baps-avatar-group--#{$size} > .baps-avatar-wrap + .baps-avatar-wrap {
+    margin-left: calc(-1 * var(--avatar-group-overlap-#{$size}));
   }
 }

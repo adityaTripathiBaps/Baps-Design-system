@@ -1,0 +1,201 @@
+baps-segmented {
+  display: inline-block;
+  --baps-seg-surface: var(--color-mybky-mono-0);
+  --baps-seg-border: var(--color-mybky-border-default);
+  --baps-seg-accent: var(--color-mybky-primary-default);
+  --baps-seg-accent-tint: var(--color-mybky-blue-50);
+  --baps-seg-text: var(--color-mybky-text-primary);
+  --baps-seg-text-disabled: var(--color-mybky-mono-400);
+  --p-togglebutton-border-radius: var(--segmented-pill-radius);
+  --p-togglebutton-padding: 0;
+  --p-togglebutton-gap: var(--segmented-pill-gap);
+  --p-togglebutton-font-weight: var(--segmented-font-weight);
+  --p-togglebutton-transition-duration: var(--motion-duration-base);
+  --p-togglebutton-background: transparent;
+  --p-togglebutton-border-color: transparent;
+  --p-togglebutton-color: var(--baps-seg-text);
+  --p-togglebutton-hover-background: var(--color-sampark-mono-alpha2);
+  --p-togglebutton-hover-color: var(--baps-seg-text);
+  --p-togglebutton-checked-background: var(--baps-seg-surface);
+  --p-togglebutton-checked-border-color: var(--baps-seg-accent);
+  --p-togglebutton-checked-color: var(--baps-seg-text);
+  --p-togglebutton-content-padding: 0 var(--segmented-pill-padding-x);
+  --p-togglebutton-content-border-radius: var(--segmented-pill-radius);
+  --p-togglebutton-content-checked-background: transparent;
+  --p-togglebutton-content-checked-shadow: var(--shadow-sampark-s);
+  --p-togglebutton-disabled-background: transparent;
+  --p-togglebutton-disabled-border-color: transparent;
+  --p-togglebutton-disabled-color: var(--baps-seg-text-disabled);
+  --p-togglebutton-focus-ring-width: var(--segmented-focus-ring-width);
+  --p-togglebutton-focus-ring-style: solid;
+  --p-togglebutton-focus-ring-color: var(--baps-seg-accent);
+  --p-togglebutton-focus-ring-offset: var(--segmented-focus-ring-offset);
+  --p-togglebutton-focus-ring-shadow: none;
+}
+
+:is(baps-segmented.baps-sampark, .baps-ds-sampark baps-segmented) {
+  --baps-seg-surface: var(--color-sampark-mono-0);
+  --baps-seg-border: var(--color-sampark-mono-borders);
+  --baps-seg-accent: var(--color-sampark-primary-60);
+  --baps-seg-accent-tint: var(--color-sampark-primary-0);
+  --baps-seg-text: var(--color-sampark-mono-100);
+  --baps-seg-text-disabled: var(--color-sampark-mono-40);
+}
+
+baps-segmented .p-selectbutton {
+  box-sizing: border-box;
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  height: var(--segmented-container-height);
+  padding: var(--segmented-container-padding);
+  gap: var(--segmented-container-gap);
+  border: var(--segmented-border-width) solid var(--baps-seg-border);
+  border-radius: var(--segmented-container-radius);
+  background: var(--baps-seg-surface);
+}
+
+baps-segmented .p-selectbutton .p-togglebutton {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 0 0;
+  min-width: var(--segmented-pill-min-width);
+  height: var(--segmented-pill-height);
+  padding: 0;
+  gap: var(--p-togglebutton-gap);
+  border: var(--segmented-border-width) solid var(--p-togglebutton-border-color);
+  border-radius: var(--p-togglebutton-border-radius);
+  background: var(--p-togglebutton-background);
+  color: var(--p-togglebutton-color);
+  font: inherit;
+  font-size: var(--segmented-font-size);
+  font-weight: var(--p-togglebutton-font-weight);
+  line-height: var(--segmented-line-height);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition:
+    background-color var(--p-togglebutton-transition-duration),
+    border-color var(--p-togglebutton-transition-duration),
+    color var(--p-togglebutton-transition-duration);
+}
+
+baps-segmented .p-selectbutton .p-togglebutton:not(:disabled):hover {
+  background: var(--p-togglebutton-hover-background);
+  color: var(--p-togglebutton-hover-color);
+}
+
+baps-segmented .p-selectbutton .p-togglebutton:focus-visible {
+  outline: var(--p-togglebutton-focus-ring-width)
+    var(--p-togglebutton-focus-ring-style)
+    var(--p-togglebutton-focus-ring-color);
+  outline-offset: var(--p-togglebutton-focus-ring-offset);
+}
+
+baps-segmented .p-selectbutton .p-togglebutton:disabled {
+  border-color: var(--p-togglebutton-disabled-border-color);
+  background: var(--p-togglebutton-disabled-background);
+  color: var(--p-togglebutton-disabled-color);
+  cursor: default;
+}
+
+baps-segmented .p-selectbutton .p-togglebutton-label {
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+baps-segmented .p-selectbutton .p-togglebutton-content {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: var(--p-togglebutton-content-padding);
+  border-radius: var(--p-togglebutton-content-border-radius);
+  background: transparent;
+}
+
+baps-segmented .p-selectbutton .p-togglebutton.p-togglebutton-checked {
+  border-width: var(--segmented-selected-border-width);
+  border-color: var(--p-togglebutton-checked-border-color);
+  background: var(--p-togglebutton-checked-background);
+  color: var(--p-togglebutton-checked-color);
+  font-weight: var(--segmented-selected-font-weight);
+}
+
+baps-segmented
+  .p-selectbutton
+  .p-togglebutton.p-togglebutton-checked
+  .p-togglebutton-content {
+  background: var(--p-togglebutton-content-checked-background);
+  box-shadow: var(--p-togglebutton-content-checked-shadow);
+}
+
+baps-segmented.baps-segmented-multiple {
+  --p-togglebutton-background: var(--baps-seg-surface);
+  --p-togglebutton-border-color: var(--baps-seg-border);
+  --p-togglebutton-checked-background: var(--baps-seg-accent-tint);
+  --p-togglebutton-checked-color: var(--baps-seg-accent);
+  --p-togglebutton-content-checked-shadow: none;
+  --p-togglebutton-disabled-border-color: var(--baps-seg-border);
+}
+
+baps-segmented.baps-segmented-multiple .p-selectbutton {
+  height: auto;
+  padding: 0;
+  gap: var(--segmented-multiple-gap);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  flex-wrap: wrap;
+}
+
+baps-segmented.baps-segmented-multiple .p-selectbutton .p-togglebutton {
+  flex: 0 0 auto;
+  min-width: var(--segmented-multiple-min-width);
+  height: var(--segmented-multiple-height);
+}
+
+baps-segmented.baps-segmented-multiple
+  .p-selectbutton
+  .p-togglebutton.p-togglebutton-checked {
+  border-width: var(--segmented-border-width);
+}
+
+.baps-dark baps-segmented {
+  --baps-seg-surface: var(--color-mybky-dark-surface-card);
+  --baps-seg-border: var(--color-mybky-dark-border-divider);
+  --baps-seg-text: var(--color-mybky-dark-text-primary);
+  --baps-seg-accent: var(--color-mybky-dark-primary-default);
+  --baps-seg-accent-tint: color-mix(
+    in srgb,
+    var(--color-mybky-dark-primary-default),
+    transparent 84%
+  );
+  --baps-seg-text-disabled: var(--color-mybky-dark-text-disabled);
+}
+
+.baps-dark :is(baps-segmented.baps-sampark, .baps-ds-sampark baps-segmented) {
+  --baps-seg-surface: var(--color-sampark-dark-surface-card);
+  --baps-seg-border: var(--color-sampark-dark-border-divider);
+  --baps-seg-text: var(--color-sampark-dark-text-primary);
+  --baps-seg-accent: var(--color-sampark-dark-primary-default);
+  --baps-seg-accent-tint: color-mix(
+    in srgb,
+    var(--color-sampark-dark-primary-default),
+    transparent 84%
+  );
+  --baps-seg-text-disabled: var(--color-sampark-dark-text-disabled);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  baps-segmented .p-selectbutton .p-togglebutton {
+    transition: none;
+  }
+}

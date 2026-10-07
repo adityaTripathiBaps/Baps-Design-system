@@ -37,7 +37,9 @@ import { BapsDrawer, BapsDrawerPosition } from './drawer.component';
       [styleClass]="styleClass()"
       header="Filters"
     >
-      <div drawer-actions><button type="button" class="my-action">Apply</button></div>
+      <div drawer-actions>
+        <button type="button" class="my-action">Apply</button>
+      </div>
       <p class="my-body">body</p>
       <div drawer-footer><span class="my-footer">24 of 180</span></div>
     </baps-drawer>
@@ -50,10 +52,13 @@ class Host {
   readonly styleClass = signal<string | undefined>(undefined);
 }
 
-async function setup(overrides: Partial<Record<'position' | 'brand' | 'styleClass', string>> = {}) {
+async function setup(
+  overrides: Partial<Record<'position' | 'brand' | 'styleClass', string>> = {},
+) {
   const fixture = TestBed.createComponent(Host);
   const host = fixture.componentInstance;
-  if (overrides.position) host.position.set(overrides.position as BapsDrawerPosition);
+  if (overrides.position)
+    host.position.set(overrides.position as BapsDrawerPosition);
   if (overrides.brand) host.brand.set(overrides.brand as 'mybky' | 'sampark');
   if (overrides.styleClass) host.styleClass.set(overrides.styleClass);
   await fixture.whenStable();
@@ -72,14 +77,19 @@ describe('BapsDrawer', () => {
     it('renders the panel when visible starts true', async () => {
       await setup();
       expect(panel()).not.toBeNull();
-      expect(document.querySelector('.p-drawer-title')!.textContent).toContain('Filters');
+      expect(document.querySelector('.p-drawer-title')!.textContent).toContain(
+        'Filters',
+      );
     });
 
     it('writes PrimeNG close back onto the consumer binding', async () => {
       const fixture = await setup();
       // `.p-drawer-close-button` is on the <p-button> host; the clickable
       // element is the <button> it renders.
-      document.querySelector<HTMLButtonElement>('.p-drawer-close-button button')!.click();
+      const closeEl = document.querySelector<HTMLButtonElement>(
+        '.baps-drawer__close button',
+      );
+      closeEl!.click();
       await fixture.whenStable();
       expect(fixture.componentInstance.visible()).toBe(false);
     });
@@ -117,21 +127,25 @@ describe('BapsDrawer', () => {
       await setup();
       const footer = document.querySelector('.p-drawer-footer');
       expect(footer).not.toBeNull();
-      expect(footer!.querySelector('.my-footer')!.textContent).toContain('24 of 180');
+      expect(footer!.querySelector('.my-footer')!.textContent).toContain(
+        '24 of 180',
+      );
     });
 
     it('keeps PrimeNG own close button alongside the projected actions', async () => {
       // The skin reorders the header with CSS rather than replacing it, so the
       // shipped close button (and its aria-label / focus-trap wiring) survives.
       await setup();
-      const close = document.querySelector('.p-drawer-close-button button');
+      const close = document.querySelector('.baps-drawer__close button');
       expect(close).not.toBeNull();
       expect(close!.getAttribute('aria-label')).toBe('Close');
     });
 
     it('puts default-slot content in the content region, not header or footer', async () => {
       await setup();
-      expect(document.querySelector('.p-drawer-content')!.querySelector('.my-body')).not.toBeNull();
+      expect(
+        document.querySelector('.p-drawer-content')!.querySelector('.my-body'),
+      ).not.toBeNull();
     });
   });
 
@@ -155,7 +169,9 @@ describe('BapsDrawer', () => {
 
     it('emits the baps-sampark host class only for sampark', async () => {
       const fixture = await setup();
-      const host = (fixture.nativeElement as HTMLElement).querySelector('baps-drawer')!;
+      const host = (fixture.nativeElement as HTMLElement).querySelector(
+        'baps-drawer',
+      )!;
       expect(host.classList.contains('baps-sampark')).toBe(false);
       fixture.componentInstance.brand.set('sampark');
       await fixture.whenStable();

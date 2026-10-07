@@ -25,6 +25,7 @@ import { SAMPARK_PROGRESSBAR_TOKENS } from '../../theme/sampark.theme';
     ></p-progressbar>
   `,
   encapsulation: ViewEncapsulation.None,
+  styleUrls: ['../../styles/components/progress-bar/_progress-bar.scss'],
   styles: `
     /* Track geometry, track/fill colours and the label are NOT here: they now
        come from PrimeNG design tokens (baps.theme.ts components.progressbar,
@@ -64,27 +65,45 @@ import { SAMPARK_PROGRESSBAR_TOKENS } from '../../theme/sampark.theme';
        variants below remain, for the same no-token reason as MyBKY. ── */
 
     /* Success variant */
-    :is(baps-progressbar.baps-sampark, .baps-ds-sampark baps-progressbar).baps-progressbar-success .p-progressbar-value {
+    :is(
+        baps-progressbar.baps-sampark,
+        .baps-ds-sampark baps-progressbar
+      ).baps-progressbar-success
+      .p-progressbar-value {
       background: var(--color-sampark-success-60, #17b56c);
     }
 
     /* Info variant */
-    :is(baps-progressbar.baps-sampark, .baps-ds-sampark baps-progressbar).baps-progressbar-info .p-progressbar-value {
+    :is(
+        baps-progressbar.baps-sampark,
+        .baps-ds-sampark baps-progressbar
+      ).baps-progressbar-info
+      .p-progressbar-value {
       background: var(--color-sampark-info-60, #3889fa);
     }
 
     /* Warning variant */
-    :is(baps-progressbar.baps-sampark, .baps-ds-sampark baps-progressbar).baps-progressbar-warning .p-progressbar-value {
+    :is(
+        baps-progressbar.baps-sampark,
+        .baps-ds-sampark baps-progressbar
+      ).baps-progressbar-warning
+      .p-progressbar-value {
       background: var(--color-sampark-warning-60, #faab38);
     }
 
     /* Error variant */
-    :is(baps-progressbar.baps-sampark, .baps-ds-sampark baps-progressbar).baps-progressbar-error .p-progressbar-value {
+    :is(
+        baps-progressbar.baps-sampark,
+        .baps-ds-sampark baps-progressbar
+      ).baps-progressbar-error
+      .p-progressbar-value {
       background: var(--color-sampark-error-80, #ea151a);
     }
 
     /* ── Dark mode ── */
-    .baps-dark :is(baps-progressbar.baps-sampark, .baps-ds-sampark baps-progressbar) .p-progressbar {
+    .baps-dark
+      :is(baps-progressbar.baps-sampark, .baps-ds-sampark baps-progressbar)
+      .p-progressbar {
       background: var(--color-mybky-mono-700, #3d4144);
     }
 
@@ -101,7 +120,11 @@ import { SAMPARK_PROGRESSBAR_TOKENS } from '../../theme/sampark.theme';
        order is what decides this. Moving this block earlier silently
        reintroduces the clipping under brand="sampark". */
     baps-progressbar.baps-progressbar-has-value .p-progressbar,
-    :is(baps-progressbar.baps-sampark, .baps-ds-sampark baps-progressbar).baps-progressbar-has-value .p-progressbar {
+    :is(
+        baps-progressbar.baps-sampark,
+        .baps-ds-sampark baps-progressbar
+      ).baps-progressbar-has-value
+      .p-progressbar {
       height: 1.25rem;
     }
     baps-progressbar.baps-progressbar-has-value .p-progressbar-label {

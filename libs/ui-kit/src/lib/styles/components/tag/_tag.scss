@@ -216,6 +216,56 @@
   text-align: center;
 }
 
+.baps-tag .baps-tag-action {
+  display: inline-flex;
+  flex: none;
+  width: var(--space-5);
+  height: var(--space-5);
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-mybky-pill);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+}
+
+.baps-tag .baps-tag-action:hover {
+  background: var(--tag-mybky-disabled-background);
+}
+
+.baps-tag--xs .baps-tag-action {
+  width: var(--space-4);
+  height: var(--space-4);
+}
+
+.baps-tag--l .baps-tag-action {
+  width: var(--space-6);
+  height: var(--space-6);
+}
+
+.baps-tag--disabled .baps-tag-action {
+  cursor: not-allowed;
+}
+
+.baps-tag .baps-tag-action__icon {
+  display: inline-flex;
+  width: var(--tag-mybky-chevron-size-s, 0.625rem);
+  height: var(--tag-mybky-chevron-size-s, 0.625rem);
+}
+
+.baps-tag.baps-sampark .baps-tag-action,
+.baps-ds-sampark .baps-tag .baps-tag-action {
+  border-radius: var(--radius-sampark-sm);
+}
+
+.baps-tag.baps-sampark .baps-tag-action:hover,
+.baps-ds-sampark .baps-tag .baps-tag-action:hover {
+  background: var(--color-sampark-mono-20);
+}
+
 /* The chevron does NOT inherit, unlike the leading icon directly above.
    Measured on the component: 8px at xs, 10px at s and m, 12px at l — declared
    as --baps-tag-chevron-size inside tag.component.ts's own styles block, whose

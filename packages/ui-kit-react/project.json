@@ -1,0 +1,44 @@
+{
+  "name": "ui-kit-react",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/ui-kit-react/src",
+  "projectType": "library",
+  "tags": ["scope:design-system", "type:ui", "framework:react"],
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "dependsOn": [
+        { "projects": ["tokens"], "target": "build" },
+        { "projects": ["ui-kit"], "target": "build" }
+      ],
+      "outputs": ["{projectRoot}/dist"],
+      "options": {
+        "commands": [
+          "node packages/ui-kit-react/scripts/generate-icon-registry.mjs",
+          "pnpm exec tsc --build packages/ui-kit-react/tsconfig.lib.json",
+          "node packages/ui-kit-react/scripts/copy-shared-styles.mjs"
+        ],
+        "parallel": false
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["build"],
+      "options": {
+        "command": "node --test packages/ui-kit-react/tests/components.test.mjs"
+      }
+    },
+    "verify-consumers": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["build"],
+      "options": {
+        "commands": [
+          "pnpm exec tsc --project packages/ui-kit-react/fixtures/strict-react/tsconfig.json",
+          "pnpm exec tsc --project packages/ui-kit-react/fixtures/next/tsconfig.json",
+          "node packages/ui-kit-react/scripts/verify-build.mjs"
+        ],
+        "parallel": false
+      }
+    }
+  }
+}
