@@ -43,79 +43,9 @@ import { Toast } from 'primeng/toast';
     ></p-toast>
   `,
   encapsulation: ViewEncapsulation.None,
-  styles: `
-    /* Toasts are portalled to <body>, so a host-anchored rule cannot reach
-       them — the brand rides on the panel's own class list, same as the
-       popover. */
-    .p-toast {
-      --baps-toast-bg: var(--color-mybky-mono-0, #ffffff);
-      --baps-toast-text: var(--color-mybky-text-primary, #181b1d);
-      --baps-toast-border: var(--color-mybky-border-default, #e4ecf1);
-      --baps-toast-radius: var(--radius-mybky-md, 0.5rem);
-      --baps-toast-shadow: 0 10px 24px -4px rgba(24, 27, 29, 0.16);
-    }
-
-    .baps-ds-sampark .p-toast,
-    .p-toast.baps-toast-sampark {
-      --baps-toast-bg: var(--color-sampark-surface-card, #ffffff);
-      --baps-toast-text: var(--color-sampark-text-primary, #151414);
-      --baps-toast-border: var(--color-sampark-border-default, #e1e0e0);
-      --baps-toast-radius: var(--radius-sampark-md, 0.5rem);
-      --baps-toast-shadow: var(--shadow-sampark-dropdown, 0 12px 40px rgba(0, 0, 0, 0.15));
-    }
-
-    .p-toast .p-toast-message {
-      background: var(--baps-toast-bg);
-      color: var(--baps-toast-text);
-      border: 1px solid var(--baps-toast-border);
-      border-radius: var(--baps-toast-radius);
-      box-shadow: var(--baps-toast-shadow);
-    }
-
-    /* Severity is carried by a 4px leading bar, not by a tinted panel. A fully
-       coloured toast over live content is hard to read and harder to ignore;
-       the bar plus the icon is enough to identify the kind at a glance. */
-    .p-toast .p-toast-message {
-      border-inline-start: 4px solid var(--baps-toast-accent, transparent);
-    }
-    .p-toast .p-toast-message-success {
-      --baps-toast-accent: var(--color-mybky-success-default, #178251);
-    }
-    .p-toast .p-toast-message-info {
-      --baps-toast-accent: var(--color-mybky-info-default, #2265c3);
-    }
-    .p-toast .p-toast-message-warn {
-      --baps-toast-accent: var(--color-mybky-warning-default, #c38222);
-    }
-    .p-toast .p-toast-message-error {
-      --baps-toast-accent: var(--color-mybky-error-default, #c32226);
-    }
-
-    .p-toast .p-toast-summary {
-      font-size: 0.875rem;
-      font-weight: 500;
-      line-height: 1.3;
-    }
-    .p-toast .p-toast-detail {
-      font-size: 0.8125rem;
-      font-weight: 400;
-      line-height: 1.4;
-      opacity: 0.85;
-    }
-
-    /* ── Dark ── */
-    .baps-dark .p-toast {
-      --baps-toast-bg: var(--color-mybky-dark-surface-card, #2b2f32);
-      --baps-toast-text: var(--color-mybky-dark-text-primary, #f8fafb);
-      --baps-toast-border: var(--color-mybky-dark-border-divider, #3d4144);
-    }
-    .baps-dark .baps-ds-sampark .p-toast,
-    .baps-dark .p-toast.baps-toast-sampark {
-      --baps-toast-bg: var(--color-sampark-dark-surface-card, #2c2c2a);
-      --baps-toast-text: var(--color-sampark-dark-text-primary, #f8f7f7);
-      --baps-toast-border: var(--color-sampark-dark-border-divider, #4a4947);
-    }
-  `,
+  // CSS lives in ../../styles/components/toast/_toast.scss so the same
+  // rules ship to non-Angular consumers through @org/ui-kit/styles.
+  styleUrls: ['../../styles/components/toast/_toast.scss'],
 })
 export class BapsToast {
   /**

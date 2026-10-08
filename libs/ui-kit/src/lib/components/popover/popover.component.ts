@@ -46,67 +46,9 @@ import { Popover } from 'primeng/popover';
     </p-popover>
   `,
   encapsulation: ViewEncapsulation.None,
-  styles: `
-    /* The panel is portalled to <body>, so it is NOT a DOM descendant of this
-       host — a rule scoped to baps-popover would never reach it. That is why
-       the brand scope below is the page-wide class plus the panel class the
-       component forwards, not the usual host-anchored :is() pair. */
-    .p-popover {
-      --baps-popover-bg: var(--color-mybky-mono-0, #ffffff);
-      --baps-popover-border: var(--color-mybky-mono-300, #e4ecf1);
-      --baps-popover-text: var(--color-mybky-text-primary, #181b1d);
-      --baps-popover-radius: 1rem;
-      --baps-popover-shadow:
-        0 4px 6px -1px rgba(24, 27, 29, 0.06),
-        0 10px 24px -4px rgba(24, 27, 29, 0.1);
-    }
-
-    :is(.baps-ds-sampark, .baps-popover-sampark).p-popover,
-    .baps-ds-sampark .p-popover {
-      --baps-popover-bg: var(--color-sampark-surface-card, #ffffff);
-      /* Mono/40, a step darker than the hairline used inside content — a
-         floating panel sits ON that content and needs its own edge. */
-      --baps-popover-border: var(--color-sampark-mono-40, #bcb9b9);
-      --baps-popover-text: var(--color-sampark-text-primary, #151414);
-      --baps-popover-radius: var(--radius-sampark-default, 0.25rem);
-      --baps-popover-shadow: var(--shadow-sampark-dropdown, 0 12px 40px rgba(0, 0, 0, 0.15));
-    }
-
-    .p-popover {
-      background: var(--baps-popover-bg);
-      color: var(--baps-popover-text);
-      border: 1px solid var(--baps-popover-border);
-      border-radius: var(--baps-popover-radius);
-      box-shadow: var(--baps-popover-shadow);
-    }
-
-    .p-popover .p-popover-content {
-      padding: 0.75rem;
-    }
-
-    /* PrimeNG draws a little arrow with two stacked pseudo-elements — the outer
-       one is the border, the inner the fill. Both have to be re-pointed or the
-       arrow keeps Material's palette while the panel wears ours. */
-    .p-popover::before {
-      border-block-end-color: var(--baps-popover-border);
-    }
-    .p-popover::after {
-      border-block-end-color: var(--baps-popover-bg);
-    }
-
-    /* ── Dark ── */
-    .baps-dark .p-popover {
-      --baps-popover-bg: var(--color-mybky-dark-surface-card, #2b2f32);
-      --baps-popover-border: var(--color-mybky-dark-border-divider, #3d4144);
-      --baps-popover-text: var(--color-mybky-dark-text-primary, #f8fafb);
-    }
-    .baps-dark .baps-ds-sampark .p-popover,
-    .baps-dark .p-popover.baps-popover-sampark {
-      --baps-popover-bg: var(--color-sampark-dark-surface-card, #2c2c2a);
-      --baps-popover-border: var(--color-sampark-dark-border-divider, #4a4947);
-      --baps-popover-text: var(--color-sampark-dark-text-primary, #f8f7f7);
-    }
-  `,
+  // CSS lives in ../../styles/components/popover/_popover.scss so the same
+  // rules ship to non-Angular consumers through @org/ui-kit/styles.
+  styleUrls: ['../../styles/components/popover/_popover.scss'],
 })
 export class BapsPopover {
   @ViewChild(Popover) private readonly popover?: Popover;

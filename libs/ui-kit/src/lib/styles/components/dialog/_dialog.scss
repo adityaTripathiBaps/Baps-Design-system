@@ -1,0 +1,161 @@
+// dialog — extracted verbatim from the component's inline `styles:`.
+//
+// Angular compiles an inline block into the JS bundle and injects it at
+// runtime, so there was no file for a React or Next consumer to import. As a
+// partial it ships both ways — styleUrls keeps it with the component, and
+// scripts/build-styles.mjs picks the directory up by name.
+//
+// Nothing changed in the move. Same rules, same order, same
+// ViewEncapsulation.None scope.
+
+/* Everything below is what the PrimeNG dialog token surface
+   (@primeuix/themes/types/dialog) cannot express. It exposes exactly
+   root.background / borderColor / color / borderRadius / shadow,
+   header.padding / gap, title.fontSize / fontWeight, content.padding and
+   footer.padding / gap — all of which are set through [dt] instead, and
+   none of which are repeated here. What is missing has its gap named at
+   the rule that works around it. */
+
+/* Width is per-instance, so it rides [style] on the panel; this only caps
+   it so a 500px shell does not overflow a 360px phone. No token: the
+   dialog surface has no root.width or root.maxWidth. */
+.baps-dialog-panel {
+  max-width: calc(100vw - 2rem);
+  font-family: inherit;
+}
+
+/* MISSING TOKEN: content.fontSize / content.lineHeight. Figma body copy is
+   Inter/H3/(14)/Regular at line-height 1.3. */
+.baps-dialog-panel .p-dialog-content {
+  font-size: 0.875rem;
+  line-height: 1.3;
+}
+
+/* The header is a plain flex row in PrimeNG (title, then the actions
+   block). The shell needs a centred COLUMN of illustration-over-title, so
+   the projected heading takes the full row and stacks itself. 8px gap is
+   Figma 17512:84191. */
+.baps-dialog-panel .p-dialog-header {
+  position: relative;
+}
+.baps-dialog-panel .baps-dialog__heading {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* MISSING TOKEN: title.color and title.lineHeight. root.color is the body
+   colour (Mono/80); the title is Mono/100, one step darker, and there is
+   no title.color to say so. Brand-split because it is the only rule in
+   this file that differs between the two ramps — everything else brand
+   specific goes through [dt]. */
+.baps-dialog-panel .baps-dialog__title {
+  line-height: 1.3;
+  color: var(--color-mybky-text-primary, #181b1d);
+}
+.baps-dialog-panel.baps-ds-sampark .baps-dialog__title {
+  color: var(--color-sampark-text-primary, #151414);
+}
+
+/* MISSING TOKEN: nothing in the dialog surface addresses alignment.
+   Centred is the Figma default; align="start" is the larger form modal. */
+.baps-dialog-panel .baps-dialog__heading,
+.baps-dialog-panel .p-dialog-content {
+  text-align: center;
+}
+.baps-dialog-panel .baps-dialog__heading {
+  align-items: center;
+}
+.baps-dialog-panel.baps-dialog-align-start .baps-dialog__heading,
+.baps-dialog-panel.baps-dialog-align-start .p-dialog-content {
+  text-align: start;
+}
+.baps-dialog-panel.baps-dialog-align-start .baps-dialog__heading {
+  align-items: flex-start;
+}
+
+/* closable is off by default, but when it is on the close button must not
+   shove a centred title off centre — so it leaves the flex flow. */
+.baps-dialog-panel .p-dialog-header-actions {
+  position: absolute;
+  top: 1rem;
+  inset-inline-end: 1rem;
+}
+
+/* MISSING TOKEN: footer.justifyContent, and nothing at all for the width
+   of an action. PrimeNG's stock footer is right-aligned with intrinsic
+   widths; Figma 17512:84200 is a centred pair of 150px buttons, 8px apart
+   (the gap IS a token, footer.gap, set via [dt]). */
+.baps-dialog-panel .p-dialog-footer {
+  display: flex;
+  justify-content: center;
+}
+/* The documented slot usage wraps the actions in ONE element (see the
+   example on the class above: a div carrying the dialog-footer attribute),
+   so the footer has a single child and the rules below were sizing that
+   wrapper to 150px instead of the buttons. The buttons inside it are
+   block-level, so they stacked vertically in a 150px column — two 36px
+   buttons in a 112px footer, which is what shipped.
+
+   display: contents drops the wrapper's own box out of the layout tree so
+   its children become the footer's flex items directly. Selector matching
+   still walks the DOM, not the layout tree, so the sizing rules need the
+   extra level spelled out; both shapes are listed so actions passed as
+   direct children keep working too. */
+.baps-dialog-panel .p-dialog-footer > [dialog-footer] {
+  display: contents;
+}
+.baps-dialog-panel .p-dialog-footer > *,
+.baps-dialog-panel .p-dialog-footer > [dialog-footer] > * {
+  flex: 0 0 9.375rem;
+}
+.baps-dialog-panel .p-dialog-footer > * .p-button,
+.baps-dialog-panel .p-dialog-footer > [dialog-footer] > * .p-button {
+  width: 100%;
+}
+.baps-dialog-panel.baps-dialog-actions-end .p-dialog-footer {
+  justify-content: flex-end;
+}
+.baps-dialog-panel.baps-dialog-actions-end .p-dialog-footer > *,
+.baps-dialog-panel.baps-dialog-actions-end .p-dialog-footer > [dialog-footer] > * {
+  flex: 0 0 auto;
+}
+.baps-dialog-panel.baps-dialog-actions-end .p-dialog-footer > * .p-button,
+.baps-dialog-panel.baps-dialog-actions-end .p-dialog-footer > [dialog-footer] > * .p-button {
+  width: auto;
+}
+
+/* The footer template is declared unconditionally so PrimeNG always
+   renders the region; this is what makes an action-less dialog not show
+   a 56px empty strip. The comment node ng-content leaves behind does not
+   defeat :empty. */
+.baps-dialog-panel .p-dialog-footer:empty {
+  display: none;
+}
+.baps-dialog-panel .p-dialog-content:has(+ .p-dialog-footer:empty) {
+  padding-bottom: 2rem;
+}
+
+/* ── Dark ──
+   Both token objects above are scoped dt values, not a colorScheme, so the
+   shell stayed on its light surface: a white panel with #f8f7f7 title text
+   on it, 1.07:1. CSS rather than a second token object because the panel is
+   portalled and the dt is written as inline custom properties — a rule on
+   the panel class is what reliably outranks them. */
+.baps-dark .baps-dialog-panel {
+  background: var(--color-mybky-dark-surface-card, #2b2f32);
+  color: var(--color-mybky-dark-text-secondary, #e4ecf1);
+}
+.baps-dark .baps-dialog-panel .baps-dialog__title {
+  color: var(--color-mybky-dark-text-primary, #f8fafb);
+}
+
+.baps-dark .baps-dialog-panel.baps-ds-sampark {
+  background: var(--color-sampark-dark-surface-card, #2c2c2a);
+  color: var(--color-sampark-dark-text-secondary, #e6e6e5);
+}
+.baps-dark .baps-dialog-panel.baps-ds-sampark .baps-dialog__title {
+  color: var(--color-sampark-dark-text-primary, #f8f7f7);
+}
