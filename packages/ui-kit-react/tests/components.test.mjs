@@ -35,6 +35,11 @@ import {
   BapsPagination,
   BapsSortIcon,
   BapsTable,
+  getColumnConfigBuckets,
+  getAvailableSortFields,
+  getApplicableSortRows,
+  BapsTreeTable,
+  flattenTreeTableRows,
   BapsSegmented,
   BapsSkeleton,
   BapsSpinner,
@@ -1346,4 +1351,188 @@ test('BapsTable marks the container busy while loading', () => {
   // aria-busy is what a screen reader acts on; the mask is decoration.
   assert.ok(html.includes('aria-busy="true"'));
   assert.ok(html.includes('p-datatable-mask'));
+});
+
+const CFG_COLUMNS = [
+  { key: 'id', label: 'ID', locked: true },
+  { key: 'name', label: 'Name' },
+  { key: 'email', label: 'Email', visible: false },
+  { key: 'region', label: 'Region', frozen: true },
+  { key: 'actions', label: 'Actions', locked: true, end: true },
+];
+const keysOf = (b) => [...b.locked, ...b.pinned, ...b.regular, ...b.end].map((c) => c.key);
+
+test('getColumnConfigBuckets orders locked, pinned, regular, then end', () => {
+  // The order is the contract. end:true exists so a trailing actions column
+  // stays trailing instead of sorting in with the other locked ones.
+  assert.deepEqual(keysOf(getColumnConfigBuckets(CFG_COLUMNS)), [
+    'id',
+    'region',
+    'name',
+    'email',
+    'actions',
+  ]);
+});
+
+test('getColumnConfigBuckets treats pinned and locked as different things', () => {
+  const b = getColumnConfigBuckets(CFG_COLUMNS);
+  // A pinned column is still the user's to unpin; a locked one is not.
+  assert.deepEqual(b.pinned.map((c) => c.key), ['region']);
+  assert.deepEqual(b.locked.map((c) => c.key), ['id']);
+  assert.deepEqual(b.end.map((c) => c.key), ['actions']);
+});
+
+test('getColumnConfigBuckets filters every bucket by the search, case-insensitively', () => {
+  assert.deepEqual(keysOf(getColumnConfigBuckets(CFG_COLUMNS, 'e')), [
+    'region',
+    'name',
+    'email',
+  ]);
+  assert.deepEqual(keysOf(getColumnConfigBuckets(CFG_COLUMNS, 'REGION')), ['region']);
+  // Whitespace is not a query.
+  assert.equal(keysOf(getColumnConfigBuckets(CFG_COLUMNS, '   ')).length, 5);
+});
+
+test('getColumnConfigBuckets returns every bucket even when all are empty', () => {
+  const b = getColumnConfigBuckets(CFG_COLUMNS, 'nothing matches this');
+  // Callers spread all four; a missing key would be a crash, not a blank list.
+  assert.deepEqual(Object.keys(b).sort(), ['end', 'locked', 'pinned', 'regular']);
+  assert.equal(keysOf(b).length, 0);
+});
+
+const SORT_FIELDS = [
+  { key: 'name', label: 'Name' },
+  { key: 'date', label: 'Date' },
+  { key: 'amount', label: 'Amount' },
+];
+
+test('getAvailableSortFields hides fields other rows already took', () => {
+  const rows = [
+    { field: 'name', direction: 1 },
+    { field: 'date', direction: -1 },
+  ];
+  // Row 0 keeps its own field — otherwise its select would show a value that
+  // is not in its options and render blank.
+  assert.deepEqual(getAvailableSortFields(SORT_FIELDS, rows, 0).map((f) => f.key), [
+    'name',
+    'amount',
+  ]);
+  assert.deepEqual(getAvailableSortFields(SORT_FIELDS, rows, 1).map((f) => f.key), [
+    'date',
+    'amount',
+  ]);
+});
+
+test('getAvailableSortFields offers everything to a row with no field yet', () => {
+  const rows = [{ field: null, direction: 1 }];
+  assert.equal(getAvailableSortFields(SORT_FIELDS, rows, 0).length, 3);
+});
+
+test('getAvailableSortFields ignores unset fields when working out what is taken', () => {
+  // Three empty rows must not block each other — null is not a claim.
+  const rows = [
+    { field: null, direction: 1 },
+    { field: null, direction: 1 },
+    { field: 'name', direction: 1 },
+  ];
+  assert.deepEqual(getAvailableSortFields(SORT_FIELDS, rows, 0).map((f) => f.key), [
+    'date',
+    'amount',
+  ]);
+});
+
+test('getApplicableSortRows drops rows with nothing chosen', () => {
+  const rows = [
+    { field: 'name', direction: 1 },
+    { field: null, direction: -1 },
+    { field: 'date', direction: -1, locked: true },
+  ];
+  // An empty row is a half-finished edit, not a sort — applying it would be a
+  // sort by nothing. The locked default survives, because it always applies.
+  assert.deepEqual(getApplicableSortRows(rows).map((r) => r.field), ['name', 'date']);
+  assert.equal(getApplicableSortRows(rows).at(-1).locked, true);
+});
+
+const TREE = [
+  {
+    key: 'a',
+    data: { name: 'Alpha' },
+    children: [
+      { key: 'a1', data: { name: 'Alpha one' } },
+      { key: 'a2', data: { name: 'Alpha two' }, children: [{ key: 'a2x', data: { name: 'Deep' } }] },
+    ],
+  },
+  { key: 'b', data: { name: 'Beta' }, children: [] },
+  { key: 'c', data: { name: 'Gamma' } },
+];
+const flatKeys = (keys) => flattenTreeTableRows(TREE, keys).map((r) => r.node.key);
+
+test('flattenTreeTableRows shows only roots when nothing is expanded', () => {
+  assert.deepEqual(flatKeys([]), ['a', 'b', 'c']);
+});
+
+test('flattenTreeTableRows needs every ancestor open, not just the parent', () => {
+  // 'a2x' stays hidden while 'a' is shut, even though its own parent is listed
+  // as expanded — this is the case a naive flattener gets wrong.
+  assert.deepEqual(flatKeys(['a2']), ['a', 'b', 'c']);
+  assert.deepEqual(flatKeys(['a', 'a2']), ['a', 'a1', 'a2', 'a2x', 'b', 'c']);
+});
+
+test('flattenTreeTableRows reports depth for the indent and aria-level', () => {
+  const rows = flattenTreeTableRows(TREE, ['a', 'a2']);
+  assert.deepEqual(
+    rows.map((r) => [r.node.key, r.depth]),
+    [['a', 0], ['a1', 1], ['a2', 1], ['a2x', 2], ['b', 0], ['c', 0]],
+  );
+});
+
+test('flattenTreeTableRows treats an empty children array as a leaf', () => {
+  const rows = flattenTreeTableRows(TREE, ['a', 'b']);
+  const b = rows.find((r) => r.node.key === 'b');
+  // 'b' has children: [] — a toggle there would reveal nothing, so it gets none.
+  assert.equal(b.expandable, false);
+  assert.equal(b.expanded, false);
+  assert.equal(rows.find((r) => r.node.key === 'c').expandable, false);
+  assert.equal(rows.find((r) => r.node.key === 'a').expandable, true);
+});
+
+test('BapsTreeTable emits the PrimeNG tree DOM and marks hierarchy for a reader', () => {
+  const html = renderToStaticMarkup(
+    createElement(BapsTreeTable, {
+      value: TREE,
+      columns: [{ field: 'name', header: 'Name' }],
+      defaultExpandedKeys: ['a'],
+    }),
+  );
+  for (const cls of [
+    'p-treetable-thead',
+    'p-treetable-tbody',
+    'p-treetable-header-cell',
+    'p-treetable-node-toggle-button',
+  ]) {
+    assert.ok(html.includes(cls), 'missing ' + cls);
+  }
+  // aria-level is 1-based; depth is not.
+  assert.ok(html.includes('aria-level="1"'));
+  assert.ok(html.includes('aria-level="2"'));
+  assert.ok(html.includes('aria-expanded="true"'));
+});
+
+test('BapsTreeTable paints an error row and spans the empty message', () => {
+  const err = renderToStaticMarkup(
+    createElement(BapsTreeTable, {
+      value: [{ key: 'x', data: { name: 'Bad' }, error: true }],
+      columns: [{ field: 'name', header: 'Name' }],
+    }),
+  );
+  assert.ok(err.includes('baps-tree-row-error'));
+
+  const empty = renderToStaticMarkup(
+    createElement(BapsTreeTable, {
+      value: [],
+      columns: [{ field: 'name', header: 'Name' }, { field: 'x', header: 'X' }],
+    }),
+  );
+  assert.ok(empty.includes('colSpan="2"'));
+  assert.ok(empty.includes('No results found'));
 });

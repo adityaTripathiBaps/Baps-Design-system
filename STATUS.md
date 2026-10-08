@@ -3,7 +3,7 @@
 Only real, reusable, typed components exported by `@org/ui-kit-react` count as
 implemented. Documentation snippets do not count.
 
-**Tracked total: 55 components — DONE: 51 — PARTIAL: 1 — NOT STARTED: 3 — BLOCKED: 0.**
+**Tracked total: 55 components — DONE: 54 — PARTIAL: 1 — NOT STARTED: 0 — BLOCKED: 0.**
 
 ## Batch 2
 
@@ -36,7 +36,7 @@ implemented. Documentation snippets do not count.
 
 ## Batch 4
 
-**15 components — DONE: 12 — NOT STARTED: 3.**
+**15 components — DONE: 15.**
 
 | Order | Component           | Status      |
 | ----: | ------------------- | ----------- |
@@ -52,9 +52,9 @@ implemented. Documentation snippets do not count.
 |    10 | Pagination          | DONE        |
 |    11 | Table               | DONE        |
 |   11a | SortIcon            | DONE        |
-|    12 | Table Column Config | NOT STARTED |
-|    13 | Table Sort Config   | NOT STARTED |
-|    14 | Tree Table          | NOT STARTED |
+|    12 | Table Column Config | DONE        |
+|    13 | Table Sort Config   | DONE        |
+|    14 | Tree Table          | DONE        |
 
 ### Current verified checkpoint
 

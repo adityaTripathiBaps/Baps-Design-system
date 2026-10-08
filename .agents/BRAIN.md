@@ -67,6 +67,21 @@ which would have broken every consumer importing one file today. Documented in
 its own rules and name its dependencies, which is cleaner but is a breaking
 change for those consumers.
 
+**A React component that cannot be rendered in a test exports its logic.**
+`BapsDrawer` always `createPortal`s into `document.body` — `appendTo: null`
+falls back to it — so `renderToStaticMarkup` throws "document is not defined"
+and Drawer, Dialog and Popover have no React tests at all. Rather than shim a
+DOM or weaken the component, the two panels built on Drawer export the logic
+worth pinning and test that directly: `getColumnConfigBuckets`,
+`getAvailableSortFields`, `getApplicableSortRows`. Pagination set the
+precedent with `getPaginationPages`. A jsdom test environment would fix the
+whole class and is a new dependency, so it needs approval.
+
+**React mirrors PrimeNG's class names, deliberately.** The canonical
+stylesheets target them — table.css alone keys off 19 `.p-datatable-*`
+selectors — so a React component that renamed them would render unstyled.
+Measure the stylesheet before writing the markup.
+
 **The React package forks nothing.** `copy-shared-styles.mjs` copies the
 canonical `@org/ui-kit` CSS; there is no React-local design stylesheet, and
 `verify-build.mjs` fails if Angular, PrimeNG or rxjs appears in the output.

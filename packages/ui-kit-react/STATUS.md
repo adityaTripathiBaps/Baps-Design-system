@@ -3,7 +3,7 @@
 Only real, reusable, typed components exported by `@org/ui-kit-react` count as
 DONE. Documentation snippets do not count.
 
-**Tracked total: 55 components — DONE: 51 — PARTIAL: 1 — NOT STARTED: 3 — BLOCKED: 0.**
+**Tracked total: 55 components — DONE: 54 — PARTIAL: 1 — NOT STARTED: 0 — BLOCKED: 0.**
 
 ## DONE
 
@@ -15,8 +15,8 @@ DONE. Documentation snippets do not count.
   Stepper, Menu Item, Popover, Tooltip, Dialog, Drawer, Toast, Split Button.
 - Batch 4 (10): Select, Multi Select, Listbox, Tree Select, Datepicker, Slider,
   Chip, Users Dropdown, File Upload, Pagination.
-- Batch 5 (3): Progress Bar — see below for why it moved out of PARTIAL — plus
-  Table and SortIcon.
+- Batch 5 (6): Progress Bar — see below for why it moved out of PARTIAL — plus
+  Table, SortIcon, Table Column Config, Table Sort Config and Tree Table.
 
 ## PARTIAL
 
@@ -49,16 +49,21 @@ could override it.
 
 ## NOT STARTED
 
-- Table Column Config, Table Sort Config, Tree Table. All three are BLOCKED on
-  the same precondition, not on React work: each Angular component keeps its CSS
-  in an inline `styles:` block, so nothing ships in `@org/ui-kit/styles` for a
-  React port to consume. Extracting those to partials is the enabling step.
+Nothing. Every tracked component is DONE or PARTIAL.
 
 ## Pending, not forgotten
 
-- **React Storybook stories and framework snippets for Table and SortIcon.**
-  The components, their types and their tests are done; the docs surface is
-  not. Tracked here so snippet coverage does not quietly stall.
+- **Stories and framework snippets for all five Batch 5 components** — Table,
+  SortIcon, Table Column Config, Table Sort Config, Tree Table. Components,
+  types and tests are done; the docs surface is not, so snippet coverage has
+  not moved.
+- **Drawer, Dialog and Popover have no React tests, and neither do the two
+  panels built on Drawer.** `BapsDrawer` always `createPortal`s into
+  `document.body` — `appendTo: null` falls back to it — so
+  `renderToStaticMarkup` throws "document is not defined". The panels' logic is
+  tested through exported pure functions instead; their rendered markup is not
+  tested at all. A jsdom test environment would fix the whole class, and is a
+  new dependency needing approval.
 
 ## Current verification
 
