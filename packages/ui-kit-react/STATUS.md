@@ -1,62 +1,45 @@
-# React Design System — Batch 2
+# React Design System status
 
-Only reusable, typed components exported by `@org/ui-kit-react` can be marked
+Only real, reusable, typed components exported by `@org/ui-kit-react` count as
 DONE. Documentation snippets do not count.
 
-**Total: 26 reusable components — DONE: 24 — PARTIAL: 2 — BLOCKED: 0.**
+**Tracked total: 55 components — DONE: 48 — PARTIAL: 2 — NOT STARTED: 5 — BLOCKED: 0.**
 
-| Order | Component     | Status  |
-| ----: | ------------- | ------- |
-|     1 | Icon          | DONE    |
-|     2 | Button        | DONE    |
-|     3 | Link          | PARTIAL |
-|     4 | Avatar        | DONE    |
-|     5 | AvatarGroup   | DONE    |
-|     6 | Badge         | DONE    |
-|     7 | OverlayBadge  | DONE    |
-|     8 | Indicator     | DONE    |
-|     9 | Tag           | DONE    |
-|    10 | Alert         | DONE    |
-|    11 | Card          | DONE    |
-|    12 | Divider       | DONE    |
-|    13 | Progress Bar  | PARTIAL |
-|    14 | Spinner       | DONE    |
-|    15 | Skeleton      | DONE    |
-|    16 | FloatLabel    | DONE    |
-|    17 | IconField     | DONE    |
-|    18 | InputIcon     | DONE    |
-|    19 | Message       | DONE    |
-|    20 | InputText     | DONE    |
-|    21 | Textarea      | DONE    |
-|    22 | Checkbox      | DONE    |
-|    23 | Radio         | DONE    |
-|    24 | Toggle Switch | DONE    |
-|    25 | Input Group   | DONE    |
-|    26 | Segmented     | DONE    |
+## DONE
 
-Batch 3, Batch 4, React shell migration and Table.tsx migration are outside
-this reconciliation and must not start yet.
+- Batch 2 (24): Icon, Button, Avatar, AvatarGroup, Badge, OverlayBadge,
+  Indicator, Tag, Alert, Card, Divider, Spinner, Skeleton, FloatLabel,
+  IconField, InputIcon, Message, InputText, Textarea, Checkbox, Radio, Toggle
+  Switch, Input Group, Segmented.
+- Batch 3 (14): Navbar, Internal Navbar, Toolbar, Breadcrumb, Tabs, Accordion,
+  Stepper, Menu Item, Popover, Tooltip, Dialog, Drawer, Toast, Split Button.
+- Batch 4 (10): Select, Multi Select, Listbox, Tree Select, Datepicker, Slider,
+  Chip, Users Dropdown, File Upload, Pagination.
 
-## Remaining live accessibility findings
+## PARTIAL
 
-- **Link:** the live default Storybook story has one serious `color-contrast`
-  violation. React shares the same canonical link CSS, so this needs a token or
-  approved visual-baseline decision before the component can be called DONE.
-- **Progress Bar:** the React implementation's role/name/value behavior passes
-  its runtime tests, but the live Angular/PrimeNG story still reports
-  `aria-allowed-attr`, `aria-valid-attr-value`, and `aria-progressbar-name`.
-  That leaves the Angular regression-safety gate incomplete.
+- Link: live default Storybook story has a serious `color-contrast` finding.
+- Progress Bar: live Angular/PrimeNG story has `aria-allowed-attr`,
+  `aria-valid-attr-value`, and `aria-progressbar-name` findings.
 
-## Verified checkpoint
+## NOT STARTED
 
-- 43/43 React runtime and interaction tests pass.
-- Strict React consumer and Next.js client/server fixture compiles pass.
-- All 26 components are exercised across the Next.js client/server fixtures;
-  Message and Textarea are present in both fixtures.
-- React and Angular typechecks, React ESLint, shared-style parity and
-  Angular-free runtime checks pass.
-- MyBKY, Sampark, light and dark selectors are present in canonical shared CSS.
-- Storybook static build and snippet/style guards pass.
-- A real Chromium run verified 50 unique React/Next Storybook example sets
-  (89 visible pairs across the MyBKY and Sampark docs states), and all 13 Batch
-  2 interaction stories pass.
+- Table, SortIcon, Table Column Config, Table Sort Config, Tree Table.
+
+## Current verification
+
+- 53/53 React tests pass.
+- React build and typecheck pass.
+- React lint: there is no `lint` target on this project, so
+  `nx run ui-kit-react:lint` fails with "Cannot find configuration for task"
+  and `nx run-many --target=lint` skips the package silently. Run directly,
+  `npx eslint "packages/ui-kit-react/src/**/*.{ts,tsx}"` is clean: 0 errors,
+  7 warnings, all `no-explicit-any` in tooltip.tsx and all pre-existing.
+  The target is worth adding; until it exists this line is a manual check.
+- Strict React consumer and Next.js client/server fixtures pass.
+- Shared MyBKY/Sampark and light/dark CSS is copied from canonical
+  `@org/ui-kit`; no React-local design stylesheet exists.
+- Angular build/typecheck and 486/486 tests pass.
+- Storybook host typecheck and static production build pass (8 GB Node heap;
+  no memory failure).
+- Snippet/style/build parity guards and `git diff --check` pass.

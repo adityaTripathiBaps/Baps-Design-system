@@ -17,6 +17,16 @@ import {
   BapsOverlayBadge,
   BapsProgressBar,
   BapsRadio,
+  BapsSelect,
+  BapsMultiSelect,
+  BapsListbox,
+  BapsTreeSelect,
+  BapsDatepicker,
+  BapsSlider,
+  BapsChip,
+  BapsUsersDropdown,
+  BapsFileUpload,
+  BapsPagination,
   BapsSegmented,
   BapsSkeleton,
   BapsSpinner,
@@ -90,6 +100,71 @@ export default function ServerPage() {
         ariaLabel="Frequency"
         options={['Once', 'Repeat', 'Ad-hoc']}
         defaultValue="Once"
+        brand="sampark"
+      />
+      <BapsSelect
+        ariaLabel="City"
+        options={[
+          { label: 'Ahmedabad', value: 'amd' },
+          { label: 'London', value: 'ldn' },
+        ]}
+        defaultValue="amd"
+      />
+      <BapsMultiSelect
+        ariaLabel="Cities"
+        options={[
+          { label: 'Ahmedabad', value: 'amd' },
+          { label: 'London', value: 'ldn' },
+        ]}
+        defaultValue={['amd']}
+        brand="sampark"
+      />
+      <BapsListbox
+        ariaLabel="Centres"
+        options={[
+          { label: 'Ahmedabad', value: 'amd' },
+          { label: 'London', value: 'ldn' },
+        ]}
+        defaultValue="ldn"
+      />
+      <BapsTreeSelect
+        ariaLabel="Locations"
+        options={[
+          {
+            key: 'in',
+            label: 'India',
+            children: [{ key: 'in-amd', label: 'Ahmedabad' }],
+          },
+        ]}
+        defaultValue="in-amd"
+        brand="sampark"
+      />
+      <BapsDatepicker
+        ariaLabel="Visit date"
+        defaultValue={new Date(2026, 9, 7)}
+        brand="sampark"
+      />
+      <BapsSlider
+        ariaLabel="Attendance target"
+        defaultValue={50}
+        brand="sampark"
+      />
+      <BapsChip label="Volunteer" brand="sampark" />
+      <BapsUsersDropdown
+        ariaLabel="Member"
+        users={[
+          { value: 'asha', title: 'Asha Patel', avatarLabel: 'AP' },
+          { value: 'ravi', title: 'Ravi Shah', avatarLabel: 'RS' },
+        ]}
+        defaultValue="asha"
+        brand="sampark"
+      />
+      <BapsFileUpload ariaLabel="Upload member photo" brand="sampark" />
+      <BapsPagination
+        totalRecords={250}
+        defaultRows={20}
+        defaultFirst={40}
+        showCurrentPageReport
         brand="sampark"
       />
     </>

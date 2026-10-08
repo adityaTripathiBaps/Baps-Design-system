@@ -19,6 +19,16 @@ import {
   BapsOverlayBadge,
   BapsProgressBar,
   BapsRadio,
+  BapsSelect,
+  BapsMultiSelect,
+  BapsListbox,
+  BapsTreeSelect,
+  BapsDatepicker,
+  BapsSlider,
+  BapsChip,
+  BapsUsersDropdown,
+  BapsFileUpload,
+  BapsPagination,
   BapsSegmented,
   BapsSkeleton,
   BapsSpinner,
@@ -103,6 +113,77 @@ export default function ClientPage() {
         options={['Once', 'Repeat', 'Ad-hoc']}
         defaultValue="Once"
         onValueChange={() => undefined}
+      />
+      <BapsSelect
+        ariaLabel="City"
+        options={[
+          { label: 'Ahmedabad', value: 'amd' },
+          { label: 'London', value: 'ldn' },
+        ]}
+        onValueChange={() => undefined}
+      />
+      <BapsMultiSelect
+        ariaLabel="Cities"
+        options={[
+          { label: 'Ahmedabad', value: 'amd' },
+          { label: 'London', value: 'ldn' },
+        ]}
+        display="chip"
+        onValueChange={() => undefined}
+      />
+      <BapsListbox
+        ariaLabel="Centres"
+        multiple
+        checkbox
+        options={[
+          { label: 'Ahmedabad', value: 'amd' },
+          { label: 'London', value: 'ldn' },
+        ]}
+        onValueChange={() => undefined}
+      />
+      <BapsTreeSelect
+        ariaLabel="Locations"
+        selectionMode="checkbox"
+        options={[
+          {
+            key: 'in',
+            label: 'India',
+            children: [{ key: 'in-amd', label: 'Ahmedabad' }],
+          },
+        ]}
+        onValueChange={() => undefined}
+      />
+      <BapsDatepicker
+        ariaLabel="Visit date"
+        showIcon
+        onValueChange={() => undefined}
+      />
+      <BapsSlider
+        ariaLabel="Attendance target"
+        defaultValue={50}
+        onValueChange={() => undefined}
+      />
+      <BapsChip label="Volunteer" removable onRemove={() => undefined} />
+      <BapsUsersDropdown
+        ariaLabel="Member"
+        users={[
+          { value: 'asha', title: 'Asha Patel', avatarLabel: 'AP' },
+          { value: 'ravi', title: 'Ravi Shah', avatarLabel: 'RS' },
+        ]}
+        onValueChange={() => undefined}
+      />
+      <BapsFileUpload
+        ariaLabel="Upload member photo"
+        accept="image/*"
+        onFilesSelected={() => undefined}
+      />
+      <BapsPagination
+        totalRecords={250}
+        defaultRows={20}
+        rowsPerPageOptions={[10, 20, 50, 100]}
+        showCurrentPageReport
+        showJumpToPage
+        onPageChange={() => undefined}
       />
     </main>
   );

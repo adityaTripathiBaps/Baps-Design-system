@@ -1,0 +1,188 @@
+@use '../avatar/avatar';
+@use '../icon/icon';
+@use '../input/input';
+@use '../input/input-sampark';
+@use '../menu-item/menu-item';
+
+/* Canonical Users Dropdown shell shared by Angular, React and Next. */
+:is(baps-users-dropdown, .baps-users-dropdown-panel) {
+  --users-dropdown-width: calc(var(--space-10) * 8 + var(--space-5));
+  --users-dropdown-radius: var(--space-3);
+  --users-dropdown-field-radius: var(--radius-sampark-default);
+  --users-dropdown-field-height: var(--space-10);
+  --users-dropdown-bg: var(--input-bg-default);
+  --users-dropdown-border: var(--input-border-default);
+  --users-dropdown-border-hover: var(--input-border-hover);
+  --users-dropdown-text: var(--input-text-filled);
+  --users-dropdown-placeholder: var(--input-text-placeholder);
+  --users-dropdown-shadow: var(--shadow-sampark-dropdown);
+}
+
+:is(baps-users-dropdown.baps-mybky, .baps-users-dropdown-panel.baps-mybky) {
+  --users-dropdown-radius: var(--card-mybky-radius);
+  --users-dropdown-field-radius: var(--form-field-mybky-border-radius);
+  --users-dropdown-bg: var(--input-bg-default);
+  --users-dropdown-border: var(--input-border-default);
+  --users-dropdown-border-hover: var(--input-border-hover);
+  --users-dropdown-text: var(--input-text-filled);
+  --users-dropdown-placeholder: var(--input-text-placeholder);
+  --users-dropdown-shadow: var(--shadow-mybky-tooltip);
+}
+
+baps-users-dropdown {
+  display: inline-block;
+}
+
+baps-users-dropdown .ud {
+  position: relative;
+  display: inline-block;
+  width: var(--users-dropdown-width);
+  max-width: 100%;
+  font-family: inherit;
+  font-size: var(--font-size-sm);
+}
+
+baps-users-dropdown .ud__trigger {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: var(--users-dropdown-field-height);
+  gap: var(--space-2);
+  padding-inline: var(--space-3);
+  border: 1px solid var(--users-dropdown-border);
+  border-radius: var(--users-dropdown-field-radius);
+  background: var(--users-dropdown-bg);
+  color: var(--users-dropdown-text);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+baps-users-dropdown .ud__trigger:hover:not(:disabled),
+baps-users-dropdown .ud--open .ud__trigger {
+  border-color: var(--users-dropdown-border-hover);
+}
+
+baps-users-dropdown .ud__trigger:focus-visible {
+  outline: none;
+  border-color: var(--users-dropdown-border-hover);
+  box-shadow: var(--shadow-sampark-input-focus);
+}
+
+baps-users-dropdown.baps-mybky .ud__trigger:focus-visible {
+  box-shadow: 0 0 0 var(--space-1) var(--color-mybky-blue-100);
+}
+
+baps-users-dropdown .ud__trigger--placeholder .ud__trigger-label {
+  color: var(--users-dropdown-placeholder);
+}
+
+baps-users-dropdown .ud--disabled .ud__trigger {
+  cursor: not-allowed;
+  background: var(--input-bg-disabled);
+  color: var(--users-dropdown-placeholder);
+}
+
+baps-users-dropdown .ud__trigger-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+baps-users-dropdown .ud__chevron {
+  flex: none;
+  width: var(--font-size-lg);
+  height: var(--font-size-lg);
+  color: var(--users-dropdown-text);
+  transition: transform 150ms ease;
+}
+
+baps-users-dropdown .ud--open .ud__chevron {
+  transform: rotate(180deg);
+}
+
+:is(baps-users-dropdown .ud__panel, .baps-users-dropdown-panel) {
+  z-index: calc(var(--overlay-backdrop-z-index) + 1);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  background: var(--users-dropdown-bg);
+  border: 1px solid var(--users-dropdown-border);
+  border-radius: var(--users-dropdown-radius);
+  box-shadow: var(--users-dropdown-shadow);
+  overflow: hidden;
+}
+
+baps-users-dropdown .ud__panel {
+  position: absolute;
+  top: calc(100% + var(--space-1));
+  inset-inline: 0;
+}
+
+:is(baps-users-dropdown .ud__search, .baps-users-dropdown-panel .ud__search) {
+  padding: var(--space-3);
+  border-bottom: 1px solid var(--users-dropdown-border);
+}
+
+:is(baps-users-dropdown .ud__list, .baps-users-dropdown-panel .ud__list) {
+  overflow-y: auto;
+  padding-block: var(--space-1);
+}
+
+:is(baps-users-dropdown .ud__group, .baps-users-dropdown-panel .ud__group):has(
+  .ud__group-title
+) {
+  padding-block: var(--space-2);
+}
+
+:is(
+  baps-users-dropdown .ud__group-title,
+  .baps-users-dropdown-panel .ud__group-title
+) {
+  display: flex;
+  align-items: center;
+  height: var(--space-6);
+  padding-inline: var(--space-3);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--font-line-height-snug);
+  letter-spacing: var(--font-letter-spacing-caps);
+  text-transform: uppercase;
+  color: var(--users-dropdown-placeholder);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:is(baps-users-dropdown .ud__empty, .baps-users-dropdown-panel .ud__empty) {
+  padding: var(--space-4);
+  text-align: center;
+  color: var(--users-dropdown-placeholder);
+  font-size: var(--font-size-sm);
+}
+
+.baps-dark :is(baps-users-dropdown, .baps-users-dropdown-panel) {
+  --users-dropdown-bg: var(--input-bg-default);
+  --users-dropdown-border: var(--input-border-default);
+  --users-dropdown-border-hover: var(--input-border-hover);
+  --users-dropdown-text: var(--input-text-filled);
+  --users-dropdown-placeholder: var(--input-text-placeholder);
+  --users-dropdown-shadow: var(--shadow-mybky-tooltip);
+}
+
+.baps-dark
+  :is(
+    baps-users-dropdown.baps-sampark,
+    .baps-users-dropdown-panel.baps-ds-sampark
+  ) {
+  --users-dropdown-bg: var(--input-bg-default);
+  --users-dropdown-border: var(--input-border-default);
+  --users-dropdown-border-hover: var(--input-border-hover);
+  --users-dropdown-text: var(--input-text-filled);
+  --users-dropdown-placeholder: var(--input-text-placeholder);
+}

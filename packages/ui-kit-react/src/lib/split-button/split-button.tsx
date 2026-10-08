@@ -123,9 +123,11 @@ export const BapsSplitButton = forwardRef<HTMLDivElement, BapsSplitButtonProps>(
               <BapsMenuItem
                 key={index}
                 title={item.label}
-                icon={item.icon}
+                {...(item.icon === undefined ? {} : { icon: item.icon })}
                 media={item.icon ? 'icon' : 'none'}
-                disabled={item.disabled}
+                {...(item.disabled === undefined
+                  ? {}
+                  : { disabled: item.disabled })}
                 brand={brand}
                 onActivated={(e?: unknown) => {
                   // In React, onActivated doesn't pass event directly yet but we can mock it

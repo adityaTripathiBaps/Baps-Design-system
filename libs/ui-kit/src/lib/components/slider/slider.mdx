@@ -1,6 +1,7 @@
-import { Meta, Canvas, Controls } from '@storybook/blocks';
-import { PropsTable } from '@baps/docs-blocks';
+import { Meta, Controls } from '@storybook/blocks';
+import { FrameworkTabs, PropsTable } from '@baps/docs-blocks';
 import * as SliderStories from './slider.stories';
+import { sliderSnippets } from './slider.snippets';
 
 <Meta of={SliderStories} />
 
@@ -11,30 +12,45 @@ A range slider input. `baps-slider` (`BapsSlider`) wraps PrimeNG's `p-slider`, i
 ## Usage
 
 ```html
-<baps-slider [(ngModel)]="volume" [min]="0" [max]="100" brand="sampark"></baps-slider>
+<baps-slider
+  [(ngModel)]="volume"
+  [min]="0"
+  [max]="100"
+  brand="sampark"
+></baps-slider>
 
-<baps-slider [(ngModel)]="priceRange" [range]="true" [min]="0" [max]="1000" [step]="10" brand="sampark"></baps-slider>
+<baps-slider
+  [(ngModel)]="priceRange"
+  [range]="true"
+  [min]="0"
+  [max]="1000"
+  [step]="10"
+  brand="sampark"
+></baps-slider>
 ```
 
 ## Examples
 
 ### Default
 
-<Canvas of={SliderStories.Default} />
+<FrameworkTabs of={SliderStories.Default} snippets={sliderSnippets.Default} />
 
 <Controls of={SliderStories.Default} />
 
 ### Range
 
-<Canvas of={SliderStories.Range} />
+<FrameworkTabs of={SliderStories.Range} snippets={sliderSnippets.Range} />
 
 ### Value Tooltip
 
-<Canvas of={SliderStories.ValueTooltip} />
+<FrameworkTabs
+  of={SliderStories.ValueTooltip}
+  snippets={sliderSnippets.ValueTooltip}
+/>
 
 ### Disabled
 
-<Canvas of={SliderStories.Disabled} />
+<FrameworkTabs of={SliderStories.Disabled} snippets={sliderSnippets.Disabled} />
 
 ## Forms
 
@@ -56,6 +72,7 @@ native control in either forms API.
 ```ts
 form = new FormGroup({ value: new FormControl(40) });
 ```
+
 ## API
 
 Inputs, outputs and their types, read from the component's own source.
@@ -64,13 +81,13 @@ Inputs, outputs and their types, read from the component's own source.
 
 ## When Not to Use
 
-| Need | Use | Why not `baps-slider` |
-| --- | --- | --- |
-| An exact number the user knows (age, quantity, price) | `bapsInputText` on a numeric field | Hitting an exact value by dragging an 18px handle is a precision task the control is bad at |
-| Showing progress the system owns | `baps-progressbar` | Slider is an input; it has no indeterminate mode and invites a drag that will do nothing |
-| An on/off choice | `baps-toggleswitch` | A two-stop slider is a switch with worse affordance |
-| Fewer than ~5 discrete named steps | `baps-select` or a radio group | `step` gives positions, not labels — nothing on the track says what a stop means |
-| A read-only ratio in a table cell | `baps-progressbar` + `.baps-table-progress` | Slider stays focusable and draggable even when it shouldn't be |
+| Need                                                  | Use                                         | Why not `baps-slider`                                                                       |
+| ----------------------------------------------------- | ------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| An exact number the user knows (age, quantity, price) | `bapsInputText` on a numeric field          | Hitting an exact value by dragging an 18px handle is a precision task the control is bad at |
+| Showing progress the system owns                      | `baps-progressbar`                          | Slider is an input; it has no indeterminate mode and invites a drag that will do nothing    |
+| An on/off choice                                      | `baps-toggleswitch`                         | A two-stop slider is a switch with worse affordance                                         |
+| Fewer than ~5 discrete named steps                    | `baps-select` or a radio group              | `step` gives positions, not labels — nothing on the track says what a stop means            |
+| A read-only ratio in a table cell                     | `baps-progressbar` + `.baps-table-progress` | Slider stays focusable and draggable even when it shouldn't be                              |
 
 ## Accessibility
 
@@ -83,9 +100,9 @@ Inputs, outputs and their types, read from the component's own source.
 
 ### Keyboard Support
 
-| Key | Function |
-| --- | --- |
-| <kbd>Tab</kbd> | Moves focus to the handle. |
-| <kbd>Arrow Up / Right</kbd> | Increases the value by one step. |
-| <kbd>Arrow Down / Left</kbd> | Decreases it by one step. |
-| <kbd>Home / End</kbd> | Jumps to the minimum or maximum. |
+| Key                          | Function                         |
+| ---------------------------- | -------------------------------- |
+| <kbd>Tab</kbd>               | Moves focus to the handle.       |
+| <kbd>Arrow Up / Right</kbd>  | Increases the value by one step. |
+| <kbd>Arrow Down / Left</kbd> | Decreases it by one step.        |
+| <kbd>Home / End</kbd>        | Jumps to the minimum or maximum. |

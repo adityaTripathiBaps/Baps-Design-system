@@ -1,80 +1,75 @@
-/**
- * Framework snippets for the DatePicker docs page.
- *
- * ## How it maps
- *
- * The Angular `baps-datepicker` component wraps PrimeNG's `p-datepicker`.
- *
- * In React, building a full datepicker calendar from scratch matching the design system
- * is a large task. However, the styling applies to standard `.p-datepicker` classes.
- * You should use a native `<input type="date">` styled with `.p-inputtext`
- * as a functional equivalent that does not require PrimeReact.
- */
 import { setupFor, type SnippetSet } from '../../docs/snippet-setup';
 
 export type { SnippetSet };
-const SETUP = setupFor('datepicker', true);
+
+const SETUP = `${setupFor('datepicker', false, '@org/ui-kit-react/styles')}
+
+import { BapsDatepicker } from '@org/ui-kit-react';`;
+
+const next = (source: string) =>
+  `'use client';\n\n${source.replace(
+    'export function Example()',
+    'export default function Example()',
+  )}`;
+
+const example = (props: string) => `${SETUP}
+
+export function Example() {
+  return <BapsDatepicker ariaLabel="Visit date" ${props} />;
+}`;
 
 export const datepickerSnippets: Record<string, SnippetSet> = {
   Default: {
-    react: `${SETUP}
-
-export function Default() {
-  return (
-    <div className="field" style={{ width: '250px' }}>
-      <input type="date" className="p-inputtext" aria-label="Start date" />
-    </div>
-  );
-}`,
+    react: example('inline'),
+    next: next(example('inline')),
+    primeng: `<baps-datepicker ariaLabel="Visit date" [inline]="true" [(ngModel)]="value" />`,
   },
   Range: {
-    react: `${SETUP}
-
-export function Range() {
-  return (
-    <div className="field" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-      <input type="date" className="p-inputtext" aria-label="Start date" />
-      <span>-</span>
-      <input type="date" className="p-inputtext" aria-label="End date" />
-    </div>
-  );
-}`,
+    react: example('selectionMode="range" numberOfMonths={2} brand="sampark"'),
+    next: next(
+      example('selectionMode="range" numberOfMonths={2} brand="sampark"'),
+    ),
+    primeng: `<baps-datepicker ariaLabel="Visit date range" selectionMode="range" [numberOfMonths]="2" brand="sampark" [(ngModel)]="range" />`,
   },
   RangeMyBKY: {
-    react: `${SETUP}
-
-export function RangeMyBKY() {
-  return (
-    <div className="field" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-      <input type="date" className="p-inputtext" aria-label="Start date" />
-      <span>-</span>
-      <input type="date" className="p-inputtext" aria-label="End date" />
-    </div>
-  );
-}`,
+    react: example('selectionMode="range" numberOfMonths={2} brand="mybky"'),
+    next: next(
+      example('selectionMode="range" numberOfMonths={2} brand="mybky"'),
+    ),
+    primeng: `<baps-datepicker ariaLabel="Visit date range" selectionMode="range" [numberOfMonths]="2" brand="mybky" [(ngModel)]="range" />`,
   },
   Overlay: {
-    react: `${SETUP}
-
-export function Overlay() {
-  return (
-    <div style={{ height: '380px' }}>
-      <div className="field" style={{ width: '250px' }}>
-        <input type="date" className="p-inputtext" aria-label="Start date" />
-      </div>
-    </div>
-  );
-}`,
+    react: example('selectionMode="range" showIcon'),
+    next: next(example('selectionMode="range" showIcon')),
+    primeng: `<baps-datepicker ariaLabel="Visit date range" selectionMode="range" [showIcon]="true" [(ngModel)]="range" />`,
   },
   Constrained: {
     react: `${SETUP}
 
-export function Constrained() {
+export function Example() {
   return (
-    <div className="field" style={{ width: '250px' }}>
-      <input type="date" className="p-inputtext" min="2026-01-01" max="2026-12-31" aria-label="Start date" />
-    </div>
+    <BapsDatepicker
+      ariaLabel="Visit date"
+      minDate={new Date(2026, 0, 1)}
+      maxDate={new Date(2026, 11, 31)}
+      disabledDays={[0, 6]}
+      showIcon
+    />
   );
 }`,
+    next: next(`${SETUP}
+
+export function Example() {
+  return (
+    <BapsDatepicker
+      ariaLabel="Visit date"
+      minDate={new Date(2026, 0, 1)}
+      maxDate={new Date(2026, 11, 31)}
+      disabledDays={[0, 6]}
+      showIcon
+    />
+  );
+}`),
+    primeng: `<baps-datepicker ariaLabel="Visit date" [minDate]="minDate" [maxDate]="maxDate" [disabledDays]="[0, 6]" [showIcon]="true" [(ngModel)]="value" />`,
   },
 };

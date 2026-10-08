@@ -1,0 +1,141 @@
+/* Canonical slider skin shared by Angular, React and Next consumers. */
+baps-slider {
+  --baps-slider-track: var(--color-mybky-mono-300);
+  --baps-slider-fill: var(--color-mybky-blue-600);
+  --baps-slider-handle: var(--color-mybky-blue-600);
+  --baps-slider-handle-hover: var(--color-mybky-blue-700);
+  --baps-slider-radius: var(--radius-mybky-pill);
+  --baps-slider-focus: var(--color-mybky-blue-100);
+  display: block;
+}
+
+:is(baps-slider.baps-sampark, .baps-ds-sampark baps-slider) {
+  --baps-slider-track: var(--color-sampark-secondary-20);
+  --baps-slider-fill: var(--color-sampark-primary-default);
+  --baps-slider-handle: var(--color-sampark-primary-default);
+  --baps-slider-handle-hover: var(--color-sampark-primary-hover);
+  --baps-slider-radius: var(--radius-sampark-default);
+  --baps-slider-focus: var(--shadow-sampark-input-focus);
+}
+
+baps-slider.baps-slider-has-tooltip {
+  position: relative;
+}
+
+baps-slider .p-slider {
+  position: relative;
+  display: block;
+  border-radius: var(--baps-slider-radius);
+  background: var(--baps-slider-track);
+  touch-action: none;
+  cursor: pointer;
+}
+
+baps-slider .p-slider-horizontal {
+  width: 100%;
+  height: var(--space-1);
+}
+
+baps-slider .p-slider-vertical {
+  width: var(--space-1);
+  height: var(--baps-slider-vertical-height, calc(var(--space-8) * 6));
+}
+
+baps-slider .p-slider-range {
+  position: absolute;
+  display: block;
+  border-radius: inherit;
+  background: var(--baps-slider-fill);
+}
+
+baps-slider .p-slider-horizontal .p-slider-range {
+  inset-block: 0;
+}
+
+baps-slider .p-slider-vertical .p-slider-range {
+  inset-inline: 0;
+}
+
+baps-slider .p-slider-handle {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  box-sizing: border-box;
+  width: var(--font-size-lg);
+  height: var(--font-size-lg);
+  border: var(--space-0-5) solid var(--baps-slider-handle);
+  border-radius: var(--radius-mybky-circle);
+  background: var(--baps-slider-handle);
+  cursor: grab;
+  touch-action: none;
+}
+
+baps-slider .p-slider-horizontal .p-slider-handle {
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+baps-slider .p-slider-vertical .p-slider-handle {
+  left: 50%;
+  transform: translate(-50%, 50%);
+}
+
+baps-slider .p-slider-handle:hover {
+  border-color: var(--baps-slider-handle-hover);
+  background: var(--baps-slider-handle-hover);
+}
+
+baps-slider .p-slider-handle:focus-visible {
+  outline: 0;
+  box-shadow: 0 0 0 var(--space-1) var(--baps-slider-focus);
+}
+
+baps-slider .p-slider.p-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+baps-slider .p-slider.p-disabled .p-slider-handle {
+  cursor: not-allowed;
+}
+
+baps-slider .baps-slider-tooltip {
+  position: absolute;
+  bottom: calc(50% + var(--space-4));
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-width: var(--space-6);
+  min-height: var(--space-6);
+  padding-inline: var(--space-2);
+  border-radius: var(--radius-sampark-default);
+  background: var(--color-sampark-mono-0);
+  color: var(--color-sampark-mono-80);
+  font-size: var(--font-size-xs);
+  line-height: var(--font-line-height-snug);
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: var(--shadow-sampark-s);
+}
+
+baps-slider .baps-slider-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-inline: var(--space-3) solid transparent;
+  border-bottom: 0;
+  border-top: var(--space-2) solid var(--color-sampark-mono-0);
+}
+
+.baps-dark baps-slider {
+  --baps-slider-track: var(--color-mybky-mono-700);
+  --baps-slider-focus: var(--color-mybky-blue-800);
+}
+
+.baps-dark :is(baps-slider.baps-sampark, .baps-ds-sampark baps-slider) {
+  --baps-slider-track: var(--color-mybky-mono-700);
+}

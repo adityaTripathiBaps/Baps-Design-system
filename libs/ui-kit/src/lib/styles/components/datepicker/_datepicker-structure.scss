@@ -1,0 +1,199 @@
+/*
+ * Framework-neutral Datepicker structure. PrimeNG already emits this shape;
+ * React emits the same classes so both runtimes consume one visual contract.
+ */
+baps-datepicker {
+  display: block;
+}
+
+p-datepicker .p-datepicker-input-group {
+  position: relative;
+  display: flex;
+  width: 100%;
+}
+
+p-datepicker .p-datepicker-input-group .p-datepicker-input {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+p-datepicker .p-datepicker-input-icon {
+  position: absolute;
+  z-index: 1;
+  inset-inline-start: var(--space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  color: var(--select-trigger-icon);
+  pointer-events: none;
+}
+
+p-datepicker
+  .p-datepicker-input-group:has(.p-datepicker-input-icon)
+  .p-datepicker-input {
+  padding-inline-start: var(--space-8) !important;
+}
+
+p-datepicker .p-datepicker-clear-icon {
+  position: absolute;
+  z-index: 1;
+  inset-inline-end: var(--space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--select-trigger-icon);
+}
+
+p-datepicker
+  .p-datepicker-input-group:has(.p-datepicker-dropdown)
+  .p-datepicker-clear-icon {
+  inset-inline-end: var(--space-10);
+}
+
+.p-datepicker-panel {
+  z-index: calc(var(--overlay-backdrop-z-index) + 1);
+  box-sizing: border-box;
+  width: max-content;
+  color: var(--select-option-text);
+}
+
+.p-datepicker-calendar-container {
+  display: flex;
+  gap: var(--datepicker-group-gap, var(--space-3));
+}
+
+.p-datepicker-group {
+  flex: none;
+}
+
+.p-datepicker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.p-datepicker-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  min-height: var(--space-8);
+}
+
+.p-datepicker-title,
+.p-datepicker-title button,
+.p-datepicker-prev-button,
+.p-datepicker-next-button,
+.p-datepicker-day,
+.p-datepicker-month,
+.p-datepicker-year,
+.p-datepicker-buttonbar button {
+  font-family: inherit;
+}
+
+.p-datepicker-prev-button,
+.p-datepicker-next-button,
+.p-datepicker-day,
+.p-datepicker-month,
+.p-datepicker-year,
+.p-datepicker-buttonbar button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+}
+
+.p-datepicker-prev-button[hidden],
+.p-datepicker-next-button[hidden] {
+  visibility: hidden;
+  display: inline-flex;
+}
+
+.p-datepicker-calendar {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.p-datepicker-calendar th,
+.p-datepicker-calendar td {
+  padding: 0;
+  text-align: center;
+}
+
+.p-datepicker-calendar th {
+  height: var(--space-8);
+  font-weight: var(--font-weight-regular);
+}
+
+.p-datepicker-day-cell {
+  width: var(--datepicker-cell-size);
+  height: var(--datepicker-cell-size);
+}
+
+.p-datepicker-day {
+  appearance: none;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.p-datepicker-day:focus-visible,
+.p-datepicker-month:focus-visible,
+.p-datepicker-year:focus-visible,
+.p-datepicker-prev-button:focus-visible,
+.p-datepicker-next-button:focus-visible {
+  outline: var(--space-0-5) solid var(--datepicker-today-border);
+  outline-offset: calc(-1 * var(--space-0-5));
+}
+
+.p-datepicker-day.p-disabled,
+.p-datepicker-day:disabled {
+  cursor: not-allowed;
+}
+
+.p-datepicker-month-view,
+.p-datepicker-year-view {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(var(--space-10), 1fr));
+  gap: var(--space-1);
+}
+
+.p-datepicker-month,
+.p-datepicker-year {
+  min-height: var(--space-10);
+  padding-inline: var(--space-2);
+  border: 0;
+  background: transparent;
+}
+
+.p-datepicker-buttonbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--select-overlay-border);
+}
+
+.p-datepicker-buttonbar button {
+  min-height: var(--space-8);
+  padding-inline: var(--space-3);
+  border: 0;
+  border-radius: var(--form-field-mybky-border-radius);
+  background: transparent;
+  color: var(--select-option-selected-text);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+:is(.baps-ds-sampark, baps-datepicker.baps-sampark)
+  .p-datepicker-buttonbar
+  button {
+  border-radius: var(--radius-sampark-default);
+}
+
+.p-datepicker-buttonbar button:hover {
+  background: var(--datepicker-day-hover-bg);
+}

@@ -1,6 +1,7 @@
-import { Meta, Canvas, Controls } from '@storybook/blocks';
-import { BrandOnly, PropsTable } from '@baps/docs-blocks';
+import { Meta, Controls } from '@storybook/blocks';
+import { BrandOnly, FrameworkTabs, PropsTable } from '@baps/docs-blocks';
 import * as MultiSelectStories from './multi-select.stories';
+import { multiSelectSnippets } from './multi-select.snippets';
 
 <Meta of={MultiSelectStories} />
 
@@ -51,37 +52,58 @@ export class RegionFilter {
 
 ### Default
 
-<Canvas of={MultiSelectStories.Default} />
+<FrameworkTabs
+  of={MultiSelectStories.Default}
+  snippets={multiSelectSnippets.Default}
+/>
 
 <Controls of={MultiSelectStories.Default} />
 
 ### Chips
 
-<Canvas of={MultiSelectStories.Chips} />
+<FrameworkTabs
+  of={MultiSelectStories.Chips}
+  snippets={multiSelectSnippets.Chips}
+/>
 
 ### Filter And Select All
 
-<Canvas of={MultiSelectStories.FilterAndSelectAll} />
+<FrameworkTabs
+  of={MultiSelectStories.FilterAndSelectAll}
+  snippets={multiSelectSnippets.FilterAndSelectAll}
+/>
 
 ### Grouped
 
-<Canvas of={MultiSelectStories.Grouped} />
+<FrameworkTabs
+  of={MultiSelectStories.Grouped}
+  snippets={multiSelectSnippets.Grouped}
+/>
 
 ### Sizes
 
-<Canvas of={MultiSelectStories.Sizes} />
+<FrameworkTabs
+  of={MultiSelectStories.Sizes}
+  snippets={multiSelectSnippets.Sizes}
+/>
 
 <BrandOnly brand="comparison">
 
 ### Brands
 
-<Canvas of={MultiSelectStories.Brands} />
+<FrameworkTabs
+  of={MultiSelectStories.Brands}
+  snippets={multiSelectSnippets.Brands}
+/>
 
 </BrandOnly>
 
 ### Disabled
 
-<Canvas of={MultiSelectStories.Disabled} />
+<FrameworkTabs
+  of={MultiSelectStories.Disabled}
+  snippets={multiSelectSnippets.Disabled}
+/>
 
 ## Forms
 
@@ -91,18 +113,29 @@ native control in either forms API.
 ### Template Driven
 
 ```html
-<baps-multi-select [options]="cities" optionLabel="name" placeholder="Select cities" [(ngModel)]="value" />
+<baps-multi-select
+  [options]="cities"
+  optionLabel="name"
+  placeholder="Select cities"
+  [(ngModel)]="value"
+/>
 ```
 
 ### Reactive Forms
 
 ```html
-<baps-multi-select [options]="cities" optionLabel="name" placeholder="Select cities" formControlName="value" />
+<baps-multi-select
+  [options]="cities"
+  optionLabel="name"
+  placeholder="Select cities"
+  formControlName="value"
+/>
 ```
 
 ```ts
 form = new FormGroup({ value: new FormControl([]) });
 ```
+
 ## API
 
 Inputs, outputs and their types, read from the component's own source.
@@ -127,9 +160,9 @@ Inputs, outputs and their types, read from the component's own source.
 
 ### Keyboard Support
 
-| Key | Function |
-| --- | --- |
-| <kbd>Tab</kbd> | Moves focus to the trigger. |
-| <kbd>Space / Enter</kbd> | Opens the panel; toggles the highlighted option when open. |
-| <kbd>Arrow Up / Down</kbd> | Moves through the options. |
-| <kbd>Esc</kbd> | Closes the panel. |
+| Key                        | Function                                                   |
+| -------------------------- | ---------------------------------------------------------- |
+| <kbd>Tab</kbd>             | Moves focus to the trigger.                                |
+| <kbd>Space / Enter</kbd>   | Opens the panel; toggles the highlighted option when open. |
+| <kbd>Arrow Up / Down</kbd> | Moves through the options.                                 |
+| <kbd>Esc</kbd>             | Closes the panel.                                          |

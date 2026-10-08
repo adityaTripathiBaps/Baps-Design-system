@@ -25,10 +25,12 @@
   ],
   "peerDependencies": {
     "@org/tokens": "workspace:*",
-    "react": "^19.2.7"
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
   },
   "devDependencies": {
     "@org/tokens": "workspace:*",
-    "react": "^19.2.7"
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
   }
 }

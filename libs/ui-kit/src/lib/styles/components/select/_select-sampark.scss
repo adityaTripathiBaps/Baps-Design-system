@@ -12,25 +12,59 @@
    DESIGN TOKENS — CSS Custom Properties
    Re-points the --select-* and --datepicker-* variables under .baps-ds-sampark.
    ══════════════════════════════════════════════════════════════════════ */
-.baps-ds-sampark {
+:is(
+  .baps-ds-sampark,
+  baps-select.baps-sampark,
+  baps-multi-select.baps-sampark,
+  baps-tree-select.baps-sampark,
+  baps-datepicker.baps-sampark,
+  baps-users-dropdown.baps-sampark
+) {
   /* ── Overlay container ───────────────────────────────────────────── */
   --select-overlay-bg: var(--color-sampark-surface-card, #ffffff);
   --select-overlay-border: var(--color-sampark-border-default, #e1e0e0);
-  --select-overlay-radius: var(--radius-sampark-default, 0.25rem); /* 4px — matches trigger */
-  --select-overlay-shadow: var(--shadow-sampark-dropdown, 0 4px 12px rgba(21, 20, 20, 0.08));
+  --select-overlay-radius: var(
+    --radius-sampark-default,
+    0.25rem
+  ); /* 4px — matches trigger */
+  --select-overlay-shadow: var(
+    --shadow-sampark-dropdown,
+    0 4px 12px rgba(21, 20, 20, 0.08)
+  );
   --select-overlay-padding: 0.25rem;
 
   /* ── Option rows ─────────────────────────────────────────────────── */
-  --select-option-height: var(--form-field-sampark-height-default, 2rem); /* 32px */
+  --select-option-height: var(
+    --form-field-sampark-height-default,
+    2rem
+  ); /* 32px */
   --select-option-padding-x: 0.5rem; /* 8px */
   --select-option-radius: var(--radius-sampark-default, 0.25rem); /* 4px */
-  --select-option-text: var(--color-sampark-text-primary, #151414); /* Mono/100 */
+  --select-option-text: var(
+    --color-sampark-text-primary,
+    #151414
+  ); /* Mono/100 */
   --select-option-hover-bg: var(--color-sampark-mono-20, #f3f2f2); /* Mono/20 */
-  --select-option-selected-bg: var(--color-sampark-primary-10, #f8ecec); /* Primary/10 */
-  --select-option-selected-text: var(--color-sampark-primary-100, #873030); /* Primary/100 */
-  --select-option-selected-hover-bg: var(--color-sampark-primary-20, #e9c3c3); /* Primary/20 */
-  --select-option-disabled-text: var(--color-sampark-text-muted, #bcb9b9); /* Mono/40 */
-  --select-option-group-text: var(--color-sampark-text-secondary, #595656); /* Mono/80 */
+  --select-option-selected-bg: var(
+    --color-sampark-primary-10,
+    #f8ecec
+  ); /* Primary/10 */
+  --select-option-selected-text: var(
+    --color-sampark-primary-100,
+    #873030
+  ); /* Primary/100 */
+  --select-option-selected-hover-bg: var(
+    --color-sampark-primary-20,
+    #e9c3c3
+  ); /* Primary/20 */
+  --select-option-disabled-text: var(
+    --color-sampark-text-muted,
+    #bcb9b9
+  ); /* Mono/40 */
+  --select-option-group-text: var(
+    --color-sampark-text-secondary,
+    #595656
+  ); /* Mono/80 */
 
   /* ── Trigger internals ───────────────────────────────────────────── */
   --select-trigger-icon: var(--color-sampark-text-secondary, #595656);
@@ -43,13 +77,19 @@
   /* ── MultiSelect chips ───────────────────────────────────────────── */
   --select-chip-bg: var(--color-sampark-secondary-0, #f8f7f7);
   --select-chip-text: var(--color-sampark-text-secondary, #595656);
-  --select-chip-radius: var(--radius-sampark-default, 0.25rem); /* chips are rounded rects, NOT pills */
+  --select-chip-radius: var(
+    --radius-sampark-default,
+    0.25rem
+  ); /* chips are rounded rects, NOT pills */
   --select-chip-height: 1.5rem;
   --select-chip-font-size: 0.75rem;
 
   /* ── DatePicker calendar ─────────────────────────────────────────── */
   --datepicker-cell-size: 2rem; /* 32px day cells */
-  --datepicker-cell-radius: var(--radius-sampark-default, 0.25rem); /* square/rect cells, NOT circular */
+  --datepicker-cell-radius: var(
+    --radius-sampark-default,
+    0.25rem
+  ); /* square/rect cells, NOT circular */
   --datepicker-day-hover-bg: var(--color-sampark-secondary-0, #f8f7f7);
   --datepicker-day-selected-bg: var(--color-sampark-primary-100, #873030);
   --datepicker-day-selected-text: var(--color-sampark-mono-0, #ffffff);
@@ -60,14 +100,24 @@
 /* ══════════════════════════════════════════════════════════════════════
    GEOMETRY & INTERACTIVE STATES OVERRIDES
    ══════════════════════════════════════════════════════════════════════ */
-.baps-ds-sampark {
+:is(
+  .baps-ds-sampark,
+  baps-select.baps-sampark,
+  baps-multi-select.baps-sampark,
+  baps-tree-select.baps-sampark,
+  baps-datepicker.baps-sampark,
+  baps-users-dropdown.baps-sampark
+) {
   /* ── 1. Trigger container defaults (32px, 4px radius, 1px border) ── */
   .p-select,
   .p-multiselect,
   .p-cascadeselect,
   .p-treeselect {
     border-radius: var(--form-field-sampark-border-radius, 0.25rem) !important;
-    height: var(--form-field-sampark-height-default, 2rem) !important; /* 32px */
+    height: var(
+      --form-field-sampark-height-default,
+      2rem
+    ) !important; /* 32px */
     min-height: var(--form-field-sampark-height-default, 2rem) !important;
     border: 1px solid var(--input-border-default) !important;
     background: var(--input-bg-default) !important;
@@ -212,7 +262,8 @@
   p-datepicker .p-datepicker-dropdown {
     border: 1px solid var(--input-border-default) !important;
     border-left: none !important;
-    border-radius: 0 var(--form-field-sampark-border-radius, 0.25rem) var(--form-field-sampark-border-radius, 0.25rem) 0 !important;
+    border-radius: 0 var(--form-field-sampark-border-radius, 0.25rem)
+      var(--form-field-sampark-border-radius, 0.25rem) 0 !important;
     height: 100% !important;
     width: 2rem !important;
   }
@@ -224,7 +275,10 @@
 
   /* .p-datepicker is the host element in v21 — must mirror base selector form */
   p-datepicker.p-datepicker {
-    height: var(--form-field-sampark-height-default, 2rem) !important; /* 32px */
+    height: var(
+      --form-field-sampark-height-default,
+      2rem
+    ) !important; /* 32px */
     border-radius: var(--form-field-sampark-border-radius, 0.25rem) !important;
   }
 
@@ -257,7 +311,8 @@
   }
 
   .p-select-overlay .p-select-list-container::-webkit-scrollbar-thumb,
-  .p-multiselect-overlay .p-multiselect-list-container::-webkit-scrollbar-thumb {
+  .p-multiselect-overlay
+    .p-multiselect-list-container::-webkit-scrollbar-thumb {
     background: var(--color-sampark-border-default, #e1e0e0) !important;
   }
 }

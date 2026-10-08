@@ -1,0 +1,201 @@
+/* Canonical menu-row primitive shared by Angular, React and composed lists. */
+baps-menu-item {
+  --menu-item-min-height: var(--space-10);
+  --menu-item-padding-x: var(--space-4);
+  --menu-item-padding-y: var(--space-2-5);
+  --menu-item-gap: var(--space-3);
+  --menu-item-icon-size: var(--space-5);
+  --menu-item-control-size: var(--font-size-lg);
+  --menu-item-bar-width: var(--radius-sampark-sm);
+  --menu-item-font-size: var(--font-size-sm);
+  --menu-item-subtitle-size: var(--font-size-xs);
+  --menu-item-bg: transparent;
+  --menu-item-bg-selected: var(--color-sampark-secondary-0);
+  --menu-item-text: var(--color-sampark-text-primary);
+  --menu-item-subtitle: var(--color-sampark-text-muted);
+  --menu-item-text-danger: var(--color-sampark-error-80);
+  --menu-item-text-disabled: var(--color-sampark-text-disabled);
+  --menu-item-bar: var(--color-sampark-primary-default);
+  --menu-item-bar-danger: var(--color-sampark-error-80);
+  --menu-item-control-border: var(--color-sampark-mono-40);
+  --menu-item-control-checked: var(--color-sampark-primary-default);
+  display: block;
+}
+
+baps-menu-item.baps-mybky {
+  --menu-item-bg-selected: var(--color-mybky-mono-50);
+  --menu-item-text: var(--color-mybky-mono-900);
+  --menu-item-subtitle: var(--color-mybky-mono-500);
+  --menu-item-text-danger: var(--color-mybky-error-80);
+  --menu-item-text-disabled: var(--color-mybky-mono-400);
+  --menu-item-bar: var(--color-mybky-blue-600);
+  --menu-item-bar-danger: var(--color-mybky-error-100);
+  --menu-item-control-border: var(--color-mybky-mono-400);
+  --menu-item-control-checked: var(--color-mybky-blue-600);
+}
+
+baps-menu-item .menu-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--menu-item-gap);
+  min-height: var(--menu-item-min-height);
+  padding: var(--menu-item-padding-y) var(--menu-item-padding-x);
+  font-family: inherit;
+  font-size: var(--menu-item-font-size);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--font-line-height-snug);
+  color: var(--menu-item-text);
+  background: var(--menu-item-bg);
+  cursor: pointer;
+  user-select: none;
+  transition: background 120ms ease;
+}
+
+baps-menu-item .menu-item:hover:not(.menu-item--disabled),
+baps-menu-item .menu-item--selected {
+  background: var(--menu-item-bg-selected);
+}
+
+baps-menu-item .menu-item:focus-visible {
+  outline: var(--space-0-5) solid var(--menu-item-bar);
+  outline-offset: calc(-1 * var(--space-0-5));
+}
+
+baps-menu-item .menu-item__bar {
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block: 0;
+  width: var(--menu-item-bar-width);
+  background: var(--menu-item-bar);
+  opacity: 0;
+}
+
+baps-menu-item .menu-item:hover:not(.menu-item--disabled) .menu-item__bar,
+baps-menu-item .menu-item--selected .menu-item__bar {
+  opacity: 1;
+}
+
+baps-menu-item .menu-item--danger {
+  color: var(--menu-item-text-danger);
+}
+
+baps-menu-item .menu-item--danger .menu-item__bar {
+  background: var(--menu-item-bar-danger);
+}
+
+baps-menu-item .menu-item--disabled {
+  color: var(--menu-item-text-disabled);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+baps-menu-item .menu-item--disabled .menu-item__avatar,
+baps-menu-item .menu-item--disabled .menu-item__control {
+  opacity: 0.5;
+}
+
+baps-menu-item .menu-item--disabled .menu-item__subtitle {
+  color: var(--menu-item-text-disabled);
+}
+
+baps-menu-item .menu-item__icon {
+  flex: none;
+  width: var(--menu-item-icon-size);
+  height: var(--menu-item-icon-size);
+  font-size: var(--menu-item-icon-size);
+  color: currentColor;
+}
+
+baps-menu-item .menu-item__text {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--space-0-5);
+  min-width: 0;
+}
+
+baps-menu-item .menu-item__title,
+baps-menu-item .menu-item__subtitle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+baps-menu-item .menu-item--two-line .menu-item__title {
+  font-weight: var(--font-weight-medium);
+}
+
+baps-menu-item .menu-item__subtitle {
+  font-size: var(--menu-item-subtitle-size);
+  color: var(--menu-item-subtitle);
+}
+
+baps-menu-item .menu-item__control {
+  flex: none;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--menu-item-control-size);
+  height: var(--menu-item-control-size);
+  border: 1px solid var(--menu-item-control-border);
+  color: var(--color-sampark-mono-0);
+}
+
+baps-menu-item .menu-item__control--check {
+  border-radius: var(--radius-sampark-default);
+}
+
+baps-menu-item .menu-item__control--radio {
+  border-radius: var(--radius-sampark-circle);
+}
+
+baps-menu-item .menu-item__control svg {
+  width: var(--space-3);
+  height: var(--space-3);
+  opacity: 0;
+}
+
+baps-menu-item .menu-item__control--check.is-checked {
+  background: var(--menu-item-control-checked);
+  border-color: var(--menu-item-control-checked);
+}
+
+baps-menu-item .menu-item__control--check.is-checked svg {
+  opacity: 1;
+}
+
+baps-menu-item .menu-item__control--radio.is-checked {
+  border-color: var(--menu-item-control-checked);
+}
+
+baps-menu-item .menu-item__control--radio.is-checked::after {
+  content: '';
+  width: var(--space-2);
+  height: var(--space-2);
+  border-radius: var(--radius-sampark-circle);
+  background: var(--menu-item-control-checked);
+}
+
+baps-menu-item .menu-item__avatar {
+  flex: none;
+}
+
+.baps-dark baps-menu-item {
+  --menu-item-bg-selected: var(--color-mybky-mono-800);
+  --menu-item-text: var(--color-mybky-mono-50);
+  --menu-item-subtitle: var(--color-mybky-mono-400);
+  --menu-item-text-disabled: var(--color-mybky-mono-500);
+  --menu-item-control-border: var(--color-mybky-dark-border-control);
+  --menu-item-text-danger: var(--color-mybky-error-tint);
+}
+
+.baps-dark :is(baps-menu-item.baps-sampark, .baps-ds-sampark baps-menu-item) {
+  --menu-item-bg-selected: var(--color-sampark-dark-surface-card);
+  --menu-item-text: var(--color-sampark-dark-text-primary);
+  --menu-item-subtitle: var(--color-sampark-dark-text-muted);
+  --menu-item-text-disabled: var(--color-sampark-dark-text-disabled);
+  --menu-item-control-border: var(--color-sampark-dark-border-control);
+  --menu-item-text-danger: var(--color-sampark-error-40);
+}

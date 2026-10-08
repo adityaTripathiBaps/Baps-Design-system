@@ -1,162 +1,134 @@
-/**
- * Framework snippets for the Listbox docs page.
- *
- * ## How it maps
- *
- * The Angular `baps-listbox` component wraps PrimeNG's `p-listbox` and uses
- * `baps-menu-item` to render each row.
- *
- * In React, without PrimeReact, you can render a native `<select multiple>`
- * or a custom styled `<ul>`/`<li>` list for rich templates.
- */
 import { setupFor, type SnippetSet } from '../../docs/snippet-setup';
 
 export type { SnippetSet };
-const SETUP = setupFor('listbox', true);
+
+const SETUP = `${setupFor('listbox', false, '@org/ui-kit-react/styles')}
+
+import { BapsListbox } from '@org/ui-kit-react';
+
+const cities = [
+  { label: 'New York', value: 'NY' },
+  { label: 'Rome', value: 'RM' },
+  { label: 'London', value: 'LDN' },
+  { label: 'Istanbul', value: 'IST' },
+  { label: 'Paris', value: 'PRS' },
+];`;
+
+const component = (props: string) => `${SETUP}
+
+export function Example() {
+  return <BapsListbox ariaLabel="Cities" options={cities} ${props} />;
+}`;
+
+const next = (source: string) =>
+  `'use client';\n\n${source.replace('export function Example()', 'export default function Example()')}`;
 
 export const listboxSnippets: Record<string, SnippetSet> = {
   ListboxPlayground: {
-    react: `${SETUP}
-
-export function ListboxPlayground() {
-  return (
-    <div className="field" style={{ width: '250px' }}>
-      <select className="p-inputtext" size={5} aria-label="Select City">
-        <option value="NY">New York</option>
-        <option value="RM">Rome</option>
-        <option value="LDN">London</option>
-        <option value="IST">Istanbul</option>
-        <option value="PRS">Paris</option>
-      </select>
-    </div>
-  );
-}`,
+    react: component('defaultValue="NY"'),
+    next: next(component('defaultValue="NY"')),
+    primeng: `<baps-listbox ariaLabel="Cities" [options]="cities" optionLabel="name" optionValue="code" [(ngModel)]="selected" />`,
   },
   MultiSelectWithCheckboxes: {
-    react: `${SETUP}
-
-export function MultiSelectWithCheckboxes() {
-  return (
-    <div className="field" style={{ width: '250px' }}>
-      <select className="p-inputtext" multiple size={5} aria-label="Select Cities">
-        <option value="NY">New York</option>
-        <option value="RM">Rome</option>
-        <option value="LDN">London</option>
-        <option value="IST">Istanbul</option>
-        <option value="PRS">Paris</option>
-      </select>
-    </div>
-  );
-}`,
+    react: component('multiple checkbox defaultValue={["NY", "LDN"]}'),
+    next: next(component('multiple checkbox defaultValue={["NY", "LDN"]}')),
+    primeng: `<baps-listbox ariaLabel="Cities" [multiple]="true" [checkbox]="true" [options]="cities" optionLabel="name" optionValue="code" [(ngModel)]="selected" />`,
   },
   WithFiltering: {
-    react: `${SETUP}
-
-export function WithFiltering() {
-  return (
-    <div className="field" style={{ width: '250px' }}>
-      <div className="p-listbox p-component">
-        <div className="p-listbox-header">
-          <div className="p-iconfield">
-            <span className="p-inputicon pi pi-search"></span>
-            <input className="p-inputtext p-listbox-filter" type="text" placeholder="Search..." />
-          </div>
-        </div>
-        <div className="p-listbox-list-wrapper">
-          <ul className="p-listbox-list" style={{ padding: 0, margin: 0, listStyle: 'none' }}>
-            <li className="p-listbox-item" style={{ padding: '0.75rem 1rem' }}>New York</li>
-            <li className="p-listbox-item" style={{ padding: '0.75rem 1rem' }}>Rome</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  );
-}`,
+    react: component('filter filterPlaceholder="Search cities"'),
+    next: next(component('filter filterPlaceholder="Search cities"')),
+    primeng: `<baps-listbox ariaLabel="Cities" [filter]="true" filterPlaceholder="Search cities" [options]="cities" optionLabel="name" />`,
   },
   Grouped: {
     react: `${SETUP}
 
-export function Grouped() {
-  return (
-    <div className="field" style={{ width: '250px' }}>
-      <div className="p-listbox p-component">
-        <div className="p-listbox-list-wrapper">
-          <ul className="p-listbox-list" style={{ padding: 0, margin: 0, listStyle: 'none' }}>
-            <li className="p-listbox-item-group" style={{ padding: '0.75rem 1rem', fontWeight: 'bold' }}>Germany</li>
-            <li className="p-listbox-item" style={{ padding: '0.75rem 1rem' }}>Berlin</li>
-            <li className="p-listbox-item" style={{ padding: '0.75rem 1rem' }}>Frankfurt</li>
-            <li className="p-listbox-item-group" style={{ padding: '0.75rem 1rem', fontWeight: 'bold' }}>USA</li>
-            <li className="p-listbox-item" style={{ padding: '0.75rem 1rem' }}>Chicago</li>
-            <li className="p-listbox-item" style={{ padding: '0.75rem 1rem' }}>Los Angeles</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  );
+const groupedCities = [
+  { label: 'Germany', options: [{ label: 'Berlin', value: 'BER' }, { label: 'Frankfurt', value: 'FRA' }] },
+  { label: 'USA', options: [{ label: 'Chicago', value: 'CHI' }, { label: 'Los Angeles', value: 'LAX' }] },
+];
+
+export function Example() {
+  return <BapsListbox ariaLabel="Cities" options={groupedCities} />;
 }`,
+    next: next(`${SETUP}
+
+const groupedCities = [
+  { label: 'Germany', options: [{ label: 'Berlin', value: 'BER' }, { label: 'Frankfurt', value: 'FRA' }] },
+  { label: 'USA', options: [{ label: 'Chicago', value: 'CHI' }, { label: 'Los Angeles', value: 'LAX' }] },
+];
+
+export function Example() {
+  return <BapsListbox ariaLabel="Cities" options={groupedCities} />;
+}`),
+    primeng: `<baps-listbox ariaLabel="Cities" [group]="true" optionGroupLabel="label" optionGroupChildren="items" [options]="groups" />`,
   },
   RichTemplatePanelList: {
     react: `${SETUP}
 
-export function RichTemplatePanelList() {
-  return (
-    <div className="field" style={{ width: '320px' }}>
-      <div className="p-listbox p-component">
-        <div className="p-listbox-list-wrapper">
-          <ul className="p-listbox-list" style={{ padding: 0, margin: 0, listStyle: 'none' }}>
-            <li className="p-listbox-item" style={{ padding: '0.75rem 1rem' }}>
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <span style={{ fontWeight: 'var(--font-weight-medium)' }}>Design System</span>
-                <span style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-mybky-text-muted)' }}>UI Kit</span>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  );
+const members = [
+  { label: 'Ghanshyam Pandey', value: 'gp', title: 'Ghanshyam Pandey', subtitle: 'Nation Leader', avatarLabel: 'GP' },
+  { label: 'Nilesh Patel', value: 'np', title: 'Nilesh Patel', subtitle: 'Regional Admin', avatarLabel: 'NP' },
+];
+
+export function Example() {
+  return <BapsListbox ariaLabel="Members" options={members} />;
 }`,
+    next: next(`${SETUP}
+
+const members = [
+  { label: 'Ghanshyam Pandey', value: 'gp', title: 'Ghanshyam Pandey', subtitle: 'Nation Leader', avatarLabel: 'GP' },
+  { label: 'Nilesh Patel', value: 'np', title: 'Nilesh Patel', subtitle: 'Regional Admin', avatarLabel: 'NP' },
+];
+
+export function Example() {
+  return <BapsListbox ariaLabel="Members" options={members} />;
+}`),
   },
   CustomTemplatesUsingPTemplate: {
     react: `${SETUP}
 
-export function CustomTemplatesUsingPTemplate() {
+export function Example() {
   return (
-    <div className="field" style={{ width: '320px' }}>
-      <div className="p-listbox p-component">
-        <div className="p-listbox-list-wrapper">
-          <ul className="p-listbox-list" style={{ padding: 0, margin: 0, listStyle: 'none' }}>
-            <li className="p-listbox-item" style={{ padding: '0.75rem 1rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <i className="pi pi-flag"></i>
-                <span>Custom Template Row</span>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
+    <BapsListbox
+      ariaLabel="Cities"
+      options={cities}
+      renderOption={(option) => <strong>{option.label}</strong>}
+    />
   );
 }`,
+    next: next(`${SETUP}
+
+export function Example() {
+  return (
+    <BapsListbox
+      ariaLabel="Cities"
+      options={cities}
+      renderOption={(option) => <strong>{option.label}</strong>}
+    />
+  );
+}`),
+    primeng: `<baps-listbox ariaLabel="Cities" [options]="cities">
+  <ng-template pTemplate="item" let-city><strong>{{ city.name }}</strong></ng-template>
+</baps-listbox>`,
   },
   DisabledAndInvalid: {
     react: `${SETUP}
 
-export function DisabledAndInvalid() {
-  return (
-    <div style={{ display: 'flex', gap: '20px' }}>
-      <div className="field" style={{ width: '250px' }}>
-        <select className="p-inputtext p-invalid" size={5} aria-label="Invalid">
-          <option value="NY">New York</option>
-        </select>
-      </div>
-      <div className="field" style={{ width: '250px' }}>
-        <select className="p-inputtext" size={5} disabled aria-label="Disabled">
-          <option value="NY">New York</option>
-        </select>
-      </div>
-    </div>
-  );
+export function Example() {
+  return <>
+    <BapsListbox ariaLabel="Invalid cities" options={cities} invalid />
+    <BapsListbox ariaLabel="Disabled cities" options={cities} disabled />
+  </>;
 }`,
+    next: next(`${SETUP}
+
+export function Example() {
+  return <>
+    <BapsListbox ariaLabel="Invalid cities" options={cities} invalid />
+    <BapsListbox ariaLabel="Disabled cities" options={cities} disabled />
+  </>;
+}`),
+    primeng: `<baps-listbox ariaLabel="Invalid cities" styleClass="p-invalid" [options]="cities" />
+<baps-listbox ariaLabel="Disabled cities" [disabled]="true" [options]="cities" />`,
   },
 };

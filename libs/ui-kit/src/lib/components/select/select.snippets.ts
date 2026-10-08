@@ -1,35 +1,46 @@
-/**
- * Framework snippets for the Select docs page.
- *
- * ## How it maps
- *
- * The Angular `baps-select` component wraps PrimeNG's `p-select`.
- *
- * In React, you use a native `<select>` element styled with `.p-inputtext`.
- */
 import { setupFor, type SnippetSet } from '../../docs/snippet-setup';
 
 export type { SnippetSet };
-const SETUP = setupFor('select', true);
 
-export const selectSnippets: Record<string, SnippetSet> = {
-  Default: {
-    react: `${SETUP}
+const SETUP = `${setupFor('select', false, '@org/ui-kit-react/styles')}
+
+import { BapsSelect } from '@org/ui-kit-react';
+
+const cities = [
+  { label: 'New York', value: 'NY' },
+  { label: 'Rome', value: 'RM' },
+  { label: 'London', value: 'LDN' },
+];`;
+
+const EXAMPLE = `${SETUP}
 
 export function Default() {
   return (
-    <div className="field" style={{ width: '250px' }}>
-      <label htmlFor="city-select">City</label>
-      <select id="city-select" className="p-inputtext" aria-label="Select City" defaultValue="">
-        <option value="" disabled>Select a city</option>
-        <option value="NY">New York</option>
-        <option value="RM">Rome</option>
-        <option value="LDN">London</option>
-        <option value="IST">Istanbul</option>
-        <option value="PRS">Paris</option>
-      </select>
-    </div>
+    <BapsSelect
+      ariaLabel="City"
+      options={cities}
+      placeholder="Select a city"
+      filter
+      showClear
+    />
   );
-}`,
+}`;
+
+export const selectSnippets: Record<string, SnippetSet> = {
+  Default: {
+    react: EXAMPLE,
+    next: `'use client';
+
+${EXAMPLE.replace('export function Default()', 'export default function Default()')}`,
+    primeng: `<baps-select
+  ariaLabel="City"
+  appendTo="body"
+  [options]="cities"
+  optionLabel="name"
+  optionValue="code"
+  placeholder="Select a city"
+  [filter]="true"
+  [showClear]="true"
+/>`,
   },
 };

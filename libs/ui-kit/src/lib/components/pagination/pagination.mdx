@@ -14,6 +14,8 @@ import { paginationSnippets } from './pagination.snippets';
 
 # Pagination
 
+React and Next.js consumers use the real typed `BapsPagination` export from `@org/ui-kit-react`; it owns the same truncated-link algorithm and emits the same `first`, `rows`, `page`, and `pageCount` shape as Angular.
+
 Table / list pagination controls — record count, rows-per-page, first/prev/next/last, truncated page links, and an optional "Go to" field. `baps-paginator` (component class `BapsPaginator`) is built for Sampark Portal (Figma node [17512:73228](https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/%F0%9F%9F%A2-Sampark-Portal?node-id=17512-73228)).
 
 Unlike every other component in this library, this one **does not wrap** PrimeNG's `p-paginator`. The Figma spec calls for a truncated page-link list (`1 2 … 24 25` instead of one button per page) with the rows-per-page dropdown and a "Go to" field in a specific DOM order. PrimeNG's `Paginator` renders a fixed window of `pageLinkSize` consecutive links with no ellipsis, no first/last anchoring, and no template hook that reaches inside the link row (`paginatorleft`/`paginatorright` only bracket it) — there is no configuration of `p-paginator` that produces this layout. Same call as `bapsTabs` (see the design system's "When NOT to wrap" rule): where PrimeNG can't express the design, the markup is owned outright rather than fought. The public API is still kept `p-paginator`-shaped (`rows`, `first`, `totalRecords`, a `pageChange` event whose payload mirrors PrimeNG's `PageEvent`) so call sites read the same. The rows-per-page control itself **is** a real `p-select`, so it still inherits the shared select skin instead of a hand-rolled dropdown.
@@ -55,13 +57,14 @@ Unlike every other component in this library, this one **does not wrap** PrimeNG
   title="MyBKY"
   description="Same strip under brand='mybky' (the input's own default) — 30×30 pill nav/page buttons, filled Mono/100 active page."
   of={PaginationStories.MyBKY}
+  snippets={paginationSnippets.MyBKY}
 />
 
 </BrandOnly>
 
 <DemoCard
   title="Mid Range"
-  description="Opened to the middle of the range, which is where the truncation earns its keep: 1 2 ... 12 13 14 ... 24 25 instead of twenty-five buttons."
+  description="Opened at the existing first=240 checkpoint: the final page of 13 for 250 records at 20 rows per page, with the leading range truncated."
   of={PaginationStories.MidRange}
   snippets={paginationSnippets.MidRange}
 />

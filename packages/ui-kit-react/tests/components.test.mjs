@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
 import {
   BapsAlert,
   BapsAvatar,
@@ -21,6 +23,16 @@ import {
   BapsOverlayBadge,
   BapsProgressBar,
   BapsRadio,
+  BapsSelect,
+  BapsMultiSelect,
+  BapsListbox,
+  BapsTreeSelect,
+  BapsDatepicker,
+  BapsSlider,
+  BapsChip,
+  BapsUsersDropdown,
+  BapsFileUpload,
+  BapsPagination,
   BapsSegmented,
   BapsSkeleton,
   BapsSpinner,
@@ -28,8 +40,34 @@ import {
   BapsTextarea,
   BapsToggleSwitch,
   getNextSegmentedValue,
+  getNextMultiSelectValue,
+  getNextListboxValue,
+  getNextTreeSelectValue,
+  getNextDatepickerValue,
+  formatBapsDate,
+  normaliseSliderValue,
+  getNextUsersDropdownValues,
+  getPaginationPages,
+  formatPaginationReport,
   moveSegmentedFocus,
 } from '../dist/index.js';
+
+const SELECTION_OPTIONS = [
+  { label: 'Ahmedabad', value: 'amd' },
+  { label: 'London', value: 'ldn' },
+  { label: 'Nairobi', value: 'nbo', disabled: true },
+];
+
+const LOCATION_TREE = [
+  {
+    key: 'in',
+    label: 'India',
+    children: [
+      { key: 'in-amd', label: 'Ahmedabad' },
+      { key: 'in-mum', label: 'Mumbai' },
+    ],
+  },
+];
 
 test('BapsAlert renders an assertive inline alert with native close behavior', () => {
   const onClose = () => undefined;
@@ -930,4 +968,227 @@ test('BapsTag trailing action is a labelled native button with disabled behavior
   assert.equal(action.props.onClick, onAction);
   assert.equal(action.props.disabled, true);
   assert.equal(element.props['aria-disabled'], true);
+});
+
+test('BapsSelect server markup exposes a named native combobox contract', () => {
+  const html = renderToStaticMarkup(
+    createElement(BapsSelect, {
+      ariaLabel: 'City',
+      options: SELECTION_OPTIONS,
+      defaultValue: 'ldn',
+      brand: 'sampark',
+      showClear: true,
+    }),
+  );
+
+  assert.match(html, /<baps-select class="baps-sampark">/);
+  assert.match(html, /role="combobox"/);
+  assert.match(html, /aria-label="City"/);
+  assert.match(html, /aria-expanded="false"/);
+  assert.match(html, />London</);
+});
+
+test('BapsMultiSelect preserves multi-selection and selection limits', () => {
+  assert.deepEqual(getNextMultiSelectValue(['amd'], 'ldn'), ['amd', 'ldn']);
+  assert.deepEqual(getNextMultiSelectValue(['amd'], 'amd'), []);
+  assert.deepEqual(getNextMultiSelectValue(['amd'], 'ldn', 1), ['amd']);
+
+  const html = renderToStaticMarkup(
+    createElement(BapsMultiSelect, {
+      ariaLabel: 'Cities',
+      options: SELECTION_OPTIONS,
+      defaultValue: ['amd', 'ldn'],
+      display: 'chip',
+    }),
+  );
+  assert.match(html, /role="combobox"/);
+  assert.match(html, /p-multiselect-chip-item/);
+  assert.match(html, /Remove Ahmedabad/);
+});
+
+test('BapsListbox state helper covers single, multiple and meta-key selection', () => {
+  assert.equal(getNextListboxValue(null, 'amd', false, false, false), 'amd');
+  assert.deepEqual(getNextListboxValue(['amd'], 'ldn', true, false, false), [
+    'amd',
+    'ldn',
+  ]);
+  assert.deepEqual(getNextListboxValue(['amd'], 'ldn', true, true, false), [
+    'ldn',
+  ]);
+
+  const html = renderToStaticMarkup(
+    createElement(BapsListbox, {
+      ariaLabel: 'Centres',
+      options: SELECTION_OPTIONS,
+      defaultValue: 'amd',
+    }),
+  );
+  assert.match(html, /role="listbox"/);
+  assert.match(html, /role="option"/);
+  assert.match(html, /aria-selected="true"/);
+  assert.match(html, /aria-disabled="true"/);
+});
+
+test('BapsTreeSelect cascades checkbox selection and renders a tree combobox', () => {
+  assert.deepEqual(
+    getNextTreeSelectValue(LOCATION_TREE, [], 'in', 'checkbox', true, true),
+    ['in', 'in-amd', 'in-mum'],
+  );
+  assert.deepEqual(
+    getNextTreeSelectValue(
+      LOCATION_TREE,
+      ['in-amd'],
+      'in-mum',
+      'checkbox',
+      true,
+      true,
+    ),
+    ['in-amd', 'in-mum', 'in'],
+  );
+
+  const html = renderToStaticMarkup(
+    createElement(BapsTreeSelect, {
+      ariaLabel: 'Locations',
+      options: LOCATION_TREE,
+      defaultValue: 'in-amd',
+    }),
+  );
+  assert.match(html, /role="combobox"/);
+  assert.match(html, /aria-haspopup="tree"/);
+  assert.match(html, />Ahmedabad</);
+});
+
+test('BapsDatepicker handles range transitions and renders an accessible inline grid', () => {
+  const start = new Date(2026, 9, 7);
+  const end = new Date(2026, 9, 10);
+  const first = getNextDatepickerValue('range', [null, null], start);
+  assert.equal(first.complete, false);
+  assert.equal(formatBapsDate(first.value[0]), '10/07/2026');
+  const second = getNextDatepickerValue('range', first.value, end);
+  assert.equal(second.complete, true);
+  assert.equal(formatBapsDate(second.value[1]), '10/10/2026');
+
+  const html = renderToStaticMarkup(
+    createElement(BapsDatepicker, {
+      ariaLabel: 'Visit date',
+      inline: true,
+      defaultValue: start,
+      brand: 'sampark',
+    }),
+  );
+  assert.match(html, /<baps-datepicker class="baps-sampark baps-ds-sampark">/);
+  assert.match(html, /role="dialog"/);
+  assert.match(html, /role="grid"/);
+  assert.match(html, /aria-selected="true"/);
+});
+
+test('BapsSlider aligns values to step and exposes native slider semantics', () => {
+  assert.equal(normaliseSliderValue(52, 0, 100, 5), 50);
+  assert.equal(normaliseSliderValue(120, 0, 100, 5), 100);
+  const html = renderToStaticMarkup(
+    createElement(BapsSlider, {
+      ariaLabel: 'Attendance target',
+      defaultValue: 50,
+      min: 0,
+      max: 100,
+      step: 5,
+    }),
+  );
+  assert.match(html, /role="slider"/);
+  assert.match(html, /aria-valuenow="50"/);
+  assert.match(html, /aria-valuemin="0"/);
+  assert.match(html, /aria-valuemax="100"/);
+});
+
+test('BapsChip uses shared host classes and a labelled native remove button', () => {
+  const element = BapsChip({
+    label: 'Ahmedabad',
+    removable: true,
+    brand: 'sampark',
+  });
+  const chip = element.props.children;
+  const remove = chip.props.children[2];
+  assert.equal(element.type, 'baps-chip');
+  assert.match(element.props.className, /baps-sampark/);
+  assert.equal(remove.type, 'button');
+  assert.equal(remove.props['aria-label'], 'Remove Ahmedabad');
+});
+
+test('BapsUsersDropdown toggles checkbox values and renders a named combobox', () => {
+  assert.deepEqual(getNextUsersDropdownValues(['asha'], 'ravi'), [
+    'asha',
+    'ravi',
+  ]);
+  assert.deepEqual(getNextUsersDropdownValues(['asha'], 'asha'), []);
+  const html = renderToStaticMarkup(
+    createElement(BapsUsersDropdown, {
+      ariaLabel: 'Member',
+      users: [{ value: 'asha', title: 'Asha Patel', avatarLabel: 'AP' }],
+      defaultValue: 'asha',
+    }),
+  );
+  assert.match(html, /role="combobox"/);
+  assert.match(html, /aria-label="Member"/);
+  assert.match(html, />Asha Patel</);
+});
+
+test('BapsFileUpload renders one keyboard-operable native file input zone', () => {
+  const html = renderToStaticMarkup(
+    createElement(BapsFileUpload, {
+      ariaLabel: 'Upload member photo',
+      accept: 'image/*',
+      multiple: true,
+      brand: 'sampark',
+    }),
+  );
+  assert.match(html, /<baps-file-upload class="baps-sampark">/);
+  assert.match(html, /role="button"/);
+  assert.match(html, /tabindex="0"/);
+  assert.match(html, /type="file"/);
+  assert.match(html, /accept="image\/\*"/);
+  assert.match(html, /multiple=""/);
+});
+
+test('BapsPagination truncates page links and exposes accessible controls', () => {
+  assert.deepEqual(getPaginationPages(1, 13), [1, 2, null, 12, 13]);
+  assert.deepEqual(getPaginationPages(7, 13), [
+    1,
+    2,
+    null,
+    6,
+    7,
+    8,
+    null,
+    12,
+    13,
+  ]);
+  assert.equal(
+    formatPaginationReport(
+      'Showing {first}-{last} of {totalRecords}',
+      { first: 20, rows: 20, page: 1, pageCount: 13 },
+      250,
+    ),
+    'Showing 21-40 of 250',
+  );
+
+  const html = renderToStaticMarkup(
+    createElement(BapsPagination, {
+      totalRecords: 250,
+      defaultRows: 20,
+      defaultFirst: 120,
+      rowsPerPageOptions: [10, 20, 50],
+      showCurrentPageReport: true,
+      showJumpToPage: true,
+      brand: 'sampark',
+    }),
+  );
+  assert.match(
+    html,
+    /<baps-paginator class="baps-sampark baps-ds-sampark">/,
+  );
+  assert.match(html, /<nav class="baps-paginator" aria-label="Pagination">/);
+  assert.match(html, /aria-current="page" aria-label="Page 7"/);
+  assert.match(html, /aria-label="Rows per page"/);
+  assert.match(html, /aria-label="Go to page"/);
+  assert.match(html, />Showing 121-140 of 250</);
 });

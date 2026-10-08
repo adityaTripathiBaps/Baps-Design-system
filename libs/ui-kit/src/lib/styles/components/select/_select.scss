@@ -72,8 +72,7 @@
   --select-overlay-border: var(--color-mybky-mono-300, #e4ecf1);
   --select-overlay-radius: 1rem; /* 16px — the MyBKY panel shell */
   --select-overlay-shadow:
-    0 4px 6px rgba(16, 24, 40, 0.06),
-    0 12px 16px rgba(16, 24, 40, 0.12);
+    0 4px 6px rgba(16, 24, 40, 0.06), 0 12px 16px rgba(16, 24, 40, 0.12);
   --select-overlay-padding: 0.25rem; /* 4px breathing room around list */
 
   /* The panel's rows run edge to edge, so the list carries no padding of its
@@ -196,7 +195,10 @@ body.baps-dark {
      small numeral it carries. In dark the accent moves one step lighter and
      the ink inverts, which is what the presets do for every other filled
      accent in dark (7.79:1). */
-  --datepicker-day-selected-bg: var(--color-mybky-dark-primary-default, #9fadd9);
+  --datepicker-day-selected-bg: var(
+    --color-mybky-dark-primary-default,
+    #9fadd9
+  );
   --datepicker-day-selected-text: var(--color-mybky-dark-text-inverse, #181b1d);
 }
 
@@ -209,6 +211,64 @@ body.baps-dark {
    ══════════════════════════════════════════════════════════════════════ */
 $select-guard: ':not(.p-disabled)#{input.$input-valid}:not(.p-inputtext-warning)';
 $select-plain-guard: ':not(.p-disabled)#{input.$input-valid}';
+
+/* Native React uses a real button for clear so it remains keyboard and screen
+   reader operable. PrimeNG renders an icon in the same slot; this structural
+   reset lets both share the existing token-driven clear-icon rules. */
+.baps-selection-clear {
+  padding: 0;
+  border: 0;
+  appearance: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+}
+
+/* React and PrimeNG share this tree structure. PrimeNG's preset supplies the
+   same layout in Angular; keeping the structural contract here makes the
+   framework-free package complete without copying any brand styling. */
+.p-treeselect-overlay :is(.p-tree-root-children, .p-tree-node-children) {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.p-treeselect-overlay .p-tree-node-children {
+  padding-inline-start: var(--space-5);
+}
+
+.p-treeselect-overlay .p-tree-node-content {
+  display: flex;
+  min-height: var(--select-option-height);
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.p-treeselect-overlay .p-tree-node-toggle-button {
+  display: inline-flex;
+  width: var(--space-8);
+  height: var(--space-8);
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  appearance: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.p-treeselect-overlay .p-tree-node-toggle-placeholder {
+  width: var(--space-8);
+  flex: 0 0 var(--space-8);
+}
+
+.p-treeselect-overlay .p-tree-node-label {
+  min-width: 0;
+  flex: 1 1 auto;
+}
 
 /* ══════════════════════════════════════════════════════════════════════
    STEP 1 — TRIGGER SILHOUETTE (shared reset + geometry)
@@ -291,10 +351,10 @@ p-datepicker.p-datepicker {
 /* Placeholder shown when no value selected */
 .p-select .p-select-label.p-placeholder,
 .p-select .p-select-label.p-select-label-empty,
-.p-select [data-pc-section="label"][data-p-placeholder="true"],
+.p-select [data-pc-section='label'][data-p-placeholder='true'],
 .p-multiselect .p-multiselect-label.p-placeholder,
 .p-multiselect .p-multiselect-label.p-multiselect-label-empty,
-.p-multiselect [data-pc-section="label"][data-p-placeholder="true"],
+.p-multiselect [data-pc-section='label'][data-p-placeholder='true'],
 .p-cascadeselect .p-cascadeselect-label.p-placeholder,
 .p-treeselect .p-treeselect-label.p-placeholder {
   color: var(--input-text-placeholder) !important;
@@ -577,7 +637,10 @@ p-datepicker.p-datepicker {
    `visibility` line (leaving opacity) restores that if it is ever wanted.
    ──────────────────────────────────────────────────────────────────── */
 .p-multiselect .p-multiselect-chip-item .p-chip .p-chip-remove-icon,
-.p-multiselect .p-multiselect-chip-item .p-chip .p-icon-wrapper:not(.p-checkbox-icon),
+.p-multiselect
+  .p-multiselect-chip-item
+  .p-chip
+  .p-icon-wrapper:not(.p-checkbox-icon),
 .p-multiselect-chip .p-multiselect-token .p-multiselect-token-icon,
 .p-multiselect-chip .p-multiselect-token .p-multiselect-close-icon {
   position: absolute !important;
@@ -595,7 +658,10 @@ p-datepicker.p-datepicker {
      what the chip already looks like, in both brands — and resolves to a flat
      #f3f2f2 in Sampark, which is the portal's literal value. */
   background-color: var(--card-background, #ffffff) !important;
-  background-image: linear-gradient(var(--select-chip-bg), var(--select-chip-bg)) !important;
+  background-image: linear-gradient(
+    var(--select-chip-bg),
+    var(--select-chip-bg)
+  ) !important;
   color: var(--select-chip-remove-color) !important;
   font-size: 0.625rem !important;
   margin: 0 !important;
@@ -614,7 +680,6 @@ p-datepicker.p-datepicker {
   pointer-events: all !important;
   cursor: pointer !important;
 }
-
 
 /* ══════════════════════════════════════════════════════════════════════
    STEP 5 — AUTOCOMPLETE & INPUTNUMBER
@@ -751,7 +816,10 @@ p-datepicker.p-datepicker:has(.p-datepicker-panel-inline) {
 .p-datepicker-panel:not(.p-datepicker-panel-inline) {
   background: var(--select-overlay-bg) !important;
   border: 1px solid var(--select-overlay-border) !important;
-  border-radius: var(--select-overlay-radius, 1rem) !important; /* 16px panel shell */
+  border-radius: var(
+    --select-overlay-radius,
+    1rem
+  ) !important; /* 16px panel shell */
   box-shadow: var(--select-overlay-shadow) !important;
   overflow: hidden !important; /* clip option hover bg to the radius */
   /* Gap between trigger and panel. PrimeNG leaves this at 0; a brand whose
@@ -841,9 +909,9 @@ p-datepicker.p-datepicker:has(.p-datepicker-panel-inline) {
 .p-cascadeselect-option:not(.p-disabled):hover
   > .p-cascadeselect-option-content,
 .p-treeselect-overlay .p-tree-node-content:not(.p-disabled):hover {
-  background: var(--p-primary-50, #EEF0F8) !important;
+  background: var(--p-primary-50, #eef0f8) !important;
   color: var(--select-option-text) !important;
-  box-shadow: inset 3px 0 0 0 var(--p-primary-600, #5F78B8) !important;
+  box-shadow: inset 3px 0 0 0 var(--p-primary-600, #5f78b8) !important;
 }
 
 /* Selected — with [checkmark]="true" PrimeNG drops .p-select-option-selected
@@ -853,10 +921,10 @@ p-datepicker.p-datepicker:has(.p-datepicker-panel-inline) {
 .p-multiselect-option.p-multiselect-option-selected,
 .p-autocomplete-option.p-autocomplete-option-selected,
 .p-treeselect-overlay .p-tree-node-content.p-tree-node-selected {
-  background: var(--p-primary-50, #EEF0F8) !important;
+  background: var(--p-primary-50, #eef0f8) !important;
   color: var(--select-option-selected-text) !important;
   font-weight: var(--select-option-selected-weight, 500) !important;
-  box-shadow: inset 3px 0 0 0 var(--p-primary-600, #5F78B8) !important;
+  box-shadow: inset 3px 0 0 0 var(--p-primary-600, #5f78b8) !important;
 }
 
 /* Selected + HOVER — one step darker, still primary text.
@@ -877,7 +945,7 @@ p-datepicker.p-datepicker:has(.p-datepicker-panel-inline) {
 .p-multiselect-option.p-multiselect-option-selected:hover {
   background: var(--select-option-selected-hover-bg, #d5dbee) !important;
   color: var(--select-option-selected-text) !important;
-  box-shadow: inset 3px 0 0 0 var(--p-primary-600, #5F78B8) !important;
+  box-shadow: inset 3px 0 0 0 var(--p-primary-600, #5f78b8) !important;
 }
 
 /* Check icon on the selected row (single select, [checkmark]="true").
@@ -907,7 +975,10 @@ p-datepicker.p-datepicker:has(.p-datepicker-panel-inline) {
 .p-multiselect-option-group,
 .p-autocomplete-option-group {
   padding: 0.75rem var(--select-option-padding-x) 0.5rem !important;
-  color: var(--select-option-group-text, var(--color-mybky-blue-600, #5f78b8)) !important;
+  color: var(
+    --select-option-group-text,
+    var(--color-mybky-blue-600, #5f78b8)
+  ) !important;
   font-size: 0.6875rem !important; /* 11px */
   font-weight: 600 !important;
   letter-spacing: 0.06em !important;
@@ -942,7 +1013,10 @@ p-datepicker.p-datepicker:has(.p-datepicker-panel-inline) {
 .p-select-header {
   padding: 0.5rem !important;
   border-bottom: none !important;
-  background: var(--select-header-bg, var(--color-mybky-mono-200, #e4ecf1)) !important;
+  background: var(
+    --select-header-bg,
+    var(--color-mybky-mono-200, #e4ecf1)
+  ) !important;
   border-top-left-radius: var(--select-overlay-radius, 1rem) !important;
   border-top-right-radius: var(--select-overlay-radius, 1rem) !important;
 }
@@ -966,7 +1040,10 @@ p-datepicker.p-datepicker:has(.p-datepicker-panel-inline) {
   width: 100% !important;
   order: -1 !important;
   padding: 0.5rem !important;
-  background: var(--select-header-bg, var(--color-mybky-mono-200, #e4ecf1)) !important;
+  background: var(
+    --select-header-bg,
+    var(--color-mybky-mono-200, #e4ecf1)
+  ) !important;
   border-top-left-radius: var(--select-overlay-radius, 1rem) !important;
   border-top-right-radius: var(--select-overlay-radius, 1rem) !important;
 }
@@ -981,9 +1058,13 @@ p-datepicker.p-datepicker:has(.p-datepicker-panel-inline) {
 .p-multiselect-filter,
 .p-listbox-filter {
   height: var(--select-filter-height, 2.5rem) !important;
-  border-radius: var(--select-filter-radius, 0.5rem) !important; /* 8px rectangle */
+  border-radius: var(
+    --select-filter-radius,
+    0.5rem
+  ) !important; /* 8px rectangle */
   background: var(--select-filter-bg, #ffffff) !important;
-  border: 1px solid var(--select-filter-border, var(--color-mybky-mono-300, #e4ecf1)) !important;
+  border: 1px solid
+    var(--select-filter-border, var(--color-mybky-mono-300, #e4ecf1)) !important;
   color: var(--input-text, #181b1d) !important;
   /* Add left padding so the placeholder isn't squished to the edge, leaving room for the icon */
   padding-left: 2.5rem !important;
@@ -1041,7 +1122,7 @@ p-datepicker.p-datepicker:has(.p-datepicker-panel-inline) {
 .p-multiselect-header-checkbox::after,
 .p-listbox-header > .p-checkbox::after,
 .p-listbox-header > p-checkbox::after {
-  content: "Select All";
+  content: 'Select All';
   margin-inline-start: 0.5rem;
   font-size: 0.875rem;
   font-weight: 500;

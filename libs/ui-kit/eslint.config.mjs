@@ -28,7 +28,14 @@ export default [
                         "{projectRoot}/**/*.stories.{ts,js}",
                         "{projectRoot}/**/*.spec.ts",
                         "{projectRoot}/src/test-setup.ts",
-                        "{projectRoot}/jest.config.{cts,ts,js}"
+                        "{projectRoot}/jest.config.{cts,ts,js}",
+                        // Build scripts are the same category. scripts/build-styles.mjs
+                        // imports 'sass' to COMPILE the stylesheets at build time; the
+                        // package ships the compiled CSS, so no consumer ever executes
+                        // it. The rule reported sass as a missing peerDependency, and
+                        // declaring it would make every consumer of @org/ui-kit install
+                        // a Sass compiler to satisfy a peer they never run.
+                        "{projectRoot}/scripts/**"
                     ],
                     // The theme files import the deep path '@org/tokens/generated/tokens'
                     // (tsconfig.base maps '@org/tokens/*' -> libs/tokens/dist/*), which the

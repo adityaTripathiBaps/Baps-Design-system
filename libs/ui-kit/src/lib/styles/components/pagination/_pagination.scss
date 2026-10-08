@@ -1,3 +1,6 @@
+@use '../select/select';
+@use '../select/select-sampark';
+
 /* ═══════════════════════════════════════════════════════════════════════
    Pagination — standalone partial for non-Angular consumers.
 
@@ -287,4 +290,94 @@ select.baps-paginator__rpp {
 }
 :is(.baps-ds-sampark) .baps-paginator__jump:focus-within {
   border-color: var(--color-sampark-primary-default, #c96868);
+}
+
+/* Dark-mode parity with the Angular component. The shared partial is the
+   source consumed by React/Next, so both runtimes must expose the same four
+   brand/scheme combinations. */
+.baps-dark
+  :is(.baps-ds-sampark, baps-paginator.baps-sampark)
+  :is(
+    .baps-paginator__report,
+    .baps-paginator__nav,
+    .baps-paginator__page,
+    .baps-paginator__gap
+  ) {
+  color: var(--color-mybky-mono-400);
+}
+
+.baps-dark
+  :is(.baps-ds-sampark, baps-paginator.baps-sampark)
+  .baps-paginator__nav:hover:not(:disabled),
+.baps-dark
+  :is(.baps-ds-sampark, baps-paginator.baps-sampark)
+  .baps-paginator__page:hover:not(.baps-paginator__page--active) {
+  background: var(--color-mybky-mono-800);
+  color: var(--color-mybky-mono-50);
+}
+
+.baps-dark
+  :is(.baps-ds-sampark, baps-paginator.baps-sampark)
+  .baps-paginator__page--active {
+  background: color-mix(
+    in srgb,
+    var(--color-sampark-mono-0) 8%,
+    transparent
+  );
+  color: var(--color-mybky-mono-50);
+}
+
+.baps-dark baps-paginator:not(.baps-sampark) .baps-paginator__report,
+.baps-dark baps-paginator:not(.baps-sampark) .baps-paginator__jump-label,
+.baps-dark baps-paginator:not(.baps-sampark) .baps-paginator__jump-input {
+  color: var(--color-mybky-dark-text-primary);
+}
+
+.baps-dark baps-paginator:not(.baps-sampark) .baps-paginator__nav,
+.baps-dark baps-paginator:not(.baps-sampark) .baps-paginator__page {
+  color: var(--color-mybky-dark-text-secondary);
+}
+
+.baps-dark baps-paginator:not(.baps-sampark) .baps-paginator__gap {
+  color: var(--color-mybky-dark-text-muted);
+}
+
+.baps-dark
+  baps-paginator:not(.baps-sampark)
+  .baps-paginator__nav:hover:not(:disabled),
+.baps-dark
+  baps-paginator:not(.baps-sampark)
+  .baps-paginator__page:hover:not(.baps-paginator__page--active) {
+  background: var(--color-mybky-dark-surface-hover);
+  color: var(--color-mybky-dark-text-primary);
+}
+
+.baps-dark baps-paginator:not(.baps-sampark) .baps-paginator__nav:disabled {
+  color: var(--color-mybky-dark-text-disabled);
+}
+
+.baps-dark
+  baps-paginator:not(.baps-sampark)
+  .baps-paginator__page--active {
+  background: var(--color-mybky-dark-surface-hover);
+  color: var(--color-mybky-dark-primary-default);
+}
+
+.baps-dark baps-paginator:not(.baps-sampark) .baps-paginator__jump {
+  background: var(--color-mybky-dark-surface-card);
+  border-color: var(--color-mybky-dark-border-divider);
+}
+
+.baps-dark baps-paginator:not(.baps-sampark) .baps-paginator__jump-label {
+  border-inline-end-color: var(--color-mybky-dark-border-divider);
+}
+
+.baps-dark
+  baps-paginator:not(.baps-sampark)
+  :is(.baps-paginator__nav, .baps-paginator__page):focus-visible,
+.baps-dark
+  baps-paginator:not(.baps-sampark)
+  .baps-paginator__jump:focus-within {
+  outline-color: var(--color-mybky-dark-primary-default);
+  border-color: var(--color-mybky-dark-primary-default);
 }

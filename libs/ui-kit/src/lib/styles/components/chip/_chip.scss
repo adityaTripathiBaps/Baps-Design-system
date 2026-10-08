@@ -1,0 +1,149 @@
+/* Canonical chip skin shared by Angular, React and Next consumers. */
+baps-chip {
+  --baps-chip-bg: var(--tag-mybky-grey-background);
+  --baps-chip-text: var(--tag-mybky-grey-text);
+  --baps-chip-border: var(--tag-mybky-grey-border);
+  --baps-chip-border-hover: var(--tag-mybky-grey-border-hover);
+  --baps-chip-radius: var(--radius-mybky-pill);
+  --baps-chip-height: var(--space-5-5);
+  --baps-chip-padding: var(--space-1) var(--space-1-5);
+  --baps-chip-font-size: var(--font-size-xs);
+  --baps-chip-font-weight: var(--font-weight-medium);
+}
+
+:is(baps-chip.baps-sampark, .baps-ds-sampark baps-chip) {
+  --baps-chip-bg: var(--tag-sampark-grey-background);
+  --baps-chip-text: var(--color-sampark-text-secondary);
+  --baps-chip-border: var(--tag-sampark-grey-border);
+  --baps-chip-border-hover: var(--tag-sampark-grey-border-hover);
+  --baps-chip-radius: var(--radius-sampark-default);
+  --baps-chip-height: var(--space-6);
+  --baps-chip-padding: var(--space-0-5) var(--space-2);
+  --baps-chip-font-size: var(--font-size-sm);
+  --baps-chip-font-weight: var(--font-weight-regular);
+  --baps-chip-remove-plate: var(--color-sampark-mono-10);
+}
+
+baps-chip .p-chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  height: var(--baps-chip-height);
+  padding: var(--baps-chip-padding);
+  gap: var(--space-1);
+  border: 1px solid var(--baps-chip-border);
+  border-radius: var(--baps-chip-radius);
+  background: var(--baps-chip-bg);
+  color: var(--baps-chip-text);
+  font-size: var(--baps-chip-font-size);
+  font-weight: var(--baps-chip-font-weight);
+  line-height: var(--font-line-height-snug);
+  white-space: nowrap;
+  cursor: default;
+  transition: border-color 150ms ease;
+}
+
+baps-chip .p-chip:hover,
+baps-chip .p-chip:focus-within {
+  border-color: var(--baps-chip-border-hover);
+}
+
+baps-chip .p-chip-label {
+  order: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--baps-chip-font-size);
+  font-weight: var(--baps-chip-font-weight);
+}
+
+baps-chip .p-chip-icon,
+baps-chip .p-chip > img,
+baps-chip .p-chip > baps-icon {
+  order: 0;
+  flex: none;
+  width: var(--space-4);
+  height: var(--space-4);
+  font-size: var(--space-4);
+}
+
+baps-chip .p-chip-remove-icon {
+  position: absolute;
+  inset-inline-end: var(--space-1-5);
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-grid;
+  place-items: center;
+  width: var(--space-3-5);
+  height: var(--space-3-5);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--baps-chip-text);
+  margin: 0;
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+}
+
+baps-chip .p-chip:has(.p-chip-remove-icon)::after {
+  content: '';
+  position: absolute;
+  inset-inline-end: 0;
+  inset-block: 0;
+  width: var(--space-7);
+  border-start-end-radius: inherit;
+  border-end-end-radius: inherit;
+  background-color: var(--baps-chip-remove-plate, var(--color-mybky-mono-50));
+  background-image: linear-gradient(var(--baps-chip-bg), var(--baps-chip-bg));
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+}
+
+baps-chip .p-chip:hover::after,
+baps-chip .p-chip:focus-within::after,
+baps-chip .p-chip:hover .p-chip-remove-icon,
+baps-chip .p-chip .p-chip-remove-icon:focus-visible {
+  opacity: 1;
+}
+
+baps-chip .p-chip:hover .p-chip-remove-icon,
+baps-chip .p-chip .p-chip-remove-icon:focus-visible {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+baps-chip[data-disabled='true'] {
+  --baps-chip-bg: var(--tag-mybky-disabled-background);
+  --baps-chip-text: var(--tag-mybky-disabled-text);
+  --baps-chip-border: var(--color-mybky-border-default);
+  --baps-chip-border-hover: var(--color-mybky-border-default);
+}
+
+:is(baps-chip.baps-sampark, .baps-ds-sampark baps-chip)[data-disabled='true'] {
+  --baps-chip-bg: var(--tag-sampark-disabled-background);
+  --baps-chip-text: var(--tag-sampark-disabled-text);
+  --baps-chip-border: var(--color-sampark-border-default);
+  --baps-chip-border-hover: var(--color-sampark-border-default);
+}
+
+baps-chip[data-disabled='true'] .p-chip {
+  cursor: not-allowed;
+}
+
+.baps-dark baps-chip {
+  --baps-chip-bg: var(--color-mybky-dark-surface-hover);
+  --baps-chip-text: var(--color-mybky-dark-text-primary);
+  --baps-chip-border: var(--color-mybky-dark-border-divider);
+  --baps-chip-border-hover: var(--color-mybky-dark-text-muted);
+}
+
+.baps-dark :is(baps-chip.baps-sampark, .baps-ds-sampark baps-chip) {
+  --baps-chip-bg: var(--color-sampark-dark-surface-hover);
+  --baps-chip-text: var(--color-sampark-dark-text-primary);
+  --baps-chip-border: var(--color-sampark-dark-border-divider);
+  --baps-chip-border-hover: var(--color-sampark-dark-text-muted);
+}

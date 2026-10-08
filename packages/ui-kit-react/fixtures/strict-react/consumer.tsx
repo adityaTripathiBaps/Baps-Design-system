@@ -20,6 +20,16 @@ import {
   BapsOverlayBadge,
   BapsProgressBar,
   BapsRadio,
+  BapsSelect,
+  BapsMultiSelect,
+  BapsListbox,
+  BapsTreeSelect,
+  BapsDatepicker,
+  BapsSlider,
+  BapsChip,
+  BapsUsersDropdown,
+  BapsFileUpload,
+  BapsPagination,
   BapsSegmented,
   BapsSkeleton,
   BapsSpinner,
@@ -27,6 +37,7 @@ import {
   BapsTextarea,
   BapsToggleSwitch,
   type BapsButtonProps,
+  type BapsTreeNode,
 } from '@org/ui-kit-react';
 
 const buttonRef = createRef<HTMLButtonElement>();
@@ -221,6 +232,124 @@ export const strictReactConsumer = (
       defaultValue={['Su', 'We']}
       onValueChange={(value) => value.map((day) => day.toUpperCase())}
     />
+    <BapsSelect
+      ariaLabel="City"
+      options={[
+        { label: 'Ahmedabad', value: 'amd' },
+        { label: 'London', value: 'ldn' },
+      ]}
+      value="amd"
+      filter
+      onValueChange={(value, event) => {
+        value?.toUpperCase();
+        event.currentTarget.focus();
+      }}
+    />
+    <BapsMultiSelect
+      ariaLabel="Cities"
+      options={[
+        { label: 'Ahmedabad', value: 'amd' },
+        { label: 'London', value: 'ldn' },
+      ]}
+      defaultValue={['amd']}
+      display="chip"
+      onValueChange={(value) => value.map((city) => city.toUpperCase())}
+    />
+    <BapsListbox
+      ariaLabel="Centres"
+      multiple
+      checkbox
+      options={[
+        { label: 'Ahmedabad', value: 'amd' },
+        { label: 'London', value: 'ldn' },
+      ]}
+      defaultValue={['ldn']}
+      onValueChange={(value) => value.map((centre) => centre.toUpperCase())}
+    />
+    <BapsTreeSelect
+      ariaLabel="Locations"
+      selectionMode="checkbox"
+      options={
+        [
+          {
+            key: 'in',
+            label: 'India',
+            children: [{ key: 'in-amd', label: 'Ahmedabad' }],
+          },
+        ] satisfies readonly BapsTreeNode[]
+      }
+      defaultValue={['in-amd']}
+      onValueChange={(value) => value.map((key) => key.toUpperCase())}
+    />
+    <BapsDatepicker
+      ariaLabel="Seva date range"
+      selectionMode="range"
+      numberOfMonths={2}
+      defaultValue={[new Date(2026, 9, 7), null]}
+      showIcon
+      onValueChange={(value, event) => {
+        value[0]?.getFullYear();
+        event.currentTarget.focus();
+      }}
+    />
+    <BapsSlider
+      range
+      ariaLabel="Age range"
+      ariaLabels={['Minimum age', 'Maximum age']}
+      defaultValue={[18, 65]}
+      showValueTooltip
+      onValueChange={(value, event) => {
+        value[0].toFixed();
+        event.currentTarget.focus();
+      }}
+    />
+    <BapsChip
+      label="Ahmedabad"
+      removable
+      onRemove={(event) => event.currentTarget.focus()}
+    />
+    <BapsUsersDropdown
+      ariaLabel="Member"
+      users={[
+        {
+          value: 1,
+          title: 'Asha Patel',
+          subtitle: 'Volunteer',
+          avatarLabel: 'AP',
+        },
+        {
+          value: 2,
+          title: 'Ravi Shah',
+          subtitle: 'Coordinator',
+          avatarLabel: 'RS',
+        },
+      ]}
+      defaultValue={1}
+      onValueChange={(value, event) => {
+        value?.toFixed();
+        event.currentTarget.focus();
+      }}
+    />
+    <BapsFileUpload
+      ariaLabel="Upload member photo"
+      accept="image/*"
+      onFilesSelected={(files, event) => {
+        files[0]?.slice();
+        event.currentTarget.focus();
+      }}
+    />
+    <BapsPagination
+      totalRecords={250}
+      defaultRows={20}
+      rowsPerPageOptions={[10, 20, 50, 100]}
+      showCurrentPageReport
+      showJumpToPage
+      onPageChange={(pageEvent, event) => {
+        pageEvent.first.toFixed();
+        pageEvent.pageCount.toFixed();
+        event.currentTarget.focus();
+      }}
+    />
   </section>
 );
 
@@ -263,3 +392,9 @@ export const radioLabelWithoutId = <BapsRadio label="All" />;
 
 // @ts-expect-error labelled switches require an id for native association
 export const toggleLabelWithoutId = <BapsToggleSwitch label="Email" />;
+
+// @ts-expect-error a datepicker needs an accessible name
+export const unnamedDatepicker = <BapsDatepicker />;
+
+// @ts-expect-error an image chip requires alt text
+export const chipImageWithoutAlt = <BapsChip image="/member.jpg" />;

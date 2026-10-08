@@ -26,6 +26,8 @@ for (const name of [
   'link.css',
   'avatar.css',
   'badge.css',
+  'chip.css',
+  'datepicker.css',
   'indicator.css',
   'tag.css',
   'alert.css',
@@ -35,12 +37,19 @@ for (const name of [
   'form-field.css',
   'input.css',
   'input-group.css',
+  'file-upload.css',
+  'menu-item.css',
+  'pagination.css',
   'progress-bar.css',
   'radio.css',
   'segmented.css',
+  'select.css',
+  'listbox.css',
+  'slider.css',
   'skeleton.css',
   'spinner.css',
   'toggle-switch.css',
+  'users-dropdown.css',
 ]) {
   const reactCss = readFileSync(resolve(reactDist, 'styles', name), 'utf8');
   const canonicalCss = readFileSync(resolve(sharedStyles, name), 'utf8');
@@ -70,7 +79,7 @@ for (const marker of ['var(--', '.baps-dark', '.baps-ds-sampark']) {
 
 const avatarCss = readFileSync(resolve(reactDist, 'styles/avatar.css'), 'utf8');
 for (const marker of [
-  '.baps-avatar-html.baps-sampark.baps-avatar-html--primary',
+  '.baps-avatar-html--primary.baps-sampark',
   '.baps-dark .baps-avatar-html',
   '.baps-avatar-group',
   '--avatar-group-overlap-',
@@ -287,6 +296,147 @@ for (const marker of [
     throw new Error(
       `[ui-kit-react] shared toggle switch CSS is missing ${marker}`,
     );
+  }
+}
+
+const selectCss = readFileSync(resolve(reactDist, 'styles/select.css'), 'utf8');
+for (const marker of [
+  '.p-select',
+  '.p-multiselect',
+  '.p-treeselect',
+  'baps-select.baps-sampark',
+  'baps-multi-select.baps-sampark',
+  'baps-tree-select.baps-sampark',
+  '.baps-selection-clear',
+  '.p-tree-node-toggle-button',
+]) {
+  if (!selectCss.includes(marker)) {
+    throw new Error(`[ui-kit-react] shared select CSS is missing ${marker}`);
+  }
+}
+
+const listboxCss = readFileSync(
+  resolve(reactDist, 'styles/listbox.css'),
+  'utf8',
+);
+for (const marker of [
+  'baps-listbox .p-listbox',
+  '.p-listbox-option-selected',
+  'baps-listbox.baps-sampark',
+  '.baps-dark baps-listbox',
+  '--listbox-bg-selected',
+]) {
+  if (!listboxCss.includes(marker)) {
+    throw new Error(`[ui-kit-react] shared listbox CSS is missing ${marker}`);
+  }
+}
+
+const chipCss = readFileSync(resolve(reactDist, 'styles/chip.css'), 'utf8');
+for (const marker of [
+  'baps-chip .p-chip',
+  'baps-chip.baps-sampark',
+  '.baps-dark baps-chip',
+  '.p-chip-remove-icon:focus-visible',
+]) {
+  if (!chipCss.includes(marker)) {
+    throw new Error(`[ui-kit-react] shared chip CSS is missing ${marker}`);
+  }
+}
+
+const datepickerCss = readFileSync(
+  resolve(reactDist, 'styles/datepicker.css'),
+  'utf8',
+);
+for (const marker of [
+  'p-datepicker .p-datepicker-input-group',
+  '.p-datepicker-panel',
+  '.baps-ds-sampark',
+  'body.baps-dark',
+  '.p-datepicker-day:focus-visible',
+]) {
+  if (!datepickerCss.includes(marker)) {
+    throw new Error(
+      `[ui-kit-react] shared datepicker CSS is missing ${marker}`,
+    );
+  }
+}
+
+const fileUploadCss = readFileSync(
+  resolve(reactDist, 'styles/file-upload.css'),
+  'utf8',
+);
+for (const marker of [
+  'baps-file-upload .baps-file-upload-zone',
+  '.baps-file-upload-invalid',
+  '.baps-file-upload-disabled',
+  ':focus-within',
+  'var(--input-bg-default',
+]) {
+  if (!fileUploadCss.includes(marker)) {
+    throw new Error(
+      `[ui-kit-react] shared file upload CSS is missing ${marker}`,
+    );
+  }
+}
+
+const menuItemCss = readFileSync(
+  resolve(reactDist, 'styles/menu-item.css'),
+  'utf8',
+);
+for (const marker of [
+  'baps-menu-item .menu-item',
+  'baps-menu-item.baps-mybky',
+  '.menu-item:focus-visible',
+  '.baps-dark baps-menu-item',
+]) {
+  if (!menuItemCss.includes(marker)) {
+    throw new Error(`[ui-kit-react] shared menu item CSS is missing ${marker}`);
+  }
+}
+
+const sliderCss = readFileSync(resolve(reactDist, 'styles/slider.css'), 'utf8');
+for (const marker of [
+  'baps-slider .p-slider',
+  '.p-slider-handle:focus-visible',
+  '.baps-ds-sampark baps-slider',
+  '.baps-dark baps-slider',
+]) {
+  if (!sliderCss.includes(marker)) {
+    throw new Error(`[ui-kit-react] shared slider CSS is missing ${marker}`);
+  }
+}
+
+const usersDropdownCss = readFileSync(
+  resolve(reactDist, 'styles/users-dropdown.css'),
+  'utf8',
+);
+for (const marker of [
+  'baps-users-dropdown .ud__trigger',
+  '.baps-users-dropdown-panel',
+  'baps-users-dropdown.baps-mybky',
+  '.ud__trigger:focus-visible',
+  '.baps-dark',
+]) {
+  if (!usersDropdownCss.includes(marker)) {
+    throw new Error(
+      `[ui-kit-react] shared users dropdown CSS is missing ${marker}`,
+    );
+  }
+}
+
+const paginationCss = readFileSync(
+  resolve(reactDist, 'styles/pagination.css'),
+  'utf8',
+);
+for (const marker of [
+  '.baps-paginator__page--active',
+  ':focus-visible',
+  '.baps-ds-sampark',
+  '.baps-dark',
+  'var(--color-mybky-dark-surface-hover)',
+]) {
+  if (!paginationCss.includes(marker)) {
+    throw new Error(`[ui-kit-react] shared pagination CSS is missing ${marker}`);
   }
 }
 

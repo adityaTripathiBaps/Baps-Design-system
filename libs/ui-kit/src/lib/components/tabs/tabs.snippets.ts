@@ -6,22 +6,6 @@ const SETUP = setupFor('tabs', true);
 
 export const tabsSnippets: Record<string, SnippetSet> = {
   Default: {
-    custom: `<div class="p-tabs p-component" data-pc-name="tabs" data-pc-section="root">
-  <div class="p-tablist" data-pc-name="tablist" data-pc-section="root">
-    <div class="p-tablist-content">
-      <div class="p-tablist-tab-list" role="tablist">
-        <button class="p-tab p-tab-active" role="tab" aria-selected="true" data-pc-name="tab" data-p-active="true">General</button>
-        <button class="p-tab" role="tab" aria-selected="false" data-pc-name="tab" data-p-active="false">Members</button>
-        <button class="p-tab" role="tab" aria-selected="false" disabled data-pc-name="tab" data-p-active="false" data-p-disabled="true">Settings</button>
-      </div>
-    </div>
-  </div>
-  <div class="p-tabpanels" data-pc-name="tabpanels" data-pc-section="root">
-    <div class="p-tabpanel" role="tabpanel" data-pc-name="tabpanel" data-p-active="true">
-      <p class="m-0">General content.</p>
-    </div>
-  </div>
-</div>`,
     react: `${SETUP}
 
 import {
@@ -42,13 +26,13 @@ export function Default() {
       </BapsTabList>
       <BapsTabPanels>
         <BapsTabPanel value="0">
-          <p className="m-0">General content.</p>
+          <p>General content.</p>
         </BapsTabPanel>
         <BapsTabPanel value="1">
-          <p className="m-0">Members content.</p>
+          <p>Members content.</p>
         </BapsTabPanel>
         <BapsTabPanel value="2">
-          <p className="m-0">Settings content.</p>
+          <p>Settings content.</p>
         </BapsTabPanel>
       </BapsTabPanels>
     </BapsTabs>
@@ -76,13 +60,13 @@ export default function Default() {
       </BapsTabList>
       <BapsTabPanels>
         <BapsTabPanel value="0">
-          <p className="m-0">General content.</p>
+          <p>General content.</p>
         </BapsTabPanel>
         <BapsTabPanel value="1">
-          <p className="m-0">Members content.</p>
+          <p>Members content.</p>
         </BapsTabPanel>
         <BapsTabPanel value="2">
-          <p className="m-0">Settings content.</p>
+          <p>Settings content.</p>
         </BapsTabPanel>
       </BapsTabPanels>
     </BapsTabs>
@@ -96,13 +80,13 @@ export default function Default() {
   </p-tablist>
   <p-tabpanels>
     <p-tabpanel value="0">
-      <p class="m-0">General content.</p>
+      <p>General content.</p>
     </p-tabpanel>
     <p-tabpanel value="1">
-      <p class="m-0">Members content.</p>
+      <p>Members content.</p>
     </p-tabpanel>
     <p-tabpanel value="2">
-      <p class="m-0">Settings content.</p>
+      <p>Settings content.</p>
     </p-tabpanel>
   </p-tabpanels>
 </p-tabs>`,

@@ -1,13 +1,14 @@
 import { Meta } from '@storybook/blocks';
 import {
   ResourceTabs,
-  DemoCard,
   CodeBlock,
+  FrameworkTabs,
   PropsTable,
   TokensTable,
   KeyboardTable,
 } from '@baps/docs-blocks';
 import * as UsersDropdownStories from './users-dropdown.stories';
+import { usersDropdownSnippets } from './users-dropdown.snippets';
 
 <Meta of={UsersDropdownStories} />
 
@@ -27,63 +28,56 @@ The Sampark Portal **Users Dropdown** (Figma node [13197:89016](https://www.figm
   code={`import { BapsUsersDropdown, type BapsUserOption } from '@org/ui-kit';
 
 @Component({
-  imports: [BapsUsersDropdown],
-  template: \`
-    <baps-users-dropdown
-      [users]="users"
-      [(value)]="selected"
-      placeholder="Select karyakar"
-      searchPlaceholder="Search"
-      brand="sampark"
-    />
-  \`,
+imports: [BapsUsersDropdown],
+template: \`
+<baps-users-dropdown
+[users]="users"
+[(value)]="selected"
+placeholder="Select karyakar"
+searchPlaceholder="Search"
+brand="sampark"
+/>
+\`,
 })
 export class AssignComponent {
-  users: BapsUserOption[] = [
-    { id: 1, name: 'Rajesh Patel', role: 'Regional Admin' },
-    { id: 2, name: 'Priya Shah', role: 'Centre Lead' },
-  ];
-  selected: unknown = null;
+users: BapsUserOption[] = [
+{ id: 1, name: 'Rajesh Patel', role: 'Regional Admin' },
+{ id: 2, name: 'Priya Shah', role: 'Centre Lead' },
+];
+selected: unknown = null;
 }`}
 />
 
 ## Examples
 
-<DemoCard
-  title="Playground"
-  description="Every input on one instance — use the controls panel to try combinations."
+<FrameworkTabs
   of={UsersDropdownStories.Playground}
-  controls
+  snippets={usersDropdownSnippets.Playground}
 />
 
-<DemoCard
-  title="Open Panel"
-  description="The panel as it opens: search field above a scrollable list of avatar rows."
+<FrameworkTabs
   of={UsersDropdownStories.OpenPanel}
+  snippets={usersDropdownSnippets.OpenPanel}
 />
 
-<DemoCard
-  title="Groups"
-  description="Rows grouped under labelled headings, for lists split by region or role."
+<FrameworkTabs
   of={UsersDropdownStories.Groups}
+  snippets={usersDropdownSnippets.Groups}
 />
 
-<DemoCard
-  title="Multi Select"
-  description="Checkbox rows. The panel stays open so several people can be picked in one pass."
+<FrameworkTabs
   of={UsersDropdownStories.MultiSelect}
+  snippets={usersDropdownSnippets.MultiSelect}
 />
 
-<DemoCard
-  title="Radio Select"
-  description="Radio rows — single selection, but with the control drawn explicitly."
+<FrameworkTabs
   of={UsersDropdownStories.RadioSelect}
+  snippets={usersDropdownSnippets.RadioSelect}
 />
 
-<DemoCard
-  title="States"
-  description="Placeholder, selected, disabled, and the empty-search result."
+<FrameworkTabs
   of={UsersDropdownStories.States}
+  snippets={usersDropdownSnippets.States}
 />
 
 ## API
@@ -100,7 +94,8 @@ The trigger is styled by the component; every row is a `baps-menu-item`, so the 
       token: '--menu-item-bg-selected',
       light: '#f8f7f7',
       dark: '#2b2f32',
-      description: 'Row background for both hover and selected — hover previews the selected look.',
+      description:
+        'Row background for both hover and selected — hover previews the selected look.',
     },
     {
       token: '--menu-item-bar',
@@ -124,7 +119,8 @@ The trigger is styled by the component; every row is a `baps-menu-item`, so the 
       token: '--menu-item-bar-width',
       light: '3px',
       dark: '3px',
-      description: 'Scheme-independent. Set to 0 by baps-listbox, which draws its own bar.',
+      description:
+        'Scheme-independent. Set to 0 by baps-listbox, which draws its own bar.',
     },
   ]}
 />
@@ -137,7 +133,11 @@ The trigger is a native `<button>` carrying `aria-haspopup="listbox"` and `aria-
 
 The component supplies no name for the trigger itself — pass one from the outside (`aria-label`, or a `baps-form-field` label), otherwise the trigger announces only its current value.
 
-**Known gap:** the rows are `baps-menu-item` elements, not `role="option"`. The `role="listbox"` container therefore has no option children and no `aria-activedescendant`, so a screen reader announces the panel as an empty listbox and reads the rows as ordinary content. Treat this as a component-level fix, not something a consumer can work around.
+The framework implementations currently differ at the option layer. The React
+`BapsUsersDropdown` gives every row `role="option"`, `aria-selected`, roving
+`tabIndex`, and Arrow/Home/End navigation. The Angular wrapper still renders
+plain `baps-menu-item` rows without `role="option"`; that pre-existing Angular
+accessibility gap is documented here rather than hidden by the React work.
 
 ### Keyboard Support
 
@@ -145,26 +145,45 @@ The component supplies no name for the trigger itself — pass one from the outs
   rows={[
     {
       key: 'Tab',
-      action: 'Move to the trigger; when open, move into the search field and then through the rows',
+      action:
+        'Move to the trigger; when open, move into the search field and then through the rows',
     },
-    { key: 'Enter', action: 'Toggle the panel from the trigger, or select the focused row' },
-    { key: 'Space', action: 'Toggle the panel from the trigger, or select the focused row' },
+    {
+      key: 'Enter',
+      action: 'Toggle the panel from the trigger, or select the focused row',
+    },
+    {
+      key: 'Space',
+      action: 'Toggle the panel from the trigger, or select the focused row',
+    },
     {
       key: 'Esc',
-      action: 'Close the panel from anywhere, including while typing in the search field',
+      action:
+        'Close the panel from anywhere, including while typing in the search field',
+    },
+    {
+      key: 'Arrow Up / Down',
+      action:
+        'React: move through enabled options; Angular currently requires Tab',
+    },
+    {
+      key: 'Home / End',
+      action: 'React: move to the first or last enabled option',
     },
   ]}
 />
 
-Arrow-key navigation through the list is not implemented — rows are reached with `Tab`. Combined with the missing `role="option"`, this is the component's weakest area; prefer `baps-select` where a fully keyboard-driven picker is required.
+For Angular consumers that require a fully keyboard-driven picker today, use
+`baps-select` until the existing wrapper closes its option-role and arrow-key
+gap. React consumers can use `BapsUsersDropdown` directly.
 
 ## When Not to Use
 
-| Need | Use instead | Why not this |
-| --- | --- | --- |
-| Picking a plain value with no avatar or subtitle | `baps-select` | The avatar column and two-line row are the entire reason this component exists |
-| A list that stays open in the page, not in a panel | `baps-listbox` | This component is a trigger plus an overlay |
-| A list of *actions* rather than values | `baps-menu-item` in your own container, or `baps-split-button` | Selecting here means "this is now the value", not "do this" |
-| Showing who is already assigned, read-only | `baps-avatargroup` | |
-| Server-side search over thousands of users | Not this component | `filtered` is a synchronous `Array.filter` over the whole `users` input on every keystroke — no debounce, no virtualization, no lazy loading. `searchChange` emits the query so a consumer *could* refetch, but the internal filter still runs over whatever `users` currently holds |
-| Keyboard-driven option navigation | Not this component | Arrow-key navigation through the list is explicitly out of scope |
+| Need                                               | Use instead                                                    | Why not this                                                                                                                                                                                                                                                                         |
+| -------------------------------------------------- | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Picking a plain value with no avatar or subtitle   | `baps-select`                                                  | The avatar column and two-line row are the entire reason this component exists                                                                                                                                                                                                       |
+| A list that stays open in the page, not in a panel | `baps-listbox`                                                 | This component is a trigger plus an overlay                                                                                                                                                                                                                                          |
+| A list of _actions_ rather than values             | `baps-menu-item` in your own container, or `baps-split-button` | Selecting here means "this is now the value", not "do this"                                                                                                                                                                                                                          |
+| Showing who is already assigned, read-only         | `baps-avatargroup`                                             |                                                                                                                                                                                                                                                                                      |
+| Server-side search over thousands of users         | Not this component                                             | `filtered` is a synchronous `Array.filter` over the whole `users` input on every keystroke — no debounce, no virtualization, no lazy loading. `searchChange` emits the query so a consumer _could_ refetch, but the internal filter still runs over whatever `users` currently holds |
+| Keyboard-driven option navigation                  | Not this component                                             | Arrow-key navigation through the list is explicitly out of scope                                                                                                                                                                                                                     |

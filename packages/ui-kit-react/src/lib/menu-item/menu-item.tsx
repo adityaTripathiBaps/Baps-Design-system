@@ -2,12 +2,16 @@ import {
   createElement,
   type HTMLAttributes,
   type KeyboardEvent,
+  type MouseEvent,
   type ReactNode,
   forwardRef,
 } from 'react';
 import { BapsAvatar } from '../avatar/avatar.js';
 
-export interface BapsMenuItemProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
+export interface BapsMenuItemProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  'title'
+> {
   title?: ReactNode;
   subtitle?: ReactNode;
   control?: 'none' | 'checkbox' | 'radio';
@@ -20,7 +24,9 @@ export interface BapsMenuItemProps extends Omit<HTMLAttributes<HTMLDivElement>, 
   selected?: boolean;
   disabled?: boolean;
   brand?: 'mybky' | 'sampark';
-  onActivated?: () => void;
+  onActivated?: (
+    event: MouseEvent<HTMLDivElement> | KeyboardEvent<HTMLDivElement>,
+  ) => void;
   children?: ReactNode;
 }
 
@@ -48,29 +54,33 @@ export const BapsMenuItem = forwardRef<HTMLDivElement, BapsMenuItemProps>(
       children,
       ...nativeProps
     },
-    ref
+    ref,
   ) => {
-    const role = control === 'checkbox' 
-      ? 'menuitemcheckbox' 
-      : control === 'radio' 
-        ? 'menuitemradio' 
-        : 'menuitem';
-    
-    const ariaChecked = control === 'checkbox' || control === 'radio' ? checked : undefined;
+    const role =
+      control === 'checkbox'
+        ? 'menuitemcheckbox'
+        : control === 'radio'
+          ? 'menuitemradio'
+          : 'menuitem';
 
-    const handleActivate = () => {
+    const ariaChecked =
+      control === 'checkbox' || control === 'radio' ? checked : undefined;
+
+    const handleActivate = (
+      event: MouseEvent<HTMLDivElement> | KeyboardEvent<HTMLDivElement>,
+    ) => {
       if (disabled) return;
-      onActivated?.();
+      onActivated?.(event);
     };
 
     const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
       if (e.key === 'Enter') {
-        handleActivate();
+        handleActivate(e);
       } else if (e.key === ' ') {
         e.preventDefault();
-        handleActivate();
+        handleActivate(e);
       }
-      
+
       if (nativeProps.onKeyDown) {
         nativeProps.onKeyDown(e);
       }
@@ -84,14 +94,14 @@ export const BapsMenuItem = forwardRef<HTMLDivElement, BapsMenuItemProps>(
           severity === 'danger' && 'menu-item--danger',
           disabled && 'menu-item--disabled',
           !!subtitle && 'menu-item--two-line',
-          className
+          className,
         )}
         role={role}
         aria-checked={ariaChecked}
         aria-disabled={disabled ? true : undefined}
         tabIndex={disabled ? undefined : 0}
         onClick={(e) => {
-          handleActivate();
+          handleActivate(e);
           if (nativeProps.onClick) nativeProps.onClick(e);
         }}
         onKeyDown={handleKeyDown}
@@ -101,7 +111,10 @@ export const BapsMenuItem = forwardRef<HTMLDivElement, BapsMenuItemProps>(
 
         {control === 'checkbox' && (
           <span
-            className={joinClassNames('menu-item__control menu-item__control--check', checked && 'is-checked')}
+            className={joinClassNames(
+              'menu-item__control menu-item__control--check',
+              checked && 'is-checked',
+            )}
             aria-hidden="true"
           >
             <svg
@@ -118,13 +131,16 @@ export const BapsMenuItem = forwardRef<HTMLDivElement, BapsMenuItemProps>(
         )}
         {control === 'radio' && (
           <span
-            className={joinClassNames('menu-item__control menu-item__control--radio', checked && 'is-checked')}
+            className={joinClassNames(
+              'menu-item__control menu-item__control--radio',
+              checked && 'is-checked',
+            )}
             aria-hidden="true"
           ></span>
         )}
 
-        {media === 'icon' && (
-          icon ? (
+        {media === 'icon' &&
+          (icon ? (
             <i className={`menu-item__icon pi ${icon}`} aria-hidden="true"></i>
           ) : (
             <svg
@@ -141,39 +157,61 @@ export const BapsMenuItem = forwardRef<HTMLDivElement, BapsMenuItemProps>(
               <path d="M12 8v4" />
               <path d="M12 16h.01" />
             </svg>
-          )
-        )}
-        {media === 'avatar' && (
-          <BapsAvatar
-            className="menu-item__avatar"
-            brand={brand}
-            size="s"
-            variant={avatarIcon ? 'secondary' : 'primary'}
-            {...((avatarIcon ? { 'aria-hidden': true } : { label: avatarLabel }) as any)}
-          >
-            {avatarIcon === 'pi-envelope' && (
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <rect width="20" height="16" x="2" y="4" rx="2" />
-                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-              </svg>
-            )}
-            {avatarIcon === 'pi-user' && (
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <circle cx="12" cy="8" r="5" />
-                <path d="M20 21a8 8 0 0 0-16 0" />
-              </svg>
-            )}
-          </BapsAvatar>
-        )}
+          ))}
+        {media === 'avatar' &&
+          (avatarIcon ? (
+            <BapsAvatar
+              className="menu-item__avatar"
+              brand={brand}
+              size="s"
+              variant="secondary"
+              aria-hidden={true}
+            >
+              {avatarIcon === 'pi-envelope' && (
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.75"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <rect width="20" height="16" x="2" y="4" rx="2" />
+                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                </svg>
+              )}
+              {avatarIcon === 'pi-user' && (
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.75"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <circle cx="12" cy="8" r="5" />
+                  <path d="M20 21a8 8 0 0 0-16 0" />
+                </svg>
+              )}
+            </BapsAvatar>
+          ) : (
+            <BapsAvatar
+              className="menu-item__avatar"
+              brand={brand}
+              size="s"
+              variant="primary"
+              label={avatarLabel ?? ''}
+            />
+          ))}
 
         <span className="menu-item__text">
           <span className="menu-item__title">
             {title}
             {children}
           </span>
-          {subtitle && (
-            <span className="menu-item__subtitle">{subtitle}</span>
-          )}
+          {subtitle && <span className="menu-item__subtitle">{subtitle}</span>}
         </span>
       </div>
     );
@@ -182,10 +220,13 @@ export const BapsMenuItem = forwardRef<HTMLDivElement, BapsMenuItemProps>(
       'baps-menu-item',
       {
         ref,
-        className: joinClassNames(brand === 'mybky' && 'baps-mybky'),
+        className: joinClassNames(
+          brand === 'mybky' && 'baps-mybky',
+          brand === 'sampark' && 'baps-sampark',
+        ),
       },
-      content
+      content,
     );
-  }
+  },
 );
 BapsMenuItem.displayName = 'BapsMenuItem';

@@ -1,97 +1,102 @@
-/**
- * Framework snippets for the Chip docs page.
- *
- * ## How it maps
- *
- * `baps-chip` is a custom `<baps-chip>` element in Angular, wrapping PrimeNG's
- * `p-chip`. The BAPS styling applies inline to the `<baps-chip>` host and
- * targets `.p-chip` elements inside it.
- *
- * For React/Next, you should render the `<baps-chip>` custom element wrapper.
- * Because the CSS variables and structural styling are attached to the host
- * element (`baps-chip`), the wrapper must be present.
- */
 import { setupFor, type SnippetSet } from '../../docs/snippet-setup';
 
 export type { SnippetSet };
-const SETUP = setupFor('chip', true);
+
+const SETUP = `${setupFor('chip', false, '@org/ui-kit-react/styles')}
+
+import { BapsChip } from '@org/ui-kit-react';`;
+
+const next = (source: string) =>
+  `'use client';\n\n${source.replace(
+    'export function Example()',
+    'export default function Example()',
+  )}`;
+
+const example = (body: string) => `${SETUP}
+
+export function Example() {
+  return ${body};
+}`;
 
 export const chipSnippets: Record<string, SnippetSet> = {
   Default: {
-    react: `${SETUP}
-
-export function Default() {
-  return (
-    <baps-chip label="Value"></baps-chip>
-  );
-}`,
+    react: example('<BapsChip label="Value" />'),
+    next: next(example('<BapsChip label="Value" />')),
+    primeng: `<baps-chip label="Value" />`,
   },
   WithIcon: {
-    react: `${SETUP}
-
-export function WithIcon() {
-  return (
-    <div style={{ display: 'flex', gap: 16 }}>
-      <baps-chip label="Search" icon="pi pi-search"></baps-chip>
-      <baps-chip label="Value" image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" alt="Amy"></baps-chip>
-      {/* For custom icons (e.g. SVG), pass them as children: */}
-      <baps-chip label="Custom Icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ width: '1rem', height: '1rem' }}>
-          <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-        </svg>
-      </baps-chip>
-    </div>
-  );
-}`,
+    react: example('<BapsChip label="Search" icon="search-2" />'),
+    next: next(example('<BapsChip label="Search" icon="search-2" />')),
+    primeng: `<baps-chip label="Search" icon="pi pi-search" />`,
   },
   Removable: {
-    react: `${SETUP}
-
-export function Removable() {
-  return (
-    <baps-chip label="Hover to remove" removable={true} onRemove={() => console.log('Removed!')}></baps-chip>
-  );
-}`,
+    react: example(
+      '<BapsChip label="Hover or focus to remove" removable onRemove={() => undefined} />',
+    ),
+    next: next(
+      example(
+        '<BapsChip label="Hover or focus to remove" removable onRemove={() => undefined} />',
+      ),
+    ),
+    primeng: `<baps-chip label="Hover or focus to remove" [removable]="true" (remove)="remove()" />`,
   },
   Group: {
     react: `${SETUP}
 
 import { useState } from 'react';
 
-export function Group() {
+export function Example() {
   const [items, setItems] = useState(['Ahmedabad', 'London', 'Nairobi']);
-
   return (
-    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-      {items.map(item => (
-        <baps-chip
+    <>
+      {items.map((item) => (
+        <BapsChip
           key={item}
           label={item}
-          removable={true}
-          onRemove={() => setItems(items.filter(i => i !== item))}
-        ></baps-chip>
+          removable
+          onRemove={() => setItems((current) => current.filter((value) => value !== item))}
+        />
       ))}
-    </div>
+    </>
   );
 }`,
+    next: next(`${SETUP}
+
+import { useState } from 'react';
+
+export function Example() {
+  const [items, setItems] = useState(['Ahmedabad', 'London', 'Nairobi']);
+  return (
+    <>
+      {items.map((item) => (
+        <BapsChip
+          key={item}
+          label={item}
+          removable
+          onRemove={() => setItems((current) => current.filter((value) => value !== item))}
+        />
+      ))}
+    </>
+  );
+}`),
+    primeng: `<baps-chip *ngFor="let item of items" [label]="item" [removable]="true" (remove)="remove(item)" />`,
   },
   Brands: {
-    react: `${SETUP}
-
-export function Brands() {
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-      <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-        <baps-chip label="MyBKY"></baps-chip>
-        <baps-chip label="MyBKY disabled" disabled={true}></baps-chip>
-      </div>
-
-      <div className="baps-ds-sampark" style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-        <baps-chip label="Sampark" brand="sampark"></baps-chip>
-        <baps-chip label="Sampark disabled" brand="sampark" disabled={true}></baps-chip>
-      </div>
-    </div>
-  );
-}`,
+    react: example(`(
+    <>
+      <BapsChip label="MyBKY" brand="mybky" />
+      <BapsChip label="Sampark" brand="sampark" />
+    </>
+  )`),
+    next: next(
+      example(`(
+    <>
+      <BapsChip label="MyBKY" brand="mybky" />
+      <BapsChip label="Sampark" brand="sampark" />
+    </>
+  )`),
+    ),
+    primeng: `<baps-chip label="MyBKY" brand="mybky" />
+<baps-chip label="Sampark" brand="sampark" />`,
   },
 };

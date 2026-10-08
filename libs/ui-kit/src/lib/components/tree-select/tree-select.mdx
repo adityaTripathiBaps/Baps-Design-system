@@ -1,6 +1,7 @@
-import { Meta, Canvas, Controls } from '@storybook/blocks';
-import { BrandOnly, PropsTable } from '@baps/docs-blocks';
+import { Meta, Controls } from '@storybook/blocks';
+import { BrandOnly, FrameworkTabs, PropsTable } from '@baps/docs-blocks';
 import * as TreeSelectStories from './tree-select.stories';
+import { treeSelectSnippets } from './tree-select.snippets';
 
 <Meta of={TreeSelectStories} />
 
@@ -54,32 +55,50 @@ export class LocationPicker {
 
 ### Default
 
-<Canvas of={TreeSelectStories.Default} />
+<FrameworkTabs
+  of={TreeSelectStories.Default}
+  snippets={treeSelectSnippets.Default}
+/>
 <Controls of={TreeSelectStories.Default} />
 
 ### Checkbox
 
-<Canvas of={TreeSelectStories.Checkbox} />
+<FrameworkTabs
+  of={TreeSelectStories.Checkbox}
+  snippets={treeSelectSnippets.Checkbox}
+/>
 
 ### Filter
 
-<Canvas of={TreeSelectStories.Filter} />
+<FrameworkTabs
+  of={TreeSelectStories.Filter}
+  snippets={treeSelectSnippets.Filter}
+/>
 
 ### Sizes
 
-<Canvas of={TreeSelectStories.Sizes} />
+<FrameworkTabs
+  of={TreeSelectStories.Sizes}
+  snippets={treeSelectSnippets.Sizes}
+/>
 
 <BrandOnly brand="comparison">
 
 ### Brands
 
-<Canvas of={TreeSelectStories.Brands} />
+<FrameworkTabs
+  of={TreeSelectStories.Brands}
+  snippets={treeSelectSnippets.Brands}
+/>
 
 </BrandOnly>
 
 ### Disabled
 
-<Canvas of={TreeSelectStories.Disabled} />
+<FrameworkTabs
+  of={TreeSelectStories.Disabled}
+  snippets={treeSelectSnippets.Disabled}
+/>
 
 ## Forms
 
@@ -89,18 +108,27 @@ native control in either forms API.
 ### Template Driven
 
 ```html
-<baps-tree-select [options]="regions" placeholder="Select a location" [(ngModel)]="value" />
+<baps-tree-select
+  [options]="regions"
+  placeholder="Select a location"
+  [(ngModel)]="value"
+/>
 ```
 
 ### Reactive Forms
 
 ```html
-<baps-tree-select [options]="regions" placeholder="Select a location" formControlName="value" />
+<baps-tree-select
+  [options]="regions"
+  placeholder="Select a location"
+  formControlName="value"
+/>
 ```
 
 ```ts
 form = new FormGroup({ value: new FormControl(null) });
 ```
+
 ## API
 
 Inputs, outputs and their types, read from the component's own source.
@@ -124,10 +152,10 @@ Inputs, outputs and their types, read from the component's own source.
 
 ### Keyboard Support
 
-| Key | Function |
-| --- | --- |
-| <kbd>Tab</kbd> | Moves focus to the trigger. |
-| <kbd>Space / Enter</kbd> | Opens the panel; selects the highlighted node when open. |
-| <kbd>Arrow Up / Down</kbd> | Moves between visible nodes. |
-| <kbd>Arrow Right / Left</kbd> | Expands and collapses the focused node. |
-| <kbd>Esc</kbd> | Closes the panel. |
+| Key                           | Function                                                 |
+| ----------------------------- | -------------------------------------------------------- |
+| <kbd>Tab</kbd>                | Moves focus to the trigger.                              |
+| <kbd>Space / Enter</kbd>      | Opens the panel; selects the highlighted node when open. |
+| <kbd>Arrow Up / Down</kbd>    | Moves between visible nodes.                             |
+| <kbd>Arrow Right / Left</kbd> | Expands and collapses the focused node.                  |
+| <kbd>Esc</kbd>                | Closes the panel.                                        |
