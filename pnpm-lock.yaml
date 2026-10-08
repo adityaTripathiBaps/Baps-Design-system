@@ -113,7 +113,7 @@ importers:
         version: 8.6.18(storybook@8.6.18(prettier@3.9.4))
       '@storybook/addon-designs':
         specifier: ^8.2.1
-        version: 8.2.1(@storybook/blocks@8.6.18(react-dom@19.3.0(react@19.2.7))(react@19.2.7)(storybook@8.6.18(prettier@3.9.4)))(@storybook/components@8.6.18(storybook@8.6.18(prettier@3.9.4)))(@storybook/theming@8.6.18(storybook@8.6.18(prettier@3.9.4)))(react-dom@19.3.0(react@19.2.7))(react@19.2.7)
+        version: 8.2.1(@storybook/blocks@8.6.18(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(storybook@8.6.18(prettier@3.9.4)))(@storybook/components@8.6.18(storybook@8.6.18(prettier@3.9.4)))(@storybook/theming@8.6.18(storybook@8.6.18(prettier@3.9.4)))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@storybook/addon-docs':
         specifier: ^8.6.18
         version: 8.6.18(@types/react@19.2.17)(storybook@8.6.18(prettier@3.9.4))
@@ -128,7 +128,7 @@ importers:
         version: 8.6.18(d5596afe2583522cd398b323a7639375)
       '@storybook/blocks':
         specifier: 8.6.18
-        version: 8.6.18(react-dom@19.3.0(react@19.2.7))(react@19.2.7)(storybook@8.6.18(prettier@3.9.4))
+        version: 8.6.18(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(storybook@8.6.18(prettier@3.9.4))
       '@storybook/test':
         specifier: 8.6.18
         version: 8.6.18(storybook@8.6.18(prettier@3.9.4))
@@ -205,8 +205,8 @@ importers:
         specifier: 19.2.7
         version: 19.2.7
       react-dom:
-        specifier: ^19.3.0
-        version: 19.3.0(react@19.2.7)
+        specifier: 19.2.7
+        version: 19.2.7(react@19.2.7)
       remark-gfm:
         specifier: ^4.0.1
         version: 4.0.1
@@ -221,7 +221,7 @@ importers:
         version: 8.6.18(prettier@3.9.4)
       storybook-dark-mode:
         specifier: 4.0.2
-        version: 4.0.2(react-dom@19.3.0(react@19.2.7))(react@19.2.7)(storybook@8.6.18(prettier@3.9.4))
+        version: 4.0.2(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(storybook@8.6.18(prettier@3.9.4))
       style-dictionary:
         specifier: ^5.5.0
         version: 5.5.0(tslib@2.8.1)
@@ -7959,11 +7959,6 @@ packages:
     peerDependencies:
       react: ^19.2.7
 
-  react-dom@19.3.0:
-    resolution: {integrity: sha512-JDk8dgif51OjFoDE70+OT9ICyYr+69HlmihNwp1+Nsfbna3t5sIiCa9ZJktDmQ4/1b/rn26hIAR2uYXDMr5r0Q==}
-    peerDependencies:
-      react: ^19.3.0
-
   react-is@17.0.2:
     resolution: {integrity: sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==}
 
@@ -8326,9 +8321,6 @@ packages:
 
   scheduler@0.27.0:
     resolution: {integrity: sha512-eNv+WrVbKu1f3vbYJT/xtiF5syA5HPIMtf9IgY/nKg0sWqzAUEvqY/xm7OcZc/qafLx/iO9FgOmeSAp4v5ti/Q==}
-
-  scheduler@0.28.0:
-    resolution: {integrity: sha512-juorfCmIkIw8tT+p5BXSm6PJjQF/ycEYmKyzURCIt/RaZIhL+PulbQ9Yu2z1HdOJDdqDTlxA1+xKBmHXJsczAw==}
 
   schema-utils@3.3.0:
     resolution: {integrity: sha512-pN/yOAvcC+5rQ5nERGuwrjLlYvLTbCibnZ1I7B1LaiAz9BRBlE9GMgE/eqV30P7aJQUf7Ddimy/RsbYO/GrVGg==}
@@ -13372,24 +13364,24 @@ snapshots:
       storybook: 8.6.18(prettier@3.9.4)
       ts-dedent: 2.3.0
 
-  '@storybook/addon-designs@8.2.1(@storybook/blocks@8.6.18(react-dom@19.3.0(react@19.2.7))(react@19.2.7)(storybook@8.6.18(prettier@3.9.4)))(@storybook/components@8.6.18(storybook@8.6.18(prettier@3.9.4)))(@storybook/theming@8.6.18(storybook@8.6.18(prettier@3.9.4)))(react-dom@19.3.0(react@19.2.7))(react@19.2.7)':
+  '@storybook/addon-designs@8.2.1(@storybook/blocks@8.6.18(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(storybook@8.6.18(prettier@3.9.4)))(@storybook/components@8.6.18(storybook@8.6.18(prettier@3.9.4)))(@storybook/theming@8.6.18(storybook@8.6.18(prettier@3.9.4)))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
     dependencies:
       '@figspec/react': 1.0.4(react@19.2.7)
     optionalDependencies:
-      '@storybook/blocks': 8.6.18(react-dom@19.3.0(react@19.2.7))(react@19.2.7)(storybook@8.6.18(prettier@3.9.4))
+      '@storybook/blocks': 8.6.18(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(storybook@8.6.18(prettier@3.9.4))
       '@storybook/components': 8.6.18(storybook@8.6.18(prettier@3.9.4))
       '@storybook/theming': 8.6.18(storybook@8.6.18(prettier@3.9.4))
       react: 19.2.7
-      react-dom: 19.3.0(react@19.2.7)
+      react-dom: 19.2.7(react@19.2.7)
 
   '@storybook/addon-docs@8.6.18(@types/react@19.2.17)(storybook@8.6.18(prettier@3.9.4))':
     dependencies:
       '@mdx-js/react': 3.1.1(@types/react@19.2.17)(react@19.2.7)
-      '@storybook/blocks': 8.6.18(react-dom@19.3.0(react@19.2.7))(react@19.2.7)(storybook@8.6.18(prettier@3.9.4))
+      '@storybook/blocks': 8.6.18(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(storybook@8.6.18(prettier@3.9.4))
       '@storybook/csf-plugin': 8.6.18(storybook@8.6.18(prettier@3.9.4))
-      '@storybook/react-dom-shim': 8.6.18(react-dom@19.3.0(react@19.2.7))(react@19.2.7)(storybook@8.6.18(prettier@3.9.4))
+      '@storybook/react-dom-shim': 8.6.18(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(storybook@8.6.18(prettier@3.9.4))
       react: 19.2.7
-      react-dom: 19.3.0(react@19.2.7)
+      react-dom: 19.2.7(react@19.2.7)
       storybook: 8.6.18(prettier@3.9.4)
       ts-dedent: 2.3.0
     transitivePeerDependencies:
@@ -13500,14 +13492,14 @@ snapshots:
       - uglify-js
       - webpack-cli
 
-  '@storybook/blocks@8.6.18(react-dom@19.3.0(react@19.2.7))(react@19.2.7)(storybook@8.6.18(prettier@3.9.4))':
+  '@storybook/blocks@8.6.18(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(storybook@8.6.18(prettier@3.9.4))':
     dependencies:
-      '@storybook/icons': 1.6.0(react-dom@19.3.0(react@19.2.7))(react@19.2.7)
+      '@storybook/icons': 1.6.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       storybook: 8.6.18(prettier@3.9.4)
       ts-dedent: 2.3.0
     optionalDependencies:
       react: 19.2.7
-      react-dom: 19.3.0(react@19.2.7)
+      react-dom: 19.2.7(react@19.2.7)
 
   '@storybook/builder-webpack5@8.6.18(@rspack/core@1.6.8(@swc/helpers@0.5.18))(@swc/core@1.15.8(@swc/helpers@0.5.18))(esbuild@0.25.12)(postcss@8.5.16)(storybook@8.6.18(prettier@3.9.4))(typescript@6.0.3)':
     dependencies:
@@ -13595,10 +13587,10 @@ snapshots:
 
   '@storybook/global@5.0.0': {}
 
-  '@storybook/icons@1.6.0(react-dom@19.3.0(react@19.2.7))(react@19.2.7)':
+  '@storybook/icons@1.6.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
     dependencies:
       react: 19.2.7
-      react-dom: 19.3.0(react@19.2.7)
+      react-dom: 19.2.7(react@19.2.7)
 
   '@storybook/instrumenter@8.6.18(storybook@8.6.18(prettier@3.9.4))':
     dependencies:
@@ -13614,10 +13606,10 @@ snapshots:
     dependencies:
       storybook: 8.6.18(prettier@3.9.4)
 
-  '@storybook/react-dom-shim@8.6.18(react-dom@19.3.0(react@19.2.7))(react@19.2.7)(storybook@8.6.18(prettier@3.9.4))':
+  '@storybook/react-dom-shim@8.6.18(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(storybook@8.6.18(prettier@3.9.4))':
     dependencies:
       react: 19.2.7
-      react-dom: 19.3.0(react@19.2.7)
+      react-dom: 19.2.7(react@19.2.7)
       storybook: 8.6.18(prettier@3.9.4)
 
   '@storybook/test@8.6.18(storybook@8.6.18(prettier@3.9.4))':
@@ -18851,11 +18843,6 @@ snapshots:
       react: 19.2.7
       scheduler: 0.27.0
 
-  react-dom@19.3.0(react@19.2.7):
-    dependencies:
-      react: 19.2.7
-      scheduler: 0.28.0
-
   react-is@17.0.2: {}
 
   react-is@18.3.1: {}
@@ -19252,8 +19239,6 @@ snapshots:
 
   scheduler@0.27.0: {}
 
-  scheduler@0.28.0: {}
-
   schema-utils@3.3.0:
     dependencies:
       '@types/json-schema': 7.0.15
@@ -19531,12 +19516,12 @@ snapshots:
 
   stdin-discarder@0.3.2: {}
 
-  storybook-dark-mode@4.0.2(react-dom@19.3.0(react@19.2.7))(react@19.2.7)(storybook@8.6.18(prettier@3.9.4)):
+  storybook-dark-mode@4.0.2(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(storybook@8.6.18(prettier@3.9.4)):
     dependencies:
       '@storybook/components': 8.6.18(storybook@8.6.18(prettier@3.9.4))
       '@storybook/core-events': 8.6.14(storybook@8.6.18(prettier@3.9.4))
       '@storybook/global': 5.0.0
-      '@storybook/icons': 1.6.0(react-dom@19.3.0(react@19.2.7))(react@19.2.7)
+      '@storybook/icons': 1.6.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@storybook/manager-api': 8.6.18(storybook@8.6.18(prettier@3.9.4))
       '@storybook/theming': 8.6.18(storybook@8.6.18(prettier@3.9.4))
       fast-deep-equal: 3.1.3

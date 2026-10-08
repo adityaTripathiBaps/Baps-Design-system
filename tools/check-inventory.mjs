@@ -80,7 +80,16 @@ for (const [dir, comp] of Object.entries(now)) {
       ? [`${BASE}/form-field/form-field.mdx`, `${BASE}/listbox/listbox.mdx`, `${BASE}/menu-item/menu-item.mdx`]
       : [`${BASE}/${dir}/${dir}.mdx`];
   const present = pages.filter((p) => existsSync(p));
-  const examples = comp.stories.filter((s) => !s.endsWith('Interaction'));
+  // Two kinds of story are not examples and must not be demanded on a page:
+  // *Interaction, per the note above, and anything named with a leading
+  // underscore. The underscore marks a story that exists for Storybook
+  // rather than for a reader — avatar/_DocsAnchor is one, and it is first in
+  // its file only because Storybook 8 inherits the docs page's tags from the
+  // primary story, so without it the whole component vanished from the
+  // Sampark sidebar. Rendering it on the page would show an empty canvas.
+  const examples = comp.stories.filter(
+    (s) => !s.endsWith('Interaction') && !s.startsWith('_'),
+  );
   if (!present.length) {
     for (const s of examples) orphans.push(`${dir}/${s} — no .mdx page at all`);
     continue;

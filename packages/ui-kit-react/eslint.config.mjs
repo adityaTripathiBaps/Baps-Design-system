@@ -26,7 +26,10 @@ export default [
     },
   },
   {
-    files: ['fixtures/**/*.tsx'],
+    // Glob is anchored with ** because Nx runs eslint from the workspace
+    // root, where 'fixtures/**' matches nothing and this override — which has
+    // been here all along — silently never applied.
+    files: ['**/fixtures/**/*.tsx'],
     rules: {
       // These are external-consumer compile fixtures on purpose; using
       // the package self-reference is the behaviour under test.

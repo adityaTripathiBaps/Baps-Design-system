@@ -97,6 +97,20 @@ const config: StorybookConfig = {
     }
   ],
   webpackFinal: async (webpackConfig) => {
+    // Cap minimizer parallelism. The production build died with
+    //   DataCloneError: Data cannot be cloned, out of memory
+    //   ERR_WORKER_OUT_OF_MEMORY
+    // which is terser spawning one worker per core and handing each a copy
+    // of a large bundle. NODE_OPTIONS does not reach those workers, so
+    // raising the parent heap changed nothing across three attempts.
+    //
+    // One worker is slower and finishes. Nothing is suppressed: a real
+    // compile error still fails the build.
+    for (const m of webpackConfig.optimization?.minimizer ?? []) {
+      if (m && typeof m === 'object' && 'options' in m) {
+        (m as unknown as { options: Record<string, unknown> }).options['parallel'] = 1;
+      }
+    }
     // Short import for the shared documentation blocks. Without it every MDX
     // under libs/ui-kit would reach them through six levels of '../'.
     webpackConfig.resolve ??= {};

@@ -16,7 +16,19 @@
  *   @org/ui-kit/styles       the whole kit: 26 component stylesheets, the Inter
  *                            @font-face, --font-family, the Sampark scopes and
  *                            the dark scope. 449 kB.
- *   @org/ui-kit/styles/tag   one component's rules, 26 kB.
+ *   @org/ui-kit/styles/tag   tag and everything tag needs, 26 kB.
+ *
+ * A per-component file is SELF-CONTAINED: it carries the component plus every
+ * other component it composes, so importing it alone is enough to render that
+ * component correctly. users-dropdown is the clearest case — it draws an
+ * avatar, an icon, an input and menu items, so users-dropdown.css is 120 kB and
+ * contains all four; datepicker.css is 164 kB because it builds on select.
+ *
+ * The cost is duplication when a consumer imports several per-component files:
+ * avatar's rules ship once in avatar.css and again inside users-dropdown.css.
+ * That is the deliberate trade — a file that renders is worth more than a file
+ * that is small. The bundle entry is unaffected either way, because Sass loads
+ * each module once per compilation.
  *
  * The per-component path is NOT the default, and the reason is measured rather
  * than assumed. Counted over the built CSS:
@@ -87,8 +99,13 @@ export const setupFor = (
 
      import '${stylesPackage}/${component}';
 
-   — that path carries ${component}'s rules only: no Inter @font-face and no
+   — that path carries ${component} and whatever ${component} composes, so it
+   renders on its own. What it does NOT carry is the Inter @font-face or
    --font-family, so your app supplies the typeface. Measured, not assumed.
+
+   Importing several of these can ship a shared component's rules more than
+   once. Prefer '@org/ui-kit/styles' unless you are deliberately loading one
+   component.
 
    Then the base rules, which are the app's own — no ui-kit partial applies
    them, and none should:
