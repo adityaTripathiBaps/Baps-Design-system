@@ -12,6 +12,7 @@
 //
 // Node only, no dependencies.
 import { readdirSync, readFileSync, existsSync } from 'node:fs';
+import { execSync } from 'node:child_process';
 import ts from 'typescript';
 
 const COMPONENTS = 'libs/ui-kit/src/lib/components';
@@ -36,6 +37,9 @@ const fail = (component, rule, detail) =>
   findings.push({ component, rule, detail });
 
 const read = (p) => readFileSync(p, 'utf8');
+
+/** How a file says "this component cannot have a Custom tab", in any wording. */
+const ROUTE_B_REASON = /Route B|no Custom tab|not applicable/i;
 const list = (dir) =>
   existsSync(dir)
     ? readdirSync(dir, { withFileTypes: true })
@@ -224,6 +228,39 @@ for (const dir of list(COMPONENTS).sort()) {
         dir,
         'story',
         `example "${ex}" has no matching export in ${dir}.stories.ts`,
+      );
+    }
+  }
+
+  // ── 2b. a Custom tab that existed must not quietly vanish ─────────────────
+  //
+  // Rule 7 below fails a Custom tab it cannot PROVE. Nothing failed one that
+  // simply disappeared, and that gap cost three of them: 0c26fe5 carried in
+  // six snippet files edited elsewhere and dropped four `custom` blocks
+  // between breadcrumb, file-upload and tabs. Coverage counts examples, not
+  // tabs, so it stayed green and nobody noticed for a week.
+  //
+  // Removing a Custom tab is still allowed — it is the right call when the
+  // markup cannot be honest, as it was for split-button. It just has to say
+  // so: the file must carry a Route B reason, the same sentence a component
+  // that never had one writes.
+  {
+    let headCount = 0;
+    try {
+      const head = execSync(`git show HEAD:${snippetFile}`, {
+        encoding: 'utf8',
+        maxBuffer: 20 * 1024 * 1024,
+        stdio: ['ignore', 'pipe', 'ignore'],
+      });
+      headCount = (head.match(/^ {4}custom: /gm) || []).length;
+    } catch {
+      // New file, or no git. Nothing to compare against.
+    }
+    if (headCount > customCount && !ROUTE_B_REASON.test(src)) {
+      fail(
+        dir,
+        'custom-removed',
+        `${headCount - customCount} Custom block(s) present in git HEAD are gone and the file gives no Route B reason — say why in the header, or restore them`,
       );
     }
   }
