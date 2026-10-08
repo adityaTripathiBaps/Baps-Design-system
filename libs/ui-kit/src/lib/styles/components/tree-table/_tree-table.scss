@@ -1,0 +1,123 @@
+// tree-table — extracted verbatim from the component's inline `styles:`.
+//
+// Angular compiles an inline block into the JS bundle and injects it at
+// runtime, so there was no file for a React or Next consumer to import: this
+// component's CSS reached nobody outside Angular. As a partial it ships both
+// ways — styleUrls keeps it with the component, and
+// scripts/build-styles.mjs picks the directory up by name with no index to
+// register in.
+//
+// Nothing changed in the move. Same rules, same order, same
+// ViewEncapsulation.None scope, so the rendering is identical; only the
+// location is new.
+
+baps-tree-table {
+  display: block;
+  --baps-tt-border: var(--tree-table-mybky-border-color, #e4ecf1);
+  --baps-tt-header-bg: var(--tree-table-mybky-header-background, #f8fafb);
+  --baps-tt-header-h: var(--tree-table-mybky-header-height, 2.5rem);
+  --baps-tt-header-text: var(--color-mybky-text-secondary, #2b2f32);
+  --baps-tt-row-bg: var(--tree-table-mybky-row-background, #ffffff);
+  /* #EEF0F8, NOT the mono wash a flat table uses. A tree row is taller and
+     carries connector lines, so it needs a hover that reads under them. */
+  --baps-tt-row-hover: var(--tree-table-mybky-row-hover-background, #eef0f8);
+  --baps-tt-row-error: var(--tree-table-mybky-row-error-background, #fff5f5);
+  --baps-tt-row-h: var(--tree-table-mybky-row-height, 3.75rem);
+  --baps-tt-text: var(--color-mybky-text-primary, #181b1d);
+  --baps-tt-toggler: var(--color-mybky-text-muted, #6f777d);
+  /* The one place a line darker than border.default is correct: the
+     hierarchy trunk crosses row borders and has to stay readable over
+     them. */
+  --baps-tt-connector: var(--tree-table-mybky-connector-color, #8d9ba5);
+}
+
+:is(baps-tree-table.baps-sampark, .baps-ds-sampark baps-tree-table) {
+  --baps-tt-border: var(--color-sampark-border-default, #e1e0e0);
+  --baps-tt-header-bg: var(--color-sampark-mono-5, #fafafa);
+  --baps-tt-header-text: var(--color-sampark-text-secondary, #595656);
+  --baps-tt-row-bg: var(--color-sampark-surface-card, #ffffff);
+  --baps-tt-row-hover: var(--color-sampark-mono-10, #f8f7f7);
+  --baps-tt-text: var(--color-sampark-text-primary, #151414);
+  --baps-tt-toggler: var(--color-sampark-text-secondary, #595656);
+  --baps-tt-connector: var(--color-sampark-mono-40, #bcb9b9);
+}
+
+/* Both selectors are needed. PrimeNG puts .p-treetable-header-cell on the
+   cells IT generates from [columns], but a forwarded header template is the
+   consumer's own raw <th> and carries no class at all — measured, not
+   assumed: it computed to a transparent background until the thead-scoped
+   selector was added. */
+baps-tree-table .p-treetable-header-cell,
+baps-tree-table .p-treetable-thead > tr > th {
+  height: var(--baps-tt-header-h);
+  background: var(--baps-tt-header-bg);
+  color: var(--baps-tt-header-text);
+  border-color: var(--baps-tt-border);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* NO zebra striping — every row is the card surface. Confirmed against the
+   shipping screens rather than assumed: PrimeNG offers striping and it is
+   deliberately unused here, so a future "add stripes for readability"
+   would be a change, not a fix. */
+baps-tree-table .p-treetable-tbody > tr {
+  height: var(--baps-tt-row-h);
+  background: var(--baps-tt-row-bg);
+  color: var(--baps-tt-text);
+}
+baps-tree-table .p-treetable-tbody > tr > td {
+  /* Bottom only — vertical rules would fight the hierarchy lines. */
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  border-color: var(--baps-tt-border);
+  font-size: 0.875rem;
+}
+baps-tree-table .p-treetable-tbody > tr:hover,
+baps-tree-table .p-treetable-tbody > tr:hover > td {
+  background: var(--baps-tt-row-hover);
+}
+
+/* An expanded parent changes WEIGHT only, no fill — the fill is reserved
+   for hover, and using it for expansion too would make a hovered collapsed
+   row indistinguishable from an expanded one. */
+baps-tree-table .p-treetable-tbody > tr[aria-expanded='true'] > td {
+  font-weight: 600;
+}
+
+baps-tree-table .p-treetable-tbody > tr.baps-tree-row-error,
+baps-tree-table .p-treetable-tbody > tr.baps-tree-row-error > td {
+  background: var(--baps-tt-row-error);
+}
+
+/* The toggler is a control, not decoration — it keeps a real hit area even
+   though the glyph inside it is small. */
+baps-tree-table .p-treetable-node-toggle-button {
+  width: 1.75rem;
+  height: 1.75rem;
+  color: var(--baps-tt-toggler);
+  border-radius: 50%;
+}
+baps-tree-table .p-treetable-node-toggle-button:hover {
+  background: var(--baps-tt-row-hover);
+}
+
+/* ── Dark ── */
+.baps-dark baps-tree-table {
+  --baps-tt-border: var(--color-mybky-dark-border-divider, #3d4144);
+  --baps-tt-header-bg: var(--color-mybky-dark-surface-card, #2b2f32);
+  --baps-tt-header-text: var(--color-mybky-dark-text-secondary, #e4ecf1);
+  --baps-tt-row-bg: var(--color-mybky-dark-surface-card, #2b2f32);
+  --baps-tt-row-hover: var(--color-mybky-dark-surface-hover, #3d4144);
+  --baps-tt-text: var(--color-mybky-dark-text-primary, #f8fafb);
+  --baps-tt-toggler: var(--color-mybky-dark-text-muted, #b6b6af);
+}
+.baps-dark :is(baps-tree-table.baps-sampark, .baps-ds-sampark baps-tree-table) {
+  --baps-tt-border: var(--color-sampark-dark-border-divider, #4a4947);
+  --baps-tt-header-bg: var(--color-sampark-dark-surface-card, #2c2c2a);
+  --baps-tt-header-text: var(--color-sampark-dark-text-secondary, #e6e6e5);
+  --baps-tt-row-bg: var(--color-sampark-dark-surface-card, #2c2c2a);
+  --baps-tt-row-hover: var(--color-sampark-dark-surface-hover, #2c2c2a);
+  --baps-tt-text: var(--color-sampark-dark-text-primary, #f8f7f7);
+  --baps-tt-toggler: var(--color-sampark-dark-text-muted, #b7b6b3);
+}

@@ -197,105 +197,10 @@ export interface BapsTableSortRow {
     </baps-drawer>
   `,
   encapsulation: ViewEncapsulation.None,
-  styles: `
-    .ts-cfg-actions {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .ts-cfg {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      height: 100%;
-      min-height: 0;
-    }
-    .ts-cfg-chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-    .ts-cfg-chip {
-      height: 1.75rem;
-      padding: 0 0.625rem;
-      border: 1px solid var(--color-sampark-border-default, #e1e0e0);
-      border-radius: var(--radius-sampark-default, 0.25rem);
-      background: var(--color-sampark-mono-0, #ffffff);
-      color: var(--color-sampark-text-primary, #151414);
-      font-size: 0.8125rem;
-      cursor: pointer;
-    }
-    .ts-cfg-chip:hover:not(:disabled) {
-      background: var(--color-sampark-mono-10, #f8f7f7);
-    }
-    .ts-cfg-chip:disabled {
-      color: var(--color-sampark-text-disabled, #bcb9b9);
-      cursor: default;
-    }
-    .ts-cfg-list {
-      display: flex;
-      flex-direction: column;
-      overflow-y: auto;
-      min-height: 0;
-    }
-    .ts-cfg-row {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.5rem 0;
-      border-bottom: 1px solid var(--color-sampark-border-default, #e1e0e0);
-      cursor: move;
-    }
-    .ts-cfg-list .ts-cfg-row:last-child {
-      border-bottom: none;
-    }
-    .ts-cfg-row--locked {
-      cursor: default;
-    }
-    .ts-cfg-row-label {
-      flex: none;
-      width: 3.75rem;
-      font-size: 0.875rem;
-      color: var(--color-sampark-text-secondary, #595656);
-    }
-    .ts-cfg-field {
-      flex: 1 1 auto;
-      min-width: 0;
-    }
-    /* Ghost icon button. 28px square with no border, and a 4% ink wash on
-       hover — the same footprint the locked-row lock icon occupies, which is
-       what keeps every row's controls on one vertical rhythm. */
-    .ts-cfg-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      flex: none;
-      width: 1.75rem;
-      height: 1.75rem;
-      padding: 0;
-      border: none;
-      border-radius: var(--radius-sampark-default, 0.25rem);
-      background: none;
-      color: var(--color-sampark-text-secondary, #595656);
-      cursor: pointer;
-    }
-    button.ts-cfg-btn:hover {
-      background: var(--color-sampark-mono-alpha4, rgba(21, 20, 20, 0.04));
-    }
-    .ts-cfg-handle {
-      cursor: grab;
-    }
-    .ts-cfg-locked {
-      cursor: default;
-      opacity: 0.6;
-    }
-    .ts-cfg-empty {
-      margin: 0;
-      padding: 1rem 0;
-      font-size: 0.875rem;
-      color: var(--color-sampark-text-muted, #9f9c9c);
-    }
-  `,
+  // CSS lives in ../../styles/components/table-sort-config/_table-sort-config.scss so the same
+  // rules ship to non-Angular consumers through @org/ui-kit/styles — an inline
+  // `styles:` block compiles into the JS bundle and reaches no one else.
+  styleUrls: ['../../styles/components/table-sort-config/_table-sort-config.scss'],
 })
 export class BapsTableSortConfig implements OnChanges {
   /** Drawer visibility, two-way bindable. */
