@@ -42,6 +42,19 @@ import {
   BapsUsersDropdown,
   BapsFileUpload,
   BapsPagination,
+  BapsAccordion,
+  BapsAccordionPanel,
+  BapsBreadcrumb,
+  BapsInternalNavbar,
+  BapsNavbar,
+  BapsStep,
+  BapsStepList,
+  BapsStepper,
+  BapsTab,
+  BapsTabList,
+  BapsTabs,
+  BapsToolbar,
+  BapsMenuItem,
   BapsSortIcon,
   BapsTable,
   BapsTreeTable,
@@ -1540,4 +1553,186 @@ test('BapsTreeTable paints an error row and spans the empty message', () => {
   );
   assert.ok(empty.includes('colSpan="2"'));
   assert.ok(empty.includes('No results found'));
+});
+
+test('BapsMenuItem always draws the selected bar, even unselected', () => {
+  const html = renderToStaticMarkup(createElement(BapsMenuItem, { title: 'Export' }));
+  // The bar is the selected indicator and is drawn in both states. Without it
+  // the row's text shifts sideways the moment selection changes.
+  assert.ok(html.includes('menu-item__bar'));
+  assert.ok(html.includes('menu-item__title'));
+  assert.ok(!html.includes('menu-item--selected'));
+});
+
+test('BapsMenuItem adds the two-line class only with a subtitle', () => {
+  const one = renderToStaticMarkup(createElement(BapsMenuItem, { title: 'Export' }));
+  const two = renderToStaticMarkup(
+    createElement(BapsMenuItem, { title: 'Notifications', subtitle: '3 unread' }),
+  );
+  // subtitle is the one input that changes BOTH a class and the markup: the
+  // class buys the height, the span carries the text, and either alone is a bug.
+  assert.ok(!one.includes('menu-item--two-line'));
+  assert.ok(two.includes('menu-item--two-line'));
+  assert.ok(two.includes('menu-item__subtitle'));
+});
+
+test('BapsMenuItem hides its control and icon from a screen reader', () => {
+  const html = renderToStaticMarkup(
+    createElement(BapsMenuItem, { title: 'Notifications', control: 'checkbox', checked: true }),
+  );
+  // The row's accessible name is its title. A checkmark announced beside it
+  // would say the same thing twice.
+  assert.ok(html.includes('menu-item__control'));
+  assert.ok(html.includes('is-checked'));
+  assert.ok(html.includes('aria-hidden="true"'));
+});
+
+test('BapsMenuItem carries severity and disabled as separate classes', () => {
+  const html = renderToStaticMarkup(
+    createElement(BapsMenuItem, { title: 'Delete', severity: 'danger', disabled: true }),
+  );
+  assert.ok(html.includes('menu-item--danger'));
+  assert.ok(html.includes('menu-item--disabled'));
+});
+
+test('BapsBreadcrumb marks only the last crumb as current', () => {
+  const html = renderToStaticMarkup(
+    createElement(BapsBreadcrumb, {
+      model: [{ label: 'Home', url: '/' }, { label: 'Projects', url: '/p' }, { label: 'Detail' }],
+    }),
+  );
+  // aria-current="page", not a class: it is what a screen reader reads for
+  // "you are here", and exactly one crumb may claim it.
+  assert.equal((html.match(/aria-current="page"/g) ?? []).length, 1);
+  assert.ok(html.includes('Detail'));
+});
+
+test('BapsAccordion opens one panel at a time unless multiple is set', () => {
+  const single = renderToStaticMarkup(
+    createElement(
+      BapsAccordion,
+      { defaultValue: 'a' },
+      createElement(BapsAccordionPanel, { value: 'a', header: 'First' }, 'one'),
+      createElement(BapsAccordionPanel, { value: 'b', header: 'Second' }, 'two'),
+    ),
+  );
+  // aria-expanded is the contract; exactly one panel may be open in single mode.
+  assert.equal((single.match(/aria-expanded="true"/g) ?? []).length, 1);
+  assert.equal((single.match(/aria-expanded="false"/g) ?? []).length, 1);
+});
+
+test('BapsAccordion opens several panels when multiple is set', () => {
+  const html = renderToStaticMarkup(
+    createElement(
+      BapsAccordion,
+      { multiple: true, defaultValue: ['a', 'b'] },
+      createElement(BapsAccordionPanel, { value: 'a', header: 'First' }, 'one'),
+      createElement(BapsAccordionPanel, { value: 'b', header: 'Second' }, 'two'),
+    ),
+  );
+  assert.equal((html.match(/aria-expanded="true"/g) ?? []).length, 2);
+});
+
+const NAV_ITEMS = [
+  { label: 'Dashboard', iconName: 'widget' },
+  { label: 'Reports', iconName: 'bar-chart' },
+  { label: 'Settings', iconName: 'settings' },
+];
+
+test('BapsInternalNavbar marks the active row for sight and for a reader', () => {
+  const html = renderToStaticMarkup(
+    createElement(BapsInternalNavbar, { items: NAV_ITEMS, activeItem: 'Reports' }),
+  );
+  // The class paints it; aria-current is what is announced. Exactly one row
+  // may claim either, and they must be the same row.
+  assert.equal((html.match(/baps-internal-nav__item--active/g) ?? []).length, 1);
+  assert.equal((html.match(/aria-current="page"/g) ?? []).length, 1);
+});
+
+test('BapsInternalNavbar gives every row a real button', () => {
+  const html = renderToStaticMarkup(createElement(BapsInternalNavbar, { items: NAV_ITEMS }));
+  // Keyboard reach and the actionable role come from the element, not from
+  // a click handler on a div.
+  assert.equal((html.match(/<button/g) ?? []).length, NAV_ITEMS.length);
+  assert.ok(html.includes('aria-label="Section navigation"') || html.includes('<nav'));
+});
+
+test('BapsInternalNavbar collapses by class, keeping the rows in the DOM', () => {
+  const open = renderToStaticMarkup(createElement(BapsInternalNavbar, { items: NAV_ITEMS }));
+  const shut = renderToStaticMarkup(
+    createElement(BapsInternalNavbar, { items: NAV_ITEMS, collapsed: true }),
+  );
+  assert.ok(!open.includes('baps-internal-nav--collapsed'));
+  assert.ok(shut.includes('baps-internal-nav--collapsed'));
+  // Rows survive collapse — hiding is the CSS's job, not a render branch.
+  assert.equal((shut.match(/<button/g) ?? []).length, NAV_ITEMS.length);
+});
+
+test('BapsNavbar renders title and version, and omits what is unset', () => {
+  const full = renderToStaticMarkup(
+    createElement(BapsNavbar, { title: 'Sampark', version: 'v1.1.0' }),
+  );
+  const bare = renderToStaticMarkup(createElement(BapsNavbar, {}));
+  assert.ok(full.includes('baps-navbar__title'));
+  assert.ok(full.includes('baps-navbar__version'));
+  // No empty spans: an unset input renders nothing rather than a blank slot.
+  assert.ok(!bare.includes('baps-navbar__title'));
+  assert.ok(!bare.includes('baps-navbar__version'));
+});
+
+test('BapsNavbar adds the chevron only when asked, and names its state', () => {
+  const without = renderToStaticMarkup(createElement(BapsNavbar, { title: 'Sampark' }));
+  const withBtn = renderToStaticMarkup(
+    createElement(BapsNavbar, { title: 'Sampark', menuButton: true, menuOpen: true }),
+  );
+  assert.ok(!without.includes('baps-navbar__menu-button'));
+  assert.ok(withBtn.includes('baps-navbar__menu-button'));
+  // aria-expanded, so the button says which way it will go.
+  assert.ok(withBtn.includes('aria-expanded="true"'));
+});
+
+test('BapsToolbar keeps its three slots independent', () => {
+  const html = renderToStaticMarkup(
+    createElement(BapsToolbar, { title: 'Projects', right: createElement('button', null, 'New') }),
+  );
+  assert.ok(html.includes('Projects'));
+  assert.ok(html.includes('New'));
+});
+
+test('BapsTabs marks one tab selected and the rest not', () => {
+  const html = renderToStaticMarkup(
+    createElement(
+      BapsTabs,
+      { defaultValue: 'b' },
+      createElement(
+        BapsTabList,
+        null,
+        createElement(BapsTab, { value: 'a' }, 'First'),
+        createElement(BapsTab, { value: 'b' }, 'Second'),
+      ),
+    ),
+  );
+  // role="tab" with aria-selected is the contract a screen reader reads; the
+  // painted underline is not.
+  assert.equal((html.match(/aria-selected="true"/g) ?? []).length, 1);
+  assert.equal((html.match(/aria-selected="false"/g) ?? []).length, 1);
+});
+
+test('BapsStepper marks the current step with aria-current', () => {
+  const html = renderToStaticMarkup(
+    createElement(
+      BapsStepper,
+      { value: 2 },
+      createElement(
+        BapsStepList,
+        null,
+        createElement(BapsStep, { value: 1 }, 'Details'),
+        createElement(BapsStep, { value: 2 }, 'Payment'),
+        createElement(BapsStep, { value: 3 }, 'Review'),
+      ),
+    ),
+  );
+  // One step is where the user is. More than one would be a lie; none leaves
+  // a screen reader with no position at all.
+  assert.equal((html.match(/aria-current="step"/g) ?? []).length, 1);
 });

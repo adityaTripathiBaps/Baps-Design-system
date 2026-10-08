@@ -87,7 +87,16 @@ export function BapsBreadcrumb({
 
           return (
             <Fragment key={index}>
-              <li className="p-breadcrumb-item">{itemContent}</li>
+              {/* aria-current="page" is what a screen reader reads for "you
+                  are here". The last crumb IS the current page, and without
+                  this the trail is announced as a row of equal links with no
+                  indication of where the reader actually is. */}
+              <li
+                className="p-breadcrumb-item"
+                aria-current={isLast ? 'page' : undefined}
+              >
+                {itemContent}
+              </li>
               {!isLast && (
                 <li className="p-breadcrumb-separator">
                   <span className="pi pi-chevron-right" aria-hidden="true"></span>
