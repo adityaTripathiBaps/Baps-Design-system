@@ -53,10 +53,13 @@ Nothing. Every tracked component is DONE or PARTIAL.
 
 ## Pending, not forgotten
 
-- **Stories and framework snippets for all five Batch 5 components** — Table,
-  SortIcon, Table Column Config, Table Sort Config, Tree Table. Components,
-  types and tests are done; the docs surface is not, so snippet coverage has
-  not moved.
+- **SortIcon is documented via Table, not on its own page.** It lives in the
+  table component folder and has no .stories.ts or .mdx of its own, so
+  check-snippets does not count it as a component and there is no snippet slot
+  to fill. Deliberate: its three states only make sense in a column header.
+- ~~Stories and framework snippets for the Batch 5 components~~ — done.
+  Snippet coverage moved 38/47 components and 207/254 examples to 41/47 and
+  227/254. SortIcon is covered through Table, as noted above.
 - **Drawer, Dialog and Popover have no React tests, and neither do the two
   panels built on Drawer.** `BapsDrawer` always `createPortal`s into
   `document.body` — `appendTo: null` falls back to it — so

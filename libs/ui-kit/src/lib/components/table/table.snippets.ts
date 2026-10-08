@@ -1,7 +1,30 @@
 /**
  * Framework snippets for the Table docs page, keyed by story export name.
  *
- * ## Why this approach and not PrimeReact
+ * ## There is a React component now, and the snippets use it
+
+This file predates `BapsTable`. It was written when the only way to get a
+table outside Angular was to hand-write one, and its older entry still shows
+that: a plain `<table>` carrying the design system's BEM vocabulary, with the
+`--table-*` custom properties set directly because the Sampark skin targets
+`baps-table .p-datatable-*` and a bare `<table>` never matches it.
+
+That approach still works and is worth knowing. It is no longer what a
+consumer should reach for first. `@org/ui-kit-react` ships `BapsTable`, which
+emits the 19 `.p-datatable-*` selectors `table.css` actually targets, so the
+skin applies without PrimeNG and without hand-written class strings. New
+entries below use the component.
+
+The component's API is data in, not templates in: `columns` and `value`
+rather than `ng-template`. Sorting is controlled or uncontrolled, and the
+difference matters — uncontrolled sorts its own rows, while controlled leaves
+row order alone so a server-paged table is never reordered behind its own
+pagination.
+
+Not implemented, each a public-API decision: row selection, frozen columns,
+virtual scroll, row expansion, column resize and reorder.
+
+## Why this approach and not PrimeReact
  *
  * No snippet in this design system uses PrimeReact. The architecture is:
  * outside Angular you write the HTML the wrapper would have rendered, and the
@@ -379,6 +402,489 @@ const TABLE_BODY = `
       </div>`;
 
 export const tableSnippets: Record<string, SnippetSet> = {
+  // Row grouping is the one thing on this page BapsTable does not do.
+  //
+  // The Angular side gets it from PrimeNG's rowgroup templates. The React
+  // component has no grouping API, and adding one is a real decision — who
+  // owns the collapsed state, whether a group header is a row or a section,
+  // what a group does to sorting. So this shows the honest alternative:
+  // group in the caller and render one table per group. It costs a heading
+  // per group and gains an API nobody has to design.
+  GroupedProjects: {
+    primeng: `<baps-table [value]="rows" rowGroupMode="subheader" groupRowsBy="centre">
+  <ng-template pTemplate="groupheader" let-row>
+    <tr class="baps-table-group-row"><td colspan="4">{{ row.centre }}</td></tr>
+  </ng-template>
+</baps-table>`,
+    react: `${SETUP}
+
+/* No grouping prop — see the note on this entry. Grouping in the caller keeps
+   the table dumb and the collapsed state wherever it already lives. */
+export function GroupedProjects({ rows }) {
+  const groups = Object.groupBy(rows, (r) => r.centre);
+
+  return (
+    <>
+      {Object.entries(groups).map(([centre, groupRows]) => (
+        <section key={centre}>
+          {/* A real heading, so the groups are navigable by landmark rather
+              than only visible. */}
+          <h3>{centre}</h3>
+          <BapsTable columns={COLUMNS} value={groupRows} />
+        </section>
+      ))}
+    </>
+  );
+}`,
+    next: `${SETUP}
+
+/* No 'use client': grouping is a pure transform and can run on the server. */
+export default function GroupedProjects({ rows }) {
+  const groups = Object.groupBy(rows, (r) => r.centre);
+
+  return (
+    <>
+      {Object.entries(groups).map(([centre, groupRows]) => (
+        <section key={centre}>
+          <h3>{centre}</h3>
+          <BapsTable columns={COLUMNS} value={groupRows} />
+        </section>
+      ))}
+    </>
+  );
+}`,
+  },
+
+  // The whole screen: toolbar, table, pagination, and the column-config panel
+  // the toolbar opens. Worth having as one entry because the wiring between
+  // them is the part that is easy to get wrong.
+  FullListingPage: {
+    primeng: `<baps-toolbar>
+  <baps-button label="Columns" (onClick)="configVisible = true" />
+</baps-toolbar>
+
+<baps-table [value]="rows" [paginator]="true" [rows]="10" [totalRecords]="total" />
+
+<baps-table-column-config
+  [(visible)]="configVisible"
+  [columns]="columns"
+  (columnsChange)="columns = $event"
+/>`,
+    react: `${SETUP}
+
+export function ListingPage({ rows, total }) {
+  const [columns, setColumns] = useState(ALL_COLUMNS);
+  const [configOpen, setConfigOpen] = useState(false);
+  const [first, setFirst] = useState(0);
+
+  // The table renders the columns the panel left visible. The panel stages
+  // its own edits and only emits on Apply, so this state changes once per
+  // Apply rather than once per toggle.
+  const visibleColumns = columns.filter((c) => c.visible !== false);
+
+  return (
+    <>
+      <BapsToolbar>
+        <BapsButton severity="secondary" size="small" onClick={() => setConfigOpen(true)}>
+          Columns
+        </BapsButton>
+      </BapsToolbar>
+
+      <BapsTable
+        columns={visibleColumns}
+        value={rows.slice(first, first + 10)}
+      />
+
+      <BapsPagination
+        first={first}
+        rows={10}
+        totalRecords={total}
+        onPageChange={(e) => setFirst(e.first)}
+      />
+
+      <BapsTableColumnConfig
+        visible={configOpen}
+        onVisibleChange={setConfigOpen}
+        columns={columns}
+        onColumnsChange={setColumns}
+      />
+    </>
+  );
+}`,
+    next: `'use client';
+
+${SETUP}
+
+/* 'use client' for the panel and the page offset. The rows themselves can
+   still be fetched on the server and passed in. */
+export default function ListingPage({ rows, total }) {
+  const [columns, setColumns] = useState(ALL_COLUMNS);
+  const [configOpen, setConfigOpen] = useState(false);
+  const [first, setFirst] = useState(0);
+
+  return (
+    <>
+      <BapsToolbar>
+        <BapsButton severity="secondary" size="small" onClick={() => setConfigOpen(true)}>
+          Columns
+        </BapsButton>
+      </BapsToolbar>
+
+      <BapsTable
+        columns={columns.filter((c) => c.visible !== false)}
+        value={rows.slice(first, first + 10)}
+      />
+
+      <BapsPagination first={first} rows={10} totalRecords={total} onPageChange={(e) => setFirst(e.first)} />
+
+      <BapsTableColumnConfig
+        visible={configOpen}
+        onVisibleChange={setConfigOpen}
+        columns={columns}
+        onColumnsChange={setColumns}
+      />
+    </>
+  );
+}`,
+  },
+
+  // A cell is a render function, which is the whole extension point: anything
+  // that goes in a cell is yours, and the table stays out of it.
+  TreeLevels: {
+    primeng: `<baps-table [value]="rows">
+  <ng-template pTemplate="body" let-row>
+    <tr>
+      <td class="baps-table-cell">
+        <span class="spm-name-col">{{ row.name }}</span>
+        <span class="baps-table-badge">{{ row.count }}</span>
+      </td>
+    </tr>
+  </ng-template>
+</baps-table>`,
+    react: `${SETUP}
+
+const LEVEL_COLUMNS = [
+  {
+    field: 'name',
+    header: 'Location',
+    sortable: true,
+    // The BEM classes here are the shared stylesheet's, not this component's
+    // — .baps-table-cell and .baps-table-badge ship in table.css and work
+    // inside any cell.
+    body: (row) => (
+      <span className="baps-table-cell">
+        <span>{row.name}</span>
+        <span className="baps-table-badge">{row.count}</span>
+      </span>
+    ),
+  },
+  { field: 'provider', header: 'Provider' },
+];
+
+export function LevelsTable({ rows }) {
+  return <BapsTable columns={LEVEL_COLUMNS} value={rows} />;
+}`,
+    next: `${SETUP}
+
+/* No 'use client': render functions run wherever the table does, and nothing
+   here holds state. */
+export default function LevelsTable({ rows }) {
+  return <BapsTable columns={LEVEL_COLUMNS} value={rows} />;
+}`,
+  },
+
+  // Composition, not configuration: avatars, tags and progress bars are their
+  // own components dropped into a cell. The table has no opinion about them.
+  KaryakarAssignments: {
+    primeng: `<baps-table [value]="rows">
+  <ng-template pTemplate="body" let-row>
+    <tr>
+      <td class="baps-table-cell">
+        <baps-avatar [label]="row.initials" size="s" />
+        <span>{{ row.name }}</span>
+      </td>
+      <td><baps-tag [label]="row.status" [severity]="row.severity" /></td>
+    </tr>
+  </ng-template>
+</baps-table>`,
+    react: `${SETUP}
+
+const ASSIGNMENT_COLUMNS = [
+  {
+    field: 'name',
+    header: 'Karyakar',
+    body: (row) => (
+      <span className="baps-table-cell">
+        <BapsAvatar label={row.initials} size="s" />
+        <span>{row.name}</span>
+      </span>
+    ),
+  },
+  {
+    field: 'status',
+    header: 'Status',
+    body: (row) => <BapsTag label={row.status} severity={row.severity} />,
+  },
+];
+
+export function AssignmentsTable({ rows }) {
+  return <BapsTable columns={ASSIGNMENT_COLUMNS} value={rows} />;
+}`,
+    next: `${SETUP}
+
+export default function AssignmentsTable({ rows }) {
+  return <BapsTable columns={ASSIGNMENT_COLUMNS} value={rows} />;
+}`,
+  },
+
+  // Pagination is a sibling, not a prop. BapsTable renders the rows it is
+  // given, so the page slice stays the caller's — which is also what makes a
+  // server-paged table possible without a second code path.
+  WithPagination: {
+    primeng: `<baps-table [value]="rows" [paginator]="true" [rows]="10" [totalRecords]="total" />`,
+    react: `${SETUP}
+
+export function PagedTable({ rows }) {
+  const [first, setFirst] = useState(0);
+  const perPage = 10;
+
+  return (
+    <>
+      <BapsTable columns={COLUMNS} value={rows.slice(first, first + perPage)} />
+      <BapsPagination
+        first={first}
+        rows={perPage}
+        totalRecords={rows.length}
+        onPageChange={(e) => setFirst(e.first)}
+      />
+    </>
+  );
+}`,
+    next: `'use client';
+
+${SETUP}
+
+/* 'use client' for the page offset. Lift it to a search param if the page
+   should survive a refresh or be shareable. */
+export default function PagedTable({ rows }) {
+  const [first, setFirst] = useState(0);
+  const perPage = 10;
+
+  return (
+    <>
+      <BapsTable columns={COLUMNS} value={rows.slice(first, first + perPage)} />
+      <BapsPagination
+        first={first}
+        rows={perPage}
+        totalRecords={rows.length}
+        onPageChange={(e) => setFirst(e.first)}
+      />
+    </>
+  );
+}`,
+  },
+
+  // Sorting CONTROLLED, which is the point of this example. Uncontrolled would
+  // sort the ten rows already on screen and leave the other ninety alone — the
+  // table would look sorted and be wrong. Controlled means the component never
+  // touches row order; it reports the click and the server answers.
+  SortableStickyPaginated: {
+    primeng: `<baps-table
+  [value]="rows"
+  sortMode="single"
+  [sortField]="sortField"
+  [sortOrder]="sortOrder"
+  (sortEvent)="onSort($event)"
+  [scrollable]="true"
+  scrollHeight="25rem"
+  [paginator]="true"
+/>`,
+    react: `${SETUP}
+
+export function ServerSortedTable({ rows, total, onQuery }) {
+  const [sort, setSort] = useState({ field: 'name', order: 1 });
+  const [first, setFirst] = useState(0);
+
+  // scrollHeight makes the header sticky: the container scrolls, the thead
+  // does not.
+  return (
+    <>
+      <BapsTable
+        columns={COLUMNS}
+        value={rows}
+        sortField={sort.field}
+        sortOrder={sort.order}
+        onSort={(e) => {
+          setSort(e);
+          setFirst(0);
+          onQuery({ ...e, first: 0 });
+        }}
+        scrollable
+        scrollHeight="25rem"
+      />
+      <BapsPagination
+        first={first}
+        rows={10}
+        totalRecords={total}
+        onPageChange={(e) => {
+          setFirst(e.first);
+          onQuery({ ...sort, first: e.first });
+        }}
+      />
+    </>
+  );
+}`,
+    next: `'use client';
+
+${SETUP}
+
+/* Sorting and paging both belong in the URL for a server-backed listing, so
+   this is the component that should read searchParams in a real app. */
+export default function ServerSortedTable({ rows, total, onQuery }) {
+  const [sort, setSort] = useState({ field: 'name', order: 1 });
+  const [first, setFirst] = useState(0);
+
+  return (
+    <>
+      <BapsTable
+        columns={COLUMNS}
+        value={rows}
+        sortField={sort.field}
+        sortOrder={sort.order}
+        onSort={(e) => {
+          setSort(e);
+          setFirst(0);
+          onQuery({ ...e, first: 0 });
+        }}
+        scrollable
+        scrollHeight="25rem"
+      />
+      <BapsPagination first={first} rows={10} totalRecords={total} onPageChange={(e) => setFirst(e.first)} />
+    </>
+  );
+}`,
+  },
+
+  // Sorting is uncontrolled here: the component sorts its own rows. onSort
+  // still fires, so a caller can record it without taking ownership.
+  Default: {
+    primeng: `<baps-table [value]="rows" sortMode="single">
+  <ng-template pTemplate="header">
+    <tr>
+      <th pSortableColumn="name">Name <baps-sort-icon [order]="0" /></th>
+      <th pSortableColumn="centre">Centre <baps-sort-icon [order]="0" /></th>
+      <th>Role</th>
+      <th>Status</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-row>
+    <tr>
+      <td>{{ row.name }}</td>
+      <td>{{ row.centre }}</td>
+      <td>{{ row.role }}</td>
+      <td>{{ row.status }}</td>
+    </tr>
+  </ng-template>
+</baps-table>`,
+    react: `${SETUP}
+
+const COLUMNS = [
+  { field: 'name', header: 'Name', sortable: true },
+  { field: 'centre', header: 'Centre', sortable: true },
+  { field: 'role', header: 'Role' },
+  { field: 'status', header: 'Status' },
+];
+
+const ROWS = [
+  { name: 'Hiren Patel', centre: 'Edison', role: 'Coordinator', status: 'Active' },
+  { name: 'Anjali Shah', centre: 'Toronto', role: 'Volunteer', status: 'Active' },
+  { name: 'Rakesh Desai', centre: 'Houston', role: 'Lead', status: 'Inactive' },
+];
+
+export function MemberTable({ onSort }) {
+  // columns + value, not templates. A column is sortable because it says so,
+  // and the header button, its aria-sort and the icon all follow from that.
+  return <BapsTable columns={COLUMNS} value={ROWS} onSort={onSort} />;
+}`,
+    next: `${SETUP}
+
+/* No 'use client': uncontrolled sorting lives inside the component, and this
+   page holds nothing of its own. Add it when you lift sortField up. */
+const COLUMNS = [
+  { field: 'name', header: 'Name', sortable: true },
+  { field: 'centre', header: 'Centre', sortable: true },
+  { field: 'role', header: 'Role' },
+  { field: 'status', header: 'Status' },
+];
+
+const ROWS = [
+  { name: 'Hiren Patel', centre: 'Edison', role: 'Coordinator', status: 'Active' },
+  { name: 'Anjali Shah', centre: 'Toronto', role: 'Volunteer', status: 'Active' },
+  { name: 'Rakesh Desai', centre: 'Houston', role: 'Lead', status: 'Inactive' },
+];
+
+export default function MemberTable() {
+  return <BapsTable columns={COLUMNS} value={ROWS} />;
+}`,
+  },
+
+  // Compact is one prop. The row height, cell padding and font size all come
+  // from .p-datatable-sm in the shared stylesheet, so there is nothing to
+  // restyle per table.
+  Compact: {
+    primeng: `<baps-table [value]="rows" size="small" />`,
+    react: `${SETUP}
+
+export function CompactTable() {
+  return <BapsTable columns={COLUMNS} value={ROWS} size="small" />;
+}`,
+    next: `${SETUP}
+
+export default function CompactTable() {
+  return <BapsTable columns={COLUMNS} value={ROWS} size="small" />;
+}`,
+  },
+
+  // Loading marks the container busy and leaves the rows in place, so a
+  // reader keeps what they had and the change is announced rather than shown.
+  Loading: {
+    primeng: `<baps-table [value]="rows" [loading]="true" />`,
+    react: `${SETUP}
+
+export function LoadingTable({ loading }) {
+  // aria-busy goes on the scroll container; the mask over it is decoration
+  // and is marked aria-hidden.
+  return <BapsTable columns={COLUMNS} value={ROWS} loading={loading} />;
+}`,
+    next: `${SETUP}
+
+export default function LoadingTable({ loading }) {
+  return <BapsTable columns={COLUMNS} value={ROWS} loading={loading} />;
+}`,
+  },
+
+  // Empty is a row spanning every column, not a blank body: a table with a
+  // head and nothing under it reads as broken rather than as "no results".
+  Empty: {
+    primeng: `<baps-table [value]="[]">
+  <ng-template pTemplate="emptymessage">
+    <tr><td colspan="4">No results found</td></tr>
+  </ng-template>
+</baps-table>`,
+    react: `${SETUP}
+
+export function EmptyTable() {
+  // emptyMessage takes a node, so it can carry an illustration or a "clear
+  // filters" action instead of a sentence.
+  return <BapsTable columns={COLUMNS} value={[]} emptyMessage="No results found" />;
+}`,
+    next: `${SETUP}
+
+export default function EmptyTable() {
+  return <BapsTable columns={COLUMNS} value={[]} emptyMessage="No results found" />;
+}`,
+  },
+
   WithColumnConfig: {
     interactive: true,
     primeng: `<baps-table
