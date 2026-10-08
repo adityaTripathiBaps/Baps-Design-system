@@ -1,5 +1,9 @@
 # BAPS Design System — Agent Rules
 
+> These are the **domain** rules — what to build and how it must look.
+> [`../RULES.md`](../RULES.md) (how to work) and [`../BRAIN.md`](../BRAIN.md)
+> (what this project already knows) come first, on every task.
+
 Every file in this folder is a **rule set an agent must follow** when working in
 this repository. They are the single source of truth: `CLAUDE.md` and
 `AGENTS.md` point here rather than restating them, so Claude, Cursor, Codex,

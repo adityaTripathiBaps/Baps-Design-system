@@ -24,6 +24,17 @@
 
 # BAPS Design System
 
+## Start here, every task
+
+1. [`.agents/RULES.md`](.agents/RULES.md) — the operating protocol. How to
+   work: scope, honesty, permissions, and the start/completion checklists.
+2. [`.agents/BRAIN.md`](.agents/BRAIN.md) — durable project knowledge.
+   Architecture decisions, verify commands, known open issues, token exceptions.
+
+Read both before reading anything else, then the rule in
+[`.agents/rules/`](.agents/rules/README.md) that matches what you are about to
+touch. Those two files are canonical; nothing restates them.
+
 A shared component library, token pipeline and Storybook site for BAPS's digital
 products (member database, event management, donation management, daily Satsang
 activities).

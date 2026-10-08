@@ -24,8 +24,20 @@
 
 # BAPS Design System
 
-**Read [AGENTS.md](AGENTS.md) first.** It is the entry point, and every rule
-lives in [`.agents/rules/`](.agents/rules/README.md).
+## Start here, every task
+
+1. [`.agents/RULES.md`](.agents/RULES.md) — the operating protocol. How to
+   work: scope, honesty, permissions, and the start/completion checklists.
+2. [`.agents/BRAIN.md`](.agents/BRAIN.md) — durable project knowledge.
+   Architecture decisions, verify commands, known open issues, token exceptions.
+
+Read both before reading anything else, then the rule in
+[`.agents/rules/`](.agents/rules/README.md) that matches what you are about to
+touch. Those two files are canonical; nothing restates them.
+
+**Then [AGENTS.md](AGENTS.md)**, which carries the project shape,
+commands and non-negotiables. Domain rules live in
+[`.agents/rules/`](.agents/rules/README.md).
 
 This file used to hold the rules inline. It no longer does, on purpose: the same
 content was invisible to every agent tool that reads `AGENTS.md` instead of
