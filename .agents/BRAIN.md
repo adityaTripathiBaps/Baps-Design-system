@@ -71,9 +71,11 @@ change for those consumers.
 `BapsDrawer` always `createPortal`s into `document.body` — `appendTo: null`
 falls back to it — so `renderToStaticMarkup` throws "document is not defined"
 and Drawer, Dialog and Popover have no React tests at all. Rather than shim a
-DOM or weaken the component, the two panels built on Drawer export the logic
-worth pinning and test that directly: `getColumnConfigBuckets`,
-`getAvailableSortFields`, `getApplicableSortRows`. Pagination set the
+DOM or weaken the component, those components export the logic worth pinning
+from their own module and the tests import it from the component file —
+`getColumnConfigBuckets`, `getAvailableSortFields`, `getApplicableSortRows`,
+`flattenTreeTableRows`. The module barrels are explicit for this reason, so a
+test helper never becomes a supported API. Pagination set the
 precedent with `getPaginationPages`. A jsdom test environment would fix the
 whole class and is a new dependency, so it needs approval.
 

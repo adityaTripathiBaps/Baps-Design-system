@@ -2,6 +2,15 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
+// Not from the package barrel: these are internals the components export for
+// their own use and for these tests. Keeping them off the barrel keeps the
+// public API to components and their types.
+import { getColumnConfigBuckets } from '../dist/lib/table-column-config/table-column-config.js';
+import {
+  getAvailableSortFields,
+  getApplicableSortRows,
+} from '../dist/lib/table-sort-config/table-sort-config.js';
+import { flattenTreeTableRows } from '../dist/lib/tree-table/tree-table.js';
 import {
   BapsAlert,
   BapsAvatar,
@@ -35,11 +44,7 @@ import {
   BapsPagination,
   BapsSortIcon,
   BapsTable,
-  getColumnConfigBuckets,
-  getAvailableSortFields,
-  getApplicableSortRows,
   BapsTreeTable,
-  flattenTreeTableRows,
   BapsSegmented,
   BapsSkeleton,
   BapsSpinner,
