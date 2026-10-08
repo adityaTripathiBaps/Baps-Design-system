@@ -249,8 +249,8 @@ screenshots, not source.
 
 Counts, if they are useful as a tripwire rather than a source of truth:
 47 component families (the barrel exports 47; `_template` is a scaffold and is
-the only directory not exported). 38 carry framework snippets, 207/254
-examples; 41 per-component stylesheets emit; Angular 505/505 across 32 suites;
+the only directory not exported). All 47 carry framework snippets, 247/254
+examples — the seven uncovered are Interaction stories, excluded by design; 41 per-component stylesheets emit; Angular 505/505 across 32 suites;
 React 53/53.
 
 Component-level truth stays in the STATUS files.

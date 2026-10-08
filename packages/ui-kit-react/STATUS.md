@@ -58,8 +58,11 @@ Nothing. Every tracked component is DONE or PARTIAL.
   check-snippets does not count it as a component and there is no snippet slot
   to fill. Deliberate: its three states only make sense in a column header.
 - ~~Stories and framework snippets for the Batch 5 components~~ — done.
-  Snippet coverage moved 38/47 components and 207/254 examples to 41/47 and
-  227/254. SortIcon is covered through Table, as noted above.
+  Snippet coverage is now **47/47 components and 247/254 examples** — every
+  component in the kit carries framework snippets. The seven uncovered
+  examples are Interaction stories, which check-snippets excludes by design:
+  being invisible is their point. SortIcon is covered through Table, as noted
+  above.
 - **Drawer, Dialog and Popover have no React tests, and neither do the two
   panels built on Drawer.** `BapsDrawer` always `createPortal`s into
   `document.body` — `appendTo: null` falls back to it — so
