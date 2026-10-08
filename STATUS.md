@@ -3,21 +3,29 @@
 Only real, reusable, typed components exported by `@org/ui-kit-react` count as
 implemented. Documentation snippets do not count.
 
-**Tracked total: 55 components — DONE: 48 — PARTIAL: 2 — NOT STARTED: 5 — BLOCKED: 0.**
+**Tracked total: 55 components — DONE: 51 — PARTIAL: 1 — NOT STARTED: 3 — BLOCKED: 0.**
 
 ## Batch 2
 
-**26 components — DONE: 24 — PARTIAL: 2.**
+**26 components — DONE: 25 — PARTIAL: 1.**
 
 - DONE: Icon, Button, Avatar, AvatarGroup, Badge, OverlayBadge, Indicator, Tag,
   Alert, Card, Divider, Spinner, Skeleton, FloatLabel, IconField, InputIcon,
   Message, InputText, Textarea, Checkbox, Radio, Toggle Switch, Input Group,
   Segmented.
-- PARTIAL: Link — live default Storybook story still has a serious
-  `color-contrast` finding.
-- PARTIAL: Progress Bar — the live Angular/PrimeNG story still has
-  `aria-allowed-attr`, `aria-valid-attr-value`, and `aria-progressbar-name`
-  findings.
+- PARTIAL: Link — serious `color-contrast`. MyBKY #5f78b8 is 4.32:1 and
+  Sampark #c96868 is 3.71:1 against white, both under AA's 4.5:1 for normal
+  text. The compliant step in each ramp is already the hover colour, so fixing
+  it means moving the whole link state ramp — and Sampark runs out of steps.
+  Blocked on a designer.
+- DONE (React) / open (Angular): Progress Bar. The REACT component is clean on
+  all three findings and asserted in tests — its own markup omits
+  `aria-value*` when indeterminate, which is the PrimeNG defect, and
+  `aria-label` reaches the element carrying the role.
+  The ANGULAR wrapper keeps two: `aria-allowed-attr` and
+  `aria-valid-attr-value`, because PrimeNG binds `aria-valuenow` on its own
+  host whatever the mode and neither wrapper lever overrides it.
+  `aria-progressbar-name` is fixed on both, verified by a clean axe run.
 
 ## Batch 3
 
@@ -28,7 +36,7 @@ implemented. Documentation snippets do not count.
 
 ## Batch 4
 
-**15 components — DONE: 10 — NOT STARTED: 5.**
+**15 components — DONE: 12 — NOT STARTED: 3.**
 
 | Order | Component           | Status      |
 | ----: | ------------------- | ----------- |
@@ -42,8 +50,8 @@ implemented. Documentation snippets do not count.
 |     8 | Users Dropdown      | DONE        |
 |     9 | File Upload         | DONE        |
 |    10 | Pagination          | DONE        |
-|    11 | Table               | NOT STARTED |
-|   11a | SortIcon            | NOT STARTED |
+|    11 | Table               | DONE        |
+|   11a | SortIcon            | DONE        |
 |    12 | Table Column Config | NOT STARTED |
 |    13 | Table Sort Config   | NOT STARTED |
 |    14 | Tree Table          | NOT STARTED |

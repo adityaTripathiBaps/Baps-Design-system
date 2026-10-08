@@ -113,7 +113,7 @@ export const Components: Story = {
             </div>
             <div style="display:grid; gap:var(--space-4, 1rem);">
               <baps-slider ariaLabel="Volume" [(ngModel)]="volume" />
-              <baps-progressbar [value]="62" />
+              <baps-progressbar [value]="62" ariaLabel="Sample progress" />
             </div>
           </div>
         </section>

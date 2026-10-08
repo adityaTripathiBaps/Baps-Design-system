@@ -22,14 +22,14 @@ export default function ${name}() {
 
 export const progressBarSnippets: Record<string, SnippetSet> = {
   Default: {
-    primeng: `<baps-progressbar [value]="64" aria-label="Upload progress" />`,
+    primeng: `<baps-progressbar [value]="64" ariaLabel="Upload progress" />`,
     ...examples(
       'DefaultProgressBar',
       '<BapsProgressBar value={64} showValue aria-label="Upload progress" />',
     ),
   },
   SeveritiesMyBKY: {
-    primeng: `<baps-progressbar [value]="72" severity="success" />`,
+    primeng: `<baps-progressbar [value]="72" severity="success" ariaLabel="Upload progress" />`,
     ...examples(
       'MyBkyProgressSeverities',
       `<>
@@ -41,7 +41,7 @@ export const progressBarSnippets: Record<string, SnippetSet> = {
     ),
   },
   Severities: {
-    primeng: `<baps-progressbar brand="sampark" [value]="72" severity="success" />`,
+    primeng: `<baps-progressbar brand="sampark" [value]="72" severity="success" ariaLabel="Upload progress" />`,
     ...examples(
       'SamparkProgressSeverities',
       `<>
@@ -53,7 +53,7 @@ export const progressBarSnippets: Record<string, SnippetSet> = {
     ),
   },
   TableCellProgress: {
-    primeng: `<baps-progressbar [value]="82" [showValue]="false" />`,
+    primeng: `<baps-progressbar [value]="82" [showValue]="false" ariaLabel="Upload progress" />`,
     ...examples(
       'TableCellProgress',
       '<BapsProgressBar value={82} aria-label="82 percent complete" />',

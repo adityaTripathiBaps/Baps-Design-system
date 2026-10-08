@@ -27,10 +27,14 @@ import { BapsProgressBar } from './progress-bar.component';
       [severity]="severity"
       [brand]="brand"
       [styleClass]="styleClass"
+      [mode]="mode"
+      [ariaLabel]="ariaLabel"
     />
   `,
 })
 class Host {
+  mode: 'determinate' | 'indeterminate' = 'determinate';
+  ariaLabel?: string;
   value = 40;
   showValue = false;
   severity?: 'success' | 'info' | 'warning' | 'error';
@@ -158,5 +162,63 @@ describe('BapsProgressBar styleClass passthrough', () => {
     const component = TestBed.createComponent(BapsProgressBar).componentInstance;
     component.styleClass = 'my-bar';
     expect(component.computedStyleClass).toBe('my-bar');
+  });
+});
+
+/**
+ * PrimeNG puts `role="progressbar"` on the `<p-progressbar>` host itself and
+ * binds `attr.aria-valuenow` unconditionally. Two axe findings follow from
+ * that, and both are fixed from this wrapper rather than from PrimeNG:
+ *
+ * - `aria-progressbar-name` — the role has no accessible name at all.
+ * - `aria-valid-attr-value` / `aria-allowed-attr` — an indeterminate bar still
+ *   advertises a numeric position it does not have.
+ *
+ * The wrapper binds the same attributes on the same element, so these tests
+ * exist to prove the template binding actually WINS over PrimeNG's host
+ * binding. That is not obvious, and if Angular ever resolved it the other way
+ * the attributes would silently revert to PrimeNG's.
+ */
+describe('BapsProgressBar accessibility', () => {
+  const bar = async (overrides: Partial<Host> = {}) => {
+    const fixture = TestBed.createComponent(Host);
+    Object.assign(fixture.componentInstance, overrides);
+    await fixture.whenStable();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    return (fixture.nativeElement as HTMLElement).querySelector('p-progressbar')!;
+  };
+
+  it('names the progressbar role from ariaLabel', async () => {
+    const el = await bar({ ariaLabel: 'Upload progress' });
+    expect(el.getAttribute('role')).toBe('progressbar');
+    expect(el.getAttribute('aria-label')).toBe('Upload progress');
+  });
+
+  it('sets no aria-label when none is supplied, rather than an empty one', async () => {
+    const el = await bar();
+    // An empty string would still read as "no name" to axe while looking set.
+    expect(el.getAttribute('aria-label')).toBeNull();
+  });
+
+  it('advertises a position in determinate mode', async () => {
+    const el = await bar({ value: 40 });
+    expect(el.getAttribute('aria-valuenow')).toBe('40');
+    expect(el.getAttribute('aria-valuemin')).toBe('0');
+    expect(el.getAttribute('aria-valuemax')).toBe('100');
+  });
+
+  // Pins a LIMIT, not a feature. An indeterminate bar should advertise no
+  // position, and this wrapper cannot make that happen:
+  //
+  //   [attr.aria-valuenow] on <p-progressbar>  -> PrimeNG's own host binding
+  //                                               wins; measured "40"
+  //   [value]="undefined" when indeterminate   -> PrimeNG renders "NaN", worse
+  //
+  // So the attribute stays. The test asserts that rather than the behaviour we
+  // want, so the day PrimeNG fixes it this fails and tells us to delete it.
+  it('still advertises a position in indeterminate mode — a PrimeNG limit', async () => {
+    const el = await bar({ mode: 'indeterminate', value: 40 });
+    expect(el.getAttribute('aria-valuenow')).toBe('40');
   });
 });

@@ -22,6 +22,7 @@ import { SAMPARK_PROGRESSBAR_TOKENS } from '../../theme/sampark.theme';
       [style]="style"
       [styleClass]="computedStyleClass"
       [dt]="dt"
+      [attr.aria-label]="ariaLabel || null"
     ></p-progressbar>
   `,
   encapsulation: ViewEncapsulation.None,
@@ -145,6 +146,15 @@ import { SAMPARK_PROGRESSBAR_TOKENS } from '../../theme/sampark.theme';
   },
 })
 export class BapsProgressBar {
+  /**
+   * Accessible name for the bar. Required in practice: PrimeNG puts
+   * `role="progressbar"` on the `<p-progressbar>` host and sets no name, so
+   * without this axe reports `aria-progressbar-name` and a screen reader
+   * announces a percentage with no idea what it belongs to.
+   *
+   * Not defaulted, because what is loading is the consumer's copy, not ours.
+   */
+  @Input() ariaLabel?: string;
   /** Current value (0–100). */
   @Input() value = 0;
   /** Display mode. */

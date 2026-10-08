@@ -1139,6 +1139,7 @@ export const GroupedProjects: StoryObj<BapsTable> = {
                 <baps-progressbar
                   severity="success"
                   [value]="row.done / row.target * 100"
+                  [ariaLabel]="row.done + ' of ' + row.target + ' families'"
                 />
                 <span class="baps-table-progress-meta">
                   <span>{{ row.done }} / {{ row.target }} Families</span>

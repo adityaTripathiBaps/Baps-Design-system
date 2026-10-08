@@ -18,6 +18,11 @@ const meta: Meta<BapsProgressBar> = {
     // The template binds [mode], so leaving this out passed undefined and lost
     // the component's own 'determinate' default — PrimeNG then rendered no fill.
     mode: 'determinate',
+    // Same trap, and it cost an a11y finding: the template binds [ariaLabel],
+    // so without an arg the playground rendered a progressbar with no name and
+    // axe reported aria-progressbar-name on this page alone, after every
+    // hand-written bar in every other story had already been named.
+    ariaLabel: 'Upload progress',
   },
   // Curated controls. Compodoc already infers every input's TYPE and doc
   // comment, so this block exists only to give the union-typed and boolean
@@ -41,7 +46,8 @@ const meta: Meta<BapsProgressBar> = {
         [mode]="mode"
         [severity]="severity"
         [showValue]="showValue"
-        [styleClass]="styleClass">
+        [styleClass]="styleClass"
+        [ariaLabel]="ariaLabel">
       </baps-progressbar>
     `,
   }),
@@ -64,11 +70,11 @@ export const SeveritiesMyBKY: StoryObj<BapsProgressBar> = {
     props: args,
     template: `
       <div style="display: flex; flex-direction: column; gap: 1rem; max-width: 20rem">
-        <baps-progressbar [value]="value" [brand]="brand"></baps-progressbar>
-        <baps-progressbar [value]="value" [brand]="brand" severity="success"></baps-progressbar>
-        <baps-progressbar [value]="value" [brand]="brand" severity="info"></baps-progressbar>
-        <baps-progressbar [value]="value" [brand]="brand" severity="warning"></baps-progressbar>
-        <baps-progressbar [value]="value" [brand]="brand" severity="error"></baps-progressbar>
+        <baps-progressbar [value]="value" [brand]="brand" ariaLabel="Completion"></baps-progressbar>
+        <baps-progressbar [value]="value" [brand]="brand" severity="success" ariaLabel="Completion"></baps-progressbar>
+        <baps-progressbar [value]="value" [brand]="brand" severity="info" ariaLabel="Completion"></baps-progressbar>
+        <baps-progressbar [value]="value" [brand]="brand" severity="warning" ariaLabel="Completion"></baps-progressbar>
+        <baps-progressbar [value]="value" [brand]="brand" severity="error" ariaLabel="Completion"></baps-progressbar>
       </div>
     `,
   }),
@@ -81,11 +87,11 @@ export const Severities: StoryObj<BapsProgressBar> = {
     props: args,
     template: `
       <div style="display: flex; flex-direction: column; gap: 1rem; max-width: 20rem">
-        <baps-progressbar [value]="value" [brand]="brand"></baps-progressbar>
-        <baps-progressbar [value]="value" [brand]="brand" severity="success"></baps-progressbar>
-        <baps-progressbar [value]="value" [brand]="brand" severity="info"></baps-progressbar>
-        <baps-progressbar [value]="value" [brand]="brand" severity="warning"></baps-progressbar>
-        <baps-progressbar [value]="value" [brand]="brand" severity="error"></baps-progressbar>
+        <baps-progressbar [value]="value" [brand]="brand" ariaLabel="Completion"></baps-progressbar>
+        <baps-progressbar [value]="value" [brand]="brand" severity="success" ariaLabel="Completion"></baps-progressbar>
+        <baps-progressbar [value]="value" [brand]="brand" severity="info" ariaLabel="Completion"></baps-progressbar>
+        <baps-progressbar [value]="value" [brand]="brand" severity="warning" ariaLabel="Completion"></baps-progressbar>
+        <baps-progressbar [value]="value" [brand]="brand" severity="error" ariaLabel="Completion"></baps-progressbar>
       </div>
     `,
   }),
@@ -118,7 +124,7 @@ export const TableCellProgress: StoryObj<BapsProgressBar> = {
       <div class="baps-ds-sampark" style="display: flex; flex-direction: column; gap: 1.5rem; max-width: 12.5rem">
         @for (row of rows; track $index) {
           <span class="baps-table-progress">
-            <baps-progressbar severity="success" [value]="row.done / row.target * 100"></baps-progressbar>
+            <baps-progressbar severity="success" [value]="row.done / row.target * 100" [ariaLabel]="row.done + ' of ' + row.target + ' families'"></baps-progressbar>
             <span class="baps-table-progress-meta">
               <span>{{ row.done }} / {{ row.target }} Families</span>
               <span>{{ row.done / row.target * 100 | number: '1.0-0' }}%</span>

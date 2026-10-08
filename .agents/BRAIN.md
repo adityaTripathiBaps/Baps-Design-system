@@ -171,6 +171,42 @@ tokens; see *Open design decisions*.
 
 Blocked on design, not on implementation. Never invent these.
 
+- **An indeterminate progress bar still advertises a position.** PrimeNG puts
+  `role="progressbar"` on the `<p-progressbar>` host and binds
+  `attr.aria-valuenow` unconditionally, so axe reports `aria-allowed-attr`
+  and `aria-valid-attr-value` on every indeterminate bar. Measured, neither
+  lever in our wrapper works:
+
+  | attempt | result |
+  | --- | --- |
+  | `[attr.aria-valuenow]="null"` on `<p-progressbar>` | PrimeNG's host binding wins; still `40` |
+  | `[value]="undefined"` when indeterminate | renders `NaN` — worse |
+
+  Fixing it needs either a PrimeNG change or imperative DOM surgery in
+  `ngAfterViewChecked`, which is the kind of workaround that rots. A spec
+  pins the current behaviour so the day PrimeNG fixes it, the test fails and
+  says to delete itself.
+
+  `aria-progressbar-name` IS fixed: the wrapper gained an `ariaLabel` input
+  (PrimeNG binds no name, and a template binding for an attribute PrimeNG
+  does NOT bind does land). Adding the input was not enough on its own — the
+  playground story binds `[ariaLabel]` and had no arg, so it rendered nameless
+  until the arg was supplied too.
+- **Link rest colour fails WCAG AA for normal text, in both brands.** Measured
+  against #ffffff (AA normal needs 4.5:1):
+
+  | brand | rest today | ratio | next ramp step | ratio |
+  | --- | --- | --- | --- | --- |
+  | MyBKY | `blue-600` #5f78b8 | **4.32** | `blue-700` #4c6095 | 6.15 |
+  | Sampark | `primary-60` #c96868 | **3.71** | `primary-80` #b44141 | 5.57 |
+
+  A compliant token exists in both ramps, but it is already the HOVER colour,
+  so adopting it collapses rest and hover into one. Fixing it properly means
+  shifting all three link states down a step — and the Sampark ramp ends at
+  `primary-100`, leaving the active state nowhere to go.
+
+  That is a change to the link state ramp across every product, not a token
+  swap. Needs a designer. There is no dedicated `--link-*` token.
 - `--avatar-sampark-info-*` does not exist; the other five variants have a tier.
   `.baps-avatar-html--info` stays on MyBKY colours.
 - No `--button-sampark-danger-*` or `--button-sampark-warning-*` at all.

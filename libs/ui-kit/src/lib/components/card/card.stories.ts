@@ -179,7 +179,7 @@ export const DashboardTiles: Story = {
         <baps-card [brand]="brand">
           <span class="eyebrow" style="display:block; margin-bottom:0.5rem">Registrations this week</span>
           <div style="font-size:1.75rem; font-weight:700; margin-bottom:0.75rem">128</div>
-          <baps-progressbar [value]="72" severity="success" [brand]="brand" />
+          <baps-progressbar [value]="72" severity="success" [brand]="brand" ariaLabel="Campaign progress" />
           <p style="margin:0.5rem 0 0; font-size:0.875rem; color:var(--card-sampark-subtitle-color)">
             72% of the Yuva Sabha capacity
           </p>

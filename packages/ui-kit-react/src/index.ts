@@ -47,4 +47,6 @@ export * from './lib/chip/index.js';
 export * from './lib/slider/index.js';
 export * from './lib/file-upload/index.js';
 export * from './lib/pagination/index.js';
+export * from './lib/sort-icon/index.js';
+export * from './lib/table/index.js';
 export * from './lib/users-dropdown/index.js';
