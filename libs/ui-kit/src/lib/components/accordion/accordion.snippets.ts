@@ -20,6 +20,17 @@
  *   The `.baps-ds-sampark` class on a parent or the `baps-sampark` class on
  *   the accordion itself activates the Sampark skin.
  */
+/*
+ * Route B: no Custom tab.
+ *
+ * Measured: accordion.css is 9 rule blocks and every one of them touches a
+ * PrimeNG selector. The panels also open and close through PrimeNG at
+ * runtime.
+ *
+ *
+ * The React component emits the same class names, so a consuming app that
+ * loads the kit's CSS gets the full look.
+ */
 import { setupFor, type SnippetSet } from '../../docs/snippet-setup';
 
 export type { SnippetSet };

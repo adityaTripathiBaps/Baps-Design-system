@@ -1,3 +1,13 @@
+/*
+ * Route B: no Custom tab.
+ *
+ * Measured: 36 rule blocks, 35 of them touching PrimeNG selectors. The
+ * float label, icon field and input states are all PrimeNG's DOM.
+ *
+ *
+ * The React component emits the same class names, so a consuming app that
+ * loads the kit's CSS gets the full look.
+ */
 import { setupFor, type SnippetSet } from '../../docs/snippet-setup';
 
 const SETUP = `${setupFor('input', false, '@org/ui-kit-react/styles')}

@@ -1,3 +1,13 @@
+/*
+ * Route B: no Custom tab.
+ *
+ * Measured: 9 rule blocks, all 9 touching PrimeNG selectors, and the
+ * active indicator is positioned at runtime.
+ *
+ *
+ * The React component emits the same class names, so a consuming app that
+ * loads the kit's CSS gets the full look.
+ */
 import { setupFor, type SnippetSet } from '../../docs/snippet-setup';
 
 export type { SnippetSet };

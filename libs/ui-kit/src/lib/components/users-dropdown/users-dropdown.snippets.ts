@@ -1,3 +1,15 @@
+/*
+ * Route B: no Custom tab.
+ *
+ * Only 26% of its rules touch PrimeNG, but the panel is an overlay
+ * positioned at open time and it composes an input, an avatar, an icon and
+ * menu items. Static markup would have to reproduce a position that is
+ * computed.
+ *
+ *
+ * The React component emits the same class names, so a consuming app that
+ * loads the kit's CSS gets the full look.
+ */
 import { setupFor, type SnippetSet } from '../../docs/snippet-setup';
 
 export type { SnippetSet };

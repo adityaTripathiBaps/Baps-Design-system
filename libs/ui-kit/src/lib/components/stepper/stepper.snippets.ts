@@ -9,6 +9,17 @@
  * In React, you build the DOM structure matching PrimeNG's output. The design-system
  * CSS scopes its styles to PrimeNG's `.p-stepper` and `.p-step` classes.
  */
+/*
+ * Route B: no Custom tab.
+ *
+ * Measured: 33 rule blocks, 24 touching PrimeNG. The rail geometry keys
+ * off `p-stepper .p-step:has(...)`, so the connectors depend on PrimeNG's
+ * own wrapper elements.
+ *
+ *
+ * The React component emits the same class names, so a consuming app that
+ * loads the kit's CSS gets the full look.
+ */
 import { setupFor, type SnippetSet } from '../../docs/snippet-setup';
 
 export type { SnippetSet };
