@@ -169,7 +169,9 @@ Verified, not fixed. Each needs a decision, not just a patch.
 |---|---|---|
 | 1 | ~30 bare-hex declarations in component SCSS | `_input.scss` 22, `_navbar.scss` 3 (see *Open design decisions*), `_tag.scss` 2, `_input-sampark.scss` 2, `_overlay-list.scss` 1. Against `rules/styling-tokens.md` §1. |
 | 2 | 17 components still have no Angular spec | `button` and `table` now covered. |
-| 3 | React tests are one 1194-line file | 53 tests, no per-component split. |
+| 3 | React tests are one file, and 17 components are not in it | Measured 2026-10-08: accordion, breadcrumb, dialog, drawer, internal-navbar, menu-item, navbar, popover, split-button, stepper, table-column-config, table-sort-config, tabs, toast, toolbar, tooltip and form-field have no assertion naming them. Drawer, Dialog and Popover cannot be tested without jsdom; the other 14 can. |
+| 3a | 26 components have no Custom tab and no written reason | 12 have one, 9 record a Route B reason in the snippet file, 26 do not. 19 of those 26 are PrimeNG wrappers where a delta-only stylesheet is a good reason — it is simply not written down. The 7 standalone ones are accordion, file-upload, form-field, spinner, stepper, tabs and users-dropdown. |
+| 3b | Three Custom tabs were deleted without being noticed | `0c26fe5` rewrote six snippet files carried in from another session and dropped the `custom` blocks from breadcrumb (1), file-upload (2) and tabs (1). check-snippets does not fail on a REMOVED Custom tab, only on an unproven one, so nothing caught it. |
 | 4 | `a11y-audit.mjs` needs a running Storybook | Cannot run in CI as written; same for `check-standalone` and the drift guards. |
 
 Closed 2026-10-08: react/react-dom mismatch (pinned to 19.2.7),

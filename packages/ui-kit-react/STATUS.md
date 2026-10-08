@@ -51,6 +51,25 @@ could override it.
 
 Nothing. Every tracked component is DONE or PARTIAL.
 
+## Verified 2026-10-08
+
+Measured from source, not from this file. All 13 gates pass on `main`,
+including `build-storybook`, which failed on earlier days for machine memory
+and succeeded here ("Preview built (1.62 min)").
+
+- All 47 Angular component families have a React directory, an `.mdx` and a
+  snippets file. None is missing a React or Next tab.
+- Snippet coverage 47/47 components, 247/254 examples — confirmed by
+  `check-snippets --report`. The seven are Interaction stories.
+- Custom tabs are NOT universal and were never meant to be: 12 components have
+  one, 9 record a Route B reason, and 26 have neither. See BRAIN items 3a/3b.
+- Three Custom tabs were lost in `0c26fe5` — breadcrumb, file-upload and tabs
+  — and no guard caught it. That commit carried in six snippet files edited by
+  another session and the Batch 4 audit checked them for junk and for Angular
+  API compatibility, not for content.
+- 17 React components have no test naming them. Three of those need jsdom;
+  fourteen do not.
+
 ## Pending, not forgotten
 
 - **SortIcon is documented via Table, not on its own page.** It lives in the
