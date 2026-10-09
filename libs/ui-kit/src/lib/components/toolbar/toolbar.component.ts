@@ -97,6 +97,12 @@ import { Toolbar } from 'primeng/toolbar';
       background: var(--toolbar-sampark-background, #ffffff);
       border: none;
       border-bottom: 1px solid var(--toolbar-sampark-border, #e1e0e0);
+      /* The partial sets this on .baps-toolbar, which is the class raw markup
+         uses; Angular renders .p-toolbar instead and so inherited PrimeNG's
+         own ink (#0f172a) rather than the token. Measured by
+         check-toolbar-drift: the component and its own Custom tab disagreed
+         on color AND on border-top-color, which follows currentColor. */
+      color: var(--toolbar-sampark-title-color, #151414);
     }
 
     /* .left — PrimeNG's real start slot. min-width:0 lets it shrink below
