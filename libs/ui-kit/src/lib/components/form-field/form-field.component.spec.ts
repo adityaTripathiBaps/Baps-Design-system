@@ -56,8 +56,11 @@ describe('BapsFloatLabel', () => {
     imports: [BapsFloatLabel],
     template: `
       <baps-floatlabel [style]="style()" [styleClass]="styleClass()">
-        <input />
-        <label>Name</label>
+        <!-- Associated for real: a float label IS the field's label, so an
+             unattached one would make the test pass on markup no consumer
+             should copy. -->
+        <input id="float-name" />
+        <label for="float-name">Name</label>
       </baps-floatlabel>
     `,
   })
