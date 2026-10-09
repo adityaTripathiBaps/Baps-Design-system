@@ -196,6 +196,10 @@ import { Toolbar } from 'primeng/toolbar';
   `,
 })
 export class BapsToolbar {
-  /** Page/section title rendered in the start (left) slot, ahead of any `toolbar-left` content. */
+  /**
+   * Page/section title rendered in the start (left) slot, AFTER any
+   * `toolbar-left` content — the slot is projected first and the heading
+   * second. (This said "ahead of" until the spec measured it.)
+   */
   @Input() title?: string;
 }
