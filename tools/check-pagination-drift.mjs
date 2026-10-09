@@ -124,20 +124,52 @@ const BOX = ['width', 'height'];
 // script run with no build step. The shape it depends on is one this file's own
 // header documents — `Name: {` ... `custom: \`...\`` — and a miss is reported
 // rather than silently skipped, so a renamed key fails loudly.
+/**
+ * The snippets file no longer writes its Custom markup inline. All five
+ * entries call one `custom(activePage, totalPages, brandClass)` helper, so
+ * looking for a literal 'custom: `' found nothing and this guard died with
+ * "Default has no `custom` block" — which reads like a documentation finding
+ * and is really a stale parser. It had been dead since 0c26fe5 made that
+ * change, and nobody noticed because the guard needed a hand-started
+ * Storybook and so was never run.
+ *
+ * Rather than freeze a copy of the markup here — which would drift from the
+ * file this guard exists to check — the helper is lifted out of the source
+ * and evaluated. It is a pure template-literal arrow with no imports and no
+ * branching, so this is safe and stays correct when the markup is edited.
+ */
 const readCustomBlocks = () => {
   const src = readFileSync(SNIPPETS, 'utf8');
+
+  const helperAt = src.indexOf('const custom = (');
+  if (helperAt === -1)
+    throw new Error(
+      `${SNIPPETS}: no 'const custom = (' helper — this guard reads the ` +
+        `markup by evaluating it, so an inline rewrite needs this updated.`,
+    );
+  const helperEnd = src.indexOf('`;', helperAt);
+  if (helperEnd === -1)
+    throw new Error(`${SNIPPETS}: the custom helper is unterminated`);
+
+  // Drop the TypeScript parameter annotations so Function can parse it.
+  const helperSrc = src
+    .slice(helperAt + 'const custom = '.length, helperEnd + 1)
+    .replace(/:\s*(number|string)\b/g, '');
+  const custom = Function(`"use strict"; return (${helperSrc});`)();
+
   const out = {};
   for (const name of Object.keys(STORIES)) {
     const start = src.indexOf(`\n  ${name}: {`);
     if (start === -1) throw new Error(`${SNIPPETS}: no entry for ${name}`);
-    const key = src.indexOf('custom: `', start);
-    if (key === -1)
-      throw new Error(`${SNIPPETS}: ${name} has no \`custom\` block`);
-    const from = key + 'custom: `'.length;
-    const end = src.indexOf('`,', from);
-    if (end === -1)
-      throw new Error(`${SNIPPETS}: ${name}'s custom block is unterminated`);
-    out[name] = src.slice(from, end);
+
+    const call = /custom:\s*custom\(([^)]*)\)/.exec(
+      src.slice(start, src.indexOf('\n  },', start)),
+    );
+    if (!call)
+      throw new Error(`${SNIPPETS}: ${name} has no custom(...) call`);
+
+    const args = Function(`"use strict"; return [${call[1]}];`)();
+    out[name] = custom(...args);
   }
   return out;
 };
