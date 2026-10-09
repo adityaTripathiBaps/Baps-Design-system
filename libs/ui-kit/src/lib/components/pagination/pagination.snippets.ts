@@ -69,7 +69,7 @@ export const paginationSnippets: Record<string, SnippetSet> = {
       showJumpToPage
       brand="sampark"`),
     primeng: fullAngular(),
-    custom: custom(1, 13, 'baps-sampark baps-ds-sampark'),
+    custom: custom(1, 13),
   },
   MyBKY: {
     ...examples(`defaultRows={20}
@@ -88,7 +88,7 @@ export const paginationSnippets: Record<string, SnippetSet> = {
       showCurrentPageReport
       showJumpToPage`),
     primeng: fullAngular('sampark', 240),
-    custom: custom(13, 13, 'baps-sampark baps-ds-sampark'),
+    custom: custom(13, 13),
   },
   FewPages: {
     ...examples(`defaultRows={20}

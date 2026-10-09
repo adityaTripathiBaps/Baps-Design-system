@@ -69,8 +69,23 @@ const PRIMEICONS = 'node_modules/primeicons/primeicons.css';
  * `indices` can name a subset when a story contains more rendered paginators
  * than its Custom example. The current stories each compare one complete row.
  */
+/**
+ * Snippet key -> the story it documents. They share a name, and that is the
+ * only thing keeping them honest, so a mismatch here is silent.
+ *
+ * `Default` used to point at `--my-bky`. The snippets' Default entry is
+ * Sampark-branded — `custom(1, 13, 'baps-sampark baps-ds-sampark')` — so the
+ * guard was comparing Sampark markup against a MyBKY story and reporting the
+ * brand difference as drift: column-gap 8px against 4px, which is exactly
+ * `:is(.baps-ds-sampark) .baps-paginator { gap: 0.5rem }` against the MyBKY
+ * 0.25rem. Both were right; the pairing was wrong.
+ *
+ * MyBKY is now covered too, since the snippets carry that entry and the
+ * story exists.
+ */
 const STORIES = {
-  Default: 'components-pagination--my-bky',
+  Default: 'components-pagination--default',
+  MyBKY: 'components-pagination--my-bky',
   MidRange: 'components-pagination--mid-range',
   FewPages: 'components-pagination--few-pages',
   Compact: 'components-pagination--compact',
