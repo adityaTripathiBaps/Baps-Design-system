@@ -380,7 +380,7 @@ import { BapsStepper, BapsStepList, BapsStep, BapsStepPanels, BapsStepPanel } fr
 
 export function Wrapper() {
   const [current, setCurrent] = useState(2);
-  
+
   return (
     <div style={{ width: '56rem', maxWidth: '100%' }}>
       <BapsStepper value={current} onValueChange={setCurrent} brand="mybky">
@@ -421,7 +421,7 @@ import { BapsStepper, BapsStepList, BapsStep, BapsStepPanels, BapsStepPanel } fr
 
 export default function Wrapper() {
   const [current, setCurrent] = useState(2);
-  
+
   return (
     <div style={{ width: '56rem', maxWidth: '100%' }}>
       <BapsStepper value={current} onValueChange={setCurrent} brand="mybky">
@@ -462,7 +462,7 @@ import { BapsStepper, BapsStepList, BapsStep, BapsStepPanels, BapsStepPanel } fr
 
 export function WrapperNumbered() {
   const [current, setCurrent] = useState(2);
-  
+
   return (
     <div style={{ width: '40rem', maxWidth: '100%' }}>
       <BapsStepper value={current} onValueChange={setCurrent} brand="mybky">
@@ -495,7 +495,7 @@ import { BapsStepper, BapsStepList, BapsStep, BapsStepPanels, BapsStepPanel } fr
 
 export default function WrapperNumbered() {
   const [current, setCurrent] = useState(2);
-  
+
   return (
     <div style={{ width: '40rem', maxWidth: '100%' }}>
       <BapsStepper value={current} onValueChange={setCurrent} brand="mybky">
