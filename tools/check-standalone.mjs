@@ -65,7 +65,7 @@ const CASES = [
   // that difference, so this case is what settles it by measurement.
   {
     name: 'navbar',
-    story: 'components-organisms-navbar--my-bky',
+    story: 'components-navbar--my-bky',
     selector: 'baps-navbar',
   },
   {
@@ -227,6 +227,33 @@ const extract = (page, selector) =>
   );
 
 // ── run ─────────────────────────────────────────────────────────────────────
+/**
+ * Check every story id against Storybook's own index BEFORE opening a page.
+ *
+ * Without this a renamed story shows up as `page.waitForSelector` timing out
+ * after 120 seconds on a blank iframe — which reads as a hang, or as the
+ * component having broken. It is how `components-organisms-navbar--my-bky`
+ * stayed wrong here long after the story lost its "organisms" grouping: the
+ * guard needed a hand-started Storybook, so nobody ran it to find out.
+ */
+{
+  const res = await fetch(`${BASE}/index.json`).catch(() => null);
+  if (!res?.ok) {
+    console.error(`cannot reach Storybook at ${BASE} — start it, or run this
+through tools/with-storybook.mjs, which starts one for you.`);
+    process.exit(1);
+  }
+  const index = await res.json();
+  const ids = new Set(Object.keys(index.entries ?? index.stories ?? {}));
+  const missing = CASES.filter((c) => !ids.has(c.story));
+  if (missing.length) {
+    console.error('story ids this guard names no longer exist:');
+    for (const c of missing) console.error(`  ${c.name}: ${c.story}`);
+    console.error('\nFind the current id in Storybook and update CASES.');
+    process.exit(1);
+  }
+}
+
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1400, height: 900 } });
 
