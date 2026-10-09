@@ -59,16 +59,22 @@ and succeeded here ("Preview built (1.62 min)").
 
 - All 47 Angular component families have a React directory, an `.mdx` and a
   snippets file. None is missing a React or Next tab.
-- Snippet coverage 47/47 components, 247/254 examples — confirmed by
-  `check-snippets --report`. The seven are Interaction stories.
+- Snippet coverage **47/47 components, 253/253 examples** — confirmed by
+  `check-snippets --report`. This line used to read 247/254 and claim "the
+  seven are Interaction stories", which was wrong twice: the guard already
+  excludes Interaction stories from the count, and the seven were ordinary
+  examples nobody had written (tabs ×3, accordion, icon, avatar ×2). Six were
+  written; avatar's `_DocsAnchor` is not an example at all and the guard now
+  skips leading-underscore exports.
 - Custom tabs are NOT universal and were never meant to be: 12 components have
   one, 9 record a Route B reason, and 26 have neither. See BRAIN items 3a/3b.
 - Three Custom tabs were lost in `0c26fe5` — breadcrumb, file-upload and tabs
   — and no guard caught it. That commit carried in six snippet files edited by
   another session and the Batch 4 audit checked them for junk and for Angular
   API compatibility, not for content.
-- 17 React components have no test naming them. Three of those need jsdom;
-  fourteen do not.
+- ~~17 React components have no test naming them.~~ Closed. Every component
+  now has its own `tests/<name>.test.mjs`; the single `components.test.mjs`
+  was split into 52 per-component files so a failure names the component.
 
 ## Pending, not forgotten
 
@@ -77,33 +83,29 @@ and succeeded here ("Preview built (1.62 min)").
   check-snippets does not count it as a component and there is no snippet slot
   to fill. Deliberate: its three states only make sense in a column header.
 - ~~Stories and framework snippets for the Batch 5 components~~ — done.
-  Snippet coverage is now **47/47 components and 247/254 examples** — every
-  component in the kit carries framework snippets. The seven uncovered
-  examples are Interaction stories, which check-snippets excludes by design:
-  being invisible is their point. SortIcon is covered through Table, as noted
-  above.
-- **Drawer, Dialog and Popover have no React tests, and neither do the two
-  panels built on Drawer.** `BapsDrawer` always `createPortal`s into
-  `document.body` — `appendTo: null` falls back to it — so
-  `renderToStaticMarkup` throws "document is not defined". The panels' logic is
-  tested through exported pure functions instead; their rendered markup is not
-  tested at all. A jsdom test environment would fix the whole class, and is a
-  new dependency needing approval.
+  Snippet coverage is now **47/47 components and 253/253 examples**. SortIcon
+  is covered through Table, as noted above.
+- ~~**Drawer, Dialog and Popover have no React tests, and neither do the two
+  panels built on Drawer.**~~ Closed. `jsdom` was approved and added as a dev
+  dependency, and `tests/dom.mjs` installs its globals once before React's
+  renderer loads. All nine portal components — dialog, drawer, popover,
+  tooltip, toast, split-button, table-column-config, table-sort-config and the
+  panels — now have rendered-markup tests, not just pure-function ones.
 
 ## Current verification
 
-- 53/53 React tests pass.
+- **138/138 React tests pass**, across 52 per-component files.
 - React build and typecheck pass.
-- React lint: there is no `lint` target on this project, so
-  `nx run ui-kit-react:lint` fails with "Cannot find configuration for task"
-  and `nx run-many --target=lint` skips the package silently. Run directly,
-  `npx eslint "packages/ui-kit-react/src/**/*.{ts,tsx}"` is clean: 0 errors,
-  7 warnings, all `no-explicit-any` in tooltip.tsx and all pre-existing.
-  The target is worth adding; until it exists this line is a manual check.
+- React lint now has a target: `nx run ui-kit-react:lint` is 0 errors and 7
+  warnings — 6 `no-explicit-any` and 1 `no-non-null-assertion`, in drawer,
+  internal-navbar, popover and tooltip, all pre-existing. The 3207 warnings
+  the per-component test split briefly introduced (one shared import block
+  copied into all 47 files) are gone.
 - Strict React consumer and Next.js client/server fixtures pass.
 - Shared MyBKY/Sampark and light/dark CSS is copied from canonical
   `@org/ui-kit`; no React-local design stylesheet exists.
-- Angular build/typecheck and 486/486 tests pass.
+- Angular build/typecheck and **733/733 tests across 50 suites** pass; every
+  Angular component family now carries a spec (18 had none).
 - Storybook host typecheck and static production build pass (8 GB Node heap;
   no memory failure).
 - Snippet/style/build parity guards and `git diff --check` pass.
