@@ -14,8 +14,13 @@ import { Component, Input, ViewEncapsulation } from '@angular/core';
 @Component({
   selector: 'baps-link',
   template: `
+    <!-- attr.href, not href. A property binding cannot remove the attribute:
+         Angular writes the DOM property, and null lands there as the empty
+         string, which resolves to the current page — so a disabled link
+         still navigated, to "/". Only the attribute binding takes it off,
+         and an <a> with no href is not a link at all, which is the intent. -->
     <a
-      [href]="disabled ? null : href"
+      [attr.href]="disabled ? null : href"
       [target]="target"
       [attr.rel]="target === '_blank' ? 'noopener noreferrer' : null"
       [attr.aria-disabled]="disabled || null"
