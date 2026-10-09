@@ -231,22 +231,50 @@ await browser.close();
 let checked = 0;
 const failures = [];
 
+/**
+ * Pair the Angular tags with the Custom tab's.
+ *
+ * Equal counts keep index pairing, which is the strictest reading and what
+ * this guard always did.
+ *
+ * Fewer in the Custom tab is NOT a failure. A story like Severities renders
+ * all eight severities while its Custom tab shows one representative tag —
+ * that is the snippet doing its job, and demanding a copy of every variant
+ * would be the guard dictating what the documentation says. Those are paired
+ * by rendered text instead, which is what identifies a variant here.
+ *
+ * A sample whose text matches nothing in the story IS a failure: it means the
+ * Custom tab documents a tag the component does not render. So does a Custom
+ * tab with MORE tags than the story.
+ */
+const pairUp = (name, a, b) => {
+  if (a.length === b.length) return a.map((ang, i) => [ang, b[i], i]);
+  if (b.length > a.length) {
+    failures.push(
+      `${name}: the Custom tab markup renders ${b.length} tags, more than ` +
+        `the story's ${a.length} — it documents something that is not there.`,
+    );
+    return [];
+  }
+  const pairs = [];
+  for (const [i, rw] of b.entries()) {
+    const ang = a.find((t) => t.text === rw.text);
+    if (!ang) {
+      failures.push(
+        `${name}: the Custom tab shows a tag reading "${rw.text.slice(0, 30)}" ` +
+          `which the story does not render.`,
+      );
+      continue;
+    }
+    pairs.push([ang, rw, i]);
+  }
+  return pairs;
+};
+
 for (const name of Object.keys(STORIES)) {
   const a = angular[name];
   const b = raw[name];
-  if (a.length !== b.length) {
-    failures.push(
-      name +
-        ': Angular renders ' +
-        a.length +
-        ' tags, the Custom tab markup ' +
-        b.length,
-    );
-    continue;
-  }
-  for (let i = 0; i < a.length; i++) {
-    const ang = a[i];
-    const rw = b[i];
+  for (const [ang, rw, i] of pairUp(name, a, b)) {
     const label = name + '[' + i + '] "' + ang.text.slice(0, 20) + '"';
     for (const k of PROPS) {
       checked++;
