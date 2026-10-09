@@ -43,7 +43,7 @@
         "build"
       ],
       "options": {
-        "command": "node --test packages/ui-kit-react/tests/components.test.mjs"
+        "command": "node --test \"packages/ui-kit-react/tests/**/*.test.mjs\""
       }
     },
     "verify-consumers": {
