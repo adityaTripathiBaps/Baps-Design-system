@@ -150,8 +150,31 @@ pnpm nx run storybook-host:typecheck
 pnpm nx run storybook-host:build-storybook # minimizer parallel=1 in main.ts
 ```
 
-Drift guards need Storybook running on `:4400`:
-`check-standalone.mjs`, `check-*-drift.mjs`, `a11y-audit.mjs`.
+The eleven browser guards no longer need a Storybook you started yourself:
+
+```bash
+node tools/with-storybook.mjs          # all eleven, against one server
+node tools/with-storybook.mjs a11y-audit
+pnpm nx run storybook-host:guards      # the same, for CI
+```
+
+It reuses a server already on `:4400` and leaves that one alone; it only
+tears down one it started itself. All eleven pass as of 2026-10-09.
+
+**Five of them were silently dead before that runner existed**, and this is
+the thing to remember: not one was failing honestly. `check-tag-drift` and
+`check-pagination-drift` crashed parsing snippets files that had been
+refactored underneath them; `check-toggle-switch-drift` crashed on a Route B
+component that has never had a Custom tab; `check-standalone` waited 120s for
+a story renamed long ago. The rest exited 1 on a connection error, which reads
+exactly like a finding.
+
+**Two more reported findings and exited 0**, so the runner printed "ok" over
+them: `check-standalone` (3 of 7 standalone) and `a11y-audit` (two CRITICAL
+rules). Both now gate — check-standalone against a written
+`STANDALONE_NOT_REQUIRED` list, a11y-audit against a `KNOWN` baseline whose
+counts are ceilings meant to ratchet down. **Check what a guard actually
+printed; an exit code from this suite was not evidence.**
 
 **Memory.** Both suites used to die on a machine with little free RAM, and
 NODE_OPTIONS does not reach worker threads, so raising the parent heap never
