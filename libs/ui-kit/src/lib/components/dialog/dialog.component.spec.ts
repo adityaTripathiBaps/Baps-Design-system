@@ -234,3 +234,52 @@ describe('BapsDialog', () => {
     });
   });
 });
+
+describe('BapsDialog accessible name', () => {
+  async function open(template: string, extra: Record<string, unknown> = {}) {
+    @Component({ imports: [BapsDialog], template })
+    class Host {
+      ariaLabel?: string;
+    }
+    Object.assign(Host.prototype, extra);
+
+    const fixture = TestBed.createComponent(Host);
+    await fixture.whenStable();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    return fixture;
+  }
+
+  /** What a screen reader resolves aria-labelledby to. */
+  function name(): string {
+    const dialog = document.querySelector('[role="dialog"]') as HTMLElement;
+    const id = dialog?.getAttribute('aria-labelledby');
+    return (id && document.getElementById(id)?.textContent?.trim()) || '';
+  }
+
+  afterEach(() => {
+    document.body.innerHTML = '';
+  });
+
+  it('names the dialog from header', async () => {
+    await open(`<baps-dialog [visible]="true" header="Cancel upload">Body</baps-dialog>`);
+    expect(name()).toBe('Cancel upload');
+  });
+
+  it('names a header-less dialog from ariaLabel', async () => {
+    await open(
+      `<baps-dialog [visible]="true" ariaLabel="Cancel upload">Body</baps-dialog>`,
+    );
+    // Without this the dialog has role="dialog" and an aria-labelledby
+    // pointing at an EMPTY element — so it is announced as "dialog" and
+    // nothing else, which is axe's aria-dialog-name.
+    expect(name()).toBe('Cancel upload');
+  });
+
+  it('prefers the visible header over ariaLabel, without saying it twice', async () => {
+    await open(
+      `<baps-dialog [visible]="true" header="Cancel upload" ariaLabel="Something else">Body</baps-dialog>`,
+    );
+    expect(name()).toBe('Cancel upload');
+  });
+});

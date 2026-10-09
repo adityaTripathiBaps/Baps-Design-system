@@ -196,6 +196,14 @@ const MYBKY_DIALOG_TOKENS = {
               {{ header }}
             }
             <ng-content select="[dialog-title]"></ng-content>
+            <!-- A dialog with no visible title still has role="dialog" and
+                 an aria-labelledby pointing HERE, so leaving this empty
+                 announces "dialog" and nothing else. ariaLabel fills it for
+                 a screen reader only. .p-hidden-accessible is PrimeNG's own
+                 visually-hidden utility, already in the shipped CSS. -->
+            @if (!header && ariaLabel) {
+              <span class="p-hidden-accessible">{{ ariaLabel }}</span>
+            }
           </div>
         </div>
       </ng-template>
@@ -267,6 +275,16 @@ export class BapsDialog {
 
   /** Title text. Carries the id that `aria-labelledby` points at. */
   @Input() header?: string;
+
+  /**
+   * The dialog's accessible name when it has no visible title.
+   *
+   * Only read when `header` is unset — a dialog that shows its title does
+   * not need a second one, and supplying both would announce the hidden
+   * text in place of what is on screen. Ignored entirely if a `[dialog-title]`
+   * is projected instead, which is the other way to give it a visible name.
+   */
+  @Input() ariaLabel?: string;
 
   /**
    * Panel width. Figma ships two: 500px for the confirm shell and 600px for
