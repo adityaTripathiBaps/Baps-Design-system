@@ -107,6 +107,13 @@ for (const dir of list(COMPONENTS).sort()) {
     });
   }
   const exampleCount = [...storyExports].filter((s) => {
+    // A leading underscore means "not an example", the same way it already
+    // means "not a component" for a directory above. avatar's `_DocsAnchor`
+    // is the case: an empty story that exists only so the docs page inherits
+    // both brand tags from it. There is nothing for a snippet to show, so
+    // counting it left avatar permanently one short of its own total.
+    if (s.startsWith('_')) return false;
+
     let nameMatch = s;
     if (storiesSrc) {
       const sf = ts.createSourceFile(

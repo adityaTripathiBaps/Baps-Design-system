@@ -330,6 +330,83 @@ export default function MyBkyStatuses() {
   // other inputs are at their defaults and are left off rather than written
   // out — size="m" and variant="primary" are what the component already does.
   HtmlCss: {},
+
+  // The same three content modes as Types, but with no component at all —
+  // `.baps-avatar-html` is the framework-free class, so this is the shape a
+  // Rails view, a Django template or a static page uses.
+  //
+  // The accessibility differs per mode and is the whole reason this is three
+  // examples rather than one: initials are content, so the span is an img
+  // with the full name as its label; the icon is decorative beside a name
+  // that is already on screen, so it is hidden outright; and an <img> already
+  // carries its own alt, so it needs nothing from the wrapper.
+  // No Custom tab, deliberately. The markup below IS the raw-HTML answer,
+  // but check-snippets will not let a PrimeNG wrapper claim a Custom tab it
+  // cannot prove, and proving avatar's needs a case in check-standalone.mjs
+  // against a running Storybook. Left as a gap rather than a weakened guard;
+  // recorded in BRAIN.md.
+  HtmlCssTypes: {
+    react: `${SETUP}
+
+/* No component here on purpose: these are the plain classes, which is what
+   a consumer reaches for when the avatar is inside markup they already own.
+   Use BapsAvatar — the Types example — when it is a component. */
+export function Example() {
+  return (
+    <div style={{ display: 'flex', gap: 'var(--space-4)', alignItems: 'center' }}>
+      <span
+        className="baps-avatar-html baps-avatar-html--m baps-avatar-html--circle"
+        role="img"
+        aria-label="Aditya Tripathi"
+      >
+        AT
+      </span>
+      <span
+        className="baps-avatar-html baps-avatar-html--m baps-avatar-html--circle"
+        aria-hidden="true"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
+          <circle cx="12" cy="8" r="5" />
+          <path d="M20 21a8 8 0 0 0-16 0" />
+        </svg>
+      </span>
+      <span className="baps-avatar-html baps-avatar-html--m baps-avatar-html--circle">
+        <img src="/avatars/amyelsner.png" alt="Amy Elsner" />
+      </span>
+    </div>
+  );
+}`,
+    next: `${SETUP}
+
+/* No 'use client': these are classes on static markup, so the whole thing
+   renders on the server. */
+export default function Example() {
+  return (
+    <div style={{ display: 'flex', gap: 'var(--space-4)', alignItems: 'center' }}>
+      <span
+        className="baps-avatar-html baps-avatar-html--m baps-avatar-html--circle"
+        role="img"
+        aria-label="Aditya Tripathi"
+      >
+        AT
+      </span>
+      <span
+        className="baps-avatar-html baps-avatar-html--m baps-avatar-html--circle"
+        aria-hidden="true"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
+          <circle cx="12" cy="8" r="5" />
+          <path d="M20 21a8 8 0 0 0-16 0" />
+        </svg>
+      </span>
+      <span className="baps-avatar-html baps-avatar-html--m baps-avatar-html--circle">
+        <img src="/avatars/amyelsner.png" alt="Amy Elsner" />
+      </span>
+    </div>
+  );
+}`,
+  },
+
   MyBkyPlayground: {
     primeng: `<baps-avatar label="AT" shape="circle" />`,
     react: `${SETUP}

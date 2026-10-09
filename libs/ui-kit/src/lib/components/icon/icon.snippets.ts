@@ -279,4 +279,123 @@ export default function Example() {
   return <BapsIcon name="notification" />;
 }`,
   },
+
+  // The searchable gallery. Filtering and the per-tile "Copied" flash are
+  // both state, which is why this is a component rather than markup.
+  //
+  // One thing it cannot do that the Angular gallery can: the package exports
+  // the BapsIconName TYPE but not the runtime list of names, so a consumer
+  // cannot enumerate the set. The array below is therefore written out and
+  // annotated — the annotation is what makes a typo a compile error instead
+  // of a blank tile. Recorded as an open decision; see BRAIN.md.
+  Library: {
+    primeng: `<baps-icon-gallery />`,
+    react: `${SETUP}
+
+import { useMemo, useState } from 'react';
+import { BapsIcon, type BapsIconName } from '@org/ui-kit-react';
+
+// The names you actually use. Typed, so a renamed or misspelt glyph fails
+// the build rather than rendering an empty tile.
+const NAMES: BapsIconName[] = ['notification', 'user', 'trash', 'search'];
+
+export function IconGallery() {
+  const [query, setQuery] = useState('');
+  const [copied, setCopied] = useState(null);
+
+  // Name only. The names are the API, so they are the thing worth finding.
+  const shown = useMemo(
+    () => NAMES.filter(name => name.includes(query.trim().toLowerCase())),
+    [query],
+  );
+
+  const copy = async (name) => {
+    await navigator.clipboard.writeText(name);
+    setCopied(name);
+    setTimeout(() => setCopied(c => (c === name ? null : c)), 1200);
+  };
+
+  return (
+    <div>
+      <input
+        type="search"
+        aria-label="Filter icons by name"
+        value={query}
+        onChange={e => setQuery(e.target.value)}
+        placeholder="Filter by name"
+      />
+
+      {/* A list, not a grid of divs: it IS a list of names, and that is what
+          a screen reader should be told. */}
+      <ul style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', listStyle: 'none', padding: 0 }}>
+        {shown.map(name => (
+          <li key={name}>
+            <button type="button" onClick={() => copy(name)}>
+              <BapsIcon name={name} size="lg" />
+              <span>{name}</span>
+              {/* Announced, not just shown — the flash is the only feedback
+                  that the copy worked. */}
+              <span role="status">{copied === name ? 'Copied' : ''}</span>
+            </button>
+          </li>
+        ))}
+      </ul>
+
+      {shown.length === 0 && <p>No icon matches "{query}".</p>}
+    </div>
+  );
+}`,
+    next: `'use client';
+
+${SETUP}
+
+import { useMemo, useState } from 'react';
+import { BapsIcon, type BapsIconName } from '@org/ui-kit-react';
+
+/* 'use client': the filter is state and the copy button reaches for
+   navigator.clipboard, neither of which exists on the server. The icons
+   themselves are server-renderable — it is the gallery around them that is
+   not. */
+const NAMES: BapsIconName[] = ['notification', 'user', 'trash', 'search'];
+
+export default function IconGallery() {
+  const [query, setQuery] = useState('');
+  const [copied, setCopied] = useState(null);
+
+  const shown = useMemo(
+    () => NAMES.filter(name => name.includes(query.trim().toLowerCase())),
+    [query],
+  );
+
+  const copy = async (name) => {
+    await navigator.clipboard.writeText(name);
+    setCopied(name);
+    setTimeout(() => setCopied(c => (c === name ? null : c)), 1200);
+  };
+
+  return (
+    <div>
+      <input
+        type="search"
+        aria-label="Filter icons by name"
+        value={query}
+        onChange={e => setQuery(e.target.value)}
+        placeholder="Filter by name"
+      />
+      <ul style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', listStyle: 'none', padding: 0 }}>
+        {shown.map(name => (
+          <li key={name}>
+            <button type="button" onClick={() => copy(name)}>
+              <BapsIcon name={name} size="lg" />
+              <span>{name}</span>
+              <span role="status">{copied === name ? 'Copied' : ''}</span>
+            </button>
+          </li>
+        ))}
+      </ul>
+      {shown.length === 0 && <p>No icon matches "{query}".</p>}
+    </div>
+  );
+}`,
+  },
 };
