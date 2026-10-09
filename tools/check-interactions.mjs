@@ -2,13 +2,18 @@
 // panel's verdict, rather than trusting that a play function "looks right".
 import { chromium } from '@playwright/test';
 
+// One env var for every guard, so tools/with-storybook.mjs can point the
+// whole set at the server it started. Falls back to the port the storybook
+// target uses, which is what a developer running it by hand gets.
+const BASE = process.env.STORYBOOK_URL ?? 'http://localhost:4400';
+
 const ids = process.argv.slice(2);
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1500, height: 900 } });
 const results = [];
 
 for (const id of ids) {
-  await page.goto(`http://localhost:4400/?path=/story/${id}`, { waitUntil: 'domcontentloaded' });
+  await page.goto(`${BASE}/?path=/story/${id}`, { waitUntil: 'domcontentloaded' });
   try {
     await page.getByRole('tab', { name: /Interactions/ }).click({ timeout: 20000 });
   } catch {

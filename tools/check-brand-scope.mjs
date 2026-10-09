@@ -24,7 +24,8 @@
  */
 import { chromium } from '@playwright/test';
 
-const BASE = process.env.SB_URL ?? 'http://localhost:4400';
+const BASE =
+  process.env.STORYBOOK_URL ?? process.env.SB_URL ?? 'http://localhost:4400';
 
 /** Hues no shared or neutral token uses, so their presence means that brand rendered. */
 const SIGNATURE = {

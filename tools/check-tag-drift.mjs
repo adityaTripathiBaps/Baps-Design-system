@@ -95,10 +95,27 @@ const readCustomBlocks = () => {
       throw new Error(SNIPPETS + ': ' + name + ' has no custom block');
     const from =
       src.indexOf('\n', key) === -1 ? key : key + 'custom: '.length + 1;
-    const end = src.indexOf('\n    react:', from);
+
+    // End at the template literal's OWN closing backtick, not at the next
+    // key. This used to look for '\n    react:', which broke the moment a
+    // snippet set replaced its explicit react/next keys with the typed
+    // `...frameworkExamples(…)` spread — Playground did, and the guard then
+    // died with "custom block unterminated" on a perfectly good file. A
+    // guard that cannot read the current snippets is not a finding about
+    // the snippets.
+    let end = -1;
+    for (let i = from; i < src.length; i++) {
+      if (src[i] === '\\') {
+        i++;
+        continue;
+      }
+      if (src[i] === '`') {
+        end = i;
+        break;
+      }
+    }
     if (end === -1)
       throw new Error(SNIPPETS + ': ' + name + ' custom block unterminated');
-    // Trim the trailing backtick-comma the template literal ends with.
     out[name] = src.slice(from, end).replace(/[`,\s]+$/, '');
   }
   return out;

@@ -4,12 +4,17 @@
 // version mismatches core registers silently and shows up nowhere.
 import { chromium } from '@playwright/test';
 
+// One env var for every guard, so tools/with-storybook.mjs can point the
+// whole set at the server it started. Falls back to the port the storybook
+// target uses, which is what a developer running it by hand gets.
+const BASE = process.env.STORYBOOK_URL ?? 'http://localhost:4400';
+
 const STORIES = process.argv.slice(2);
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1500, height: 900 } });
 
 for (const id of STORIES) {
-  await page.goto(`http://localhost:4400/?path=/story/${id}`, { waitUntil: 'domcontentloaded' });
+  await page.goto(`${BASE}/?path=/story/${id}`, { waitUntil: 'domcontentloaded' });
   await page.waitForTimeout(6000);
   const info = await page.evaluate(() => {
     const text = (e) => (e.getAttribute('title') || e.textContent || '').trim();

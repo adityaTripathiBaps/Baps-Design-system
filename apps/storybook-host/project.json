@@ -132,6 +132,13 @@
         "cwd": "apps/storybook-host/visual",
         "command": "npx playwright test --config=playwright.config.ts --update-snapshots"
       }
+    },
+    "guards": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/with-storybook.mjs",
+        "cwd": "{workspaceRoot}"
+      }
     }
   }
 }

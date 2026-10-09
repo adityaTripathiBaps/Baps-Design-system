@@ -12,6 +12,11 @@
 import { chromium } from '@playwright/test';
 import { readFileSync, readdirSync } from 'node:fs';
 
+// One env var for every guard, so tools/with-storybook.mjs can point the
+// whole set at the server it started. Falls back to the port the storybook
+// target uses, which is what a developer running it by hand gets.
+const BASE = process.env.STORYBOOK_URL ?? 'http://localhost:4400';
+
 // axe-core arrives as a transitive dep of @storybook/addon-a11y, so it is not
 // hoisted to the root and require.resolve cannot see it. Read it out of the
 // pnpm store instead of adding a direct dependency for a dev-only script.
@@ -20,7 +25,7 @@ const axeDir = readdirSync(store).find((d) => /^axe-core@/.test(d));
 if (!axeDir) throw new Error('axe-core not found in the pnpm store — is addon-a11y installed?');
 const axeSource = readFileSync(`${store}/${axeDir}/node_modules/axe-core/axe.min.js`, 'utf8');
 
-const res = await fetch('http://localhost:4400/index.json');
+const res = await fetch(`${BASE}/index.json`);
 const index = await res.json();
 const stories = Object.values(index.entries).filter((e) => e.type === 'story');
 
@@ -41,7 +46,7 @@ const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
 const byRule = {};
 
 for (const s of picked) {
-  await page.goto(`http://localhost:4400/iframe.html?viewMode=story&id=${s.id}`, {
+  await page.goto(`${BASE}/iframe.html?viewMode=story&id=${s.id}`, {
     waitUntil: 'networkidle',
   });
   await page.waitForTimeout(700);
