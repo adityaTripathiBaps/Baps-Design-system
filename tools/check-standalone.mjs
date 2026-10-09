@@ -368,3 +368,50 @@ const proven = verdicts.filter((v) => v.standalone).map((v) => v.name);
 console.log(
   `\n${proven.length} of ${CASES.length} proven standalone: ${proven.join(', ') || '(none)'}`,
 );
+
+/**
+ * Components whose markup is NOT expected to stand alone, with the reason.
+ *
+ * Standalone means: lift the rendered DOM onto a bare page carrying only
+ * tokens and the component's own partial, and it still computes the same.
+ * That is a reasonable bar for a leaf component. It is not a reasonable bar
+ * for one that composes PrimeNG widgets, because those widgets' own CSS is
+ * not in the component's partial and never will be — the differences the
+ * guard reports for these four are all inside a `p-*` subtree.
+ *
+ * Listing one here is a claim that its RAW markup is not a supported way to
+ * use it; a consumer renders the component. Everything not listed must pass,
+ * and the guard now exits 1 if it does not — before this it reported and
+ * always exited 0, so it was sitting in the CI suite gating nothing.
+ */
+const STANDALONE_NOT_REQUIRED = {
+  navbar: 'composes p-menu and p-ripple; their CSS is not in navbar.css',
+  toolbar: 'wraps p-toolbar — the geometry under test is PrimeNG\'s own',
+  pagination: 'composes p-select for rows-per-page, and PrimeIcons glyphs',
+  'file-upload': 'composes baps-button, whose partial it does not carry',
+};
+
+const unexpected = verdicts.filter(
+  (v) => !v.standalone && !(v.name in STANDALONE_NOT_REQUIRED),
+);
+const excused = verdicts.filter(
+  (v) => !v.standalone && v.name in STANDALONE_NOT_REQUIRED,
+);
+
+if (excused.length) {
+  console.log('\nnot required to be standalone:');
+  for (const v of excused)
+    console.log(`  ${v.name} — ${STANDALONE_NOT_REQUIRED[v.name]}`);
+}
+
+if (unexpected.length) {
+  console.error(
+    `\n${unexpected.length} component(s) stopped being standalone: ` +
+      unexpected.map((v) => v.name).join(', '),
+  );
+  console.error(
+    'Either the markup now needs CSS its partial does not ship, or it belongs\n' +
+      'in STANDALONE_NOT_REQUIRED with a reason.',
+  );
+  process.exit(1);
+}

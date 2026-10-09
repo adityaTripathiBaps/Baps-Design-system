@@ -30,6 +30,7 @@
  *
  *   severity="primary"        -> class="baps-button--primary"
  *   severity="secondary"      -> class="baps-button--secondary"
+ *   [outlined]="true"         -> class="baps-button--outlined" (compose it)
  *   severity="danger"         -> class="baps-button--danger"
  *   severity="warn"           -> class="baps-button--warn"
  *   severity="primary"   + [text]="true"     -> "baps-button--ghost-primary"
@@ -404,7 +405,7 @@ export default function States() {
      ancestor, which is what the Design system toolbar does. -->
 <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center">
   <button type="button" class="baps-button baps-sampark baps-button--primary"><span class="baps-button__label">Primary</span></button>
-  <button type="button" class="baps-button baps-sampark baps-button--secondary"><span class="baps-button__label">Secondary</span></button>
+  <button type="button" class="baps-button baps-sampark baps-button--secondary baps-button--outlined"><span class="baps-button__label">Secondary</span></button>
   <button type="button" class="baps-button baps-sampark baps-button--ghost-primary"><span class="baps-button__label">Primary Ghost</span></button>
   <button type="button" class="baps-button baps-sampark baps-button--link"><span class="baps-button__label">Link</span></button>
 </div>`,
@@ -414,6 +415,9 @@ export function SamparkVariants() {
   return (
     <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
       <BapsButton brand="sampark" label="Primary" />
+      {/* The Angular story renders this one [outlined]="true". React has no
+          outlined variant yet — variant is solid | ghost | link — so this is
+          the filled secondary. Tracked as a React parity gap. */}
       <BapsButton brand="sampark" label="Secondary" severity="secondary" />
       <BapsButton brand="sampark" label="Primary Ghost" variant="ghost" />
       <BapsButton brand="sampark" label="Link" variant="link" />
@@ -428,6 +432,9 @@ export default function SamparkVariants() {
   return (
     <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
       <BapsButton brand="sampark" label="Primary" />
+      {/* The Angular story renders this one [outlined]="true". React has no
+          outlined variant yet — variant is solid | ghost | link — so this is
+          the filled secondary. Tracked as a React parity gap. */}
       <BapsButton brand="sampark" label="Secondary" severity="secondary" />
       <BapsButton brand="sampark" label="Primary Ghost" variant="ghost" />
       <BapsButton brand="sampark" label="Link" variant="link" />
@@ -496,7 +503,7 @@ export default function SamparkSizes() {
   <button type="button" class="baps-button baps-sampark baps-button--primary baps-button--icon-only" aria-label="Confirm"><i class="pi pi-check" aria-hidden="true"></i></button>
   <button type="button" class="baps-button baps-sampark baps-button--primary baps-button--icon-only baps-button--l" aria-label="Confirm"><i class="pi pi-check" aria-hidden="true"></i></button>
   <button type="button" class="baps-button baps-sampark baps-button--primary baps-button--icon-only baps-button--xl" aria-label="Confirm"><i class="pi pi-check" aria-hidden="true"></i></button>
-  <button type="button" class="baps-button baps-sampark baps-button--secondary baps-button--icon-only" aria-label="Edit"><i class="pi pi-pencil" aria-hidden="true"></i></button>
+  <button type="button" class="baps-button baps-sampark baps-button--secondary baps-button--outlined baps-button--icon-only" aria-label="Edit"><i class="pi pi-pencil" aria-hidden="true"></i></button>
   <button type="button" class="baps-button baps-sampark baps-button--ghost-primary baps-button--icon-only" aria-label="Delete"><i class="pi pi-trash" aria-hidden="true"></i></button>
 </div>`,
     react: `${SETUP}

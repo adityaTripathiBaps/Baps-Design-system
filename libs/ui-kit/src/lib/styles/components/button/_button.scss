@@ -348,6 +348,26 @@
   background-color: var(--button-sampark-secondary-ghost-hover);
 }
 
+/* Outlined — the border and ink of a severity, with no fill.
+   Compose it: `baps-button baps-button--secondary baps-button--outlined`.
+
+   PrimeNG's `[outlined]="true"` does exactly this: the preset's `outlined`
+   block deliberately omits `background`, so the button renders transparent
+   and keeps the severity's border and text. The kit's shipped CSS had no
+   equivalent at all, so a non-Angular consumer could not render an outlined
+   button — and the Sampark Variants Custom tab reached for the filled
+   `--secondary` instead, which is the drift check-button-drift reported:
+   component transparent, Custom tab white.
+
+   Selectors are written to the same specificity as the severity rules above
+   and placed after them, because `.baps-button--outlined` alone (0,1,0)
+   loses to `.baps-button.baps-sampark.baps-button--secondary` (0,3,0). */
+.baps-button.baps-button--outlined,
+.baps-button.baps-sampark.baps-button--outlined,
+.baps-ds-sampark .baps-button.baps-button--outlined {
+  background-color: transparent;
+}
+
 /* Link — MyBKY has no equivalent. Still a <button>, so it has no href: use a
    real anchor when the destination is a URL, the same caveat baps-link
    carries. */
