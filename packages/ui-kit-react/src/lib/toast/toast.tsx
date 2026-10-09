@@ -41,6 +41,12 @@ export interface BapsToastProps {
   brand?: 'mybky' | 'sampark';
   baseZIndex?: number;
   autoZIndex?: boolean;
+  /**
+   * Collapse a message already on screen instead of showing it twice.
+   * Matched on severity, summary and detail — what the reader hears.
+   * Off by default, so nothing existing changes.
+   */
+  preventDuplicates?: boolean;
   children?: ReactNode; // If used as a provider wrapper
 }
 
@@ -54,21 +60,40 @@ export function BapsToastProvider({
   brand = 'mybky',
   baseZIndex = 0,
   autoZIndex = true,
+  preventDuplicates = false,
   children
 }: BapsToastProps) {
   const [messages, setMessages] = useState<(BapsToastMessage & { id: string })[]>([]);
 
   const show = useCallback((messageOrMessages: BapsToastMessage | BapsToastMessage[]) => {
     const newMessages = Array.isArray(messageOrMessages) ? messageOrMessages : [messageOrMessages];
-    
-    setMessages(prev => [
-      ...prev,
-      ...newMessages.map(msg => ({
-        ...msg,
-        id: msg.id || `toast-${toastIdCounter++}`,
-      }))
-    ]);
-  }, []);
+
+    setMessages(prev => {
+      const queued = prev.concat();
+      for (const msg of newMessages) {
+        // The container is a live region, so a duplicate is not a repeated
+        // pixel — it is the same sentence read out twice. A retry loop
+        // announcing the same failure on every attempt is the case this
+        // exists for. Matched on what the reader actually hears: severity,
+        // summary and detail. Angular's baps-toast has had this since it was
+        // written; React did not, and its own docs page documented a `key`
+        // that did nothing.
+        if (
+          preventDuplicates &&
+          queued.some(
+            seen =>
+              seen.severity === msg.severity &&
+              seen.summary === msg.summary &&
+              seen.detail === msg.detail,
+          )
+        ) {
+          continue;
+        }
+        queued.push({ ...msg, id: msg.id || `toast-${toastIdCounter++}` });
+      }
+      return queued;
+    });
+  }, [preventDuplicates]);
 
   const clear = useCallback(() => {
     setMessages([]);

@@ -34,6 +34,18 @@ type BapsButtonAppearanceProps =
       variant: 'link';
     };
 
+/**
+ * Drops the fill and keeps the severity's border and ink — the same thing
+ * PrimeNG's `[outlined]` does, by omitting `background`.
+ *
+ * A boolean rather than a `variant` value, because it COMPOSES with a
+ * severity in the CSS (`baps-button baps-button--secondary
+ * baps-button--outlined`), which is also how the Angular component models it.
+ *
+ * Ignored for ghost and link, which have no fill to drop.
+ */
+type BapsButtonOutlinedProp = { outlined?: boolean };
+
 type NativeButtonProps = Omit<
   ButtonHTMLAttributes<HTMLButtonElement>,
   'aria-label' | 'children' | 'type'
@@ -66,7 +78,8 @@ export type BapsButtonProps = NativeButtonProps &
     loading?: boolean;
     loadingIndicator?: ReactElement;
     ref?: Ref<HTMLButtonElement>;
-  } & BapsButtonAppearanceProps;
+  } & BapsButtonAppearanceProps &
+  BapsButtonOutlinedProp;
 
 const BUTTON_ICON_SIZE: Readonly<Record<BapsButtonSize, number>> = {
   small: 16,
@@ -107,6 +120,7 @@ export function BapsButton({
   brand = 'mybky',
   severity = 'primary',
   variant = 'solid',
+  outlined = false,
   size = 'medium',
   icon,
   iconPosition = 'left',
@@ -143,6 +157,7 @@ export function BapsButton({
         'baps-button',
         brand === 'sampark' && 'baps-sampark',
         appearanceClass(severity, variant),
+        outlined && variant === 'solid' && 'baps-button--outlined',
         SIZE_CLASS[size],
         iconOnly && 'baps-button--icon-only',
         loading && 'baps-button--loading',

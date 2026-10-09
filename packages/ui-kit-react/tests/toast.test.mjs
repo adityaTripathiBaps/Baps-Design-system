@@ -199,3 +199,51 @@ test('the Sampark brand scopes the container, not each message', async (t) => {
   // renders with the MyBKY tokens.
   assert.match(container().className, /baps-ds-sampark/);
 });
+
+test('preventDuplicates collapses an identical message already on screen', async (t) => {
+  t.after(teardown);
+  await render({ preventDuplicates: true }, (toast) => {
+    toast.show({ severity: 'error', summary: 'Sync failed', detail: 'Retrying.', sticky: true });
+    toast.show({ severity: 'error', summary: 'Sync failed', detail: 'Retrying.', sticky: true });
+  });
+  // The container is a live region, so a duplicate is the same sentence read
+  // out twice — a retry loop announcing the same failure on every attempt.
+  assert.equal(messages().length, 1);
+});
+
+test('preventDuplicates lets a message through once the first has left', async (t) => {
+  t.after(teardown);
+  let handle;
+  await render({ preventDuplicates: true }, (toast) => {
+    handle = toast;
+    toast.show({ severity: 'error', summary: 'Sync failed', sticky: true });
+  });
+  assert.equal(messages().length, 1);
+
+  handle.clear();
+  await flush();
+  handle.show({ severity: 'error', summary: 'Sync failed', sticky: true });
+  await flush();
+  // It collapses against what is ON SCREEN, not against all history —
+  // otherwise a failure could only ever be announced once per session.
+  assert.equal(messages().length, 1);
+});
+
+test('preventDuplicates still admits a message that differs in any part', async (t) => {
+  t.after(teardown);
+  await render({ preventDuplicates: true }, (toast) => {
+    toast.show({ severity: 'error', summary: 'Sync failed', detail: 'Retrying.', sticky: true });
+    toast.show({ severity: 'error', summary: 'Sync failed', detail: 'Giving up.', sticky: true });
+    toast.show({ severity: 'warn', summary: 'Sync failed', detail: 'Retrying.', sticky: true });
+  });
+  assert.equal(messages().length, 3);
+});
+
+test('duplicates are allowed by default, so nothing existing changes', async (t) => {
+  t.after(teardown);
+  await render({}, (toast) => {
+    toast.show({ summary: 'Saved', sticky: true });
+    toast.show({ summary: 'Saved', sticky: true });
+  });
+  assert.equal(messages().length, 2);
+});

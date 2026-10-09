@@ -101,26 +101,24 @@ export default function ToastRoot({ children }) {
     primeng: `<baps-toast [preventDuplicates]="true" />`,
     react: `${SETUP}
 
-/* The React provider has no preventDuplicates: show() appends whatever it is
-   given, so a retry loop announces the same failure on every attempt. Until
-   it gains one, the guard belongs at the call site — and it has to be a ref,
-   because state would re-render the button mid-retry. */
+/* preventDuplicates on the provider, not a guard at every call site. The
+   container is a live region, so a duplicate is the same sentence read out
+   twice — which is what a retry loop produces. It collapses against what is
+   ON SCREEN, so the failure can be announced again once the first has gone. */
+export function App({ children }) {
+  return <BapsToastProvider preventDuplicates>{children}</BapsToastProvider>;
+}
+
 export function SyncButton({ onSync }) {
   const toast = useToast();
-  const announced = useRef(false);
 
-  const notify = () => {
-    if (announced.current) return;
-    announced.current = true;
+  const notify = () =>
     toast.show({
       severity: 'error',
       summary: 'Sync failed',
       detail: 'Retrying in the background.',
       life: 4000,
     });
-    // Let it be announced again once the first one has left the screen.
-    setTimeout(() => { announced.current = false; }, 4000);
-  };
 
   return <BapsButton onClick={() => onSync().catch(notify)}>Sync</BapsButton>;
 }`,
@@ -128,25 +126,11 @@ export function SyncButton({ onSync }) {
 
 ${SETUP}
 
-/* Same guard as the React example, and the same reason: the provider does
-   not collapse duplicates, so the caller does. */
-export default function SyncButton({ onSync }) {
-  const toast = useToast();
-  const announced = useRef(false);
-
-  const notify = () => {
-    if (announced.current) return;
-    announced.current = true;
-    toast.show({
-      severity: 'error',
-      summary: 'Sync failed',
-      detail: 'Retrying in the background.',
-      life: 4000,
-    });
-    setTimeout(() => { announced.current = false; }, 4000);
-  };
-
-  return <BapsButton onClick={() => onSync().catch(notify)}>Sync</BapsButton>;
+/* Same prop, same reason. Messages are matched on severity, summary and
+   detail — what the reader actually hears — so a message that differs in any
+   of the three is still announced. */
+export default function ToastRoot({ children }) {
+  return <BapsToastProvider preventDuplicates>{children}</BapsToastProvider>;
 }`,
   },
 };

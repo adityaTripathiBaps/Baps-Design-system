@@ -415,10 +415,7 @@ export function SamparkVariants() {
   return (
     <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
       <BapsButton brand="sampark" label="Primary" />
-      {/* The Angular story renders this one [outlined]="true". React has no
-          outlined variant yet — variant is solid | ghost | link — so this is
-          the filled secondary. Tracked as a React parity gap. */}
-      <BapsButton brand="sampark" label="Secondary" severity="secondary" />
+      <BapsButton brand="sampark" label="Secondary" severity="secondary" outlined />
       <BapsButton brand="sampark" label="Primary Ghost" variant="ghost" />
       <BapsButton brand="sampark" label="Link" variant="link" />
     </div>
@@ -432,10 +429,7 @@ export default function SamparkVariants() {
   return (
     <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
       <BapsButton brand="sampark" label="Primary" />
-      {/* The Angular story renders this one [outlined]="true". React has no
-          outlined variant yet — variant is solid | ghost | link — so this is
-          the filled secondary. Tracked as a React parity gap. */}
-      <BapsButton brand="sampark" label="Secondary" severity="secondary" />
+      <BapsButton brand="sampark" label="Secondary" severity="secondary" outlined />
       <BapsButton brand="sampark" label="Primary Ghost" variant="ghost" />
       <BapsButton brand="sampark" label="Link" variant="link" />
     </div>
