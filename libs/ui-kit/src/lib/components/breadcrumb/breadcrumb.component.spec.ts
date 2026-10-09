@@ -105,6 +105,45 @@ describe('BapsBreadcrumb', () => {
     });
   });
 
+  describe('aria-current', () => {
+    const links = (fixture: { nativeElement: HTMLElement }) =>
+      [...fixture.nativeElement.querySelectorAll('.p-breadcrumb-item-link')] as HTMLElement[];
+
+    it('marks the last crumb as the current page, and only the last', async () => {
+      const fixture = await setup();
+      const marked = links(fixture).map((a) => a.getAttribute('aria-current'));
+
+      // The last crumb IS the page you are on. Without aria-current a
+      // screen reader reads the whole trail as a row of ordinary links and
+      // never says which one is here — the styling that makes it obvious to
+      // a sighted reader carries nothing.
+      expect(marked).toEqual([null, 'page']);
+    });
+
+    it('moves the mark when the trail changes', async () => {
+      const fixture = await setup();
+      fixture.componentInstance.model.set([
+        { label: 'Events', routerLink: '/events' },
+        { label: 'Registrations', routerLink: '/events/1' },
+        { label: 'Payment' },
+      ]);
+      await apply(fixture);
+
+      expect(links(fixture).map((a) => a.getAttribute('aria-current'))).toEqual([
+        null,
+        null,
+        'page',
+      ]);
+    });
+
+    it('marks nothing when the trail is empty', async () => {
+      const fixture = await setup();
+      fixture.componentInstance.model.set([]);
+      await apply(fixture);
+      expect(links(fixture)).toEqual([]);
+    });
+  });
+
   describe('brand', () => {
     it('is absent for mybky and present for sampark', async () => {
       const fixture = await setup();

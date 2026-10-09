@@ -47,7 +47,7 @@ Inputs, outputs and their types, read from the component's own source.
 
 ## Accessibility
 
-- PrimeNG's `p-breadcrumb` renders a `<nav>` with a list of links — no custom ARIA added by this wrapper.
+- PrimeNG's `p-breadcrumb` renders a `<nav>` with a list of links.
 - Items without a `url`/`command` render as inert text, not a `<button>` or empty anchor — they won't appear in the tab order, which is correct since they're not actionable.
-- The active (last) item is visually distinct but is **not** marked `aria-current="page"` by this wrapper or by PrimeNG — if that matters for your flow, set it via a custom item template.
+- The active (last) item is marked **`aria-current="page"`** by this wrapper, so a screen reader says which crumb is the page you are on rather than reading the trail as a row of ordinary links. PrimeNG does not do this itself, and it offers no hook that knows which item is last — `itemTemplate`'s context is `{ $implicit: MenuItem }` with no index — so the wrapper sets the attribute on the rendered link. Nothing to do at the call site.
 - Focus-visible ring is only defined for the Sampark skin; MyBKY relies on the global preset's default focus styling.
