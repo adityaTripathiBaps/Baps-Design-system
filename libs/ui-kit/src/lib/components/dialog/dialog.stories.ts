@@ -76,7 +76,13 @@ const meta: Meta<BapsDialog> = {
     appendTo: { control: 'inline-radio', options: ['self', 'body'] },
   },
   args: {
-    brand: 'sampark',
+    // No `brand` default. It used to be pinned to 'sampark', which overrode
+    // the design-system toolbar: every canvas on the docs page rendered
+    // Sampark even under the MyBKY view, so a MyBKY reader was shown maroon
+    // dialogs. check-brand-scope reported it as the one remaining leak.
+    // Unset, the component follows the document-level brand class the
+    // toolbar sets, which is what every other component here does. The
+    // MyBky story stays pinned, because pinning is its point.
     styleClass: '',
     header: 'Cancel Document Upload',
     width: '31.25rem',

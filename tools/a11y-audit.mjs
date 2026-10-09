@@ -71,3 +71,62 @@ for (const [rule, v] of rows) {
   console.log(`${rule}  [${v.impact}]  ${v.count} nodes across ${v.stories.length} stories`);
   console.log(`   ${v.stories.slice(0, 8).join(', ')}${v.stories.length > 8 ? ', …' : ''}`);
 }
+
+/**
+ * What this audit is known to report today, and why each one is still here.
+ *
+ * Until now the audit printed its findings and exited 0, so it sat in the CI
+ * suite reporting two CRITICAL rules and nobody saw it — `with-storybook.mjs`
+ * listed it as "ok". Exiting 1 on everything would have been just as useless,
+ * because the whole list goes red on day one and stays red.
+ *
+ * So: a rule here is accounted for, and the count is the ceiling. Exceed the
+ * ceiling, or introduce a rule that is not listed, and the audit fails. Fix
+ * something and lower the number — it is meant to ratchet down.
+ */
+const KNOWN = {
+  'color-contrast': {
+    max: 52,
+    why: 'not yet triaged — 52 nodes over 12 stories, needs a design pass',
+  },
+  'aria-allowed-attr': {
+    max: 2,
+    why: 'progress-bar: PrimeNG binds aria-valuenow on its own host whatever the mode, and neither wrapper lever overrides it. Open design decision in BRAIN.md',
+  },
+  'aria-valid-attr-value': {
+    max: 2,
+    why: 'the same progress-bar host binding as aria-allowed-attr',
+  },
+  'scrollable-region-focusable': {
+    max: 1,
+    why: 'listbox — proven a false positive and pinned by a test; see listbox.mdx',
+  },
+  'aria-required-children': {
+    max: 1,
+    why: "stepper — PrimeNG puts role=tablist on the stepper ROOT, so the tabpanels sit inside it. Needs an upstream fix or a decision to drop PrimeNG's stepper markup",
+  },
+  'aria-dialog-name': {
+    max: 1,
+    why: 'Patterns/Delete confirmation — its baps-dialog does carry a header, so the flagged node has not been identified yet',
+  },
+};
+
+const regressions = [];
+for (const [rule, v] of rows) {
+  const known = KNOWN[rule];
+  if (!known) {
+    regressions.push(`${rule} [${v.impact}] — new, ${v.count} nodes`);
+  } else if (v.count > known.max) {
+    regressions.push(`${rule} — ${v.count} nodes, was ${known.max}`);
+  }
+}
+
+if (regressions.length) {
+  console.error('\na11y regressions:');
+  for (const r of regressions) console.error('  ' + r);
+  console.error('\nFix it, or raise the ceiling in KNOWN with a reason.');
+  process.exit(1);
+}
+
+console.log('\nno a11y regressions — every finding is accounted for in KNOWN:');
+for (const [rule, v] of rows) console.log(`  ${rule} (${v.count}) — ${KNOWN[rule].why}`);
