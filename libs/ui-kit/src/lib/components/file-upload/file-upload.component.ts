@@ -51,6 +51,7 @@ import { BapsButton } from '../button/button.component';
         [multiple]="multiple"
         [disabled]="disabled"
         (change)="onChange($event)"
+        (click)="$event.stopPropagation()"
       />
       <div class="baps-file-upload-ring">
         <div class="baps-file-upload-icon">
