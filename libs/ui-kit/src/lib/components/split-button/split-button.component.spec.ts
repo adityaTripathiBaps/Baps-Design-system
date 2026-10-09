@@ -188,3 +188,22 @@ describe('BapsSplitButton click output', () => {
     expect(fixture.componentInstance.clickCount).toBe(1);
   });
 });
+
+describe('BapsSplitButton dropdown accessible name', () => {
+  it('names the dropdown toggle, which is icon-only', async () => {
+    const fixture = await render();
+    const buttons = [
+      ...(fixture.nativeElement as HTMLElement).querySelectorAll('button'),
+    ];
+    const toggle = buttons.find((b) =>
+      b.classList.contains('p-splitbutton-dropdown'),
+    )!;
+
+    // The toggle renders a chevron and nothing else, so its accessible name
+    // can only come from aria-label. Without one it is announced as "button"
+    // and a screen-reader user has no way to know the menu exists. PrimeNG
+    // exposes `expandAriaLabel` for exactly this and defaults it to nothing.
+    expect(toggle.getAttribute('aria-label')).toBe('More Options');
+    expect(toggle.textContent?.trim()).toBe('');
+  });
+});

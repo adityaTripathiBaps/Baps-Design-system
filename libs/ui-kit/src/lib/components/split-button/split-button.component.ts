@@ -23,6 +23,7 @@ import { MenuItem, PrimeTemplate } from 'primeng/api';
       [size]="primeSize"
       [disabled]="disabled"
       [menuStyleClass]="menuStyleClass ?? ''"
+      expandAriaLabel="More Options"
       (onClick)="clicked.emit($event)"
     >
       @if (hasCount) {
