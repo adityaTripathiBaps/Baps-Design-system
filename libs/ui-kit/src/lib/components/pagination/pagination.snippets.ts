@@ -47,17 +47,62 @@ const fullAngular = (brand = 'sampark', first = 0) => `<baps-paginator
   (pageChange)="onPage($event)"
 />`;
 
+/**
+ * The nav strip the Custom tab documents.
+ *
+ * Nav only, deliberately: the component also renders the "Showing x-y of z"
+ * report, a rows-per-page control and a jump-to-page input, and that control
+ * is a PrimeNG p-select whose CSS is not in pagination.css. Raw markup cannot
+ * reproduce it without shipping an imitation of PrimeNG's chrome, so this
+ * documents the part it can render honestly. check-pagination-drift compares
+ * the nav controls for that reason, and check-standalone lists pagination as
+ * not-required-to-be-standalone for the same one.
+ *
+ * The page buttons follow the component's own elision rule, because the guard
+ * compares against what the story actually renders: under six pages nothing is
+ * elided and every page is listed; otherwise the active page is shown with the
+ * last behind an ellipsis, and when the active page IS the last there is
+ * neither a second button nor an ellipsis.
+ */
+const pageButton = (n: number, active: boolean) =>
+  [
+    '<button type="button" class="baps-paginator__page',
+    active ? ' baps-paginator__page--active"' : '"',
+    active ? ' aria-current="page"' : '',
+    ` aria-label="Page ${n}">${n}</button>`,
+  ].join('');
+
+const pageButtons = (activePage: number, totalPages: number): string => {
+  const rows =
+    totalPages < 6
+      ? Array.from({ length: totalPages }, (_, i) =>
+          pageButton(i + 1, i + 1 === activePage),
+        )
+      : [
+          pageButton(activePage, true),
+          ...(activePage === totalPages
+            ? []
+            : [
+                '<span class="baps-paginator__gap" aria-hidden="true">...</span>',
+                pageButton(totalPages, false),
+              ]),
+        ];
+  return rows.join('\n    ');
+};
+
 const custom = (
   activePage: number,
   totalPages: number,
   brandClass = '',
 ) => `<baps-paginator class="${brandClass}">
   <nav class="baps-paginator" aria-label="Pagination">
-    <button type="button" class="baps-paginator__nav" aria-label="Previous page">Previous</button>
-    <button type="button" class="baps-paginator__page baps-paginator__page--active" aria-current="page" aria-label="Page ${activePage}">${activePage}</button>
-    <span class="baps-paginator__gap" aria-hidden="true">...</span>
-    <button type="button" class="baps-paginator__page" aria-label="Page ${totalPages}">${totalPages}</button>
-    <button type="button" class="baps-paginator__nav" aria-label="Next page">Next</button>
+    <!-- Icon buttons, not text. The component renders a PrimeIcons chevron
+         and nothing else, so the accessible name comes from aria-label —
+         check-pagination-drift caught this reading "Previous" where the
+         component reads nothing at all. -->
+    <button type="button" class="baps-paginator__nav" aria-label="Previous page"><i class="pi pi-angle-left" aria-hidden="true"></i></button>
+    ${pageButtons(activePage, totalPages)}
+    <button type="button" class="baps-paginator__nav" aria-label="Next page"><i class="pi pi-angle-right" aria-hidden="true"></i></button>
   </nav>
 </baps-paginator>`;
 

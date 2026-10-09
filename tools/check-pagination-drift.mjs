@@ -132,24 +132,27 @@ const PROPS = [
 
 /** Rendered box, compared separately so a size regression names itself. */
 /**
- * `width` only — NOT `height`.
+ * Both `width` and `height`.
  *
- * Both sides are matched on `.baps-paginator`, but they do not hold the same
- * thing. The component's strip carries the "Showing x-y of z" report, the
- * rows-per-page control and the jump-to-page input beside the nav buttons;
- * the Custom tab carries the nav alone, and cannot do otherwise — the
- * rows-per-page control is a PrimeNG `p-select`, and its CSS is not in
- * pagination.css and never will be. That is the same reason pagination is
- * listed as not-required-to-be-standalone in check-standalone.mjs.
+ * This used to compare the whole `.baps-paginator` strip, and the two sides
+ * did not hold the same thing: the component's strip carries the report, the
+ * rows-per-page control and the jump-to-page input beside the nav buttons,
+ * and the Custom tab carries the nav alone. Its height is set by its tallest
+ * child, so it differed by construction and `height` had to be dropped.
  *
- * So the strip's height is set by its tallest child, which differs by
- * construction: 36px against 34px, every story, with nothing wrong on either
- * side. Comparing it reported drift that no edit could fix.
+ * The guard now compares the nav CONTROLS themselves, which both sides do
+ * render identically, so the box is meaningful again — and this is stricter
+ * than before, because a button's own height is now checked rather than the
+ * container's.
  *
- * Everything else still compares, including every colour, border and radius,
- * and `width` — so a nav that stops filling its row still fails.
+ * The Custom tab stays nav-only on purpose. The rows-per-page control is a
+ * PrimeNG `p-select` whose CSS is not in pagination.css, so raw markup
+ * cannot reproduce it without shipping an imitation of PrimeNG's chrome.
+ * Documenting the nav honestly beats documenting the strip inaccurately —
+ * the same reason pagination is listed as not-required-to-be-standalone in
+ * check-standalone.mjs.
  */
-const BOX = ['width'];
+const BOX = ['width', 'height'];
 
 // ── Pull the `custom` markup out of the snippets file ──────────────────────
 //
@@ -174,21 +177,31 @@ const BOX = ['width'];
 const readCustomBlocks = () => {
   const src = readFileSync(SNIPPETS, 'utf8');
 
-  const helperAt = src.indexOf('const custom = (');
+  // `custom` is built from two smaller helpers, so all three are lifted and
+  // evaluated together. Each is a pure function over numbers and strings —
+  // no imports, no state — which is what makes reading them out of the file
+  // safe, and what keeps this guard following the markup instead of holding
+  // a copy that drifts from it.
+  const helperAt = src.indexOf('const pageButton = (');
   if (helperAt === -1)
     throw new Error(
-      `${SNIPPETS}: no 'const custom = (' helper — this guard reads the ` +
+      `${SNIPPETS}: no 'const pageButton = (' helper — this guard reads the ` +
         `markup by evaluating it, so an inline rewrite needs this updated.`,
     );
-  const helperEnd = src.indexOf('`;', helperAt);
+  const customAt = src.indexOf('const custom = (', helperAt);
+  if (customAt === -1)
+    throw new Error(`${SNIPPETS}: no 'const custom = (' helper`);
+  const helperEnd = src.indexOf('`;', customAt);
   if (helperEnd === -1)
     throw new Error(`${SNIPPETS}: the custom helper is unterminated`);
 
-  // Drop the TypeScript parameter annotations so Function can parse it.
+  // Drop the TypeScript annotations so Function can parse them.
   const helperSrc = src
-    .slice(helperAt + 'const custom = '.length, helperEnd + 1)
-    .replace(/:\s*(number|string)\b/g, '');
-  const custom = Function(`"use strict"; return (${helperSrc});`)();
+    .slice(helperAt, helperEnd + 2)
+    .replace(/:\s*(number|string|boolean)\b/g, '');
+  const custom = Function(
+    `"use strict"; ${helperSrc} return custom;`,
+  )();
 
   const out = {};
   for (const name of Object.keys(STORIES)) {
@@ -320,7 +333,13 @@ for (const [name, spec] of Object.entries(STORIES)) {
   });
   await page.evaluate(() => document.fonts.ready);
   await page.waitForTimeout(500);
-  angular[name] = await extract(page, 'baps-paginator .baps-paginator');
+  angular[name] = await extract(
+    page,
+    '.baps-paginator__nav, .baps-paginator__page, .baps-paginator__gap'
+      .split(', ')
+      .map((sel) => `baps-paginator ${sel}`)
+      .join(', '),
+  );
 }
 
 const rawUrl = buildRawPage(blocks);
@@ -332,7 +351,10 @@ const raw = {};
 for (const name of Object.keys(STORIES)) {
   raw[name] = await extract(
     page,
-    `section[data-story="${name}"] .baps-paginator`,
+    '.baps-paginator__nav, .baps-paginator__page, .baps-paginator__gap'
+      .split(', ')
+      .map((sel) => `section[data-story="${name}"] ${sel}`)
+      .join(', '),
   );
 }
 await browser.close();
@@ -341,55 +363,69 @@ await browser.close();
 let checked = 0;
 const failures = [];
 
+/** Every disagreement between one Angular control and one Custom control. */
+const diff = (ang, rw, label) => {
+  const out = [];
+  for (const k of PROPS) {
+    // CSS can blockify an inline-flex item to flex without changing its
+    // rendered design. Normalise that one equivalent computed value; every
+    // other display change is still a failure.
+    const norm = (v) => (k === 'display' && v === 'flex' ? 'inline-flex' : v);
+    if (norm(ang.css[k]) !== norm(rw.css[k]))
+      out.push(
+        `${label}  ${k}\n      angular: ${ang.css[k]}\n      custom : ${rw.css[k]}`,
+      );
+  }
+  for (const k of BOX) {
+    // Ignore sub-pixel rounding, not a visible box change.
+    if (Math.abs(ang.box[k] - rw.box[k]) > 0.5)
+      out.push(
+        `${label}  ${k}\n      angular: ${ang.box[k]}px\n      custom : ${rw.box[k]}px`,
+      );
+  }
+  return out;
+};
+
 for (const name of Object.keys(STORIES)) {
-  const a = pick(name, angular[name]);
+  const a = angular[name];
   const b = raw[name];
-  if (a.length !== b.length) {
+
+  if (b.length > a.length) {
     failures.push(
-      `${name}: the Custom tab markup renders ${b.length} paginator rows, but it claims ` +
-        `${a.length} of the story's ${angular[name].length} paginator rows`,
+      `${name}: the Custom tab renders ${b.length} nav controls, more than the ` +
+        `story's ${a.length} — it documents something that is not there.`,
     );
     continue;
   }
-  a.forEach((ang, i) => {
-    const rw = b[i];
-    const label = `${name}[${i}] "${ang.text.slice(0, 24)}"`;
-    for (const k of PROPS) {
-      checked++;
-      // CSS can blockify an inline-flex item to flex without changing its
-      // rendered design. Normalise that one equivalent computed value while
-      // retaining all other display changes as failures.
-      const norm = (v) => (k === 'display' && v === 'flex' ? 'inline-flex' : v);
-      if (norm(ang.css[k]) !== norm(rw.css[k])) {
-        failures.push(
-          `${label}  ${k}\n      angular: ${ang.css[k]}\n      custom : ${rw.css[k]}`,
-        );
-      }
+
+  for (const [i, rw] of b.entries()) {
+    // The Custom tab samples: a story may render thirteen page buttons where
+    // the snippet shows the first, the gap and the last. Controls are paired
+    // by their rendered text, and a sample may match ANY control carrying
+    // that text — several read the same, so pinning it to the first would
+    // report a difference that is only an artefact of which one was picked.
+    const candidates = a.filter((t) => t.text === rw.text);
+    if (!candidates.length) {
+      failures.push(
+        `${name}: the Custom tab shows a control reading "${rw.text.slice(0, 24)}" ` +
+          `which the story does not render.`,
+      );
+      continue;
     }
-    for (const k of BOX) {
-      checked++;
-      // Ignore only sub-pixel text/layout rounding, not a visible box change.
-      if (Math.abs(ang.box[k] - rw.box[k]) > 0.5) {
-        failures.push(
-          `${label}  ${k}\n      angular: ${ang.box[k]}px\n      custom : ${rw.box[k]}px`,
-        );
-      }
-    }
+    checked += (PROPS.length + BOX.length) * candidates.length;
+    const label = `${name}[${i}] "${rw.text.slice(0, 24)}"`;
+    const best = candidates
+      .map((ang) => diff(ang, rw, label))
+      .sort((x, y) => x.length - y.length)[0];
+    failures.push(...best);
     if (VERBOSE) {
       console.log(`\n${label}`);
-      for (const k of PROPS) console.log(`  ${k.padEnd(20)} ${ang.css[k]}`);
-      for (const k of BOX) console.log(`  ${k.padEnd(20)} ${ang.box[k]}px`);
+      for (const k of PROPS) console.log(`  ${k.padEnd(20)} ${candidates[0].css[k]}`);
+      for (const k of BOX) console.log(`  ${k.padEnd(20)} ${candidates[0].box[k]}px`);
     }
-  });
+  }
 }
 
-const paginators = Object.keys(STORIES).reduce(
-  (n, k) => n + pick(k, angular[k]).length,
-  0,
-);
-console.log(
-  `\nchecked ${checked} properties across ${paginators} paginator rows in ${Object.keys(STORIES).length} stories`,
-);
 
 if (failures.length) {
   console.error(

@@ -123,6 +123,14 @@ select.baps-paginator__rpp {
   align-items: flex-end;
   justify-content: center;
   min-width: 1.25rem;
+  /* border-box, stated rather than inherited: this is the one paginator part
+     with vertical padding, so under the browser's content-box default the
+     0.25rem below adds to the 1.875rem and the gap renders 34px against the
+     page buttons' 30px. Storybook and the app both set a global reset, so it
+     looked right there and wrong for anyone importing pagination.css on its
+     own — which is exactly the portability this partial exists to provide.
+     Measured by check-pagination-drift. */
+  box-sizing: border-box;
   height: 1.875rem;
   padding-bottom: 0.25rem;
   color: var(--color-mybky-mono-500, #6f777d);
