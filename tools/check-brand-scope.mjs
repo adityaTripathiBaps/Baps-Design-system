@@ -40,6 +40,12 @@ const SIGNATURE = {
  */
 const ALLOWED_BOTH = new Map([
   ['foundations-colour--docs', 'palette reference — documents both ramps'],
+  [
+    'foundations-icons--docs',
+    "the page's whole point is that an icon has no colour of its own — " +
+      'it takes the text colour around it, so it shows one in each brand ' +
+      "(#c96868 and #5f78b8). Painting both is the demonstration, not a leak.",
+  ],
   ['foundations-audit-inconsistency-findings--docs', 'its subject is where the brands diverge'],
   ['patterns-single-brand-project-setup--docs', 'guide that has to name both to explain the choice'],
   ['guidelines-known-gaps--docs', 'maintainer notes, several about cross-brand behaviour'],

@@ -248,7 +248,7 @@ const failures = [];
  * tab with MORE tags than the story.
  */
 const pairUp = (name, a, b) => {
-  if (a.length === b.length) return a.map((ang, i) => [ang, b[i], i]);
+  if (a.length === b.length) return a.map((ang, i) => [[ang], b[i], i]);
   if (b.length > a.length) {
     failures.push(
       `${name}: the Custom tab markup renders ${b.length} tags, more than ` +
@@ -258,61 +258,61 @@ const pairUp = (name, a, b) => {
   }
   const pairs = [];
   for (const [i, rw] of b.entries()) {
-    const ang = a.find((t) => t.text === rw.text);
-    if (!ang) {
+    const candidates = a.filter((t) => t.text === rw.text);
+    if (!candidates.length) {
       failures.push(
         `${name}: the Custom tab shows a tag reading "${rw.text.slice(0, 30)}" ` +
           `which the story does not render.`,
       );
       continue;
     }
-    pairs.push([ang, rw, i]);
+    pairs.push([candidates, rw, i]);
   }
   return pairs;
+};
+
+/** Every disagreement between one Angular tag and one Custom tag. */
+const diff = (ang, rw, label) => {
+  const out = [];
+  for (const k of PROPS) {
+    // A tag is a flex item on one side and not the other, and CSS blockifies
+    // a flex item's inline-flex to flex. Same rendered result, different
+    // computed string — normalised rather than dropped, so a genuine change
+    // to `block` would still fail.
+    const norm = (v) => (k === 'display' && v === 'flex' ? 'inline-flex' : v);
+    if (norm(ang.css[k]) !== norm(rw.css[k]))
+      out.push(
+        `${label}  ${k}\n      angular: ${ang.css[k]}\n      custom : ${rw.css[k]}`,
+      );
+  }
+  for (const k of BOX) {
+    if (Math.abs(ang.box[k] - rw.box[k]) > 0.5)
+      out.push(
+        `${label}  ${k}\n      angular: ${ang.box[k]}px\n      custom : ${rw.box[k]}px`,
+      );
+  }
+  return out;
 };
 
 for (const name of Object.keys(STORIES)) {
   const a = angular[name];
   const b = raw[name];
-  for (const [ang, rw, i] of pairUp(name, a, b)) {
-    const label = name + '[' + i + '] "' + ang.text.slice(0, 20) + '"';
-    for (const k of PROPS) {
-      checked++;
-      // A tag is a flex item on one side and not the other, and CSS blockifies
-      // a flex item's inline-flex to flex. Same rendered result, different
-      // computed string — normalised rather than dropped, so a genuine change
-      // to `block` would still fail.
-      const norm = (v) => (k === 'display' && v === 'flex' ? 'inline-flex' : v);
-      if (norm(ang.css[k]) !== norm(rw.css[k])) {
-        failures.push(
-          label +
-            '  ' +
-            k +
-            '\n      angular: ' +
-            ang.css[k] +
-            '\n      custom : ' +
-            rw.css[k],
-        );
-      }
-    }
-    for (const k of BOX) {
-      checked++;
-      if (Math.abs(ang.box[k] - rw.box[k]) > 0.5) {
-        failures.push(
-          label +
-            '  ' +
-            k +
-            '\n      angular: ' +
-            ang.box[k] +
-            'px\n      custom : ' +
-            rw.box[k] +
-            'px',
-        );
-      }
-    }
+  for (const [candidates, rw, i] of pairUp(name, a, b)) {
+    // A sample may match ANY of the variants its story shows. Several tags
+    // share one rendered text — all four sizes of the icon-only tag read
+    // the same — so pinning the sample to the first would report size drift
+    // that is only an artefact of which one was picked. Zero differences
+    // against any candidate is a pass; otherwise the closest is reported.
+    checked += (PROPS.length + BOX.length) * candidates.length;
+    const label = `${name}[${i}] "${candidates[0].text.slice(0, 20)}"`;
+    const best = candidates
+      .map((ang) => diff(ang, rw, label))
+      .sort((x, y) => x.length - y.length)[0];
+    failures.push(...best);
     if (VERBOSE) {
       console.log('\n' + label);
-      for (const k of PROPS) console.log('  ' + k.padEnd(20) + ang.css[k]);
+      for (const k of PROPS)
+        console.log('  ' + k.padEnd(20) + candidates[0].css[k]);
     }
   }
 }

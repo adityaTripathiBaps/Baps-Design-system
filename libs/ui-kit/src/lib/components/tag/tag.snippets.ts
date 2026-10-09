@@ -171,7 +171,7 @@ export default function TrailingActionAxis({ onAction }) {
 
   ChevronAxis: {
     primeng: `<baps-tag value="Registered" [chevron]="true" />`,
-    custom: `<span class="baps-tag baps-tag--grey"><span class="baps-tag__label">Registered</span><span class="baps-tag-chevron pi pi-chevron-down" aria-hidden="true"></span></span>`,
+    custom: `<span class="baps-tag baps-tag--grey"><span class="baps-tag__label">Small</span><span class="baps-tag-chevron pi pi-chevron-down" aria-hidden="true"></span></span>`,
     ...frameworkExamples('ChevronAxis', chevronTags),
   },
 
