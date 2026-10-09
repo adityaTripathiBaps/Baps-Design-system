@@ -6,6 +6,7 @@ import {
   useRef,
   useEffect,
   useImperativeHandle,
+  useId,
 } from 'react';
 import { createPortal } from 'react-dom';
 
@@ -60,6 +61,7 @@ export const BapsDialog = forwardRef<HTMLDialogElement, BapsDialogProps>(
     },
     ref
   ) => {
+    const titleId = useId();
     const dialogRef = useRef<HTMLDialogElement>(null);
     const activeElementRef = useRef<HTMLElement | null>(null);
 
@@ -145,6 +147,12 @@ export const BapsDialog = forwardRef<HTMLDialogElement, BapsDialogProps>(
           background: 'transparent',
           ...style,
         }}
+        // A dialog needs an accessible name or it is announced as nothing —
+        // the aria-dialog-name finding. The title is already on screen, so
+        // this points at it instead of duplicating the string into a label.
+        // A caller's own aria-label or aria-labelledby wins, because
+        // nativeProps spread after this.
+        aria-labelledby={header || title ? titleId : undefined}
         onCancel={handleCancel}
         onClick={handleBackdropClick}
         aria-modal="true"
@@ -153,7 +161,7 @@ export const BapsDialog = forwardRef<HTMLDialogElement, BapsDialogProps>(
         <div className="p-dialog-header">
           <div className="baps-dialog__heading">
             {media}
-            <div className="baps-dialog__title">
+            <div className="baps-dialog__title" id={titleId}>
               {header}
               {title}
             </div>
