@@ -240,3 +240,45 @@ describe('BapsListbox', () => {
     });
   });
 });
+
+describe('BapsListbox scrollable region', () => {
+  it('reaches the scrolling list through PrimeNG focus sentinels, not a dead tab stop', async () => {
+    @Component({
+      imports: [BapsListbox],
+      template: `<baps-listbox [options]="options" optionLabel="name" />`,
+    })
+    class Host {
+      readonly options = Array.from({ length: 30 }, (_, i) => ({
+        name: `Option ${i + 1}`,
+      }));
+    }
+
+    const fixture = TestBed.createComponent(Host);
+    await fixture.whenStable();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const root = fixture.nativeElement as HTMLElement;
+    const scroller = root.querySelector('.p-listbox-list-container')!;
+    const list = scroller.querySelector('.p-listbox-list')!;
+
+    // Our stylesheet gives .p-listbox-list-container max-height +
+    // overflow-y: auto, so it is the region axe's scrollable-region-focusable
+    // rule asks about — and axe FLAGS it, because the only element inside is
+    // the list at tabindex=-1.
+    expect(scroller).not.toBeNull();
+    expect(list.getAttribute('tabindex')).toBe('-1');
+
+    // It is nonetheless operable, and this is why: PrimeNG renders focus
+    // sentinels at tabindex=0 that catch Tab and hand focus to the list,
+    // which then takes the arrow keys and scrolls itself. The axe finding is
+    // a limitation of static analysis, not a defect.
+    //
+    // Putting tabindex="0" on the scroller to silence it would make things
+    // WORSE: a second tab stop on an element with no role and no name,
+    // announced as nothing, in front of the list the user actually wants.
+    const sentinels = [...root.querySelectorAll('.p-hidden-focusable')];
+    expect(sentinels.length).toBeGreaterThan(0);
+    expect(sentinels.every((s) => s.getAttribute('tabindex') === '0')).toBe(true);
+  });
+});
