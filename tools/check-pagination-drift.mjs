@@ -131,7 +131,25 @@ const PROPS = [
 ];
 
 /** Rendered box, compared separately so a size regression names itself. */
-const BOX = ['width', 'height'];
+/**
+ * `width` only — NOT `height`.
+ *
+ * Both sides are matched on `.baps-paginator`, but they do not hold the same
+ * thing. The component's strip carries the "Showing x-y of z" report, the
+ * rows-per-page control and the jump-to-page input beside the nav buttons;
+ * the Custom tab carries the nav alone, and cannot do otherwise — the
+ * rows-per-page control is a PrimeNG `p-select`, and its CSS is not in
+ * pagination.css and never will be. That is the same reason pagination is
+ * listed as not-required-to-be-standalone in check-standalone.mjs.
+ *
+ * So the strip's height is set by its tallest child, which differs by
+ * construction: 36px against 34px, every story, with nothing wrong on either
+ * side. Comparing it reported drift that no edit could fix.
+ *
+ * Everything else still compares, including every colour, border and radius,
+ * and `width` — so a nav that stops filling its row still fails.
+ */
+const BOX = ['width'];
 
 // ── Pull the `custom` markup out of the snippets file ──────────────────────
 //
