@@ -239,6 +239,21 @@ Blocked on design, not on implementation. Never invent these.
 - `0`, `100%`, `50%` and other technical values.
 - 1px borders and hairlines.
 - SVG `viewBox` and path data.
+- **`.baps-tag--primary`'s `background-color` and `color` in
+  `components/tag/_tag.scss`.** The only two bare hex left anywhere, and
+  deliberate: they are baked to match the preset's own literals so the live
+  component and the preset cannot disagree, with `check-tag-drift.mjs` as the
+  thing that notices if they do. They become token references again when
+  bucket B migrates tag off the preset literals. The reasoning is written
+  above the rule itself.
+
+**Measured 2026-10-09, over the whole styles tree and every component's inline
+`styles:` block, with comments, `--token:` definitions and nested
+`var(--token, #fallback)` fallbacks excluded: 2 bare hex, both the tag
+exception above.** Earlier counts of "22 in `_input.scss`" and similar were
+counting fallbacks, which this list has always permitted — there was never
+anything there to fix. Worth re-measuring the same way before trusting any
+future count.
 
 ---
 
@@ -251,8 +266,18 @@ screenshots, not source.
 
 Counts, if they are useful as a tripwire rather than a source of truth:
 47 component families (the barrel exports 47; `_template` is a scaffold and is
-the only directory not exported). All 47 carry framework snippets, 247/254
-examples — the seven uncovered are Interaction stories, excluded by design; 41 per-component stylesheets emit; Angular 505/505 across 32 suites;
-React 53/53.
+the only directory not exported). All 47 carry framework snippets, **253/253
+examples** — the previous line claimed 247/254 and that "the seven uncovered
+are Interaction stories, excluded by design", which was wrong twice over: the
+guard already excludes Interaction stories from the count, and the seven were
+ordinary examples nobody had written (tabs ×3, accordion, icon, avatar ×2).
+Six were written; the seventh, avatar's `_DocsAnchor`, is not an example at
+all and the guard now skips leading-underscore exports the way it already
+skipped leading-underscore directories.
+
+41 per-component stylesheets emit. **Angular 733/733 across 50 suites** and
+every component now has a spec (was 505/505 over 32 suites, with 18 families
+carrying none). **React 138/138 across 52 per-component files** (was 53/53 in
+one file).
 
 Component-level truth stays in the STATUS files.
