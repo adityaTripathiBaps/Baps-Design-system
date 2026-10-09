@@ -41,22 +41,18 @@ export const toastSnippets: Record<string, SnippetSet> = {
     react: `${SETUP}
 
 export function App({ children }) {
-  // One container for the app, mounted once. Mount it twice and every
+  // The provider IS the container — it portals one to document.body itself,
+  // so there is nothing to render beside it. Mount it twice and every
   // message is announced twice.
-  return (
-    <BapsToastProvider>
-      {children}
-      <BapsToast />
-    </BapsToastProvider>
-  );
+  return <BapsToastProvider>{children}</BapsToastProvider>;
 }
 
 export function SaveButton() {
-  const toast = useBapsToast();
+  const toast = useToast();
 
   return (
     <BapsButton
-      onClick={() => toast.add({ severity: 'success', summary: 'Saved', detail: 'Project updated.' })}
+      onClick={() => toast.show({ severity: 'success', summary: 'Saved', detail: 'Project updated.' })}
     >
       Save
     </BapsButton>
@@ -70,12 +66,7 @@ ${SETUP}
    browser timers. Mount it in the root layout so one container serves every
    route. */
 export default function ToastRoot({ children }) {
-  return (
-    <BapsToastProvider>
-      {children}
-      <BapsToast />
-    </BapsToastProvider>
-  );
+  return <BapsToastProvider>{children}</BapsToastProvider>;
 }`,
   },
 
@@ -86,11 +77,10 @@ export default function ToastRoot({ children }) {
     react: `${SETUP}
 
 export function App({ children }) {
+  // Placement is a prop on the provider, because the provider owns the
+  // container the messages land in.
   return (
-    <BapsToastProvider>
-      {children}
-      <BapsToast position="bottom-center" />
-    </BapsToastProvider>
+    <BapsToastProvider position="bottom-center">{children}</BapsToastProvider>
   );
 }`,
     next: `'use client';
@@ -99,10 +89,7 @@ ${SETUP}
 
 export default function ToastRoot({ children }) {
   return (
-    <BapsToastProvider>
-      {children}
-      <BapsToast position="bottom-center" />
-    </BapsToastProvider>
+    <BapsToastProvider position="bottom-center">{children}</BapsToastProvider>
   );
 }`,
   },
@@ -114,19 +101,26 @@ export default function ToastRoot({ children }) {
     primeng: `<baps-toast [preventDuplicates]="true" />`,
     react: `${SETUP}
 
+/* The React provider has no preventDuplicates: show() appends whatever it is
+   given, so a retry loop announces the same failure on every attempt. Until
+   it gains one, the guard belongs at the call site — and it has to be a ref,
+   because state would re-render the button mid-retry. */
 export function SyncButton({ onSync }) {
-  const toast = useBapsToast();
+  const toast = useToast();
+  const announced = useRef(false);
 
-  const notify = () =>
-    // A key is what makes two pushes the same message rather than two
-    // messages. Without it, a retry loop announces the same failure on every
-    // attempt.
-    toast.add({
-      key: 'sync-failed',
+  const notify = () => {
+    if (announced.current) return;
+    announced.current = true;
+    toast.show({
       severity: 'error',
       summary: 'Sync failed',
       detail: 'Retrying in the background.',
+      life: 4000,
     });
+    // Let it be announced again once the first one has left the screen.
+    setTimeout(() => { announced.current = false; }, 4000);
+  };
 
   return <BapsButton onClick={() => onSync().catch(notify)}>Sync</BapsButton>;
 }`,
@@ -134,25 +128,25 @@ export function SyncButton({ onSync }) {
 
 ${SETUP}
 
+/* Same guard as the React example, and the same reason: the provider does
+   not collapse duplicates, so the caller does. */
 export default function SyncButton({ onSync }) {
-  const toast = useBapsToast();
+  const toast = useToast();
+  const announced = useRef(false);
 
-  return (
-    <BapsButton
-      onClick={() =>
-        onSync().catch(() =>
-          toast.add({
-            key: 'sync-failed',
-            severity: 'error',
-            summary: 'Sync failed',
-            detail: 'Retrying in the background.',
-          }),
-        )
-      }
-    >
-      Sync
-    </BapsButton>
-  );
+  const notify = () => {
+    if (announced.current) return;
+    announced.current = true;
+    toast.show({
+      severity: 'error',
+      summary: 'Sync failed',
+      detail: 'Retrying in the background.',
+      life: 4000,
+    });
+    setTimeout(() => { announced.current = false; }, 4000);
+  };
+
+  return <BapsButton onClick={() => onSync().catch(notify)}>Sync</BapsButton>;
 }`,
   },
 };

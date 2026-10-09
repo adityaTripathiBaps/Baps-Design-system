@@ -34,6 +34,7 @@ for (const key of [
   'Node',
   'Event',
   'KeyboardEvent',
+  'FocusEvent',
   'MouseEvent',
   'getComputedStyle',
   'requestAnimationFrame',

@@ -83,7 +83,11 @@ export function BapsToastProvider({
   const toastContainer = (
     <div
       className={joinClassNames(
-        'p-toast p-component p-toast-top-right',
+        'p-toast p-component',
+        // One position class only. `p-toast-top-right` used to be baked into
+        // the line above as well, so every container carried two of them and
+        // the stylesheet placed it by rule order rather than by the prop —
+        // position="bottom-center" rendered top right.
         `p-toast-${position}`,
         brand === 'sampark' && 'baps-toast-sampark baps-ds-sampark'
       )}
