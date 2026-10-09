@@ -83,6 +83,27 @@ const RAW = {
   thumb: '.baps-toggle-switch__thumb',
 };
 
+/** How a snippets file says "this component cannot have a Custom tab". */
+const ROUTE_B_REASON = /Route B|no Custom tab|not applicable/i;
+
+/**
+ * toggle-switch is Route B and always has been — it has never carried a
+ * single `custom` block, and check-snippets lists it with no Custom tab.
+ *
+ * This guard compares Custom markup against the rendered component, so on a
+ * Route B component there is nothing to compare, and it was crashing with
+ * "Playground has no `custom` block" — which reads as a missing Custom tab
+ * rather than as a guard with no work to do. It had been failing that way
+ * unseen, because it needed a hand-started Storybook.
+ *
+ * It is kept rather than deleted so that it wakes up by itself the day a
+ * Custom tab IS added.
+ */
+const routeB = () => {
+  const src = readFileSync(SNIPPETS, 'utf8');
+  return !src.includes('custom: ') && ROUTE_B_REASON.test(src);
+};
+
 const readCustomBlocks = () => {
   const src = readFileSync(SNIPPETS, 'utf8');
   const out = {};
@@ -198,6 +219,14 @@ ${sections}
 };
 
 // ── run ─────────────────────────────────────────────────────────────────────
+if (routeB()) {
+  console.log(
+    `${SNIPPETS} is Route B — no Custom tab, and a written reason for it.\n` +
+      'Nothing to compare. This guard starts working the day one is added.',
+  );
+  process.exit(0);
+}
+
 const blocks = readCustomBlocks();
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1400, height: 900 } });
