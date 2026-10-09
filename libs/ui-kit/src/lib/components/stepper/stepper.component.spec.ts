@@ -105,6 +105,17 @@ describe('BapsStepperWrapper', () => {
       expect(count()).toBe(1);
     });
 
+    it('adds no wrapper element at all when railClass is empty', async () => {
+      const fixture = await setup();
+      const list = fixture.nativeElement.querySelector('p-step-list');
+
+      // PrimeNG v21 puts role="tablist" on the <p-stepper> ROOT, so every
+      // element under it is inside the tablist — and a tablist owns tab
+      // children. An unconditional wrapper put a generic element between the
+      // two for every stepper in the app, wanted or not.
+      expect(list.parentElement.tagName.toLowerCase()).toBe('p-stepper');
+    });
+
     it('puts railClass on the element wrapping the rail', async () => {
       const fixture = await setup();
       fixture.componentInstance.railClass.set('is-sticky');

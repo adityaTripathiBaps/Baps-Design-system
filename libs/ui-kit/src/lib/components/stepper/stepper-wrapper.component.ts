@@ -87,7 +87,20 @@ import { BapsStep } from './step.component';
         </p-step-panels>
       }
 
-      <div [class]="railClass">
+      <!-- Only when asked for. PrimeNG v21 puts role="tablist" on the
+           <p-stepper> ROOT, so everything below is inside the tablist — and
+           a tablist owns tab children. An unconditional wrapper added a
+           generic element between the tablist and the steps for every
+           stepper in the app, whether or not anyone wanted one. -->
+      @if (railClass) {
+        <div [class]="railClass">
+          <ng-container *ngTemplateOutlet="rail" />
+        </div>
+      } @else {
+        <ng-container *ngTemplateOutlet="rail" />
+      }
+
+      <ng-template #rail>
       <p-step-list>
         @for (s of steps; track s.value) {
           <p-step [value]="s.value">
@@ -139,7 +152,7 @@ import { BapsStep } from './step.component';
           </p-step>
         }
       </p-step-list>
-      </div>
+      </ng-template>
 
       <!-- The panels block is written out in BOTH branches rather than
            declared once in an <ng-template> and stamped with ngTemplateOutlet.
