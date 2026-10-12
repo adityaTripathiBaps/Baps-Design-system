@@ -55,6 +55,13 @@ The popup panel portals to `<body>`, so a host class binding never reaches it.
 `baps-menu-sampark` directly onto PrimeNG's `.p-menu` container, matching the
 pattern established by `popover` and `toast`.
 
+**ConfirmDialog wraps BapsDialog with imperative service.**
+`BapsConfirmDialog` is built on `baps-dialog` so it inherits the modal shell,
+backdrop mask, focus trapping, focus restoration, and brand theming. It listens
+to `BapsConfirmationService` (and optionally PrimeNG's `ConfirmationService` for
+interoperability). In React, `BapsConfirmProvider` pairs with the `useConfirm()`
+hook to provide promise-based confirmation resolution.
+
 **Routes A / B / C.** A: a standalone `baps-*` partial written from tokens, with
 a drift guard — raw markup works outside Angular. B: markup and style intent
 only. C: Angular-only, because the design lives in PrimeNG's own DOM. Route is

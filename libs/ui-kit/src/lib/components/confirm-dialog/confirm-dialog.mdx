@@ -1,0 +1,65 @@
+import { Meta, Canvas, Controls } from '@storybook/blocks';
+import { FrameworkTabs, PropsTable } from '@baps/docs-blocks';
+import * as ConfirmDialogStories from './confirm-dialog.stories';
+import { confirmDialogSnippets } from './confirm-dialog.snippets';
+
+<Meta of={ConfirmDialogStories} />
+
+# ConfirmDialog
+
+A modal confirmation prompt driven imperatively by a service. `baps-confirm-dialog` wraps `baps-dialog` to deliver consistent modal styling, backdrop masking, focus trapping, and brand theming.
+
+In Angular, add `<baps-confirm-dialog />` once in the application layout and trigger confirmations using `BapsConfirmationService.confirm()`. In React, wrap with `<BapsConfirmProvider>` and call `useConfirm()`.
+
+## Examples
+
+### Default
+
+<FrameworkTabs
+  of={ConfirmDialogStories.Default}
+  snippets={confirmDialogSnippets.Default}
+/>
+
+<Controls of={ConfirmDialogStories.Default} />
+
+### Delete Confirmation
+
+A high-severity action with custom button labels, icon, and danger styling.
+
+<FrameworkTabs
+  of={ConfirmDialogStories.DeleteConfirmation}
+  snippets={confirmDialogSnippets.DeleteConfirmation}
+/>
+
+### Key Routing
+
+Route confirmations to specific dialog instances when multiple confirmation overlays exist in the same application.
+
+<FrameworkTabs
+  of={ConfirmDialogStories.KeyRouting}
+  snippets={confirmDialogSnippets.KeyRouting}
+/>
+
+### Sampark
+
+<FrameworkTabs
+  of={ConfirmDialogStories.Sampark}
+  snippets={confirmDialogSnippets.Sampark}
+/>
+
+## Interactions
+
+<Canvas of={ConfirmDialogStories.OpenCloseInteraction} />
+
+## API
+
+Inputs, outputs and their types, read from the component's source.
+
+<PropsTable of={ConfirmDialogStories} />
+
+## Accessibility
+
+- Traps keyboard focus within the dialog while active.
+- Restores focus to the trigger element when dismissed or accepted.
+- <kbd>Esc</kbd> key dismisses the confirmation by default.
+- Header and body elements are connected via `aria-labelledby` or `aria-label`.

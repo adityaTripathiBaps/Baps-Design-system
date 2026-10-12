@@ -55,3 +55,4 @@ export * from './lib/table-sort-config/index.js';
 export * from './lib/tree-table/index.js';
 export * from './lib/users-dropdown/index.js';
 export * from './lib/menu/index.js';
+export * from './lib/confirm-dialog/index.js';

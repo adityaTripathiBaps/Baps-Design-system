@@ -3,7 +3,7 @@
 Only real, reusable, typed components exported by `@org/ui-kit-react` count as
 implemented. Documentation snippets do not count.
 
-**Tracked total: 57 components — DONE: 56 — PARTIAL: 1 — NOT STARTED: 0 — BLOCKED: 0.**
+**Tracked total: 58 components — DONE: 57 — PARTIAL: 1 — NOT STARTED: 0 — BLOCKED: 0.**
 
 ## Batch 2
 
@@ -58,9 +58,9 @@ implemented. Documentation snippets do not count.
 
 ## Gap-fill (feat/kit-gap-fill)
 
-**2 components — DONE: 2.**
+**3 components — DONE: 3.**
 
-- DONE: InputNumber, Menu.
+- DONE: InputNumber, Menu, ConfirmDialog.
 
 ### Current verified checkpoint
 
