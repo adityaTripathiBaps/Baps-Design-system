@@ -3,7 +3,7 @@
 Only real, reusable, typed components exported by `@org/ui-kit-react` count as
 DONE. Documentation snippets do not count.
 
-**Tracked total: 56 components — DONE: 55 — PARTIAL: 1 — NOT STARTED: 0 — BLOCKED: 0.**
+**Tracked total: 57 components — DONE: 56 — PARTIAL: 1 — NOT STARTED: 0 — BLOCKED: 0.**
 
 ## DONE
 
@@ -11,12 +11,13 @@ DONE. Documentation snippets do not count.
   Indicator, Tag, Alert, Card, Divider, Spinner, Skeleton, FloatLabel,
   IconField, InputIcon, Message, InputText, Textarea, Checkbox, Radio, Toggle
   Switch, Input Group, Segmented.
-- Batch 3 (15): Navbar, Internal Navbar, Toolbar, Breadcrumb, Tabs, Accordion,
-  Stepper, Menu, Menu Item, Popover, Tooltip, Dialog, Drawer, Toast, Split Button.
+- Batch 3 (14): Navbar, Internal Navbar, Toolbar, Breadcrumb, Tabs, Accordion,
+  Stepper, Menu Item, Popover, Tooltip, Dialog, Drawer, Toast, Split Button.
 - Batch 4 (10): Select, Multi Select, Listbox, Tree Select, Datepicker, Slider,
   Chip, Users Dropdown, File Upload, Pagination.
 - Batch 5 (6): Progress Bar — see below for why it moved out of PARTIAL — plus
   Table, SortIcon, Table Column Config, Table Sort Config and Tree Table.
+- Gap-fill (feat/kit-gap-fill) (2): InputNumber, Menu.
 
 ## PARTIAL
 
