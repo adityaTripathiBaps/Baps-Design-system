@@ -7,7 +7,13 @@ import { BapsInputGroup } from './input-group.component';
   imports: [BapsInputGroup, InputText],
   template: `
     <baps-input-group [brand]="brand" [prefix]="prefix" [suffix]="suffix">
+      @if (projectPrefix) {
+        <i input-group-prefix class="pi pi-search" aria-hidden="true"></i>
+      }
       <input pInputText aria-label="Days" />
+      @if (projectSuffix) {
+        <span input-group-suffix>kg</span>
+      }
     </baps-input-group>
   `,
 })
@@ -15,9 +21,15 @@ class Host {
   brand: 'mybky' | 'sampark' = 'mybky';
   prefix?: string = 'min';
   suffix?: string = 'day/s';
+  projectPrefix = false;
+  projectSuffix = false;
 }
 
-async function render(setup: (h: Host) => void = () => { /* empty */ }) {
+async function render(
+  setup: (h: Host) => void = () => {
+    /* empty */
+  },
+) {
   const fixture = TestBed.createComponent(Host);
   setup(fixture.componentInstance);
   await fixture.whenStable();
@@ -28,28 +40,90 @@ async function render(setup: (h: Host) => void = () => { /* empty */ }) {
 
 function addons(fixture: { nativeElement: unknown }) {
   return Array.from(
-    (fixture.nativeElement as HTMLElement).querySelectorAll('p-inputgroup-addon'),
+    (fixture.nativeElement as HTMLElement).querySelectorAll(
+      'p-inputgroup-addon',
+    ),
   );
+}
+
+function populatedAddons(fixture: { nativeElement: unknown }) {
+  return addons(fixture).filter((el) => {
+    const content = el.querySelector('.baps-input-group__addon-content');
+    const fallback = el.querySelector('.baps-input-group__addon-fallback');
+    return Boolean(
+      content?.childElementCount || content?.textContent?.trim() || fallback,
+    );
+  });
 }
 
 describe('BapsInputGroup', () => {
   it('renders leading and trailing text addons around the projected field', async () => {
     const fixture = await render();
-    const rendered = addons(fixture);
+    const rendered = populatedAddons(fixture);
 
-    expect(rendered.map((el) => el.textContent?.trim())).toEqual(['min', 'day/s']);
-    expect((fixture.nativeElement as HTMLElement).querySelector('input')).toBeTruthy();
+    expect(rendered.map((el) => el.textContent?.trim())).toEqual([
+      'min',
+      'day/s',
+    ]);
+    expect(
+      (fixture.nativeElement as HTMLElement).querySelector('input'),
+    ).toBeTruthy();
   });
 
   it('omits an addon that was not given', async () => {
     const suffixOnly = await render((h) => (h.prefix = undefined));
-    expect(addons(suffixOnly).map((el) => el.textContent?.trim())).toEqual(['day/s']);
+    expect(
+      populatedAddons(suffixOnly).map((el) => el.textContent?.trim()),
+    ).toEqual(['day/s']);
 
     const bare = await render((h) => {
       h.prefix = undefined;
       h.suffix = undefined;
     });
-    expect(addons(bare)).toHaveLength(0);
+    expect(populatedAddons(bare)).toHaveLength(0);
+  });
+
+  it('renders projected content inside the matching PrimeNG addon', async () => {
+    const fixture = await render((h) => {
+      h.prefix = undefined;
+      h.suffix = undefined;
+      h.projectPrefix = true;
+      h.projectSuffix = true;
+    });
+    const [prefix, suffix] = populatedAddons(fixture);
+
+    expect(prefix.querySelector('[input-group-prefix]')).toBeTruthy();
+    expect(prefix.querySelector('i')?.classList).toContain('pi-search');
+    expect(suffix.querySelector('[input-group-suffix]')?.textContent).toBe(
+      'kg',
+    );
+  });
+
+  it('gives projected content precedence over the matching string input', async () => {
+    const fixture = await render((h) => {
+      h.projectPrefix = true;
+      h.projectSuffix = true;
+    });
+    const [prefix, suffix] = populatedAddons(fixture);
+
+    expect(prefix.querySelector('[input-group-prefix]')).toBeTruthy();
+    expect(
+      prefix.querySelector('.baps-input-group__addon-content')
+        ?.childElementCount,
+    ).toBe(1);
+    expect(
+      prefix.querySelector('.baps-input-group__addon-fallback')?.textContent,
+    ).toBe('min');
+    expect(suffix.querySelector('[input-group-suffix]')?.textContent).toBe(
+      'kg',
+    );
+    expect(
+      suffix.querySelector('.baps-input-group__addon-content')
+        ?.childElementCount,
+    ).toBe(1);
+    expect(
+      suffix.querySelector('.baps-input-group__addon-fallback')?.textContent,
+    ).toBe('day/s');
   });
 
   /**
@@ -59,7 +133,7 @@ describe('BapsInputGroup', () => {
    */
   it('renders addons as non-interactive static text', async () => {
     const fixture = await render();
-    for (const el of addons(fixture)) {
+    for (const el of populatedAddons(fixture)) {
       expect(el.getAttribute('role')).toBeNull();
       expect(el.getAttribute('tabindex')).toBeNull();
       expect(el.getAttribute('aria-hidden')).toBeNull();

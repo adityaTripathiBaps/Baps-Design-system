@@ -17,6 +17,10 @@ export type BapsInputGroupProps = BapsInputGroupNativeProps & {
   children: ReactNode;
   prefix?: ReactNode;
   suffix?: ReactNode;
+  /** Rich leading addon content. Takes precedence over prefix when supplied. */
+  prefixContent?: ReactNode;
+  /** Rich trailing addon content. Takes precedence over suffix when supplied. */
+  suffixContent?: ReactNode;
   brand?: BapsInputGroupBrand;
   inputGroupClassName?: string;
   ref?: Ref<HTMLElement>;
@@ -27,12 +31,17 @@ export function BapsInputGroup({
   children,
   prefix,
   suffix,
+  prefixContent,
+  suffixContent,
   brand = 'mybky',
   inputGroupClassName,
   className,
   ref,
   ...nativeProps
 }: BapsInputGroupProps): ReactElement {
+  const resolvedPrefix = prefixContent ?? prefix;
+  const resolvedSuffix = suffixContent ?? suffix;
+
   return createElement(
     'baps-input-group',
     {
@@ -47,12 +56,12 @@ export function BapsInputGroup({
         .filter(Boolean)
         .join(' ')}
     >
-      {prefix !== undefined && prefix !== null && (
-        <span className="p-inputgroupaddon p-component">{prefix}</span>
+      {resolvedPrefix !== undefined && resolvedPrefix !== null && (
+        <span className="p-inputgroupaddon p-component">{resolvedPrefix}</span>
       )}
       {children}
-      {suffix !== undefined && suffix !== null && (
-        <span className="p-inputgroupaddon p-component">{suffix}</span>
+      {resolvedSuffix !== undefined && resolvedSuffix !== null && (
+        <span className="p-inputgroupaddon p-component">{resolvedSuffix}</span>
       )}
     </div>,
   );

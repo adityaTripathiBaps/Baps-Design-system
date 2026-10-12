@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import { createElement } from 'react';
 import { BapsInputGroup, BapsInputText } from '../dist/index.js';
 
 test('BapsInputGroup orders static addons around the reusable form control', () => {
@@ -39,4 +40,35 @@ test('BapsInputGroup omits absent addons without hiding supplied content', () =>
   assert.equal(suffix.props.children, 'week/s');
   assert.equal(suffix.props['aria-hidden'], undefined);
   assert.equal(suffix.props.tabIndex, undefined);
+});
+
+test('BapsInputGroup renders rich addon content with precedence over strings', () => {
+  const input = BapsInputText({ 'aria-label': 'Search radius' });
+  const prefixContent = createElement('i', {
+    className: 'pi pi-search',
+    'aria-hidden': 'true',
+  });
+  const suffixContent = createElement('span', null, 'km');
+  const element = BapsInputGroup({
+    prefix: 'Search',
+    suffix: 'kilometres',
+    prefixContent,
+    suffixContent,
+    children: input,
+  });
+  const [prefix, field, suffix] = element.props.children.props.children;
+
+  assert.equal(prefix.props.children, prefixContent);
+  assert.equal(field, input);
+  assert.equal(suffix.props.children, suffixContent);
+});
+
+test('BapsInputGroup renders only the form control when no addons are supplied', () => {
+  const input = BapsInputText({ 'aria-label': 'Days' });
+  const element = BapsInputGroup({ children: input });
+  const [prefix, field, suffix] = element.props.children.props.children;
+
+  assert.equal(prefix, false);
+  assert.equal(field, input);
+  assert.equal(suffix, false);
 });

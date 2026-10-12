@@ -43,6 +43,10 @@ const ADDON_TOKENS = {
  *     <input pInputText type="number" [(ngModel)]="days" />
  *   </baps-input-group>
  *
+ * Arbitrary content can use the input-group-prefix and input-group-suffix
+ * slots. Projected content takes precedence over the matching string input,
+ * so adding a richer addon never renders duplicate text.
+ *
  * ## Figma values (17512:82916 "Min", 168x32)
  * Container: Mono/0 fill, 1px Mono/Borders (#e1e0e0), 4px radius, 32px tall.
  * Addons: 32px min-width, 8px/10px padding, 14px Inter Regular, Mono/100
@@ -65,13 +69,27 @@ const ADDON_TOKENS = {
   imports: [InputGroup, InputGroupAddon],
   template: `
     <p-inputgroup [dt]="dt">
-      @if (prefix) {
-        <p-inputgroup-addon>{{ prefix }}</p-inputgroup-addon>
-      }
+      <p-inputgroup-addon
+        class="baps-input-group__addon baps-input-group__addon--prefix"
+      >
+        <span class="baps-input-group__addon-content">
+          <ng-content select="[input-group-prefix]"></ng-content>
+        </span>
+        @if (prefix) {
+          <span class="baps-input-group__addon-fallback">{{ prefix }}</span>
+        }
+      </p-inputgroup-addon>
       <ng-content></ng-content>
-      @if (suffix) {
-        <p-inputgroup-addon>{{ suffix }}</p-inputgroup-addon>
-      }
+      <p-inputgroup-addon
+        class="baps-input-group__addon baps-input-group__addon--suffix"
+      >
+        <span class="baps-input-group__addon-content">
+          <ng-content select="[input-group-suffix]"></ng-content>
+        </span>
+        @if (suffix) {
+          <span class="baps-input-group__addon-fallback">{{ suffix }}</span>
+        }
+      </p-inputgroup-addon>
     </p-inputgroup>
   `,
   encapsulation: ViewEncapsulation.None,
@@ -171,6 +189,25 @@ const ADDON_TOKENS = {
       align-items: center;
     }
 
+    /* Projection slots need a stable PrimeNG addon parent even when empty.
+       Hide that parent when neither projected nor string content exists, and
+       hide the string fallback when projected content is present. :empty
+       ignores Angular's comment anchors, so conditional projected content
+       still follows the same rule. */
+    baps-input-group
+      .baps-input-group__addon:has(.baps-input-group__addon-content:empty):not(
+        :has(.baps-input-group__addon-fallback)
+      ) {
+      display: none;
+    }
+
+    baps-input-group .baps-input-group__addon-content:empty,
+    baps-input-group
+      .baps-input-group__addon-content:not(:empty)
+      ~ .baps-input-group__addon-fallback {
+      display: none;
+    }
+
     /* Leading addon sits a step darker than the trailing one (Mono/20% Black
        against Mono/10% Black). inputgroup.addon.background is a single token
        with no leading/trailing split, so it carries the trailing value and
@@ -196,9 +233,15 @@ const ADDON_TOKENS = {
   },
 })
 export class BapsInputGroup {
-  /** Text addon rendered before the field, e.g. "min". Omit for none. */
+  /**
+   * Text addon rendered before the field, e.g. "min". Omit for none.
+   * Content projected with input-group-prefix takes precedence when both exist.
+   */
   @Input() prefix?: string;
-  /** Text addon rendered after the field, e.g. "day/s". Omit for none. */
+  /**
+   * Text addon rendered after the field, e.g. "day/s". Omit for none.
+   * Content projected with input-group-suffix takes precedence when both exist.
+   */
   @Input() suffix?: string;
   /** Visual skin. */
   @Input() brand: 'mybky' | 'sampark' = 'mybky';

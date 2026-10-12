@@ -9,6 +9,8 @@ import { inputGroupSnippets } from './input-group.snippets';
 
 A control with a fixed prefix or suffix — a unit, a currency, a bounded range. `baps-input-group` owns the border and the focus ring; the control inside is chromeless.
 
+Use `prefix` and `suffix` for plain text. For icons or richer markup, project an element with `input-group-prefix` or `input-group-suffix`. Projected content takes precedence when the matching string input is also present.
+
 ## Usage
 
 ```html
@@ -37,6 +39,13 @@ A control with a fixed prefix or suffix — a unit, a currency, a bounded range.
 <FrameworkTabs
   of={InputGroupStories.SuffixOnly}
   snippets={inputGroupSnippets.SuffixOnly}
+/>
+
+### Projected Addons
+
+<FrameworkTabs
+  of={InputGroupStories.ProjectedAddons}
+  snippets={inputGroupSnippets.ProjectedAddons}
 />
 
 ### Min Max Row
@@ -77,3 +86,4 @@ Inputs, outputs and their types, read from the component's own source.
 
 - The addons are decoration — they carry no role and are not focusable. The control inside keeps its own label.
 - An addon is not a label. Give the inner control an `aria-label` or a visible label; "min" alone does not say what is being measured.
+- Give projected interactive content its own accessible name. Decorative icons should use `aria-hidden="true"`.

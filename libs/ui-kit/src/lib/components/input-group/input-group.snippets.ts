@@ -55,6 +55,24 @@ export const inputGroupSnippets: Record<string, SnippetSet> = {
     </BapsInputGroup>`,
     ),
   },
+  ProjectedAddons: {
+    primeng: `<baps-input-group prefix="Unused fallback" suffix="Unused fallback">
+  <i input-group-prefix class="pi pi-search" aria-hidden="true"></i>
+  <input bapsInputText aria-label="Member search" />
+  <span input-group-suffix>name</span>
+</baps-input-group>`,
+    ...examples(
+      'ProjectedInputGroupAddons',
+      `<BapsInputGroup
+      prefix="Unused fallback"
+      suffix="Unused fallback"
+      prefixContent={<i className="pi pi-search" aria-hidden="true" />}
+      suffixContent={<span>name</span>}
+    >
+      <BapsInputText aria-label="Member search" />
+    </BapsInputGroup>`,
+    ),
+  },
   MinMaxRow: {
     primeng: `<baps-input-group prefix="min"><input bapsInputText type="number" aria-label="Minimum" /></baps-input-group>
 <baps-input-group prefix="max"><input bapsInputText type="number" aria-label="Maximum" /></baps-input-group>`,

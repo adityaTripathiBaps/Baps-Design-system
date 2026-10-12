@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
+import { expect, within } from '@storybook/test';
 import { FormsModule } from '@angular/forms';
 import { InputText } from 'primeng/inputtext';
 import { BapsInputGroup } from './input-group.component';
@@ -24,14 +25,20 @@ const meta: Meta<BapsInputGroup> = {
   // inputs a control a reader can actually drive — a select with the real
   // option list instead of a free-text box that accepts nonsense.
   argTypes: {
-    brand: { control: 'inline-radio', options: [undefined, 'mybky', 'sampark'] },
+    brand: {
+      control: 'inline-radio',
+      options: [undefined, 'mybky', 'sampark'],
+    },
     prefix: { control: 'text' },
     suffix: { control: 'text' },
   },
   parameters: {
     // Design tab — the Figma frame this component implements, node 17512:77924.
     // Harvested from input-group.stories.ts, where it was already recorded as a comment.
-    design: { type: 'figma', url: 'https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/?node-id=17512-77924' },
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/?node-id=17512-77924',
+    },
   },
   component: BapsInputGroup,
   decorators: [moduleMetadata({ imports: [FormsModule, InputText] })],
@@ -65,6 +72,61 @@ export const SuffixOnly: StoryObj<BapsInputGroup> = {
       </div>
     `,
   }),
+};
+
+/** Rich content slots for icons, controls, or styled text. Slots win over strings. */
+export const ProjectedAddons: StoryObj<BapsInputGroup> = {
+  render: () => ({
+    props: { query: '' },
+    template: `
+      <baps-input-group prefix="Unused fallback" suffix="Unused fallback">
+        <i input-group-prefix class="pi pi-search" aria-hidden="true"></i>
+        <input pInputText aria-label="Member search" [(ngModel)]="query" />
+        <span input-group-suffix>name</span>
+      </baps-input-group>
+    `,
+  }),
+};
+
+export const ProjectedPrecedenceInteraction: StoryObj<BapsInputGroup> = {
+  name: 'Interaction — projected addon precedence',
+  render: () => ({
+    props: { query: '' },
+    template: `
+      <baps-input-group prefix="Unused fallback" suffix="Unused fallback">
+        <i input-group-prefix class="pi pi-search" aria-hidden="true"></i>
+        <input pInputText aria-label="Member search" [(ngModel)]="query" />
+        <span input-group-suffix>name</span>
+      </baps-input-group>
+    `,
+  }),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const input = canvas.getByRole('textbox', { name: 'Member search' });
+    const group = input.closest('baps-input-group');
+    const prefix = group?.querySelector('.baps-input-group__addon--prefix');
+    const suffix = group?.querySelector('.baps-input-group__addon--suffix');
+    const prefixFallback = prefix?.querySelector(
+      '.baps-input-group__addon-fallback',
+    );
+    const suffixFallback = suffix?.querySelector(
+      '.baps-input-group__addon-fallback',
+    );
+
+    if (
+      !(prefix instanceof HTMLElement) ||
+      !(suffix instanceof HTMLElement) ||
+      !(prefixFallback instanceof HTMLElement) ||
+      !(suffixFallback instanceof HTMLElement)
+    ) {
+      throw new Error('InputGroup addon structure did not render');
+    }
+
+    await expect(prefix.querySelector('[input-group-prefix]')).toBeVisible();
+    await expect(suffix.querySelector('[input-group-suffix]')).toBeVisible();
+    await expect(getComputedStyle(prefixFallback).display).toBe('none');
+    await expect(getComputedStyle(suffixFallback).display).toBe('none');
+  },
 };
 
 /** The full Min / Max row from node 17512:82912. */
