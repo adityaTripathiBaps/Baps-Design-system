@@ -3,7 +3,7 @@
 Only real, reusable, typed components exported by `@org/ui-kit-react` count as
 DONE. Documentation snippets do not count.
 
-**Tracked total: 55 components — DONE: 54 — PARTIAL: 1 — NOT STARTED: 0 — BLOCKED: 0.**
+**Tracked total: 56 components — DONE: 55 — PARTIAL: 1 — NOT STARTED: 0 — BLOCKED: 0.**
 
 ## DONE
 
@@ -11,8 +11,8 @@ DONE. Documentation snippets do not count.
   Indicator, Tag, Alert, Card, Divider, Spinner, Skeleton, FloatLabel,
   IconField, InputIcon, Message, InputText, Textarea, Checkbox, Radio, Toggle
   Switch, Input Group, Segmented.
-- Batch 3 (14): Navbar, Internal Navbar, Toolbar, Breadcrumb, Tabs, Accordion,
-  Stepper, Menu Item, Popover, Tooltip, Dialog, Drawer, Toast, Split Button.
+- Batch 3 (15): Navbar, Internal Navbar, Toolbar, Breadcrumb, Tabs, Accordion,
+  Stepper, Menu, Menu Item, Popover, Tooltip, Dialog, Drawer, Toast, Split Button.
 - Batch 4 (10): Select, Multi Select, Listbox, Tree Select, Datepicker, Slider,
   Chip, Users Dropdown, File Upload, Pagination.
 - Batch 5 (6): Progress Bar — see below for why it moved out of PARTIAL — plus
@@ -94,7 +94,7 @@ and succeeded here ("Preview built (1.62 min)").
 
 ## Current verification
 
-- **138/138 React tests pass**, across 52 per-component files.
+- **155/155 React tests pass**, across 53 per-component files.
 - React build and typecheck pass.
 - React lint now has a target: `nx run ui-kit-react:lint` is 0 errors and 7
   warnings — 6 `no-explicit-any` and 1 `no-non-null-assertion`, in drawer,
@@ -104,8 +104,8 @@ and succeeded here ("Preview built (1.62 min)").
 - Strict React consumer and Next.js client/server fixtures pass.
 - Shared MyBKY/Sampark and light/dark CSS is copied from canonical
   `@org/ui-kit`; no React-local design stylesheet exists.
-- Angular build/typecheck and **733/733 tests across 50 suites** pass; every
-  Angular component family now carries a spec (18 had none).
+- Angular build/typecheck and **752/752 tests across 52 suites** pass; every
+  Angular component family now carries a spec.
 - Storybook host typecheck and static production build pass (8 GB Node heap;
   no memory failure).
 - Snippet/style/build parity guards and `git diff --check` pass.

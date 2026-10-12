@@ -1,0 +1,64 @@
+import { Meta, Canvas, Controls } from '@storybook/blocks';
+import { FrameworkTabs, PropsTable } from '@baps/docs-blocks';
+import * as MenuStories from './menu.stories';
+import { menuSnippets } from './menu.snippets';
+
+<Meta of={MenuStories} />
+
+# Menu
+
+A navigation and action menu displaying a hierarchical list of items. `baps-menu` wraps PrimeNG's `p-menu`.
+
+The menu can be used inline or as a popup overlay anchored to a trigger button. Submenus, icons, disabled items, separators, and brand theming are fully supported.
+
+## Examples
+
+### Default
+
+<FrameworkTabs
+  of={MenuStories.Default}
+  snippets={menuSnippets.Default}
+/>
+
+<Controls of={MenuStories.Default} />
+
+### Submenus
+
+Group related commands under category headers by providing a nested `items` array.
+
+<FrameworkTabs
+  of={MenuStories.Submenus}
+  snippets={menuSnippets.Submenus}
+/>
+
+### Inline
+
+Render the menu directly inside page content instead of an overlay.
+
+<FrameworkTabs
+  of={MenuStories.Inline}
+  snippets={menuSnippets.Inline}
+/>
+
+### Sampark
+
+<FrameworkTabs
+  of={MenuStories.Sampark}
+  snippets={menuSnippets.Sampark}
+/>
+
+## Interactions
+
+<Canvas of={MenuStories.OpenCloseInteraction} />
+
+## API
+
+Inputs, outputs and their types, read from the component's source.
+
+<PropsTable of={MenuStories} />
+
+## Accessibility
+
+- Uses semantic `<ul role="menu">` and `<li role="none">` / `<a role="menuitem">` attributes.
+- Popup menus close reliably when pressing <kbd>Esc</kbd> or clicking outside the panel.
+- Disabled items receive `aria-disabled="true"` and are excluded from keyboard tab sequences.

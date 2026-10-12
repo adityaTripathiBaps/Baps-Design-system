@@ -1,0 +1,82 @@
+// menu — panel-level skin for baps-menu's portalled overlay.
+//
+// Item hover, accent bar, keyboard focus and the destructive-row treatment
+// are all owned by overlay-list/_overlay-list.scss, which already targets
+// .p-menu-overlay, .p-menu-item and .p-menu-item-content. This partial adds
+// only the panel container rules that overlay-list does not carry:
+// background, border, radius, shadow, padding and the submenu header.
+//
+// The panel is portalled to <body>, so a host class cannot reach it.
+// Brand rides on the panel's own class list — .baps-ds-sampark is forwarded
+// by the component's `panelClass` getter, exactly as popover and toast do.
+
+@use '../../components/overlay-list/overlay-list';
+
+/* ── Panel container ─────────────────────────────────────────────────── */
+
+.p-menu {
+  --baps-menu-bg: var(--color-mybky-mono-0, #ffffff);
+  --baps-menu-border: var(--color-mybky-mono-300, #e4ecf1);
+  --baps-menu-text: var(--color-mybky-text-primary, #181b1d);
+  --baps-menu-radius: var(--radius-mybky-default, 0.5rem);
+  --baps-menu-shadow:
+    0 4px 6px -1px rgba(24, 27, 29, 0.06),
+    0 10px 24px -4px rgba(24, 27, 29, 0.1);
+
+  background: var(--baps-menu-bg);
+  color: var(--baps-menu-text);
+  border: 1px solid var(--baps-menu-border);
+  border-radius: var(--baps-menu-radius);
+  box-shadow: var(--baps-menu-shadow);
+  min-width: 12.5rem;
+}
+
+.p-menu .p-menu-list {
+  padding: 0.25rem 0;
+}
+
+/* ── Submenu header ──────────────────────────────────────────────────── */
+
+.p-menu .p-menu-submenu-item {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.5rem 1rem 0.25rem;
+  color: var(--baps-menu-text);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* ── Separator ───────────────────────────────────────────────────────── */
+
+.p-menu .p-menu-separator {
+  border-top: 1px solid var(--baps-menu-border);
+  margin: 0.25rem 0;
+}
+
+/* ── Sampark ─────────────────────────────────────────────────────────── */
+
+:is(.baps-ds-sampark, .baps-menu-sampark).p-menu,
+.baps-ds-sampark .p-menu {
+  --baps-menu-bg: var(--color-sampark-surface-card, #ffffff);
+  --baps-menu-border: var(--color-sampark-mono-40, #bcb9b9);
+  --baps-menu-text: var(--color-sampark-text-primary, #151414);
+  --baps-menu-radius: var(--radius-sampark-default, 0.25rem);
+  --baps-menu-shadow: var(--shadow-sampark-dropdown, 0 12px 40px rgba(0, 0, 0, 0.15));
+}
+
+/* ── Dark ────────────────────────────────────────────────────────────── */
+
+.baps-dark .p-menu {
+  --baps-menu-bg: var(--color-mybky-dark-surface-card, #2b2f32);
+  --baps-menu-border: var(--color-mybky-dark-border-divider, #3d4144);
+  --baps-menu-text: var(--color-mybky-dark-text-primary, #f8fafb);
+}
+
+.baps-dark .p-menu.baps-menu-sampark,
+.baps-dark .baps-ds-sampark .p-menu {
+  --baps-menu-bg: var(--color-sampark-dark-surface-card, #2c2c2a);
+  --baps-menu-border: var(--color-sampark-dark-border-divider, #4a4947);
+  --baps-menu-text: var(--color-sampark-dark-text-primary, #f8f7f7);
+}

@@ -3,7 +3,7 @@
 Only real, reusable, typed components exported by `@org/ui-kit-react` count as
 implemented. Documentation snippets do not count.
 
-**Tracked total: 55 components — DONE: 54 — PARTIAL: 1 — NOT STARTED: 0 — BLOCKED: 0.**
+**Tracked total: 56 components — DONE: 55 — PARTIAL: 1 — NOT STARTED: 0 — BLOCKED: 0.**
 
 ## Batch 2
 
@@ -29,10 +29,10 @@ implemented. Documentation snippets do not count.
 
 ## Batch 3
 
-**14 components — DONE: 14.**
+**15 components — DONE: 15.**
 
 - DONE: Navbar, Internal Navbar, Toolbar, Breadcrumb, Tabs, Accordion, Stepper,
-  Menu Item, Popover, Tooltip, Dialog, Drawer, Toast, Split Button.
+  Menu, Menu Item, Popover, Tooltip, Dialog, Drawer, Toast, Split Button.
 
 ## Batch 4
 

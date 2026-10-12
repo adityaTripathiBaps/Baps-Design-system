@@ -49,6 +49,12 @@ provides two keyboard-reachable native buttons instead. Their visible glyphs
 are the decorative 12px kit `plus` / `minus` icons; `aria-label="Increase
 value"` and `aria-label="Decrease value"` provide the accessible names.
 
+**Menu overlay carries brand on panelClass.**
+The popup panel portals to `<body>`, so a host class binding never reaches it.
+`BapsMenu` provides a `panelClass` getter forwarding `baps-ds-sampark` and
+`baps-menu-sampark` directly onto PrimeNG's `.p-menu` container, matching the
+pattern established by `popover` and `toast`.
+
 **Routes A / B / C.** A: a standalone `baps-*` partial written from tokens, with
 a drift guard — raw markup works outside Angular. B: markup and style intent
 only. C: Angular-only, because the design lives in PrimeNG's own DOM. Route is
