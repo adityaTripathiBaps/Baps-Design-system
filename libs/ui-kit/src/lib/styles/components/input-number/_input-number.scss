@@ -1,0 +1,86 @@
+/*
+ * Shared InputNumber spinner chrome for Angular and React.
+ *
+ * The field itself already carries `.p-inputtext`, so the canonical input
+ * partial owns every colour and text state. This file only joins that field
+ * to the two native spinner buttons and consumes the same existing variables.
+ */
+
+baps-input-number {
+  --baps-input-number-radius: var(--form-field-mybky-border-radius);
+  display: inline-block;
+}
+
+:is(baps-input-number.baps-sampark, .baps-ds-sampark baps-input-number) {
+  --baps-input-number-radius: var(--form-field-sampark-border-radius);
+}
+
+baps-input-number .baps-input-number__control {
+  display: inline-flex;
+  align-items: stretch;
+  max-width: 100%;
+}
+
+baps-input-number .p-inputnumber {
+  display: inline-flex;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+baps-input-number .p-inputnumber-input {
+  min-width: 0;
+  width: 100%;
+}
+
+baps-input-number
+  .baps-input-number__control:has(.baps-input-number__buttons)
+  .p-inputnumber-input {
+  border-start-end-radius: 0 !important;
+  border-end-end-radius: 0 !important;
+  border-inline-end: none !important;
+}
+
+baps-input-number .baps-input-number__buttons {
+  display: flex;
+  flex: 0 0 var(--space-8);
+  flex-direction: column;
+}
+
+baps-input-number .baps-input-number__button {
+  display: inline-grid;
+  min-width: var(--space-8);
+  min-height: 0;
+  flex: 1 1 50%;
+  place-items: center;
+  padding: 0;
+  border-color: var(--input-border-default);
+  border-style: solid;
+  background: var(--input-addon-bg);
+  color: var(--input-text-filled);
+  font: inherit;
+  cursor: pointer;
+}
+
+baps-input-number .baps-input-number__button--increment {
+  border-width: calc(var(--space-0-5) / 2) calc(var(--space-0-5) / 2) 0;
+  border-start-end-radius: var(--baps-input-number-radius);
+}
+
+baps-input-number .baps-input-number__button--decrement {
+  border-width: calc(var(--space-0-5) / 2);
+  border-end-end-radius: var(--baps-input-number-radius);
+}
+
+baps-input-number .baps-input-number__button:focus-visible {
+  position: relative;
+  z-index: 1;
+  outline: none;
+  border-color: var(--input-border-hover);
+  box-shadow: 0 0 0 var(--space-0-5) var(--input-shadow-focused);
+}
+
+baps-input-number .baps-input-number__button:disabled {
+  background: var(--input-bg-disabled);
+  color: var(--input-text-disabled);
+  cursor: not-allowed;
+}

@@ -73,4 +73,5 @@ export * from './lib/components/split-button/split-button.component';
 // Phase 6 — Sampark Portal audit gaps
 export * from './lib/components/segmented/segmented.component';
 export * from './lib/components/input-group/input-group.component';
+export * from './lib/components/input-number/input-number.component';
 export * from './lib/theme/ramp';

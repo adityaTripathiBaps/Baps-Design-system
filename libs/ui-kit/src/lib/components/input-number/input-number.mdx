@@ -1,0 +1,73 @@
+import { Meta, Controls } from '@storybook/blocks';
+import { BrandOnly, FrameworkTabs, PropsTable } from '@baps/docs-blocks';
+import * as InputNumberStories from './input-number.stories';
+import { inputNumberSnippets } from './input-number.snippets';
+
+<Meta of={InputNumberStories} />
+
+# Input Number
+
+A numeric form control with min/max clamping, locale grouping, decimal precision, and keyboard-accessible spinner buttons. `baps-input-number` wraps PrimeNG's `p-inputnumber` and implements `ControlValueAccessor`.
+
+Spinner buttons are enabled by default because every measured Sampark use has them. Set `[showButtons]="false"` only when the surrounding form does not use the spinner shape.
+
+## Examples
+
+### Default
+
+<FrameworkTabs
+  of={InputNumberStories.Default}
+  snippets={inputNumberSnippets.Default}
+/>
+
+<Controls of={InputNumberStories.Default} />
+
+### Constrained
+
+<FrameworkTabs
+  of={InputNumberStories.Constrained}
+  snippets={inputNumberSnippets.Constrained}
+/>
+
+### Disabled
+
+<FrameworkTabs
+  of={InputNumberStories.Disabled}
+  snippets={inputNumberSnippets.Disabled}
+/>
+
+<BrandOnly brand="comparison">
+
+### Brands
+
+<FrameworkTabs
+  of={InputNumberStories.Brands}
+  snippets={inputNumberSnippets.Brands}
+/>
+
+</BrandOnly>
+
+## Forms
+
+The wrapper is a full `ControlValueAccessor`, including touched and disabled state, so both forms APIs work.
+
+```html
+<baps-input-number formControlName="attendance" [min]="0" [max]="100000" />
+```
+
+## Events
+
+Angular follows the kit's existing value-event convention with `(valueChange)`. React keeps its platform convention with `onInput`. Both receive the normalized input event, including its numeric `value`.
+
+## API
+
+Inputs, outputs and their types, read from the component's source.
+
+<PropsTable of={InputNumberStories} />
+
+## Accessibility
+
+- Put the control inside a visible `<label>`, or associate a visible label with the nested input through your form-field pattern.
+- The input exposes native spinbutton semantics and supports <kbd>Arrow Up</kbd> / <kbd>Arrow Down</kbd>.
+- The increment and decrement actions use the kit's 12px plus/minus icons inside native buttons. Their `aria-label` values provide the accessible names, and both buttons remain keyboard reachable.
+- Disabled state is native on the field and both buttons; no class-only disabling is used.

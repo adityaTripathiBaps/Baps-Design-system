@@ -42,6 +42,13 @@ background on `.p-button`. So when a SCSS value and `theme/*.theme.ts` disagree,
 the preset is what the user actually sees. Settled this way in commit
 `4b1bd05`-era work on Sampark secondary.
 
+**InputNumber uses kit-owned native spinner buttons for accessibility.**
+PrimeNG v21 renders its built-in spinner buttons with `tabindex="-1"` and
+`aria-hidden="true"`, so `BapsInputNumber` disables that button rendering and
+provides two keyboard-reachable native buttons instead. Their visible glyphs
+are the decorative 12px kit `plus` / `minus` icons; `aria-label="Increase
+value"` and `aria-label="Decrease value"` provide the accessible names.
+
 **Routes A / B / C.** A: a standalone `baps-*` partial written from tokens, with
 a drift guard — raw markup works outside Angular. B: markup and style intent
 only. C: Angular-only, because the design lives in PrimeNG's own DOM. Route is

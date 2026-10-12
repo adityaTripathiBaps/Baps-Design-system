@@ -16,6 +16,7 @@ export * from './lib/form-field/textarea.js';
 export * from './lib/icon/icon.js';
 export * from './lib/indicator/indicator.js';
 export * from './lib/input-group/input-group.js';
+export * from './lib/input-number/index.js';
 export * from './lib/link/link.js';
 export * from './lib/progress-bar/progress-bar.js';
 export * from './lib/radio/radio.js';
