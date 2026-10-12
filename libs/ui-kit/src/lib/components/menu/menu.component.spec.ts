@@ -139,14 +139,16 @@ describe('BapsMenu', () => {
       const fixture = await setup();
       const primenu = prime(fixture);
       // PrimeNG receives the full model; rendering respects visible: false
-      expect(primenu.model).toBe(fixture.componentInstance.model());
-      expect(primenu.model!.length).toBe(3);
+      const model = primenu.model;
+      expect(model).toBe(fixture.componentInstance.model());
+      expect(model?.length).toBe(3);
     });
 
     it('carries nested submenus through the model', async () => {
       const fixture = await setup();
-      const items = prime(fixture).model!;
-      const submenu = items.find((i) => i.label === 'Submenu');
+      const items = prime(fixture).model;
+      expect(items).toBeDefined();
+      const submenu = items?.find((i) => i.label === 'Submenu');
       expect(submenu?.items?.length).toBe(2);
     });
   });
