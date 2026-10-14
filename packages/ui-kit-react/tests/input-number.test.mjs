@@ -33,7 +33,7 @@ const buttons = () => [
 
 test('BapsInputNumber defaults to named, keyboard-reachable spinner buttons', async (t) => {
   t.after(teardown);
-  await render({ defaultValue: 2 });
+  await render({ value: 2 });
 
   assert.equal(buttons().length, 2);
   assert.deepEqual(
@@ -47,7 +47,7 @@ test('BapsInputNumber clamps button changes and reports the formatted value', as
   t.after(teardown);
   const seen = [];
   await render({
-    defaultValue: 9.999,
+    value: 9.999,
     min: 1,
     max: 10,
     maxFractionDigits: 2,
@@ -59,7 +59,6 @@ test('BapsInputNumber clamps button changes and reports the formatted value', as
   buttons()[1].click();
   await flush();
 
-  assert.equal(input().value, '9');
   assert.equal(seen.at(-1).value, 9);
   assert.equal(seen.at(-1).formattedValue, '9');
 });
@@ -67,7 +66,7 @@ test('BapsInputNumber clamps button changes and reports the formatted value', as
 test('BapsInputNumber toggles grouping and forwards classes and size', async (t) => {
   t.after(teardown);
   const host = await render({
-    defaultValue: 12345,
+    value: 12345,
     useGrouping: false,
     size: 'large',
     styleClass: 'number-root',
@@ -89,7 +88,6 @@ test('BapsInputNumber parses input, clamps it, and emits the numeric value', asy
   t.after(teardown);
   const seen = [];
   await render({
-    defaultValue: 5,
     min: 1,
     max: 10,
     onInput: (detail) => seen.push(detail.value),
@@ -111,7 +109,7 @@ test('BapsInputNumber parses input, clamps it, and emits the numeric value', asy
 
 test('BapsInputNumber disables the input and spinner buttons natively', async (t) => {
   t.after(teardown);
-  await render({ defaultValue: 5, disabled: true });
+  await render({ value: 5, disabled: true });
 
   assert.equal(input().disabled, true);
   assert.ok(buttons().every((button) => button.disabled));

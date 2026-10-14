@@ -48,6 +48,12 @@ PrimeNG v21 renders its built-in spinner buttons with `tabindex="-1"` and
 provides two keyboard-reachable native buttons instead. Their visible glyphs
 are the decorative 12px kit `plus` / `minus` icons; `aria-label="Increase
 value"` and `aria-label="Decrease value"` provide the accessible names.
+Measured in the `Brands` story on 2026-10-14, the button group exactly follows
+the adjacent kit input: MyBKY is 36px high with the 99px input radius, Sampark
+is 32px high with the 4px input radius. In both brands it is 32px wide, splits
+into equal half-height buttons with zero padding and no gap, and keeps the 12px
+icon. The custom buttons are therefore an accessibility substitution, not a
+different non-colour treatment.
 
 **Menu overlay carries brand on panelClass.**
 The popup panel portals to `<body>`, so a host class binding never reaches it.

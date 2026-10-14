@@ -3,7 +3,6 @@
 import {
   createElement,
   type ChangeEvent,
-  type FocusEvent,
   type HTMLAttributes,
   type MouseEvent,
   type ReactElement,
@@ -18,12 +17,11 @@ export type BapsInputNumberMode = 'decimal' | 'currency';
 
 type BapsInputNumberNativeProps = Omit<
   HTMLAttributes<HTMLElement>,
-  'defaultValue' | 'onInput'
+  'defaultValue' | 'onInput' | 'onBlur'
 >;
 
 export type BapsInputNumberProps = BapsInputNumberNativeProps & {
   value?: number | null;
-  defaultValue?: number | null;
   showButtons?: boolean;
   min?: number;
   max?: number;
@@ -43,7 +41,6 @@ export type BapsInputNumberProps = BapsInputNumberNativeProps & {
     value: number | null;
     formattedValue: string;
   }) => void;
-  onBlur?: (event: FocusEvent<HTMLInputElement>) => void;
 };
 
 const joinClassNames = (
@@ -90,7 +87,6 @@ function parseValue(value: string): number | null {
 /** Native React spinbutton using the same BAPS field and spinner-button skin. */
 export function BapsInputNumber({
   value: controlledValue,
-  defaultValue = null,
   showButtons = true,
   min,
   max,
@@ -105,13 +101,10 @@ export function BapsInputNumber({
   size,
   brand = 'mybky',
   onInput,
-  onBlur,
   className,
   ...nativeProps
 }: BapsInputNumberProps): ReactElement {
-  const [internalValue, setInternalValue] = useState<number | null>(() =>
-    normaliseValue(defaultValue, min, max, maxFractionDigits),
-  );
+  const [internalValue, setInternalValue] = useState<number | null>(null);
   const currentValue = normaliseValue(
     controlledValue === undefined ? internalValue : controlledValue,
     min,
@@ -180,7 +173,6 @@ export function BapsInputNumber({
           onChange={(event) =>
             commit(parseValue(event.currentTarget.value), event)
           }
-          onBlur={onBlur}
         />
       </span>
 

@@ -37,7 +37,7 @@ export const inputNumberSnippets: Record<string, SnippetSet> = {
 </label>`,
     ...example(
       'AttendanceInput',
-      'defaultValue={1250} onInput={({ value }) => console.log(value)}',
+      'value={1250} onInput={({ value }) => console.log(value)}',
     ),
   },
   Constrained: {
@@ -53,7 +53,7 @@ export const inputNumberSnippets: Record<string, SnippetSet> = {
 </label>`,
     ...example(
       'ConstrainedNumberInput',
-      'defaultValue={5.25} min={1} max={10} maxFractionDigits={2} useGrouping={false}',
+      'value={5.25} min={1} max={10} maxFractionDigits={2} useGrouping={false}',
     ),
   },
   Disabled: {
@@ -61,11 +61,11 @@ export const inputNumberSnippets: Record<string, SnippetSet> = {
   Attendance
   <baps-input-number [(ngModel)]="attendance" [disabled]="true" />
 </label>`,
-    ...example('DisabledNumberInput', 'defaultValue={1250} disabled'),
+    ...example('DisabledNumberInput', 'value={1250} disabled'),
   },
   Brands: {
     primeng: `<label>MyBKY attendance <baps-input-number [(ngModel)]="mybky" /></label>
 <label>Sampark attendance <baps-input-number brand="sampark" [(ngModel)]="sampark" /></label>`,
-    ...example('SamparkNumberInput', 'brand="sampark" defaultValue={1250}'),
+    ...example('SamparkNumberInput', 'brand="sampark" value={1250}'),
   },
 };
