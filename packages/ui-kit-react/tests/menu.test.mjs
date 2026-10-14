@@ -41,7 +41,6 @@ test('BapsMenu renders inline when popup is false', async (t) => {
   const items = [
     { label: 'Edit', icon: 'pi pi-pencil', command: () => { clicked = true; } },
     { label: 'Hidden', visible: false },
-    { separator: true },
     { label: 'Disabled item', disabled: true },
     {
       label: 'Group',
@@ -85,7 +84,7 @@ test('BapsMenu stays out of DOM when popup is true until triggered', async (t) =
   assert.equal(document.querySelector('.p-menu'), null);
 });
 
-test('BapsMenu popup opens and closes via ref', async (t) => {
+test('BapsMenu popup opens and closes through the approved toggle ref', async (t) => {
   t.after(teardown);
   const ref = createRef();
   const host = mount();
@@ -97,13 +96,13 @@ test('BapsMenu popup opens and closes via ref', async (t) => {
   await flush();
 
   const trig = trigger();
-  ref.current.show(clickFrom(trig));
+  ref.current.toggle(clickFrom(trig));
   await flush();
 
   const menuEl = document.querySelector('.p-menu.p-menu-overlay');
   assert.ok(menuEl, 'overlay menu should be in document');
 
-  ref.current.hide();
+  ref.current.toggle(clickFrom(trig));
   await flush();
 
   assert.equal(document.querySelector('.p-menu'), null);

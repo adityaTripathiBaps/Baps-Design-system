@@ -1,6 +1,5 @@
 import {
   createElement,
-  type HTMLAttributes,
   type MouseEvent as ReactMouseEvent,
   type KeyboardEvent as ReactKeyboardEvent,
   forwardRef,
@@ -13,43 +12,30 @@ import { createPortal } from 'react-dom';
 
 export interface MenuItem {
   label?: string;
+  visible?: boolean;
   icon?: string;
+  styleClass?: string;
+  routerLink?: string;
+  items?: MenuItem[];
   command?: (event: {
     originalEvent: ReactMouseEvent<HTMLElement> | ReactKeyboardEvent<HTMLElement>;
     item: MenuItem;
   }) => void;
-  url?: string;
-  items?: MenuItem[];
-  expanded?: boolean;
   disabled?: boolean;
-  visible?: boolean;
-  target?: string;
-  separator?: boolean;
-  styleClass?: string;
-  badge?: string;
-  title?: string;
-  id?: string;
-  ariaLabel?: string;
 }
+
+type BapsMenuToggleEvent = ReactMouseEvent<HTMLElement> | Event;
 
 export interface BapsMenuRef {
-  toggle: (event: ReactMouseEvent<HTMLElement> | Event) => void;
-  show: (event: ReactMouseEvent<HTMLElement> | Event) => void;
-  hide: () => void;
+  toggle: (event: BapsMenuToggleEvent) => void;
 }
 
-export interface BapsMenuProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
+export interface BapsMenuProps {
   model?: MenuItem[];
   popup?: boolean;
   appendTo?: HTMLElement | 'body' | null;
-  autoZIndex?: boolean;
-  baseZIndex?: number;
   brand?: 'mybky' | 'sampark';
-  ariaLabel?: string;
-  ariaLabelledBy?: string;
-  onShow?: () => void;
-  onHide?: () => void;
+  styleClass?: string;
 }
 
 const joinClassNames = (
@@ -62,15 +48,8 @@ export const BapsMenu = forwardRef<BapsMenuRef, BapsMenuProps>(
       model = [],
       popup = false,
       appendTo = 'body',
-      autoZIndex = true,
-      baseZIndex = 0,
       brand = 'mybky',
-      ariaLabel,
-      ariaLabelledBy,
-      onShow,
-      onHide,
-      className,
-      ...nativeProps
+      styleClass,
     },
     ref,
   ) => {
@@ -78,7 +57,6 @@ export const BapsMenu = forwardRef<BapsMenuRef, BapsMenuProps>(
     const [style, setStyle] = useState<{
       left: number;
       top: number;
-      zIndex?: number;
     }>({ left: 0, top: 0 });
     const menuRef = useRef<HTMLDivElement>(null);
     const targetRef = useRef<HTMLElement | null>(null);
@@ -92,22 +70,20 @@ export const BapsMenu = forwardRef<BapsMenuRef, BapsMenuProps>(
 
       return {
         left: targetRect.left + scrollLeft,
-        top: targetRect.bottom + scrollTop + 4,
+        top: targetRect.bottom + scrollTop,
       };
     };
 
-    const show = (event: ReactMouseEvent<HTMLElement> | Event) => {
-      const e = event as unknown as { currentTarget?: HTMLElement; target?: HTMLElement };
-      const target = (e.currentTarget || e.target) as HTMLElement;
+    const show = (event: BapsMenuToggleEvent) => {
+      const eventTarget = event.currentTarget ?? event.target;
+      if (!(eventTarget instanceof HTMLElement)) return;
+
+      const target = eventTarget;
       targetRef.current = target;
 
-      setStyle({
-        ...calculatePosition(target),
-        ...(autoZIndex ? { zIndex: baseZIndex + 1000 } : {}),
-      });
+      setStyle(calculatePosition(target));
 
       setVisible(true);
-      onShow?.();
     };
 
     const hide = () => {
@@ -115,10 +91,9 @@ export const BapsMenu = forwardRef<BapsMenuRef, BapsMenuProps>(
         setVisible(false);
       }
       targetRef.current = null;
-      onHide?.();
     };
 
-    const toggle = (event: ReactMouseEvent<HTMLElement> | Event) => {
+    const toggle = (event: BapsMenuToggleEvent) => {
       if (visible && popup) {
         hide();
       } else {
@@ -126,11 +101,7 @@ export const BapsMenu = forwardRef<BapsMenuRef, BapsMenuProps>(
       }
     };
 
-    useImperativeHandle(ref, () => ({
-      toggle,
-      show,
-      hide,
-    }));
+    useImperativeHandle(ref, () => ({ toggle }));
 
     useEffect(() => {
       if (!popup || !visible) return;
@@ -181,16 +152,6 @@ export const BapsMenu = forwardRef<BapsMenuRef, BapsMenuProps>(
       items
         .filter((item) => item.visible !== false)
         .map((item, idx) => {
-          if (item.separator) {
-            return (
-              <li
-                key={`sep-${idx}`}
-                className="p-menu-separator"
-                role="separator"
-              />
-            );
-          }
-
           if (item.items && item.items.length > 0) {
             return (
               <li key={`sub-${item.label || idx}`} role="none">
@@ -206,7 +167,7 @@ export const BapsMenu = forwardRef<BapsMenuRef, BapsMenuProps>(
 
           return (
             <li
-              key={item.id || item.label || `item-${idx}`}
+              key={item.label || `item-${idx}`}
               className={joinClassNames(
                 'p-menu-item',
                 item.disabled && 'p-disabled',
@@ -216,19 +177,17 @@ export const BapsMenu = forwardRef<BapsMenuRef, BapsMenuProps>(
             >
               <div className="p-menu-item-content">
                 <a
-                  href={item.url || '#'}
-                  target={item.target}
+                  href={item.routerLink || '#'}
                   className="p-menu-item-link"
                   role="menuitem"
                   tabIndex={item.disabled ? -1 : 0}
                   aria-disabled={item.disabled ? true : undefined}
-                  aria-label={item.ariaLabel}
                   onClick={(e) => {
                     if (item.disabled) {
                       e.preventDefault();
                       return;
                     }
-                    if (!item.url) {
+                    if (!item.routerLink) {
                       e.preventDefault();
                     }
                     item.command?.({ originalEvent: e, item });
@@ -244,9 +203,6 @@ export const BapsMenu = forwardRef<BapsMenuRef, BapsMenuProps>(
                     />
                   )}
                   <span className="p-menu-item-label">{item.label}</span>
-                  {item.badge && (
-                    <span className="p-menu-item-badge">{item.badge}</span>
-                  )}
                 </a>
               </div>
             </li>
@@ -260,15 +216,13 @@ export const BapsMenu = forwardRef<BapsMenuRef, BapsMenuProps>(
           'p-menu p-component',
           popup && 'p-menu-overlay',
           brand === 'sampark' && 'baps-menu-sampark',
-          className,
+          styleClass,
         )}
         style={{
           ...(popup ? { ...style, position: 'absolute' } : {}),
         }}
         role="menu"
-        aria-label={ariaLabel}
-        aria-labelledby={ariaLabelledBy}
-        {...nativeProps}
+        aria-label="Menu"
       >
         <ul className="p-menu-list" role="none">
           {renderItems(model)}

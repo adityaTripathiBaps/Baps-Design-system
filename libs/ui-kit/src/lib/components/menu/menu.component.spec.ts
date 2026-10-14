@@ -1,9 +1,8 @@
 import { Component, ViewChild, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { MenuItem } from 'primeng/api';
 import { Menu } from 'primeng/menu';
 
-import { BapsMenu } from './menu.component';
+import { BapsMenu, type BapsMenuModelItem } from './menu.component';
 
 /**
  * `baps-menu` wraps `p-menu`. It owns three things that break silently:
@@ -31,16 +30,13 @@ import { BapsMenu } from './menu.component';
       [appendTo]="appendTo()"
       [styleClass]="styleClass()"
       [brand]="brand()"
-      [ariaLabel]="ariaLabel()"
-      (show)="seen.push('show')"
-      (hide)="seen.push('hide')"
     />
   `,
 })
 class Host {
   @ViewChild(BapsMenu) readonly menu!: BapsMenu;
 
-  readonly model = signal<MenuItem[]>([
+  readonly model = signal<BapsMenuModelItem[]>([
     {
       label: 'Edit',
       icon: 'pi pi-pencil',
@@ -64,7 +60,6 @@ class Host {
   readonly appendTo = signal<unknown>('body');
   readonly styleClass = signal<string | undefined>(undefined);
   readonly brand = signal<'mybky' | 'sampark'>('mybky');
-  readonly ariaLabel = signal<string | undefined>(undefined);
   readonly seen: string[] = [];
 }
 
@@ -165,16 +160,14 @@ describe('BapsMenu', () => {
   });
 
   describe('forwarding', () => {
-    it('passes ariaLabel through', async () => {
-      const fixture = await setup();
-      fixture.componentInstance.ariaLabel.set('Actions');
-      await apply(fixture);
-      expect(prime(fixture).ariaLabel).toBe('Actions');
-    });
-
-    it('defaults popup to true', async () => {
+    it('passes popup through', async () => {
       const fixture = await setup();
       expect(prime(fixture).popup).toBe(true);
+    });
+
+    it('provides an internal accessible name without widening the public API', async () => {
+      const fixture = await setup();
+      expect(prime(fixture).ariaLabel).toBe('Menu');
     });
   });
 });

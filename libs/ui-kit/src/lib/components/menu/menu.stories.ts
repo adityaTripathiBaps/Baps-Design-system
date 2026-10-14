@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { expect, userEvent, waitFor, within } from '@storybook/test';
 import { moduleMetadata } from '@storybook/angular';
-import type { MenuItem } from 'primeng/api';
-import { BapsMenu } from './menu.component';
+import { BapsMenu, type BapsMenuModelItem } from './menu.component';
 import { BapsButton } from '../button/button.component';
 
 /**
@@ -14,14 +13,13 @@ import { BapsButton } from '../button/button.component';
  * The panel is portalled to `<body>` by default when `popup` is true, so its
  * brand rides on the panel's own class list (`panelClass`) instead of a host class.
  */
-const sampleItems: MenuItem[] = [
+const sampleItems: BapsMenuModelItem[] = [
   { label: 'Edit profile', icon: 'pi pi-user' },
   { label: 'Settings', icon: 'pi pi-cog' },
-  { separator: true },
   { label: 'Sign out', icon: 'pi pi-sign-out' },
 ];
 
-const submenuItems: MenuItem[] = [
+const submenuItems: BapsMenuModelItem[] = [
   {
     label: 'Actions',
     items: [
@@ -47,16 +45,10 @@ const meta: Meta<BapsMenu> = {
   argTypes: {
     brand: { control: 'inline-radio', options: ['mybky', 'sampark'] },
     popup: { control: 'boolean' },
-    autoZIndex: { control: 'boolean' },
-    baseZIndex: { control: 'number' },
-    show: { control: false },
-    hide: { control: false },
   },
   args: {
     popup: true,
     brand: 'mybky',
-    autoZIndex: true,
-    baseZIndex: 0,
     model: sampleItems,
   },
 };
@@ -68,7 +60,7 @@ export const Default: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <div style="padding:3rem">
+      <div style="padding:var(--space-6)">
         <baps-button label="Open Menu" [brand]="brand" (click)="menu.toggle($event)" />
         <baps-menu #menu [model]="model" [popup]="popup" [brand]="brand" />
       </div>
@@ -83,7 +75,7 @@ export const Submenus: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <div style="padding:3rem">
+      <div style="padding:var(--space-6)">
         <baps-button label="User Menu" [brand]="brand" (click)="menu.toggle($event)" />
         <baps-menu #menu [model]="model" [popup]="popup" [brand]="brand" />
       </div>
@@ -98,7 +90,7 @@ export const Inline: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <div style="padding:2rem; max-width:16rem">
+      <div style="padding:var(--space-6)">
         <baps-menu [model]="model" [popup]="false" [brand]="brand" />
       </div>
     `,
@@ -112,7 +104,7 @@ export const Sampark: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <div class="baps-ds-sampark" style="padding:3rem">
+      <div class="baps-ds-sampark" style="padding:var(--space-6)">
         <baps-button label="Sampark Menu" brand="sampark" (click)="menu.toggle($event)" />
         <baps-menu #menu [model]="model" [popup]="popup" brand="sampark" />
       </div>
@@ -127,7 +119,7 @@ export const OpenCloseInteraction: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <div style="padding:3rem">
+      <div style="padding:var(--space-6)">
         <baps-button label="Actions" [brand]="brand" (click)="menu.toggle($event)" />
         <baps-menu #menu [model]="model" [popup]="true" [brand]="brand" />
       </div>

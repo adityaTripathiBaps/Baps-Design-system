@@ -22,7 +22,6 @@ export const menuSnippets: Record<string, SnippetSet> = {
 const items: MenuItem[] = [
   { label: 'Edit profile', icon: 'pi pi-user' },
   { label: 'Settings', icon: 'pi pi-cog' },
-  { separator: true },
   { label: 'Sign out', icon: 'pi pi-sign-out' },
 ];
 
@@ -43,7 +42,6 @@ ${SETUP}
 const items: MenuItem[] = [
   { label: 'Edit profile', icon: 'pi pi-user' },
   { label: 'Settings', icon: 'pi pi-cog' },
-  { separator: true },
   { label: 'Sign out', icon: 'pi pi-sign-out' },
 ];
 
@@ -131,7 +129,6 @@ export default function SubmenuDemo() {
 const items: MenuItem[] = [
   { label: 'Edit profile', icon: 'pi pi-user' },
   { label: 'Settings', icon: 'pi pi-cog' },
-  { separator: true },
   { label: 'Sign out', icon: 'pi pi-sign-out' },
 ];
 
@@ -145,7 +142,6 @@ ${SETUP}
 const items: MenuItem[] = [
   { label: 'Edit profile', icon: 'pi pi-user' },
   { label: 'Settings', icon: 'pi pi-cog' },
-  { separator: true },
   { label: 'Sign out', icon: 'pi pi-sign-out' },
 ];
 
@@ -162,7 +158,6 @@ export default function InlineMenu() {
 const items: MenuItem[] = [
   { label: 'Edit profile', icon: 'pi pi-user' },
   { label: 'Settings', icon: 'pi pi-cog' },
-  { separator: true },
   { label: 'Sign out', icon: 'pi pi-sign-out' },
 ];
 
@@ -183,7 +178,6 @@ ${SETUP}
 const items: MenuItem[] = [
   { label: 'Edit profile', icon: 'pi pi-user' },
   { label: 'Settings', icon: 'pi pi-cog' },
-  { separator: true },
   { label: 'Sign out', icon: 'pi pi-sign-out' },
 ];
 

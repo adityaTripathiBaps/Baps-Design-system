@@ -1,13 +1,27 @@
 import {
   Component,
-  EventEmitter,
   Input,
-  Output,
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import type { MenuItem as PrimeMenuItem } from 'primeng/api';
 import { Menu } from 'primeng/menu';
+
+type BapsMenuModelItemBase = Pick<
+  PrimeMenuItem,
+  | 'label'
+  | 'visible'
+  | 'icon'
+  | 'styleClass'
+  | 'routerLink'
+  | 'command'
+  | 'disabled'
+>;
+
+/** The menu-item keys approved from measured consumer usage. */
+export interface BapsMenuModelItem extends BapsMenuModelItemBase {
+  items?: BapsMenuModelItem[];
+}
 
 /**
  * baps-menu — a popup (or inline) navigation / command menu.
@@ -28,13 +42,8 @@ import { Menu } from 'primeng/menu';
       [model]="model"
       [popup]="popup"
       [appendTo]="appendTo"
-      [autoZIndex]="autoZIndex"
-      [baseZIndex]="baseZIndex"
-      [ariaLabel]="ariaLabel"
-      [ariaLabelledBy]="ariaLabelledBy"
+      ariaLabel="Menu"
       [styleClass]="panelClass"
-      (onShow)="show.emit()"
-      (onHide)="hide.emit()"
     />
   `,
   encapsulation: ViewEncapsulation.None,
@@ -44,7 +53,7 @@ export class BapsMenu {
   @ViewChild(Menu) private readonly menu?: Menu;
 
   /** Menu items. Nested `items` arrays render submenus. */
-  @Input() model?: MenuItem[];
+  @Input() model?: BapsMenuModelItem[];
   /** Show as a popup anchored to the triggering event. */
   @Input() popup = false;
   /**
@@ -52,17 +61,10 @@ export class BapsMenu {
    * clipped by any ancestor with `overflow` or a `transform`.
    */
   @Input() appendTo: unknown = 'body';
-  @Input() autoZIndex = true;
-  @Input() baseZIndex = 0;
-  @Input() ariaLabel?: string;
-  @Input() ariaLabelledBy?: string;
   /** Extra class(es) for the menu panel. */
   @Input() styleClass?: string;
   /** Visual skin: 'mybky' (default) or 'sampark'. */
   @Input() brand: 'mybky' | 'sampark' = 'mybky';
-
-  @Output() show = new EventEmitter<void>();
-  @Output() hide = new EventEmitter<void>();
 
   /**
    * The panel is portalled out of this host, so the brand cannot be carried by
