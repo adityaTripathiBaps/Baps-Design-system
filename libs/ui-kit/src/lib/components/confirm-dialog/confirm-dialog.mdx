@@ -1,5 +1,5 @@
 import { Meta, Canvas, Controls } from '@storybook/blocks';
-import { FrameworkTabs, PropsTable } from '@baps/docs-blocks';
+import { BrandOnly, FrameworkTabs, PropsTable } from '@baps/docs-blocks';
 import * as ConfirmDialogStories from './confirm-dialog.stories';
 import { confirmDialogSnippets } from './confirm-dialog.snippets';
 
@@ -40,12 +40,16 @@ Route confirmations to specific dialog instances when multiple confirmation over
   snippets={confirmDialogSnippets.KeyRouting}
 />
 
+<BrandOnly brand="sampark">
+
 ### Sampark
 
 <FrameworkTabs
   of={ConfirmDialogStories.Sampark}
   snippets={confirmDialogSnippets.Sampark}
 />
+
+</BrandOnly>
 
 ## Interactions
 

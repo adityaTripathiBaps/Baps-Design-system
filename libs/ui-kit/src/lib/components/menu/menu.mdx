@@ -1,5 +1,5 @@
 import { Meta, Canvas, Controls } from '@storybook/blocks';
-import { FrameworkTabs, PropsTable } from '@baps/docs-blocks';
+import { BrandOnly, FrameworkTabs, PropsTable } from '@baps/docs-blocks';
 import * as MenuStories from './menu.stories';
 import { menuSnippets } from './menu.snippets';
 
@@ -40,12 +40,16 @@ Render the menu directly inside page content instead of an overlay.
   snippets={menuSnippets.Inline}
 />
 
+<BrandOnly brand="sampark">
+
 ### Sampark
 
 <FrameworkTabs
   of={MenuStories.Sampark}
   snippets={menuSnippets.Sampark}
 />
+
+</BrandOnly>
 
 ## Interactions
 
