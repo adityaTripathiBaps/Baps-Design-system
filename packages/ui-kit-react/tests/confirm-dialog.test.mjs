@@ -3,7 +3,7 @@ import './dom.mjs';
 
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { createElement, useState } from 'react';
+import { createElement } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
   BapsConfirmDialog,
@@ -33,7 +33,7 @@ test('BapsConfirmDialog renders nothing while closed', async (t) => {
       visible: false,
       header: 'Delete Item',
       message: 'Are you sure?',
-    })
+    }),
   );
   await flush();
 
@@ -57,19 +57,23 @@ test('BapsConfirmDialog renders dialog, icon, message and buttons when visible',
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: 'Proceed',
       rejectLabel: 'Cancel',
+      baseZIndex: 1200,
+      style: { maxWidth: '90vw' },
       onAccept: () => {
         accepted = true;
       },
       onReject: () => {
         rejected = true;
       },
-    })
+    }),
   );
   await flush();
 
   const dialog = document.querySelector('dialog');
   assert.ok(dialog, 'dialog should be in the document');
   assert.ok(dialog.classList.contains('p-confirmdialog'));
+  assert.equal(dialog.style.zIndex, '1200');
+  assert.equal(dialog.style.maxWidth, '90vw');
 
   const msg = document.querySelector('.baps-confirm-dialog__message');
   assert.ok(msg, 'message element should exist');
@@ -83,11 +87,14 @@ test('BapsConfirmDialog renders dialog, icon, message and buttons when visible',
   assert.equal(buttons.length, 2, 'should render two action buttons');
 
   // Click accept button
-  const acceptBtn = Array.from(buttons).find((b) => b.textContent.includes('Proceed'));
+  const acceptBtn = Array.from(buttons).find((b) =>
+    b.textContent.includes('Proceed'),
+  );
   assert.ok(acceptBtn, 'accept button exists');
   acceptBtn.click();
   await flush();
   assert.equal(accepted, true, 'onAccept was triggered');
+  assert.equal(rejected, false, 'onReject was not triggered');
 });
 
 test('BapsConfirmProvider and useConfirm resolves promise on user action', async (t) => {
@@ -105,23 +112,19 @@ test('BapsConfirmProvider and useConfirm resolves promise on user action', async
       {
         id: 'trigger',
         onClick: async () => {
-          const res = await confirm({
+          const res = await confirm.confirm({
             header: 'Hook Confirm',
             message: 'Proceed with action?',
           });
           resolveValue = res;
         },
       },
-      'Open Confirm'
+      'Open Confirm',
     );
   }
 
   root.render(
-    createElement(
-      BapsConfirmProvider,
-      null,
-      createElement(Consumer)
-    )
+    createElement(BapsConfirmProvider, null, createElement(Consumer)),
   );
   await flush();
 
@@ -136,10 +139,114 @@ test('BapsConfirmProvider and useConfirm resolves promise on user action', async
 
   // Click reject button ("No")
   const buttons = dialog.querySelectorAll('button');
-  const rejectBtn = Array.from(buttons).find((b) => b.textContent.includes('No'));
+  const rejectBtn = Array.from(buttons).find((b) =>
+    b.textContent.includes('No'),
+  );
   assert.ok(rejectBtn, 'reject button exists');
   rejectBtn.click();
   await flush();
 
-  assert.equal(resolveValue, false, 'useConfirm should resolve with false on reject');
+  assert.equal(
+    resolveValue,
+    false,
+    'useConfirm should resolve with false on reject',
+  );
+});
+
+test('BapsConfirmProvider invokes callbacks once and settles once', async (t) => {
+  t.after(teardown);
+  const host = mount();
+  const root = createRoot(host);
+  active = root;
+
+  const seen = [];
+  let resolveValue = null;
+
+  function Consumer() {
+    const confirm = useConfirm();
+    return createElement(
+      'button',
+      {
+        id: 'trigger',
+        onClick: async () => {
+          resolveValue = await confirm.confirm({
+            header: 'Single settlement',
+            accept: () => seen.push('accept'),
+            reject: () => seen.push('reject'),
+          });
+        },
+      },
+      'Open Confirm',
+    );
+  }
+
+  root.render(
+    createElement(BapsConfirmProvider, null, createElement(Consumer)),
+  );
+  await flush();
+
+  const trigger = document.getElementById('trigger');
+  assert.ok(trigger, 'trigger button exists');
+  trigger.click();
+  await flush();
+
+  const dialog = document.querySelector('dialog');
+  assert.ok(dialog, 'dialog should open after hook call');
+  const acceptBtn = Array.from(dialog.querySelectorAll('button')).find(
+    (button) => button.textContent.includes('Yes'),
+  );
+  assert.ok(acceptBtn, 'accept button exists');
+  acceptBtn.click();
+  await flush();
+
+  assert.equal(resolveValue, true);
+  assert.deepEqual(seen, ['accept']);
+});
+
+test('BapsConfirmProvider resolves false and rejects on Escape', async (t) => {
+  t.after(teardown);
+  const host = mount();
+  const root = createRoot(host);
+  active = root;
+
+  const seen = [];
+  let resolveValue = null;
+
+  function Consumer() {
+    const confirm = useConfirm();
+    return createElement(
+      'button',
+      {
+        id: 'trigger',
+        onClick: async () => {
+          resolveValue = await confirm.confirm({
+            header: 'Escape settlement',
+            reject: () => seen.push('reject'),
+          });
+        },
+      },
+      'Open Confirm',
+    );
+  }
+
+  root.render(
+    createElement(BapsConfirmProvider, null, createElement(Consumer)),
+  );
+  await flush();
+
+  const trigger = document.getElementById('trigger');
+  assert.ok(trigger, 'trigger button exists');
+  trigger.click();
+  await flush();
+
+  const dialog = document.querySelector('dialog');
+  assert.ok(dialog, 'dialog should open after hook call');
+  dialog.dispatchEvent(
+    new window.Event('cancel', { bubbles: true, cancelable: true }),
+  );
+  await flush();
+
+  assert.equal(resolveValue, false);
+  assert.deepEqual(seen, ['reject']);
+  assert.equal(document.querySelector('dialog'), null);
 });

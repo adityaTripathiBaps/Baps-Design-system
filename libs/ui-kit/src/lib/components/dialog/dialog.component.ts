@@ -178,6 +178,7 @@ const MYBKY_DIALOG_TOKENS = {
       [closeAriaLabel]="closeAriaLabel"
       [style]="panelStyle"
       [styleClass]="resolvedPanelStyleClass"
+      [baseZIndex]="baseZIndex"
       [maskStyle]="maskStyle"
       [dt]="dt"
       (onShow)="shown.emit()"
@@ -333,6 +334,12 @@ export class BapsDialog {
   /** Extra classes for the panel element. */
   @Input() styleClass?: string;
 
+  /** Additional inline panel styles used by composed dialog wrappers. */
+  @Input() style?: Record<string, string | number>;
+
+  /** Base stacking index forwarded to PrimeNG's portalled dialog. */
+  @Input() baseZIndex = 0;
+
   /** Visual skin. 'sampark' also arrives page-wide via `.baps-ds-sampark`. */
   @Input() brand: 'mybky' | 'sampark' = 'mybky';
 
@@ -364,8 +371,8 @@ export class BapsDialog {
     if (trigger?.isConnected) trigger.focus();
   }
 
-  protected get panelStyle(): Record<string, string> {
-    return { width: this.width };
+  protected get panelStyle(): Record<string, string | number> {
+    return { width: this.width, ...this.style };
   }
 
   /**

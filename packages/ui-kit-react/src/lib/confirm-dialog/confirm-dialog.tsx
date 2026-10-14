@@ -22,8 +22,10 @@ export interface BapsConfirmOptions {
   rejectIcon?: string;
   acceptVisible?: boolean;
   rejectVisible?: boolean;
-  acceptSeverity?: 'primary' | 'secondary' | 'danger' | 'success' | 'warn' | 'info';
-  rejectSeverity?: 'primary' | 'secondary' | 'danger' | 'success' | 'warn' | 'info';
+  acceptSeverity?:
+    'primary' | 'secondary' | 'danger' | 'success' | 'warn' | 'info';
+  rejectSeverity?:
+    'primary' | 'secondary' | 'danger' | 'success' | 'warn' | 'info';
   acceptButtonStyleClass?: string;
   rejectButtonStyleClass?: string;
   closable?: boolean;
@@ -43,13 +45,20 @@ export interface BapsConfirmDialogProps extends BapsConfirmOptions {
   appendTo?: HTMLElement | 'body' | null;
   className?: string;
   style?: CSSProperties;
+  baseZIndex?: number;
   onAccept?: () => void;
   onReject?: () => void;
   onHide?: () => void;
 }
 
-const joinClassNames = (...names: Array<string | false | null | undefined>): string =>
-  names.filter(Boolean).join(' ');
+type BapsConfirmSeverity = NonNullable<BapsConfirmOptions['acceptSeverity']>;
+type BapsConfirmButtonAppearance =
+  | { brand: 'mybky'; severity: BapsButtonSeverity }
+  | { brand: 'sampark'; severity: 'primary' | 'secondary' };
+
+const joinClassNames = (
+  ...names: Array<string | false | null | undefined>
+): string => names.filter(Boolean).join(' ');
 
 /**
  * BapsConfirmDialog — modal confirmation dialog component.
@@ -82,6 +91,7 @@ export const BapsConfirmDialog: FC<BapsConfirmDialogProps> = ({
   className,
   styleClass,
   style,
+  baseZIndex = 0,
   onAccept,
   onReject,
   onHide,
@@ -114,16 +124,32 @@ export const BapsConfirmDialog: FC<BapsConfirmDialogProps> = ({
     'p-confirmdialog',
     brand === 'sampark' && 'baps-ds-sampark baps-confirm-dialog-sampark',
     styleClass,
-    className
+    className,
   );
 
-  const mapSeverity = (
-    sev: 'primary' | 'secondary' | 'danger' | 'success' | 'warn' | 'info'
-  ): BapsButtonSeverity => {
-    if (sev === 'danger' || sev === 'warn' || sev === 'secondary' || sev === 'primary') {
+  const mapSeverity = (sev: BapsConfirmSeverity): BapsButtonSeverity => {
+    if (
+      sev === 'danger' ||
+      sev === 'warn' ||
+      sev === 'secondary' ||
+      sev === 'primary'
+    ) {
       return sev;
     }
     return 'primary';
+  };
+
+  const buttonAppearance = (
+    severity: BapsConfirmSeverity,
+  ): BapsConfirmButtonAppearance => {
+    if (brand === 'sampark') {
+      return {
+        brand,
+        severity: severity === 'secondary' ? 'secondary' : 'primary',
+      };
+    }
+
+    return { brand, severity: mapSeverity(severity) };
   };
 
   return (
@@ -138,12 +164,17 @@ export const BapsConfirmDialog: FC<BapsConfirmDialogProps> = ({
       blockScroll={blockScroll}
       appendTo={appendTo}
       className={panelClassName}
-      style={style}
-      aria-label={ariaLabel || (typeof header === 'string' ? header : 'Confirmation')}
+      style={{ ...style, zIndex: baseZIndex }}
+      aria-label={
+        ariaLabel || (typeof header === 'string' ? header : 'Confirmation')
+      }
       media={
         icon ? (
           <div className="baps-confirm-dialog__icon-wrapper">
-            <i className={joinClassNames(icon, 'baps-confirm-dialog__icon')} aria-hidden="true" />
+            <i
+              className={joinClassNames(icon, 'baps-confirm-dialog__icon')}
+              aria-hidden="true"
+            />
           </div>
         ) : undefined
       }
@@ -152,9 +183,13 @@ export const BapsConfirmDialog: FC<BapsConfirmDialogProps> = ({
           {rejectVisible && (
             <BapsButton
               label={rejectLabel}
-              severity={mapSeverity(rejectSeverity) as any}
+              {...(rejectIcon
+                ? {
+                    icon: <i className={rejectIcon} aria-hidden="true" />,
+                  }
+                : {})}
+              {...buttonAppearance(rejectSeverity)}
               outlined
-              brand={brand as any}
               className={rejectButtonStyleClass}
               onClick={handleReject}
             />
@@ -162,8 +197,12 @@ export const BapsConfirmDialog: FC<BapsConfirmDialogProps> = ({
           {acceptVisible && (
             <BapsButton
               label={acceptLabel}
-              severity={mapSeverity(acceptSeverity) as any}
-              brand={brand as any}
+              {...(acceptIcon
+                ? {
+                    icon: <i className={acceptIcon} aria-hidden="true" />,
+                  }
+                : {})}
+              {...buttonAppearance(acceptSeverity)}
               className={acceptButtonStyleClass}
               onClick={handleAccept}
             />
@@ -171,11 +210,7 @@ export const BapsConfirmDialog: FC<BapsConfirmDialogProps> = ({
         </div>
       }
     >
-      {message && (
-        <p className="baps-confirm-dialog__message">
-          {message}
-        </p>
-      )}
+      {message && <p className="baps-confirm-dialog__message">{message}</p>}
     </BapsDialog>
   );
 };
@@ -189,18 +224,12 @@ interface ActiveConfirmation extends BapsConfirmOptions {
   resolve: ConfirmResolver;
 }
 
-export interface ConfirmFn {
-  (options: BapsConfirmOptions): Promise<boolean>;
+export interface ConfirmContextValue {
   confirm: (options: BapsConfirmOptions) => Promise<boolean>;
   close: () => void;
 }
 
-interface ConfirmContextType {
-  requestConfirm: (options: BapsConfirmOptions) => Promise<boolean>;
-  close: () => void;
-}
-
-const ConfirmContext = createContext<ConfirmContextType | null>(null);
+const ConfirmContext = createContext<ConfirmContextValue | null>(null);
 
 export interface BapsConfirmProviderProps {
   children?: ReactNode;
@@ -220,47 +249,55 @@ export function BapsConfirmProvider({
   activeRef.current = active;
 
   const close = useCallback(() => {
-    if (activeRef.current) {
-      activeRef.current.resolve(false);
+    const current = activeRef.current;
+    if (current) {
+      activeRef.current = null;
+      current.resolve(false);
       setActive(null);
     }
   }, []);
 
-  const requestConfirm = useCallback((options: BapsConfirmOptions): Promise<boolean> => {
-    return new Promise<boolean>((resolve) => {
-      // If a confirmation is already pending, reject it with false
-      if (activeRef.current) {
-        activeRef.current.resolve(false);
-      }
-      const entry: ActiveConfirmation = {
-        ...options,
-        id: ++confirmSeq,
-        resolve: (val: boolean) => {
-          resolve(val);
-        },
-      };
-      setActive(entry);
-    });
-  }, []);
+  const requestConfirm = useCallback(
+    (options: BapsConfirmOptions): Promise<boolean> => {
+      return new Promise<boolean>((resolve) => {
+        // If a confirmation is already pending, reject it with false
+        if (activeRef.current) {
+          activeRef.current.resolve(false);
+        }
+        const entry: ActiveConfirmation = {
+          ...options,
+          id: ++confirmSeq,
+          resolve: (val: boolean) => {
+            resolve(val);
+          },
+        };
+        activeRef.current = entry;
+        setActive(entry);
+      });
+    },
+    [],
+  );
 
   const handleAccept = useCallback(() => {
-    if (active) {
-      active.accept?.();
-      active.resolve(true);
+    const current = activeRef.current;
+    if (current) {
+      activeRef.current = null;
+      current.resolve(true);
       setActive(null);
     }
-  }, [active]);
+  }, []);
 
   const handleReject = useCallback(() => {
-    if (active) {
-      active.reject?.();
-      active.resolve(false);
+    const current = activeRef.current;
+    if (current) {
+      activeRef.current = null;
+      current.resolve(false);
       setActive(null);
     }
-  }, [active]);
+  }, []);
 
   return (
-    <ConfirmContext.Provider value={{ requestConfirm, close }}>
+    <ConfirmContext.Provider value={{ confirm: requestConfirm, close }}>
       {children}
       {active && (
         <BapsConfirmDialog
@@ -270,24 +307,17 @@ export function BapsConfirmProvider({
           {...active}
           onAccept={handleAccept}
           onReject={handleReject}
-          onHide={handleReject}
         />
       )}
     </ConfirmContext.Provider>
   );
 }
 
-export function useConfirm(): ConfirmFn {
+export function useConfirm(): ConfirmContextValue {
   const context = useContext(ConfirmContext);
   if (!context) {
     throw new Error('useConfirm must be used within a BapsConfirmProvider');
   }
 
-  const fn = ((options: BapsConfirmOptions) =>
-    context.requestConfirm(options)) as ConfirmFn;
-
-  fn.confirm = (options: BapsConfirmOptions) => context.requestConfirm(options);
-  fn.close = () => context.close();
-
-  return fn;
+  return context;
 }

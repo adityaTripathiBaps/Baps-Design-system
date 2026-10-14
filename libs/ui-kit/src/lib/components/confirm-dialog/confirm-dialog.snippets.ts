@@ -20,7 +20,7 @@ export const confirmDialogSnippets: Record<string, SnippetSet> = {
 
 <!-- In a component: -->
 @Component({
-  template: \`<baps-button label="Confirm" (onClick)="open()" />\`,
+  template: \`<baps-button label="Confirm" (click)="open()" />\`,
 })
 export class MyComponent {
   private readonly confirm = inject(BapsConfirmationService);
@@ -49,7 +49,7 @@ function ConfirmExample() {
   const confirm = useConfirm();
 
   const handleClick = async () => {
-    const accepted = await confirm({
+    const accepted = await confirm.confirm({
       header: 'Confirm Action',
       message: 'Are you sure you want to proceed?',
       icon: 'pi pi-question-circle',
@@ -75,7 +75,7 @@ function ConfirmExample() {
   const confirm = useConfirm();
 
   const handleClick = async () => {
-    const accepted = await confirm({
+    const accepted = await confirm.confirm({
       header: 'Confirm Action',
       message: 'Are you sure you want to proceed?',
       icon: 'pi pi-question-circle',
@@ -104,7 +104,7 @@ function DeleteButton() {
   const confirm = useConfirm();
 
   const handleDelete = async () => {
-    const accepted = await confirm({
+    const accepted = await confirm.confirm({
       header: 'Confirm Deletion',
       message: 'This will permanently remove the member. This action cannot be undone.',
       icon: 'pi pi-exclamation-triangle',
@@ -125,8 +125,8 @@ function DeleteButton() {
 <baps-confirm-dialog key="dialog-b" />
 
 <!-- Trigger them separately -->
-<baps-button label="Open A" (onClick)="confirmSvc.confirm({ key: 'dialog-a', header: 'Dialog A', message: '...' })" />
-<baps-button label="Open B" (onClick)="confirmSvc.confirm({ key: 'dialog-b', header: 'Dialog B', message: '...' })" />`,
+<baps-button label="Open A" (click)="confirmSvc.confirm({ key: 'dialog-a', header: 'Dialog A', message: '...' })" />
+<baps-button label="Open B" (click)="confirmSvc.confirm({ key: 'dialog-b', header: 'Dialog B', message: '...' })" />`,
   },
 
   Sampark: {

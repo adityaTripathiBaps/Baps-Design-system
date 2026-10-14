@@ -76,5 +76,6 @@ export * from './lib/components/input-group/input-group.component';
 export * from './lib/components/input-number/input-number.component';
 export * from './lib/components/menu/menu.component';
 export * from './lib/components/confirm-dialog/confirm-dialog.component';
-export * from './lib/components/confirm-dialog/confirmation.service';
+export { BapsConfirmationService } from './lib/components/confirm-dialog/confirmation.service';
+export type { BapsConfirmation } from './lib/components/confirm-dialog/confirmation.service';
 export * from './lib/theme/ramp';

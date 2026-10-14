@@ -1,5 +1,6 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import type { Meta, StoryObj } from '@storybook/angular';
+import { action } from '@storybook/addon-actions';
 import { expect, userEvent, waitFor, within } from '@storybook/test';
 import { applicationConfig, moduleMetadata } from '@storybook/angular';
 import { BapsConfirmDialog } from './confirm-dialog.component';
@@ -24,15 +25,12 @@ import { BapsConfirmationService } from './confirmation.service';
       [key]="key"
       [brand]="brand"
       [closable]="closable"
-      [closeOnEscape]="closeOnEscape"
-      [dismissableMask]="dismissableMask"
-      [blockScroll]="blockScroll"
-      [acceptLabel]="acceptLabel"
-      [rejectLabel]="rejectLabel"
-      [acceptSeverity]="acceptSeverity"
-      [rejectSeverity]="rejectSeverity"
-      [acceptVisible]="acceptVisible"
-      [rejectVisible]="rejectVisible"
+      [baseZIndex]="baseZIndex"
+      [acceptButtonStyleClass]="acceptButtonStyleClass"
+      [rejectButtonStyleClass]="rejectButtonStyleClass"
+      [styleClass]="styleClass"
+      [style]="style"
+      (hide)="hide.emit()"
     />
   `,
 })
@@ -40,30 +38,17 @@ class ConfirmDialogDemo {
   @Input() key?: string;
   @Input() brand: 'mybky' | 'sampark' = 'mybky';
   @Input() closable = false;
-  @Input() closeOnEscape = true;
-  @Input() dismissableMask = false;
-  @Input() blockScroll = true;
-  @Input() acceptLabel = 'Yes';
-  @Input() rejectLabel = 'No';
-  @Input() acceptSeverity:
-    | 'primary'
-    | 'secondary'
-    | 'danger'
-    | 'success'
-    | 'warn'
-    | 'info' = 'danger';
-  @Input() rejectSeverity:
-    | 'primary'
-    | 'secondary'
-    | 'danger'
-    | 'success'
-    | 'warn'
-    | 'info' = 'secondary';
-  @Input() acceptVisible = true;
-  @Input() rejectVisible = true;
+  @Input() baseZIndex = 0;
+  @Input() acceptButtonStyleClass?: string;
+  @Input() rejectButtonStyleClass?: string;
+  @Input() styleClass?: string;
+  @Input() style?: Record<string, string | number>;
+  @Output() hide = new EventEmitter<void>();
 
   readonly svc = inject(BapsConfirmationService);
 }
+
+type ConfirmDialogStoryArgs = ConfirmDialogDemo & Record<'onHide', () => void>;
 
 /**
  * ConfirmDialog — a modal confirmation prompt driven by an imperative service.
@@ -72,7 +57,7 @@ class ConfirmDialogDemo {
  * trapping and brand tokens. Drop `<baps-confirm-dialog />` once in your root
  * and call `BapsConfirmationService.confirm()` to open it.
  */
-const meta: Meta<ConfirmDialogDemo> = {
+const meta: Meta<ConfirmDialogStoryArgs> = {
   title: 'Components/Molecules/ConfirmDialog',
   id: 'components-confirm-dialog',
   tags: ['ds:mybky', 'ds:sampark'],
@@ -84,44 +69,29 @@ const meta: Meta<ConfirmDialogDemo> = {
   argTypes: {
     brand: { control: 'inline-radio', options: ['mybky', 'sampark'] },
     closable: { control: 'boolean' },
-    closeOnEscape: { control: 'boolean' },
-    dismissableMask: { control: 'boolean' },
-    blockScroll: { control: 'boolean' },
-    acceptLabel: { control: 'text' },
-    rejectLabel: { control: 'text' },
-    acceptSeverity: {
-      control: 'select',
-      options: ['primary', 'secondary', 'danger', 'success', 'warn', 'info'],
-    },
-    rejectSeverity: {
-      control: 'select',
-      options: ['primary', 'secondary', 'danger', 'success', 'warn', 'info'],
-    },
-    acceptVisible: { control: 'boolean' },
-    rejectVisible: { control: 'boolean' },
+    baseZIndex: { control: 'number' },
+    acceptButtonStyleClass: { control: 'text' },
+    rejectButtonStyleClass: { control: 'text' },
+    styleClass: { control: 'text' },
+    style: { control: 'object' },
+    hide: { control: false },
+    onHide: { control: false },
   },
   args: {
     brand: 'mybky',
     closable: false,
-    closeOnEscape: true,
-    dismissableMask: false,
-    blockScroll: true,
-    acceptLabel: 'Yes',
-    rejectLabel: 'No',
-    acceptSeverity: 'danger',
-    rejectSeverity: 'secondary',
-    acceptVisible: true,
-    rejectVisible: true,
+    baseZIndex: 0,
   },
 };
 
 export default meta;
-type Story = StoryObj<ConfirmDialogDemo>;
+type Story = StoryObj<ConfirmDialogStoryArgs>;
 
 export const Default: Story = {
   render: (args) => ({
     props: {
       ...args,
+      onHide: action('hide'),
       open(svc: BapsConfirmationService) {
         svc.confirm({
           header: 'Confirm Action',
@@ -135,17 +105,14 @@ export const Default: Story = {
         #demo
         [brand]="brand"
         [closable]="closable"
-        [closeOnEscape]="closeOnEscape"
-        [dismissableMask]="dismissableMask"
-        [blockScroll]="blockScroll"
-        [acceptLabel]="acceptLabel"
-        [rejectLabel]="rejectLabel"
-        [acceptSeverity]="acceptSeverity"
-        [rejectSeverity]="rejectSeverity"
-        [acceptVisible]="acceptVisible"
-        [rejectVisible]="rejectVisible"
+        [baseZIndex]="baseZIndex"
+        [acceptButtonStyleClass]="acceptButtonStyleClass"
+        [rejectButtonStyleClass]="rejectButtonStyleClass"
+        [styleClass]="styleClass"
+        [style]="style"
+        (hide)="onHide()"
       >
-        <baps-button label="Confirm" [brand]="brand" (onClick)="open(demo.svc)" />
+        <baps-button label="Confirm" [brand]="brand" (click)="open(demo.svc)" />
       </baps-confirm-dialog-demo>
     `,
   }),
@@ -156,6 +123,7 @@ export const DeleteConfirmation: Story = {
   render: (args) => ({
     props: {
       ...args,
+      onHide: action('hide'),
       open(svc: BapsConfirmationService) {
         svc.confirm({
           header: 'Confirm Deletion',
@@ -170,8 +138,8 @@ export const DeleteConfirmation: Story = {
       },
     },
     template: `
-      <baps-confirm-dialog-demo #demo [brand]="brand">
-        <baps-button label="Delete Member" severity="danger" [brand]="brand" (onClick)="open(demo.svc)" />
+      <baps-confirm-dialog-demo #demo [brand]="brand" (hide)="onHide()">
+        <baps-button label="Delete Member" severity="danger" [brand]="brand" (click)="open(demo.svc)" />
       </baps-confirm-dialog-demo>
     `,
   }),
@@ -182,6 +150,7 @@ export const KeyRouting: Story = {
   render: (args) => ({
     props: {
       ...args,
+      onHide: action('hide'),
       openA(svc: BapsConfirmationService) {
         svc.confirm({
           key: 'dialog-a',
@@ -198,11 +167,11 @@ export const KeyRouting: Story = {
       },
     },
     template: `
-      <div style="padding:3rem; display:flex; gap:1rem;">
-        <baps-button label="Open A" [brand]="brand" (onClick)="openA(svcA.svc)" />
-        <baps-button label="Open B" [brand]="brand" (onClick)="openB(svcB.svc)" />
-        <baps-confirm-dialog-demo #svcA key="dialog-a" [brand]="brand" />
-        <baps-confirm-dialog-demo #svcB key="dialog-b" [brand]="brand" />
+      <div style="padding:var(--space-6); display:flex; gap:var(--space-4);">
+        <baps-button label="Open A" [brand]="brand" (click)="openA(svcA.svc)" />
+        <baps-button label="Open B" [brand]="brand" (click)="openB(svcB.svc)" />
+        <baps-confirm-dialog-demo #svcA key="dialog-a" [brand]="brand" (hide)="onHide()" />
+        <baps-confirm-dialog-demo #svcB key="dialog-b" [brand]="brand" (hide)="onHide()" />
       </div>
     `,
   }),
@@ -215,6 +184,7 @@ export const Sampark: Story = {
   render: (args) => ({
     props: {
       ...args,
+      onHide: action('hide'),
       open(svc: BapsConfirmationService) {
         svc.confirm({
           header: 'Confirm Action',
@@ -225,8 +195,8 @@ export const Sampark: Story = {
     },
     template: `
       <div class="baps-ds-sampark">
-        <baps-confirm-dialog-demo #demo brand="sampark">
-          <baps-button label="Confirm (Sampark)" brand="sampark" (onClick)="open(demo.svc)" />
+        <baps-confirm-dialog-demo #demo brand="sampark" (hide)="onHide()">
+          <baps-button label="Confirm (Sampark)" brand="sampark" (click)="open(demo.svc)" />
         </baps-confirm-dialog-demo>
       </div>
     `,
@@ -240,6 +210,7 @@ export const OpenCloseInteraction: Story = {
   render: (args) => ({
     props: {
       ...args,
+      onHide: action('hide'),
       open(svc: BapsConfirmationService) {
         svc.confirm({
           header: 'Confirm Action',
@@ -249,8 +220,8 @@ export const OpenCloseInteraction: Story = {
       },
     },
     template: `
-      <baps-confirm-dialog-demo #demo [brand]="brand">
-        <baps-button label="Open Dialog" [brand]="brand" (onClick)="open(demo.svc)" />
+      <baps-confirm-dialog-demo #demo [brand]="brand" (hide)="onHide()">
+        <baps-button label="Open Dialog" [brand]="brand" (click)="open(demo.svc)" />
       </baps-confirm-dialog-demo>
     `,
   }),

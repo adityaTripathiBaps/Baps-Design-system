@@ -58,9 +58,10 @@ pattern established by `popover` and `toast`.
 **ConfirmDialog wraps BapsDialog with imperative service.**
 `BapsConfirmDialog` is built on `baps-dialog` so it inherits the modal shell,
 backdrop mask, focus trapping, focus restoration, and brand theming. It listens
-to `BapsConfirmationService` (and optionally PrimeNG's `ConfirmationService` for
-interoperability). In React, `BapsConfirmProvider` pairs with the `useConfirm()`
-hook to provide promise-based confirmation resolution.
+to `BapsConfirmationService` through an internal callback channel, so the kit
+does not expose an observable surface or need its own RxJS peer declaration. In
+React, `BapsConfirmProvider` pairs with the `useConfirm()` hook to provide
+promise-based confirmation resolution.
 
 **Routes A / B / C.** A: a standalone `baps-*` partial written from tokens, with
 a drift guard — raw markup works outside Angular. B: markup and style intent

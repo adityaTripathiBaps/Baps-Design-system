@@ -1,6 +1,7 @@
 import { Component, ViewChild, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { ConfirmationService } from 'primeng/api';
+import { By } from '@angular/platform-browser';
+import { BapsDialog } from '../dialog/dialog.component';
 import { BapsConfirmDialog } from './confirm-dialog.component';
 import { BapsConfirmationService } from './confirmation.service';
 
@@ -11,9 +12,9 @@ import { BapsConfirmationService } from './confirmation.service';
     <baps-confirm-dialog
       [key]="key()"
       [brand]="brand()"
+      [baseZIndex]="1200"
+      [style]="{ maxWidth: '90vw' }"
       (hide)="seen.push('hide')"
-      (acceptEvent)="seen.push('accept')"
-      (rejectEvent)="seen.push('reject')"
     />
   `,
 })
@@ -26,9 +27,9 @@ class Host {
 
 /**
  * Use autoDetectChanges so Angular manages CD the same way it would in a
- * running app (inside NgZone). Manual detectChanges + an imperative Subject
- * that fires between CD cycles triggers NG0100 in dev mode — a false positive
- * that does not occur in production.
+ * running app (inside NgZone). The imperative callback can update the dialog
+ * between change-detection cycles, so the test lets Angular schedule the same
+ * follow-up pass a real event handler receives.
  */
 async function setup() {
   const fixture = TestBed.createComponent(Host);
@@ -70,7 +71,7 @@ describe('BapsConfirmDialog', () => {
 
     expect(accepted).toBe(true);
     expect(fixture.componentInstance.dialog.visible).toBe(false);
-    expect(fixture.componentInstance.seen).toContain('accept');
+    expect(fixture.componentInstance.seen).toContain('hide');
   });
 
   it('rejects and executes reject callback when reject() is called', async () => {
@@ -93,7 +94,30 @@ describe('BapsConfirmDialog', () => {
 
     expect(rejected).toBe(true);
     expect(fixture.componentInstance.dialog.visible).toBe(false);
-    expect(fixture.componentInstance.seen).toContain('reject');
+    expect(fixture.componentInstance.seen).toContain('hide');
+  });
+
+  it('rejects when the dialog shell dismisses through Escape', async () => {
+    const fixture = await setup();
+    const service = TestBed.inject(BapsConfirmationService);
+    const shell = fixture.debugElement.query(By.directive(BapsDialog))
+      .componentInstance as BapsDialog;
+    let rejected = false;
+
+    service.confirm({
+      message: 'Dismiss with Escape?',
+      reject: () => {
+        rejected = true;
+      },
+    });
+    await settle(fixture);
+
+    shell.visibleChange.emit(false);
+    await settle(fixture);
+
+    expect(rejected).toBe(true);
+    expect(fixture.componentInstance.dialog.visible).toBe(false);
+    expect(fixture.componentInstance.seen).toEqual(['hide']);
   });
 
   it('routes confirmations by key', async () => {
@@ -131,31 +155,19 @@ describe('BapsConfirmDialog', () => {
     service.close();
     await settle(fixture);
     expect(fixture.componentInstance.dialog.visible).toBe(false);
+    expect(fixture.componentInstance.seen).toEqual(['hide']);
+
+    service.close();
+    await settle(fixture);
+    expect(fixture.componentInstance.seen).toEqual(['hide']);
   });
 
-  it('supports PrimeNG ConfirmationService interoperability', async () => {
-    TestBed.resetTestingModule();
-    TestBed.configureTestingModule({
-      providers: [ConfirmationService, BapsConfirmationService],
-    });
-
+  it('forwards approved panel style and stacking inputs', async () => {
     const fixture = await setup();
-    const primeService = TestBed.inject(ConfirmationService);
+    const dialog = fixture.debugElement.query(By.directive(BapsDialog))
+      .componentInstance as BapsDialog;
 
-    let accepted = false;
-    primeService.confirm({
-      message: 'PrimeNG confirmation',
-      accept: () => {
-        accepted = true;
-      },
-    });
-
-    await settle(fixture);
-    expect(fixture.componentInstance.dialog.visible).toBe(true);
-
-    fixture.componentInstance.dialog.accept();
-    await settle(fixture);
-    expect(accepted).toBe(true);
-    expect(fixture.componentInstance.dialog.visible).toBe(false);
+    expect(dialog.baseZIndex).toBe(1200);
+    expect(dialog.style).toEqual({ maxWidth: '90vw' });
   });
 });

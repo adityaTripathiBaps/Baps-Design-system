@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
 
 export interface BapsConfirmation {
   message?: string;
@@ -15,26 +14,47 @@ export interface BapsConfirmation {
   acceptVisible?: boolean;
   rejectVisible?: boolean;
   acceptSeverity?:
-    | 'primary'
-    | 'secondary'
-    | 'danger'
-    | 'success'
-    | 'warn'
-    | 'info';
+    'primary' | 'secondary' | 'danger' | 'success' | 'warn' | 'info';
   rejectSeverity?:
-    | 'primary'
-    | 'secondary'
-    | 'danger'
-    | 'success'
-    | 'warn'
-    | 'info';
+    'primary' | 'secondary' | 'danger' | 'success' | 'warn' | 'info';
   acceptButtonStyleClass?: string;
   rejectButtonStyleClass?: string;
   closable?: boolean;
   closeOnEscape?: boolean;
   dismissableMask?: boolean;
-  defaultFocus?: 'accept' | 'reject' | 'none';
   styleClass?: string;
+}
+
+type ConfirmationListener = (confirmation: BapsConfirmation | null) => void;
+
+const listenersByService = new WeakMap<
+  BapsConfirmationService,
+  Set<ConfirmationListener>
+>();
+
+function listenersFor(
+  service: BapsConfirmationService,
+): Set<ConfirmationListener> {
+  const existing = listenersByService.get(service);
+  if (existing) {
+    return existing;
+  }
+
+  const listeners = new Set<ConfirmationListener>();
+  listenersByService.set(service, listeners);
+  return listeners;
+}
+
+/** @internal Connects the dialog host without adding a public observable API. */
+export function subscribeToBapsConfirmations(
+  service: BapsConfirmationService,
+  listener: ConfirmationListener,
+): () => void {
+  const listeners = listenersFor(service);
+  listeners.add(listener);
+  return () => {
+    listeners.delete(listener);
+  };
 }
 
 /**
@@ -44,19 +64,13 @@ export interface BapsConfirmation {
   providedIn: 'root',
 })
 export class BapsConfirmationService {
-  private readonly requireConfirmationSource = new Subject<BapsConfirmation>();
-  private readonly closeSource = new Subject<void>();
-
-  readonly requireConfirmation$ = this.requireConfirmationSource.asObservable();
-  readonly close$ = this.closeSource.asObservable();
-
   confirm(confirmation: BapsConfirmation): this {
-    this.requireConfirmationSource.next(confirmation);
+    listenersFor(this).forEach((listener) => listener(confirmation));
     return this;
   }
 
   close(): this {
-    this.closeSource.next();
+    listenersFor(this).forEach((listener) => listener(null));
     return this;
   }
 }

@@ -3,18 +3,16 @@ import {
   EventEmitter,
   Input,
   OnDestroy,
-  OnInit,
   Output,
   ViewEncapsulation,
   inject,
 } from '@angular/core';
-import { ConfirmationService } from 'primeng/api';
-import { Subscription } from 'rxjs';
 import { BapsButton } from '../button/button.component';
 import { BapsDialog } from '../dialog/dialog.component';
 import {
   BapsConfirmation,
   BapsConfirmationService,
+  subscribeToBapsConfirmations,
 } from './confirmation.service';
 
 /**
@@ -23,7 +21,7 @@ import {
  * Built on `baps-dialog`, ensuring consistent modal shell layout, focus
  * trapping, focus restoration, backdrop masking, and brand token theming.
  *
- * Listens to `BapsConfirmationService` (and optionally PrimeNG's `ConfirmationService`).
+ * Listens to `BapsConfirmationService` through its internal callback channel.
  */
 @Component({
   selector: 'baps-confirm-dialog',
@@ -40,12 +38,18 @@ import {
       [blockScroll]="blockScroll"
       [appendTo]="appendTo"
       [styleClass]="panelClass"
+      [style]="style"
+      [baseZIndex]="baseZIndex"
       (visibleChange)="onDialogVisibleChange($event)"
       (hidden)="onDialogHide()"
     >
       @if (activeIcon) {
         <div dialog-media class="baps-confirm-dialog__icon-wrapper">
-          <i [class]="activeIcon" class="baps-confirm-dialog__icon" aria-hidden="true"></i>
+          <i
+            [class]="activeIcon"
+            class="baps-confirm-dialog__icon"
+            aria-hidden="true"
+          ></i>
         </div>
       }
 
@@ -64,7 +68,7 @@ import {
             [outlined]="true"
             [brand]="brand"
             [class]="rejectBtnClass"
-            (onClick)="reject()"
+            (click)="reject()"
           />
         }
         @if (activeAcceptVisible) {
@@ -74,7 +78,7 @@ import {
             [severity]="activeAcceptSeverity"
             [brand]="brand"
             [class]="acceptBtnClass"
-            (onClick)="accept()"
+            (click)="accept()"
           />
         }
       </div>
@@ -83,80 +87,36 @@ import {
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['../../styles/components/confirm-dialog/_confirm-dialog.scss'],
 })
-export class BapsConfirmDialog implements OnInit, OnDestroy {
-  private readonly bapsConfirmationService = inject(BapsConfirmationService);
-  private readonly primeConfirmationService = inject(ConfirmationService, {
-    optional: true,
-  });
-  private readonly subscription = new Subscription();
+export class BapsConfirmDialog implements OnDestroy {
+  private readonly confirmationService = inject(BapsConfirmationService);
+  private readonly unsubscribe = subscribeToBapsConfirmations(
+    this.confirmationService,
+    (confirmation) => {
+      if (confirmation) {
+        this.handleConfirmation(confirmation);
+      } else {
+        this.close();
+      }
+    },
+  );
 
   /** Dialog key matching confirmation.key. */
   @Input() key?: string;
-  @Input() header?: string;
-  @Input() message?: string;
-  @Input() icon?: string;
-  @Input() acceptLabel = 'Yes';
-  @Input() rejectLabel = 'No';
-  @Input() acceptIcon?: string;
-  @Input() rejectIcon?: string;
-  @Input() acceptVisible = true;
-  @Input() rejectVisible = true;
-  @Input() acceptSeverity:
-    | 'primary'
-    | 'secondary'
-    | 'danger'
-    | 'success'
-    | 'warn'
-    | 'info' = 'danger';
-  @Input() rejectSeverity:
-    | 'primary'
-    | 'secondary'
-    | 'danger'
-    | 'success'
-    | 'warn'
-    | 'info' = 'secondary';
   @Input() acceptButtonStyleClass?: string;
   @Input() rejectButtonStyleClass?: string;
   @Input() styleClass?: string;
   @Input() closable = false;
-  @Input() closeOnEscape = true;
-  @Input() dismissableMask = false;
-  @Input() blockScroll = true;
-  @Input() appendTo: 'self' | 'body' | HTMLElement = 'body';
-  @Input() autoZIndex = true;
+  @Input() style?: Record<string, string | number>;
   @Input() baseZIndex = 0;
   @Input() brand: 'mybky' | 'sampark' = 'mybky';
-  @Input() ariaLabel?: string;
 
   @Output() hide = new EventEmitter<void>();
-  @Output() acceptEvent = new EventEmitter<void>();
-  @Output() rejectEvent = new EventEmitter<void>();
 
   visible = false;
   confirmation?: BapsConfirmation;
 
-  ngOnInit(): void {
-    this.subscription.add(
-      this.bapsConfirmationService.requireConfirmation$.subscribe(
-        (confirmation) => this.handleConfirmation(confirmation),
-      ),
-    );
-    this.subscription.add(
-      this.bapsConfirmationService.close$.subscribe(() => this.close()),
-    );
-
-    if (this.primeConfirmationService) {
-      this.subscription.add(
-        this.primeConfirmationService.requireConfirmation$.subscribe(
-          (confirmation) =>
-            this.handleConfirmation(confirmation as BapsConfirmation),
-        ),
-      );
-    }
-  }
-
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.unsubscribe();
   }
 
   private handleConfirmation(confirmation: BapsConfirmation): void {
@@ -170,7 +130,6 @@ export class BapsConfirmDialog implements OnInit, OnDestroy {
     if (this.confirmation?.accept) {
       this.confirmation.accept();
     }
-    this.acceptEvent.emit();
     this.close();
   }
 
@@ -178,14 +137,16 @@ export class BapsConfirmDialog implements OnInit, OnDestroy {
     if (this.confirmation?.reject) {
       this.confirmation.reject();
     }
-    this.rejectEvent.emit();
     this.close();
   }
 
   close(): void {
+    const wasVisible = this.visible;
     this.visible = false;
     this.confirmation = undefined;
-    this.hide.emit();
+    if (wasVisible) {
+      this.hide.emit();
+    }
   }
 
   protected onDialogVisibleChange(next: boolean): void {
@@ -201,67 +162,53 @@ export class BapsConfirmDialog implements OnInit, OnDestroy {
   }
 
   protected get activeHeader(): string | undefined {
-    return this.confirmation?.header ?? this.header;
+    return this.confirmation?.header;
   }
 
   protected get activeAriaLabel(): string {
-    return (
-      this.ariaLabel ??
-      this.activeHeader ??
-      'Confirmation'
-    );
+    return this.activeHeader ?? 'Confirmation';
   }
 
   protected get activeMessage(): string | undefined {
-    return this.confirmation?.message ?? this.message;
+    return this.confirmation?.message;
   }
 
   protected get activeIcon(): string | undefined {
-    return this.confirmation?.icon ?? this.icon;
+    return this.confirmation?.icon;
   }
 
   protected get activeAcceptLabel(): string {
-    return this.confirmation?.acceptLabel ?? this.acceptLabel;
+    return this.confirmation?.acceptLabel ?? 'Yes';
   }
 
   protected get activeRejectLabel(): string {
-    return this.confirmation?.rejectLabel ?? this.rejectLabel;
+    return this.confirmation?.rejectLabel ?? 'No';
   }
 
   protected get activeAcceptIcon(): string | undefined {
-    return this.confirmation?.acceptIcon ?? this.acceptIcon;
+    return this.confirmation?.acceptIcon;
   }
 
   protected get activeRejectIcon(): string | undefined {
-    return this.confirmation?.rejectIcon ?? this.rejectIcon;
+    return this.confirmation?.rejectIcon;
   }
 
   protected get activeAcceptVisible(): boolean {
-    return this.confirmation?.acceptVisible ?? this.acceptVisible;
+    return this.confirmation?.acceptVisible ?? true;
   }
 
   protected get activeRejectVisible(): boolean {
-    return this.confirmation?.rejectVisible ?? this.rejectVisible;
+    return this.confirmation?.rejectVisible ?? true;
   }
 
   protected get activeAcceptSeverity():
-    | 'primary'
-    | 'secondary'
-    | 'danger'
-    | 'success'
-    | 'warn'
-    | 'info' {
-    return this.confirmation?.acceptSeverity ?? this.acceptSeverity;
+    'primary' | 'secondary' | 'danger' | 'success' | 'warn' | 'info' {
+    return this.confirmation?.acceptSeverity ?? 'danger';
   }
 
   protected get activeRejectSeverity():
-    | 'primary'
-    | 'secondary'
-    | 'danger'
-    | 'success'
-    | 'warn'
-    | 'info' {
-    return this.confirmation?.rejectSeverity ?? this.rejectSeverity;
+    'primary' | 'secondary' | 'danger' | 'success' | 'warn' | 'info' {
+    return this.confirmation?.rejectSeverity ?? 'secondary';
   }
 
   protected get activeClosable(): boolean {
@@ -269,12 +216,15 @@ export class BapsConfirmDialog implements OnInit, OnDestroy {
   }
 
   protected get activeCloseOnEscape(): boolean {
-    return this.confirmation?.closeOnEscape ?? this.closeOnEscape;
+    return this.confirmation?.closeOnEscape ?? true;
   }
 
   protected get activeDismissableMask(): boolean {
-    return this.confirmation?.dismissableMask ?? this.dismissableMask;
+    return this.confirmation?.dismissableMask ?? false;
   }
+
+  protected readonly blockScroll = true;
+  protected readonly appendTo = 'body';
 
   protected get acceptBtnClass(): string | undefined {
     return (
