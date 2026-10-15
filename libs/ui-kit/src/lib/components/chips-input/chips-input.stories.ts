@@ -163,13 +163,26 @@ export const KeyboardInteraction: Story = {
   }),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const input = canvas.getByRole('combobox', { name: 'Skills' });
+
+    // findBy*, not getBy*. The control is a PrimeNG AutoComplete inside an
+    // Angular app that bootstraps asynchronously, so a synchronous getBy
+    // ran before the combobox existed whenever the machine was busy — which
+    // is why this story passed alone and failed in a full run.
+    const input = await canvas.findByRole(
+      'combobox',
+      { name: 'Skills' },
+      // 8s, not findBy's 1s default: this is a PrimeNG AutoComplete inside an
+      // Angular app that bootstraps asynchronously, and 1s is not enough when
+      // the machine is running other story contexts alongside it. Still a wait
+      // on a real condition — if the combobox never appears, this still fails.
+      { timeout: 8000 },
+    );
 
     await userEvent.click(input);
     await userEvent.type(input, 'Angular');
     await userEvent.keyboard('{Enter}');
-    await expect(
-      canvas.getAllByRole('button', { name: 'Remove' }),
+    expect(
+      await canvas.findAllByRole('button', { name: 'Remove' }, { timeout: 8000 }),
     ).toHaveLength(1);
     await expect(
       canvas.getByRole('status', { name: 'Committed value count' }),
@@ -177,18 +190,20 @@ export const KeyboardInteraction: Story = {
 
     await userEvent.type(input, 'React');
     await userEvent.keyboard(',');
-    await expect(
-      canvas.getAllByRole('button', { name: 'Remove' }),
+    expect(
+      await canvas.findAllByRole('button', { name: 'Remove' }, { timeout: 8000 }),
     ).toHaveLength(2);
     await expect(
       canvas.getByRole('status', { name: 'Committed value count' }),
     ).toHaveTextContent('2');
-    const firstRemove = canvas.getAllByRole('button', { name: 'Remove' })[0];
+    const firstRemove = (
+      await canvas.findAllByRole('button', { name: 'Remove' }, { timeout: 8000 })
+    )[0];
     firstRemove.focus();
     await expect(firstRemove).toHaveFocus();
     await userEvent.keyboard('{Enter}');
-    await expect(
-      canvas.getAllByRole('button', { name: 'Remove' }),
+    expect(
+      await canvas.findAllByRole('button', { name: 'Remove' }, { timeout: 8000 }),
     ).toHaveLength(1);
     await expect(
       canvas.getByRole('status', { name: 'Committed value count' }),

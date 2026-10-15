@@ -62,7 +62,13 @@ for (const id of ids) {
   // Both of those last two turned PASSING stories into failures, which is
   // the opposite of what a guard should do. One page, one load, one play
   // run, then the page is closed.
-  const page = await browser.newPage({ viewport: { width: 1500, height: 900 } });
+  // A fresh CONTEXT, not just a page. Pages in one context share storage,
+  // permissions and — the one that matters here — the browser's notion of
+  // which page is focused. With shared context a story could fail purely
+  // because another story ran before it in the same batch: chips-input
+  // passed alone and failed in a pair, repeatedly and in both orders.
+  const context = await browser.newContext({ viewport: { width: 1500, height: 900 } });
+  const page = await context.newPage();
 
   await page.goto(`${BASE}/?path=/story/${id}`, { waitUntil: 'domcontentloaded' });
 
@@ -75,7 +81,7 @@ for (const id of ids) {
     try {
       await waitForRender(preview);
     } catch {
-      await page.close();
+      await context.close();
       results.push([id, 'FAIL: story never rendered']);
       console.log(id.padEnd(52), 'FAIL: story never rendered');
       continue;
@@ -110,7 +116,7 @@ for (const id of ids) {
     if (/Write a play function/.test(text)) { verdict = 'NO PLAY DETECTED'; }
     await page.waitForTimeout(600);
   }
-  await page.close();
+  await context.close();
   results.push([id, verdict]);
   console.log(id.padEnd(52), verdict);
 }
