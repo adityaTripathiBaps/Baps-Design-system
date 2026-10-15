@@ -393,3 +393,40 @@ not current infrastructure. Source manifests retain `workspace:*` for local
 development, while the build/pack path rewrites it to the exact token version.
 Consumer setup and proof requirements live in
 `docs/CONSUMER-INTEGRATION-GUIDE.md`.
+
+## Open question — something focuses the form-field input late — *2026-10-15*
+
+`components-form-controls--label-and-typing-interaction` fails at
+`expect(<input#pg>).toHaveFocus()` and is documented as a known
+pre-existing failure. It fails on `main` as well; no branch has touched
+`form-field`.
+
+**The unexplained part, measured:** roughly 9 seconds after the story
+loads, **with no interaction at all**, `document.activeElement` is already
+`INPUT#pg`. At play-function time it is not. Something focuses that input
+later, and until it is identified the story cannot be fixed honestly.
+
+Candidates, none confirmed:
+
+- an `autofocus` somewhere in the Playground template or a directive,
+- a Storybook manager or docs effect restoring focus to the preview,
+- another story's play function reaching across (the guard now isolates
+  each story in its own browser context, which did **not** change this),
+- Angular restoring focus after a late change-detection pass.
+
+Already ruled out by direct measurement, so do not re-test these:
+
+| Hypothesis | Result |
+| --- | --- |
+| duplicate `id="pg"` | no — one input, one label, in both the iframe and manager views |
+| broken label association | no — `for`/`id` match; `findByLabelText` resolves through it |
+| `userEvent` synthetic click cannot focus via a label | no — dispatching the exact pointer/mouse sequence focuses `INPUT#pg` |
+| input disabled or readonly | no — both false |
+| tab order | the original `userEvent.tab()` assertion was impossible — the first five tabbables are buttons and anchors — and was replaced in `9221553` |
+
+**It also poisons the story that runs after it.** Measured:
+`chips-input--keyboard-interaction` passes when it runs BEFORE
+form-controls and fails when it runs AFTER, in both orders, repeatedly. So
+a single genuine failure here shows up as two, and the second one looks
+like flakiness. When reading an interactions run, check what ran
+immediately before a surprising failure.
