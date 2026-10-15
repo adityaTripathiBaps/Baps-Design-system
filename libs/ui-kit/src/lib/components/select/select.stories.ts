@@ -100,8 +100,13 @@ export const SelectOptionInteraction: StoryObj<BapsSelect> = {
   args: {
     placeholder: 'Select a City',
     optionLabel: 'name',
+    // Rome is the option the play function below selects. It was missing
+    // from this list, so the story waited for an option that could never
+    // render and failed every run since 16c3adb. The sibling
+    // KeyboardInteraction story has always carried both.
     options: [
       { name: 'New York', code: 'NY' },
+      { name: 'Rome', code: 'RM' },
     ],
   },
   play: async ({ canvasElement }) => {
