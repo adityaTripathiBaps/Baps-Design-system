@@ -356,3 +356,25 @@ The public Angular API remains the approved `placeholder`, `disabled`, `size`,
 `brand`, `separator` and `string[]` CVA surface. React maps that same form value
 contract to `value`/`onChange`; no blur-add, duplicate-policy, maximum-count,
 ARIA-label or style escape-hatch API was approved or added.
+
+## Versioning and consumption decisions — *2026-10-15*
+
+`docs/VERSIONING-AND-UPGRADE.md` is the single compatibility matrix and release
+policy. The kit remains on 0.x until spm-ui integrates successfully. An
+intentional default visual change is minor; a spec-alignment visual fix is
+patch; removing or renaming a public API, CSS class or token is major.
+Deprecate first, remove in the next major, and maintain `CHANGELOG.md` manually.
+Supported consumers use the current Angular 21 / PrimeNG 21 line; older apps
+take the upgrade-first route rather than a compatibility shim.
+
+The legacy path keeps an application's wrapper APIs stable, upgrades its
+framework/PrimeNG first, then swaps wrapper internals to the kit one component
+family at a time with baseline screenshots and designer colour/contrast
+sign-off.
+
+`@org/tokens` stays a separate package. The current external delivery route is
+matched tokens + kit tarballs; a private registry is a future team decision,
+not current infrastructure. Source manifests retain `workspace:*` for local
+development, while the build/pack path rewrites it to the exact token version.
+Consumer setup and proof requirements live in
+`docs/CONSUMER-INTEGRATION-GUIDE.md`.

@@ -35,6 +35,10 @@ Read both before reading anything else, then the rule in
 [`.agents/rules/`](.agents/rules/README.md) that matches what you are about to
 touch. Those two files are canonical; nothing restates them.
 
+For integration, dependency or upgrade work, also read
+[`docs/CONSUMER-INTEGRATION-GUIDE.md`](docs/CONSUMER-INTEGRATION-GUIDE.md) and
+[`docs/VERSIONING-AND-UPGRADE.md`](docs/VERSIONING-AND-UPGRADE.md).
+
 A shared component library, token pipeline and Storybook site for BAPS's digital
 products (member database, event management, donation management, daily Satsang
 activities).

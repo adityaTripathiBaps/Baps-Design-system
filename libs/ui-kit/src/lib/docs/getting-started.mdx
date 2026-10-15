@@ -9,24 +9,23 @@ installing the library, wiring up the theme, loading fonts and tokens, and using
 component. It applies to any Angular app inside this Nx workspace (member database,
 event management, donation management, Satsang).
 
-> **Not using Angular?** This page is the Angular route. React, Next.js and plain
-> HTML consume the design system through CSS and token packages instead of
-> components — see **Installation** for those three, and the **Component status**
-> page for which components genuinely work outside Angular. The short version:
-> `@org/tokens/css` plus `@org/ui-kit/styles` gives you the design, and the
-> components' behaviour stays with Angular.
+> **Not using Angular?** This page is the Angular route. React and Next.js use
+> the typed `@org/ui-kit-react` package plus the same tokens and canonical CSS.
+> See **Installation** and **Component status** for the supported setup and
+> current implementation list. Plain HTML consumes tokens and CSS only.
 
 ## At a glance
 
-|                       |                                                                                 |
-| --------------------- | ------------------------------------------------------------------------------- |
-| Package               | `@org/ui-kit` (workspace library)                                               |
-| Framework             | Angular 21, standalone components only — no NgModules                           |
-| Outside Angular       | CSS + tokens only: `@org/tokens/css`, `@org/ui-kit/styles`, `@org/ui-kit/icons` |
-| Underlying UI library | PrimeNG 21 with a customized Material preset (`MyBky`)                          |
-| Design tokens         | `@org/tokens` — Style Dictionary, generated `tokens.ts` + `tokens.css`          |
-| Icons                 | primeicons (PrimeNG inputs) and Lucide (product UI)                             |
-| Selector prefix       | `baps-` for components, `baps` (no hyphen) for directives                       |
+|                       |                                                                                         |
+| --------------------- | --------------------------------------------------------------------------------------- |
+| Angular package       | `@org/ui-kit`                                                                            |
+| React / Next package  | `@org/ui-kit-react`                                                                      |
+| Framework             | Angular 21 standalone components; React 19 typed components                               |
+| Plain HTML            | CSS + tokens only: `@org/tokens/css`, `@org/ui-kit/styles`, `@org/ui-kit/icons`           |
+| Underlying UI library | PrimeNG 21 with a customized Material preset (`MyBky`)                                    |
+| Design tokens         | `@org/tokens` — Style Dictionary, generated `tokens.ts` + `tokens.css`                    |
+| Icons                 | PrimeIcons for PrimeNG inputs and the kit's own `BapsIcon`/`BAPS_ICONS` set for product UI |
+| Selector prefix       | `baps-` for components, `baps` (no hyphen) for directives                                 |
 
 ## 1. Install / reference the library
 

@@ -79,6 +79,20 @@ Never without explicit permission in the current conversation:
 Approved multi-step work (a batch, a phase) continues without stopping.
 Pause only for a real blocker or a new decision.
 
+## Branches, compatibility and releases
+
+- Start every task on a feature branch created from `main`; merge and push
+  only after explicit approval.
+- Any dependency or peer-dependency change updates the compatibility matrix in
+  [`docs/VERSIONING-AND-UPGRADE.md`](../docs/VERSIONING-AND-UPGRADE.md).
+- Classify every public API, CSS class, token or visible-style change as
+  major/minor/patch and record it in the changelog or migration notes.
+- Breaking changes require explicit approval and a migration note. Deprecate
+  first and remove only in the next major.
+- New components and inputs are additive with backward-compatible defaults.
+- Compatibility requires both the matrix and a real consumer build; a local
+  type-check is not sufficient evidence.
+
 ## Design values
 
 - Colour, spacing, typography, radius, shadow and z-index come from tokens.
