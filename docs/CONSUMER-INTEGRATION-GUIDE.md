@@ -10,7 +10,8 @@ starting.
 `@org/tokens` is a separate publishable package. The current delivery route is
 immutable tarballs for integration and early spm-ui testing; a private npm
 registry is the intended later route, but no registry or release automation is
-configured yet.
+configured yet. Its manifest declares `publishConfig.access` as `restricted`
+so the scoped package cannot be published publicly by accident.
 
 Source manifests use the pnpm workspace protocol in three places:
 
