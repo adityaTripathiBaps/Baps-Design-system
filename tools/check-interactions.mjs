@@ -67,10 +67,23 @@ for (const id of ids) {
   // because another story ran before it in the same batch: chips-input
   // passed alone and failed in a pair, repeatedly and in both orders.
   const browser = await chromium.launch();
-  const context = await browser.newContext({ viewport: { width: 1500, height: 900 } });
+  const context = await browser.newContext({
+    viewport: { width: 1500, height: 900 },
+  });
   const page = await context.newPage();
+  const runtimeErrors = [];
+  page.on('console', (message) => {
+    if (message.type() === 'error') {
+      runtimeErrors.push(`console.error: ${message.text()}`);
+    }
+  });
+  page.on('pageerror', (error) => {
+    runtimeErrors.push(`pageerror: ${error.message}`);
+  });
 
-  await page.goto(`${BASE}/?path=/story/${id}`, { waitUntil: 'domcontentloaded' });
+  await page.goto(`${BASE}/?path=/story/${id}`, {
+    waitUntil: 'domcontentloaded',
+  });
 
   // The preview is an iframe; its render state is the thing that matters.
   const preview = await page
@@ -90,32 +103,54 @@ for (const id of ids) {
   }
 
   try {
-    await page.getByRole('tab', { name: /Interactions/ }).click({ timeout: 20000 });
+    await page
+      .getByRole('tab', { name: /Interactions/ })
+      .click({ timeout: 20000 });
   } catch {
     // The tab label carries a count, so fall back to a looser match.
-    await page.locator('[role="tablist"] button', { hasText: 'Interactions' }).first().click();
+    await page
+      .locator('[role="tablist"] button', { hasText: 'Interactions' })
+      .first()
+      .click();
   }
   let verdict = 'NO VERDICT';
   // 60 x 600ms = 36s. The portaled-overlay stories chain two waitFor windows of
   // 5-8s each, so a shorter poll reports "NO PLAY DETECTED" on a story that is
   // still legitimately running — a tool limitation that reads as a failure.
   for (let i = 0; i < 60; i++) {
-    const text = await page.locator('#storybook-panel-root').innerText().catch(() => '');
-    if (/\bPASS\b/.test(text)) { verdict = 'PASS'; break; }
+    const text = await page
+      .locator('#storybook-panel-root')
+      .innerText()
+      .catch(() => '');
+    if (/\bPASS\b/.test(text)) {
+      verdict = 'PASS';
+      break;
+    }
     if (/\bFAIL\b/.test(text)) {
       // Skip the panel's own chrome. "Scroll to error" and "Scroll to end"
       // are BUTTON LABELS that match /Error/i, so the old pick reported
       // `FAIL: Scroll to error` for every failure and told you nothing.
-      const chrome = /^(Scroll to (error|end)|Interactions?\d*|Controls\d*|Actions|Accessibility|On this page|Visual tests|Design)$/i;
+      const chrome =
+        /^(Scroll to (error|end)|Interactions?\d*|Controls\d*|Actions|Accessibility|On this page|Visual tests|Design)$/i;
       const line = text
         .split('\n')
         .map((l) => l.trim())
-        .find((l) => l && !chrome.test(l) && /Error|expect|Unable|received|toBe|toHave/i.test(l));
+        .find(
+          (l) =>
+            l &&
+            !chrome.test(l) &&
+            /Error|expect|Unable|received|toBe|toHave/i.test(l),
+        );
       verdict = 'FAIL: ' + (line ?? 'see Interactions panel').slice(0, 140);
       break;
     }
-    if (/Write a play function/.test(text)) { verdict = 'NO PLAY DETECTED'; }
+    if (/Write a play function/.test(text)) {
+      verdict = 'NO PLAY DETECTED';
+    }
     await page.waitForTimeout(600);
+  }
+  if (runtimeErrors.length) {
+    verdict = `FAIL: ${runtimeErrors[0].slice(0, 134)}`;
   }
   await context.close();
   await browser.close();

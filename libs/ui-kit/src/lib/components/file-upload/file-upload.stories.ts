@@ -21,6 +21,7 @@ interface FileUploadArgs {
   hint: string;
   description: string;
   brand: 'mybky' | 'sampark';
+  onSelected?: (files: File[]) => void;
 }
 
 const meta: Meta<FileUploadArgs> = {
@@ -31,7 +32,10 @@ const meta: Meta<FileUploadArgs> = {
   parameters: {
     // Design tab — the Figma frame this component implements, node 13197:87830.
     // Harvested from file-upload.stories.ts, where it was already recorded as a comment.
-    design: { type: 'figma', url: 'https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/?node-id=13197-87830' },
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/?node-id=13197-87830',
+    },
   },
   // Docs page now comes from file-upload.mdx (added after this comment was
   // written) — 'autodocs' was removed since both tagged would conflict
@@ -44,6 +48,7 @@ const meta: Meta<FileUploadArgs> = {
     multiple: { control: 'boolean' },
     disabled: { control: 'boolean' },
     invalid: { control: 'boolean' },
+    onSelected: { action: 'filesSelected' },
   },
   args: {
     accept: 'image/*',
@@ -107,7 +112,9 @@ export const States: Story = {
  * undefined. What matters is that the wrapper forwarded the selection, and a
  * zone that swallows it is the real failure mode.
  */
-export const UploadInteraction: StoryObj<FileUploadArgs & { onSelected: (files: File[]) => void }> = {
+export const UploadInteraction: StoryObj<
+  FileUploadArgs & { onSelected: (files: File[]) => void }
+> = {
   name: 'Interaction — choose a file',
   args: { onSelected: fn() },
   render: (args) => ({
@@ -123,7 +130,8 @@ export const UploadInteraction: StoryObj<FileUploadArgs & { onSelected: (files: 
     `,
   }),
   play: async ({ canvasElement }) => {
-    const input = canvasElement.querySelector<HTMLInputElement>('input[type="file"]');
+    const input =
+      canvasElement.querySelector<HTMLInputElement>('input[type="file"]');
     await expect(input).toBeTruthy();
 
     // What IS assertable: the hidden input is wired the way the zone promises.

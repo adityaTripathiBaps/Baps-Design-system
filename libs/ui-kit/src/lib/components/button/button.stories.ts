@@ -44,12 +44,17 @@ const BUTTON_ICON_OPTIONS = [
   ...BAPS_ALL_ICON_NAMES.filter((name) => !POPULAR_BUTTON_ICONS.includes(name)),
 ];
 
+type ButtonArgs = BapsButton &
+  Partial<
+    Record<'onClick' | 'onDisabled' | 'onLoading' | 'onActivate', () => void>
+  >;
+
 /**
  * Pilot component for the BAPS authoring pattern — copy this file's shape
  * (Meta argTypes, Playground, AllVariants, AllSizes) for every subsequent
  * component. Button uses the `BapsButton` wrapper component.
  */
-const meta: Meta<BapsButton> = {
+const meta: Meta<ButtonArgs> = {
   title: 'Components/Atoms/Button',
   // Pinned so the categorised title above does not move the docs URL:
   // without it the id would follow the title to components-button-button.
@@ -57,7 +62,10 @@ const meta: Meta<BapsButton> = {
   parameters: {
     // Design tab — the Figma frame this component implements.
     // Harvested from button.stories.ts, where it was already recorded as a comment.
-    design: { type: 'figma', url: 'https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/🟢-Sampark-Portal?node-id=13197-91897' },
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/🟢-Sampark-Portal?node-id=13197-91897',
+    },
   },
   // Design-system availability — drives the sidebar filter in .storybook/manager.ts
   tags: ['ds:mybky', 'ds:sampark'],
@@ -66,9 +74,22 @@ const meta: Meta<BapsButton> = {
     label: { control: 'text' },
     severity: {
       control: 'select',
-      options: ['primary', 'secondary', 'success', 'info', 'warn', 'help', 'danger', 'contrast', undefined],
+      options: [
+        'primary',
+        'secondary',
+        'success',
+        'info',
+        'warn',
+        'help',
+        'danger',
+        'contrast',
+        undefined,
+      ],
     },
-    size: { control: 'select', options: [undefined, 'small', 'large', 'xlarge'] },
+    size: {
+      control: 'select',
+      options: [undefined, 'small', 'large', 'xlarge'],
+    },
     brand: { control: 'select', options: ['mybky', 'sampark'] },
     disabled: { control: 'boolean' },
     loading: { control: 'boolean' },
@@ -80,13 +101,18 @@ const meta: Meta<BapsButton> = {
     icon: {
       control: 'select',
       options: BUTTON_ICON_OPTIONS,
-      description: 'Icon name: select BAPS SVG icon or PrimeIcons class. Clear label to test icon-only buttons.',
+      description:
+        'Icon name: select BAPS SVG icon or PrimeIcons class. Clear label to test icon-only buttons.',
     },
     iconPos: { control: 'select', options: ['left', 'right', 'top', 'bottom'] },
     fluid: { control: 'boolean' },
     autofocus: { control: 'boolean' },
     plain: { control: 'boolean' },
     ariaLabel: { control: 'text' },
+    onClick: { action: 'click' },
+    onDisabled: { action: 'disabled click' },
+    onLoading: { action: 'loading click' },
+    onActivate: { action: 'activate' },
   },
   args: {
     autofocus: false,
@@ -128,7 +154,7 @@ const meta: Meta<BapsButton> = {
 };
 
 export default meta;
-type Story = StoryObj<BapsButton>;
+type Story = StoryObj<ButtonArgs>;
 
 /**
  * For interaction stories that add `fn()` spies to args. The default
@@ -136,7 +162,10 @@ type Story = StoryObj<BapsButton>;
  * fails to compile — and putting the spy in render() props instead hides it
  * from `play`, which is the trap the disabled story hit first.
  */
-type SpyStory = StoryObj<BapsButton & Record<'onClick' | 'onDisabled' | 'onLoading' | 'onActivate', () => void>>;
+type SpyStory = StoryObj<
+  BapsButton &
+    Record<'onClick' | 'onDisabled' | 'onLoading' | 'onActivate', () => void>
+>;
 
 export const Playground: Story = {};
 
