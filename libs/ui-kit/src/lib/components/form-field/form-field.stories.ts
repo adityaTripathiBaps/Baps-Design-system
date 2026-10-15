@@ -139,9 +139,14 @@ export const LabelAndTypingInteraction: Story = {
     //
     // The label is taken by its for attribute rather than by text, because
     // the label and the input's accessible name both read "Email".
-    const label = canvasElement.querySelector<HTMLLabelElement>(
-      'label[for="pg"]',
-    )!;
+    // getByLabelText above already proves the label exists and points here,
+    // so this find cannot legitimately miss — but assert it rather than
+    // reach for `!`, which the lint baseline forbids and which would turn a
+    // missing label into an unhelpful null dereference.
+    const label = canvasElement.querySelector('label[for="pg"]');
+    if (!(label instanceof HTMLLabelElement)) {
+      throw new Error('form-field Playground should render label[for="pg"]');
+    }
     await userEvent.click(label);
 
     // waitFor, not a bare assertion: focus arrives a tick after the click in
