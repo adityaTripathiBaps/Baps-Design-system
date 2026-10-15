@@ -142,22 +142,51 @@ async function interactionIds() {
   );
 }
 
+/**
+ * One story per component for check-panels, which reports the addon surface
+ * each story exposes. One per component is the useful granularity: a panel
+ * that fails to register does so per preview, not per story.
+ */
+async function panelSampleIds() {
+  const res = await fetch(`${BASE}/index.json`);
+  if (!res.ok) throw new Error(`cannot read ${BASE}/index.json`);
+  const index = await res.json();
+  const entries = index.entries ?? index.stories ?? {};
+  const seen = new Set();
+  const picked = [];
+  for (const [id, entry] of Object.entries(entries)) {
+    if (entry.type === 'docs') continue;
+    const component = entry.title ?? id.split('--')[0];
+    if (seen.has(component)) continue;
+    seen.add(component);
+    picked.push(id);
+  }
+  return picked;
+}
+
 const results = [];
 for (const name of guards) {
   console.log(`\n── ${name} ───────────────────────────────────────────`);
 
   let extraArgs = [];
-  if (name === 'check-interactions') {
-    extraArgs = await interactionIds();
+
+  // Both of these take story ids on argv and both were being run with none —
+  // check-interactions reported `0/0 pass` and check-panels printed nothing
+  // at all, and the summary called each one `ok`.
+  if (name === 'check-interactions' || name === 'check-panels') {
+    extraArgs =
+      name === 'check-interactions'
+        ? await interactionIds()
+        : await panelSampleIds();
     if (!extraArgs.length) {
       console.error(
-        'no interaction stories found in the Storybook index — refusing to\n' +
+        `no stories found for ${name} in the Storybook index — refusing to\n` +
           'report a pass on an empty run.',
       );
       results.push([name, 1]);
       continue;
     }
-    console.log(`driving ${extraArgs.length} interaction stories`);
+    console.log(`driving ${extraArgs.length} stories`);
   }
 
   results.push([name, await run('node', [`tools/${name}.mjs`, ...extraArgs])]);

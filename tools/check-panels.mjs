@@ -10,6 +10,31 @@ import { chromium } from '@playwright/test';
 const BASE = process.env.STORYBOOK_URL ?? 'http://localhost:4400';
 
 const STORIES = process.argv.slice(2);
+
+/**
+ * Refuse to report success on an empty run.
+ *
+ * This tool takes story ids on argv, and `tools/with-storybook.mjs` passed
+ * none — so it looped zero times, printed nothing at all, set no exit code,
+ * and the runner's summary printed `ok`. It had been doing that for as long
+ * as it has been in the suite, alongside the same defect in
+ * check-interactions.
+ *
+ * Note what this tool does and does not do: it REPORTS which panel tabs and
+ * toolbar tools each story exposes. It asserts nothing about them, so it
+ * cannot fail on a missing addon — it can only show you one is gone. That
+ * is worth knowing before treating a green run here as coverage.
+ */
+if (!STORIES.length) {
+  console.error(
+    'check-panels: no story ids given, so nothing was checked.\n' +
+      'Pass one story id per category, e.g.\n' +
+      '  node tools/check-panels.mjs components-button--playground …\n' +
+      'tools/with-storybook.mjs supplies them automatically.',
+  );
+  process.exit(1);
+}
+
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1500, height: 900 } });
 

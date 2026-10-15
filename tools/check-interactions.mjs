@@ -12,8 +12,56 @@ const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1500, height: 900 } });
 const results = [];
 
+/**
+ * Wait for the story to actually be on screen before reading any verdict.
+ *
+ * Without this the guard navigated, clicked the Interactions tab and started
+ * polling while Storybook was still showing its `sb-loader` placeholder — so
+ * it could read the PREVIOUS story's verdict and report a failure that
+ * belonged to a different story. That is what made
+ * `form-controls--label-and-typing` and `menu--open-close` "fail" in a full
+ * run and pass in isolation.
+ *
+ * This is a wait on a real signal, not a sleep and not a retry: the story
+ * root must actually have content. A story that genuinely never renders
+ * still times out and still fails, which is the point.
+ *
+ * NOT `.sb-loader`. Measured: that element is present in the preview iframe
+ * even once a story has fully rendered — it is part of the preview
+ * scaffolding, not a transient spinner. Waiting for it to disappear fails
+ * every story forever, which is exactly what a first attempt here did.
+ */
+async function waitForRender(frame) {
+  await frame.waitForFunction(
+    () => {
+      const root =
+        document.querySelector('#storybook-root') ??
+        document.querySelector('#root');
+      return !!root && root.childElementCount > 0;
+    },
+    undefined,
+    { timeout: 30000 },
+  );
+}
+
 for (const id of ids) {
   await page.goto(`${BASE}/?path=/story/${id}`, { waitUntil: 'domcontentloaded' });
+
+  // The preview is an iframe; its render state is the thing that matters.
+  const preview = await page
+    .waitForSelector('#storybook-preview-iframe', { timeout: 30000 })
+    .then((h) => h.contentFrame())
+    .catch(() => null);
+  if (preview) {
+    try {
+      await waitForRender(preview);
+    } catch {
+      results.push([id, 'FAIL: story never rendered']);
+      console.log(id.padEnd(52), 'FAIL: story never rendered');
+      continue;
+    }
+  }
+
   try {
     await page.getByRole('tab', { name: /Interactions/ }).click({ timeout: 20000 });
   } catch {
