@@ -147,7 +147,10 @@ export const LabelAndTypingInteraction: Story = {
     // waitFor, not a bare assertion: focus arrives a tick after the click in
     // this environment. Still a wait on a real condition — if focus never
     // lands, this fails.
-    await waitFor(() => expect(input).toHaveFocus());
+    // 3s, deliberately modest. This assertion is the known failure, so a
+    // long timeout would only make every run slower and leave the browser
+    // busy for longer while the story after it starts.
+    await waitFor(() => expect(input).toHaveFocus(), { timeout: 3000 });
 
     await userEvent.type(input, 'test@baps.dev');
     expect(input).toHaveValue('test@baps.dev');

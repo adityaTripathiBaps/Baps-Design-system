@@ -430,3 +430,34 @@ form-controls and fails when it runs AFTER, in both orders, repeatedly. So
 a single genuine failure here shows up as two, and the second one looks
 like flakiness. When reading an interactions run, check what ran
 immediately before a surprising failure.
+
+## The Storybook build OOM is not closed — *2026-10-15*
+
+*Closed 2026-10-08* above lists "Storybook build OOM (minimizer
+parallelism)" as fixed. **It recurs.** Measured 2026-10-15 with 4.2 GB free
+of 19.8 GB:
+
+```
+DataCloneError: Data cannot be cloned, out of memory.
+Emitted 'error' event on Worker instance
+```
+
+It is a worker-thread failure, so `NODE_OPTIONS=--max-old-space-size=8192`
+does not reach it — that flag still matters for the Angular Jest run, but
+it will not save this build.
+
+It is also **not a code error**, and reads like one: the log ends mid-way
+through parsing component files with no TypeScript diagnostic. The same
+build succeeded on an immediate retry with no source change.
+
+Before any Storybook build:
+
+1. Kill leftover guard processes — Playwright Chrome
+   (`CommandLine -match 'ms-playwright|--headless'`) and any node still
+   running `check-*`, `with-storybook` or `http-server`. **Never kill the
+   developer's own Chrome**; match on the command line, not the image name.
+2. Keep `NODE_OPTIONS=--max-old-space-size=8192` set.
+3. If it fails this way anyway, retry once before looking for a cause.
+
+A browser check against a stale `dist/storybook/storybook-host` is worse
+than no check, so confirm the build actually exited 0 before serving it.
