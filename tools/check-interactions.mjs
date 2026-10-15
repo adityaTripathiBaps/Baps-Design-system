@@ -9,7 +9,6 @@ const BASE = process.env.STORYBOOK_URL ?? 'http://localhost:4400';
 
 const ids = process.argv.slice(2);
 const browser = await chromium.launch();
-const page = await browser.newPage({ viewport: { width: 1500, height: 900 } });
 const results = [];
 
 /**
@@ -45,6 +44,26 @@ async function waitForRender(frame) {
 }
 
 for (const id of ids) {
+  // A fresh page per story. This is the whole fix for the "flaky"
+  // interactions, and the cheap-looking alternatives are all worse:
+  //
+  //   reusing one page      the manager is a single-page app, so changing
+  //                         `?path=` swaps the story WITHOUT tearing the
+  //                         Interactions panel down — the poll below can
+  //                         read the previous story's verdict. Measured:
+  //                         chips-input reported FAIL in a full run while
+  //                         its panel, read directly, showed PASS.
+  //   reload() after goto   loads the story, runs its play function, then
+  //                         loads and runs it again; the second run races
+  //                         its own half-torn-down state.
+  //   about:blank then goto cold-starts the manager and the preview is not
+  //                         ready when the play function types into it.
+  //
+  // Both of those last two turned PASSING stories into failures, which is
+  // the opposite of what a guard should do. One page, one load, one play
+  // run, then the page is closed.
+  const page = await browser.newPage({ viewport: { width: 1500, height: 900 } });
+
   await page.goto(`${BASE}/?path=/story/${id}`, { waitUntil: 'domcontentloaded' });
 
   // The preview is an iframe; its render state is the thing that matters.
@@ -56,6 +75,7 @@ for (const id of ids) {
     try {
       await waitForRender(preview);
     } catch {
+      await page.close();
       results.push([id, 'FAIL: story never rendered']);
       console.log(id.padEnd(52), 'FAIL: story never rendered');
       continue;
@@ -76,12 +96,21 @@ for (const id of ids) {
     const text = await page.locator('#storybook-panel-root').innerText().catch(() => '');
     if (/\bPASS\b/.test(text)) { verdict = 'PASS'; break; }
     if (/\bFAIL\b/.test(text)) {
-      verdict = 'FAIL: ' + (text.split('\n').find((l) => /Error|expect|Unable|received/i.test(l)) ?? '').slice(0, 140);
+      // Skip the panel's own chrome. "Scroll to error" and "Scroll to end"
+      // are BUTTON LABELS that match /Error/i, so the old pick reported
+      // `FAIL: Scroll to error` for every failure and told you nothing.
+      const chrome = /^(Scroll to (error|end)|Interactions?\d*|Controls\d*|Actions|Accessibility|On this page|Visual tests|Design)$/i;
+      const line = text
+        .split('\n')
+        .map((l) => l.trim())
+        .find((l) => l && !chrome.test(l) && /Error|expect|Unable|received|toBe|toHave/i.test(l));
+      verdict = 'FAIL: ' + (line ?? 'see Interactions panel').slice(0, 140);
       break;
     }
     if (/Write a play function/.test(text)) { verdict = 'NO PLAY DETECTED'; }
     await page.waitForTimeout(600);
   }
+  await page.close();
   results.push([id, verdict]);
   console.log(id.padEnd(52), verdict);
 }
