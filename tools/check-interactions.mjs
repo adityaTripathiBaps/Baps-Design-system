@@ -149,8 +149,24 @@ for (const id of ids) {
     }
     await page.waitForTimeout(600);
   }
-  if (runtimeErrors.length) {
-    verdict = `FAIL: ${runtimeErrors[0].slice(0, 134)}`;
+  // The panel is authoritative for the play's own outcome. Console errors are
+  // here to add the one class it cannot see: a listener that throws without
+  // failing any assertion, which is how `ctx.onClick is not a function` sat in
+  // three stories the panel called PASS.
+  //
+  // Testing-library's retries are not that. findBy*/waitFor poll, and every
+  // miss logs — so a story that waits once and then succeeds still leaves
+  // errors behind. Letting any console error override turned two genuinely
+  // green stories red (chips-input keyboard, form-controls label-and-typing):
+  // the hollow pass this tool was fixed for, inverted into a hollow failure.
+  //
+  // So: only a NON-assertion error, and only when the panel says PASS. A panel
+  // FAIL already carries the more precise message.
+  const assertionNoise =
+    /TestingLibraryElementError|JestExtendError|Unable to find|toHave|toBe\b/;
+  const realErrors = runtimeErrors.filter((e) => !assertionNoise.test(e));
+  if (realErrors.length && verdict === 'PASS') {
+    verdict = `FAIL: ${realErrors[0].slice(0, 134)}`;
   }
   await context.close();
   await browser.close();
