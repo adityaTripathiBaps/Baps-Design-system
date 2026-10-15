@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
-import { expect, userEvent, within } from '@storybook/test';
+import { expect, userEvent, waitFor, within } from '@storybook/test';
 import { FormsModule } from '@angular/forms';
 import { BapsInputText } from './directives/input-text.directive';
 import { BapsTextarea } from './directives/textarea.directive';
@@ -127,10 +127,27 @@ export const LabelAndTypingInteraction: Story = {
   name: 'Interaction — the label focuses its input and typing lands',
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const input = canvas.getByLabelText(/Email/i);
+    const input = await canvas.findByLabelText(/Email/i);
 
-    await userEvent.tab();
-    expect(input).toHaveFocus();
+    // Click the label. The story is named for the label focusing its input,
+    // and this is what tests that.
+    //
+    // It replaces userEvent.tab(), which could never have passed: measured
+    // in the rendered story, the first five tabbables are buttons and
+    // anchors, so one Tab from the document start lands on body, not on
+    // this input. That assertion was testing tab order, not the label.
+    //
+    // The label is taken by its for attribute rather than by text, because
+    // the label and the input's accessible name both read "Email".
+    const label = canvasElement.querySelector<HTMLLabelElement>(
+      'label[for="pg"]',
+    )!;
+    await userEvent.click(label);
+
+    // waitFor, not a bare assertion: focus arrives a tick after the click in
+    // this environment. Still a wait on a real condition — if focus never
+    // lands, this fails.
+    await waitFor(() => expect(input).toHaveFocus());
 
     await userEvent.type(input, 'test@baps.dev');
     expect(input).toHaveValue('test@baps.dev');
