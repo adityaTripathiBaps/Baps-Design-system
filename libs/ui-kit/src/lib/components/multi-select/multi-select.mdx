@@ -1,4 +1,4 @@
-import { Meta, Controls } from '@storybook/blocks';
+import { Meta, Canvas, Controls } from '@storybook/blocks';
 import { BrandOnly, FrameworkTabs, PropsTable } from '@baps/docs-blocks';
 import * as MultiSelectStories from './multi-select.stories';
 import { multiSelectSnippets } from './multi-select.snippets';
@@ -52,6 +52,8 @@ export class RegionFilter {
 
 ### Default
 
+<Canvas of={MultiSelectStories.Default} sourceState="none" />
+
 <FrameworkTabs
   of={MultiSelectStories.Default}
   snippets={multiSelectSnippets.Default}
@@ -61,12 +63,16 @@ export class RegionFilter {
 
 ### Chips
 
+<Canvas of={MultiSelectStories.Chips} sourceState="none" />
+
 <FrameworkTabs
   of={MultiSelectStories.Chips}
   snippets={multiSelectSnippets.Chips}
 />
 
 ### Filter And Select All
+
+<Canvas of={MultiSelectStories.FilterAndSelectAll} sourceState="none" />
 
 <FrameworkTabs
   of={MultiSelectStories.FilterAndSelectAll}
@@ -75,12 +81,16 @@ export class RegionFilter {
 
 ### Grouped
 
+<Canvas of={MultiSelectStories.Grouped} sourceState="none" />
+
 <FrameworkTabs
   of={MultiSelectStories.Grouped}
   snippets={multiSelectSnippets.Grouped}
 />
 
 ### Sizes
+
+<Canvas of={MultiSelectStories.Sizes} sourceState="none" />
 
 <FrameworkTabs
   of={MultiSelectStories.Sizes}
@@ -91,6 +101,8 @@ export class RegionFilter {
 
 ### Brands
 
+<Canvas of={MultiSelectStories.Brands} sourceState="none" />
+
 <FrameworkTabs
   of={MultiSelectStories.Brands}
   snippets={multiSelectSnippets.Brands}
@@ -99,6 +111,8 @@ export class RegionFilter {
 </BrandOnly>
 
 ### Disabled
+
+<Canvas of={MultiSelectStories.Disabled} sourceState="none" />
 
 <FrameworkTabs
   of={MultiSelectStories.Disabled}

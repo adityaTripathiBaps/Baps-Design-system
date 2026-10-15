@@ -1,4 +1,4 @@
-import { Meta, Controls } from '@storybook/blocks';
+import { Meta, Canvas, Controls } from '@storybook/blocks';
 import { FrameworkTabs, PropsTable } from '@baps/docs-blocks';
 import * as SliderStories from './slider.stories';
 import { sliderSnippets } from './slider.snippets';
@@ -33,15 +33,21 @@ A range slider input. `baps-slider` (`BapsSlider`) wraps PrimeNG's `p-slider`, i
 
 ### Default
 
+<Canvas of={SliderStories.Default} sourceState="none" />
+
 <FrameworkTabs of={SliderStories.Default} snippets={sliderSnippets.Default} />
 
 <Controls of={SliderStories.Default} />
 
 ### Range
 
+<Canvas of={SliderStories.Range} sourceState="none" />
+
 <FrameworkTabs of={SliderStories.Range} snippets={sliderSnippets.Range} />
 
 ### Value Tooltip
+
+<Canvas of={SliderStories.ValueTooltip} sourceState="none" />
 
 <FrameworkTabs
   of={SliderStories.ValueTooltip}
@@ -49,6 +55,8 @@ A range slider input. `baps-slider` (`BapsSlider`) wraps PrimeNG's `p-slider`, i
 />
 
 ### Disabled
+
+<Canvas of={SliderStories.Disabled} sourceState="none" />
 
 <FrameworkTabs of={SliderStories.Disabled} snippets={sliderSnippets.Disabled} />
 

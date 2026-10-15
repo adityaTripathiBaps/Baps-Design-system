@@ -1,4 +1,4 @@
-import { Meta, Controls } from '@storybook/blocks';
+import { Meta, Canvas, Controls } from '@storybook/blocks';
 import { BrandOnly, FrameworkTabs, PropsTable } from '@baps/docs-blocks';
 import * as InputNumberStories from './input-number.stories';
 import { inputNumberSnippets } from './input-number.snippets';
@@ -15,6 +15,8 @@ Spinner buttons are enabled by default because every measured Sampark use has th
 
 ### Default
 
+<Canvas of={InputNumberStories.Default} sourceState="none" />
+
 <FrameworkTabs
   of={InputNumberStories.Default}
   snippets={inputNumberSnippets.Default}
@@ -24,12 +26,16 @@ Spinner buttons are enabled by default because every measured Sampark use has th
 
 ### Constrained
 
+<Canvas of={InputNumberStories.Constrained} sourceState="none" />
+
 <FrameworkTabs
   of={InputNumberStories.Constrained}
   snippets={inputNumberSnippets.Constrained}
 />
 
 ### Disabled
+
+<Canvas of={InputNumberStories.Disabled} sourceState="none" />
 
 <FrameworkTabs
   of={InputNumberStories.Disabled}
@@ -39,6 +45,8 @@ Spinner buttons are enabled by default because every measured Sampark use has th
 <BrandOnly brand="comparison">
 
 ### Brands
+
+<Canvas of={InputNumberStories.Brands} sourceState="none" />
 
 <FrameworkTabs
   of={InputNumberStories.Brands}
