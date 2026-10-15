@@ -1,4 +1,4 @@
-import { Meta, Controls } from '@storybook/blocks';
+import { Meta, Canvas, Controls } from '@storybook/blocks';
 import { BrandOnly, FrameworkTabs, PropsTable } from '@baps/docs-blocks';
 import * as TreeSelectStories from './tree-select.stories';
 import { treeSelectSnippets } from './tree-select.snippets';
@@ -55,6 +55,8 @@ export class LocationPicker {
 
 ### Default
 
+<Canvas of={TreeSelectStories.Default} sourceState="none" />
+
 <FrameworkTabs
   of={TreeSelectStories.Default}
   snippets={treeSelectSnippets.Default}
@@ -63,6 +65,8 @@ export class LocationPicker {
 
 ### Checkbox
 
+<Canvas of={TreeSelectStories.Checkbox} sourceState="none" />
+
 <FrameworkTabs
   of={TreeSelectStories.Checkbox}
   snippets={treeSelectSnippets.Checkbox}
@@ -70,12 +74,16 @@ export class LocationPicker {
 
 ### Filter
 
+<Canvas of={TreeSelectStories.Filter} sourceState="none" />
+
 <FrameworkTabs
   of={TreeSelectStories.Filter}
   snippets={treeSelectSnippets.Filter}
 />
 
 ### Sizes
+
+<Canvas of={TreeSelectStories.Sizes} sourceState="none" />
 
 <FrameworkTabs
   of={TreeSelectStories.Sizes}
@@ -86,6 +94,8 @@ export class LocationPicker {
 
 ### Brands
 
+<Canvas of={TreeSelectStories.Brands} sourceState="none" />
+
 <FrameworkTabs
   of={TreeSelectStories.Brands}
   snippets={treeSelectSnippets.Brands}
@@ -94,6 +104,8 @@ export class LocationPicker {
 </BrandOnly>
 
 ### Disabled
+
+<Canvas of={TreeSelectStories.Disabled} sourceState="none" />
 
 <FrameworkTabs
   of={TreeSelectStories.Disabled}

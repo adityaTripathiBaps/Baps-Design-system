@@ -2,8 +2,8 @@
  * Run the browser-backed guards against a Storybook this script owns.
  *
  * Eleven of the tools under `tools/` drive a real page: a11y-audit,
- * check-standalone, check-brand-scope, check-controls, check-interactions,
- * check-panels, check-dark-contrast and the four drift guards. Every one of
+ * check-standalone, check-brand-scope, check-interactions, check-panels,
+ * check-dark-contrast and the five drift guards. Every one of
  * them assumed somebody had already run `nx run storybook-host:storybook` in
  * another terminal, so in CI they did not fail — they exited 1 on a connection
  * error, which reads exactly like a real finding. That is the problem this
@@ -18,6 +18,8 @@
  * port it is reused and left alone afterwards — the common local case, where
  * the developer has their own server up and does not want this killing it.
  *
+ * The suite also runs check-docs-previews, a static authoring guard that makes
+ * sure component docs which own stories embed at least one live preview.
  * Node only, no new dependencies.
  */
 import { spawn } from 'node:child_process';
@@ -36,6 +38,7 @@ const READY_TIMEOUT_MS = Number(process.env.STORYBOOK_TIMEOUT_MS ?? 240_000);
  * meaningful "all" mode, so it stays a tool you reach for by hand.
  */
 const GUARDS = [
+  'check-docs-previews',
   'a11y-audit',
   'check-standalone',
   'check-brand-scope',
@@ -106,7 +109,10 @@ if (await isUp()) {
   server = spawn(
     'pnpm',
     ['exec', 'nx', 'run', 'storybook-host:storybook', `--port=${PORT}`, '--ci'],
-    { stdio: ['ignore', 'ignore', 'inherit'], shell: process.platform === 'win32' },
+    {
+      stdio: ['ignore', 'ignore', 'inherit'],
+      shell: process.platform === 'win32',
+    },
   );
   try {
     await waitUntilUp(server);

@@ -1,4 +1,4 @@
-import { Meta } from '@storybook/blocks';
+import { Meta, Canvas } from '@storybook/blocks';
 import {
   ResourceTabs,
   CodeBlock,
@@ -50,30 +50,42 @@ selected: unknown = null;
 
 ## Examples
 
+<Canvas of={UsersDropdownStories.Playground} sourceState="none" />
+
 <FrameworkTabs
   of={UsersDropdownStories.Playground}
   snippets={usersDropdownSnippets.Playground}
 />
+
+<Canvas of={UsersDropdownStories.OpenPanel} sourceState="none" />
 
 <FrameworkTabs
   of={UsersDropdownStories.OpenPanel}
   snippets={usersDropdownSnippets.OpenPanel}
 />
 
+<Canvas of={UsersDropdownStories.Groups} sourceState="none" />
+
 <FrameworkTabs
   of={UsersDropdownStories.Groups}
   snippets={usersDropdownSnippets.Groups}
 />
+
+<Canvas of={UsersDropdownStories.MultiSelect} sourceState="none" />
 
 <FrameworkTabs
   of={UsersDropdownStories.MultiSelect}
   snippets={usersDropdownSnippets.MultiSelect}
 />
 
+<Canvas of={UsersDropdownStories.RadioSelect} sourceState="none" />
+
 <FrameworkTabs
   of={UsersDropdownStories.RadioSelect}
   snippets={usersDropdownSnippets.RadioSelect}
 />
+
+<Canvas of={UsersDropdownStories.States} sourceState="none" />
 
 <FrameworkTabs
   of={UsersDropdownStories.States}

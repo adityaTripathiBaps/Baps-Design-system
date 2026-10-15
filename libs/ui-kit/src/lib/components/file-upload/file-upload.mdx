@@ -1,4 +1,4 @@
-import { Meta, Controls } from '@storybook/blocks';
+import { Meta, Canvas, Controls } from '@storybook/blocks';
 import { FrameworkTabs, PropsTable } from '@baps/docs-blocks';
 import * as FileUploadStories from './file-upload.stories';
 import { fileUploadSnippets } from './file-upload.snippets';
@@ -28,6 +28,8 @@ A click-or-drag dropzone (Sampark Portal "Web File Upload", Figma node 13197:878
 
 ### Playground
 
+<Canvas of={FileUploadStories.Playground} sourceState="none" />
+
 <FrameworkTabs
   of={FileUploadStories.Playground}
   snippets={fileUploadSnippets.Playground}
@@ -35,6 +37,8 @@ A click-or-drag dropzone (Sampark Portal "Web File Upload", Figma node 13197:878
 <Controls of={FileUploadStories.Playground} />
 
 ### States
+
+<Canvas of={FileUploadStories.States} sourceState="none" />
 
 <FrameworkTabs
   of={FileUploadStories.States}

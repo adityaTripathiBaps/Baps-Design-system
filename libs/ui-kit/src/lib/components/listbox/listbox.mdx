@@ -1,4 +1,4 @@
-import { Meta, Controls } from '@storybook/blocks';
+import { Meta, Canvas, Controls } from '@storybook/blocks';
 import { FrameworkTabs } from '@baps/docs-blocks';
 
 import * as ListboxStories from './listbox.stories';
@@ -27,6 +27,8 @@ Rows are rendered by [`baps-menu-item`](?path=/docs/components-menuitem--docs); 
 
 ### Playground
 
+<Canvas of={ListboxStories.ListboxPlayground} sourceState="none" />
+
 <FrameworkTabs
   of={ListboxStories.ListboxPlayground}
   snippets={listboxSnippets.ListboxPlayground}
@@ -35,12 +37,16 @@ Rows are rendered by [`baps-menu-item`](?path=/docs/components-menuitem--docs); 
 
 ### Multi Select With Checkboxes
 
+<Canvas of={ListboxStories.MultiSelectWithCheckboxes} sourceState="none" />
+
 <FrameworkTabs
   of={ListboxStories.MultiSelectWithCheckboxes}
   snippets={listboxSnippets.MultiSelectWithCheckboxes}
 />
 
 ### With Filtering
+
+<Canvas of={ListboxStories.WithFiltering} sourceState="none" />
 
 <FrameworkTabs
   of={ListboxStories.WithFiltering}
@@ -49,9 +55,13 @@ Rows are rendered by [`baps-menu-item`](?path=/docs/components-menuitem--docs); 
 
 ### Grouped
 
+<Canvas of={ListboxStories.Grouped} sourceState="none" />
+
 <FrameworkTabs of={ListboxStories.Grouped} snippets={listboxSnippets.Grouped} />
 
 ### Rich Template Panel List
+
+<Canvas of={ListboxStories.RichTemplatePanelList} sourceState="none" />
 
 <FrameworkTabs
   of={ListboxStories.RichTemplatePanelList}
@@ -60,12 +70,16 @@ Rows are rendered by [`baps-menu-item`](?path=/docs/components-menuitem--docs); 
 
 ### Custom Templates Using P Template
 
+<Canvas of={ListboxStories.CustomTemplatesUsingPTemplate} sourceState="none" />
+
 <FrameworkTabs
   of={ListboxStories.CustomTemplatesUsingPTemplate}
   snippets={listboxSnippets.CustomTemplatesUsingPTemplate}
 />
 
 ### Disabled And Invalid
+
+<Canvas of={ListboxStories.DisabledAndInvalid} sourceState="none" />
 
 <FrameworkTabs
   of={ListboxStories.DisabledAndInvalid}
