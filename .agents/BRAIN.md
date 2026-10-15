@@ -357,6 +357,21 @@ The public Angular API remains the approved `placeholder`, `disabled`, `size`,
 contract to `value`/`onChange`; no blur-add, duplicate-policy, maximum-count,
 ARIA-label or style escape-hatch API was approved or added.
 
+**Recheck this on every PrimeNG upgrade.** The wrapper writes no key handling
+of its own — searching `chips-input.component.ts` for `Backspace` finds
+nothing, and that is correct rather than a gap. Empty-input Backspace,
+Enter-to-commit and separator splitting all come from AutoComplete's own
+value model, which still runs because its internal chip nodes are only
+*presentation-hidden* (`.p-autocomplete-chip-item { display: none }`) rather
+than removed from the DOM. A PrimeNG release that stops rendering those
+nodes, or that changes where the key handling lives, silently removes
+behaviour this wrapper never implemented.
+
+Two tests guard it and are the thing that will fail first — keep them:
+`chips-input.component.spec.ts` *"removes the final value with Backspace when
+the input is empty"* and `tests/chips-input.test.mjs` *"removes the last value
+with Backspace on empty input"*.
+
 ## Versioning and consumption decisions — *2026-10-15*
 
 `docs/VERSIONING-AND-UPGRADE.md` is the single compatibility matrix and release
