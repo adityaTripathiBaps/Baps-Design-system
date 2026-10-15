@@ -56,3 +56,4 @@ export * from './lib/tree-table/index.js';
 export * from './lib/users-dropdown/index.js';
 export * from './lib/menu/index.js';
 export * from './lib/confirm-dialog/index.js';
+export * from './lib/chips-input/index.js';

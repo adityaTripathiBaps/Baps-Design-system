@@ -3,7 +3,7 @@
 Only real, reusable, typed components exported by `@org/ui-kit-react` count as
 DONE. Documentation snippets do not count.
 
-**Tracked total: 58 components — DONE: 57 — PARTIAL: 1 — NOT STARTED: 0 — BLOCKED: 0.**
+**Tracked total: 59 components — DONE: 58 — PARTIAL: 1 — NOT STARTED: 0 — BLOCKED: 0.**
 
 ## DONE
 
@@ -17,7 +17,8 @@ DONE. Documentation snippets do not count.
   Chip, Users Dropdown, File Upload, Pagination.
 - Batch 5 (6): Progress Bar — see below for why it moved out of PARTIAL — plus
   Table, SortIcon, Table Column Config, Table Sort Config and Tree Table.
-- Gap-fill (feat/kit-gap-fill) (3): InputNumber, Menu, ConfirmDialog.
+- Gap-fill (feat/kit-gap-fill) (4): InputNumber, Menu, ConfirmDialog,
+  ChipsInput.
 
 ## PARTIAL
 
@@ -95,7 +96,7 @@ and succeeded here ("Preview built (1.62 min)").
 
 ## Current verification
 
-- **155/155 React tests pass**, across 53 per-component files.
+- **165/165 React tests pass**, across 58 per-component files.
 - React build and typecheck pass.
 - React lint now has a target: `nx run ui-kit-react:lint` is 0 errors and 7
   warnings — 6 `no-explicit-any` and 1 `no-non-null-assertion`, in drawer,
@@ -105,7 +106,7 @@ and succeeded here ("Preview built (1.62 min)").
 - Strict React consumer and Next.js client/server fixtures pass.
 - Shared MyBKY/Sampark and light/dark CSS is copied from canonical
   `@org/ui-kit`; no React-local design stylesheet exists.
-- Angular build/typecheck and **752/752 tests across 52 suites** pass; every
+- Angular build/typecheck and **765/765 tests across 54 suites** pass; every
   Angular component family now carries a spec.
 - Storybook host typecheck and static production build pass (8 GB Node heap;
   no memory failure).

@@ -331,3 +331,28 @@ carrying none). **React 138/138 across 52 per-component files** (was 53/53 in
 one file).
 
 Component-level truth stays in the STATUS files.
+
+## ChipsInput PrimeNG replacement — *2026-10-14*
+
+PrimeNG 21.1.3 has no `primeng/chips` package export. PrimeNG removed Chips in
+v18 and its migration guidance names AutoComplete with `multiple` enabled and
+`typeahead` disabled as the replacement. The installed v21 AutoComplete owns
+the required Enter, empty-input Backspace, separator and CVA behavior, while a
+wrapper-owned sibling list renders every committed string through `baps-chip`.
+The AutoComplete's duplicate internal chip nodes are presentation-hidden; its
+input and value model remain the behavior source of truth.
+
+PrimeNG does not label its multiple-value container, and its `listbox` / nested
+`option` / `combobox` roles fail axe's nested-interactive rule. Wrapping this
+control in a native `label` would also nest every chip remove action.
+Use a visible label with an `id` and put the standard `aria-labelledby`
+attribute on `baps-chips-input`. The wrapper forwards it to the combobox and
+turns PrimeNG's containing list into a named non-interactive `group` after view
+initialisation; this is internal a11y wiring, not an extra component input.
+Chips are tracked by value so PrimeNG's hide-on-remove animation state cannot
+be reused for the next visible chip.
+
+The public Angular API remains the approved `placeholder`, `disabled`, `size`,
+`brand`, `separator` and `string[]` CVA surface. React maps that same form value
+contract to `value`/`onChange`; no blur-add, duplicate-policy, maximum-count,
+ARIA-label or style escape-hatch API was approved or added.

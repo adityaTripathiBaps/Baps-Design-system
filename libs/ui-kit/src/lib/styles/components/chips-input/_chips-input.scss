@@ -1,0 +1,123 @@
+/*
+ * PrimeNG removed Chips and designates AutoComplete with multiple enabled and
+ * typeahead disabled as its replacement. The component supplies the keyboard
+ * behavior; this partial joins that structure to the existing form-field and
+ * chip skins without introducing another colour vocabulary.
+ */
+
+baps-chips-input {
+  display: inline-block;
+  max-width: 100%;
+}
+
+baps-chips-input .baps-chips-input__control {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100%;
+  min-height: var(--form-field-mybky-height);
+  margin: 0;
+  padding: var(--space-1) var(--space-3);
+  gap: var(--space-1);
+  border: calc(var(--space-0-5) / 2) solid var(--input-border-default);
+  border-radius: var(--form-field-mybky-border-radius);
+  background: var(--input-bg-default);
+  color: var(--input-text-filled);
+  list-style: none;
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease,
+    background 150ms ease;
+}
+
+baps-chips-input .baps-chips-input__control:hover:not(.p-disabled) {
+  border-color: var(--input-border-hover);
+}
+
+baps-chips-input .baps-chips-input__control:focus-within {
+  border-color: var(--input-border-hover);
+  outline: none;
+  box-shadow: 0 0 0 var(--space-0-5) var(--input-shadow-focused);
+}
+
+baps-chips-input .baps-chips-input__control.p-disabled {
+  background: var(--input-bg-disabled);
+  color: var(--input-text-disabled);
+  cursor: not-allowed;
+}
+
+baps-chips-input .p-autocomplete {
+  flex: 1 1 var(--space-16);
+  min-width: var(--space-16);
+  width: auto;
+}
+
+baps-chips-input .p-autocomplete-input-multiple {
+  display: flex;
+  width: 100%;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  list-style: none;
+}
+
+/* AutoComplete owns the value/keyboard model; baps-chip owns presentation. */
+baps-chips-input .p-autocomplete-chip-item {
+  display: none;
+}
+
+baps-chips-input .p-autocomplete-input-chip {
+  display: flex;
+  flex: 1 1 var(--space-16);
+  min-width: var(--space-16);
+}
+
+baps-chips-input .p-autocomplete-input-chip .p-autocomplete-input {
+  width: 100%;
+  min-width: 0;
+  padding: var(--space-1);
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+
+baps-chips-input .p-autocomplete-input-chip .p-autocomplete-input::placeholder {
+  color: var(--input-text-placeholder);
+  opacity: 1;
+}
+
+baps-chips-input.baps-chips-input-sm .baps-chips-input__control {
+  min-height: var(--space-8);
+  font-size: var(--font-size-xs);
+}
+
+baps-chips-input.baps-chips-input-lg .baps-chips-input__control {
+  min-height: calc(var(--space-10) + var(--space-1));
+  font-size: var(--font-size-md);
+}
+
+:is(baps-chips-input.baps-sampark, .baps-ds-sampark baps-chips-input)
+  .baps-chips-input__control {
+  min-height: var(--form-field-sampark-height-default);
+  border-radius: var(--form-field-sampark-border-radius);
+}
+
+:is(
+    baps-chips-input.baps-sampark,
+    .baps-ds-sampark baps-chips-input
+  ).baps-chips-input-sm
+  .baps-chips-input__control {
+  min-height: var(--form-field-sampark-height-sm);
+}
+
+:is(
+    baps-chips-input.baps-sampark,
+    .baps-ds-sampark baps-chips-input
+  ).baps-chips-input-lg
+  .baps-chips-input__control {
+  min-height: var(--form-field-sampark-height-lg);
+}

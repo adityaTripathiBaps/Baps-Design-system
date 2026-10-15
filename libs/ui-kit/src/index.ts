@@ -78,4 +78,5 @@ export * from './lib/components/menu/menu.component';
 export * from './lib/components/confirm-dialog/confirm-dialog.component';
 export { BapsConfirmationService } from './lib/components/confirm-dialog/confirmation.service';
 export type { BapsConfirmation } from './lib/components/confirm-dialog/confirmation.service';
+export * from './lib/components/chips-input/chips-input.component';
 export * from './lib/theme/ramp';

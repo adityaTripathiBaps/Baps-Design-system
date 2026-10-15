@@ -1,0 +1,82 @@
+import { Meta, Canvas, Controls } from '@storybook/blocks';
+import { BrandOnly, FrameworkTabs, PropsTable } from '@baps/docs-blocks';
+import * as ChipsInputStories from './chips-input.stories';
+import { chipsInputSnippets } from './chips-input.snippets';
+
+<Meta of={ChipsInputStories} />
+
+# Chips Input
+
+A free-text multi-value form control. Enter or the configured separator commits the current text, and each committed value is rendered by `baps-chip`.
+
+PrimeNG removed `p-chips`; the Angular wrapper uses its official replacement, AutoComplete with multiple mode enabled and typeahead disabled. React provides the same behavior without an Angular runtime.
+
+## Examples
+
+### Default
+
+<FrameworkTabs
+  of={ChipsInputStories.Default}
+  snippets={chipsInputSnippets.Default}
+/>
+
+<Controls of={ChipsInputStories.Default} />
+
+### Custom Separator
+
+<FrameworkTabs
+  of={ChipsInputStories.CustomSeparator}
+  snippets={chipsInputSnippets.CustomSeparator}
+/>
+
+### Disabled
+
+<FrameworkTabs
+  of={ChipsInputStories.Disabled}
+  snippets={chipsInputSnippets.Disabled}
+/>
+
+<BrandOnly brand="comparison">
+
+### Brands
+
+<FrameworkTabs
+  of={ChipsInputStories.Brands}
+  snippets={chipsInputSnippets.Brands}
+/>
+
+</BrandOnly>
+
+<BrandOnly brand="comparison">
+
+### Both brands in dark mode
+
+<FrameworkTabs of={ChipsInputStories.Dark} snippets={chipsInputSnippets.Dark} />
+
+</BrandOnly>
+
+## Interactions
+
+<Canvas of={ChipsInputStories.KeyboardInteraction} />
+
+## Forms
+
+Angular implements `ControlValueAccessor` over `string[]`, including touched and disabled state. React maps the same value contract to `value` and `onChange`.
+
+```html
+<baps-chips-input formControlName="skills" separator="," />
+```
+
+## API
+
+Inputs and their types, read from the component source.
+
+<PropsTable of={ChipsInputStories} />
+
+## Accessibility
+
+- In Angular, give the visible label an `id` and point the component host's standard `aria-labelledby` attribute to it. This names both the combobox and its multiple-value group without wrapping removable buttons in a `<label>`.
+- React derives the input and value-group names from `placeholder`, with "Chips input" as the fallback.
+- Enter adds the current value. Backspace on an empty field removes the last value.
+- Every visible chip has a keyboard-operable remove control with an accessible name.
+- Disabled state reaches the native input and removes all chip actions from the tab order.

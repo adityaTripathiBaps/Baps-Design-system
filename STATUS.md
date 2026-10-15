@@ -3,7 +3,7 @@
 Only real, reusable, typed components exported by `@org/ui-kit-react` count as
 implemented. Documentation snippets do not count.
 
-**Tracked total: 58 components — DONE: 57 — PARTIAL: 1 — NOT STARTED: 0 — BLOCKED: 0.**
+**Tracked total: 59 components — DONE: 58 — PARTIAL: 1 — NOT STARTED: 0 — BLOCKED: 0.**
 
 ## Batch 2
 
@@ -58,9 +58,9 @@ implemented. Documentation snippets do not count.
 
 ## Gap-fill (feat/kit-gap-fill)
 
-**3 components — DONE: 3.**
+**4 components — DONE: 4.**
 
-- DONE: InputNumber, Menu, ConfirmDialog.
+- DONE: InputNumber, Menu, ConfirmDialog, ChipsInput.
 
 ### Current verified checkpoint
 
@@ -76,9 +76,9 @@ implemented. Documentation snippets do not count.
   and covered by a test asserting page truncation and accessible controls. The
   code was right and the status was stale; corrected here.
 - React typecheck and ESLint pass: 0 errors, 7 pre-existing warnings.
-- 138/138 React tests pass, across 52 per-component files.
+- 165/165 React tests pass, across 58 per-component files.
 - Strict React consumer and Next.js client/server fixtures pass.
-- Angular build/typecheck and 733/733 Angular tests across 50 suites pass;
+- Angular build/typecheck and 765/765 Angular tests across 54 suites pass;
   every component family now carries a spec.
 - Storybook host typecheck and static production build pass (8 GB Node heap;
   no memory failure).
