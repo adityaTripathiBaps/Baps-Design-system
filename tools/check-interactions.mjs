@@ -8,7 +8,6 @@ import { chromium } from '@playwright/test';
 const BASE = process.env.STORYBOOK_URL ?? 'http://localhost:4400';
 
 const ids = process.argv.slice(2);
-const browser = await chromium.launch();
 const results = [];
 
 /**
@@ -67,6 +66,7 @@ for (const id of ids) {
   // which page is focused. With shared context a story could fail purely
   // because another story ran before it in the same batch: chips-input
   // passed alone and failed in a pair, repeatedly and in both orders.
+  const browser = await chromium.launch();
   const context = await browser.newContext({ viewport: { width: 1500, height: 900 } });
   const page = await context.newPage();
 
@@ -82,6 +82,7 @@ for (const id of ids) {
       await waitForRender(preview);
     } catch {
       await context.close();
+      await browser.close();
       results.push([id, 'FAIL: story never rendered']);
       console.log(id.padEnd(52), 'FAIL: story never rendered');
       continue;
@@ -117,11 +118,11 @@ for (const id of ids) {
     await page.waitForTimeout(600);
   }
   await context.close();
+  await browser.close();
   results.push([id, verdict]);
   console.log(id.padEnd(52), verdict);
 }
 
-await browser.close();
 const bad = results.filter(([, v]) => v !== 'PASS');
 console.log(`\n${results.length - bad.length}/${results.length} pass`);
 if (bad.length) process.exitCode = 1;
