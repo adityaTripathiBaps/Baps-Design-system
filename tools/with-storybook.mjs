@@ -118,10 +118,49 @@ if (await isUp()) {
   console.log('Storybook is up');
 }
 
+/**
+ * check-interactions takes story ids as arguments and drives each one in a
+ * real browser. Run with none it reports `0/0 pass` and exits 0 — so the
+ * summary below printed "ok" for a guard that had checked nothing, and had
+ * been doing so since this runner was written.
+ *
+ * The ids are read from the Storybook index the runner is already serving,
+ * so the set cannot drift from the build the other guards are checking.
+ * Finding none is itself a failure: this repo has interaction stories, and a
+ * build with zero of them means the build is wrong, not that there is
+ * nothing to test.
+ */
+async function interactionIds() {
+  const res = await fetch(`${BASE}/index.json`);
+  if (!res.ok) throw new Error(`cannot read ${BASE}/index.json`);
+  const index = await res.json();
+  const entries = index.entries ?? index.stories ?? {};
+  return Object.keys(entries).filter(
+    (id) =>
+      /^Interaction( |—|$)/.test(entries[id].name ?? '') ||
+      /interaction/i.test(id),
+  );
+}
+
 const results = [];
 for (const name of guards) {
   console.log(`\n── ${name} ───────────────────────────────────────────`);
-  results.push([name, await run('node', [`tools/${name}.mjs`])]);
+
+  let extraArgs = [];
+  if (name === 'check-interactions') {
+    extraArgs = await interactionIds();
+    if (!extraArgs.length) {
+      console.error(
+        'no interaction stories found in the Storybook index — refusing to\n' +
+          'report a pass on an empty run.',
+      );
+      results.push([name, 1]);
+      continue;
+    }
+    console.log(`driving ${extraArgs.length} interaction stories`);
+  }
+
+  results.push([name, await run('node', [`tools/${name}.mjs`, ...extraArgs])]);
 }
 
 // Only tear down a server this script started. A developer's own one is
