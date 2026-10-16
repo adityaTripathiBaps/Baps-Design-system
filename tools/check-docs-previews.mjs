@@ -50,31 +50,76 @@ const storiesOn = (source, block) =>
     ),
   ].map((match) => match[1]);
 
+/**
+ * Story exports a docs page is expected to show.
+ *
+ * Interaction stories are not documentation — they are behaviour tests, read
+ * in the Interactions panel, and embedding one would run its play function on
+ * the docs page. The visual suite excludes them for the same reason.
+ * Leading-underscore exports are anchors, not examples.
+ */
+const documentableStories = (source) =>
+  [...source.matchAll(/export const (\w+)\s*[:=]/g)]
+    .map((match) => match[1])
+    .filter((name) => !name.startsWith('_') && !/Interaction$/.test(name));
+
 const checked = [];
 const missing = [];
 const unpreviewed = [];
+const undocumented = [];
 let examples = 0;
+let stories = 0;
 
 for (const entry of readdirSync(COMPONENTS_DIR, { withFileTypes: true })) {
   if (!entry.isDirectory()) continue;
 
   const directory = join(COMPONENTS_DIR, entry.name);
   const files = readdirSync(directory);
-  if (!files.some((file) => STORY_FILE.test(file))) continue;
+  const storyFiles = files.filter((file) => STORY_FILE.test(file));
+  if (!storyFiles.length) continue;
 
-  for (const file of files.filter((name) => name.endsWith('.mdx'))) {
-    const path = join(directory, file);
+  const docs = files.filter((name) => name.endsWith('.mdx'));
+  if (!docs.length) {
+    missing.push(`${entry.name} (component has stories but no .mdx at all)`);
+    continue;
+  }
+
+  // Every live-preview block across the component's pages, so a story split
+  // onto a second .mdx still counts as previewed.
+  const previewed = new Set();
+  for (const file of docs) {
+    const source = withoutFencedCode(
+      readFileSync(join(directory, file), 'utf8'),
+    );
     const name = `${entry.name}/${file}`;
-    const source = withoutFencedCode(readFileSync(path, 'utf8'));
     checked.push(name);
 
     if (!LIVE_PREVIEW.test(source)) missing.push(name);
 
-    const previewed = new Set(storiesOn(source, 'Canvas'));
+    for (const block of ['Canvas', 'DemoCard', 'Story', 'Primary']) {
+      for (const story of storiesOn(source, block)) previewed.add(story);
+    }
+
     const tabbed = storiesOn(source, 'FrameworkTabs');
     examples += tabbed.length;
     for (const story of tabbed) {
-      if (!previewed.has(story)) unpreviewed.push(`${name} → ${story}`);
+      if (!storiesOn(source, 'Canvas').includes(story)) {
+        unpreviewed.push(`${name} → ${story}`);
+      }
+    }
+  }
+
+  // The widest assertion: a story a reader can reach must be shown, however
+  // its page chose to document it. FrameworkTabs pairing above does not cover
+  // a story documented with neither block.
+  for (const file of storyFiles) {
+    for (const story of documentableStories(
+      readFileSync(join(directory, file), 'utf8'),
+    )) {
+      stories += 1;
+      if (!previewed.has(story)) {
+        undocumented.push(`${entry.name} → ${story}`);
+      }
     }
   }
 }
@@ -104,9 +149,24 @@ if (unpreviewed.length) {
   );
 }
 
-if (missing.length || unpreviewed.length) process.exit(1);
+if (undocumented.length) {
+  console.error(
+    `stories with no preview on their component's docs (${undocumented.length}/${stories}):`,
+  );
+  for (const story of undocumented) console.error(`  ${story}`);
+  console.error(
+    '\neither add a preview block for it, or — if it is a behaviour test\n' +
+      'rather than an example — give it the Interaction suffix, which is how\n' +
+      'this guard and the visual suite both recognise one.',
+  );
+}
+
+if (missing.length || unpreviewed.length || undocumented.length) {
+  process.exit(1);
+}
 
 console.log(
   `component docs previews OK — ${checked.length} pages, ` +
-    `${examples}/${examples} documented examples carry a live preview`,
+    `${examples}/${examples} documented examples carry a live preview, ` +
+    `${stories}/${stories} documentable stories previewed`,
 );
