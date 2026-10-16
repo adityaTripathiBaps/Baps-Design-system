@@ -119,6 +119,15 @@ canonical `@org/ui-kit` CSS; there is no React-local design stylesheet, and
 
 ## Things that mislead — *2026-10-08*
 
+**Never run a Storybook build while the guard suite is running.** Both read and
+write `dist/`, so the guard run becomes invalid — not merely slower. It does
+not announce itself as a collision either: a guard mid-sweep sees files being
+replaced underneath it and reports a component failure. Measured:
+`check-brand-scope` died on `components-internalnavbar--docs` with
+`TimeoutError: page.waitForSelector: Timeout 60000ms exceeded`, which reads
+exactly like a broken page. Finish one, then start the other; a suite that
+overlapped a build has to be re-run from the start.
+
 **`className` does not reach a custom element in React.** Measured: `class` came
 back `null` while an inline `style` landed fine. Set it with a ref callback —
 and if the class depends on state, put that state in the dependency list, or the
