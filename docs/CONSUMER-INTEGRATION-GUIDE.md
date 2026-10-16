@@ -102,6 +102,32 @@ import { BapsButton } from '@org/ui-kit';
 export class ExampleComponent {}
 ```
 
+### Raise the initial bundle budget
+
+A fresh Angular workspace ships a 1 MB `budgets.initial` error threshold, and
+the kit plus PrimeNG exceeds it. The consumption proof hit this: `ng build
+--configuration production` failed on the budget alone, with nothing wrong in
+the application code. Raise it in `angular.json` / `project.json`:
+
+```json
+{
+  "type": "initial",
+  "maximumWarning": "4mb",
+  "maximumError": "6mb"
+}
+```
+
+Measured on that proof — a throwaway Angular 21 app importing **five**
+components — the production build emitted a **3.11 MB** main bundle
+(480.82 kB transferred) and **385.56 kB** of CSS.
+
+Treat those numbers as a ceiling to plan around, not a target to accept. Five
+components should not cost 3.11 MB, so the `@org/ui-kit` barrel is very likely
+not tree-shaking and is pulling in more of PrimeNG than the app uses. That is
+an open follow-up on our side — whether the barrel needs `sideEffects` work or
+per-component entry points. Until it is settled, budget for the figures above
+rather than assuming the cost scales with the number of components you import.
+
 ## React setup
 
 Import the component package and global CSS in the application entry point:
