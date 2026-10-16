@@ -285,9 +285,23 @@ const PreviewFrame = ({
    `/visual-baselines` static dir in main.ts. Baselines are captured in MyBKY
    light, so they are shown only there; another brand or dark mode gets a
    neutral plate, since a MyBKY picture on a Sampark page would misstate the
-   component. The platform suffix follows whichever OS last wrote the
-   baselines, so both are tried. */
+   component.
+
+   The platform suffix follows whichever OS last wrote the baselines, so both
+   spellings are considered — but against the list main.ts read off disk, not
+   by asking the server. Rendering the win32 filename and retrying linux
+   onError meant every story with NO baseline logged two 404s per Overview
+   render before falling back to the plate. The plate was always the right
+   answer for those; only the asking was wrong. */
 const POSTER_SUFFIXES = ['-chromium-win32.png', '-chromium-linux.png'];
+const BASELINES = new Set(
+  (process.env['STORYBOOK_VISUAL_BASELINES'] ?? '').split(',').filter(Boolean),
+);
+const posterFile = (storyId: string): string | undefined =>
+  POSTER_SUFFIXES.map((suffix) => `${storyId}${suffix}`).find((file) =>
+    BASELINES.has(file),
+  );
+
 const Poster = ({
   storyId,
   name,
@@ -297,8 +311,8 @@ const Poster = ({
   name: string;
   show: boolean;
 }) => {
-  const [attempt, setAttempt] = useState(0);
-  if (!show || attempt >= POSTER_SUFFIXES.length) {
+  const file = posterFile(storyId);
+  if (!show || !file) {
     return (
       <span className="baps-docs-frame__plate" aria-hidden="true">
         {name}
@@ -308,10 +322,9 @@ const Poster = ({
   return (
     <img
       className="baps-docs-frame__poster"
-      src={`visual-baselines/${storyId}${POSTER_SUFFIXES[attempt]}`}
+      src={`visual-baselines/${file}`}
       alt=""
       loading="lazy"
-      onError={() => setAttempt((a) => a + 1)}
     />
   );
 };

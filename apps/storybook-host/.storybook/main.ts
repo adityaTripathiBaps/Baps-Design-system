@@ -1,5 +1,23 @@
 import type { StorybookConfig } from '@storybook/angular';
+import { readdirSync } from 'node:fs';
+import { join } from 'node:path';
 import remarkGfm from 'remark-gfm';
+
+/**
+ * Desktop Playwright baselines on disk, by filename.
+ *
+ * Missing or unreadable is not an error: a checkout that has never run the
+ * visual suite simply gets a name plate on every Overview card, which is the
+ * same thing it got before, minus the 404s.
+ */
+function baselineFilenames(): string[] {
+  try {
+    return readdirSync(join(__dirname, '../visual/stories.spec.ts-snapshots'))
+      .filter((f) => f.endsWith('.png') && !f.includes('-mobile-'));
+  } catch {
+    return [];
+  }
+}
 
 
 const config: StorybookConfig = {
@@ -96,6 +114,21 @@ const config: StorybookConfig = {
       to: '/visual-baselines'
     }
   ],
+  // Which baselines actually exist, read once here rather than discovered by
+  // request in the browser.
+  //
+  // Poster (blocks/showcase.tsx) used to guess: it rendered an <img> for the
+  // win32 filename, and on error retried the linux one. Every story WITHOUT a
+  // baseline therefore logged two 404s on each Overview render before falling
+  // back to its name plate — avatar's docs-anchor, html-css and html-css-types
+  // did exactly that, and any story added since the suite last ran does too.
+  // The fallback was correct; the probing was the noise.
+  //
+  // Only desktop shots are listed: Poster never asks for the -mobile- ones.
+  env: (existing) => ({
+    ...existing,
+    STORYBOOK_VISUAL_BASELINES: baselineFilenames().join(','),
+  }),
   webpackFinal: async (webpackConfig) => {
     // Cap minimizer parallelism. The production build died with
     //   DataCloneError: Data cannot be cloned, out of memory
