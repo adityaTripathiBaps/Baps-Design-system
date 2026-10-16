@@ -185,6 +185,25 @@ export const ClickInteraction: StoryObj<BapsCheckbox> = {
 
     await userEvent.click(canvas.getByText('I accept the terms and conditions'));
     await expect(box).toBeChecked();
+
+    // The tick must be SEEN, not merely true.
+    //
+    // This is asserted here rather than in the spec because the rule that
+    // reveals it lives in global SCSS, which a jsdom unit test never loads —
+    // a spec assertion would pass against the broken stylesheet and prove
+    // nothing. A play function runs in a real browser with the real CSS.
+    //
+    // The bug it pins: the reveal used to match `.p-checkbox-icon-check`, a
+    // name PrimeNG 21 does not emit, so a checked box kept `display: none` at
+    // 0×0 and looked exactly like an unchecked one.
+    const icon = canvasElement.querySelector('.p-checkbox-icon');
+    if (!(icon instanceof Element)) {
+      throw new Error('a checked baps-checkbox should render .p-checkbox-icon');
+    }
+    await expect(icon).toBeVisible();
+    const { width, height } = icon.getBoundingClientRect();
+    await expect(width).toBeGreaterThan(0);
+    await expect(height).toBeGreaterThan(0);
   },
 };
 

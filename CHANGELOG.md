@@ -8,6 +8,17 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch, visual:** the checkbox tick icon was not rendered
+  (`0ad83ec`). The glyph is hidden by default and revealed when the box is
+  checked, but the reveal matched `.p-checkbox-icon-check` and
+  `.p-checkbox-indeterminate .p-checkbox-icon-minus` — names PrimeNG 21 does
+  not emit, as its element is `class="p-checkbox-icon p-icon"`. So the tick
+  stayed `display: none` at 0×0 in every state and a checked box looked
+  identical to an unchecked one, while the underlying state was correct the
+  whole time. The rule now keys on the icon's presence, which in v21 is
+  exactly the checked-or-indeterminate condition because an unchecked box
+  renders no icon element. Verified at 14×14 and 18×18 in MyBKY and Sampark,
+  light and dark.
 - **`@org/ui-kit` — patch, visual:** corrected the Angular toolbar's inherited
   text/border colour to use `--toolbar-sampark-title-color` instead of
   PrimeNG's fallback ink (`1e800d2`). This aligns the wrapper with its existing
