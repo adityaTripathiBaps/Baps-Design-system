@@ -143,6 +143,41 @@ baps-checkbox .p-checkbox-icon {
   transform: translate(-50%, -50%);
 }
 
+/* The rule above is right for Angular and wrong for React, which is how the
+   same stylesheet broke one while fixing the other.
+ *
+ * PrimeNG renders ONE glyph and only when there is one to show, so "show what
+ * is present" resolves to exactly one. React renders BOTH glyphs, always, and
+ * expects CSS to pick — so "show what is present" showed a tick and a minus
+ * stacked. Measured on React markup: both `display: flex` at 14px.
+ *
+ * These two rules pick for React and are inert for Angular, which emits
+ * neither suffix class — its glyph is plain `p-checkbox-icon p-icon`.
+ *
+ * The minus is hidden by default and revealed on an explicit indeterminate
+ * signal, because React carries that state as the class
+ * `p-checkbox-indeterminate` on `.p-checkbox` and never sets the input's
+ * `indeterminate` DOM property; the `:indeterminate` half covers a consumer
+ * that sets the property instead. */
+baps-checkbox
+  .p-checkbox-input:not(:checked)
+  + .p-checkbox-box
+  .p-checkbox-icon-check {
+  display: none;
+}
+
+baps-checkbox .p-checkbox-icon-minus {
+  display: none;
+}
+
+baps-checkbox .p-checkbox-indeterminate .p-checkbox-icon-minus,
+baps-checkbox
+  .p-checkbox-input:indeterminate
+  + .p-checkbox-box
+  .p-checkbox-icon-minus {
+  display: inline-flex;
+}
+
 /* Second half is the indeterminate box, by the same v21 condition as the glyph
    above: it carries an icon while the root is not checked. `.p-checkbox-
    indeterminate`, which this used to match, is a name v21 never emits — so an

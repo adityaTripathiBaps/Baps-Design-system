@@ -19,7 +19,9 @@
  * the developer has their own server up and does not want this killing it.
  *
  * The suite also runs check-docs-previews, a static authoring guard that makes
- * sure component docs which own stories embed at least one live preview.
+ * sure component docs which own stories embed at least one live preview, and
+ * check-react-checkbox, which drives the REACT package in its own browser —
+ * React has no Storybook, so nothing else here looks at it.
  * Node only, no new dependencies.
  */
 import { spawn } from 'node:child_process';
@@ -39,6 +41,7 @@ const READY_TIMEOUT_MS = Number(process.env.STORYBOOK_TIMEOUT_MS ?? 240_000);
  */
 const GUARDS = [
   'check-docs-previews',
+  'check-react-checkbox',
   'a11y-audit',
   'check-standalone',
   'check-brand-scope',
