@@ -120,26 +120,39 @@ baps-checkbox .p-checkbox-box {
     box-shadow var(--motion-duration-base) var(--motion-easing-standard);
 }
 
+/* The glyph is shown whenever PrimeNG renders one, because in v21 that IS the
+   condition: an unchecked box renders no icon element at all, so the only
+   boxes carrying one are checked or indeterminate. The component's own styles
+   already rely on this to size the indeterminate minus.
+
+   It used to be hidden here and revealed by
+   `.p-checkbox-input:checked + .p-checkbox-box .p-checkbox-icon-check` and
+   `.p-checkbox-indeterminate .p-checkbox-icon-minus`. v21 emits neither name —
+   the element is `class="p-checkbox-icon p-icon"` — so the reveal never
+   matched and the tick stayed `display: none` in EVERY state. Measured: a
+   checked box reported `p-checkbox-checked` on the root, `input.checked`
+   true, and an icon 0×0 at `display: none`. Every checkbox read as empty, so
+   clicking one looked like nothing happened. */
 baps-checkbox .p-checkbox-icon {
   position: absolute;
   inset-block-start: 50%;
   inset-inline-start: 50%;
-  display: none;
+  display: inline-flex;
   max-width: 100%;
   max-height: 100%;
   transform: translate(-50%, -50%);
 }
 
-baps-checkbox
-  .p-checkbox-input:checked
-  + .p-checkbox-box
-  .p-checkbox-icon-check,
-baps-checkbox .p-checkbox-indeterminate .p-checkbox-icon-minus {
-  display: inline-flex;
-}
-
+/* Second half is the indeterminate box, by the same v21 condition as the glyph
+   above: it carries an icon while the root is not checked. `.p-checkbox-
+   indeterminate`, which this used to match, is a name v21 never emits — so an
+   indeterminate box was left with the resting border instead of the accent
+   one. `:has()` is how the rest of this tree selects a parent by its content
+   (84 uses, e.g. chip and datepicker). */
 baps-checkbox .p-checkbox-input:checked + .p-checkbox-box,
-baps-checkbox .p-checkbox-indeterminate .p-checkbox-box {
+baps-checkbox
+  .p-checkbox:not(.p-checkbox-checked)
+  .p-checkbox-box:has(.p-checkbox-icon) {
   color: var(--sel-border-checked);
   background: var(--sel-background);
   border-color: var(--sel-border-checked);
