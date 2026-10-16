@@ -19,10 +19,31 @@ import { BapsButton } from '../button/button.component';
   imports: [BapsToast, BapsButton],
   template: `
     <div style="padding:1.5rem; display:flex; gap:0.5rem; flex-wrap:wrap">
-      <baps-button label="Success" severity="success" [brand]="brand" (click)="push('success', 'Saved', 'Template updated.')" />
-      <baps-button label="Info" [brand]="brand" (click)="push('info', 'Heads up', 'Sync runs at 6:30 PM.')" />
-      <baps-button label="Warning" severity="warn" [brand]="brand" (click)="push('warn', 'Check this', 'Two rows have no department.')" />
-      <baps-button label="Error" severity="danger" [brand]="brand" (click)="push('error', 'Could not save', 'The server rejected the change.')" />
+      <baps-button
+        label="Success"
+        severity="success"
+        [brand]="brand"
+        (click)="push('success', 'Saved', 'Template updated.')"
+      />
+      <baps-button
+        label="Info"
+        [brand]="brand"
+        (click)="push('info', 'Heads up', 'Sync runs at 6:30 PM.')"
+      />
+      <baps-button
+        label="Warning"
+        severity="warn"
+        [brand]="brand"
+        (click)="push('warn', 'Check this', 'Two rows have no department.')"
+      />
+      <baps-button
+        label="Error"
+        severity="danger"
+        [brand]="brand"
+        (click)="
+          push('error', 'Could not save', 'The server rejected the change.')
+        "
+      />
     </div>
     <baps-toast
       [position]="position"
@@ -33,7 +54,14 @@ import { BapsButton } from '../button/button.component';
   `,
 })
 class ToastDemo {
-  @Input() position: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'top-center' | 'bottom-center' | 'center' = 'top-right';
+  @Input() position:
+    | 'top-right'
+    | 'top-left'
+    | 'bottom-right'
+    | 'bottom-left'
+    | 'top-center'
+    | 'bottom-center'
+    | 'center' = 'top-right';
   @Input() life = 4000;
   @Input() preventOpenDuplicates = false;
   @Input() brand: 'mybky' | 'sampark' = 'mybky';
@@ -60,17 +88,35 @@ class ToastDemo {
  * Severity is carried by a 4px leading bar, not a tinted panel — a fully
  * coloured toast over live content is hard to read and harder to ignore.
  */
-const meta: Meta<ToastDemo> = {
+const meta: Meta<BapsToast> = {
   title: 'Components/Molecules/Toast',
   // Pinned so the categorised title above does not move the docs URL.
   id: 'components-toast',
   // Design-system availability — drives the sidebar filter in .storybook/manager.tsx.
   tags: ['ds:mybky', 'ds:sampark'],
-  component: ToastDemo,
+  // BapsToast, not ToastDemo. compodoc is run with `-p
+  // libs/ui-kit/tsconfig.lib.json`, which excludes *.stories.ts, so a
+  // story-local class can never reach documentation.json — naming one here
+  // logged "Component not found in compodoc JSON: 'ToastDemo'" on every docs
+  // render. Pointing at the exported component also makes the props table
+  // describe the public API a consumer writes against, rather than a private
+  // demo host.
+  component: BapsToast,
   decorators: [
     applicationConfig({ providers: [MessageService] }),
     moduleMetadata({ imports: [ToastDemo] }),
   ],
+  // Explicit, because `component` no longer names the thing that renders.
+  // Without this Storybook would auto-template <baps-toast>, and the buttons
+  // that push the messages — the entire point of these stories — would go.
+  render: (args) => ({
+    props: args,
+    template: `<baps-toast-demo
+      [position]="position"
+      [life]="life"
+      [preventOpenDuplicates]="preventOpenDuplicates"
+      [brand]="brand" />`,
+  }),
   argTypes: {
     position: {
       control: 'select',
@@ -85,14 +131,25 @@ const meta: Meta<ToastDemo> = {
       ],
     },
     brand: { control: 'inline-radio', options: ['mybky', 'sampark'] },
+    // BapsToast's remaining inputs are real, but the demo host above does not
+    // forward them. Left on, they would render controls that look live and
+    // change nothing — worse than not offering them.
+    key: { control: false, table: { disable: true } },
+    preventDuplicates: { control: false, table: { disable: true } },
+    autoZIndex: { control: false, table: { disable: true } },
+    baseZIndex: { control: false, table: { disable: true } },
+    styleClass: { control: false, table: { disable: true } },
   },
   args: {
-    position: 'top-right', life: 4000,
+    position: 'top-right',
+    life: 4000,
+    preventOpenDuplicates: false,
+    brand: 'mybky',
   },
 };
 
 export default meta;
-type Story = StoryObj<ToastDemo>;
+type Story = StoryObj<BapsToast>;
 
 /** Click a button to push a message of that severity. */
 export const Default: Story = {};

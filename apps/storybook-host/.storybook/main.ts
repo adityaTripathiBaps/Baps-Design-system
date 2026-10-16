@@ -1,6 +1,24 @@
 import type { StorybookConfig } from '@storybook/angular';
+import { readdirSync } from 'node:fs';
+import { join } from 'node:path';
 import remarkGfm from 'remark-gfm';
 
+/**
+ * Desktop Playwright baselines on disk, by filename.
+ *
+ * Missing or unreadable is not an error: a checkout that has never run the
+ * visual suite simply gets a name plate on every Overview card, which is the
+ * same thing it got before, minus the 404s.
+ */
+function baselineFilenames(): string[] {
+  try {
+    return readdirSync(
+      join(__dirname, '../visual/stories.spec.ts-snapshots'),
+    ).filter((f) => f.endsWith('.png') && !f.includes('-mobile-'));
+  } catch {
+    return [];
+  }
+}
 
 const config: StorybookConfig = {
   stories: [
@@ -75,7 +93,7 @@ const config: StorybookConfig = {
   staticDirs: [
     {
       from: '../../../libs/ui-kit/src/lib/styles/layout',
-      to: '/'
+      to: '/',
     },
     // Storybook requests /favicon.svg on every page load, and the only static
     // dir above is a shared STYLES folder — dropping an icon in there would be
@@ -84,7 +102,7 @@ const config: StorybookConfig = {
     // real file rather than kept only as that file's inline data URI.
     {
       from: '../static',
-      to: '/'
+      to: '/',
     },
     // The Playwright baselines double as the still image on each Components
     // Overview card (ComponentGallery in blocks/showcase.tsx), 21st.dev-style:
@@ -93,9 +111,24 @@ const config: StorybookConfig = {
     // in sync; a new or updated baseline shows up on the next start.
     {
       from: '../visual/stories.spec.ts-snapshots',
-      to: '/visual-baselines'
-    }
+      to: '/visual-baselines',
+    },
   ],
+  // Which baselines actually exist, read once here rather than discovered by
+  // request in the browser.
+  //
+  // Poster (blocks/showcase.tsx) used to guess: it rendered an <img> for the
+  // win32 filename, and on error retried the linux one. Every story WITHOUT a
+  // baseline therefore logged two 404s on each Overview render before falling
+  // back to its name plate — avatar's docs-anchor, html-css and html-css-types
+  // did exactly that, and any story added since the suite last ran does too.
+  // The fallback was correct; the probing was the noise.
+  //
+  // Only desktop shots are listed: Poster never asks for the -mobile- ones.
+  env: (existing) => ({
+    ...existing,
+    STORYBOOK_VISUAL_BASELINES: baselineFilenames().join(','),
+  }),
   webpackFinal: async (webpackConfig) => {
     // Cap minimizer parallelism. The production build died with
     //   DataCloneError: Data cannot be cloned, out of memory
@@ -108,7 +141,9 @@ const config: StorybookConfig = {
     // compile error still fails the build.
     for (const m of webpackConfig.optimization?.minimizer ?? []) {
       if (m && typeof m === 'object' && 'options' in m) {
-        (m as unknown as { options: Record<string, unknown> }).options['parallel'] = 1;
+        (m as unknown as { options: Record<string, unknown> }).options[
+          'parallel'
+        ] = 1;
       }
     }
     // Short import for the shared documentation blocks. Without it every MDX
@@ -116,7 +151,10 @@ const config: StorybookConfig = {
     webpackConfig.resolve ??= {};
     webpackConfig.resolve.alias = {
       ...webpackConfig.resolve.alias,
-      '@baps/docs-blocks': require('path').resolve(__dirname, 'blocks/index.tsx'),
+      '@baps/docs-blocks': require('path').resolve(
+        __dirname,
+        'blocks/index.tsx',
+      ),
     };
     webpackConfig.module ??= { rules: [] };
     webpackConfig.module.rules ??= [];
@@ -157,7 +195,11 @@ const config: StorybookConfig = {
         rule.test.test('file.scss')
       ) {
         const prev = rule.exclude;
-        rule.exclude = prev ? (Array.isArray(prev) ? [...prev, globalScss] : [prev, globalScss]) : globalScss;
+        rule.exclude = prev
+          ? Array.isArray(prev)
+            ? [...prev, globalScss]
+            : [prev, globalScss]
+          : globalScss;
       }
     }
     webpackConfig.module.rules.push({
@@ -166,20 +208,18 @@ const config: StorybookConfig = {
       // from the site root at runtime; the style-loader <style> tag resolves it
       // against the document base, so bundling the TTF here is both unnecessary
       // and broken (the path doesn't exist relative to styles.scss).
-      use: ['style-loader', { loader: 'css-loader', options: { url: false } }, 'sass-loader'],
+      use: [
+        'style-loader',
+        { loader: 'css-loader', options: { url: false } },
+        'sass-loader',
+      ],
     });
     return webpackConfig;
   },
 };
 
-
-
 export default config;
-
 
 // To customize your webpack configuration you can use the webpackFinal field.
 // Check https://storybook.js.org/docs/react/builders/webpack#extending-storybooks-webpack-config
 // and https://nx.dev/recipes/storybook/custom-builder-configs
-
-
-
