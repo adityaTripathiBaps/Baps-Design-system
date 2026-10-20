@@ -1,5 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { SharedModule } from 'primeng/api';
+import type { ScrollerOptions } from 'primeng/api';
 import { Table } from 'primeng/table';
 
 import { BapsTable } from './table.component';
@@ -31,6 +33,11 @@ import { BapsTable } from './table.component';
       [value]="value()"
       [brand]="brand()"
       [styleClass]="styleClass()"
+      [virtualScroll]="virtualScroll()"
+      [virtualScrollDelay]="virtualScrollDelay()"
+      [virtualScrollOptions]="virtualScrollOptions()"
+      [keepScrollPosition]="keepScrollPosition()"
+      [reorderableColumns]="reorderableColumns()"
       (sortEvent)="log('sort', $event)"
       (pageEvent)="log('page', $event)"
       (rowSelect)="log('rowSelect', $event)"
@@ -38,6 +45,7 @@ import { BapsTable } from './table.component';
       (lazyLoad)="log('lazyLoad', $event)"
       (selectionChange)="log('selectionChange', $event)"
       (firstChange)="log('firstChange', $event)"
+      (colReorder)="log('colReorder', $event)"
     />
   `,
 })
@@ -48,10 +56,69 @@ class Host {
   ]);
   readonly brand = signal<'mybky' | 'sampark'>('mybky');
   readonly styleClass = signal<string | undefined>(undefined);
+  readonly virtualScroll = signal(false);
+  readonly virtualScrollDelay = signal(0);
+  readonly virtualScrollOptions = signal<ScrollerOptions | undefined>(
+    undefined,
+  );
+  readonly keepScrollPosition = signal(false);
+  readonly reorderableColumns = signal(false);
   readonly seen: Array<[string, unknown]> = [];
 
   log(name: string, payload: unknown): void {
     this.seen.push([name, payload]);
+  }
+}
+
+@Component({
+  standalone: true,
+  imports: [BapsTable, SharedModule],
+  template: `
+    <baps-table
+      [value]="value"
+      rowGroupMode="subheader"
+      groupRowsBy="location"
+      [collapsibleGroups]="true"
+      [collapsedGroupKeys]="collapsedGroupKeys"
+      (collapsedGroupKeysChange)="onCollapsedGroupKeysChange($event)"
+    >
+      <ng-template
+        pTemplate="groupheader"
+        let-row
+        let-collapsed="collapsed"
+        let-toggleGroup="toggleGroup"
+      >
+        <tr class="group-header">
+          <td>
+            <button
+              type="button"
+              [attr.aria-expanded]="!collapsed"
+              (click)="toggleGroup()"
+            >
+              {{ row.location }}
+            </button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-row>
+        <tr class="member-row">
+          <td>{{ row.name }}</td>
+        </tr>
+      </ng-template>
+    </baps-table>
+  `,
+})
+class GroupHost {
+  readonly value = [
+    { location: 'North', name: 'North one' },
+    { location: 'South', name: 'South one' },
+  ];
+  collapsedGroupKeys: readonly string[] = ['South'];
+  readonly seen: string[][] = [];
+
+  onCollapsedGroupKeysChange(keys: string[]): void {
+    this.collapsedGroupKeys = keys;
+    this.seen.push(keys);
   }
 }
 
@@ -64,6 +131,8 @@ async function setup() {
 }
 
 describe('BapsTable', () => {
+  afterEach(() => jest.useRealTimers());
+
   describe('output forwarding', () => {
     // name on baps-table -> name on p-table. Every row is a separate hand
     // written binding in the template, so every row can rot on its own.
@@ -75,6 +144,7 @@ describe('BapsTable', () => {
       ['lazyLoad', 'onLazyLoad'],
       ['selectionChange', 'selectionChange'],
       ['firstChange', 'firstChange'],
+      ['colReorder', 'onColReorder'],
     ];
 
     it.each(CASES)('re-emits %s from the PrimeNG table', async (ours, theirs) => {
@@ -138,6 +208,99 @@ describe('BapsTable', () => {
         { id: 1, name: 'Alpha' },
         { id: 2, name: 'Beta' },
       ]);
+    });
+  });
+
+  describe('virtual scrolling', () => {
+    it('forwards delay, reorder and caller scroller options', async () => {
+      const fixture = await setup();
+      const options: ScrollerOptions = { autoSize: true, delay: 40 };
+      fixture.componentInstance.virtualScrollDelay.set(25);
+      fixture.componentInstance.virtualScrollOptions.set(options);
+      fixture.componentInstance.reorderableColumns.set(true);
+      await fixture.whenStable();
+
+      const prime = fixture.debugElement.query(
+        (de) => de.componentInstance instanceof Table,
+      ).componentInstance as Table;
+      expect(prime.virtualScrollDelay).toBe(25);
+      expect(prime.virtualScrollOptions).toBe(options);
+      expect(prime.reorderableColumns).toBe(true);
+    });
+
+    it('disables auto-size while preserving the caller options when scroll position is kept', async () => {
+      const fixture = await setup();
+      fixture.componentInstance.virtualScrollOptions.set({
+        delay: 40,
+        autoSize: true,
+      });
+      fixture.componentInstance.keepScrollPosition.set(true);
+      await fixture.whenStable();
+
+      const component = fixture.debugElement.children[0]
+        .componentInstance as BapsTable;
+      expect(component.resolvedVirtualScrollOptions).toEqual({
+        delay: 40,
+        autoSize: false,
+      });
+    });
+
+    it('resets a virtual viewport on value replacement by default', async () => {
+      const fixture = await setup();
+      const prime = fixture.debugElement.query(
+        (de) => de.componentInstance instanceof Table,
+      ).componentInstance as Table;
+      const reset = jest.spyOn(prime, 'resetScrollTop').mockImplementation();
+      jest.useFakeTimers();
+
+      fixture.componentInstance.virtualScroll.set(true);
+      fixture.componentInstance.value.set([{ id: 3, name: 'Gamma' }]);
+      fixture.detectChanges();
+      jest.runOnlyPendingTimers();
+
+      expect(reset).toHaveBeenCalledTimes(1);
+    });
+
+    it('does not reset a virtual viewport when keepScrollPosition is enabled', async () => {
+      const fixture = await setup();
+      const prime = fixture.debugElement.query(
+        (de) => de.componentInstance instanceof Table,
+      ).componentInstance as Table;
+      const reset = jest.spyOn(prime, 'resetScrollTop').mockImplementation();
+      jest.useFakeTimers();
+
+      fixture.componentInstance.virtualScroll.set(true);
+      fixture.componentInstance.keepScrollPosition.set(true);
+      fixture.componentInstance.value.set([{ id: 3, name: 'Gamma' }]);
+      fixture.detectChanges();
+      jest.runOnlyPendingTimers();
+
+      expect(reset).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('collapsible groups', () => {
+    it('keeps group headers, hides collapsed members and toggles from the template context', async () => {
+      const fixture = TestBed.createComponent(GroupHost);
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      const text = () =>
+        (fixture.nativeElement as HTMLElement).textContent ?? '';
+      expect(text()).toContain('North one');
+      expect(text()).not.toContain('South one');
+
+      const south = [
+        ...(fixture.nativeElement as HTMLElement).querySelectorAll('button'),
+      ].find((button) => button.textContent?.trim() === 'South');
+      expect(south?.getAttribute('aria-expanded')).toBe('false');
+      south?.click();
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(text()).toContain('South one');
+      expect(fixture.componentInstance.seen).toEqual([[]]);
+      expect(south?.getAttribute('aria-expanded')).toBe('true');
     });
   });
 });

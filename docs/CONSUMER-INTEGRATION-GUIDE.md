@@ -258,7 +258,10 @@ safe contract.
   with `overflow: auto`; no wrapper is needed.
 - **Scroller:** the one measured spm-ui use is a virtualized table viewport.
   `baps-table` already exposes `virtualScroll` and
-  `virtualScrollItemSize`, so there is no separate Scroller export.
+  `virtualScrollItemSize`, plus `virtualScrollDelay`,
+  `virtualScrollOptions`, and opt-in `keepScrollPosition`, so there is no
+  separate Scroller export. These are Angular/PrimeNG APIs; the React table
+  does not claim a virtual-scroller equivalent.
 - **Chart and Editor:** remain application-level because they would add
   chart.js/Quill dependencies and no kit API has been approved.
 

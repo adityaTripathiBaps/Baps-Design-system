@@ -3,15 +3,19 @@ import {
   ContentChildren,
   EventEmitter,
   Input,
+  OnChanges,
   Output,
   QueryList,
+  SimpleChanges,
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
 import type { TrackByFunction } from '@angular/core';
 import { Table, TableModule } from 'primeng/table';
+import type { TableColumnReorderEvent } from 'primeng/table';
 import { NgTemplateOutlet } from '@angular/common';
 import { PrimeTemplate, SharedModule, SortMeta } from 'primeng/api';
+import type { ScrollerOptions } from 'primeng/api';
 
 /**
  * baps-table — data table with sorting, filtering, pagination, and selection.
@@ -60,6 +64,8 @@ import { PrimeTemplate, SharedModule, SortMeta } from 'primeng/api';
       [scrollHeight]="scrollHeight"
       [virtualScroll]="virtualScroll"
       [virtualScrollItemSize]="virtualScrollItemSize!"
+      [virtualScrollDelay]="virtualScrollDelay"
+      [virtualScrollOptions]="resolvedVirtualScrollOptions"
       [selectionMode]="selectionMode"
       [(selection)]="selection"
       [loading]="loading"
@@ -71,6 +77,7 @@ import { PrimeTemplate, SharedModule, SortMeta } from 'primeng/api';
       [groupRowsBy]="groupRowsBy"
       [resizableColumns]="resizableColumns"
       [columnResizeMode]="columnResizeMode"
+      [reorderableColumns]="reorderableColumns"
       [showGridlines]="showGridlines"
       [stripedRows]="stripedRows"
       [size]="size"
@@ -84,6 +91,7 @@ import { PrimeTemplate, SharedModule, SortMeta } from 'primeng/api';
       (onRowSelect)="rowSelect.emit($event)"
       (onRowUnselect)="rowUnselect.emit($event)"
       (onLazyLoad)="lazyLoad.emit($event)"
+      (onColReorder)="colReorder.emit($event)"
       (selectionChange)="selectionChange.emit($event)"
       (firstChange)="firstChange.emit($event)"
     >
@@ -99,21 +107,27 @@ import { PrimeTemplate, SharedModule, SortMeta } from 'primeng/api';
           let-rowgroup="rowgroup"
           let-rowspan="rowspan"
         >
-          <ng-container
-            *ngTemplateOutlet="
-              t.template;
-              context: {
-                $implicit: rowData,
-                columns: columns,
-                rowIndex: rowIndex,
-                expanded: expanded,
-                editing: editing,
-                frozen: frozen,
-                rowgroup: rowgroup,
-                rowspan: rowspan
-              }
-            "
-          ></ng-container>
+          @if (
+            t.getType() !== 'body' || !isGroupCollapsed(groupKeyOf(rowData))
+          ) {
+            <ng-container
+              *ngTemplateOutlet="
+                t.template;
+                context: {
+                  $implicit: rowData,
+                  columns: columns,
+                  rowIndex: rowIndex,
+                  expanded: expanded,
+                  editing: editing,
+                  frozen: frozen,
+                  rowgroup: rowgroup,
+                  rowspan: rowspan,
+                  collapsed: isGroupCollapsed(groupKeyOf(rowData)),
+                  toggleGroup: toggleGroupFor(rowData),
+                }
+              "
+            ></ng-container>
+          }
         </ng-template>
       }
     </p-table>
@@ -128,7 +142,7 @@ import { PrimeTemplate, SharedModule, SortMeta } from 'primeng/api';
     '[class.baps-sampark]': "brand === 'sampark'",
   },
 })
-export class BapsTable {
+export class BapsTable implements OnChanges {
   /**
    * The PrimeNG table underneath.
    *
@@ -190,6 +204,12 @@ export class BapsTable {
   /** Needs [scrollable]="true", a [scrollHeight] and [virtualScrollItemSize]. */
   @Input() virtualScroll = false;
   @Input() virtualScrollItemSize?: number;
+  /** Scroller render debounce in milliseconds. Zero keeps client-side rows responsive. */
+  @Input() virtualScrollDelay = 0;
+  /** Additional PrimeNG scroller options for large, virtualised datasets. */
+  @Input() virtualScrollOptions?: ScrollerOptions;
+  /** Preserve the virtual viewport when the value changes instead of resetting to the first row. */
+  @Input() keepScrollPosition = false;
   @Input() selectionMode?: 'single' | 'multiple' | null;
   @Input() selection: any;
   @Input() loading = false;
@@ -202,8 +222,13 @@ export class BapsTable {
   /** 'subheader' needs pTemplate="groupheader"; 'rowspan' merges cells. */
   @Input() rowGroupMode?: 'subheader' | 'rowspan';
   @Input() groupRowsBy?: any;
+  /** Enables wrapper-owned collapse state for subheader groups. */
+  @Input() collapsibleGroups = false;
+  /** Group keys hidden initially or by controlled updates. */
+  @Input() collapsedGroupKeys: readonly string[] = [];
   @Input() resizableColumns = false;
   @Input() columnResizeMode: 'fit' | 'expand' = 'fit';
+  @Input() reorderableColumns = false;
   @Input() showGridlines = false;
   /** Off by default — the Sampark Figma spec has flat white rows. */
   @Input() stripedRows = false;
@@ -265,8 +290,66 @@ export class BapsTable {
   @Output() lazyLoad = new EventEmitter<any>();
   @Output() selectionChange = new EventEmitter<any>();
   @Output() firstChange = new EventEmitter<number>();
+  @Output() colReorder = new EventEmitter<TableColumnReorderEvent>();
+  @Output() collapsedGroupKeysChange = new EventEmitter<string[]>();
 
   @ContentChildren(PrimeTemplate) templates!: QueryList<PrimeTemplate>;
+
+  /** Stable options reference: PrimeNG setters must not receive a new object every change pass. */
+  resolvedVirtualScrollOptions?: ScrollerOptions;
+  private collapsedGroups = new Set<string>();
+  private readonly groupToggleCallbacks = new Map<string, () => void>();
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['virtualScrollOptions'] || changes['keepScrollPosition']) {
+      this.resolvedVirtualScrollOptions = this.keepScrollPosition
+        ? { ...this.virtualScrollOptions, autoSize: false }
+        : this.virtualScrollOptions;
+    }
+
+    if (changes['collapsedGroupKeys']) {
+      this.collapsedGroups = new Set(this.collapsedGroupKeys);
+    }
+
+    if (
+      changes['value'] &&
+      !changes['value'].firstChange &&
+      this.virtualScroll &&
+      !this.keepScrollPosition
+    ) {
+      setTimeout(() => this.table?.resetScrollTop());
+    }
+  }
+
+  /** The grouping value for a row, normalised to the public string-key contract. */
+  groupKeyOf(row: unknown): string {
+    if (!row || typeof this.groupRowsBy !== 'string') return '';
+    const value = (row as Record<string, unknown>)[this.groupRowsBy];
+    return String(value ?? '');
+  }
+
+  /** Whether the projected body template should be suppressed for this group. */
+  isGroupCollapsed(key: string): boolean {
+    return this.collapsibleGroups && this.collapsedGroups.has(key);
+  }
+
+  /** Toggle function supplied to the projected group-header template context. */
+  toggleGroupFor(row: unknown): () => void {
+    const key = this.groupKeyOf(row);
+    let callback = this.groupToggleCallbacks.get(key);
+    if (!callback) {
+      callback = () => this.toggleGroup(key);
+      this.groupToggleCallbacks.set(key, callback);
+    }
+    return callback;
+  }
+
+  private toggleGroup(key: string): void {
+    if (!this.collapsibleGroups) return;
+    if (this.collapsedGroups.has(key)) this.collapsedGroups.delete(key);
+    else this.collapsedGroups.add(key);
+    this.collapsedGroupKeysChange.emit([...this.collapsedGroups]);
+  }
 
   get computedStyleClass(): string {
     return this.styleClass || '';

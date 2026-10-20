@@ -115,6 +115,15 @@ Measure the stylesheet before writing the markup.
 canonical `@org/ui-kit` CSS; there is no React-local design stylesheet, and
 `verify-build.mjs` fails if Angular, PrimeNG or rxjs appears in the output.
 
+**Table collapsible groups are an Angular projected-template contract.**
+`BapsTable` keeps `collapsedGroupKeys` as controlled state and supplies
+`collapsed` plus a stable `toggleGroup` callback to projected `groupheader`
+templates. The consumer owns the native toggle button and its
+`aria-expanded`; the wrapper suppresses only matching `body` templates so the
+group header remains available to reopen. React has no approved grouping or
+PrimeNG virtual-scroller contract, so GAP-01 does not create look-alike React
+props with different semantics.
+
 ---
 
 ## Things that mislead — *2026-10-08*
@@ -264,6 +273,14 @@ Blocked on design, not on implementation. Never invent these.
   `ngAfterViewChecked`, which is the kind of workaround that rots. A spec
   pins the current behaviour so the day PrimeNG fixes it, the test fails and
   says to delete itself.
+
+  PrimeNG 21.2 also writes the non-existent `aria-level` attribute as a
+  percentage on every determinate progress bar. Measured in the Table grouped
+  story on 2026-10-20, axe reports both `aria-allowed-attr` and
+  `aria-valid-attr-value` for each rendered bar even though its valid
+  `role="progressbar"`, `aria-valuenow`, min, max and label are present. This is
+  an upstream host binding, not a Table/collapse defect; do not raise the axe
+  ceiling or hide it with a Table-specific workaround.
 
   `aria-progressbar-name` IS fixed: the wrapper gained an `ariaLabel` input
   (PrimeNG binds no name, and a template binding for an attribute PrimeNG

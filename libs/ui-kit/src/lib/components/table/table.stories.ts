@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
-import { expect, within } from '@storybook/test';
+import { action } from '@storybook/addon-actions';
+import { expect, userEvent, within } from '@storybook/test';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from 'primeng/api';
 import { TableModule } from 'primeng/table';
@@ -294,6 +295,8 @@ const meta: Meta<BapsTable> = {
   // inputs a control a reader can actually drive — a select with the real
   // option list instead of a free-text box that accepts nonsense.
   argTypes: {
+    colReorder: { control: false },
+    collapsedGroupKeysChange: { control: false },
     firstChange: { control: false },
     lazyLoad: { control: false },
     pageEvent: { control: false },
@@ -313,6 +316,9 @@ const meta: Meta<BapsTable> = {
     showInitialSortBadge: { control: 'boolean' },
     scrollable: { control: 'boolean' },
     virtualScroll: { control: 'boolean' },
+    keepScrollPosition: { control: 'boolean' },
+    collapsibleGroups: { control: 'boolean' },
+    reorderableColumns: { control: 'boolean' },
     loading: { control: 'boolean' },
     lazy: { control: 'boolean' },
     rowHover: { control: 'boolean' },
@@ -322,6 +328,7 @@ const meta: Meta<BapsTable> = {
     first: { control: 'number' },
     rows: { control: 'number' },
     totalRecords: { control: 'number' },
+    virtualScrollDelay: { control: 'number' },
     sortField: { control: 'text' },
     scrollHeight: { control: 'text' },
     styleClass: { control: 'text' },
@@ -366,6 +373,11 @@ const meta: Meta<BapsTable> = {
     stripedRows: false,
     totalRecords: 0,
     virtualScroll: false,
+    virtualScrollDelay: 0,
+    keepScrollPosition: false,
+    collapsibleGroups: false,
+    collapsedGroupKeys: [],
+    reorderableColumns: false,
     value: templates,
   },
 };
@@ -1066,20 +1078,25 @@ export const SortableStickyPaginated: StoryObj<BapsTable> = {
  * `p-treetable`: the tree spine is CSS `::before`/`::after` on
  * `.spm-name-col`, no extra column and no hierarchical data.
  *
- * Collapsing hides a group's rows with `@if` inside the body template
- * rather than rebuilding `value` — the group header still renders, and no
- * new array is allocated per change-detection pass.
+ * Collapsing is owned by `BapsTable`. The projected group header receives
+ * stable `collapsed` and `toggleGroup` context values; member rows are
+ * suppressed while the group header stays rendered.
  */
 export const GroupedProjects: StoryObj<BapsTable> = {
-  args: { value: projects, rowGroupMode: 'subheader', groupRowsBy: 'location' },
+  args: {
+    value: projects,
+    rowGroupMode: 'subheader',
+    groupRowsBy: 'location',
+    collapsibleGroups: true,
+    collapsedGroupKeys: ['Dayton North'],
+  },
   render: (args) => ({
     props: {
       ...args,
       statusSeverity: projectStatusSeverity,
       lastInGroup: lastInGroupNames(projects),
       counts: groupCounts(projects),
-      // Robbinsvile open (Figma "Default"), Dayton North closed ("Variant2").
-      expanded: { Robbinsvile: true, 'Dayton North': false } as Record<string, boolean>,
+      onCollapsedGroupKeysChange: action('collapsedGroupKeysChange'),
     },
     template: `
       <baps-table
@@ -1087,6 +1104,9 @@ export const GroupedProjects: StoryObj<BapsTable> = {
         [brand]="brand"
         [rowGroupMode]="rowGroupMode"
         [groupRowsBy]="groupRowsBy"
+        [collapsibleGroups]="collapsibleGroups"
+        [collapsedGroupKeys]="collapsedGroupKeys"
+        (collapsedGroupKeysChange)="collapsedGroupKeys = $event; onCollapsedGroupKeysChange($event)"
         [tableStyle]="{ 'min-width': '64.75rem' }"
       >
         <ng-template pTemplate="header">
@@ -1100,14 +1120,19 @@ export const GroupedProjects: StoryObj<BapsTable> = {
           </tr>
         </ng-template>
 
-        <ng-template pTemplate="groupheader" let-row>
-          <tr class="baps-table-group-row" [class.baps-table-group-collapsed]="!expanded[row.location]">
+        <ng-template
+          pTemplate="groupheader"
+          let-row
+          let-collapsed="collapsed"
+          let-toggleGroup="toggleGroup"
+        >
+          <tr class="baps-table-group-row" [class.baps-table-group-collapsed]="collapsed">
             <td colspan="6">
               <button
                 type="button"
                 class="baps-table-group-toggle"
-                [attr.aria-expanded]="expanded[row.location]"
-                (click)="expanded[row.location] = !expanded[row.location]"
+                [attr.aria-expanded]="!collapsed"
+                (click)="toggleGroup()"
               >
                 <i class="pi pi-chevron-right" aria-hidden="true"></i>
                 <span>{{ row.location }}</span>
@@ -1120,7 +1145,6 @@ export const GroupedProjects: StoryObj<BapsTable> = {
         </ng-template>
 
         <ng-template pTemplate="body" let-row>
-          @if (expanded[row.location]) {
           <tr class="baps-table-child-row">
             <td class="spm-name-col" [class.spm-last-in-group]="lastInGroup.includes(row.name)">
               <div style="display: flex; align-items: center; gap: 0.5rem">
@@ -1156,11 +1180,87 @@ export const GroupedProjects: StoryObj<BapsTable> = {
               </button>
             </td>
           </tr>
-          }
         </ng-template>
       </baps-table>
     `,
   }),
+};
+
+export const CollapsibleGroupsInteraction: StoryObj<BapsTable> = {
+  name: 'Interaction — a group expands and collapses',
+  args: {
+    value: projects,
+    rowGroupMode: 'subheader',
+    groupRowsBy: 'location',
+    collapsibleGroups: true,
+    collapsedGroupKeys: ['Dayton North'],
+  },
+  render: (args) => ({
+    props: {
+      ...args,
+      onCollapsedGroupKeysChange: action('collapsedGroupKeysChange'),
+    },
+    template: `
+      <baps-table
+        [value]="value"
+        [brand]="brand"
+        [rowGroupMode]="rowGroupMode"
+        [groupRowsBy]="groupRowsBy"
+        [collapsibleGroups]="collapsibleGroups"
+        [collapsedGroupKeys]="collapsedGroupKeys"
+        (collapsedGroupKeysChange)="collapsedGroupKeys = $event; onCollapsedGroupKeysChange($event)"
+      >
+        <ng-template pTemplate="header">
+          <tr><th>Project</th><th>Status</th></tr>
+        </ng-template>
+        <ng-template
+          pTemplate="groupheader"
+          let-row
+          let-collapsed="collapsed"
+          let-toggleGroup="toggleGroup"
+        >
+          <tr class="baps-table-group-row">
+            <td colspan="2">
+              <button
+                type="button"
+                class="baps-table-group-toggle"
+                [attr.aria-expanded]="!collapsed"
+                (click)="toggleGroup()"
+              >
+                <i class="pi pi-chevron-right" aria-hidden="true"></i>
+                {{ row.location }}
+              </button>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-row>
+          <tr><td>{{ row.name }}</td><td>{{ row.status }}</td></tr>
+        </ng-template>
+      </baps-table>
+    `,
+  }),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const dayton = canvas.getByRole('button', { name: /Dayton North/i });
+
+    expect(dayton).toHaveAttribute('aria-expanded', 'false');
+    expect(
+      canvas.queryByText('Bal Parent Sampark Plan - M2'),
+    ).not.toBeInTheDocument();
+
+    await userEvent.click(dayton);
+    expect(dayton).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      canvas.getByText('Bal Parent Sampark Plan - M2'),
+    ).toBeInTheDocument();
+
+    dayton.focus();
+    await userEvent.keyboard('{Enter}');
+    expect(dayton).toHaveAttribute('aria-expanded', 'false');
+    expect(
+      canvas.queryByText('Bal Parent Sampark Plan - M2'),
+    ).not.toBeInTheDocument();
+  },
 };
 
 /** One branch per depth, for the level-indent story below. */

@@ -66,6 +66,8 @@ Data table with sorting, filtering, pagination, selection, and row grouping. `ba
 
 <Canvas of={TableStories.GroupedProjects} />
 
+<FrameworkTabs of={TableStories.GroupedProjects} snippets={tableSnippets.GroupedProjects} />
+
 ### Tree Levels
 
 <Canvas of={TableStories.TreeLevels} />
@@ -83,6 +85,13 @@ Data table with sorting, filtering, pagination, selection, and row grouping. `ba
 <Canvas of={TableStories.Empty} />
 
 ## API
+
+### Virtual scroll, column reorder and collapsible groups
+
+- `virtualScrollDelay` and `virtualScrollOptions` pass the matching PrimeNG 21 scroller settings through. `keepScrollPosition` preserves the viewport across value updates and forces `autoSize: false`; its default is `false`, so existing tables continue to reset to the first row.
+- `reorderableColumns` enables PrimeNG column dragging and `colReorder` forwards the typed `TableColumnReorderEvent`.
+- For `rowGroupMode="subheader"`, opt in with `collapsibleGroups`. Bind `collapsedGroupKeys` and handle `collapsedGroupKeysChange` for controlled state. The projected `groupheader` template receives `collapsed` and `toggleGroup`; put `toggleGroup()` on a native button and bind `aria-expanded="!collapsed"` as the grouped story demonstrates.
+- These additions are Angular/PrimeNG-specific. The React table has neither a PrimeNG virtual scroller nor an approved row-grouping/reordering public contract, so it does not expose look-alike props with different behaviour.
 
 Inputs, outputs and their types, read from the component's own source.
 

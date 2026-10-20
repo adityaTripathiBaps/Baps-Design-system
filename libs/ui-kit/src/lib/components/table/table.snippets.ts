@@ -414,18 +414,31 @@ const TABLE_BODY = `
       </div>`;
 
 export const tableSnippets: Record<string, SnippetSet> = {
-  // Row grouping is the one thing on this page BapsTable does not do.
-  //
-  // The Angular side gets it from PrimeNG's rowgroup templates. The React
-  // component has no grouping API, and adding one is a real decision — who
-  // owns the collapsed state, whether a group header is a row or a section,
-  // what a group does to sorting. So this shows the honest alternative:
-  // group in the caller and render one table per group. It costs a heading
-  // per group and gains an API nobody has to design.
+  // Angular uses PrimeNG row-group templates plus BapsTable's controlled
+  // collapse state. React has no approved grouping contract, so its honest
+  // alternative remains caller grouping rather than a look-alike API with
+  // different behaviour.
   GroupedProjects: {
-    primeng: `<baps-table [value]="rows" rowGroupMode="subheader" groupRowsBy="centre">
-  <ng-template pTemplate="groupheader" let-row>
-    <tr class="baps-table-group-row"><td colspan="4">{{ row.centre }}</td></tr>
+    primeng: `<baps-table
+  [value]="rows"
+  rowGroupMode="subheader"
+  groupRowsBy="centre"
+  [collapsibleGroups]="true"
+  [(collapsedGroupKeys)]="collapsedCentres"
+>
+  <ng-template
+    pTemplate="groupheader"
+    let-row
+    let-collapsed="collapsed"
+    let-toggleGroup="toggleGroup"
+  >
+    <tr class="baps-table-group-row">
+      <td colspan="4">
+        <button type="button" [attr.aria-expanded]="!collapsed" (click)="toggleGroup()">
+          {{ row.centre }}
+        </button>
+      </td>
+    </tr>
   </ng-template>
 </baps-table>`,
     react: `${SETUP}
