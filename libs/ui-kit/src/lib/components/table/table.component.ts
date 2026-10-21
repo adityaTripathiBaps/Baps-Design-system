@@ -92,6 +92,12 @@ import type { ScrollerOptions } from 'primeng/api';
       (onRowUnselect)="rowUnselect.emit($event)"
       (onLazyLoad)="lazyLoad.emit($event)"
       (onColReorder)="colReorder.emit($event)"
+      (dragstart)="onProjectedColumnDragStart($event)"
+      (dragover)="onProjectedColumnDragOver($event)"
+      (dragenter)="onProjectedColumnDragEnter($event)"
+      (dragleave)="onProjectedColumnDragLeave($event)"
+      (drop)="onProjectedColumnDrop($event)"
+      (dragend)="clearProjectedColumnDrag()"
       (selectionChange)="selectionChange.emit($event)"
       (firstChange)="firstChange.emit($event)"
     >
@@ -299,6 +305,9 @@ export class BapsTable implements OnChanges {
   resolvedVirtualScrollOptions?: ScrollerOptions;
   private collapsedGroups = new Set<string>();
   private readonly groupToggleCallbacks = new Map<string, () => void>();
+  private draggedHeader?: HTMLTableCellElement;
+  private dropHeader?: HTMLTableCellElement;
+  private dropAfter = false;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['virtualScrollOptions'] || changes['keepScrollPosition']) {
@@ -349,6 +358,115 @@ export class BapsTable implements OnChanges {
     if (this.collapsedGroups.has(key)) this.collapsedGroups.delete(key);
     else this.collapsedGroups.add(key);
     this.collapsedGroupKeysChange.emit([...this.collapsedGroups]);
+  }
+
+  /**
+   * PrimeNG's pReorderableColumn directive injects its parent p-table and
+   * therefore cannot be used from a consumer-owned projected header template.
+   * A projected header opts into the same behaviour with the native
+   * `draggable="true"` attribute. The wrapper then emits its existing
+   * `colReorder` event and the consumer remains the owner of its column array.
+   */
+  onProjectedColumnDragStart(event: DragEvent): void {
+    if (!this.reorderableColumns) return;
+    const header = this.reorderableHeaderOf(event.target);
+    if (!header) return;
+
+    this.draggedHeader = header;
+    header.classList.add('baps-table-column-dragging');
+    event.dataTransfer?.setData('text/plain', 'baps-table-column');
+    if (event.dataTransfer) event.dataTransfer.effectAllowed = 'move';
+  }
+
+  onProjectedColumnDragOver(event: DragEvent): void {
+    if (!this.draggedHeader || !this.reorderableHeaderOf(event.target)) return;
+    event.preventDefault();
+    if (event.dataTransfer) event.dataTransfer.dropEffect = 'move';
+  }
+
+  onProjectedColumnDragEnter(event: DragEvent): void {
+    if (!this.draggedHeader) return;
+    const header = this.reorderableHeaderOf(event.target);
+    if (!header || header === this.draggedHeader) return;
+
+    this.clearDropCue();
+    this.dropHeader = header;
+    const bounds = header.getBoundingClientRect();
+    this.dropAfter = event.clientX > bounds.left + bounds.width / 2;
+    header.classList.add(
+      this.dropAfter
+        ? 'baps-table-column-drop-after'
+        : 'baps-table-column-drop-before',
+    );
+  }
+
+  onProjectedColumnDragLeave(event: DragEvent): void {
+    const header = this.reorderableHeaderOf(event.target);
+    if (!header || header !== this.dropHeader) return;
+    const next = event.relatedTarget;
+    if (next instanceof Node && header.contains(next)) return;
+    this.clearDropCue();
+  }
+
+  onProjectedColumnDrop(event: DragEvent): void {
+    if (!this.draggedHeader) return;
+    const target = this.reorderableHeaderOf(event.target) ?? this.dropHeader;
+    if (!target || target === this.draggedHeader) {
+      this.clearProjectedColumnDrag();
+      return;
+    }
+
+    event.preventDefault();
+    const headers = this.projectedReorderHeaders();
+    const dragIndex = headers.indexOf(this.draggedHeader);
+    const targetIndex = headers.indexOf(target);
+    if (dragIndex === -1 || targetIndex === -1) {
+      this.clearProjectedColumnDrag();
+      return;
+    }
+
+    let dropIndex = targetIndex + (this.dropAfter ? 1 : 0);
+    if (dragIndex < dropIndex) dropIndex -= 1;
+    if (dragIndex !== dropIndex) this.colReorder.emit({ dragIndex, dropIndex });
+    this.clearProjectedColumnDrag();
+  }
+
+  clearProjectedColumnDrag(): void {
+    this.draggedHeader?.classList.remove('baps-table-column-dragging');
+    this.draggedHeader = undefined;
+    this.clearDropCue();
+  }
+
+  private reorderableHeaderOf(
+    target: EventTarget | null,
+  ): HTMLTableCellElement | undefined {
+    if (!(target instanceof Element)) return undefined;
+    const header = target.closest<HTMLTableCellElement>('th[draggable="true"]');
+    const head = this.tableHead();
+    return header && head?.contains(header) ? header : undefined;
+  }
+
+  private projectedReorderHeaders(): HTMLTableCellElement[] {
+    return [
+      ...(this.tableHead()?.querySelectorAll<HTMLTableCellElement>(
+        'th[draggable="true"]',
+      ) ?? []),
+    ];
+  }
+
+  private tableHead(): HTMLTableSectionElement | null {
+    return (
+      this.table?.el.nativeElement.querySelector('.p-datatable-thead') ?? null
+    );
+  }
+
+  private clearDropCue(): void {
+    this.dropHeader?.classList.remove(
+      'baps-table-column-drop-before',
+      'baps-table-column-drop-after',
+    );
+    this.dropHeader = undefined;
+    this.dropAfter = false;
   }
 
   get computedStyleClass(): string {

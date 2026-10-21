@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
 import { action } from '@storybook/addon-actions';
-import { expect, userEvent, within } from '@storybook/test';
+import { expect, userEvent, waitFor, within } from '@storybook/test';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from 'primeng/api';
 import { TableModule } from 'primeng/table';
@@ -491,6 +491,98 @@ export const RowActionFocusInteraction: StoryObj<BapsTable> = {
     expect(editBtns.length).toBeGreaterThan(0);
     editBtns[0].focus();
     expect(editBtns[0]).toHaveFocus();
+  },
+};
+
+/**
+ * Projected headers cannot use PrimeNG's `pReorderableColumn` directive: the
+ * directive injects `p-table`, while projected templates remain in the
+ * consumer's injector tree. Native draggable headers let `baps-table` bridge
+ * that boundary and keep the existing typed `colReorder` output.
+ */
+export const ColumnReorderInteraction: StoryObj<BapsTable> = {
+  name: 'Interaction — projected columns reorder',
+  args: { reorderableColumns: true },
+  render: (args) => {
+    const columns = [
+      { field: 'name', label: 'Name' },
+      { field: 'scope', label: 'Scope' },
+      { field: 'status', label: 'Status' },
+    ];
+    const props = {
+      ...args,
+      columns,
+      rows: [{ name: 'Home Visit', scope: 'North America', status: 'Draft' }],
+      onColReorder: (event: { dragIndex?: number; dropIndex?: number }) => {
+        if (event.dragIndex === undefined || event.dropIndex === undefined)
+          return;
+        const [column] = props.columns.splice(event.dragIndex, 1);
+        props.columns.splice(event.dropIndex, 0, column);
+        props.columns = [...props.columns];
+        action('colReorder')(event);
+      },
+    };
+    return {
+      props,
+      template: `
+        <baps-table
+          [value]="rows"
+          [brand]="brand"
+          [reorderableColumns]="reorderableColumns"
+          (colReorder)="onColReorder($event)"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              @for (column of columns; track column.field) {
+                <th draggable="true">{{ column.label }}</th>
+              }
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-row>
+            <tr>
+              @for (column of columns; track column.field) {
+                <td>{{ row[column.field] }}</td>
+              }
+            </tr>
+          </ng-template>
+        </baps-table>
+      `,
+    };
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const headers = canvas.getAllByRole('columnheader');
+    const transfer = new DataTransfer();
+    headers[0].dispatchEvent(
+      new DragEvent('dragstart', {
+        bubbles: true,
+        cancelable: true,
+        dataTransfer: transfer,
+      }),
+    );
+    headers[2].dispatchEvent(
+      new DragEvent('dragenter', {
+        bubbles: true,
+        cancelable: true,
+        dataTransfer: transfer,
+        clientX: headers[2].getBoundingClientRect().left,
+      }),
+    );
+    headers[2].dispatchEvent(
+      new DragEvent('drop', {
+        bubbles: true,
+        cancelable: true,
+        dataTransfer: transfer,
+      }),
+    );
+
+    await waitFor(() => {
+      expect(
+        canvas
+          .getAllByRole('columnheader')
+          .map((header) => header.textContent?.trim()),
+      ).toEqual(['Scope', 'Name', 'Status']);
+    });
   },
 };
 

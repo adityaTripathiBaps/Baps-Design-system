@@ -122,6 +122,44 @@ class GroupHost {
   }
 }
 
+@Component({
+  standalone: true,
+  imports: [BapsTable, SharedModule],
+  template: `
+    <baps-table
+      [value]="value"
+      [reorderableColumns]="true"
+      (colReorder)="onColReorder($event)"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          @for (column of columns; track column) {
+            <th draggable="true">{{ column }}</th>
+          }
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-row>
+        <tr>
+          @for (column of columns; track column) {
+            <td>{{ row[column] }}</td>
+          }
+        </tr>
+      </ng-template>
+    </baps-table>
+  `,
+})
+class ReorderHost {
+  readonly value = [{ first: 'A', second: 'B', third: 'C' }];
+  columns = ['first', 'second', 'third'];
+  readonly seen: Array<{ dragIndex?: number; dropIndex?: number }> = [];
+
+  onColReorder(event: { dragIndex?: number; dropIndex?: number }): void {
+    this.seen.push(event);
+    const [column] = this.columns.splice(event.dragIndex!, 1);
+    this.columns.splice(event.dropIndex!, 0, column);
+  }
+}
+
 async function setup() {
   const fixture = TestBed.createComponent(Host);
   await fixture.whenStable();
@@ -301,6 +339,39 @@ describe('BapsTable', () => {
       expect(text()).toContain('South one');
       expect(fixture.componentInstance.seen).toEqual([[]]);
       expect(south?.getAttribute('aria-expanded')).toBe('true');
+    });
+  });
+
+  describe('projected column reordering', () => {
+    it('emits indices for native draggable headers without PrimeNG parent injection', async () => {
+      const fixture = TestBed.createComponent(ReorderHost);
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      const headers = [
+        ...(fixture.nativeElement as HTMLElement).querySelectorAll<HTMLElement>(
+          'th[draggable="true"]',
+        ),
+      ];
+      headers[0].dispatchEvent(
+        new Event('dragstart', { bubbles: true, cancelable: true }),
+      );
+      headers[2].dispatchEvent(
+        new Event('dragenter', { bubbles: true, cancelable: true }),
+      );
+      headers[2].dispatchEvent(
+        new Event('drop', { bubbles: true, cancelable: true }),
+      );
+      fixture.detectChanges();
+
+      expect(fixture.componentInstance.seen).toEqual([
+        { dragIndex: 0, dropIndex: 1 },
+      ]);
+      expect(fixture.componentInstance.columns).toEqual([
+        'second',
+        'first',
+        'third',
+      ]);
     });
   });
 });

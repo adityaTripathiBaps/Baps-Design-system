@@ -124,6 +124,15 @@ group header remains available to reopen. React has no approved grouping or
 PrimeNG virtual-scroller contract, so GAP-01 does not create look-alike React
 props with different semantics.
 
+**Projected table headers use native drag markers, not PrimeNG's directive.**
+`pReorderableColumn` injects its parent `Table`, so it throws NG0201 when the
+header template is owned by a `BapsTable` consumer. With
+`reorderableColumns=true`, put native `draggable="true"` only on movable
+projected `<th>` elements. `BapsTable` handles the browser drag events and
+emits the existing typed `colReorder` indices; the consumer remains responsible
+for reordering its own column array. This preserves per-column opt-out without
+adding another public input or weakening the element-injector rule.
+
 ---
 
 ## Things that mislead — *2026-10-08*

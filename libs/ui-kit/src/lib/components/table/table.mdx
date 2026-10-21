@@ -89,7 +89,7 @@ Data table with sorting, filtering, pagination, selection, and row grouping. `ba
 ### Virtual scroll, column reorder and collapsible groups
 
 - `virtualScrollDelay` and `virtualScrollOptions` pass the matching PrimeNG 21 scroller settings through. `keepScrollPosition` preserves the viewport across value updates and forces `autoSize: false`; its default is `false`, so existing tables continue to reset to the first row.
-- `reorderableColumns` enables PrimeNG column dragging and `colReorder` forwards the typed `TableColumnReorderEvent`.
+- `reorderableColumns` enables column dragging and `colReorder` forwards the typed `TableColumnReorderEvent`. In a projected header, mark only movable `<th>` elements with native `draggable="true"`; do not use `pReorderableColumn`, because that PrimeNG directive cannot inject the wrapped `p-table` across the projection boundary. The consumer remains the owner of its column array and applies the emitted indices, as shown by `ColumnReorderInteraction`.
 - For `rowGroupMode="subheader"`, opt in with `collapsibleGroups`. Bind `collapsedGroupKeys` and handle `collapsedGroupKeysChange` for controlled state. The projected `groupheader` template receives `collapsed` and `toggleGroup`; put `toggleGroup()` on a native button and bind `aria-expanded="!collapsed"` as the grouped story demonstrates.
 - These additions are Angular/PrimeNG-specific. The React table has neither a PrimeNG virtual scroller nor an approved row-grouping/reordering public contract, so it does not expose look-alike props with different behaviour.
 

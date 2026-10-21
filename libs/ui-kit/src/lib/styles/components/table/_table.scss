@@ -105,6 +105,26 @@ baps-table .p-datatable-thead > tr > th {
   border-bottom: 1px solid var(--baps-table-border);
 }
 
+/* Projected headers cannot use PrimeNG's pReorderableColumn directive because
+   it injects the p-table across a content-projection boundary. Native
+   draggable headers are handled by BapsTable and keep the existing output
+   contract. The drop cue uses the active brand's semantic primary token. */
+baps-table .p-datatable-thead > tr > th[draggable='true'] {
+  cursor: move;
+}
+
+baps-table .p-datatable-thead > tr > th.baps-table-column-dragging {
+  opacity: 0.6;
+}
+
+baps-table .p-datatable-thead > tr > th.baps-table-column-drop-before {
+  box-shadow: inset var(--space-0-5) 0 0 var(--p-primary-color);
+}
+
+baps-table .p-datatable-thead > tr > th.baps-table-column-drop-after {
+  box-shadow: inset calc(var(--space-0-5) * -1) 0 0 var(--p-primary-color);
+}
+
 /* Body. NO zebra striping — every row is the card surface, matching
    baps-tree-table. PrimeNG offers .p-datatable-striped and it is deliberately
    unused, so adding stripes later is a change, not a fix. */
