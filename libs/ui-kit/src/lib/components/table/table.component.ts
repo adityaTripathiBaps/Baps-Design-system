@@ -64,7 +64,7 @@ import type { ScrollerOptions } from 'primeng/api';
       [scrollHeight]="scrollHeight"
       [virtualScroll]="virtualScroll"
       [virtualScrollItemSize]="virtualScrollItemSize!"
-      [virtualScrollDelay]="virtualScrollDelay"
+      [virtualScrollDelay]="virtualScrollDelay ?? PRIME_VIRTUAL_SCROLL_DELAY"
       [virtualScrollOptions]="resolvedVirtualScrollOptions"
       [selectionMode]="selectionMode"
       [(selection)]="selection"
@@ -210,8 +210,10 @@ export class BapsTable implements OnChanges {
   /** Needs [scrollable]="true", a [scrollHeight] and [virtualScrollItemSize]. */
   @Input() virtualScroll = false;
   @Input() virtualScrollItemSize?: number;
-  /** Scroller render debounce in milliseconds. Zero keeps client-side rows responsive. */
-  @Input() virtualScrollDelay = 0;
+  /** Lazy scroller debounce in milliseconds. Unset keeps PrimeNG's own default. */
+  @Input() virtualScrollDelay?: number;
+  /** PrimeNG 21's own `virtualScrollDelay`; the spec fails if upstream changes it. */
+  protected readonly PRIME_VIRTUAL_SCROLL_DELAY = 250;
   /** Additional PrimeNG scroller options for large, virtualised datasets. */
   @Input() virtualScrollOptions?: ScrollerOptions;
   /** Preserve the virtual viewport when the value changes instead of resetting to the first row. */

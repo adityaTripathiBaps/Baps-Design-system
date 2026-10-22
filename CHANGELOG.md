@@ -11,7 +11,8 @@ classification and deprecation policy.
 - **`@org/ui-kit` — minor, additive:** `baps-table` now exposes PrimeNG 21's
   virtual-scroll delay/options and column-reorder contract, plus opt-in scroll
   retention and controlled collapsible subheader groups. All defaults preserve
-  existing table behaviour. The React table intentionally remains unchanged:
+  existing table behaviour; an unset `virtualScrollDelay` keeps PrimeNG's own
+  250 ms lazy-load debounce. The React table intentionally remains unchanged:
   it has no PrimeNG scroller or approved row-grouping/reordering contract.
 
 ### Fixed

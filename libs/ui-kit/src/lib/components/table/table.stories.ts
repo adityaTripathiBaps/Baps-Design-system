@@ -373,7 +373,6 @@ const meta: Meta<BapsTable> = {
     stripedRows: false,
     totalRecords: 0,
     virtualScroll: false,
-    virtualScrollDelay: 0,
     keepScrollPosition: false,
     collapsibleGroups: false,
     collapsedGroupKeys: [],

@@ -1,8 +1,9 @@
 import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { SharedModule } from 'primeng/api';
 import type { ScrollerOptions } from 'primeng/api';
-import { Table } from 'primeng/table';
+import { Table, TableModule } from 'primeng/table';
 
 import { BapsTable } from './table.component';
 
@@ -57,7 +58,7 @@ class Host {
   readonly brand = signal<'mybky' | 'sampark'>('mybky');
   readonly styleClass = signal<string | undefined>(undefined);
   readonly virtualScroll = signal(false);
-  readonly virtualScrollDelay = signal(0);
+  readonly virtualScrollDelay = signal<number | undefined>(undefined);
   readonly virtualScrollOptions = signal<ScrollerOptions | undefined>(
     undefined,
   );
@@ -155,9 +156,23 @@ class ReorderHost {
 
   onColReorder(event: { dragIndex?: number; dropIndex?: number }): void {
     this.seen.push(event);
-    const [column] = this.columns.splice(event.dragIndex!, 1);
-    this.columns.splice(event.dropIndex!, 0, column);
+    const { dragIndex, dropIndex } = event;
+    if (dragIndex === undefined || dropIndex === undefined) return;
+    const [column] = this.columns.splice(dragIndex, 1);
+    this.columns.splice(dropIndex, 0, column);
   }
+}
+
+@Component({
+  standalone: true,
+  imports: [BapsTable, TableModule],
+  template: `
+    <baps-table [value]="value" [virtualScroll]="true" />
+    <p-table [value]="value" [virtualScroll]="true" />
+  `,
+})
+class DefaultDelayHost {
+  readonly value = [{ id: 1 }];
 }
 
 async function setup() {
@@ -250,6 +265,19 @@ describe('BapsTable', () => {
   });
 
   describe('virtual scrolling', () => {
+    it("keeps PrimeNG's own delay when virtualScrollDelay is not passed", async () => {
+      const fixture = TestBed.createComponent(DefaultDelayHost);
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      // [0] is inside baps-table, [1] is the bare p-table: same default.
+      const [wrapped, bare] = fixture.debugElement
+        .queryAll(By.directive(Table))
+        .map((de) => de.componentInstance as Table);
+      expect(wrapped).not.toBe(bare);
+      expect(wrapped.virtualScrollDelay).toBe(bare.virtualScrollDelay);
+    });
+
     it('forwards delay, reorder and caller scroller options', async () => {
       const fixture = await setup();
       const options: ScrollerOptions = { autoSize: true, delay: 40 };
