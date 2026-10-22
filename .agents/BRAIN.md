@@ -177,6 +177,13 @@ nothing. `ui-kit-react` carried a correct `enforce-module-boundaries` override
 for its consumer fixtures that had never once applied — invisible because the
 project had no lint target to run it.
 
+**`git blame` on `.storybook/main.ts` or `toast.stories.ts` can land on merge
+`d1e161c`.** That merge of `chore/storybook-noise` is not clean: on top of both
+parents it reformats those two files with Prettier — line wraps and trailing
+commas, no logic change, verified by diffing the merge against `f999d3a`. The
+real changes are `25f17cd` (toast) and `f999d3a` (baseline list). The merge
+message does not mention the reformat.
+
 **A snippet is a backtick-delimited string.** A nested template literal inside
 one ends it early and interpolates at build time. Use concatenation.
 `tools/check-styles-literals.mjs` guards this.
