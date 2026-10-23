@@ -17,6 +17,20 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` and `@org/ui-kit-react` — patch, visual:** dividers drew the
+  wrong borders, two different ways. In the shipped stylesheet the type rules
+  set a bare `border-style`, which styles all four sides of the line's
+  `::before`; the three sides without a width fell back to `medium` (3px), so
+  every React divider, and every Angular app importing `@org/ui-kit/styles`,
+  drew a small box instead of a 1px rule. Each type now styles only the line's
+  own side per orientation. Separately, the Angular divider's inline Sampark
+  rules used a `border-top` / `border-left` shorthand, whose `solid` overrode
+  the type, so Sampark dashed and dotted dividers rendered solid; they now set
+  width and colour only. Measured on `main`: 0/12 brand × layout × type cases
+  correct in the shipped CSS, Sampark dashed/dotted solid in Angular; after:
+  12/12, and MyBKY Angular unchanged. `tools/check-react-divider.mjs` holds
+  the shipped-CSS case in a real browser, and the Divider story
+  *Interaction — one styled side per layout* holds the Angular one.
 - **`@org/ui-kit-react` — patch, visual:** the React checkbox showed both the
   tick and the minus after `0ad83ec`. That fix replaced a hide/reveal pair with
   "show the glyph whenever one is present", which is correct in Angular because

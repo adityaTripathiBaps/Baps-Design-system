@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/angular';
+import { expect } from '@storybook/test';
 import { BapsDivider } from './divider.component';
 
 const meta: Meta<BapsDivider> = {
@@ -76,4 +77,57 @@ export const ToolbarSeparator: StoryObj<BapsDivider> = {
       </div>
     `,
   }),
+};
+
+/**
+ * Every type in both layouts, and the line is drawn on ONE side only.
+ *
+ * The rule is a `::before` with a width on one side. A bare `border-style`
+ * styled all four, and the three without a width fell back to `medium`
+ * (3px), so a dashed or dotted divider grew extra borders. jsdom has no
+ * cascade, so this is asserted here, in a real browser.
+ */
+export const TypesAndLayoutsInteraction: StoryObj<BapsDivider> = {
+  name: 'Interaction — one styled side per layout',
+  render: (args) => ({
+    props: args,
+    template: `
+      <div style="padding:1rem">
+        @for (type of ['solid', 'dashed', 'dotted']; track type) {
+          <baps-divider layout="horizontal" [type]="type" [brand]="brand" />
+        }
+        <div style="display:flex; height:3rem">
+          @for (type of ['solid', 'dashed', 'dotted']; track type) {
+            <span>{{ type }}</span>
+            <baps-divider layout="vertical" [type]="type" [brand]="brand" />
+          }
+        </div>
+      </div>
+    `,
+  }),
+  play: async ({ canvasElement }) => {
+    const roots = canvasElement.querySelectorAll<HTMLElement>('.p-divider');
+    await expect(roots.length).toBe(6);
+    for (const root of Array.from(roots)) {
+      const css = getComputedStyle(root, '::before');
+      const vertical = root.classList.contains('p-divider-vertical');
+      const type = ['solid', 'dashed', 'dotted'].find((t) =>
+        root.classList.contains(`p-divider-${t}`),
+      );
+      // Physical sides: block-start is top and inline-start is left in LTR.
+      const lineSide = vertical ? 'Left' : 'Top';
+      const sides = { Top: '', Right: '', Bottom: '', Left: '' };
+      for (const side of Object.keys(sides) as Array<keyof typeof sides>) {
+        sides[side] = css.getPropertyValue(
+          `border-${side.toLowerCase()}-style`,
+        );
+      }
+      await expect({ [lineSide]: sides[lineSide] }).toEqual({
+        [lineSide]: type,
+      });
+      for (const side of Object.keys(sides) as Array<keyof typeof sides>) {
+        if (side !== lineSide) await expect({ [side]: sides[side] }).toEqual({ [side]: 'none' });
+      }
+    }
+  },
 };

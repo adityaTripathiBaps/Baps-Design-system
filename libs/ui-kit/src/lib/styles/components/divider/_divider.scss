@@ -47,16 +47,30 @@ baps-divider .p-divider-content {
   background: var(--divider-mybky-content-background);
 }
 
-baps-divider .p-divider-solid::before {
-  border-style: solid;
+/* Style only the side that carries the line. A bare `border-style` styles all
+   four sides, and the three without a width fall back to `medium` (3px). */
+baps-divider .p-divider-horizontal.p-divider-solid::before {
+  border-block-start-style: solid;
 }
 
-baps-divider .p-divider-dashed::before {
-  border-style: dashed;
+baps-divider .p-divider-horizontal.p-divider-dashed::before {
+  border-block-start-style: dashed;
 }
 
-baps-divider .p-divider-dotted::before {
-  border-style: dotted;
+baps-divider .p-divider-horizontal.p-divider-dotted::before {
+  border-block-start-style: dotted;
+}
+
+baps-divider .p-divider-vertical.p-divider-solid::before {
+  border-inline-start-style: solid;
+}
+
+baps-divider .p-divider-vertical.p-divider-dashed::before {
+  border-inline-start-style: dashed;
+}
+
+baps-divider .p-divider-vertical.p-divider-dotted::before {
+  border-inline-start-style: dotted;
 }
 
 baps-divider[data-size='compact'] {

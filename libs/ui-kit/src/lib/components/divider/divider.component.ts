@@ -61,12 +61,16 @@ import { Divider } from 'primeng/divider';
       padding: 0;
     }
 
-    /* ── Sampark scope ── */
+    /* ── Sampark scope ──
+       Width and colour only. A border shorthand also sets the style, so it
+       turned every Sampark dashed or dotted divider back into a solid one. */
     :is(baps-divider.baps-sampark, .baps-ds-sampark baps-divider) .p-divider-horizontal::before {
-      border-top: 1px solid var(--color-sampark-border-default, #e1e0e0);
+      border-top-width: 1px;
+      border-top-color: var(--color-sampark-border-default, #e1e0e0);
     }
     :is(baps-divider.baps-sampark, .baps-ds-sampark baps-divider) .p-divider-vertical::before {
-      border-left: 1px solid var(--color-sampark-border-default, #e1e0e0);
+      border-left-width: 1px;
+      border-left-color: var(--color-sampark-border-default, #e1e0e0);
     }
     :is(baps-divider.baps-sampark, .baps-ds-sampark baps-divider) .p-divider-content {
       background: var(--color-sampark-surface-card, #ffffff);
