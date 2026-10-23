@@ -8,6 +8,10 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/ui-kit` — minor, additive:** `baps-toggleswitch` emits
+  `(valueChange)` with the new state when the user toggles it (GAP-04).
+  Values written by the form do not emit, so a handler that patches the form
+  cannot loop. The React toggle already reports user changes via `onChange`.
 - **`@org/ui-kit` — minor, additive:** `baps-table` now exposes PrimeNG 21's
   virtual-scroll delay/options and column-reorder contract, plus opt-in scroll
   retention and controlled collapsible subheader groups. All defaults preserve

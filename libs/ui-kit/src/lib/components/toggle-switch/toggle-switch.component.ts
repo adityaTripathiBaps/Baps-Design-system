@@ -1,4 +1,4 @@
-import { Component, Input, forwardRef } from '@angular/core';
+import { Component, EventEmitter, Input, Output, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
 import { ToggleSwitch } from 'primeng/toggleswitch';
 
@@ -17,7 +17,7 @@ let nextSwitchId = 0;
         [disabled]="disabled"
         [readonly]="readonly"
         [inputId]="inputId"
-        (onChange)="onModelChange($event.checked)"
+        (onChange)="onUserChange($event.checked)"
       ></p-toggleswitch>
       @if (label) {
         <label [for]="inputId" class="p-toggleswitch-label" [class.p-disabled]="disabled">{{ label }}</label>
@@ -63,11 +63,22 @@ export class BapsToggleSwitch implements ControlValueAccessor {
    * radius, inset track shadow. Also applied page-wide by .baps-ds-sampark.
    */
   @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  /**
+   * The new state, emitted only when the USER toggles. A value written by the
+   * form (setValue / patchValue) does not emit, so a handler that patches the
+   * form from here cannot loop the way `valueChanges` does.
+   */
+  @Output() valueChange = new EventEmitter<boolean>();
 
   value = false;
 
   onModelChange: any = () => { /* empty */ };
   onModelTouched: any = () => { /* empty */ };
+
+  onUserChange(checked: boolean): void {
+    this.onModelChange(checked);
+    this.valueChange.emit(checked);
+  }
 
   writeValue(value: any): void {
     this.value = !!value;

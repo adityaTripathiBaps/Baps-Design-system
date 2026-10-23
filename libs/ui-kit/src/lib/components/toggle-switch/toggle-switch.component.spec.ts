@@ -28,14 +28,16 @@ import { BapsToggleSwitch } from './toggle-switch.component';
  */
 @Component({
   imports: [BapsToggleSwitch, ReactiveFormsModule],
-  template: `<baps-toggleswitch [formControl]="control" [size]="size()" [brand]="brand()" />`,
+  template: `<baps-toggleswitch [formControl]="control" [size]="size()" [brand]="brand()" [readonly]="readonly()" (valueChange)="changes.push($event)" />`,
 })
 class Host {
   readonly control = new FormControl(false);
+  readonly changes: boolean[] = [];
   // Signals for the inputs: the env is zoneless, so a plain field mutation
   // plus a forced detectChanges() trips NG0100 instead of testing anything.
   readonly size = signal<'xs' | 'sm' | 'md' | 'lg'>('md');
   readonly brand = signal<'mybky' | 'sampark'>('mybky');
+  readonly readonly = signal(false);
 }
 
 interface Overrides {
@@ -111,6 +113,38 @@ describe('BapsToggleSwitch', () => {
 
       switchInput(fixture).click();
       await fixture.whenStable();
+      expect(fixture.componentInstance.control.value).toBe(false);
+    });
+
+    it('emits valueChange with the new state when the user toggles', async () => {
+      const fixture = await setup();
+      switchInput(fixture).click();
+      await fixture.whenStable();
+      switchInput(fixture).click();
+      await fixture.whenStable();
+      expect(fixture.componentInstance.changes).toEqual([true, false]);
+    });
+
+    // The reason the output exists: a handler that patches the form from
+    // valueChanges loops, this one must not see programmatic writes at all.
+    it('does not emit valueChange for a value written by the form', async () => {
+      const fixture = await setup();
+      fixture.componentInstance.control.setValue(true);
+      fixture.componentInstance.control.patchValue(false);
+      await fixture.whenStable();
+      expect(fixture.componentInstance.changes).toEqual([]);
+    });
+
+    it.each(['disabled', 'readonly'] as const)('does not emit valueChange when %s and clicked', async (state) => {
+      const fixture = await setup({ disabled: state === 'disabled' });
+      if (state === 'readonly') {
+        fixture.componentInstance.readonly.set(true);
+        fixture.detectChanges();
+        await fixture.whenStable();
+      }
+      switchInput(fixture).click();
+      await fixture.whenStable();
+      expect(fixture.componentInstance.changes).toEqual([]);
       expect(fixture.componentInstance.control.value).toBe(false);
     });
 

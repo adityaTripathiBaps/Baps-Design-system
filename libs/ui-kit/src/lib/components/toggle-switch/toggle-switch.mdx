@@ -111,6 +111,14 @@ native control in either forms API.
 form = new FormGroup({ value: new FormControl(false) });
 ```
 
+### Reacting to a user toggle
+
+`(valueChange)` emits the new state only when the user toggles. Values the form writes (`setValue`, `patchValue`) do not emit, so a handler can patch other controls without looping the way a `valueChanges` subscription can.
+
+```html
+<baps-toggleswitch formControlName="value" (valueChange)="onToggle($event)" />
+```
+
 ## API
 
 Inputs, outputs and their types, read from the component's own source.

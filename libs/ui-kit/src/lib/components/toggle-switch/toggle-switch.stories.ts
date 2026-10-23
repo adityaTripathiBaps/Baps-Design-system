@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
 import { FormsModule } from '@angular/forms';
+import { action } from '@storybook/addon-actions';
 import { expect, userEvent, within } from '@storybook/test';
 import { BapsToggleSwitch } from './toggle-switch.component';
 
@@ -36,9 +37,10 @@ const meta: Meta<BapsToggleSwitch> = {
     size: 'md',
   },
   render: (args) => ({
-    props: { ...args, checked: true },
+    props: { ...args, checked: true, onValueChange: action('valueChange') },
     template: `<baps-toggleswitch
       [(ngModel)]="checked"
+      (valueChange)="onValueChange($event)"
       [disabled]="disabled"
       [readonly]="readonly"
       [size]="size"
