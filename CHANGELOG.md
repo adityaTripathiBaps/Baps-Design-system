@@ -37,6 +37,11 @@ classification and deprecation policy.
   so they add no specificity. Unwrapped they put the base state rules at
   (0,5–6,0) `!important`, out-ranking the Sampark skin's state rules and
   every raw p-select on the page. Which state applies is unchanged.
+- **`@org/ui-kit` — patch, visual (Sampark):** a page-level `.baps-ds-sampark`
+  no longer restyles raw PrimeNG `p-drawer`s. The page-scope arm now matches
+  only kit drawer panels, which always name their brand
+  (`baps-drawer-mybky` / `baps-drawer-sampark`). Measured on a raw drawer
+  under the scope: white, 16px radius, 32/24 padding, 20px title before.
 - **`@org/ui-kit` — patch, visual:** `baps-chips-input`'s typing slot had no
   minimum width. Its `flex-basis` and `min-width` read a `--space-16` token
   that does not exist, so the browser dropped both declarations (measured:
