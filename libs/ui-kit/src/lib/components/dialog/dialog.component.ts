@@ -181,6 +181,7 @@ const MYBKY_DIALOG_TOKENS = {
       [baseZIndex]="baseZIndex"
       [maskStyle]="maskStyle"
       [dt]="dt"
+      [pt]="panelPt"
       (onShow)="shown.emit()"
       (onHide)="hidden.emit()"
     >
@@ -286,6 +287,25 @@ export class BapsDialog {
    * is projected instead, which is the other way to give it a visible name.
    */
   @Input() ariaLabel?: string;
+
+  /**
+   * Id of the element that describes the dialog, e.g. a confirmation's
+   * message. PrimeNG has no input for it, so it rides on the panel root's
+   * pass-through (`pt.root`), the same element that carries `role`.
+   */
+  @Input() ariaDescribedBy?: string;
+
+  private ptFor?: string;
+  private ptCache?: object;
+  /** Cached so change detection does not hand PrimeNG a new object each pass. */
+  protected get panelPt(): object | undefined {
+    if (!this.ariaDescribedBy) return undefined;
+    if (this.ptFor !== this.ariaDescribedBy) {
+      this.ptFor = this.ariaDescribedBy;
+      this.ptCache = { root: { 'aria-describedby': this.ariaDescribedBy } };
+    }
+    return this.ptCache;
+  }
 
   /**
    * Panel width. Figma ships two: 500px for the confirm shell and 600px for

@@ -12,18 +12,15 @@
   margin-bottom: var(--space-2);
 }
 
-.baps-confirm-dialog__icon,
-.p-confirmdialog-icon {
+.baps-confirm-dialog__icon {
   font-size: var(--font-size-5xl);
   color: var(--color-mybky-state-warning);
 }
 
-.baps-ds-sampark .baps-confirm-dialog__icon,
-.baps-ds-sampark .p-confirmdialog-icon {
+.baps-ds-sampark .baps-confirm-dialog__icon {
   color: var(--color-sampark-state-warning);
 }
 
-.baps-confirm-dialog__message,
-.p-confirmdialog-message {
+.baps-confirm-dialog__message {
   margin: 0;
 }

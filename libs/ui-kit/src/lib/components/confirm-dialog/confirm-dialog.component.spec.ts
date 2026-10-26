@@ -170,4 +170,51 @@ describe('BapsConfirmDialog', () => {
     expect(dialog.baseZIndex).toBe(1200);
     expect(dialog.style).toEqual({ maxWidth: '90vw' });
   });
+
+  it('renders the shell as an alertdialog', async () => {
+    const fixture = await setup();
+    const dialog = fixture.debugElement.query(By.directive(BapsDialog))
+      .componentInstance as BapsDialog;
+
+    expect(dialog.role).toBe('alertdialog');
+    // Bound as a property: a static role="alertdialog" attribute also landed
+    // on the <baps-dialog> host, a second, nameless "dialog" (axe
+    // aria-dialog-name) next to the real PrimeNG panel.
+    expect(
+      fixture.debugElement.query(By.directive(BapsDialog)).nativeElement.hasAttribute('role'),
+    ).toBe(false);
+  });
+
+  // The tests run zoneless. The service calls the dialog outside any template
+  // event, so without markForCheck its state changed and the view never did:
+  // the shell stayed closed while `visible` read true.
+  it('renders the shell when the service emits, with no template event', async () => {
+    const fixture = await setup();
+    TestBed.inject(BapsConfirmationService).confirm({
+      message: 'Delete this member?',
+      header: 'Confirm Deletion',
+    });
+    await settle(fixture);
+    const inner = fixture.debugElement.query(By.directive(BapsDialog))
+      .componentInstance as BapsDialog;
+    expect(inner.visible).toBe(true);
+    expect(inner.header).toBe('Confirm Deletion');
+  });
+
+  it('describes the alertdialog with its message', async () => {
+    const fixture = await setup();
+    TestBed.inject(BapsConfirmationService).confirm({
+      message: 'Delete this member?',
+      header: 'Confirm Deletion',
+    });
+    await settle(fixture);
+
+    // The baps-dialog HOST also carries role="alertdialog" as an attribute;
+    // the panel is PrimeNG's .p-dialog element.
+    const panel = document.querySelector('.p-dialog[role="alertdialog"]');
+    expect(panel).not.toBeNull();
+    const id = panel!.getAttribute('aria-describedby');
+    expect(id).toBeTruthy();
+    expect(document.getElementById(id!)!.textContent).toContain('Delete this member?');
+  });
 });

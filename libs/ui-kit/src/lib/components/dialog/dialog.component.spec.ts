@@ -44,6 +44,7 @@ import { BapsDialog, BapsDialogAlign } from './dialog.component';
       [actionsAlign]="actionsAlign()"
       [styleClass]="styleClass()"
       [closable]="closable()"
+      [ariaDescribedBy]="describedBy()"
       header="Cancel Document Upload"
     >
       <img dialog-media class="my-media" alt="" />
@@ -59,6 +60,7 @@ class Host {
   readonly actionsAlign = signal<'center' | 'end'>('center');
   readonly styleClass = signal<string | undefined>(undefined);
   readonly closable = signal(false);
+  readonly describedBy = signal<string | undefined>(undefined);
 }
 
 type Overrides = Partial<{
@@ -120,6 +122,19 @@ describe('BapsDialog', () => {
       await setup();
       expect(panel()!.getAttribute('role')).toBe('dialog');
       expect(panel()!.getAttribute('aria-modal')).toBe('true');
+    });
+
+    it('sets no aria-describedby unless one is given', async () => {
+      await setup();
+      expect(panel()!.hasAttribute('aria-describedby')).toBe(false);
+    });
+
+    it('puts ariaDescribedBy on the role=dialog element', async () => {
+      const fixture = await setup();
+      fixture.componentInstance.describedBy.set('my-desc');
+      fixture.detectChanges();
+      await fixture.whenStable();
+      expect(panel()!.getAttribute('aria-describedby')).toBe('my-desc');
     });
 
     it('points aria-labelledby at the wrapper own title element', async () => {

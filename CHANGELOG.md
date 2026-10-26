@@ -8,6 +8,10 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/ui-kit` — minor, additive:** `baps-dialog` takes `ariaDescribedBy`,
+  the id of the element that describes the dialog. PrimeNG's Dialog has no
+  input for it, so it is set on the panel root through PrimeNG pass-through,
+  the same element that carries `role`.
 - **`@org/ui-kit` — minor, additive:** `baps-toggleswitch` emits
   `(valueChange)` with the new state when the user toggles it (GAP-04).
   Values written by the form do not emit, so a handler that patches the form
@@ -38,6 +42,17 @@ classification and deprecation policy.
   radius now reads the real `--radius-mybky-md` (0.5rem, the same value the
   dead `--radius-mybky-default` fell back to), and the paddings, font size and
   weight now read space and font tokens of identical value.
+- **`@org/ui-kit` — patch, a11y:** `baps-confirm-dialog` renders as
+  `role="alertdialog"` with `aria-describedby` pointing at its message, so
+  screen readers announce the confirmation and its question at once.
+  Dead `.p-confirmdialog-icon` / `.p-confirmdialog-message` rules removed;
+  the component never rendered those classes.
+- **`@org/ui-kit` — patch:** `baps-confirm-dialog` now renders when
+  `BapsConfirmationService` emits in a zoneless host. The service calls the
+  dialog outside any template event, so its state changed and nothing
+  scheduled a render: `visible` read true while the shell stayed closed.
+  Zone-based apps were unaffected, because the triggering click ran change
+  detection anyway.
 - **`@org/ui-kit` and `@org/ui-kit-react` — patch, visual:** a page-level
   `.baps-ds-sampark` no longer restyles raw PrimeNG `p-table`s. The Sampark
   table skin's scope was `.baps-ds-sampark` itself, so its header rule

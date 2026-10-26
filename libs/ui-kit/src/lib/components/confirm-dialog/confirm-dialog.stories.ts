@@ -58,7 +58,7 @@ type ConfirmDialogStoryArgs = ConfirmDialogDemo & Record<'onHide', () => void>;
  * and call `BapsConfirmationService.confirm()` to open it.
  */
 const meta: Meta<ConfirmDialogStoryArgs> = {
-  title: 'Components/Molecules/ConfirmDialog',
+  title: 'Components/Molecules/Confirm Dialog',
   id: 'components-confirm-dialog',
   tags: ['ds:mybky', 'ds:sampark'],
   component: ConfirmDialogDemo,

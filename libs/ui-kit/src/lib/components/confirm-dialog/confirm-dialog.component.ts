@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -14,6 +15,8 @@ import {
   BapsConfirmationService,
   subscribeToBapsConfirmations,
 } from './confirmation.service';
+
+let nextConfirmDialogId = 0;
 
 /**
  * baps-confirm-dialog — modal confirmation dialog triggered imperatively.
@@ -31,6 +34,8 @@ import {
       [visible]="visible"
       [header]="activeHeader"
       [ariaLabel]="activeAriaLabel"
+      [role]="'alertdialog'"
+      [ariaDescribedBy]="activeMessage ? messageId : undefined"
       [brand]="brand"
       [closable]="activeClosable"
       [closeOnEscape]="activeCloseOnEscape"
@@ -54,7 +59,7 @@ import {
       }
 
       @if (activeMessage) {
-        <p class="baps-confirm-dialog__message">
+        <p class="baps-confirm-dialog__message" [id]="messageId">
           {{ activeMessage }}
         </p>
       }
@@ -88,7 +93,10 @@ import {
   styleUrls: ['../../styles/components/confirm-dialog/_confirm-dialog.scss'],
 })
 export class BapsConfirmDialog implements OnDestroy {
+  /** Stable per instance: aria-describedby points the alertdialog here. */
+  protected readonly messageId = `baps-confirm-dialog-message-${nextConfirmDialogId++}`;
   private readonly confirmationService = inject(BapsConfirmationService);
+  private readonly cdr = inject(ChangeDetectorRef);
   private readonly unsubscribe = subscribeToBapsConfirmations(
     this.confirmationService,
     (confirmation) => {
@@ -97,6 +105,9 @@ export class BapsConfirmDialog implements OnDestroy {
       } else {
         this.close();
       }
+      // The service calls this outside any template event, so nothing else
+      // schedules a render: in a zoneless host the dialog never opened.
+      this.cdr.markForCheck();
     },
   );
 
