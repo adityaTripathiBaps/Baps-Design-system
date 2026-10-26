@@ -30,7 +30,7 @@ const meta: Meta<Args> = {
     value: { control: 'text' },
     severity: {
       control: 'select',
-      options: [undefined, 'secondary', 'success', 'info', 'warn', 'danger', 'contrast'],
+      options: [undefined, 'primary', 'secondary', 'success', 'info', 'warn', 'danger', 'contrast'],
     },
     size: { control: 'select', options: ['xs', 's', 'm', 'l'] },
     icon: { control: 'text' },

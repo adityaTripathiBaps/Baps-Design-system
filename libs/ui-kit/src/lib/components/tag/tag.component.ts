@@ -18,7 +18,7 @@ import { Tag } from 'primeng/tag';
   template: `
     <p-tag
       [value]="value"
-      [severity]="severity"
+      [severity]="primeSeverity"
       [rounded]="rounded"
       [icon]="icon"
       [style]="style"
@@ -234,8 +234,17 @@ import { Tag } from 'primeng/tag';
 })
 export class BapsTag {
   @Input() value?: string;
-  /** No severity renders Figma's grey chip; Figma's navy "Primary" is `contrast`. */
-  @Input() severity?: 'secondary' | 'success' | 'info' | 'warn' | 'danger' | 'contrast';
+  /**
+   * No severity renders Figma's grey chip. Figma's "Primary" chip (MyBKY navy,
+   * Sampark rose) is `contrast`; `primary` is the same chip under the name
+   * spm-ui uses (`badgevariant="primary"`).
+   */
+  @Input() severity?: 'primary' | 'secondary' | 'success' | 'info' | 'warn' | 'danger' | 'contrast';
+
+  /** PrimeNG has no `primary` severity; it renders the `contrast` chip. */
+  protected get primeSeverity(): Exclude<BapsTag['severity'], 'primary'> {
+    return this.severity === 'primary' ? 'contrast' : this.severity;
+  }
   @Input() rounded = false;
   @Input() icon?: string;
   /** Figma "Chevron=True" — decorative disclosure caret after the label. */

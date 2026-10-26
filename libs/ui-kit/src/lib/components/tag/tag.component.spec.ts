@@ -33,7 +33,7 @@ import { BapsTag } from './tag.component';
 class Host {
   value = 'Active';
   size: 'xs' | 's' | 'm' | 'l' = 's';
-  severity?: 'secondary' | 'success' | 'info' | 'warn' | 'danger' | 'contrast';
+  severity?: 'primary' | 'secondary' | 'success' | 'info' | 'warn' | 'danger' | 'contrast';
   disabled = false;
   brand: 'mybky' | 'sampark' = 'mybky';
 }
@@ -90,7 +90,7 @@ describe('BapsTag disabled state', () => {
 
 describe('BapsTag severity passthrough', () => {
   async function tagClasses(
-    severity?: 'secondary' | 'success' | 'info' | 'warn' | 'danger' | 'contrast',
+    severity?: 'primary' | 'secondary' | 'success' | 'info' | 'warn' | 'danger' | 'contrast',
   ): Promise<DOMTokenList> {
     const fixture = await render({ severity });
     return (fixture.nativeElement as HTMLElement).querySelector('.p-tag')!.classList;
@@ -103,6 +103,8 @@ describe('BapsTag severity passthrough', () => {
     ['warn', 'p-tag-warn'],
     ['danger', 'p-tag-danger'],
     ['contrast', 'p-tag-contrast'],
+    // spm-ui's name for the same chip; PrimeNG has no p-tag-primary.
+    ['primary', 'p-tag-contrast'],
   ] as const)('forwards severity %s so the .%s border rule can match', async (severity, cls) => {
     expect((await tagClasses(severity)).contains(cls)).toBe(true);
   });

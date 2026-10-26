@@ -14,6 +14,9 @@ classification and deprecation policy.
   no longer draws the MyBKY 99px pill (measured 4px vs 99px).
 - **`@org/ui-kit` — minor, additive:** `baps-message` takes `brand`.
   `brand="sampark"` was silently ignored before; the input did not exist.
+- **`@org/ui-kit` — minor, additive:** `baps-tag` accepts `severity="primary"`,
+  the name spm-ui uses for Figma's "Primary" chip. It renders the existing
+  `contrast` chip (MyBKY navy, Sampark rose); PrimeNG has no `p-tag-primary`.
 - **`@org/ui-kit` — minor, additive:** `baps-dialog` takes `ariaDescribedBy`,
   the id of the element that describes the dialog. PrimeNG's Dialog has no
   input for it, so it is set on the panel root through PrimeNG pass-through,
