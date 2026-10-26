@@ -25,6 +25,18 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch, visual (Sampark):** tree-select and cascade-select
+  placeholders render in the placeholder colour. The Sampark placeholder rule
+  listed select and multiselect only, while the label rule above it gave all
+  four the filled-text colour (measured tree-select placeholder #151414).
+- **`@org/ui-kit` — patch, visual (Sampark):** select-family overlay rows draw
+  one bar. Base `_select.scss` also painted `inset 3px var(--p-primary-600)` on
+  hover/selected rows, read from the preset, so under a non-kit preset a second
+  3px bar sat under Sampark's 4px `::before` (spm-ui: #bf5555).
+- **`@org/ui-kit` — patch:** the select state guards are wrapped in `:where()`
+  so they add no specificity. Unwrapped they put the base state rules at
+  (0,5–6,0) `!important`, out-ranking the Sampark skin's state rules and
+  every raw p-select on the page. Which state applies is unchanged.
 - **`@org/ui-kit` — patch, visual:** `baps-chips-input`'s typing slot had no
   minimum width. Its `flex-basis` and `min-width` read a `--space-16` token
   that does not exist, so the browser dropped both declarations (measured:

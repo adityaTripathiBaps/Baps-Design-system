@@ -135,7 +135,9 @@
   }
 
   .p-select .p-select-label.p-placeholder,
-  .p-multiselect .p-multiselect-label.p-placeholder {
+  .p-multiselect .p-multiselect-label.p-placeholder,
+  .p-cascadeselect .p-cascadeselect-label.p-placeholder,
+  .p-treeselect .p-treeselect-label.p-placeholder {
     color: var(--input-text-placeholder) !important;
   }
 
@@ -315,4 +317,31 @@
     .p-multiselect-list-container::-webkit-scrollbar-thumb {
     background: var(--color-sampark-border-default, #e1e0e0) !important;
   }
+}
+
+/* ── Row bar: Sampark draws ONE, the 4px ::before (_overlay-list.scss) ──
+   Base _select.scss also paints hover/selected rows with
+   `inset 3px 0 0 0 var(--p-primary-600)`, read from the PRESET. Under a
+   non-kit preset that is a second, 3px bar (spm-ui SpmTheme: #bf5555). It
+   sat under the ::before, so it only showed where the ::before did not.
+   Mirrors the base selector lists with the scope prefix, one class more
+   specific, so file load order does not decide it. */
+.baps-ds-sampark .p-select-option:not(.p-disabled):hover,
+.baps-ds-sampark .p-select-option.p-focus:not(.p-disabled),
+.baps-ds-sampark .p-multiselect-option:not(.p-disabled):hover,
+.baps-ds-sampark .p-multiselect-option.p-focus:not(.p-disabled),
+.baps-ds-sampark .p-autocomplete-option:not(.p-disabled):hover,
+.baps-ds-sampark .p-autocomplete-option.p-focus:not(.p-disabled),
+.baps-ds-sampark .p-cascadeselect-option:not(.p-disabled):hover
+  > .p-cascadeselect-option-content,
+.baps-ds-sampark .p-treeselect-overlay .p-tree-node-content:not(.p-disabled):hover,
+.baps-ds-sampark .p-select-option.p-select-option-selected,
+.baps-ds-sampark .p-select-option[data-p-selected='true'],
+.baps-ds-sampark .p-multiselect-option.p-multiselect-option-selected,
+.baps-ds-sampark .p-autocomplete-option.p-autocomplete-option-selected,
+.baps-ds-sampark .p-treeselect-overlay .p-tree-node-content.p-tree-node-selected,
+.baps-ds-sampark .p-select-option.p-select-option-selected:hover,
+.baps-ds-sampark .p-select-option[data-p-selected='true']:hover,
+.baps-ds-sampark .p-multiselect-option.p-multiselect-option-selected:hover {
+  box-shadow: none !important; /* beats base _select.scss's !important bar */
 }

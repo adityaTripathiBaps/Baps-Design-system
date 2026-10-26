@@ -209,8 +209,13 @@ body.baps-dark {
    guards drop the :disabled/:not(.step-input--error) fragments that
    only apply to real inputs.
    ══════════════════════════════════════════════════════════════════════ */
-$select-guard: ':not(.p-disabled)#{input.$input-valid}:not(.p-inputtext-warning)';
-$select-plain-guard: ':not(.p-disabled)#{input.$input-valid}';
+/* Wrapped in :where() so the guards add no specificity. Unwrapped they put
+   the base state rules at (0,5-6,0) !important, out-ranking the Sampark
+   skin's state rules (its hover/focus border leaked at 1.5px) and every raw
+   p-select on the page. The guards still decide WHICH state applies; they
+   just no longer decide who wins. */
+$select-guard: ':where(:not(.p-disabled)#{input.$input-valid}:not(.p-inputtext-warning))';
+$select-plain-guard: ':where(:not(.p-disabled)#{input.$input-valid})';
 
 /* Native React uses a real button for clear so it remains keyboard and screen
    reader operable. PrimeNG renders an icon in the same slot; this structural
