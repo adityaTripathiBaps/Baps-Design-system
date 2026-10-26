@@ -60,6 +60,10 @@ classification and deprecation policy.
   inline row: inline-flex, 22px box (`--tag-sampark-height-s`), `0 0.25rem`
   padding, `0.125rem` gap, a 1px border in the badge colours instead of the
   MyBKY outline. Measured on the shipped CSS: 45px with 12/16 padding before.
+- **`@org/ui-kit` — patch, visual (Sampark):** `baps-paginator`'s rows-per-page
+  select is 28px (`--form-field-sampark-height-sm`). Its height rule was a
+  descendant selector, but in v21 both classes sit on the same element, so it
+  never matched.
 - **`@org/ui-kit` — patch, visual:** `baps-chips-input`'s typing slot had no
   minimum width. Its `flex-basis` and `min-width` read a `--space-16` token
   that does not exist, so the browser dropped both declarations (measured:

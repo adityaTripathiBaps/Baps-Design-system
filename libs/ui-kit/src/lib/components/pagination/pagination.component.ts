@@ -267,6 +267,16 @@ export interface BapsPageEvent {
       height: 1.875rem;
     }
 
+    /* The rule above never matches in v21: .baps-paginator__rpp and .p-select
+       are on the SAME element (the width rule's comment measures the same
+       thing). Sampark gets a compound selector, (0,3,1), which beats the
+       Sampark select skin's 2rem !important height (0,2,1). SPM dev: 28px. */
+    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator)
+      .baps-paginator__rpp.p-select {
+      height: var(--form-field-sampark-height-sm, 1.75rem) !important;
+      min-height: var(--form-field-sampark-height-sm, 1.75rem) !important;
+    }
+
     baps-paginator .baps-paginator__nav,
     baps-paginator .baps-paginator__page {
       display: inline-flex;
