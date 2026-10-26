@@ -213,7 +213,7 @@ export const BapsMenu = forwardRef<BapsMenuRef, BapsMenuProps>(
       <div
         ref={menuRef}
         className={joinClassNames(
-          'p-menu p-component',
+          'p-menu p-component baps-menu-panel',
           popup && 'p-menu-overlay',
           brand === 'sampark' && 'baps-menu-sampark',
           styleClass,

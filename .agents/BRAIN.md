@@ -327,6 +327,11 @@ Blocked on design, not on implementation. Never invent these.
 
 ## Approved token exceptions — *2026-10-08*
 
+- **Ask at demo.** `_menu.scss` (2026-10-24): no MyBKY dropdown shadow (Sampark has
+  `--shadow-sampark-dropdown`; no `--shadow-mybky-*` matches the two-layer
+  `rgba(24, 27, 29, …)` value), no token for the 200px panel `min-width`, and
+  no letter-spacing token for the submenu header's `0.04em`. All three stay
+  literal with a comment.
 - **Ask at demo.** `_chips-input.scss` (2026-10-24): the intended 64px
   (4rem) input slot was written as a
   non-existent `--space-16` (the scale stops at `--space-10`), so the browser

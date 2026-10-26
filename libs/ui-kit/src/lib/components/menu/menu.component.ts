@@ -69,11 +69,14 @@ export class BapsMenu {
   /**
    * The panel is portalled out of this host, so the brand cannot be carried by
    * a host class — it rides along on the panel's own class list instead.
+   * `baps-menu-panel` is what _menu.scss roots every rule at.
    */
   protected get panelClass(): string {
     const brandClass =
       this.brand === 'sampark' ? 'baps-ds-sampark baps-menu-sampark' : '';
-    return [brandClass, this.styleClass].filter(Boolean).join(' ');
+    return ['baps-menu-panel', brandClass, this.styleClass]
+      .filter(Boolean)
+      .join(' ');
   }
 
   /** Open (or close) the popup menu against the event that triggered it. */

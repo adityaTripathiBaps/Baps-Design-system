@@ -31,6 +31,13 @@ classification and deprecation policy.
 - **`@org/ui-kit` — patch, visual:** `baps-input-number`'s spinner borders
   are `1px` instead of `0.0625rem`, which can round to 0 at some zoom levels.
   Identical at 100% zoom.
+- **`@org/ui-kit` and `@org/ui-kit-react` — patch, visual:** `baps-menu`'s
+  panel skin no longer restyles raw PrimeNG `p-menu`s elsewhere on the page.
+  Rules were rooted at bare `.p-menu`; they now match `.baps-menu-panel`,
+  which both menus add to their panel. `baps-menu` itself is unchanged: the
+  radius now reads the real `--radius-mybky-md` (0.5rem, the same value the
+  dead `--radius-mybky-default` fell back to), and the paddings, font size and
+  weight now read space and font tokens of identical value.
 - **`@org/ui-kit` and `@org/ui-kit-react` — patch, visual:** a page-level
   `.baps-ds-sampark` no longer restyles raw PrimeNG `p-table`s. The Sampark
   table skin's scope was `.baps-ds-sampark` itself, so its header rule

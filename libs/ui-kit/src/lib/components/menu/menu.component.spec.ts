@@ -89,9 +89,9 @@ const prime = (fixture: {
 
 describe('BapsMenu', () => {
   describe('panelClass', () => {
-    it('is empty for mybky, so the panel inherits the preset', async () => {
+    it('carries only the scoping class for mybky, so the panel inherits the preset', async () => {
       const fixture = await setup();
-      expect(prime(fixture).styleClass).toBe('');
+      expect(prime(fixture).styleClass).toBe('baps-menu-panel');
     });
 
     it('carries the Sampark scope onto the portalled panel', async () => {
@@ -110,7 +110,7 @@ describe('BapsMenu', () => {
       await apply(fixture);
 
       expect(prime(fixture).styleClass).toBe(
-        'baps-ds-sampark baps-menu-sampark my-custom-menu',
+        'baps-menu-panel baps-ds-sampark baps-menu-sampark my-custom-menu',
       );
     });
 
@@ -118,7 +118,7 @@ describe('BapsMenu', () => {
       const fixture = await setup();
       fixture.componentInstance.styleClass.set('my-custom-menu');
       await apply(fixture);
-      expect(prime(fixture).styleClass).toBe('my-custom-menu');
+      expect(prime(fixture).styleClass).toBe('baps-menu-panel my-custom-menu');
     });
   });
 
