@@ -21,6 +21,15 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` and `@org/ui-kit-react` — patch, visual:** a page-level
+  `.baps-ds-sampark` no longer restyles raw PrimeNG `p-table`s. The Sampark
+  table skin's scope was `.baps-ds-sampark` itself, so its header rule
+  (`nowrap`, `ellipsis`, `0 12px` padding, 40px) reached every table on the
+  page and clipped a raw table's "Primary? ⓘ" header in spm-ui. Styling rules
+  now match `.baps-ds-sampark baps-table`, the form base `_table.scss` already
+  uses. The `--table-*` custom properties stay on the page scope, since they
+  style nothing on their own and the raw-markup docs example reads them.
+  `baps-table` in both brands is unchanged.
 - **`@org/ui-kit` and `@org/ui-kit-react` — patch, visual:** dividers drew the
   wrong borders, two different ways. In the shipped stylesheet the type rules
   set a bare `border-style`, which styles all four sides of the line's

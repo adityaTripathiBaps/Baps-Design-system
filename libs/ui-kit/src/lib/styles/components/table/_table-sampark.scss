@@ -22,12 +22,17 @@
 
 /* Both entry points into the skin. Kept in one variable so every selector
    below stays a single flat chain (no nesting, no specificity drift). */
-$s: ':is(baps-table.baps-sampark, .baps-ds-sampark)';
+/* Variable-only blocks stay on the page scope: custom properties style
+   nothing on their own, and a raw markup example (table.snippets.ts) reads
+   them. Every rule that STYLES is limited to kit tables, so a page-level
+   .baps-ds-sampark leaves a raw PrimeNG p-table alone (spm-kit-issues D1). */
+$s-vars: ':is(baps-table.baps-sampark, .baps-ds-sampark)';
+$s: ':is(baps-table.baps-sampark, .baps-ds-sampark baps-table)';
 
 /* ══════════════════════════════════════════════════════════════════════
    DESIGN TOKENS — CSS Custom Properties
    ══════════════════════════════════════════════════════════════════════ */
-#{$s} {
+#{$s-vars} {
   --table-border: var(--color-sampark-border-default, #e1e0e0);
   --table-header-bg: var(--color-sampark-mono-10, #f8f7f7);
   --table-header-text: var(--color-sampark-mono-60, #9f9c9c);
@@ -54,8 +59,8 @@ $s: ':is(baps-table.baps-sampark, .baps-ds-sampark)';
 /* ══════════════════════════════════════════════════════════════════════
    DARK MODE
    ══════════════════════════════════════════════════════════════════════ */
-.baps-dark #{$s},
-.baps-dark#{$s} {
+.baps-dark #{$s-vars},
+.baps-dark#{$s-vars} {
   --table-border: var(--color-mybky-mono-700, #3d4144);
   --table-header-bg: var(--color-mybky-mono-800, #2b2f32);
   --table-header-text: var(--color-mybky-mono-400, #b6b6af);
@@ -447,7 +452,7 @@ $s: ':is(baps-table.baps-sampark, .baps-ds-sampark)';
    its child rows. Those hexes sit one step down the code-side scale
    (info-10 / info-5) — a known Figma-vs-code drift, same as the tag skin.
    ══════════════════════════════════════════════════════════════════════ */
-#{$s} {
+#{$s-vars} {
   --table-group-bg: var(--color-sampark-info-10, #e6f0fe);
   --table-group-row-bg: var(--color-sampark-info-5, #f3f8ff);
   --table-tree-line: var(--color-sampark-mono-40, #bcb9b9);
@@ -455,8 +460,8 @@ $s: ':is(baps-table.baps-sampark, .baps-ds-sampark)';
   --table-badge-text: var(--color-sampark-text-secondary, #595656);
 }
 
-.baps-dark #{$s},
-.baps-dark#{$s} {
+.baps-dark #{$s-vars},
+.baps-dark#{$s-vars} {
   --table-group-bg: rgba(56, 137, 250, 0.16);
   --table-group-row-bg: rgba(56, 137, 250, 0.06);
   --table-tree-line: var(--color-mybky-mono-600, #545a5e);

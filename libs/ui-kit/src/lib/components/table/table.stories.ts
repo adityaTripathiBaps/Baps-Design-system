@@ -1521,3 +1521,49 @@ export const Empty: StoryObj<BapsTable> = {
     `,
   }),
 };
+
+/**
+ * A page-level `.baps-ds-sampark` styles kit tables, not a raw PrimeNG
+ * `p-table` next to them.
+ *
+ * Before, the Sampark skin's scope was `.baps-ds-sampark` itself, so a page
+ * scope reached every `p-table` on the page. In spm-ui that clipped a raw
+ * table's "Primary? ⓘ" header to "Primary?…" with the skin's nowrap/ellipsis
+ * header rule (spm-kit-issues D1). The skin now matches `.baps-ds-sampark
+ * baps-table`. This story renders both under one page scope and reads the
+ * header's computed style.
+ */
+export const PageScopeLeavesRawTableInteraction: StoryObj<BapsTable> = {
+  name: 'Interaction — page scope skips a raw p-table',
+  render: () => ({
+    props: { rows: [{ name: 'Home Visit' }] },
+    template: `
+      <div class="baps-ds-sampark" style="display:grid; gap:1rem">
+        <div data-testid="raw">
+          <p-table [value]="rows">
+            <ng-template pTemplate="header"><tr><th>Raw p-table header</th></tr></ng-template>
+            <ng-template pTemplate="body" let-row><tr><td>{{ row.name }}</td></tr></ng-template>
+          </p-table>
+        </div>
+        <div data-testid="kit">
+          <baps-table [value]="rows">
+            <ng-template pTemplate="header"><tr><th>Kit table header</th></tr></ng-template>
+            <ng-template pTemplate="body" let-row><tr><td>{{ row.name }}</td></tr></ng-template>
+          </baps-table>
+        </div>
+      </div>
+    `,
+  }),
+  play: async ({ canvasElement }) => {
+    const header = (testId: string) =>
+      getComputedStyle(
+        canvasElement.querySelector(`[data-testid="${testId}"] th`) as HTMLElement,
+      );
+    // The kit table still gets the Sampark header rule.
+    await expect(header('kit').textOverflow).toBe('ellipsis');
+    await expect(header('kit').whiteSpace).toBe('nowrap');
+    // The raw table does not.
+    await expect(header('raw').textOverflow).not.toBe('ellipsis');
+    await expect(header('raw').whiteSpace).not.toBe('nowrap');
+  },
+};
