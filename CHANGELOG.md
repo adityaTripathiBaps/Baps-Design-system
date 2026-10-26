@@ -21,6 +21,13 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch, visual:** `baps-chips-input`'s typing slot had no
+  minimum width. Its `flex-basis` and `min-width` read a `--space-16` token
+  that does not exist, so the browser dropped both declarations (measured:
+  both computed `auto`). Both are now 4rem, the value the rule was written
+  for, built from `--space-8`; a real 64px space token is a design decision.
+  Its border is now `1px` instead of `0.0625rem`, which can round to 0 at
+  some zoom levels.
 - **`@org/ui-kit` and `@org/ui-kit-react` — patch, visual:** a page-level
   `.baps-ds-sampark` no longer restyles raw PrimeNG `p-table`s. The Sampark
   table skin's scope was `.baps-ds-sampark` itself, so its header rule

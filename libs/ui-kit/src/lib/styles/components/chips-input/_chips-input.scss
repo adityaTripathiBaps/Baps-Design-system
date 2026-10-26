@@ -19,7 +19,7 @@ baps-chips-input .baps-chips-input__control {
   margin: 0;
   padding: var(--space-1) var(--space-3);
   gap: var(--space-1);
-  border: calc(var(--space-0-5) / 2) solid var(--input-border-default);
+  border: 1px solid var(--input-border-default);
   border-radius: var(--form-field-mybky-border-radius);
   background: var(--input-bg-default);
   color: var(--input-text-filled);
@@ -46,9 +46,11 @@ baps-chips-input .baps-chips-input__control.p-disabled {
   cursor: not-allowed;
 }
 
+/* 4rem. The space scale stops at --space-10 and has no 64px step, so the
+   width is computed from an existing token rather than invented. */
 baps-chips-input .p-autocomplete {
-  flex: 1 1 var(--space-16);
-  min-width: var(--space-16);
+  flex: 1 1 calc(var(--space-8) * 2);
+  min-width: calc(var(--space-8) * 2);
   width: auto;
 }
 
@@ -70,8 +72,8 @@ baps-chips-input .p-autocomplete-chip-item {
 
 baps-chips-input .p-autocomplete-input-chip {
   display: flex;
-  flex: 1 1 var(--space-16);
-  min-width: var(--space-16);
+  flex: 1 1 calc(var(--space-8) * 2);
+  min-width: calc(var(--space-8) * 2);
 }
 
 baps-chips-input .p-autocomplete-input-chip .p-autocomplete-input {

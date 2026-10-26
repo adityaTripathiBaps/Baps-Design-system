@@ -327,6 +327,12 @@ Blocked on design, not on implementation. Never invent these.
 
 ## Approved token exceptions — *2026-10-08*
 
+- **Ask at demo.** `_chips-input.scss` (2026-10-24): the intended 64px
+  (4rem) input slot was written as a
+  non-existent `--space-16` (the scale stops at `--space-10`), so the browser
+  dropped it. Now `calc(var(--space-8) * 2)`; a real `--space-16` is the
+  designer's call. Its `150ms` transitions have no token either: the nearest,
+  `--motion-duration-fast`, is 120ms.
 - `var(--token, #fallback)` fallbacks. Defensive, not hardcoding.
 - `0`, `100%`, `50%` and other technical values.
 - 1px borders and hairlines.
