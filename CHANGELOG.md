@@ -28,6 +28,9 @@ classification and deprecation policy.
   for, built from `--space-8`; a real 64px space token is a design decision.
   Its border is now `1px` instead of `0.0625rem`, which can round to 0 at
   some zoom levels.
+- **`@org/ui-kit` — patch, visual:** `baps-input-number`'s spinner borders
+  are `1px` instead of `0.0625rem`, which can round to 0 at some zoom levels.
+  Identical at 100% zoom.
 - **`@org/ui-kit` and `@org/ui-kit-react` — patch, visual:** a page-level
   `.baps-ds-sampark` no longer restyles raw PrimeNG `p-table`s. The Sampark
   table skin's scope was `.baps-ds-sampark` itself, so its header rule

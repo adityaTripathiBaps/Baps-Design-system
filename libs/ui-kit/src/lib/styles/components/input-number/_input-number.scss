@@ -35,6 +35,9 @@ baps-input-number .p-inputnumber-input {
 baps-input-number
   .baps-input-number__control:has(.baps-input-number__buttons)
   .p-inputnumber-input {
+  /* input/_input.scss pins .p-inputtext's radius (the pill rule) and border
+     (the input-state mixin) with !important, so squaring the edge that meets
+     the spinner column needs !important too. */
   border-start-end-radius: 0 !important;
   border-end-end-radius: 0 !important;
   border-inline-end: none !important;
@@ -62,17 +65,19 @@ baps-input-number .baps-input-number__button {
 }
 
 baps-input-number .baps-input-number__button--increment {
-  border-width: calc(var(--space-0-5) / 2) calc(var(--space-0-5) / 2) 0;
+  border-width: 1px 1px 0;
   border-start-end-radius: var(--baps-input-number-radius);
 }
 
 baps-input-number .baps-input-number__button--decrement {
-  border-width: calc(var(--space-0-5) / 2);
+  border-width: 1px;
   border-end-end-radius: var(--baps-input-number-radius);
 }
 
 baps-input-number .baps-input-number__button:focus-visible {
   position: relative;
+  /* Local stacking only: lifts the focused button's ring over the shared
+     edge with its neighbour. Not a page layer, so no z-index token applies. */
   z-index: 1;
   outline: none;
   border-color: var(--input-border-hover);
