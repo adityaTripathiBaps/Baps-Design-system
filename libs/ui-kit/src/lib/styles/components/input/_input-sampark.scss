@@ -197,7 +197,7 @@
    1.5px; each state below re-pins 1px).
    ══════════════════════════════════════════════════════════════════════ */
 
-:is(.baps-ds-sampark, .baps-sampark) .p-inputtext {
+:is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark) {
   border-radius: var(--form-field-sampark-border-radius, 0.25rem) !important;
   height: var(--form-field-sampark-height-default, 2rem) !important; /* 32px */
   min-height: var(--form-field-sampark-height-default, 2rem) !important;
@@ -218,7 +218,7 @@
 }
 
 /* ── Placeholder — #979493 (Mono/60) ─────────────────────────────────── */
-:is(.baps-ds-sampark, .baps-sampark) .p-inputtext::placeholder {
+:is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark)::placeholder {
   color: var(--input-text-placeholder) !important;
   opacity: 1 !important;
 }
@@ -227,14 +227,14 @@
    SIZES
    ══════════════════════════════════════════════════════════════════════ */
 
-:is(.baps-ds-sampark, .baps-sampark) .p-inputtext.p-inputtext-sm {
+:is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark).p-inputtext-sm {
   height: var(--form-field-sampark-height-sm, 1.75rem) !important; /* 28px */
   min-height: var(--form-field-sampark-height-sm, 1.75rem) !important;
   padding: 0.25rem 0.5rem !important; /* 4px 8px */
   font-size: 0.75rem !important; /* 12px */
 }
 
-:is(.baps-ds-sampark, .baps-sampark) .p-inputtext.p-inputtext-lg {
+:is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark).p-inputtext-lg {
   height: var(--form-field-sampark-height-lg, 2.5rem) !important; /* 40px */
   min-height: var(--form-field-sampark-height-lg, 2.5rem) !important;
   padding: 0.5rem 0.75rem !important; /* 8px 12px */
@@ -249,8 +249,8 @@
    │ #E1E0E0    │ #FFFFFF │ #151414 │
    └────────────┴─────────┴─────────┘
    ══════════════════════════════════════════════════════════════════════ */
-:is(.baps-ds-sampark, .baps-sampark) .p-inputtext.p-filled,
-:is(.baps-ds-sampark, .baps-sampark) .p-inputtext:not(:placeholder-shown) {
+:is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark).p-filled,
+:is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark):not(:placeholder-shown) {
   border: 1px solid var(--input-border-default) !important;
   background: var(--input-bg-default) !important;
   color: var(--input-text-filled) !important;
@@ -265,10 +265,9 @@
    └────────────┴─────────┴───────────┘
    Border stays 1px — width never changes in Sampark.
    ══════════════════════════════════════════════════════════════════════ */
-:is(.baps-ds-sampark, .baps-sampark) .p-inputtext:hover#{input.$input-guard}:not(.p-inputtext-ghost),
-:is(.baps-ds-sampark, .baps-sampark) .p-inputtext.p-filled:hover#{input.$input-enabled}#{input.$input-valid},
-:is(.baps-ds-sampark, .baps-sampark)
-  .p-inputtext:not(:placeholder-shown):hover#{input.$input-enabled}#{input.$input-valid} {
+:is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark):hover#{input.$input-guard}:not(.p-inputtext-ghost),
+:is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark).p-filled:hover#{input.$input-enabled}#{input.$input-valid},
+:is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark):not(:placeholder-shown):hover#{input.$input-enabled}#{input.$input-valid} {
   @include input.input-state(1px solid var(--input-border-hover));
 }
 
@@ -280,8 +279,8 @@
    │ #94928F    │ #FFFFFF │ #151414 │ 0 0 0 3px #F2F1F0                │
    └────────────┴─────────┴─────────┴──────────────────────────────────┘
    ══════════════════════════════════════════════════════════════════════ */
-:is(.baps-ds-sampark, .baps-sampark) .p-inputtext:focus#{input.$input-guard},
-:is(.baps-ds-sampark, .baps-sampark) .p-inputtext:focus-visible#{input.$input-guard} {
+:is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark):focus#{input.$input-guard},
+:is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark):focus-visible#{input.$input-guard} {
   @include input.input-state(
     1px solid var(--input-border-hover),
     var(--input-shadow-focused)
@@ -295,10 +294,9 @@
    palette (border Warning/80, ring Warning/10) to keep the variant
    coherent. Ring always visible, matching the base file's contract.
    ══════════════════════════════════════════════════════════════════════ */
-:is(.baps-ds-sampark, .baps-sampark) .p-inputtext.p-inputtext-warning,
-:is(.baps-ds-sampark, .baps-sampark) .p-inputtext.p-inputtext-warning:focus#{input.$input-enabled},
-:is(.baps-ds-sampark, .baps-sampark)
-  .p-inputtext.p-inputtext-warning:focus-visible#{input.$input-enabled} {
+:is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark).p-inputtext-warning,
+:is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark).p-inputtext-warning:focus#{input.$input-enabled},
+:is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark).p-inputtext-warning:focus-visible#{input.$input-enabled} {
   @include input.input-state(
     1px solid var(--input-border-warning),
     var(--input-shadow-warning)
@@ -313,12 +311,12 @@
    │ #EA151A    │ #FFFFFF │ unchanged │
    └────────────┴─────────┴───────────┘
    ══════════════════════════════════════════════════════════════════════ */
-#{input.invalid-set(':is(.baps-ds-sampark, .baps-sampark) .p-inputtext')} {
+#{input.invalid-set(':is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark)')} {
   @include input.input-state(1px solid var(--input-border-error));
 }
 
 /* ── Error — Hover (border color unchanged, still 1px) ── */
-#{input.invalid-set(':is(.baps-ds-sampark, .baps-sampark) .p-inputtext', ':hover#{input.$input-enabled}')} {
+#{input.invalid-set(':is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark)', ':hover#{input.$input-enabled}')} {
   @include input.input-state(1px solid var(--input-border-error));
 }
 
@@ -330,8 +328,8 @@
    │ #EA151A    │ #FFFFFF │ #151414 │ 0 0 0 3px #FFE5E5                │
    └────────────┴─────────┴─────────┴──────────────────────────────────┘
    ══════════════════════════════════════════════════════════════════════ */
-#{input.invalid-set(':is(.baps-ds-sampark, .baps-sampark) .p-inputtext', ':focus#{input.$input-enabled}')},
-#{input.invalid-set(':is(.baps-ds-sampark, .baps-sampark) .p-inputtext', ':focus-visible#{input.$input-enabled}')} {
+#{input.invalid-set(':is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark)', ':focus#{input.$input-enabled}')},
+#{input.invalid-set(':is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark)', ':focus-visible#{input.$input-enabled}')} {
   @include input.input-state(
     1px solid var(--input-border-error),
     var(--input-shadow-error)
@@ -345,16 +343,15 @@
    white background. Filled ghost text is Mono/80 (#595656), not
    Mono/100 — the one place ghost differs from the standard input.
    ══════════════════════════════════════════════════════════════════════ */
-:is(.baps-ds-sampark, .baps-sampark) .p-inputtext.p-inputtext-ghost {
+:is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark).p-inputtext-ghost {
   /* transparent (not none) — the box keeps its 1px so hover adds no shift */
   @include input.input-state(1px solid transparent, $bg: var(--input-bg-ghost));
   color: var(--input-text-ghost) !important;
 }
 
-:is(.baps-ds-sampark, .baps-sampark) .p-inputtext.p-inputtext-ghost:hover#{input.$input-enabled},
-:is(.baps-ds-sampark, .baps-sampark) .p-inputtext.p-inputtext-ghost.p-filled:hover#{input.$input-enabled},
-:is(.baps-ds-sampark, .baps-sampark)
-  .p-inputtext.p-inputtext-ghost:not(
+:is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark).p-inputtext-ghost:hover#{input.$input-enabled},
+:is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark).p-inputtext-ghost.p-filled:hover#{input.$input-enabled},
+:is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark).p-inputtext-ghost:not(
     :placeholder-shown
   ):hover#{input.$input-enabled} {
   @include input.input-state(
@@ -363,8 +360,8 @@
   );
 }
 
-:is(.baps-ds-sampark, .baps-sampark) .p-inputtext.p-inputtext-ghost.p-filled,
-:is(.baps-ds-sampark, .baps-sampark) .p-inputtext.p-inputtext-ghost:not(:placeholder-shown) {
+:is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark).p-inputtext-ghost.p-filled,
+:is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark).p-inputtext-ghost:not(:placeholder-shown) {
   color: var(--input-text-ghost) !important;
 }
 
@@ -379,9 +376,9 @@
    not-allowed must remain visible, so pointer-events is NOT disabled
    (same deliberate deviation from spm-ui as the base file).
    ══════════════════════════════════════════════════════════════════════ */
-:is(.baps-ds-sampark, .baps-sampark) .p-inputtext:disabled,
-:is(.baps-ds-sampark, .baps-sampark) .p-inputtext.p-disabled,
-:is(.baps-ds-sampark, .baps-sampark) .p-inputtext[disabled] {
+:is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark):disabled,
+:is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark).p-disabled,
+:is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark)[disabled] {
   @include input.input-state(
     1px solid var(--input-border-default),
     $bg: var(--input-bg-disabled)
@@ -400,7 +397,7 @@
    that (_input.scss STEP 6), but under Sampark it lost the cascade:
 
      _input.scss        .p-inputtext.p-inputtext-ghost:disabled   (0,3,0) !important
-     _input-sampark.scss :is(.baps-ds-sampark, .baps-sampark) .p-inputtext:disabled   (0,3,0) !important
+     _input-sampark.scss :is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark):disabled   (0,3,0) !important
 
    Identical specificity, and this file is imported last — so the generic
    disabled rule won and a Sampark ghost-disabled input rendered with an
@@ -411,9 +408,9 @@
    both and restores the intended treatment. Not a new design — it is the
    base file's own ghost-disabled state, made reachable again.
    ══════════════════════════════════════════════════════════════════════ */
-:is(.baps-ds-sampark, .baps-sampark) .p-inputtext.p-inputtext-ghost:disabled,
-:is(.baps-ds-sampark, .baps-sampark) .p-inputtext.p-inputtext-ghost.p-disabled,
-:is(.baps-ds-sampark, .baps-sampark) .p-inputtext.p-inputtext-ghost[disabled] {
+:is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark).p-inputtext-ghost:disabled,
+:is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark).p-inputtext-ghost.p-disabled,
+:is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark).p-inputtext-ghost[disabled] {
   @include input.input-state(
     1px solid transparent,
     $bg: var(--input-bg-ghost)
@@ -483,8 +480,8 @@
    MyBKY-ism). Box geometry restated because the input rules above
    outrank the base file's textarea rules on specificity.
    ══════════════════════════════════════════════════════════════════════ */
-:is(.baps-ds-sampark, .baps-sampark) textarea.p-inputtext,
-:is(.baps-ds-sampark, .baps-sampark) textarea.p-textarea {
+:is(.baps-ds-sampark textarea.p-inputtext, .baps-sampark textarea.p-inputtext, textarea.p-inputtext.baps-sampark),
+:is(.baps-ds-sampark textarea.p-textarea, .baps-sampark textarea.p-textarea, textarea.p-textarea.baps-sampark) {
   border-radius: var(--radius-sampark-default, 0.25rem) !important;
   height: auto !important;
   min-height: 5rem !important;
@@ -492,23 +489,19 @@
 }
 
 /* Textarea state rules stay 1px like the input (base thickens to 1.5px) */
-:is(.baps-ds-sampark, .baps-sampark)
-  textarea.p-textarea:hover#{input.$input-enabled}#{input.$input-valid}:not(
+:is(.baps-ds-sampark textarea.p-textarea, .baps-sampark textarea.p-textarea, textarea.p-textarea.baps-sampark):hover#{input.$input-enabled}#{input.$input-valid}:not(
     .p-inputtext-warning
   ),
-:is(.baps-ds-sampark, .baps-sampark)
-  textarea.p-inputtext:focus#{input.$input-enabled}#{input.$input-valid}:not(
+:is(.baps-ds-sampark textarea.p-inputtext, .baps-sampark textarea.p-inputtext, textarea.p-inputtext.baps-sampark):focus#{input.$input-enabled}#{input.$input-valid}:not(
     .p-inputtext-warning
   ),
-:is(.baps-ds-sampark, .baps-sampark)
-  textarea.p-textarea:focus#{input.$input-enabled}#{input.$input-valid}:not(
+:is(.baps-ds-sampark textarea.p-textarea, .baps-sampark textarea.p-textarea, textarea.p-textarea.baps-sampark):focus#{input.$input-enabled}#{input.$input-valid}:not(
     .p-inputtext-warning
   ),
-#{input.invalid-set(':is(.baps-ds-sampark, .baps-sampark) textarea.p-textarea', ':hover#{input.$input-enabled}')},
-#{input.invalid-set(':is(.baps-ds-sampark, .baps-sampark) textarea.p-textarea', ':focus#{input.$input-enabled}')},
-:is(.baps-ds-sampark, .baps-sampark) textarea.p-textarea.p-inputtext-warning,
-:is(.baps-ds-sampark, .baps-sampark)
-  textarea.p-textarea.p-inputtext-warning:focus#{input.$input-enabled} {
+#{input.invalid-set(':is(.baps-ds-sampark textarea.p-textarea, .baps-sampark textarea.p-textarea, textarea.p-textarea.baps-sampark)', ':hover#{input.$input-enabled}')},
+#{input.invalid-set(':is(.baps-ds-sampark textarea.p-textarea, .baps-sampark textarea.p-textarea, textarea.p-textarea.baps-sampark)', ':focus#{input.$input-enabled}')},
+:is(.baps-ds-sampark textarea.p-textarea, .baps-sampark textarea.p-textarea, textarea.p-textarea.baps-sampark).p-inputtext-warning,
+:is(.baps-ds-sampark textarea.p-textarea, .baps-sampark textarea.p-textarea, textarea.p-textarea.baps-sampark).p-inputtext-warning:focus#{input.$input-enabled} {
   border-width: 1px !important;
 }
 

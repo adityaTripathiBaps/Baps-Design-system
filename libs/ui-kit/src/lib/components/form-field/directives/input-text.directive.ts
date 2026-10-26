@@ -1,4 +1,4 @@
-import { Directive } from '@angular/core';
+import { Directive, Input } from '@angular/core';
 import { InputText } from 'primeng/inputtext';
 
 @Directive({
@@ -9,5 +9,15 @@ import { InputText } from 'primeng/inputtext';
       inputs: ['pSize', 'variant', 'invalid', 'fluid'],
     },
   ],
+  host: {
+    '[class.baps-sampark]': "brand === 'sampark'",
+  },
 })
-export class BapsInputText {}
+export class BapsInputText {
+  /**
+   * Sampark skin on this field without a page scope. The class lands on the
+   * element itself, which _input-sampark.scss also matches (spm-ui sets no
+   * root class, so a bare [bapsInputText] there rendered the MyBKY pill).
+   */
+  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+}

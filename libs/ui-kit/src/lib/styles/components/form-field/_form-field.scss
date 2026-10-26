@@ -81,6 +81,14 @@ baps-iconfield .p-iconfield-right .p-inputicon {
   );
 }
 
+/* PrimeNG centres the icon with top:50% + a negative margin-top; the rule
+   above centres it with translateY(-50%). Together they lift it by half its
+   height (8px) wherever this partial ships (spm-ui, React). Sampark only for
+   now: MyBKY has the same double centring in the shipped CSS (backlog F6). */
+:is(baps-iconfield.baps-sampark, .baps-ds-sampark baps-iconfield) .p-inputicon {
+  margin-block-start: 0;
+}
+
 :is(baps-iconfield.baps-sampark, .baps-ds-sampark baps-iconfield)
   .p-iconfield-left
   .p-inputicon {
@@ -185,33 +193,51 @@ baps-message .p-message-simple .p-message-content {
   padding: 0;
 }
 
+/* Sampark's inline message is a compact, badge-like row, not MyBKY's
+   12/16px panel (SPM dev, measured: inline-flex, centred, gap 0.125rem,
+   22px box, padding 0 0.25rem, margin 0, 1px solid border in the badge
+   colours). The 22px box reads the Sampark badge/tag height token, which is
+   the same box. Text size and weight stay as they are: dev's 12.72px/500
+   has no token (ask-at-demo, backlog E1). */
 :is(baps-message.baps-sampark, .baps-ds-sampark baps-message) .p-message {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tag-sampark-height-s);
+  margin: 0;
+  border: 1px solid var(--color-sampark-border-default);
   border-radius: var(--radius-sampark-default);
+  outline: none;
+}
+
+:is(baps-message.baps-sampark, .baps-ds-sampark baps-message) .p-message-content {
+  gap: var(--space-0-5);
+  align-items: center;
+  padding: 0 var(--space-1);
 }
 
 :is(baps-message.baps-sampark, .baps-ds-sampark baps-message) .p-message-info {
-  color: var(--color-sampark-info-80);
-  background: var(--color-sampark-info-10);
-  outline-color: var(--color-sampark-info-60);
+  color: var(--tag-sampark-info-text);
+  background: var(--tag-sampark-info-background);
+  border-color: var(--tag-sampark-info-border);
 }
 
 :is(baps-message.baps-sampark, .baps-ds-sampark baps-message)
   .p-message-success {
   color: var(--color-sampark-success-80);
   background: var(--color-sampark-success-10);
-  outline-color: var(--color-sampark-success-60);
+  border-color: var(--color-sampark-success-60);
 }
 
 :is(baps-message.baps-sampark, .baps-ds-sampark baps-message) .p-message-warn {
   color: var(--color-sampark-warning-80);
   background: var(--color-sampark-warning-10);
-  outline-color: var(--color-sampark-warning-60);
+  border-color: var(--color-sampark-warning-60);
 }
 
 :is(baps-message.baps-sampark, .baps-ds-sampark baps-message) .p-message-error {
   color: var(--color-sampark-error-100);
   background: var(--color-sampark-error-10);
-  outline-color: var(--color-sampark-error-80);
+  border-color: var(--color-sampark-error-80);
 }
 
 .baps-dark baps-message .p-message {

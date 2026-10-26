@@ -214,6 +214,7 @@ describe('BapsMessage', () => {
         [size]="size()"
         [style]="style()"
         [styleClass]="styleClass()"
+        [brand]="brand()"
       >
         {{ projected() }}
       </baps-message>
@@ -230,7 +231,17 @@ describe('BapsMessage', () => {
     readonly style = signal<Record<string, string | number> | undefined>(undefined);
     readonly styleClass = signal<string | undefined>(undefined);
     readonly projected = signal('');
+    readonly brand = signal<'mybky' | 'sampark'>('mybky');
   }
+
+  it('stamps baps-sampark on the host for sampark only', async () => {
+    const fixture = await render(Host);
+    const host = fixture.nativeElement.querySelector('baps-message') as HTMLElement;
+    expect(host.classList.contains('baps-sampark')).toBe(false);
+    fixture.componentInstance.brand.set('sampark');
+    await apply(fixture);
+    expect(host.classList.contains('baps-sampark')).toBe(true);
+  });
 
   it('forwards every input to PrimeNG', async () => {
     const fixture = await render(Host);

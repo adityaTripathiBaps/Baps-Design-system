@@ -8,6 +8,12 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/ui-kit` — minor, additive:** `[bapsInputText]` and `[bapsTextarea]`
+  take `brand`. `brand="sampark"` puts `baps-sampark` on the field itself, which
+  the Sampark input skin now also matches, so a Sampark app with no page scope
+  no longer draws the MyBKY 99px pill (measured 4px vs 99px).
+- **`@org/ui-kit` — minor, additive:** `baps-message` takes `brand`.
+  `brand="sampark"` was silently ignored before; the input did not exist.
 - **`@org/ui-kit` — minor, additive:** `baps-dialog` takes `ariaDescribedBy`,
   the id of the element that describes the dialog. PrimeNG's Dialog has no
   input for it, so it is set on the panel root through PrimeNG pass-through,
@@ -42,6 +48,15 @@ classification and deprecation policy.
   only kit drawer panels, which always name their brand
   (`baps-drawer-mybky` / `baps-drawer-sampark`). Measured on a raw drawer
   under the scope: white, 16px radius, 32/24 padding, 20px title before.
+- **`@org/ui-kit` — patch, visual (Sampark):** `baps-iconfield`'s icon sits
+  centred. PrimeNG centres it with a negative `margin-top` and the kit with
+  `translateY(-50%)`; together they lifted it 8px (measured on the shipped
+  CSS with PrimeNG's runtime rule). The margin is reset for Sampark; MyBKY has
+  the same double centring and is left for a separate decision.
+- **`@org/ui-kit` — patch, visual (Sampark):** `baps-message` is SPM's compact
+  inline row: inline-flex, 22px box (`--tag-sampark-height-s`), `0 0.25rem`
+  padding, `0.125rem` gap, a 1px border in the badge colours instead of the
+  MyBKY outline. Measured on the shipped CSS: 45px with 12/16 padding before.
 - **`@org/ui-kit` — patch, visual:** `baps-chips-input`'s typing slot had no
   minimum width. Its `flex-basis` and `min-width` read a `--space-16` token
   that does not exist, so the browser dropped both declarations (measured:

@@ -590,3 +590,29 @@ export const SamparkDropdownSizes: Story = {
   }),
 };
 
+
+/**
+ * `[bapsInputText]` / `[bapsTextarea]` sit ON the field, so a Sampark app with
+ * no page scope had no Sampark ancestor and drew the MyBKY pill.
+ * `brand="sampark"` stamps the class on the field itself.
+ */
+export const FieldBrandWithoutScopeInteraction: Story = {
+  name: 'Interaction — field brand without a page scope',
+  render: () => ({
+    template: `
+      <div style="display:grid; gap:1rem; padding:1rem; max-width:20rem">
+        <input data-testid="mybky" bapsInputText placeholder="MyBKY" />
+        <input data-testid="sampark" bapsInputText brand="sampark" placeholder="Sampark" />
+        <textarea data-testid="sampark-area" bapsTextarea brand="sampark" rows="2"></textarea>
+      </div>
+    `,
+  }),
+  play: async ({ canvasElement }) => {
+    const radius = (id: string) =>
+      getComputedStyle(canvasElement.querySelector(`[data-testid="${id}"]`) as HTMLElement)
+        .borderTopLeftRadius;
+    await expect(radius('sampark')).toBe('4px');
+    await expect(radius('mybky')).toBe('99px');
+    await expect(radius('sampark-area')).not.toBe('99px');
+  },
+};
