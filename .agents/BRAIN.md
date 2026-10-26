@@ -324,9 +324,6 @@ Blocked on design, not on implementation. Never invent these.
 - Sampark toggle-switch `xs` has no standalone rule; only `--s` and `--l` exist.
 - `--navbar-menu-button-bg` `#fbc02d`, `-hover-bg` `#d3a126`, `-text` `#212121`
   are bare literals with no token behind them.
-
-## Approved token exceptions — *2026-10-08*
-
 - **Ask at demo.** `_menu.scss` (2026-10-24): no MyBKY dropdown shadow (Sampark has
   `--shadow-sampark-dropdown`; no `--shadow-mybky-*` matches the two-layer
   `rgba(24, 27, 29, …)` value), no token for the 200px panel `min-width`, and
@@ -338,6 +335,9 @@ Blocked on design, not on implementation. Never invent these.
   dropped it. Now `calc(var(--space-8) * 2)`; a real `--space-16` is the
   designer's call. Its `150ms` transitions have no token either: the nearest,
   `--motion-duration-fast`, is 120ms.
+
+## Approved token exceptions — *2026-10-08*
+
 - `var(--token, #fallback)` fallbacks. Defensive, not hardcoding.
 - `0`, `100%`, `50%` and other technical values.
 - 1px borders and hairlines.
