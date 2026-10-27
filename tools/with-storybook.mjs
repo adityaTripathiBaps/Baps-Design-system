@@ -1,9 +1,9 @@
 /**
  * Run the browser-backed guards against a Storybook this script owns.
  *
- * Eleven of the tools under `tools/` drive a real page: a11y-audit,
+ * The tools under `tools/` that drive a real page include a11y-audit,
  * check-standalone, check-brand-scope, check-interactions, check-panels,
- * check-dark-contrast and the five drift guards. Every one of
+ * check-dark-contrast, the drift guards and the Sampark overlay guard. Every one of
  * them assumed somebody had already run `nx run storybook-host:storybook` in
  * another terminal, so in CI they did not fail — they exited 1 on a connection
  * error, which reads exactly like a real finding. That is the problem this
@@ -55,6 +55,7 @@ const GUARDS = [
   'check-toggle-switch-drift',
   'check-toolbar-drift',
   'check-pagination-drift',
+  'check-sampark-overlays',
 ];
 
 const args = process.argv.slice(2);

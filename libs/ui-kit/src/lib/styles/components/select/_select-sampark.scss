@@ -67,8 +67,11 @@
   ); /* Mono/80 */
 
   /* ── Trigger internals ───────────────────────────────────────────── */
-  --select-trigger-icon: var(--color-sampark-text-secondary, #595656);
-  --select-trigger-icon-size: 0.875rem;
+  /* SPM origin/develop renders its explicit pi-chevron-down trigger at
+     12px in Mono/100. Keep the icon font-size on the typography scale so
+     select, multiselect, treeselect and datepicker cannot drift apart. */
+  --select-trigger-icon: var(--color-sampark-text-primary, #151414);
+  --select-trigger-icon-size: var(--font-size-xs, 0.75rem);
 
   /* ── Filter (search inside overlay) ──────────────────────────────── */
   --select-filter-bg: var(--color-sampark-secondary-0, #f8f7f7);
@@ -95,6 +98,95 @@
   --datepicker-day-selected-text: var(--color-sampark-mono-0, #ffffff);
   --datepicker-today-border: var(--color-sampark-primary-40, #d48787);
   --datepicker-muted-text: var(--color-sampark-text-secondary, #595656);
+}
+
+/* PrimeNG ships three different trigger glyph paths here: chevron SVGs for
+   Select/MultiSelect/TreeSelect, a calendar SVG for DatePicker, and whatever
+   a raw consumer supplies through dropdownicon/triggericon. Sampark uses one
+   SPM-compatible PrimeIcons chevron for all four. The original child remains
+   in the DOM for PrimeNG ownership but is hidden only in the Sampark scope,
+   which leaves MyBKY's rendered icon byte-identical. Loading spinners are
+   deliberately excluded so asynchronous controls still announce progress. */
+:is(
+    .baps-ds-sampark,
+    baps-select.baps-sampark,
+    baps-multi-select.baps-sampark,
+    baps-tree-select.baps-sampark,
+    baps-datepicker.baps-sampark
+  )
+  :is(
+    .p-select-dropdown,
+    .p-multiselect-dropdown,
+    .p-treeselect-dropdown,
+    .p-datepicker-dropdown
+  ):not(
+    :has(
+      .p-select-loading-icon,
+      .p-multiselect-loading-icon,
+      .p-treeselect-loading-icon,
+      .pi-spinner,
+      [data-p-icon='spinner']
+    )
+  ) {
+  position: relative;
+  color: var(--select-trigger-icon) !important;
+}
+
+:is(
+    .baps-ds-sampark,
+    baps-select.baps-sampark,
+    baps-multi-select.baps-sampark,
+    baps-tree-select.baps-sampark,
+    baps-datepicker.baps-sampark
+  )
+  :is(
+    .p-select-dropdown,
+    .p-multiselect-dropdown,
+    .p-treeselect-dropdown,
+    .p-datepicker-dropdown
+  ):not(
+    :has(
+      .p-select-loading-icon,
+      .p-multiselect-loading-icon,
+      .p-treeselect-loading-icon,
+      .pi-spinner,
+      [data-p-icon='spinner']
+    )
+  )
+  > * {
+  visibility: hidden !important;
+}
+
+:is(
+    .baps-ds-sampark,
+    baps-select.baps-sampark,
+    baps-multi-select.baps-sampark,
+    baps-tree-select.baps-sampark,
+    baps-datepicker.baps-sampark
+  )
+  :is(
+    .p-select-dropdown,
+    .p-multiselect-dropdown,
+    .p-treeselect-dropdown,
+    .p-datepicker-dropdown
+  ):not(
+    :has(
+      .p-select-loading-icon,
+      .p-multiselect-loading-icon,
+      .p-treeselect-loading-icon,
+      .pi-spinner,
+      [data-p-icon='spinner']
+    )
+  )::before {
+  position: absolute;
+  content: '\e902';
+  font-family: 'primeicons';
+  font-size: var(--select-trigger-icon-size) !important;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  color: var(--select-trigger-icon) !important;
+  speak: none;
 }
 
 /* ══════════════════════════════════════════════════════════════════════
@@ -332,14 +424,19 @@
 .baps-ds-sampark .p-multiselect-option.p-focus:not(.p-disabled),
 .baps-ds-sampark .p-autocomplete-option:not(.p-disabled):hover,
 .baps-ds-sampark .p-autocomplete-option.p-focus:not(.p-disabled),
-.baps-ds-sampark .p-cascadeselect-option:not(.p-disabled):hover
+.baps-ds-sampark
+  .p-cascadeselect-option:not(.p-disabled):hover
   > .p-cascadeselect-option-content,
-.baps-ds-sampark .p-treeselect-overlay .p-tree-node-content:not(.p-disabled):hover,
+.baps-ds-sampark
+  .p-treeselect-overlay
+  .p-tree-node-content:not(.p-disabled):hover,
 .baps-ds-sampark .p-select-option.p-select-option-selected,
 .baps-ds-sampark .p-select-option[data-p-selected='true'],
 .baps-ds-sampark .p-multiselect-option.p-multiselect-option-selected,
 .baps-ds-sampark .p-autocomplete-option.p-autocomplete-option-selected,
-.baps-ds-sampark .p-treeselect-overlay .p-tree-node-content.p-tree-node-selected,
+.baps-ds-sampark
+  .p-treeselect-overlay
+  .p-tree-node-content.p-tree-node-selected,
 .baps-ds-sampark .p-select-option.p-select-option-selected:hover,
 .baps-ds-sampark .p-select-option[data-p-selected='true']:hover,
 .baps-ds-sampark .p-multiselect-option.p-multiselect-option-selected:hover {
