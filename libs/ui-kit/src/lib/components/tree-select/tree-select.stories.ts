@@ -44,7 +44,10 @@ const meta: Meta<BapsTreeSelect> = {
     nodeExpand: { control: false },
     nodeSelect: { control: false },
     nodeUnselect: { control: false },
-    selectionMode: { control: 'select', options: ['single', 'multiple', 'checkbox'] },
+    selectionMode: {
+      control: 'select',
+      options: ['single', 'multiple', 'checkbox'],
+    },
     display: { control: 'select', options: ['comma', 'chip'] },
     size: { control: 'select', options: [undefined, 'small', 'large'] },
     filterMode: { control: 'select', options: ['lenient', 'strict'] },
@@ -64,22 +67,40 @@ const REGIONS: TreeNode[] = [
     key: 'in',
     label: 'India',
     children: [
-      { key: 'in-amd', label: 'Ahmedabad', children: [{ key: 'in-amd-1', label: 'Yuva Sabha' }, { key: 'in-amd-2', label: 'Bal Sabha' }] },
-      { key: 'in-bom', label: 'Mumbai', children: [{ key: 'in-bom-1', label: 'Yuva Sabha' }] },
+      {
+        key: 'in-amd',
+        label: 'Ahmedabad',
+        children: [
+          { key: 'in-amd-1', label: 'Yuva Sabha', leaf: true },
+          { key: 'in-amd-2', label: 'Bal Sabha', leaf: true },
+        ],
+      },
+      {
+        key: 'in-bom',
+        label: 'Mumbai',
+        children: [{ key: 'in-bom-1', label: 'Yuva Sabha', leaf: true }],
+      },
     ],
   },
   {
     key: 'uk',
     label: 'United Kingdom',
     children: [
-      { key: 'uk-lon', label: 'London', children: [{ key: 'uk-lon-1', label: 'Yuva Sabha' }, { key: 'uk-lon-2', label: 'Mahila Sabha' }] },
-      { key: 'uk-lei', label: 'Leicester' },
+      {
+        key: 'uk-lon',
+        label: 'London',
+        children: [
+          { key: 'uk-lon-1', label: 'Yuva Sabha', leaf: true },
+          { key: 'uk-lon-2', label: 'Mahila Sabha', leaf: true },
+        ],
+      },
+      { key: 'uk-lei', label: 'Leicester', leaf: true },
     ],
   },
   {
     key: 'ea',
     label: 'East Africa',
-    children: [{ key: 'ea-nbo', label: 'Nairobi' }],
+    children: [{ key: 'ea-nbo', label: 'Nairobi', leaf: true }],
   },
 ];
 
@@ -249,11 +270,15 @@ export const ExpandAndSelectInteraction: Story = {
     await expect(branches.length).toBeGreaterThan(0);
 
     // Expanding a branch must reveal children WITHOUT selecting the branch.
-    const toggle = branches[0].querySelector<HTMLElement>('.p-tree-node-toggle-button');
+    const toggle = branches[0].querySelector<HTMLElement>(
+      '.p-tree-node-toggle-button',
+    );
     if (toggle) {
       await userEvent.click(toggle);
       await waitFor(() =>
-        expect(page.getAllByRole('treeitem').length).toBeGreaterThan(branches.length),
+        expect(page.getAllByRole('treeitem').length).toBeGreaterThan(
+          branches.length,
+        ),
       );
     }
   },

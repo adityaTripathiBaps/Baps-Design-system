@@ -172,6 +172,127 @@ await checkRadius('treeselect focus', '.p-tree-node-content');
 await addState('.p-tree-node-content', 'p-tree-node-selected');
 await checkRadius('treeselect selected', '.p-tree-node-content');
 
+await page
+  .locator(
+    '.p-tree-node[data-id="in"] > .p-tree-node-content > .p-tree-node-toggle-button',
+  )
+  .click();
+await page
+  .locator(
+    '.p-tree-node[data-id="in-amd"] > .p-tree-node-content > .p-tree-node-toggle-button',
+  )
+  .click();
+await page
+  .locator(
+    '.p-tree-node[data-id="in-amd-1"] > .p-tree-node-content > .p-tree-node-toggle-button',
+  )
+  .waitFor({ state: 'attached' });
+await page.waitForTimeout(200);
+const treePanel = await page
+  .locator('.p-treeselect-overlay')
+  .evaluate((panel) => {
+    const panelStyle = getComputedStyle(panel);
+    const rootRow = panel.querySelector(
+      '.p-tree-node[data-id="in"] > .p-tree-node-content',
+    );
+    const hoverRow = panel.querySelector(
+      '.p-tree-node[data-id="in-amd"] > .p-tree-node-content',
+    );
+    const guide = panel.querySelector(
+      '.p-tree-node[data-id="in"] > .p-tree-node-children',
+    );
+    const toggle = panel.querySelector(
+      '.p-tree-node[data-id="in-amd"] > .p-tree-node-content > .p-tree-node-toggle-button',
+    );
+    const toggleIcon = toggle?.querySelector('.p-tree-node-toggle-icon');
+    const leafToggle = panel.querySelector(
+      '.p-tree-node[data-id="in-amd-1"] > .p-tree-node-content > .p-tree-node-toggle-button',
+    );
+    const leafIcon = leafToggle?.querySelector('.p-tree-node-toggle-icon');
+    const rootStyle = rootRow ? getComputedStyle(rootRow) : null;
+    const rootBar = rootRow ? getComputedStyle(rootRow, '::before') : null;
+    const guideStyle = guide ? getComputedStyle(guide) : null;
+    const toggleStyle = toggle ? getComputedStyle(toggle) : null;
+    const iconStyle = toggleIcon ? getComputedStyle(toggleIcon) : null;
+    const leafMarker = leafToggle
+      ? getComputedStyle(leafToggle, '::before')
+      : null;
+    return {
+      panelRadius: panelStyle.borderRadius,
+      panelBorderWidth: panelStyle.borderTopWidth,
+      panelBorderColor: panelStyle.borderTopColor,
+      rowHeight: rootStyle?.height,
+      selectedBackground: rootStyle?.backgroundColor,
+      selectedBarOpacity: rootBar?.opacity,
+      guideWidth: guideStyle?.borderInlineStartWidth,
+      guideStyle: guideStyle?.borderInlineStartStyle,
+      guideColor: guideStyle?.borderInlineStartColor,
+      guideMargin: guideStyle?.marginInlineStart,
+      toggleWidth: toggleStyle?.width,
+      toggleHeight: toggleStyle?.height,
+      toggleIcon: toggleIcon?.getAttribute('data-p-icon'),
+      toggleIconWidth: iconStyle?.width,
+      toggleIconHeight: iconStyle?.height,
+      leafMarker: leafMarker?.content,
+      leafIconDisplay: leafIcon
+        ? getComputedStyle(leafIcon).display
+        : undefined,
+      hoverRowSelector: hoverRow ? 'found' : 'missing',
+    };
+  });
+await page
+  .locator('.p-tree-node[data-id="in-amd"] > .p-tree-node-content')
+  .hover();
+await page.waitForTimeout(200);
+const treeHover = await page
+  .locator('.p-tree-node[data-id="in-amd"] > .p-tree-node-content')
+  .evaluate((row) => ({
+    background: getComputedStyle(row).backgroundColor,
+    barOpacity: getComputedStyle(row, '::before').opacity,
+  }));
+console.log(
+  `treeselect panel: ${JSON.stringify({ ...treePanel, ...treeHover })}`,
+);
+const treeExpected = {
+  panelRadius: '4px',
+  panelBorderWidth: '1px',
+  panelBorderColor: 'rgb(225, 224, 224)',
+  selectedBackground: 'rgb(248, 236, 236)',
+  selectedBarOpacity: '0',
+  guideWidth: '2px',
+  guideStyle: 'solid',
+  guideColor: 'rgb(225, 224, 224)',
+  guideMargin: '20px',
+  toggleWidth: '16px',
+  toggleHeight: '16px',
+  toggleIconWidth: '12px',
+  toggleIconHeight: '12px',
+  leafMarker: '"–"',
+  leafIconDisplay: 'none',
+  hoverRowSelector: 'found',
+  background: 'rgb(246, 245, 245)',
+  barOpacity: '1',
+};
+for (const [property, expected] of Object.entries(treeExpected)) {
+  const actual = { ...treePanel, ...treeHover }[property];
+  if (actual !== expected) {
+    failures.push(
+      `treeselect panel ${property}: expected ${JSON.stringify(expected)}, got ${JSON.stringify(actual)}`,
+    );
+  }
+}
+const treeRowHeight = Number.parseFloat(treePanel.rowHeight ?? '0');
+if (treeRowHeight < 34 || treeRowHeight > 36) {
+  failures.push(
+    `treeselect panel rowHeight: expected 34–36px, got ${treePanel.rowHeight}`,
+  );
+}
+if (!['chevron-right', 'chevron-down'].includes(treePanel.toggleIcon ?? '')) {
+  failures.push(
+    `treeselect panel toggleIcon: expected a chevron, got ${JSON.stringify(treePanel.toggleIcon)}`,
+  );
+}
+
 await openStory('components-menu--sampark');
 await page.getByRole('button', { name: 'Sampark Menu' }).click();
 await page.locator('.p-menu-item').first().waitFor();
@@ -211,5 +332,5 @@ if (failures.length) {
 }
 
 console.log(
-  '\nSampark overlays match SPM: 12px Mono/100 chevrons and square list states',
+  '\nSampark overlays match SPM: 12px Mono/100 chevrons, square list states, and tree panel geometry',
 );
