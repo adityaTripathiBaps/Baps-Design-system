@@ -1,4 +1,10 @@
-import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewEncapsulation,
+} from '@angular/core';
 import { SharedModule } from 'primeng/api';
 import { Drawer } from 'primeng/drawer';
 import { BapsButton } from '../button/button.component';
@@ -13,8 +19,8 @@ export type BapsDrawerPosition = 'left' | 'right' | 'top' | 'bottom';
  * ones (mask, focus trap, Esc to close, scroll blocking). What this
  * adds is the Sampark skin from the Portal Figma (node 17512:72588): the
  * 16px radius on the two inner corners, the deep `0 0 40px` float shadow, the
- * 420px panel width, 24/32px padding, and a header row laid out as
- * `title · actions · close`.
+ * fluid panel width, SPM-compatible header/content padding, and a header row
+ * laid out as `title · actions · close`.
  *
  * ## Anatomy
  *
@@ -89,6 +95,7 @@ export type BapsDrawerPosition = 'left' | 'right' | 'top' | 'bottom';
       [fullScreen]="fullScreen"
       [appendTo]="appendTo"
       [ariaCloseLabel]="ariaCloseLabel"
+      [style]="panelStyle"
       [styleClass]="panelClass"
       [maskStyle]="maskStyle"
       (onShow)="shown.emit()"
@@ -175,6 +182,11 @@ export class BapsDrawer {
   /** Expand to fill the viewport. */
   @Input() fullScreen = false;
   /**
+   * Panel width. Any CSS length is accepted; leave unset to use the active
+   * brand skin's responsive default.
+   */
+  @Input() width?: string;
+  /**
    * Where the panel is attached in the DOM. PrimeNG defaults to `'self'`;
    * `'body'` escapes any `overflow`/`transform` ancestor that would otherwise
    * clip a fixed-position panel. The skin is a global partial precisely so it
@@ -231,14 +243,19 @@ export class BapsDrawer {
    */
   protected get maskStyle(): Record<string, string> | undefined {
     if (this.brand === 'sampark') {
-      return { '--p-mask-background': 'var(--drawer-sampark-mask-background, rgba(14, 13, 13, 0.45))' };
+      return {
+        '--p-mask-background':
+          'var(--drawer-sampark-mask-background, rgba(14, 13, 13, 0.45))',
+      };
     }
     // MyBKY frosts the scrim. This cannot be done from CSS: the mask is an
     // EMPTY element and a SIBLING of the panel under <body> (measured), so
     // neither a descendant selector nor :has() can reach it from the panel's
     // brand class. The blur belongs on the scrim, never on the panel — a
     // blurred panel blurs its own content.
-    return { 'backdrop-filter': 'blur(var(--drawer-mybky-backdrop-blur, 25px))' };
+    return {
+      'backdrop-filter': 'blur(var(--drawer-mybky-backdrop-blur, 25px))',
+    };
   }
 
   /**
@@ -253,6 +270,12 @@ export class BapsDrawer {
    * itself here too, and `_drawer.scss` keys off that class.
    */
   protected get panelClass(): string {
-    return [this.styleClass, `baps-drawer-${this.brand}`].filter(Boolean).join(' ');
+    return [this.styleClass, `baps-drawer-${this.brand}`]
+      .filter(Boolean)
+      .join(' ');
+  }
+
+  protected get panelStyle(): Record<string, string> | undefined {
+    return this.width ? { width: this.width } : undefined;
   }
 }

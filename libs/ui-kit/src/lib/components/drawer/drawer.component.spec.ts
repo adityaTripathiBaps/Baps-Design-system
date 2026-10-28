@@ -35,6 +35,7 @@ import { BapsDrawer, BapsDrawerPosition } from './drawer.component';
       [position]="position()"
       [brand]="brand()"
       [styleClass]="styleClass()"
+      [width]="width()"
       header="Filters"
     >
       <div drawer-actions>
@@ -50,10 +51,13 @@ class Host {
   readonly position = signal<BapsDrawerPosition>('right');
   readonly brand = signal<'mybky' | 'sampark'>('mybky');
   readonly styleClass = signal<string | undefined>(undefined);
+  readonly width = signal<string | undefined>(undefined);
 }
 
 async function setup(
-  overrides: Partial<Record<'position' | 'brand' | 'styleClass', string>> = {},
+  overrides: Partial<
+    Record<'position' | 'brand' | 'styleClass' | 'width', string>
+  > = {},
 ) {
   const fixture = TestBed.createComponent(Host);
   const host = fixture.componentInstance;
@@ -61,6 +65,7 @@ async function setup(
     host.position.set(overrides.position as BapsDrawerPosition);
   if (overrides.brand) host.brand.set(overrides.brand as 'mybky' | 'sampark');
   if (overrides.styleClass) host.styleClass.set(overrides.styleClass);
+  if (overrides.width) host.width.set(overrides.width);
   await fixture.whenStable();
   fixture.detectChanges();
   await fixture.whenStable();
@@ -112,6 +117,18 @@ describe('BapsDrawer', () => {
         expect(panel()!.classList.contains(`p-drawer-${position}`)).toBe(true);
       },
     );
+  });
+
+  describe('width', () => {
+    it('forwards a CSS width to the PrimeNG panel', async () => {
+      await setup({ width: '37.5rem' });
+      expect((panel() as HTMLElement).style.width).toBe('37.5rem');
+    });
+
+    it('leaves width to the brand skin when unset', async () => {
+      await setup();
+      expect((panel() as HTMLElement).style.width).toBe('');
+    });
   });
 
   describe('ng-template forwarding across the PrimeNG boundary', () => {

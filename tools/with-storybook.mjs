@@ -56,6 +56,7 @@ const GUARDS = [
   'check-toolbar-drift',
   'check-pagination-drift',
   'check-sampark-overlays',
+  'check-sampark-filter-panel',
 ];
 
 const args = process.argv.slice(2);

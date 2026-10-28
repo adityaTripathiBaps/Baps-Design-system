@@ -8,14 +8,20 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
-import { Accordion, AccordionPanel, AccordionHeader, AccordionContent } from 'primeng/accordion';
+import {
+  Accordion,
+  AccordionPanel,
+  AccordionHeader,
+  AccordionContent,
+} from 'primeng/accordion';
 import { BapsAccordionPanel } from './accordion-panel.component';
 
 /**
  * PrimeNG's own accordion value type, mirrored so this passes straight
  * through. Numbers are in it because a panel's `value` may be an index.
  */
-export type AccordionValue = string | number | string[] | number[] | null | undefined;
+export type AccordionValue =
+  string | number | string[] | number[] | null | undefined;
 
 /**
  * baps-accordion — collapsible sections, in the house shape.
@@ -61,7 +67,13 @@ export type AccordionValue = string | number | string[] | number[] | null | unde
  */
 @Component({
   selector: 'baps-accordion',
-  imports: [NgTemplateOutlet, Accordion, AccordionPanel, AccordionHeader, AccordionContent],
+  imports: [
+    NgTemplateOutlet,
+    Accordion,
+    AccordionPanel,
+    AccordionHeader,
+    AccordionContent,
+  ],
   template: `
     <p-accordion
       [multiple]="multiple"
@@ -73,7 +85,9 @@ export type AccordionValue = string | number | string[] | number[] | null | unde
         <p-accordion-panel [value]="panel.value" [disabled]="panel.disabled">
           <p-accordion-header>
             @if (panel.count !== undefined && panel.count !== null) {
-              <span class="baps-accordion-count" aria-hidden="true">{{ panel.count }}</span>
+              <span class="baps-accordion-count" aria-hidden="true">{{
+                panel.count
+              }}</span>
             }
             <span class="baps-accordion-label">{{ panel.label }}</span>
             @if (panel.clearable && +(panel.count ?? 0) > 0) {
@@ -86,7 +100,23 @@ export type AccordionValue = string | number | string[] | number[] | null | unde
                 [attr.aria-label]="'Clear ' + panel.label"
                 (click)="panel.clear.emit(); $event.stopPropagation()"
               >
-                <i class="pi pi-times-circle" aria-hidden="true"></i>
+                <i
+                  class="pi pi-times-circle baps-accordion-clear__mybky"
+                  aria-hidden="true"
+                ></i>
+                <svg
+                  class="baps-accordion-clear__sampark"
+                  viewBox="0 0 18 18"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M11.625 7.12503L9.74998 9.00002M9.74998 9.00002L7.87498 10.875M9.74998 9.00002L7.87497 7.12502M9.74998 9.00002L11.625 10.875M2.61736 11.385L3.12796 12.18C4.01338 13.5586 4.45608 14.2479 5.15336 14.6239C5.85063 15 6.68593 15 8.35653 15H10.3342C13.2408 15 14.6941 15 15.597 14.1213C16.5 13.2426 16.5 11.8284 16.5 9C16.5 6.17157 16.5 4.75736 15.597 3.87868C14.6941 3 13.2408 3 10.3342 3L8.35653 3C6.68593 3 5.85063 3 5.15336 3.37607C4.45608 3.75215 4.01337 4.44143 3.12796 5.82001L2.61736 6.61501C1.87245 7.77481 1.5 8.35471 1.5 9C1.5 9.64529 1.87245 10.2252 2.61736 11.385Z"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
               </button>
             }
           </p-accordion-header>

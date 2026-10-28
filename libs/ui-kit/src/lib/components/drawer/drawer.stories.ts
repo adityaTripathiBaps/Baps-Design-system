@@ -48,9 +48,13 @@ const meta: Meta<Args> = {
     hidden: { control: false },
     shown: { control: false },
     visibleChange: { control: false },
-    position: { control: 'inline-radio', options: ['left', 'right', 'top', 'bottom'] },
+    position: {
+      control: 'inline-radio',
+      options: ['left', 'right', 'top', 'bottom'],
+    },
     brand: { control: 'inline-radio', options: ['mybky', 'sampark'] },
     appendTo: { control: 'inline-radio', options: ['self', 'body'] },
+    width: { control: 'text' },
   },
   args: {
     styleClass: '',
@@ -74,7 +78,10 @@ const meta: Meta<Args> = {
   parameters: {
     // Design tab — the Figma frame this component implements, node 17512:72588.
     // Harvested from drawer.component.ts, where it was already recorded as a comment.
-    design: { type: 'figma', url: 'https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/?node-id=17512-72588' },
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/?node-id=17512-72588',
+    },
     // The panel is fixed-position and fills the viewport height, so the
     // default padded docs frame clips it. Stories open it in place instead.
     layout: 'fullscreen',
@@ -111,6 +118,7 @@ const meta: Meta<Args> = {
         [closable]="closable"
         [closeOnEscape]="closeOnEscape"
         [fullScreen]="fullScreen"
+        [width]="width"
         [appendTo]="appendTo"
         [brand]="brand"
       
@@ -162,12 +170,20 @@ export const Open: Story = {};
  * covered by the component spec and by drawer.mdx.
  */
 export const FilterPanel: Story = {
-  args: { header: 'Filters' },
+  args: {
+    header: 'Filters',
+    brand: 'sampark',
+    width: 'max(31.25rem, 26.05vw)',
+  },
   render: (args) => ({
     props: {
       ...args,
       open: ['location', 'duration', 'progress'],
-      locations: [{ name: 'Robbinsvile' }, { name: 'Edison' }, { name: 'Parsippany' }],
+      locations: [
+        { name: 'Robbinsvile' },
+        { name: 'Edison' },
+        { name: 'Parsippany' },
+      ],
       location: [{ name: 'Robbinsvile' }],
       period: 'custom',
       from: new Date(2025, 5, 5),
@@ -181,15 +197,15 @@ export const FilterPanel: Story = {
         </baps-button>
       </div>
 
-      <baps-drawer [(visible)]="visible" [header]="header" [position]="position" [appendTo]="appendTo" [brand]="brand">
+      <baps-drawer [(visible)]="visible" [header]="header" [position]="position" [width]="width" [appendTo]="appendTo" [brand]="brand">
         <div drawer-actions>
-          <baps-button label="Clear All" severity="secondary" [outlined]="true" size="small" [brand]="brand" />
-          <baps-button label="Apply" size="small" [brand]="brand" />
+          <baps-button label="Clear All" severity="secondary" [outlined]="true" [brand]="brand" />
+          <baps-button label="Apply" [brand]="brand" />
         </div>
 
         <baps-accordion [brand]="brand" [multiple]="true" [value]="open">
 
-          <baps-accordion-panel value="location" label="Location" [count]="1" [divider]="false">
+          <baps-accordion-panel value="location" label="Location" [count]="location.length" [clearable]="true" (clear)="location = []" [divider]="false">
             <baps-multi-select
               [brand]="brand" display="chip" optionLabel="name"
               placeholder="Select location" [options]="locations" [(ngModel)]="location"
@@ -323,11 +339,16 @@ export const OpenCloseInteraction: Story = {
     const page = within(canvasElement.ownerDocument.body);
 
     await userEvent.click(canvas.getByRole('button', { name: /Open drawer/ }));
-    const panel = await waitFor(() => page.getByRole('complementary'), { timeout: 8000 });
+    const panel = await waitFor(() => page.getByRole('complementary'), {
+      timeout: 8000,
+    });
     await expect(panel).toBeVisible();
 
     await userEvent.click(page.getByRole('button', { name: 'Close' }));
-    await waitFor(() => expect(page.queryByRole('complementary')).not.toBeInTheDocument(), { timeout: 8000 });
+    await waitFor(
+      () => expect(page.queryByRole('complementary')).not.toBeInTheDocument(),
+      { timeout: 8000 },
+    );
   },
 };
 
@@ -339,7 +360,9 @@ export const EscapeInteraction: Story = {
     const page = within(canvasElement.ownerDocument.body);
 
     await userEvent.click(canvas.getByRole('button', { name: /Open drawer/ }));
-    await waitFor(() => expect(page.getByRole('complementary')).toBeVisible(), { timeout: 8000 });
+    await waitFor(() => expect(page.getByRole('complementary')).toBeVisible(), {
+      timeout: 8000,
+    });
 
     // A real browser Escape DOES close this panel — driven with Playwright,
     // the panel count goes 1 -> 0. userEvent.keyboard('{Escape}') does not,
@@ -353,6 +376,8 @@ export const EscapeInteraction: Story = {
       code: 'Escape',
       keyCode: 27,
     });
-    await waitFor(() => expect(page.queryByRole('complementary')).not.toBeInTheDocument());
+    await waitFor(() =>
+      expect(page.queryByRole('complementary')).not.toBeInTheDocument(),
+    );
   },
 };

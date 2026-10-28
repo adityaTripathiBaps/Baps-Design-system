@@ -23,6 +23,7 @@ A slide-in panel anchored to an edge of the screen. `baps-drawer` wraps PrimeNG 
   [(visible)]="visible"
   header="Filters"
   position="right"
+  width="max(31.25rem, 26.05vw)"
   appendTo="body"
   brand="sampark"
 >
@@ -31,10 +32,9 @@ A slide-in panel anchored to an edge of the screen. `baps-drawer` wraps PrimeNG 
       label="Clear All"
       severity="secondary"
       [outlined]="true"
-      size="small"
       brand="sampark"
     />
-    <baps-button label="Apply" size="small" brand="sampark" />
+    <baps-button label="Apply" brand="sampark" />
   </div>
 
   <baps-checkbox [(ngModel)]="filters.family" label="Family" brand="sampark" />

@@ -335,6 +335,10 @@ Blocked on design, not on implementation. Never invent these.
   dropped it. Now `calc(var(--space-8) * 2)`; a real `--space-16` is the
   designer's call. Its `150ms` transitions have no token either: the nearest,
   `--motion-duration-fast`, is 120ms.
+- **Ask at demo.** `_accordion.scss` (2026-10-28): SPM dev's Filters drawer
+  resolves `--table-header-bg` to `#f6f7f8`, but Sampark has no token for that
+  cool-grey surface; its documented Mono/10 header token is `#f8f7f7`.
+  FILTER-PANEL keeps Mono/10 rather than inventing a new Sampark value.
 
 ## Approved token exceptions — *2026-10-08*
 
