@@ -1,0 +1,52 @@
+/* Sampark input icons use one centring mechanism. PrimeNG supplies a negative
+   margin while the design-system geometry uses translateY(-50%); resetting the
+   margin prevents a projected svg-icon from being lifted by half its height. */
+:is(
+    baps-iconfield.baps-sampark,
+    .baps-ds-sampark baps-iconfield,
+    baps-inputicon.baps-sampark,
+    .baps-ds-sampark baps-inputicon
+  )
+  .p-inputicon {
+  --baps-icon-field-padding: var(
+    --form-field-sampark-padding-x,
+    var(--space-2)
+  );
+
+  position: absolute;
+  inset-block-start: 50%;
+  z-index: 1;
+  display: inline-flex;
+  width: var(--font-size-md);
+  height: var(--font-size-md);
+  margin-top: 0 !important;
+  margin-block-start: 0 !important;
+  align-items: center;
+  justify-content: center;
+  color: var(--input-leading-icon-color);
+  line-height: 1;
+  pointer-events: none;
+  transform: translateY(-50%);
+
+  > :is(svg-icon, svg, i) {
+    display: inline-flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    font-size: inherit;
+    line-height: 1;
+  }
+}
+
+:is(baps-iconfield.baps-sampark, .baps-ds-sampark baps-iconfield)
+  .p-iconfield-left
+  .p-inputicon {
+  inset-inline-start: var(--baps-icon-field-padding);
+}
+
+:is(baps-iconfield.baps-sampark, .baps-ds-sampark baps-iconfield)
+  .p-iconfield-right
+  .p-inputicon {
+  inset-inline-end: var(--baps-icon-field-padding);
+}

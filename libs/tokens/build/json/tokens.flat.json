@@ -8179,6 +8179,53 @@
     "legacyMapping": {}
   },
   {
+    "name": "MessageSamparkTextFontSize",
+    "path": [
+      "message",
+      "sampark",
+      "textFontSize"
+    ],
+    "value": "0.795rem",
+    "original": "0.795rem",
+    "legacyMapping": {},
+    "comment": "12.72px compact inline-message text measured in spm-ui _message.scss at the template breakpoint"
+  },
+  {
+    "name": "MessageSamparkTextFontWeight",
+    "path": [
+      "message",
+      "sampark",
+      "textFontWeight"
+    ],
+    "value": "500",
+    "original": "{font.weight.medium}",
+    "legacyMapping": {},
+    "comment": "500 from spm-ui inline-message text"
+  },
+  {
+    "name": "MessageSamparkTextLineHeight",
+    "path": [
+      "message",
+      "sampark",
+      "textLineHeight"
+    ],
+    "value": "1.2",
+    "original": "1.2",
+    "legacyMapping": {}
+  },
+  {
+    "name": "MessageSamparkIconSize",
+    "path": [
+      "message",
+      "sampark",
+      "iconSize"
+    ],
+    "value": "0.8125rem",
+    "original": "0.8125rem",
+    "legacyMapping": {},
+    "comment": "13px icon requested from the rendered SPM dev message"
+  },
+  {
     "name": "InputGroupHeight",
     "path": [
       "inputGroup",

@@ -1,3 +1,4 @@
+@use 'input-icon-sampark';
 @use 'message-sampark';
 
 baps-floatlabel,
@@ -72,55 +73,6 @@ baps-iconfield .p-iconfield-left .p-inputicon {
 
 baps-iconfield .p-iconfield-right .p-inputicon {
   inset-inline-end: var(--form-field-mybky-padding-x);
-}
-
-:is(baps-iconfield.baps-sampark, .baps-ds-sampark baps-iconfield)
-  :is(.p-iconfield-left, .p-iconfield-right)
-  .p-inputicon {
-  --baps-icon-field-padding: var(
-    --form-field-sampark-padding-x,
-    var(--space-2)
-  );
-}
-
-/* PrimeNG centres the icon with top:50% + a negative margin-top; the rule
-   above centres it with translateY(-50%). Together they lift it by half its
-   height (8px) wherever this partial ships (spm-ui, React). Sampark only for
-   now: MyBKY has the same double centring in the shipped CSS (backlog F6). */
-:is(
-    baps-iconfield.baps-sampark,
-    .baps-ds-sampark baps-iconfield,
-    baps-inputicon.baps-sampark,
-    .baps-ds-sampark baps-inputicon
-  )
-  .p-inputicon {
-  margin-top: 0 !important;
-  margin-block-start: 0 !important;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  > :is(svg-icon, svg, i) {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    font-size: inherit;
-    line-height: 1;
-  }
-}
-
-:is(baps-iconfield.baps-sampark, .baps-ds-sampark baps-iconfield)
-  .p-iconfield-left
-  .p-inputicon {
-  inset-inline-start: var(--baps-icon-field-padding);
-}
-
-:is(baps-iconfield.baps-sampark, .baps-ds-sampark baps-iconfield)
-  .p-iconfield-right
-  .p-inputicon {
-  inset-inline-end: var(--baps-icon-field-padding);
 }
 
 baps-message .p-message {

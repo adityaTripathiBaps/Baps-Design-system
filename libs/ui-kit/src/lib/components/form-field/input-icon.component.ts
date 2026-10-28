@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { InputIcon } from 'primeng/inputicon';
 
 @Component({
@@ -9,6 +9,8 @@ import { InputIcon } from 'primeng/inputicon';
       <ng-content></ng-content>
     </p-inputicon>
   `,
+  encapsulation: ViewEncapsulation.None,
+  styleUrls: ['../../styles/components/form-field/_input-icon-sampark.scss'],
   host: {
     '[class.baps-sampark]': "brand === 'sampark'",
   },

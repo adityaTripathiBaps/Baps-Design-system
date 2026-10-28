@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
 import { expect, userEvent, waitFor, within } from '@storybook/test';
 import { FormsModule } from '@angular/forms';
+import { Component } from '@angular/core';
 import { BapsInputText } from './directives/input-text.directive';
 import { BapsTextarea } from './directives/textarea.directive';
 import { BapsFloatLabel } from './float-label.component';
@@ -12,6 +13,20 @@ import { BapsMessage } from './message.component';
 import { SelectModule } from 'primeng/select';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { DatePickerModule } from 'primeng/datepicker';
+
+@Component({
+  // eslint-disable-next-line @angular-eslint/component-selector
+  selector: 'svg-icon',
+  standalone: true,
+  template: `
+    <svg viewBox="0 0 24 24" width="100%" height="100%" aria-hidden="true">
+      <path
+        d="M10 4a6 6 0 1 0 3.87 10.58L19.3 20 20 19.3l-5.42-5.43A6 6 0 0 0 10 4Z"
+      />
+    </svg>
+  `,
+})
+class StorySvgIcon {}
 
 /**
  * Form Field — the text-input field pattern (label + control + helper/error)
@@ -41,6 +56,7 @@ const meta: Meta = {
         BapsIconField,
         BapsInputIcon,
         BapsMessage,
+        StorySvgIcon,
         FormsModule,
         SelectModule,
         MultiSelectModule,
@@ -52,6 +68,54 @@ const meta: Meta = {
 
 export default meta;
 type Story = StoryObj;
+
+export const SamparkProjectedSvgIconInteraction: Story = {
+  name: 'Interaction — Sampark projected SVG icon metrics',
+  render: () => ({
+    props: { value: '' },
+    template: `
+      <baps-iconfield brand="sampark" style="display:block; max-width:320px;">
+        <baps-inputicon brand="sampark">
+          <svg-icon />
+        </baps-inputicon>
+        <input
+          bapsInputText
+          brand="sampark"
+          [(ngModel)]="value"
+          aria-label="Search events"
+        />
+      </baps-iconfield>
+    `,
+  }),
+  play: async ({ canvasElement }) => {
+    const icon = canvasElement.querySelector('.p-inputicon');
+    const projectedIcon = canvasElement.querySelector('svg-icon');
+    const input = canvasElement.querySelector('input');
+    if (
+      !(icon instanceof HTMLElement) ||
+      !(projectedIcon instanceof HTMLElement) ||
+      !(input instanceof HTMLInputElement)
+    ) {
+      throw new Error('Sampark projected input icon should render');
+    }
+
+    const iconRect = icon.getBoundingClientRect();
+    const projectedRect = projectedIcon.getBoundingClientRect();
+    const inputRect = input.getBoundingClientRect();
+    await expect(iconRect.width).toBe(16);
+    await expect(iconRect.height).toBe(16);
+    await expect(projectedRect.width).toBe(16);
+    await expect(projectedRect.height).toBe(16);
+    await expect(getComputedStyle(icon).marginTop).toBe('0px');
+    await expect(
+      Math.abs(
+        iconRect.top +
+          iconRect.height / 2 -
+          (inputRect.top + inputRect.height / 2),
+      ),
+    ).toBeLessThanOrEqual(0.5);
+  },
+};
 
 export const SamparkMessageMetricsInteraction: Story = {
   name: 'Interaction — Sampark message metrics',

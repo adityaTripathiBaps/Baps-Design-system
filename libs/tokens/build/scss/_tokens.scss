@@ -381,6 +381,9 @@ $progress-bar-sampark-track-height: 0.5rem;
 $progress-bar-sampark-labelled-height: 1.25rem;
 $divider-mybky-border-width: 1px;
 $divider-sampark-border-width: 1px;
+$message-sampark-text-font-size: 0.795rem; // 12.72px compact inline-message text measured in spm-ui _message.scss at the template breakpoint
+$message-sampark-text-line-height: 1.2;
+$message-sampark-icon-size: 0.8125rem; // 13px icon requested from the rendered SPM dev message
 $input-group-border-width: 1px;
 $input-group-focus-ring-width: 0.1875rem;
 $input-group-addon-padding-x: 0.625rem;
@@ -733,6 +736,7 @@ $divider-mybky-vertical-margin: $space-4;
 $divider-mybky-compact-height: $space-4;
 $divider-sampark-content-padding-x: $space-3;
 $divider-sampark-content-radius: $radius-sampark-default;
+$message-sampark-text-font-weight: $font-weight-medium; // 500 from spm-ui inline-message text
 $input-group-height: $form-field-sampark-height-default; // 32px group height from Figma node 17512:82916
 $input-group-radius: $radius-sampark-default; // 4px shared group corner radius
 $input-group-addon-min-width: $space-8;
