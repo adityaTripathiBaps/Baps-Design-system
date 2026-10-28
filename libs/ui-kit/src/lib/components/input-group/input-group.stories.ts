@@ -176,10 +176,10 @@ export const WithInputNumber: StoryObj<BapsInputGroup> = {
     template: `
       <div style="display:flex; flex-direction:column; gap:1rem; width:220px">
         <baps-input-group brand="sampark" prefix="min" suffix="days">
-          <baps-input-number [(ngModel)]="count" [showButtons]="true" [min]="1" [max]="100" />
+          <baps-input-number brand="sampark" [(ngModel)]="count" [showButtons]="true" [min]="1" [max]="100" />
         </baps-input-group>
         <baps-input-group brand="mybky" prefix="min" suffix="days">
-          <baps-input-number [(ngModel)]="count" [showButtons]="true" [min]="1" [max]="100" />
+          <baps-input-number brand="mybky" [(ngModel)]="count" [showButtons]="true" [min]="1" [max]="100" />
         </baps-input-group>
       </div>
     `,

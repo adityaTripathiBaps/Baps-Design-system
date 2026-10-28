@@ -147,8 +147,7 @@ const ADDON_TOKENS = {
       box-shadow: var(--baps-ig-ring);
     }
 
-    baps-input-group.w-auto,
-    baps-input-group[class*='w-auto'] {
+    baps-input-group.w-auto {
       display: inline-block;
       width: auto;
 
@@ -157,13 +156,26 @@ const ADDON_TOKENS = {
       }
     }
 
-    baps-input-group:has(.ng-invalid.ng-dirty) .p-inputgroup,
-    baps-input-group:has(.p-invalid) .p-inputgroup {
+    :is(baps-input-group.baps-sampark, .baps-ds-sampark baps-input-group):has(
+        .ng-invalid.ng-dirty
+      )
+      .p-inputgroup,
+    :is(baps-input-group.baps-sampark, .baps-ds-sampark baps-input-group):has(
+        .p-invalid
+      )
+      .p-inputgroup {
       border-color: var(--color-sampark-error-100, #ea151a);
     }
-    baps-input-group:has(.ng-invalid.ng-dirty) .p-inputgroup:focus-within,
-    baps-input-group:has(.p-invalid) .p-inputgroup:focus-within {
-      box-shadow: 0 0 0 3px var(--input-shadow-error, #ffe5e5);
+    :is(baps-input-group.baps-sampark, .baps-ds-sampark baps-input-group):has(
+        .ng-invalid.ng-dirty
+      )
+      .p-inputgroup:focus-within,
+    :is(baps-input-group.baps-sampark, .baps-ds-sampark baps-input-group):has(
+        .p-invalid
+      )
+      .p-inputgroup:focus-within {
+      box-shadow: 0 0 0 var(--input-group-focus-ring-width)
+        var(--input-shadow-error, #ffe5e5);
     }
 
     /* The projected control is chromeless — the container owns the ring.

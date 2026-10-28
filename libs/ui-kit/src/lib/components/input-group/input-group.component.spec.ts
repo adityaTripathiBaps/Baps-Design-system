@@ -185,7 +185,11 @@ describe('BapsInputGroup', () => {
       imports: [BapsInputGroup, BapsInputNumber, FormsModule],
       template: `
         <baps-input-group prefix="min" suffix="days" brand="sampark">
-          <baps-input-number [(ngModel)]="val" [showButtons]="true" />
+          <baps-input-number
+            brand="sampark"
+            [(ngModel)]="val"
+            [showButtons]="true"
+          />
         </baps-input-group>
       `,
     })
