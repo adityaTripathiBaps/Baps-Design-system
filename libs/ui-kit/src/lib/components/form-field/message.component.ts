@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { Message } from 'primeng/message';
 
 @Component({
@@ -17,6 +17,8 @@ import { Message } from 'primeng/message';
       <ng-content></ng-content>
     </p-message>
   `,
+  encapsulation: ViewEncapsulation.None,
+  styleUrls: ['../../styles/components/form-field/_message-sampark.scss'],
   host: {
     '[class.baps-sampark]': "brand === 'sampark'",
   },

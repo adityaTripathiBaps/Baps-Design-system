@@ -1,0 +1,74 @@
+/* Sampark's inline message is a compact, badge-like row, not MyBKY's panel.
+   This partial is loaded by BapsMessage and by _form-field.scss so Angular and
+   package-CSS consumers resolve the same Sampark-only rules. */
+:is(baps-message.baps-sampark, .baps-ds-sampark baps-message) .p-message {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tag-sampark-height-s);
+  margin: 0;
+  border: 1px solid var(--color-sampark-border-default);
+  border-radius: var(--radius-sampark-default);
+  outline: none;
+}
+
+:is(baps-message.baps-sampark, .baps-ds-sampark baps-message)
+  .p-message-content {
+  gap: var(--space-0-5);
+  align-items: center;
+  padding: 0 var(--space-1);
+}
+
+:is(baps-message.baps-sampark, .baps-ds-sampark baps-message) .p-message-text {
+  font-size: var(--message-sampark-text-font-size, 0.795rem);
+  font-weight: var(--message-sampark-text-font-weight, 500);
+  line-height: var(--message-sampark-text-line-height, 1.2);
+}
+
+:is(baps-message.baps-sampark, .baps-ds-sampark baps-message) .p-message-icon {
+  display: inline-flex;
+  width: var(--message-sampark-icon-size, 0.8125rem);
+  height: var(--message-sampark-icon-size, 0.8125rem);
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--message-sampark-icon-size, 0.8125rem);
+
+  > :is(svg, i) {
+    width: var(--message-sampark-icon-size, 0.8125rem);
+    height: var(--message-sampark-icon-size, 0.8125rem);
+    font-size: var(--message-sampark-icon-size, 0.8125rem);
+  }
+}
+
+:is(baps-message.baps-sampark, .baps-ds-sampark baps-message) .p-message-info {
+  color: var(--tag-sampark-info-text);
+  background: var(--tag-sampark-info-background);
+  border-color: var(--tag-sampark-info-border);
+}
+
+:is(baps-message.baps-sampark, .baps-ds-sampark baps-message)
+  .p-message-success {
+  color: var(--color-sampark-success-80);
+  background: var(--color-sampark-success-10);
+  border-color: var(--color-sampark-success-60);
+}
+
+:is(baps-message.baps-sampark, .baps-ds-sampark baps-message) .p-message-warn {
+  color: var(--color-sampark-warning-80);
+  background: var(--color-sampark-warning-10);
+  border-color: var(--color-sampark-warning-60);
+}
+
+:is(baps-message.baps-sampark, .baps-ds-sampark baps-message) .p-message-error {
+  color: var(--color-sampark-error-100);
+  background: var(--color-sampark-error-10);
+  border-color: var(--color-sampark-error-80);
+}
+
+.baps-dark
+  :is(baps-message.baps-sampark, .baps-ds-sampark baps-message)
+  .p-message,
+.baps-ds-sampark .baps-dark baps-message .p-message {
+  color: var(--color-sampark-dark-text-primary);
+  background: var(--color-sampark-dark-surface-card);
+}

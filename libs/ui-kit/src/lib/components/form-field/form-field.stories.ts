@@ -53,6 +53,34 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj;
 
+export const SamparkMessageMetricsInteraction: Story = {
+  name: 'Interaction — Sampark message metrics',
+  render: () => ({
+    template: `
+      <baps-message
+        brand="sampark"
+        severity="info"
+        icon="pi pi-info-circle"
+        text="One department must be selected as primary."
+      />
+    `,
+  }),
+  play: async ({ canvasElement }) => {
+    const text = canvasElement.querySelector('.p-message-text');
+    const icon = canvasElement.querySelector('.p-message-icon');
+    if (!(text instanceof HTMLElement) || !(icon instanceof HTMLElement)) {
+      throw new Error('Sampark message text and icon should render');
+    }
+
+    const textStyle = getComputedStyle(text);
+    const iconRect = icon.getBoundingClientRect();
+    await expect(textStyle.fontSize).toBe('12.72px');
+    await expect(textStyle.fontWeight).toBe('500');
+    await expect(iconRect.width).toBe(13);
+    await expect(iconRect.height).toBe(13);
+  },
+};
+
 /* ═══════════════════════════════════════════════════════════════════════
    1. FORM FIELD
    The text-input field pattern (label + control + helper/error) using the

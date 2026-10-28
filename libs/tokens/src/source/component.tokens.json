@@ -1867,6 +1867,25 @@
       "contentRadius": { "value": "{radius.sampark.default}" }
     }
   },
+  "message": {
+    "sampark": {
+      "textFontSize": {
+        "value": "0.795rem",
+        "comment": "12.72px compact inline-message text measured in spm-ui _message.scss at the template breakpoint"
+      },
+      "textFontWeight": {
+        "value": "{font.weight.medium}",
+        "comment": "500 from spm-ui inline-message text"
+      },
+      "textLineHeight": {
+        "value": "1.2"
+      },
+      "iconSize": {
+        "value": "0.8125rem",
+        "comment": "13px icon requested from the rendered SPM dev message"
+      }
+    }
+  },
   "inputGroup": {
     "height": {
       "value": "{formField.sampark.heightDefault}",
