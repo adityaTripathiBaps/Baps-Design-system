@@ -3,6 +3,7 @@ import { moduleMetadata } from '@storybook/angular';
 import { expect, within } from '@storybook/test';
 import { FormsModule } from '@angular/forms';
 import { InputText } from 'primeng/inputtext';
+import { BapsInputNumber } from '../input-number/input-number.component';
 import { BapsInputGroup } from './input-group.component';
 
 /**
@@ -41,7 +42,9 @@ const meta: Meta<BapsInputGroup> = {
     },
   },
   component: BapsInputGroup,
-  decorators: [moduleMetadata({ imports: [FormsModule, InputText] })],
+  decorators: [
+    moduleMetadata({ imports: [FormsModule, InputText, BapsInputNumber] }),
+  ],
 };
 
 export default meta;
@@ -160,6 +163,23 @@ export const Brands: StoryObj<BapsInputGroup> = {
         </baps-input-group>
         <baps-input-group brand="mybky" prefix="min" suffix="day/s">
           <input pInputText type="number" aria-label="MyBKY days" [(ngModel)]="b" />
+        </baps-input-group>
+      </div>
+    `,
+  }),
+};
+
+/** Numeric stepper inside an input group (IGIN parity). */
+export const WithInputNumber: StoryObj<BapsInputGroup> = {
+  render: () => ({
+    props: { count: 10 },
+    template: `
+      <div style="display:flex; flex-direction:column; gap:1rem; width:220px">
+        <baps-input-group brand="sampark" prefix="min" suffix="days">
+          <baps-input-number [(ngModel)]="count" [showButtons]="true" [min]="1" [max]="100" />
+        </baps-input-group>
+        <baps-input-group brand="mybky" prefix="min" suffix="days">
+          <baps-input-number [(ngModel)]="count" [showButtons]="true" [min]="1" [max]="100" />
         </baps-input-group>
       </div>
     `,

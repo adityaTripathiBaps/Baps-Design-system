@@ -147,6 +147,25 @@ const ADDON_TOKENS = {
       box-shadow: var(--baps-ig-ring);
     }
 
+    baps-input-group.w-auto,
+    baps-input-group[class*='w-auto'] {
+      display: inline-block;
+      width: auto;
+
+      .p-inputgroup {
+        width: auto;
+      }
+    }
+
+    baps-input-group:has(.ng-invalid.ng-dirty) .p-inputgroup,
+    baps-input-group:has(.p-invalid) .p-inputgroup {
+      border-color: var(--color-sampark-error-100, #ea151a);
+    }
+    baps-input-group:has(.ng-invalid.ng-dirty) .p-inputgroup:focus-within,
+    baps-input-group:has(.p-invalid) .p-inputgroup:focus-within {
+      box-shadow: 0 0 0 3px var(--input-shadow-error, #ffe5e5);
+    }
+
     /* The projected control is chromeless — the container owns the ring.
        _input.scss already says this for .p-inputgroup .p-inputtext, but only
        when that global sheet is loaded; restated so the component stands up
@@ -160,6 +179,54 @@ const ADDON_TOKENS = {
       outline: none;
       text-align: center;
       min-width: 0;
+    }
+
+    /* baps-input-number inside baps-input-group: stretches to fill the group,
+       with chromeless input and cleanly joined spinner buttons. */
+    baps-input-group .p-inputgroup > baps-input-number {
+      flex: 1 1 auto;
+      display: inline-flex;
+      min-width: 0;
+      height: 100%;
+
+      .baps-input-number__control {
+        width: 100%;
+        height: 100%;
+      }
+
+      .p-inputnumber {
+        height: 100%;
+        flex: 1 1 auto;
+      }
+
+      .p-inputnumber-input {
+        height: 100%;
+        border: 0 !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        outline: none !important;
+        text-align: center;
+        min-width: 0;
+      }
+
+      .baps-input-number__buttons {
+        height: 100%;
+      }
+
+      .baps-input-number__button {
+        border-block-start: 0;
+        border-inline-end: 0;
+        border-radius: 0 !important;
+      }
+
+      .baps-input-number__button--increment {
+        border-block-end: 1px solid var(--baps-ig-border);
+      }
+
+      .baps-input-number__button--decrement {
+        border-block-end: 0;
+      }
     }
 
     /* ── Addons ──

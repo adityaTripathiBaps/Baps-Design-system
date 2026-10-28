@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 import { InputText } from 'primeng/inputtext';
+import { BapsInputNumber } from '../input-number/input-number.component';
 import { BapsInputGroup } from './input-group.component';
 
 @Component({
@@ -176,5 +178,37 @@ describe('BapsInputGroup', () => {
       'padding',
     ]);
     expect(component.dt).toBe(component.dt);
+  });
+
+  it('renders baps-input-number inside baps-input-group cleanly with addons (IGIN)', async () => {
+    @Component({
+      imports: [BapsInputGroup, BapsInputNumber, FormsModule],
+      template: `
+        <baps-input-group prefix="min" suffix="days" brand="sampark">
+          <baps-input-number [(ngModel)]="val" [showButtons]="true" />
+        </baps-input-group>
+      `,
+    })
+    class InputNumberHost {
+      val = 5;
+    }
+
+    const fixture = TestBed.createComponent(InputNumberHost);
+    await fixture.whenStable();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const root = fixture.nativeElement as HTMLElement;
+    const inputNumber = root.querySelector('baps-input-number');
+    expect(inputNumber).toBeTruthy();
+    expect(inputNumber?.querySelector('input')).toBeTruthy();
+    expect(
+      inputNumber?.querySelector('.baps-input-number__buttons'),
+    ).toBeTruthy();
+
+    const addonsList = root.querySelectorAll('p-inputgroup-addon');
+    expect(addonsList.length).toBe(2);
+    expect(addonsList[0].textContent?.trim()).toBe('min');
+    expect(addonsList[1].textContent?.trim()).toBe('days');
   });
 });
