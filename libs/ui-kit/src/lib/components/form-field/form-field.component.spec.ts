@@ -37,14 +37,23 @@ async function render<T>(host: new () => T) {
   return fixture;
 }
 
-async function apply(fixture: { whenStable: () => Promise<unknown>; detectChanges: () => void }) {
+async function apply(fixture: {
+  whenStable: () => Promise<unknown>;
+  detectChanges: () => void;
+}) {
   await fixture.whenStable();
   fixture.detectChanges();
   await fixture.whenStable();
 }
 
 const instanceOf = <T>(
-  fixture: { debugElement: { query: (p: (de: { componentInstance: unknown }) => boolean) => { componentInstance: unknown } | null } },
+  fixture: {
+    debugElement: {
+      query: (
+        p: (de: { componentInstance: unknown }) => boolean,
+      ) => { componentInstance: unknown } | null;
+    };
+  },
   type: new (...args: never[]) => T,
 ) =>
   fixture.debugElement.query((de) => de.componentInstance instanceof type)
@@ -65,7 +74,9 @@ describe('BapsFloatLabel', () => {
     `,
   })
   class Host {
-    readonly style = signal<Record<string, string | number> | undefined>(undefined);
+    readonly style = signal<Record<string, string | number> | undefined>(
+      undefined,
+    );
     readonly styleClass = signal<string | undefined>(undefined);
   }
 
@@ -109,6 +120,7 @@ describe('BapsIconField', () => {
         [iconPosition]="iconPosition()"
         [style]="style()"
         [styleClass]="styleClass()"
+        [brand]="brand()"
       >
         <input />
       </baps-iconfield>
@@ -116,8 +128,11 @@ describe('BapsIconField', () => {
   })
   class Host {
     readonly iconPosition = signal<'left' | 'right'>('left');
-    readonly style = signal<Record<string, string | number> | undefined>(undefined);
+    readonly style = signal<Record<string, string | number> | undefined>(
+      undefined,
+    );
     readonly styleClass = signal<string | undefined>(undefined);
+    readonly brand = signal<'mybky' | 'sampark'>('mybky');
   }
 
   it('defaults the icon to the left', async () => {
@@ -160,6 +175,17 @@ describe('BapsIconField', () => {
       fixture.nativeElement.querySelector('p-iconfield input'),
     ).not.toBeNull();
   });
+
+  it('stamps baps-sampark on the host for sampark only', async () => {
+    const fixture = await render(Host);
+    const host = fixture.nativeElement.querySelector(
+      'baps-iconfield',
+    ) as HTMLElement;
+    expect(host.classList.contains('baps-sampark')).toBe(false);
+    fixture.componentInstance.brand.set('sampark');
+    await apply(fixture);
+    expect(host.classList.contains('baps-sampark')).toBe(true);
+  });
 });
 
 describe('BapsInputIcon', () => {
@@ -167,14 +193,21 @@ describe('BapsInputIcon', () => {
     standalone: true,
     imports: [BapsInputIcon],
     template: `
-      <baps-inputicon [styleClass]="styleClass()" [style]="style()">
+      <baps-inputicon
+        [styleClass]="styleClass()"
+        [style]="style()"
+        [brand]="brand()"
+      >
         <i class="pi pi-search"></i>
       </baps-inputicon>
     `,
   })
   class Host {
     readonly styleClass = signal<string | undefined>(undefined);
-    readonly style = signal<Record<string, string | number> | undefined>(undefined);
+    readonly style = signal<Record<string, string | number> | undefined>(
+      undefined,
+    );
+    readonly brand = signal<'mybky' | 'sampark'>('mybky');
   }
 
   it('projects the glyph inside the PrimeNG input icon', async () => {
@@ -199,6 +232,17 @@ describe('BapsInputIcon', () => {
         .top,
     ).toBe('50%');
   });
+
+  it('stamps baps-sampark on the host for sampark only', async () => {
+    const fixture = await render(Host);
+    const host = fixture.nativeElement.querySelector(
+      'baps-inputicon',
+    ) as HTMLElement;
+    expect(host.classList.contains('baps-sampark')).toBe(false);
+    fixture.componentInstance.brand.set('sampark');
+    await apply(fixture);
+    expect(host.classList.contains('baps-sampark')).toBe(true);
+  });
 });
 
 describe('BapsMessage', () => {
@@ -222,13 +266,23 @@ describe('BapsMessage', () => {
   })
   class Host {
     readonly severity = signal<
-      'success' | 'info' | 'warn' | 'error' | 'secondary' | 'contrast' | undefined
+      | 'success'
+      | 'info'
+      | 'warn'
+      | 'error'
+      | 'secondary'
+      | 'contrast'
+      | undefined
     >(undefined);
     readonly text = signal<string | undefined>(undefined);
     readonly icon = signal<string | undefined>(undefined);
-    readonly variant = signal<'outlined' | 'text' | 'simple' | undefined>(undefined);
+    readonly variant = signal<'outlined' | 'text' | 'simple' | undefined>(
+      undefined,
+    );
     readonly size = signal<'small' | 'large' | undefined>(undefined);
-    readonly style = signal<Record<string, string | number> | undefined>(undefined);
+    readonly style = signal<Record<string, string | number> | undefined>(
+      undefined,
+    );
     readonly styleClass = signal<string | undefined>(undefined);
     readonly projected = signal('');
     readonly brand = signal<'mybky' | 'sampark'>('mybky');
@@ -236,7 +290,9 @@ describe('BapsMessage', () => {
 
   it('stamps baps-sampark on the host for sampark only', async () => {
     const fixture = await render(Host);
-    const host = fixture.nativeElement.querySelector('baps-message') as HTMLElement;
+    const host = fixture.nativeElement.querySelector(
+      'baps-message',
+    ) as HTMLElement;
     expect(host.classList.contains('baps-sampark')).toBe(false);
     fixture.componentInstance.brand.set('sampark');
     await apply(fixture);

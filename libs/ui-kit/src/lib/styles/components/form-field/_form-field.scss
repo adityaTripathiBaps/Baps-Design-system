@@ -85,8 +85,28 @@ baps-iconfield .p-iconfield-right .p-inputicon {
    above centres it with translateY(-50%). Together they lift it by half its
    height (8px) wherever this partial ships (spm-ui, React). Sampark only for
    now: MyBKY has the same double centring in the shipped CSS (backlog F6). */
-:is(baps-iconfield.baps-sampark, .baps-ds-sampark baps-iconfield) .p-inputicon {
-  margin-block-start: 0;
+:is(
+    baps-iconfield.baps-sampark,
+    .baps-ds-sampark baps-iconfield,
+    baps-inputicon.baps-sampark,
+    .baps-ds-sampark baps-inputicon
+  )
+  .p-inputicon {
+  margin-top: 0 !important;
+  margin-block-start: 0 !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  > :is(svg-icon, svg, i) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    font-size: inherit;
+    line-height: 1;
+  }
 }
 
 :is(baps-iconfield.baps-sampark, .baps-ds-sampark baps-iconfield)
@@ -209,10 +229,33 @@ baps-message .p-message-simple .p-message-content {
   outline: none;
 }
 
-:is(baps-message.baps-sampark, .baps-ds-sampark baps-message) .p-message-content {
+:is(baps-message.baps-sampark, .baps-ds-sampark baps-message)
+  .p-message-content {
   gap: var(--space-0-5);
   align-items: center;
   padding: 0 var(--space-1);
+}
+
+:is(baps-message.baps-sampark, .baps-ds-sampark baps-message) .p-message-text {
+  font-size: 0.795rem; /* 12.72px matching SPM dev */
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+:is(baps-message.baps-sampark, .baps-ds-sampark baps-message) .p-message-icon {
+  width: 13px;
+  height: 13px;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  > :is(svg, i) {
+    width: 13px;
+    height: 13px;
+    font-size: 13px;
+  }
 }
 
 :is(baps-message.baps-sampark, .baps-ds-sampark baps-message) .p-message-info {

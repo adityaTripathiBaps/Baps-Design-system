@@ -9,8 +9,12 @@ import { InputIcon } from 'primeng/inputicon';
       <ng-content></ng-content>
     </p-inputicon>
   `,
+  host: {
+    '[class.baps-sampark]': "brand === 'sampark'",
+  },
 })
 export class BapsInputIcon {
   @Input() styleClass?: string;
   @Input() style?: Record<string, string | number>;
+  @Input() brand: 'mybky' | 'sampark' = 'mybky';
 }

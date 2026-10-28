@@ -66,10 +66,7 @@
   );
 
   /* Track + thumb colors — no hover change in the Sampark spec */
-  --p-toggleswitch-background: var(
-    --toggle-switch-sampark-track-off,
-    #bcb9b9
-  );
+  --p-toggleswitch-background: var(--toggle-switch-sampark-track-off, #bcb9b9);
   --p-toggleswitch-hover-background: var(
     --toggle-switch-sampark-track-off,
     #bcb9b9
@@ -113,7 +110,10 @@
 
 /* ── Sizes — same variables, different boxes; the checked position
    calc(width - handle - gap) tracks automatically ────────────────────── */
-:is(baps-toggleswitch.baps-sampark, .baps-ds-sampark baps-toggleswitch).baps-switch-xs
+:is(
+    baps-toggleswitch.baps-sampark,
+    .baps-ds-sampark baps-toggleswitch
+  ).baps-switch-xs
   .p-toggleswitch {
   --p-toggleswitch-width: var(--toggle-switch-sampark-track-xs-width, 1.75rem);
   --p-toggleswitch-height: var(--toggle-switch-sampark-track-xs-height, 1rem);
@@ -124,7 +124,10 @@
   );
 }
 
-:is(baps-toggleswitch.baps-sampark, .baps-ds-sampark baps-toggleswitch).baps-switch-sm
+:is(
+    baps-toggleswitch.baps-sampark,
+    .baps-ds-sampark baps-toggleswitch
+  ).baps-switch-sm
   .p-toggleswitch {
   --p-toggleswitch-width: var(--toggle-switch-sampark-track-sm-width, 2rem);
   --p-toggleswitch-height: var(
@@ -138,13 +141,13 @@
   );
 }
 
-:is(baps-toggleswitch.baps-sampark, .baps-ds-sampark baps-toggleswitch).baps-switch-lg
+:is(
+    baps-toggleswitch.baps-sampark,
+    .baps-ds-sampark baps-toggleswitch
+  ).baps-switch-lg
   .p-toggleswitch {
   --p-toggleswitch-width: var(--toggle-switch-sampark-track-lg-width, 2.5rem);
-  --p-toggleswitch-height: var(
-    --toggle-switch-sampark-track-lg-height,
-    1.5rem
-  );
+  --p-toggleswitch-height: var(--toggle-switch-sampark-track-lg-height, 1.5rem);
   --p-toggleswitch-handle-size: var(--toggle-switch-sampark-thumb-lg, 1.25rem);
 }
 
@@ -153,21 +156,27 @@
 :is(baps-toggleswitch.baps-sampark, .baps-ds-sampark baps-toggleswitch)
   .p-toggleswitch
   .p-toggleswitch-handle {
-  box-shadow: var(--shadow-sampark-switch-thumb, 0 1px 2px #0000001a) !important;
+  box-shadow: var(
+    --shadow-sampark-switch-thumb,
+    0 1px 2px #0000001a
+  ) !important;
 }
 
 /* ── Checked + disabled — Primary/20 track; no PrimeNG token slot ────── */
 :is(baps-toggleswitch.baps-sampark, .baps-ds-sampark baps-toggleswitch)
   .p-toggleswitch.p-toggleswitch-checked.p-disabled
   .p-toggleswitch-slider {
-  background: var(--toggle-switch-sampark-track-on-disabled, #e9c3c3) !important;
+  background: var(
+    --toggle-switch-sampark-track-on-disabled,
+    #e9c3c3
+  ) !important;
 }
 
-/* ── Disabled — softer inset shadow (black @ 10%), full opacity; the
+/* ── Disabled — softer inset shadow (black @ 10%), 0.6 opacity matching dev; the
    pale track colors carry the disabled look, as in spm-ui ─────────────── */
 :is(baps-toggleswitch.baps-sampark, .baps-ds-sampark baps-toggleswitch)
   .p-toggleswitch.p-disabled {
-  opacity: 1 !important;
+  opacity: 0.6 !important;
 }
 :is(baps-toggleswitch.baps-sampark, .baps-ds-sampark baps-toggleswitch)
   .p-toggleswitch.p-disabled

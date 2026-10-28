@@ -22,7 +22,8 @@ import { Message } from 'primeng/message';
   },
 })
 export class BapsMessage {
-  @Input() severity?: 'success' | 'info' | 'warn' | 'error' | 'secondary' | 'contrast';
+  @Input() severity?:
+    'success' | 'info' | 'warn' | 'error' | 'secondary' | 'contrast';
   @Input() text?: string;
   @Input() icon?: string;
   @Input() variant?: 'outlined' | 'text' | 'simple';

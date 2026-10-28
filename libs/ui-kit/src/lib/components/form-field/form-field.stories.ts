@@ -25,7 +25,10 @@ const meta: Meta = {
   parameters: {
     // Design tab — the Figma frame this component implements, node 13197:87722.
     // Harvested from form-field.stories.ts, where it was already recorded as a comment.
-    design: { type: 'figma', url: 'https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/?node-id=13197-87722' },
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/?node-id=13197-87722',
+    },
   },
   // Design-system availability — drives the sidebar filter in .storybook/manager.ts
   tags: ['ds:mybky', 'ds:sampark'],
@@ -433,7 +436,8 @@ export const SamparkTextarea: Story = {
   render: () => ({
     props: {
       message: '',
-      filledMessage: 'Jai Swaminarayan. Requesting an update to my mandal record.',
+      filledMessage:
+        'Jai Swaminarayan. Requesting an update to my mandal record.',
       requiredMessage: '',
       lockedMessage: 'locked value',
     },
@@ -590,7 +594,6 @@ export const SamparkDropdownSizes: Story = {
   }),
 };
 
-
 /**
  * `[bapsInputText]` / `[bapsTextarea]` sit ON the field, so a Sampark app with
  * no page scope had no Sampark ancestor and drew the MyBKY pill.
@@ -609,8 +612,9 @@ export const FieldBrandWithoutScopeInteraction: Story = {
   }),
   play: async ({ canvasElement }) => {
     const radius = (id: string) =>
-      getComputedStyle(canvasElement.querySelector(`[data-testid="${id}"]`) as HTMLElement)
-        .borderTopLeftRadius;
+      getComputedStyle(
+        canvasElement.querySelector(`[data-testid="${id}"]`) as HTMLElement,
+      ).borderTopLeftRadius;
     await expect(radius('sampark')).toBe('4px');
     await expect(radius('mybky')).toBe('99px');
     await expect(radius('sampark-area')).not.toBe('99px');
