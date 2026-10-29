@@ -42,6 +42,9 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch, visual (Sampark):** dropdown chevrons follow SPM
+  dev: 10px (`--font-size-2xs`) on Select and TreeSelect, 12px on
+  MultiSelect; all were 12px. MyBKY unchanged.
 - **`@org/ui-kit` — patch, visual (Sampark):** TreeSelect rows hover in
   Mono/10 (#f8f7f7) without the bar, as in SPM dev (was #f6f5f5 with the
   4px bar). MyBKY unchanged.

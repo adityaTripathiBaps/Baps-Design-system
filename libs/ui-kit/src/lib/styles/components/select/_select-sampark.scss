@@ -67,11 +67,11 @@
   ); /* Mono/80 */
 
   /* ── Trigger internals ───────────────────────────────────────────── */
-  /* SPM origin/develop renders its explicit pi-chevron-down trigger at
-     12px in Mono/100. Keep the icon font-size on the typography scale so
-     select, multiselect and treeselect cannot drift apart. */
+  /* SPM dev: Select and TreeSelect chevrons are 10px; MultiSelect (app-select's
+     explicit pi-chevron-down) is 12px, set on its dropdown below. Mono/100;
+     dev's #1a0701 has no token. */
   --select-trigger-icon: var(--color-sampark-text-primary, #151414);
-  --select-trigger-icon-size: var(--font-size-xs, 0.75rem);
+  --select-trigger-icon-size: var(--font-size-2xs, 0.625rem);
 
   /* ── Filter (search inside overlay) ──────────────────────────────── */
   --select-filter-bg: var(--color-sampark-secondary-0, #f8f7f7);
@@ -170,6 +170,10 @@
   line-height: 1;
   color: var(--select-trigger-icon) !important;
   speak: none;
+}
+
+:is(.baps-ds-sampark, baps-multi-select.baps-sampark) .p-multiselect-dropdown {
+  --select-trigger-icon-size: var(--font-size-xs, 0.75rem);
 }
 
 /* ══════════════════════════════════════════════════════════════════════

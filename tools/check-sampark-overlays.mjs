@@ -30,7 +30,6 @@ const CASES = [
 const EXPECTED_ICON = {
   content: '"\uE902"',
   color: 'rgb(21, 20, 20)',
-  fontSize: '12px',
   fontFamily: 'primeicons',
 };
 
@@ -58,8 +57,13 @@ const readTrigger = async (selector) =>
       };
     });
 
-const check = (name, actual) => {
+// SPM dev: Select / TreeSelect 10px, MultiSelect 12px.
+const check = (name, actual, fontSize = '10px') => {
   console.log(`${name}: ${JSON.stringify(actual)}`);
+  if (actual.fontSize !== fontSize)
+    failures.push(
+      `${name} fontSize: expected ${fontSize}, got ${actual.fontSize}`,
+    );
   for (const [property, expected] of Object.entries(EXPECTED_ICON)) {
     if (actual[property] !== expected) {
       failures.push(
@@ -121,7 +125,11 @@ for (const [name, storyId, selector] of CASES) {
     { waitUntil: 'domcontentloaded' },
   );
   await page.waitForSelector(selector, { timeout: 60_000 });
-  check(name, await readTrigger(selector));
+  check(
+    name,
+    await readTrigger(selector),
+    name === 'multiselect' ? '12px' : '10px',
+  );
 }
 
 await openStory('components-datepicker--overlay');
@@ -161,6 +169,7 @@ check(
 check(
   'raw multiselect template',
   await readTrigger('[data-sampark-overlay-fixture] .p-multiselect-dropdown'),
+  '12px',
 );
 
 await openStory('components-select--default');
