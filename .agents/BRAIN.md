@@ -366,6 +366,10 @@ Blocked on design, not on implementation. Never invent these.
   the search icon in `#1a0701`, which has no Sampark token. The kit uses
   `--color-sampark-text-primary` (#151414), the nearest text colour, instead of
   the MyBKY Mono/900 `:root` default it inherited before.
+- **Ask at demo.** Sampark modal scrim (2026-10-29): SPM dev's drawers and
+  dialogs show PrimeNG's default `rgba(0, 0, 0, 0.32)` scrim; the kit's
+  `--drawer-sampark-mask-background` is `rgba(14, 13, 13, 0.45)`, visibly
+  darker in spm-ui. Which one Sampark wants is a design call; the token stays.
 
 ## Approved token exceptions — *2026-10-08*
 

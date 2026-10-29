@@ -47,6 +47,11 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch, visual (Sampark):** a `baps-drawer` or
+  `baps-dialog` left on its default brand inside a `.baps-ds-sampark` page no
+  longer blurs the page behind it: the MyBKY frosted scrim (25px blur) leaked
+  into Sampark pages, visible in every Sampark Storybook drawer. MyBKY
+  unchanged.
 - **`@org/ui-kit` — patch (Sampark table):** `.dt-frozen-right` still pins to
   the right edge by default, but its `right: 0` is no longer `!important`, so
   a table that pins several trailing columns can bind each one's offset with
