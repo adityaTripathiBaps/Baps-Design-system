@@ -339,6 +339,15 @@ Blocked on design, not on implementation. Never invent these.
   resolves `--table-header-bg` to `#f6f7f8`, but Sampark has no token for that
   cool-grey surface; its documented Mono/10 header token is `#f8f7f7`.
   FILTER-PANEL keeps Mono/10 rather than inventing a new Sampark value.
+- **Ask at demo.** `--message-sampark-*` (2026-10-29): SPM dev's
+  `_message.scss` sizes inline-message text and icon at `0.875rem` (14px)
+  and drops both to `0.795rem` only under `@media (max-width: 1440px)`, the
+  template form's stacking breakpoint. The kit ships the compact value at
+  every width, so above 1440px the kit message is ~1.3px smaller than dev.
+  The icon token is `0.8125rem` (13px), which matches neither dev step
+  (12.72px / 14px). `0.795rem` is also off the type scale. Whether the
+  component should carry an app's layout breakpoint at all is the design
+  call; until then the tokens stay as shipped.
 
 ## Approved token exceptions — *2026-10-08*
 
