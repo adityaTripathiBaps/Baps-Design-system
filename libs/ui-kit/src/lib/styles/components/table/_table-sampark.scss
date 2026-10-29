@@ -408,12 +408,12 @@ $s: ':is(baps-table.baps-sampark, .baps-ds-sampark baps-table)';
 }
 
 /* `.dt-frozen-right` is `.dt-frozen-left`'s mirror for a trailing sticky
-   column (e.g. a row-actions cell) — anchored to `right: 0` instead of a
-   computed `left`, since only one column pins to the right edge here, no
-   cumulative-offset math needed. */
+   column (e.g. a row-actions cell). It defaults to the right edge; the offset
+   is not !important, so a consumer that pins several trailing columns binds
+   each one's cumulative `[style.right]` and the inline value wins. */
 #{$s} .p-datatable .dt-frozen-right {
   position: sticky !important;
-  right: 0 !important;
+  right: 0;
   z-index: 1 !important;
   background: var(--table-row-bg) !important;
 }

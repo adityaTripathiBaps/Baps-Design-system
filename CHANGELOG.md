@@ -42,6 +42,10 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark table):** `.dt-frozen-right` still pins to
+  the right edge by default, but its `right: 0` is no longer `!important`, so
+  a table that pins several trailing columns can bind each one's offset with
+  `[style.right]` (they all collapsed onto the edge before).
 - **`@org/ui-kit` — patch, visual (Sampark):** dropdown chevrons follow SPM
   dev: 10px (`--font-size-2xs`) on Select and TreeSelect, 12px on
   MultiSelect; all were 12px. MyBKY unchanged.
