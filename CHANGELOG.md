@@ -34,6 +34,11 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch, visual (Sampark):** list-overlay rows (select,
+  multiselect, tree-select, paginator rows-per-page) are square on hover,
+  focus and selected, as in SPM dev; they rounded to 4px before
+  (`--select-option-radius`). Menu and listbox were already square. MyBKY
+  unchanged.
 - **`@org/ui-kit` — patch, visual (Sampark):** select, multiselect and
   tree-select triggers draw one 12px Mono/100 PrimeIcons chevron, as SPM dev
   does, including raw `p-select`/`p-multiselect` under `.baps-ds-sampark`
