@@ -292,7 +292,7 @@ console.log(
 const treeExpected = {
   panelRadius: '4px',
   panelBorderWidth: '1px',
-  panelBorderColor: 'rgb(225, 224, 224)',
+  panelBorderColor: 'rgb(188, 185, 185)',
   selectedBackground: 'rgb(248, 236, 236)',
   selectedBarOpacity: '0',
   guideWidth: '2px',

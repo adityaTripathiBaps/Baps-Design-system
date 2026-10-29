@@ -398,7 +398,7 @@
   .baps-ds-sampark.p-treeselect-overlay,
   .baps-ds-sampark .p-treeselect-overlay
 ) {
-  border-color: var(--color-sampark-border-default, #e1e0e0) !important;
+  border-color: var(--color-sampark-mono-40, #bcb9b9) !important;
   border-radius: var(--radius-sampark-default, 0.25rem) !important;
 
   .p-tree {
@@ -558,4 +558,17 @@
   .p-multiselect-overlay
   .p-multiselect-option.p-multiselect-option-selected::before {
   opacity: 0;
+}
+
+/* ── Panel frame (SPM dev) ──────────────────────────────────────────────
+   SPM dev frames Select, MultiSelect and TreeSelect panels in Mono/40
+   (#bcb9b9). Only the frame: --select-overlay-border also draws internal
+   dividers (filter header, datepicker bar), which stay Mono/borders. */
+:is(
+  .baps-ds-sampark.p-select-overlay,
+  .baps-ds-sampark .p-select-overlay,
+  .baps-ds-sampark.p-multiselect-overlay,
+  .baps-ds-sampark .p-multiselect-overlay
+) {
+  border-color: var(--color-sampark-mono-40, #bcb9b9) !important;
 }
