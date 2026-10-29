@@ -51,6 +51,11 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch, visual (Sampark):** the Sampark trigger glyph
+  replaces only chevrons (PrimeNG's default or a `pi-chevron-down` template).
+  Any other consumer `dropdownicon` is shown as supplied, as SPM dev does
+  (its up/down "switch" icon on Project Type / Sampark Type was being
+  painted over with a chevron). MyBKY unchanged.
 - **`@org/ui-kit` — patch, visual (Sampark):** TreeSelect leaf rows show the
   "–" marker again. PrimeNG hides a leaf's toggle button with
   `visibility: hidden`, which the marker (its `::before`) inherited, so it

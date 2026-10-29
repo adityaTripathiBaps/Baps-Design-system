@@ -156,7 +156,10 @@ await page.evaluate(() => {
       <div class="p-select-dropdown"><span><i class="pi pi-chevron-down"></i></span></div>
     </div>
     <div class="p-multiselect">
-      <div class="p-multiselect-dropdown"><span><svg aria-hidden="true"></svg></span></div>
+      <div class="p-multiselect-dropdown"><span><svg data-p-icon="chevron-down" aria-hidden="true"></svg></span></div>
+    </div>
+    <div class="p-select p-select-custom-icon">
+      <div class="p-select-dropdown"><span><svg aria-hidden="true" class="switch"></svg></span></div>
     </div>
   `;
   document.body.append(fixture);
@@ -171,6 +174,16 @@ check(
   await readTrigger('[data-sampark-overlay-fixture] .p-multiselect-dropdown'),
   '12px',
 );
+// A consumer icon that is not a chevron (SPM's up/down switch trigger) is
+// left exactly as supplied: no glyph painted over it, child still visible.
+const customIcon = await readTrigger(
+  '[data-sampark-overlay-fixture] .p-select-custom-icon .p-select-dropdown',
+);
+console.log(`raw custom icon: ${JSON.stringify(customIcon)}`);
+if (customIcon.content !== 'none' || customIcon.childVisibility !== 'visible')
+  failures.push(
+    `raw custom icon: expected untouched, got ${JSON.stringify(customIcon)}`,
+  );
 
 await openStory('components-select--default');
 await page.locator('.p-select').click();

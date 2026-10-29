@@ -101,8 +101,11 @@
 }
 
 /* PrimeNG ships chevron SVGs for Select/MultiSelect/TreeSelect, and a raw
-   consumer can swap them through dropdownicon. Sampark uses one
-   SPM-compatible PrimeIcons chevron for all three. DatePicker is left out:
+   consumer can swap them through dropdownicon. Sampark normalises every
+   CHEVRON (PrimeNG's default or a pi-chevron-down template) to one
+   PrimeIcons glyph; any other consumer icon (e.g. SPM's up/down "switch"
+   trigger) is left as supplied, as SPM dev shows it. A loading spinner is
+   not a chevron, so it is never covered. DatePicker is left out:
    SPM dev renders its calendar glyph (iconDisplay="input"), never a chevron.
    The original child remains in the DOM for PrimeNG ownership but is hidden
    only in the Sampark scope, which leaves MyBKY's rendered icon
@@ -114,14 +117,8 @@
     baps-multi-select.baps-sampark,
     baps-tree-select.baps-sampark
   )
-  :is(.p-select-dropdown, .p-multiselect-dropdown, .p-treeselect-dropdown):not(
-    :has(
-      .p-select-loading-icon,
-      .p-multiselect-loading-icon,
-      .p-treeselect-loading-icon,
-      .pi-spinner,
-      [data-p-icon='spinner']
-    )
+  :is(.p-select-dropdown, .p-multiselect-dropdown, .p-treeselect-dropdown):has(
+    :is([data-p-icon='chevron-down'], .pi-chevron-down)
   ) {
   position: relative;
   color: var(--select-trigger-icon) !important;
@@ -133,14 +130,8 @@
     baps-multi-select.baps-sampark,
     baps-tree-select.baps-sampark
   )
-  :is(.p-select-dropdown, .p-multiselect-dropdown, .p-treeselect-dropdown):not(
-    :has(
-      .p-select-loading-icon,
-      .p-multiselect-loading-icon,
-      .p-treeselect-loading-icon,
-      .pi-spinner,
-      [data-p-icon='spinner']
-    )
+  :is(.p-select-dropdown, .p-multiselect-dropdown, .p-treeselect-dropdown):has(
+    :is([data-p-icon='chevron-down'], .pi-chevron-down)
   )
   > * {
   visibility: hidden !important;
@@ -152,14 +143,8 @@
     baps-multi-select.baps-sampark,
     baps-tree-select.baps-sampark
   )
-  :is(.p-select-dropdown, .p-multiselect-dropdown, .p-treeselect-dropdown):not(
-    :has(
-      .p-select-loading-icon,
-      .p-multiselect-loading-icon,
-      .p-treeselect-loading-icon,
-      .pi-spinner,
-      [data-p-icon='spinner']
-    )
+  :is(.p-select-dropdown, .p-multiselect-dropdown, .p-treeselect-dropdown):has(
+    :is([data-p-icon='chevron-down'], .pi-chevron-down)
   )::before {
   position: absolute;
   content: '\e902';
