@@ -172,12 +172,15 @@ export const Open: Story = {};
 export const FilterPanel: Story = {
   args: {
     header: 'Filters',
-    brand: 'sampark',
     width: 'max(31.25rem, 26.05vw)',
   },
-  render: (args) => ({
+  // Brand follows the toolbar's Design system global, not a pinned arg: a
+  // pinned 'sampark' leaked into the MyBKY docs view, and an unset arg binds
+  // brand=undefined, which leaves the panel with neither brand's skin.
+  render: (args, { globals }) => ({
     props: {
       ...args,
+      brand: globals['designSystem'] === 'sampark' ? 'sampark' : 'mybky',
       open: ['location', 'duration', 'progress'],
       locations: [
         { name: 'Robbinsvile' },
