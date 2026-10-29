@@ -263,7 +263,10 @@
   )
   .p-drawer-footer {
   flex: none;
-  padding: var(--drawer-sampark-gap, 1.5rem) 0 0;
+  /* The panel itself has no padding since c393b3a, so the footer carries the
+     content's 32px inset — its separator stays aligned with the content edge. */
+  margin-inline: var(--space-8);
+  padding: var(--drawer-sampark-gap, 1.5rem) 0 var(--space-8);
   border-top: 1px solid var(--drawer-sampark-border-color, #e1e0e0);
 }
 /* BapsDrawer always declares the footer template (PrimeNG only renders the
