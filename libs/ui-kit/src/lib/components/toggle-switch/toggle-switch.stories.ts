@@ -17,7 +17,10 @@ const meta: Meta<BapsToggleSwitch> = {
   parameters: {
     // Design tab — the Figma frame this component implements, node 13197:89115.
     // Harvested from toggle-switch.stories.ts, where it was already recorded as a comment.
-    design: { type: 'figma', url: 'https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/?node-id=13197-89115' },
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/xc0L2xnREMgjyb5XcKyLIz/?node-id=13197-89115',
+    },
   },
   // Design-system availability — drives the sidebar filter in .storybook/manager.ts
   tags: ['ds:mybky', 'ds:sampark'],
@@ -249,5 +252,23 @@ export const KeyboardInteraction: Story = {
     await expect(toggle).toHaveFocus();
     await userEvent.keyboard('{ }');
     await expect(toggle).not.toBeChecked();
+  },
+};
+
+/** Sampark disabled toggle opacity matches SPM dev (0.6). */
+export const SamparkDisabledOpacityInteraction: Story = {
+  name: 'Interaction — Sampark disabled switch opacity',
+  render: () => ({
+    props: { on: true },
+    template: `
+      <baps-toggleswitch brand="sampark" [disabled]="true" [(ngModel)]="on" />
+    `,
+  }),
+  play: async ({ canvasElement }) => {
+    const el = canvasElement.querySelector('.p-toggleswitch.p-disabled');
+    if (!(el instanceof HTMLElement)) {
+      throw new Error('Sampark disabled toggleswitch should render');
+    }
+    await expect(getComputedStyle(el).opacity).toBe('0.6');
   },
 };
