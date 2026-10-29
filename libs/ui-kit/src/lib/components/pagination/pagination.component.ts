@@ -7,6 +7,7 @@ import {
   computed,
   signal,
 } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Select } from 'primeng/select';
 
@@ -56,23 +57,15 @@ export interface BapsPageEvent {
  */
 @Component({
   selector: 'baps-paginator',
-  imports: [FormsModule, Select],
+  imports: [FormsModule, NgTemplateOutlet, Select],
   template: `
     <div class="baps-paginator" role="navigation" [attr.aria-label]="ariaLabel">
       @if (showCurrentPageReport) {
         <span class="baps-paginator__report">{{ report() }}</span>
       }
 
-      @if (rowsPerPageOptions?.length) {
-        <p-select
-          class="baps-paginator__rpp"
-          [options]="rowsPerPageOptions!"
-          [ngModel]="rows"
-          (ngModelChange)="onRowsChange($event)"
-          [appendTo]="'body'"
-          [panelStyleClass]="rppPanelClass()"
-          ariaLabel="Rows per page"
-        />
+      @if (rowsPerPageOptions?.length && rowsPerPagePosition === 'start') {
+        <ng-container *ngTemplateOutlet="rpp" />
       }
 
       @if (showFirstLastIcon) {
@@ -138,6 +131,10 @@ export interface BapsPageEvent {
         </button>
       }
 
+      @if (rowsPerPageOptions?.length && rowsPerPagePosition === 'end') {
+        <ng-container *ngTemplateOutlet="rpp" />
+      }
+
       @if (showJumpToPage) {
         <!-- One bordered group, split by a hairline: a label cell and the
              field. Commits on Enter and on blur — not on every keystroke,
@@ -157,6 +154,18 @@ export interface BapsPageEvent {
         </span>
       }
     </div>
+
+    <ng-template #rpp>
+      <p-select
+        class="baps-paginator__rpp"
+        [options]="rowsPerPageOptions!"
+        [ngModel]="rows"
+        (ngModelChange)="onRowsChange($event)"
+        [appendTo]="'body'"
+        [panelStyleClass]="rppPanelClass()"
+        ariaLabel="Rows per page"
+      />
+    </ng-template>
   `,
   encapsulation: ViewEncapsulation.None,
   styles: `
@@ -446,6 +455,22 @@ export interface BapsPageEvent {
         color 120ms cubic-bezier(0.16, 1, 0.3, 1);
     }
 
+    /* ── Sampark nav arrows: SPM dev is 28px with a ~12.8px glyph. The small
+       field height is 28px; 12.8px has no token, --font-size-xs (12px) is
+       the nearest step. Page links keep the 32px box. */
+    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator)
+      .baps-paginator__nav {
+      min-width: var(--form-field-sampark-height-sm, 1.75rem);
+      height: var(--form-field-sampark-height-sm, 1.75rem);
+      padding: 0;
+    }
+
+    :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator)
+      .baps-paginator__nav
+      .pi {
+      font-size: var(--font-size-xs, 0.75rem);
+    }
+
     :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator)
       .baps-paginator__nav:hover:not(:disabled),
     :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator)
@@ -676,6 +701,12 @@ export class BapsPaginator {
   @Input() rowsPerPageOptions?: number[];
   /** The « and » jumps. */
   @Input() showFirstLastIcon = true;
+  /**
+   * Where the rows-per-page select sits: `'start'` (default) right after the
+   * report, or `'end'` after the nav buttons, which is SPM's order
+   * (report → arrows → rows-per-page).
+   */
+  @Input() rowsPerPagePosition: 'start' | 'end' = 'start';
   /** The "Showing 1-20 of 250" text. */
   @Input() showCurrentPageReport = false;
   /** Placeholders: {first} {last} {totalRecords} {currentPage} {totalPages}. */

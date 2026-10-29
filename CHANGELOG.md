@@ -8,6 +8,10 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/ui-kit` — minor, additive:** `baps-paginator` takes
+  `rowsPerPagePosition` (`'start'` default, `'end'`). `'end'` puts the
+  rows-per-page select after the arrows, SPM's order (report → arrows →
+  rows-per-page). Default unchanged (PAG-1).
 - **`@org/ui-kit` — minor, additive:** `baps-overlaybadge` takes `brand`.
   `brand="sampark"` (or a `.baps-ds-sampark` page) gives the badge the
   Sampark count-pill sizes and the notification red for `danger`; PrimeNG
@@ -47,6 +51,11 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch, visual (Sampark):** `baps-paginator` nav arrows are
+  28px (`--form-field-sampark-height-sm`) with a 12px glyph
+  (`--font-size-xs`), as in SPM dev (28px, ~12.8px); they were 32px with a
+  16px glyph. Page links keep 32px. SPM dev's 13px report text has no token
+  (ask-at-demo). MyBKY unchanged.
 - **`@org/ui-kit` — patch, visual (Sampark):** a `baps-drawer` or
   `baps-dialog` left on its default brand inside a `.baps-ds-sampark` page no
   longer blurs the page behind it: the MyBKY frosted scrim (25px blur) leaked

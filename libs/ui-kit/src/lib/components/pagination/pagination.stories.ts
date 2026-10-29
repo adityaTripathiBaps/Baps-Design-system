@@ -34,9 +34,11 @@ const meta: Meta<BapsPaginator> = {
     showPageLinks: true,
     totalRecords: 250,
     rows: 20,
+    rowsPerPagePosition: 'start',
   },
   argTypes: {
     pageChange: { control: false },
+    rowsPerPagePosition: { control: 'inline-radio', options: ['start', 'end'] },
     currentPageReportTemplate: {
       description: 'Placeholders: {first} {last} {totalRecords} {currentPage} {totalPages}',
     },
@@ -54,6 +56,7 @@ const meta: Meta<BapsPaginator> = {
         [currentPageReportTemplate]="currentPageReportTemplate"
         [showFirstLastIcon]="showFirstLastIcon"
         [showJumpToPage]="showJumpToPage"
+        [rowsPerPagePosition]="rowsPerPagePosition"
       />
     `,
   }),

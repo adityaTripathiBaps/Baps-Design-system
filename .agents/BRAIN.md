@@ -370,6 +370,10 @@ Blocked on design, not on implementation. Never invent these.
   dialogs show PrimeNG's default `rgba(0, 0, 0, 0.32)` scrim; the kit's
   `--drawer-sampark-mask-background` is `rgba(14, 13, 13, 0.45)`, visibly
   darker in spm-ui. Which one Sampark wants is a design call; the token stays.
+- **Ask at demo.** Sampark paginator text (2026-10-29): SPM dev sets the
+  page report and rows-per-page value at 13px; the type scale has 12 and
+  14px only, so the kit keeps 14px. Its nav glyph is ~12.8px; the kit uses
+  `--font-size-xs` (12px).
 
 ## Approved token exceptions — *2026-10-08*
 

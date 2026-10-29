@@ -21,6 +21,7 @@ import { BapsPageEvent, BapsPaginator } from './pagination.component';
       [showFirstLastIcon]="showFirstLastIcon"
       [showJumpToPage]="showJumpToPage"
       [showCurrentPageReport]="showCurrentPageReport"
+      [rowsPerPagePosition]="rowsPerPagePosition"
       (pageChange)="lastEvent = $event"
     />
   `,
@@ -33,6 +34,7 @@ class Host {
   showFirstLastIcon = true;
   showJumpToPage = false;
   showCurrentPageReport = true;
+  rowsPerPagePosition: 'start' | 'end' = 'start';
   lastEvent?: BapsPageEvent;
 }
 
@@ -46,9 +48,9 @@ async function setup(overrides: Partial<Host> = {}) {
 }
 
 function pageLabels(el: HTMLElement): string[] {
-  return [...el.querySelectorAll('.baps-paginator__page, .baps-paginator__gap')].map((n) =>
-    n.textContent!.trim(),
-  );
+  return [
+    ...el.querySelectorAll('.baps-paginator__page, .baps-paginator__gap'),
+  ].map((n) => n.textContent!.trim());
 }
 
 describe('BapsPaginator', () => {
@@ -69,13 +71,25 @@ describe('BapsPaginator', () => {
     // 13 pages, first=240 -> page index 12 (last page). Use a mid value instead.
     const fixture = await setup({ first: 120 }); // page 7 of 13 (rows=20)
     const el = fixture.nativeElement as HTMLElement;
-    expect(pageLabels(el)).toEqual(['1', '2', '...', '6', '7', '8', '...', '12', '13']);
+    expect(pageLabels(el)).toEqual([
+      '1',
+      '2',
+      '...',
+      '6',
+      '7',
+      '8',
+      '...',
+      '12',
+      '13',
+    ]);
   });
 
   it('marks the current page active and gives it aria-current', async () => {
     const fixture = await setup();
     const el = fixture.nativeElement as HTMLElement;
-    const active = el.querySelector('.baps-paginator__page--active') as HTMLButtonElement;
+    const active = el.querySelector(
+      '.baps-paginator__page--active',
+    ) as HTMLButtonElement;
     expect(active.textContent!.trim()).toBe('1');
     expect(active.getAttribute('aria-current')).toBe('page');
   });
@@ -83,7 +97,9 @@ describe('BapsPaginator', () => {
   it('disables Previous/First on page one and Next/Last on the final page', async () => {
     const first = await setup();
     const elFirst = first.nativeElement as HTMLElement;
-    const [firstBtn, prevBtn] = elFirst.querySelectorAll('.baps-paginator__nav');
+    const [firstBtn, prevBtn] = elFirst.querySelectorAll(
+      '.baps-paginator__nav',
+    );
     expect((firstBtn as HTMLButtonElement).disabled).toBe(true);
     expect((prevBtn as HTMLButtonElement).disabled).toBe(true);
 
@@ -130,7 +146,10 @@ describe('BapsPaginator', () => {
     // page 1 — it should land on the page that still contains record #40.
     // Driven through the component API directly: the rows-per-page control
     // is a real p-select overlay, out of scope for this test.
-    const fixture = await setup({ first: 40, rowsPerPageOptions: [10, 20, 50, 100] });
+    const fixture = await setup({
+      first: 40,
+      rowsPerPageOptions: [10, 20, 50, 100],
+    });
     const paginator = fixture.debugElement.query(By.directive(BapsPaginator))
       .componentInstance as unknown as { onRowsChange: (rows: number) => void };
     paginator.onRowsChange(50);
@@ -147,23 +166,25 @@ describe('BapsPaginator', () => {
   it('formats the current-page report with all placeholders', async () => {
     const fixture = await setup({ first: 20 });
     const el = fixture.nativeElement as HTMLElement;
-    expect(el.querySelector('.baps-paginator__report')!.textContent!.trim()).toBe(
-      'Showing 21-40 of 250',
-    );
+    expect(
+      el.querySelector('.baps-paginator__report')!.textContent!.trim(),
+    ).toBe('Showing 21-40 of 250');
   });
 
   it('reports "0 of 0" without throwing when there are no records', async () => {
     const fixture = await setup({ totalRecords: 0, first: 0 });
     const el = fixture.nativeElement as HTMLElement;
-    expect(el.querySelector('.baps-paginator__report')!.textContent!.trim()).toBe(
-      'Showing 0-0 of 0',
-    );
+    expect(
+      el.querySelector('.baps-paginator__report')!.textContent!.trim(),
+    ).toBe('Showing 0-0 of 0');
   });
 
   it('commits a typed jump-to-page value via Enter', async () => {
     const fixture = await setup({ showJumpToPage: true });
     const el = fixture.nativeElement as HTMLElement;
-    const input = el.querySelector('.baps-paginator__jump-input') as HTMLInputElement;
+    const input = el.querySelector(
+      '.baps-paginator__jump-input',
+    ) as HTMLInputElement;
     input.value = '5';
     input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
     await fixture.whenStable();
@@ -175,7 +196,9 @@ describe('BapsPaginator', () => {
     const fixture = await setup({ showJumpToPage: true });
     fixture.componentInstance.lastEvent = undefined;
     const el = fixture.nativeElement as HTMLElement;
-    const input = el.querySelector('.baps-paginator__jump-input') as HTMLInputElement;
+    const input = el.querySelector(
+      '.baps-paginator__jump-input',
+    ) as HTMLInputElement;
     input.value = 'abc';
     input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
     await fixture.whenStable();
@@ -186,7 +209,9 @@ describe('BapsPaginator', () => {
   it('clamps a jump value past the last page to the last page', async () => {
     const fixture = await setup({ showJumpToPage: true });
     const el = fixture.nativeElement as HTMLElement;
-    const input = el.querySelector('.baps-paginator__jump-input') as HTMLInputElement;
+    const input = el.querySelector(
+      '.baps-paginator__jump-input',
+    ) as HTMLInputElement;
     input.value = '999';
     input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
     await fixture.whenStable();
@@ -197,7 +222,11 @@ describe('BapsPaginator', () => {
   it('applies the baps-sampark host class only for brand="sampark"', async () => {
     @Component({
       imports: [BapsPaginator],
-      template: `<baps-paginator brand="sampark" [totalRecords]="10" [rows]="10" />`,
+      template: `<baps-paginator
+        brand="sampark"
+        [totalRecords]="10"
+        [rows]="10"
+      />`,
     })
     class SamparkHost {}
 
@@ -205,7 +234,43 @@ describe('BapsPaginator', () => {
     await fixture.whenStable();
     fixture.detectChanges();
     await fixture.whenStable();
-    const el = (fixture.nativeElement as HTMLElement).querySelector('baps-paginator')!;
+    const el = (fixture.nativeElement as HTMLElement).querySelector(
+      'baps-paginator',
+    )!;
     expect(el.classList.contains('baps-sampark')).toBe(true);
+  });
+
+  describe('rowsPerPagePosition', () => {
+    const order = (el: HTMLElement) =>
+      [...el.querySelectorAll('.baps-paginator > *')].map((n) =>
+        n.classList.contains('baps-paginator__rpp')
+          ? 'rpp'
+          : n.classList.contains('baps-paginator__report')
+            ? 'report'
+            : (n.getAttribute('aria-label') ?? ''),
+      );
+
+    it('keeps rows-per-page right after the report by default', async () => {
+      const fixture = await setup({
+        rowsPerPageOptions: [20, 50],
+        showFirstLastIcon: false,
+      });
+      const o = order(fixture.nativeElement as HTMLElement).filter((x) =>
+        ['report', 'rpp', 'Previous page', 'Next page'].includes(x),
+      );
+      expect(o).toEqual(['report', 'rpp', 'Previous page', 'Next page']);
+    });
+
+    it('moves rows-per-page after the arrows for end (SPM order)', async () => {
+      const fixture = await setup({
+        rowsPerPageOptions: [20, 50],
+        showFirstLastIcon: false,
+        rowsPerPagePosition: 'end',
+      });
+      const o = order(fixture.nativeElement as HTMLElement).filter((x) =>
+        ['report', 'rpp', 'Previous page', 'Next page'].includes(x),
+      );
+      expect(o).toEqual(['report', 'Previous page', 'Next page', 'rpp']);
+    });
   });
 });
