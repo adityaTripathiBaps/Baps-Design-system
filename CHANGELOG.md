@@ -42,6 +42,12 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch, visual (Sampark):** the selected option in
+  Select and MultiSelect panels is the plain Sampark row surface (#f6f5f5)
+  with no bar, as in SPM dev; the bar stays the hover/keyboard-focus cue.
+  The rule is four classes deep so app CSS on the overlay at (0,3,0)
+  `!important` (spm-ui painted the selected row #f8f7f7) no longer wins.
+  MyBKY unchanged.
 - **`@org/ui-kit` — patch, visual (Sampark):** select-family option rows are
   content-sized as in SPM dev: Select 10px/16px padding (37px rows),
   MultiSelect and TreeSelect 8px/12px (33px), line-height normal. The base

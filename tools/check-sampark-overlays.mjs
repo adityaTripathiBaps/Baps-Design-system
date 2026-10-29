@@ -173,6 +173,19 @@ await addState('.p-select-option', 'p-focus');
 await checkRadius('select focus', '.p-select-option');
 await addState('.p-select-option', 'p-select-option-selected');
 await checkRadius('select selected', '.p-select-option');
+// SPM dev: the selected row is the plain hover surface, no bar.
+const selectedRow = await page
+  .locator('.p-select-option')
+  .first()
+  .evaluate((row) => ({
+    bg: getComputedStyle(row).backgroundColor,
+    bar: getComputedStyle(row, '::before').opacity,
+  }));
+console.log(`select selected: ${JSON.stringify(selectedRow)}`);
+if (selectedRow.bg !== 'rgb(246, 245, 245)' || selectedRow.bar !== '0')
+  failures.push(
+    `select selected: expected rgb(246, 245, 245) and bar opacity 0, got ${JSON.stringify(selectedRow)}`,
+  );
 
 await openStory('components-multiselect--default');
 await page.locator('.p-multiselect').click();
