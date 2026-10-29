@@ -472,6 +472,9 @@
     > .p-tree-node-content
     > .p-tree-node-toggle-button::before {
     content: '–';
+    /* PrimeNG hides a leaf's toggle button with visibility: hidden, which the
+       pseudo-element inherits; the dash has to opt back in. */
+    visibility: visible;
     color: var(--color-sampark-text-placeholder, #979493);
     font-size: var(--font-size-sm);
     line-height: 1;

@@ -279,6 +279,7 @@ const treePanel = await page
       toggleIconWidth: iconStyle?.width,
       toggleIconHeight: iconStyle?.height,
       leafMarker: leafMarker?.content,
+      leafMarkerVisibility: leafMarker?.visibility,
       leafIconDisplay: leafIcon
         ? getComputedStyle(leafIcon).display
         : undefined,
@@ -313,6 +314,7 @@ const treeExpected = {
   toggleIconWidth: '12px',
   toggleIconHeight: '12px',
   leafMarker: '"–"',
+  leafMarkerVisibility: 'visible',
   leafIconDisplay: 'none',
   hoverRowSelector: 'found',
   background: 'rgb(248, 247, 247)',

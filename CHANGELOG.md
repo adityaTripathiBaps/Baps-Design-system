@@ -51,6 +51,10 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch, visual (Sampark):** TreeSelect leaf rows show the
+  "–" marker again. PrimeNG hides a leaf's toggle button with
+  `visibility: hidden`, which the marker (its `::before`) inherited, so it
+  was never painted (spm-ui location tree). MyBKY unchanged.
 - **`@org/ui-kit` — patch, visual (Sampark):** `baps-paginator` nav arrows are
   28px (`--form-field-sampark-height-sm`) with a 12px glyph
   (`--font-size-xs`), as in SPM dev (28px, ~12.8px); they were 32px with a
