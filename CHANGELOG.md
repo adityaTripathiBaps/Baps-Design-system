@@ -42,6 +42,11 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch, visual (Sampark):** input leading icons
+  (`baps-inputicon`, iconfield search icons) use Sampark primary text
+  (#151414). They inherited the `:root` MyBKY Mono/900 (#181b1d), the only
+  MyBKY colour spm-ui's brand-scan found on its Template screens. SPM dev's
+  #1a0701 has no token (ask-at-demo). MyBKY unchanged.
 - **`@org/ui-kit` — patch, visual (Sampark):** `baps-message` text is
   12.72px/500 with a 13px icon, as in SPM dev (was 14px/400). The Sampark
   message rules moved to `_message-sampark.scss`, which `baps-message` now

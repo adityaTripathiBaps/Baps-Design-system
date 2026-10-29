@@ -99,6 +99,8 @@ export const SamparkProjectedSvgIconInteraction: Story = {
     await expect(projectedRect.width).toBe(16);
     await expect(projectedRect.height).toBe(16);
     await expect(getComputedStyle(icon).marginTop).toBe('0px');
+    // Sampark text primary, not the MyBKY Mono/900 the :root default carries.
+    await expect(getComputedStyle(icon).color).toBe('rgb(21, 20, 20)');
     await expect(
       Math.abs(
         iconRect.top +

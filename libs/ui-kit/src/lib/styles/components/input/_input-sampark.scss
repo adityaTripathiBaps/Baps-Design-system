@@ -147,6 +147,11 @@
   --input-addon-bg: var(--color-sampark-secondary-0, #f8f7f7);
   --input-addon-border: var(--color-sampark-border-default, #e1e0e0);
 
+  /* Leading icon: the :root value is MyBKY Mono/900 (#181b1d), which put a
+     MyBKY colour on every Sampark search icon. SPM dev renders #1a0701, which
+     has no token; Sampark's primary text colour is the nearest (ask-at-demo). */
+  --input-leading-icon-color: var(--color-sampark-text-primary, #151414);
+
   /* Labels, hints (default), char count, shortcut, trailing icon and
      overlay backdrop tokens are IDENTICAL across both design systems —
      inherited from the :root set in _input.scss. */
@@ -187,6 +192,7 @@
 
   --input-addon-bg: var(--color-mybky-mono-900, #181b1d);
   --input-addon-border: var(--color-mybky-mono-700, #3d4144);
+  --input-leading-icon-color: var(--color-mybky-mono-100, #eff1f3);
 }
 
 /* ══════════════════════════════════════════════════════════════════════

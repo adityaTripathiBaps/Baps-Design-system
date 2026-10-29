@@ -362,6 +362,10 @@ Blocked on design, not on implementation. Never invent these.
   MyBKY that combination is still unintegrated (stepper keeps its own pill
   chrome inside the group). Whether MyBKY wants the same treatment is a
   design call; extending it changes MyBKY output.
+- **Ask at demo.** Sampark input leading icon (2026-10-29): SPM dev renders
+  the search icon in `#1a0701`, which has no Sampark token. The kit uses
+  `--color-sampark-text-primary` (#151414), the nearest text colour, instead of
+  the MyBKY Mono/900 `:root` default it inherited before.
 
 ## Approved token exceptions — *2026-10-08*
 
