@@ -8,6 +8,10 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/ui-kit` — minor, additive:** `baps-drawer` takes `width`, any CSS
+  length, forwarded to the PrimeNG panel as an inline width (GAP-05). Unset
+  keeps the brand skin's default width, so existing drawers are unchanged.
+  The narrow-viewport Sampark rule (100vw) still wins below 768px.
 - **`@org/ui-kit` — minor, additive:** `[bapsInputText]` and `[bapsTextarea]`
   take `brand`. `brand="sampark"` puts `baps-sampark` on the field itself, which
   the Sampark input skin now also matches, so a Sampark app with no page scope
@@ -34,6 +38,13 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch, visual (Sampark):** the Filters drawer matches SPM
+  dev: header inset 24/32/8px, content inset 12/32/32px with no panel
+  padding or gap, footer inset to the content, 32px header actions, and
+  `baps-accordion` sections with a 12px count-to-title gap, an 18px clear
+  icon in a 28px button and two-column 12px field rows. The `#f6f7f8` header
+  surface SPM uses has no Sampark token, so the header stays Mono/10
+  (ask-at-demo). MyBKY unchanged.
 - **`@org/ui-kit` — patch, visual (Sampark):** list-overlay rows (select,
   multiselect, tree-select, paginator rows-per-page) are square on hover,
   focus and selected, as in SPM dev; they rounded to 4px before
