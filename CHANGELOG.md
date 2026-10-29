@@ -8,6 +8,11 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/ui-kit` — minor, additive:** `baps-overlaybadge` takes `brand`.
+  `brand="sampark"` (or a `.baps-ds-sampark` page) gives the badge the
+  Sampark count-pill sizes and the notification red for `danger`; PrimeNG
+  forwards no design tokens to the inner badge, so they arrive as its CSS
+  variables. MyBKY unchanged.
 - **`@org/tokens` — minor, additive:** `--message-sampark-text-font-size`
   (12.72px), `--message-sampark-text-font-weight` (500, `font.weight.medium`),
   `--message-sampark-text-line-height` (1.2) and `--message-sampark-icon-size`

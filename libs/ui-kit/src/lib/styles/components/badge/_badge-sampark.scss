@@ -54,20 +54,55 @@
    notification = alert count, counts = plain count, disable = inert.
    Set via the `type` input; leaving it unset keeps PrimeNG's severity
    colours, so this file adds a vocabulary rather than replacing one. */
-:is(baps-badge.baps-sampark, .baps-ds-sampark baps-badge).baps-badge-notification .p-badge {
+:is(
+    baps-badge.baps-sampark,
+    .baps-ds-sampark baps-badge
+  ).baps-badge-notification
+  .p-badge {
   background: var(--badge-sampark-notification-background, #ea151a) !important;
   color: var(--badge-sampark-notification-text, #ffffff) !important;
   border-color: var(--badge-sampark-notification-border, #ffffff) !important;
 }
 
-:is(baps-badge.baps-sampark, .baps-ds-sampark baps-badge).baps-badge-counts .p-badge {
+:is(baps-badge.baps-sampark, .baps-ds-sampark baps-badge).baps-badge-counts
+  .p-badge {
   background: var(--badge-sampark-counts-background, #ffffff) !important;
   color: var(--badge-sampark-counts-text, #151414) !important;
   border-color: var(--badge-sampark-counts-border, #e1e0e0) !important;
 }
 
-:is(baps-badge.baps-sampark, .baps-ds-sampark baps-badge).baps-badge-disable .p-badge {
-  background: var(--badge-sampark-disable-background, rgba(21, 20, 20, 0.04)) !important;
+:is(baps-badge.baps-sampark, .baps-ds-sampark baps-badge).baps-badge-disable
+  .p-badge {
+  background: var(
+    --badge-sampark-disable-background,
+    rgba(21, 20, 20, 0.04)
+  ) !important;
   color: var(--badge-sampark-disable-text, #151414) !important;
   border-color: var(--badge-sampark-disable-border, #e1e0e0) !important;
+}
+
+/* ── baps-overlaybadge ───────────────────────────────────────────────
+   PrimeNG's OverlayBadge renders its own p-badge and forwards no `dt`, so
+   the Sampark badge tokens (SAMPARK_BADGE_TOKENS) arrive here as the CSS
+   variables PrimeNG's badge rule reads. `danger` is Sampark's notification
+   red, the colour SPM dev gives its filter-count badge (#ea151a). */
+:is(baps-overlaybadge.baps-sampark, .baps-ds-sampark baps-overlaybadge)
+  .p-badge {
+  --p-badge-border-radius: var(--badge-sampark-radius);
+  --p-badge-height: var(--badge-sampark-size-m);
+  --p-badge-min-width: var(--badge-sampark-size-m);
+  --p-badge-font-size: var(--badge-sampark-font-size-m);
+  --p-badge-font-weight: var(--font-weight-medium);
+  --p-badge-padding: var(--badge-sampark-padding-m);
+  --p-badge-sm-height: var(--badge-sampark-size-s);
+  --p-badge-sm-min-width: var(--badge-sampark-size-s);
+  --p-badge-sm-font-size: var(--badge-sampark-font-size-s);
+  --p-badge-lg-height: var(--badge-sampark-size-l);
+  --p-badge-lg-min-width: var(--badge-sampark-size-l);
+  --p-badge-lg-font-size: var(--badge-sampark-font-size-l);
+  --p-badge-xl-height: var(--badge-sampark-size-xl);
+  --p-badge-xl-min-width: var(--badge-sampark-size-xl);
+  --p-badge-xl-font-size: var(--badge-sampark-font-size-xl);
+  --p-badge-danger-background: var(--badge-sampark-notification-background);
+  --p-badge-danger-color: var(--badge-sampark-notification-text);
 }
