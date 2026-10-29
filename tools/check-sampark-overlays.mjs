@@ -1,8 +1,9 @@
 /**
  * Guard Sampark-only overlay details recovered from spm-ui origin/develop.
  *
- * The select family used three differently sized chevrons plus DatePicker's
- * calendar glyph, while SPM renders one 12px Mono/100 pi-chevron-down. This
+ * The select family used three differently sized chevrons, while SPM renders
+ * one 12px Mono/100 pi-chevron-down. DatePicker keeps its calendar glyph, as
+ * in SPM dev, and is asserted untouched. This
  * drives the real Storybook components and also injects raw p-select and
  * p-multiselect trigger markup to cover the application wrappers that provide
  * their own dropdownicon templates.
@@ -24,7 +25,6 @@ const CASES = [
     'components-treeselect--brands',
     'baps-tree-select.baps-sampark .p-treeselect-dropdown',
   ],
-  ['datepicker', 'components-datepicker--overlay', '.p-datepicker-dropdown'],
 ];
 
 const EXPECTED_ICON = {
@@ -111,6 +111,16 @@ for (const [name, storyId, selector] of CASES) {
   );
   await page.waitForSelector(selector, { timeout: 60_000 });
   check(name, await readTrigger(selector));
+}
+
+await openStory('components-datepicker--overlay');
+await page.waitForSelector('.p-datepicker-dropdown', { timeout: 60_000 });
+const datepicker = await readTrigger('.p-datepicker-dropdown');
+console.log(`datepicker: ${JSON.stringify(datepicker)}`);
+if (datepicker.childVisibility !== 'visible' || datepicker.content !== 'none') {
+  failures.push(
+    `datepicker trigger: expected its own calendar glyph, got ${JSON.stringify(datepicker)}`,
+  );
 }
 
 await page.goto(

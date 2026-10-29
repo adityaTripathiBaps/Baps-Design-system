@@ -69,7 +69,7 @@
   /* ── Trigger internals ───────────────────────────────────────────── */
   /* SPM origin/develop renders its explicit pi-chevron-down trigger at
      12px in Mono/100. Keep the icon font-size on the typography scale so
-     select, multiselect, treeselect and datepicker cannot drift apart. */
+     select, multiselect and treeselect cannot drift apart. */
   --select-trigger-icon: var(--color-sampark-text-primary, #151414);
   --select-trigger-icon-size: var(--font-size-xs, 0.75rem);
 
@@ -100,26 +100,21 @@
   --datepicker-muted-text: var(--color-sampark-text-secondary, #595656);
 }
 
-/* PrimeNG ships three different trigger glyph paths here: chevron SVGs for
-   Select/MultiSelect/TreeSelect, a calendar SVG for DatePicker, and whatever
-   a raw consumer supplies through dropdownicon/triggericon. Sampark uses one
-   SPM-compatible PrimeIcons chevron for all four. The original child remains
-   in the DOM for PrimeNG ownership but is hidden only in the Sampark scope,
-   which leaves MyBKY's rendered icon byte-identical. Loading spinners are
-   deliberately excluded so asynchronous controls still announce progress. */
+/* PrimeNG ships chevron SVGs for Select/MultiSelect/TreeSelect, and a raw
+   consumer can swap them through dropdownicon. Sampark uses one
+   SPM-compatible PrimeIcons chevron for all three. DatePicker is left out:
+   SPM dev renders its calendar glyph (iconDisplay="input"), never a chevron.
+   The original child remains in the DOM for PrimeNG ownership but is hidden
+   only in the Sampark scope, which leaves MyBKY's rendered icon
+   byte-identical. Loading spinners are deliberately excluded so asynchronous
+   controls still announce progress. */
 :is(
     .baps-ds-sampark,
     baps-select.baps-sampark,
     baps-multi-select.baps-sampark,
-    baps-tree-select.baps-sampark,
-    baps-datepicker.baps-sampark
+    baps-tree-select.baps-sampark
   )
-  :is(
-    .p-select-dropdown,
-    .p-multiselect-dropdown,
-    .p-treeselect-dropdown,
-    .p-datepicker-dropdown
-  ):not(
+  :is(.p-select-dropdown, .p-multiselect-dropdown, .p-treeselect-dropdown):not(
     :has(
       .p-select-loading-icon,
       .p-multiselect-loading-icon,
@@ -136,15 +131,9 @@
     .baps-ds-sampark,
     baps-select.baps-sampark,
     baps-multi-select.baps-sampark,
-    baps-tree-select.baps-sampark,
-    baps-datepicker.baps-sampark
+    baps-tree-select.baps-sampark
   )
-  :is(
-    .p-select-dropdown,
-    .p-multiselect-dropdown,
-    .p-treeselect-dropdown,
-    .p-datepicker-dropdown
-  ):not(
+  :is(.p-select-dropdown, .p-multiselect-dropdown, .p-treeselect-dropdown):not(
     :has(
       .p-select-loading-icon,
       .p-multiselect-loading-icon,
@@ -161,15 +150,9 @@
     .baps-ds-sampark,
     baps-select.baps-sampark,
     baps-multi-select.baps-sampark,
-    baps-tree-select.baps-sampark,
-    baps-datepicker.baps-sampark
+    baps-tree-select.baps-sampark
   )
-  :is(
-    .p-select-dropdown,
-    .p-multiselect-dropdown,
-    .p-treeselect-dropdown,
-    .p-datepicker-dropdown
-  ):not(
+  :is(.p-select-dropdown, .p-multiselect-dropdown, .p-treeselect-dropdown):not(
     :has(
       .p-select-loading-icon,
       .p-multiselect-loading-icon,
