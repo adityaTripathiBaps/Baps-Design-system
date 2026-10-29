@@ -348,6 +348,13 @@ Blocked on design, not on implementation. Never invent these.
   (12.72px / 14px). `0.795rem` is also off the type scale. Whether the
   component should carry an app's layout breakpoint at all is the design
   call; until then the tokens stay as shipped.
+- **Ask at demo.** Sampark TreeSelect panel (`_select-sampark.scss`,
+  2026-10-29): SPM dev's tree guide is a 2px line at a 19px indent with a
+  2px-radius toggle. The kit has no border-width token and no 2px radius
+  (`--radius-sampark-sm` is 3px), so f298c08 borrows `--space-0-5` for both
+  the line width and the toggle radius, and uses `--space-5` (20px, 1px off
+  dev) for the indent. Values render correctly; the spacing tokens are
+  standing in for missing border-width and radius steps.
 
 ## Approved token exceptions — *2026-10-08*
 
