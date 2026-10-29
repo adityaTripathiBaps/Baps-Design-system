@@ -34,6 +34,13 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch, visual (Sampark):** select, multiselect and
+  tree-select triggers draw one 12px Mono/100 PrimeIcons chevron, as SPM dev
+  does, including raw `p-select`/`p-multiselect` under `.baps-ds-sampark`
+  (they mixed 14px and 16px SVG chevrons before). The glyph is a `::before`
+  in the `primeicons` font, so **a Sampark app must load
+  `primeicons/primeicons.css`**; without it the trigger is blank. DatePicker
+  keeps its calendar glyph. MyBKY unchanged.
 - **`@org/ui-kit` — patch, visual (Sampark):** tree-select and cascade-select
   placeholders render in the placeholder colour. The Sampark placeholder rule
   listed select and multiselect only, while the label rule above it gave all

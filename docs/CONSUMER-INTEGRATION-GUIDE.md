@@ -184,7 +184,8 @@ Preferred global order:
 
 1. `@org/tokens/css`
 2. `@org/ui-kit/styles` or `@org/ui-kit-react/styles`
-3. `primeicons/primeicons.css` when `pi-*` glyphs are used
+3. `primeicons/primeicons.css` when `pi-*` glyphs are used, and always for
+   Sampark: its select-family trigger chevron is a PrimeIcons glyph
 4. application CSS in the final `app-styles` layer
 
 The full kit bundle includes the Inter `@font-face`, the shared font custom
