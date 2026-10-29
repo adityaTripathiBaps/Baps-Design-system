@@ -355,6 +355,13 @@ Blocked on design, not on implementation. Never invent these.
   the line width and the toggle radius, and uses `--space-5` (20px, 1px off
   dev) for the indent. Values render correctly; the spacing tokens are
   standing in for missing border-width and radius steps.
+- **Ask at demo.** MyBKY input-group + input-number integration (2026-10-29):
+  the IGIN rules that stretch `baps-input-number` inside `baps-input-group`
+  (chromeless input, joined spinner buttons) and the `.w-auto` host rule are
+  scoped to Sampark only (`2b1f628`), so MyBKY renders exactly as it did. In
+  MyBKY that combination is still unintegrated (stepper keeps its own pill
+  chrome inside the group). Whether MyBKY wants the same treatment is a
+  design call; extending it changes MyBKY output.
 
 ## Approved token exceptions — *2026-10-08*
 
