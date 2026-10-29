@@ -8,6 +8,10 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/tokens` — minor, additive:** `--message-sampark-text-font-size`
+  (12.72px), `--message-sampark-text-font-weight` (500, `font.weight.medium`),
+  `--message-sampark-text-line-height` (1.2) and `--message-sampark-icon-size`
+  (13px), the SPM dev inline-message metrics.
 - **`@org/ui-kit` — minor, additive:** `baps-drawer` takes `width`, any CSS
   length, forwarded to the PrimeNG panel as an inline width (GAP-05). Unset
   keeps the brand skin's default width, so existing drawers are unchanged.
@@ -38,6 +42,11 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch, visual (Sampark):** `baps-message` text is
+  12.72px/500 with a 13px icon, as in SPM dev (was 14px/400). The Sampark
+  message rules moved to `_message-sampark.scss`, which `baps-message` now
+  loads itself, so Storybook and per-component imports get them too; before,
+  they existed only in the full bundle. MyBKY unchanged.
 - **`@org/ui-kit` — patch, visual (Sampark):** the Filters drawer matches SPM
   dev: header inset 24/32/8px, content inset 12/32/32px with no panel
   padding or gap, footer inset to the content, 32px header actions, and
