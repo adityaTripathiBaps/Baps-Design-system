@@ -37,7 +37,7 @@ baps-input-group .p-inputgroup:focus-within {
   box-shadow: var(--baps-ig-ring);
 }
 
-baps-input-group.w-auto {
+:is(baps-input-group.baps-sampark, .baps-ds-sampark baps-input-group).w-auto {
   display: inline-block;
   width: auto;
 
@@ -80,7 +80,9 @@ baps-input-group .p-inputgroup .p-inputtext {
   text-align: center;
 }
 
-baps-input-group .p-inputgroup > baps-input-number {
+:is(baps-input-group.baps-sampark, .baps-ds-sampark baps-input-group)
+  .p-inputgroup
+  > baps-input-number {
   flex: 1 1 auto;
   display: inline-flex;
   min-width: 0;

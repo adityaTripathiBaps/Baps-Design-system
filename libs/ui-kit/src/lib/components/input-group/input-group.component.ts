@@ -147,7 +147,10 @@ const ADDON_TOKENS = {
       box-shadow: var(--baps-ig-ring);
     }
 
-    baps-input-group.w-auto {
+    :is(
+      baps-input-group.baps-sampark,
+      .baps-ds-sampark baps-input-group
+    ).w-auto {
       display: inline-block;
       width: auto;
 
@@ -193,9 +196,11 @@ const ADDON_TOKENS = {
       min-width: 0;
     }
 
-    /* baps-input-number inside baps-input-group: stretches to fill the group,
+    /* Sampark only: baps-input-number inside baps-input-group stretches to fill the group,
        with chromeless input and cleanly joined spinner buttons. */
-    baps-input-group .p-inputgroup > baps-input-number {
+    :is(baps-input-group.baps-sampark, .baps-ds-sampark baps-input-group)
+      .p-inputgroup
+      > baps-input-number {
       flex: 1 1 auto;
       display: inline-flex;
       min-width: 0;
