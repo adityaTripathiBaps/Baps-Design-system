@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
 import { expect, userEvent, waitFor, within } from '@storybook/test';
 import { FormsModule } from '@angular/forms';
-import { Component } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BapsInputText } from './directives/input-text.directive';
 import { BapsTextarea } from './directives/textarea.directive';
 import { BapsFloatLabel } from './float-label.component';
@@ -13,20 +13,6 @@ import { BapsMessage } from './message.component';
 import { SelectModule } from 'primeng/select';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { DatePickerModule } from 'primeng/datepicker';
-
-@Component({
-  // eslint-disable-next-line @angular-eslint/component-selector
-  selector: 'svg-icon',
-  standalone: true,
-  template: `
-    <svg viewBox="0 0 24 24" width="100%" height="100%" aria-hidden="true">
-      <path
-        d="M10 4a6 6 0 1 0 3.87 10.58L19.3 20 20 19.3l-5.42-5.43A6 6 0 0 0 10 4Z"
-      />
-    </svg>
-  `,
-})
-class StorySvgIcon {}
 
 /**
  * Form Field — the text-input field pattern (label + control + helper/error)
@@ -56,7 +42,6 @@ const meta: Meta = {
         BapsIconField,
         BapsInputIcon,
         BapsMessage,
-        StorySvgIcon,
         FormsModule,
         SelectModule,
         MultiSelectModule,
@@ -71,12 +56,19 @@ type Story = StoryObj;
 
 export const SamparkProjectedSvgIconInteraction: Story = {
   name: 'Interaction — Sampark projected SVG icon metrics',
+  // <svg-icon> stands in for spm-ui's angular-svg-icon host element; a plain
+  // custom element is enough, so no stub component (or lint suppression).
+  decorators: [moduleMetadata({ schemas: [CUSTOM_ELEMENTS_SCHEMA] })],
   render: () => ({
     props: { value: '' },
     template: `
       <baps-iconfield brand="sampark" style="display:block; max-width:320px;">
         <baps-inputicon brand="sampark">
-          <svg-icon />
+          <svg-icon>
+            <svg viewBox="0 0 24 24" width="100%" height="100%" aria-hidden="true">
+              <path d="M10 4a6 6 0 1 0 3.87 10.58L19.3 20 20 19.3l-5.42-5.43A6 6 0 0 0 10 4Z" />
+            </svg>
+          </svg-icon>
         </baps-inputicon>
         <input
           bapsInputText
