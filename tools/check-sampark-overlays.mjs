@@ -90,6 +90,17 @@ const checkRadius = async (name, selector) => {
   }
 };
 
+// SPM dev rows are content-sized: Select 37px, MultiSelect 33px.
+const checkHeight = async (name, selector, expected) => {
+  const h = await page
+    .locator(selector)
+    .first()
+    .evaluate((row) => row.getBoundingClientRect().height);
+  console.log(`${name}: height ${h}`);
+  if (Math.abs(h - expected) > 0.5)
+    failures.push(`${name} height: expected ${expected}px, got ${h}px`);
+};
+
 const addState = async (selector, stateClass) => {
   await page
     .locator(selector)
@@ -157,6 +168,7 @@ await page.locator('.p-select').click();
 await page.locator('.p-select-option').first().waitFor();
 await page.locator('.p-select-option').first().hover();
 await checkRadius('select hover', '.p-select-option');
+await checkHeight('select row', '.p-select-option', 37);
 await addState('.p-select-option', 'p-focus');
 await checkRadius('select focus', '.p-select-option');
 await addState('.p-select-option', 'p-select-option-selected');
@@ -167,6 +179,7 @@ await page.locator('.p-multiselect').click();
 await page.locator('.p-multiselect-option').first().waitFor();
 await page.locator('.p-multiselect-option').first().hover();
 await checkRadius('multiselect hover', '.p-multiselect-option');
+await checkHeight('multiselect row', '.p-multiselect-option', 33);
 await addState('.p-multiselect-option', 'p-focus');
 await checkRadius('multiselect focus', '.p-multiselect-option');
 await addState('.p-multiselect-option', 'p-multiselect-option-selected');
@@ -292,9 +305,9 @@ for (const [property, expected] of Object.entries(treeExpected)) {
   }
 }
 const treeRowHeight = Number.parseFloat(treePanel.rowHeight ?? '0');
-if (treeRowHeight < 34 || treeRowHeight > 36) {
+if (treeRowHeight < 32.5 || treeRowHeight > 33.5) {
   failures.push(
-    `treeselect panel rowHeight: expected 34–36px, got ${treePanel.rowHeight}`,
+    `treeselect panel rowHeight: expected 33px (SPM dev), got ${treePanel.rowHeight}`,
   );
 }
 if (!['chevron-right', 'chevron-down'].includes(treePanel.toggleIcon ?? '')) {

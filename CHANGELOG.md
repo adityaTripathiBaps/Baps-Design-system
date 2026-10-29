@@ -42,6 +42,11 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch, visual (Sampark):** select-family option rows are
+  content-sized as in SPM dev: Select 10px/16px padding (37px rows),
+  MultiSelect and TreeSelect 8px/12px (33px), line-height normal. The base
+  `min-height: 48px; line-height: 1.3` reached Sampark rows (measured 48px in
+  spm-ui). MyBKY unchanged.
 - **`@org/ui-kit` — patch, visual (Sampark):** input leading icons
   (`baps-inputicon`, iconfield search icons) use Sampark primary text
   (#151414). They inherited the `:root` MyBKY Mono/900 (#181b1d), the only

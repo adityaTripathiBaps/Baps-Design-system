@@ -516,3 +516,24 @@
 .baps-ds-sampark .p-multiselect-option.p-multiselect-option-selected:hover {
   box-shadow: none !important; /* beats base _select.scss's !important bar */
 }
+
+/* ── Option row geometry (SPM dev) ──────────────────────────────────────
+   Base _select.scss gives every option `min-height: 48px; line-height: 1.3`
+   (!important, MyBKY). SPM dev's rows are content-sized: Select 10px/16px
+   padding (37px), MultiSelect and TreeSelect 8px/12px (33px), line-height
+   normal. One class more specific than the base rule, so load order does not
+   decide it; TreeSelect's padding already comes from the panel block above. */
+.baps-ds-sampark .p-select-option,
+.baps-ds-sampark .p-multiselect-option,
+.baps-ds-sampark .p-treeselect-overlay .p-tree-node-content {
+  min-height: auto !important;
+  line-height: normal !important;
+}
+
+.baps-ds-sampark .p-select-option {
+  padding: var(--space-2-5) var(--space-4) !important;
+}
+
+.baps-ds-sampark .p-multiselect-option {
+  padding: var(--space-2) var(--space-3) !important;
+}
