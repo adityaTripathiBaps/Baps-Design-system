@@ -196,6 +196,8 @@ await checkRadius('select focus', '.p-select-option');
 await addState('.p-select-option', 'p-select-option-selected');
 await checkRadius('select selected', '.p-select-option');
 // SPM dev: the selected row is the plain hover surface, no bar.
+// Rows animate background/bar over 150ms; read the settled state.
+await page.waitForTimeout(400);
 const selectedRow = await page
   .locator('.p-select-option')
   .first()
@@ -392,5 +394,5 @@ if (failures.length) {
 }
 
 console.log(
-  '\nSampark overlays match SPM: 12px Mono/100 chevrons, square list states, and tree panel geometry',
+  '\nSampark overlays match SPM: chevrons (10px, MultiSelect 12px), row heights, selected rows, square list states, and tree panel geometry',
 );
