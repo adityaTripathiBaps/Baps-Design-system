@@ -306,8 +306,8 @@ const treeExpected = {
   leafMarker: '"–"',
   leafIconDisplay: 'none',
   hoverRowSelector: 'found',
-  background: 'rgb(246, 245, 245)',
-  barOpacity: '1',
+  background: 'rgb(248, 247, 247)',
+  barOpacity: '0',
 };
 for (const [property, expected] of Object.entries(treeExpected)) {
   const actual = { ...treePanel, ...treeHover }[property];

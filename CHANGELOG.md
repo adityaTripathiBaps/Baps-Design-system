@@ -42,6 +42,9 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch, visual (Sampark):** TreeSelect rows hover in
+  Mono/10 (#f8f7f7) without the bar, as in SPM dev (was #f6f5f5 with the
+  4px bar). MyBKY unchanged.
 - **`@org/ui-kit` — patch, visual (Sampark):** Select, MultiSelect and
   TreeSelect panels are framed in Mono/40 (#bcb9b9) as in SPM dev; they
   used the lighter Mono/borders (#e1e0e0). Internal dividers are unchanged.

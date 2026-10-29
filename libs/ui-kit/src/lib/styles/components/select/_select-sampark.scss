@@ -479,6 +479,16 @@
     color: var(--select-option-text) !important;
   }
 
+  /* SPM dev: tree hover is Mono/10 with no bar (Select/MultiSelect keep
+     the bar as their hover cue). */
+  .p-tree-node-content:not(.p-tree-node-selected):not(.p-disabled):hover {
+    background: var(--color-sampark-mono-10, #f8f7f7) !important;
+  }
+
+  .p-tree-node-content:not(.p-disabled):hover::before {
+    opacity: 0 !important;
+  }
+
   .p-tree-node-content.p-tree-node-selected::before,
   .p-tree-node-content.p-tree-node-selected:hover::before {
     opacity: 0 !important;
