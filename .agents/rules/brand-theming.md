@@ -75,9 +75,8 @@ for Storybook and docs only.
 
 - **Sampark app:** `<html class="baps-ds-sampark">`; the `Sampark` preset;
   `brand="sampark"` on every kit component that has a `brand` input (mechanism
-  3 means the root class alone is not enough). Components with no `brand` input
-  (`baps-message`, `baps-iconfield` / `baps-inputicon`) rely on the root class.
-  Never `brand="mybky"`, the `MyBky`/`Baps` preset or `--color-mybky-*` in app
+  3 means the root class alone is not enough). Raw PrimeNG controls with no kit
+  wrapper rely on the root class alone. Never `brand="mybky"`, the `MyBky`/`Baps` preset or `--color-mybky-*` in app
   code.
 - **MyBKY app:** no `baps-ds-sampark` / `baps-sampark` class, no
   `brand="sampark"`, the `MyBky` preset, no `--color-sampark-*` in app code.
