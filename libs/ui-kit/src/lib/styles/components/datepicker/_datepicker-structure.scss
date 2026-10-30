@@ -6,18 +6,25 @@ baps-datepicker {
   display: block;
 }
 
-p-datepicker .p-datepicker-input-group {
+/* Input structure is scoped to kit hosts: unscoped, it moved the input icon of
+   every raw PrimeNG p-datepicker in a consuming app outside its field (spm-ui
+   AT-034), as the select width rule did (F2). :where() keeps the specificity. */
+
+:where(baps-datepicker) p-datepicker .p-datepicker-input-group {
   position: relative;
   display: flex;
   width: 100%;
 }
 
-p-datepicker .p-datepicker-input-group .p-datepicker-input {
+:where(baps-datepicker)
+  p-datepicker
+  .p-datepicker-input-group
+  .p-datepicker-input {
   flex: 1 1 auto;
   min-width: 0;
 }
 
-p-datepicker .p-datepicker-input-icon {
+:where(baps-datepicker) p-datepicker .p-datepicker-input-icon {
   position: absolute;
   z-index: 1;
   inset-inline-start: var(--space-3);
@@ -28,13 +35,14 @@ p-datepicker .p-datepicker-input-icon {
   pointer-events: none;
 }
 
-p-datepicker
+:where(baps-datepicker)
+  p-datepicker
   .p-datepicker-input-group:has(.p-datepicker-input-icon)
   .p-datepicker-input {
   padding-inline-start: var(--space-8) !important;
 }
 
-p-datepicker .p-datepicker-clear-icon {
+:where(baps-datepicker) p-datepicker .p-datepicker-clear-icon {
   position: absolute;
   z-index: 1;
   inset-inline-end: var(--space-3);
@@ -43,7 +51,8 @@ p-datepicker .p-datepicker-clear-icon {
   color: var(--select-trigger-icon);
 }
 
-p-datepicker
+:where(baps-datepicker)
+  p-datepicker
   .p-datepicker-input-group:has(.p-datepicker-dropdown)
   .p-datepicker-clear-icon {
   inset-inline-end: var(--space-10);

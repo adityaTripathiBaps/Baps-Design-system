@@ -64,6 +64,13 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch, visual (raw PrimeNG only):** the datepicker input
+  structure (input group, leading input icon, clear icon and their padding) now
+  applies only inside `baps-datepicker`. Unscoped, it reached every raw
+  PrimeNG `p-datepicker` in a consuming app and, because PrimeNG 21 renders
+  `.p-datepicker-input-icon-container` rather than the kit's input group,
+  pushed the calendar icon outside the field (spm-ui AT-034). `:where()` keeps
+  the old specificity, so kit datepickers render unchanged in both brands.
 - **`@org/ui-kit` — patch, visual (Sampark):** a disabled Sampark
   `baps-toggleswitch` renders at 0.6 opacity, as in SPM dev (was full
   opacity). MyBKY unchanged.
