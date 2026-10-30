@@ -295,6 +295,9 @@ p-accordion .baps-accordion-slider {
   --baps-accordion-header-bg: var(--color-sampark-mono-10, #f8f7f7);
   --baps-accordion-text: var(--color-sampark-mono-100, #151414);
   --baps-accordion-border: var(--color-sampark-mono-borders, #e1e0e0);
+  /* Header clear icon: SPM dev strokes it Mono/100; without this it fell
+     back to MyBKY Mono/500 on Sampark pages. */
+  --baps-accordion-muted: var(--color-sampark-text-primary, #151414);
   --baps-accordion-count-bg: var(
     --color-sampark-primary-alpha10,
     rgba(135, 48, 48, 0.1)
@@ -327,6 +330,7 @@ p-accordion .baps-accordion-slider {
 .baps-dark :is(p-accordion.baps-sampark, .baps-ds-sampark p-accordion),
 .baps-ds-sampark .baps-dark p-accordion {
   --baps-accordion-header-bg: var(--color-sampark-dark-surface-hover, #4a4947);
+  --baps-accordion-muted: var(--baps-accordion-text);
 }
 
 /* Header clear control (baps-accordion-panel [clearable]).

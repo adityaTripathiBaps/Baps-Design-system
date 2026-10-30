@@ -51,6 +51,10 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch, visual (Sampark):** the `baps-accordion-panel`
+  clear icon is Sampark Mono/100 (#151414), as in SPM dev; it fell back to
+  MyBKY Mono/500 (#6f777d) on Sampark pages, the one MyBKY colour spm-ui's
+  brand-scan found on its kit Filters drawer. MyBKY unchanged.
 - **`@org/ui-kit` — patch, visual (Sampark):** the Sampark trigger glyph
   replaces only chevrons (PrimeNG's default or a `pi-chevron-down` template).
   Any other consumer `dropdownicon` is shown as supplied, as SPM dev does

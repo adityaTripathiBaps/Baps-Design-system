@@ -64,6 +64,15 @@ expect('header action gap', actions.gap, '8px');
 expect('header action height', actionButton.height, '32px');
 expect('section clear size', clearButton.width, '28px');
 expect('section clear icon', clearIcon.width, '18px');
+// SPM dev strokes the clear icon Mono/100 (it fell back to MyBKY Mono/500).
+expect(
+  'section clear colour',
+  await page
+    .locator('.baps-accordion-clear')
+    .first()
+    .evaluate((e) => getComputedStyle(e).color),
+  'rgb(21, 20, 20)',
+);
 
 await page.goto(
   `${BASE}/iframe.html?id=components-accordion--filter-panel&viewMode=story&globals=designSystem:sampark`,
