@@ -186,7 +186,9 @@
     border: 1px solid var(--input-border-default) !important;
     background: var(--input-bg-default) !important;
     box-shadow: none !important;
-    width: 100% !important;
+    /* No width here: the kit-host-scoped width rule in _select.scss covers
+       both brands, and this block's .baps-ds-sampark arm would otherwise
+       stretch every raw PrimeNG select on the page. */
   }
 
   /* ── 2. Label alignments (6px 8px padding matching text inputs) ── */

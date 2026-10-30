@@ -51,6 +51,14 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch, visual (both brands, raw PrimeNG only):** the
+  select trigger's `width: 100% !important` (`.p-select`, `.p-multiselect`,
+  `.p-cascadeselect`, `.p-treeselect`) now applies only inside a kit host
+  (`baps-select`, `baps-multi-select`, `baps-tree-select`, `baps-paginator`).
+  Unscoped, it stretched every raw PrimeNG select in a consuming app (spm-ui's
+  raw paginator rows-per-page rendered 1360px wide); the Sampark block's
+  restatement under `.baps-ds-sampark` is removed for the same reason. Kit
+  components render unchanged in both brands (F2).
 - **`@org/ui-kit` — patch, visual (Sampark):** an open `baps-accordion-panel`
   with a divider leaves 8px between the divider and its first field
   (`--space-2`), as in SPM dev (header, 8px, divider, 8px, field); the field

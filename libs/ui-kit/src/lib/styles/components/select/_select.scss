@@ -310,7 +310,6 @@ p-datepicker.p-datepicker {
 .p-treeselect {
   display: inline-flex !important;
   align-items: center !important;
-  width: 100% !important;
   height: 2.25rem !important; /* 36px */
   min-height: 2rem !important; /* 32px */
   border: 1px solid var(--input-border-default) !important;
@@ -326,6 +325,14 @@ p-datepicker.p-datepicker {
     border-width 150ms ease,
     box-shadow 150ms ease,
     background 150ms ease !important;
+}
+
+/* Full width only inside a kit host. Unscoped, it stretched every raw
+   PrimeNG select in a consuming app (spm-ui's paginator rows-per-page
+   rendered 1360px wide). :where() keeps the specificity of the old rule. */
+:where(baps-select, baps-multi-select, baps-tree-select, baps-paginator)
+  :is(.p-select, .p-multiselect, .p-cascadeselect, .p-treeselect) {
+  width: 100% !important;
 }
 
 /* Label region — v21 renders the value inside .p-*-label; the container
