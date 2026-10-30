@@ -88,6 +88,29 @@ export const appConfig: ApplicationConfig = {
 };
 ```
 
+A Sampark app registers the `Sampark` preset instead, with the same options:
+
+```ts
+import { Sampark } from '@org/ui-kit';
+
+providePrimeNG({
+  ripple: true,
+  theme: {
+    preset: Sampark,
+    options: {
+      darkModeSelector: '.baps-dark',
+      cssLayer: {
+        name: 'primeng',
+        order: 'theme, base, components, primeng, utilities, app-styles',
+      },
+    },
+  },
+});
+```
+
+An app registers exactly one of the two presets; see
+[One app, one brand](#one-app-one-brand).
+
 Standalone components import wrappers directly:
 
 ```ts
@@ -222,13 +245,40 @@ explicit.
 
 ## Brand and dark-mode classes
 
-MyBKY is the default. Use `.baps-ds-sampark` for a page/subtree and
-`.baps-sampark` for one component instance:
+MyBKY is the default (unscoped). A Sampark app puts `.baps-ds-sampark` on
+`<html>` in `index.html`:
 
 ```html
-<main class="baps-ds-sampark">...</main>
-<baps-button class="baps-sampark" label="Save" />
+<html lang="en" class="baps-ds-sampark">
+  <!-- head and body unchanged -->
+</html>
 ```
+
+Put it on `<html>`, never on a subtree such as `<main>`: portalled panels
+(select, tree-select and datepicker overlays, drawers, dialogs, tooltips) are
+appended to `<body>`, so a subtree scope leaves them in MyBKY. Also pass
+`brand="sampark"` to every kit component that has a `brand` input; some pick
+their PrimeNG `dt` tokens from it in TypeScript, so the root class alone is not
+enough for them.
+
+### One app, one brand
+
+An app that adopts the kit renders exactly one brand, MyBKY or Sampark, never
+both. Decide it at integration start and record it in the app's README.
+
+- **Sampark app:** `<html class="baps-ds-sampark">`, the `Sampark` preset,
+  `brand="sampark"` on every kit component that takes `brand`. Never
+  `brand="mybky"`, the `MyBky`/`Baps` preset, or `--color-mybky-*` in app code.
+- **MyBKY app:** no `baps-ds-sampark` / `baps-sampark` class, no
+  `brand="sampark"`, the `MyBky` preset, and no `--color-sampark-*` in app code.
+- Do not fix a wrong-brand colour with app CSS. The fix is the root class, the
+  `brand` input, or a kit change.
+- Side-by-side brands are for Storybook and docs only.
+
+Gate before calling a migration done: open each touched screen and every
+overlay it owns, and scan the computed colours of kit hosts and portalled
+panels. Expected: 0 colours that exist only in the other brand's palette (the
+brand-scan tool does this).
 
 Dark mode must be applied to both `<html>` and `<body>`:
 
@@ -269,6 +319,35 @@ safe contract.
 A consumer may keep a PrimeNG component where the kit deliberately has no
 equivalent. Such usage stays application-owned and must not be presented as a
 kit export.
+
+## No kit equivalent
+
+These PrimeNG components have no kit wrapper. Keep the raw PrimeNG component.
+In a Sampark app its Sampark styling comes only from the root
+`.baps-ds-sampark` class on `<html>`; do not patch it with app CSS. A future
+kit component for any of them is an open design decision (ask at demo).
+
+| PrimeNG             | Notes                                                        |
+| ------------------- | ------------------------------------------------------------ |
+| `p-editor`          | Quill dependency; application-owned                          |
+| `p-chart`           | chart.js dependency; application-owned                       |
+| `p-progressspinner` | not a drop-in for `baps-spinner`; kept raw until decided     |
+| `p-scrollpanel`     | a semantic container with `overflow: auto` usually suffices  |
+| `p-togglebutton`    | `baps-segmented` models a group, not a binary toggle         |
+| `p-autocomplete`    | `baps-autocomplete` would take its Sampark spec from SPM dev |
+
+## Text inputs
+
+The kit standard for text fields is a directive on the native element, not a
+component:
+
+```html
+<input bapsInputText brand="sampark" [(ngModel)]="name" />
+<textarea bapsTextarea brand="sampark" [(ngModel)]="notes"></textarea>
+```
+
+There is no `<baps-input>` component. Use `bapsInputText` and `bapsTextarea`
+(pass `brand` in a Sampark app).
 
 ## Verification checklist
 

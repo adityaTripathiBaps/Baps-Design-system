@@ -17,14 +17,19 @@ always an override. That is why `_chip.scss` holds MyBKY and
 
 ## The three mechanisms, and which to use
 
-### 1. Page-wide scope — `.baps-ds-sampark` on `<body>`
+### 1. Page-wide scope — `.baps-ds-sampark` on `<html>`
 
 The normal case. A single-brand app sets it once and every component follows.
 
 ```html
 <!-- index.html -->
-<body class="baps-ds-sampark">
+<html lang="en" class="baps-ds-sampark">
 ```
+
+On `<html>`, never on a subtree such as `<main>`: portalled panels are appended
+to `<body>`, and a subtree scope leaves them in MyBKY. Measured on spm-ui
+(2026-10-24): adding the class to `<html>` took the listing's MyBKY-only
+colours from 30+ to 0.
 
 Selectors then read:
 
@@ -62,6 +67,26 @@ correctly and still used MyBKY `dt` tokens, because `brand` defaulted to
 **So: check whether a component reads `dt` before assuming the page scope is
 enough.** `baps-chip` does not (page scope suffices, and its 4px radius proves
 it). `baps-datepicker` does.
+
+## One app, one brand
+
+A consuming app renders exactly one brand, never both. Side-by-side brands are
+for Storybook and docs only.
+
+- **Sampark app:** `<html class="baps-ds-sampark">`; the `Sampark` preset;
+  `brand="sampark"` on every kit component that has a `brand` input (mechanism
+  3 means the root class alone is not enough). Components with no `brand` input
+  (`baps-message`, `baps-iconfield` / `baps-inputicon`) rely on the root class.
+  Never `brand="mybky"`, the `MyBky`/`Baps` preset or `--color-mybky-*` in app
+  code.
+- **MyBKY app:** no `baps-ds-sampark` / `baps-sampark` class, no
+  `brand="sampark"`, the `MyBky` preset, no `--color-sampark-*` in app code.
+- A wrong-brand colour is fixed by the root class, the `brand` input or a kit
+  change, never by app CSS.
+
+Gate: open each screen and every overlay it owns and scan computed colours
+inside kit hosts and portalled panels. Expected: 0 colours that exist only in
+the other brand's palette. An overlay that did not open does not count.
 
 ## Portalled panels
 

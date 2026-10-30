@@ -134,7 +134,7 @@ It must cover:
 
 1. **`cssLayer` in `app.config.ts`** — without it PrimeNG's unlayered CSS beats
    every design-system rule regardless of specificity.
-2. **The brand scope** — `.baps-ds-sampark` on `<body>` in `index.html`, plus
+2. **The brand scope** — `.baps-ds-sampark` on `<html>` in `index.html` (never a subtree: portalled panels sit under `<body>`), plus
    which components additionally need a `brand` input because they read PrimeNG
    `dt` tokens.
 3. **Style partials** — the library ships SCSS as source; a component with no

@@ -46,7 +46,7 @@ looked right there and wrong here.
 `src/index.html`:
 
 ```html
-<body class="<SCOPE_CLASS>">
+<html lang="en" class="<SCOPE_CLASS>">
 ```
 
 That page-wide class is enough for **most** components — a chip's 4px radius
