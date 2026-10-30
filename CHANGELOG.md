@@ -59,6 +59,10 @@ classification and deprecation policy.
   raw paginator rows-per-page rendered 1360px wide); the Sampark block's
   restatement under `.baps-ds-sampark` is removed for the same reason. Kit
   components render unchanged in both brands (F2).
+- **`@org/ui-kit` — patch, visual (Sampark):** `baps-input-group` addons no
+  longer shrink below their text. In a narrow group (spm-ui's 166px duration
+  Min/Max) the "Day/s" suffix collapsed to 38px and its text overflowed the
+  10px padding; the field now gives up the width instead. MyBKY unchanged.
 - **`@org/ui-kit` — patch, visual (Sampark):** an open `baps-accordion-panel`
   with a divider leaves 8px between the divider and its first field
   (`--space-2`), as in SPM dev (header, 8px, divider, 8px, field); the field

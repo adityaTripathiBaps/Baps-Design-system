@@ -144,6 +144,15 @@ baps-input-group .p-inputgroup > .p-inputgroupaddon {
   white-space: nowrap;
 }
 
+/* Sampark: an addon keeps its text width and the field shrinks instead.
+   In a narrow column (spm-ui duration Min/Max, 166px) the "Day/s" suffix
+   otherwise collapsed below its text and overflowed its own padding. */
+:is(baps-input-group.baps-sampark, .baps-ds-sampark baps-input-group)
+  .p-inputgroup
+  > .p-inputgroupaddon {
+  flex-shrink: 0;
+}
+
 baps-input-group .p-inputgroup > .p-inputgroupaddon:first-child {
   border-inline-end: var(--input-group-border-width) solid var(--baps-ig-border);
   border-start-end-radius: 0;
