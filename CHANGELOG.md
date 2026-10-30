@@ -8,6 +8,19 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/ui-kit` — minor, additive (Sampark):** `baps-input-number` inside a
+  Sampark `baps-input-group` fills the group: chromeless input, spinner buttons
+  joined to the group border, no double border. A Sampark group also takes
+  `class="w-auto"` (inline, content width) and draws the error ring when its
+  control is `ng-invalid.ng-dirty` or `.p-invalid`. All three are scoped to
+  Sampark (`baps-input-group.baps-sampark` or a `.baps-ds-sampark` page);
+  MyBKY is unchanged and its input-group + input-number pairing stays
+  unintegrated (ask-at-demo).
+- **`@org/ui-kit` — minor, additive:** `baps-iconfield` and `baps-inputicon`
+  take `brand`; `brand="sampark"` stamps `baps-sampark` on the host so the
+  Sampark icon skin applies without a page scope. A projected icon (for
+  example `svg-icon`) inside a Sampark `baps-inputicon` is centred. Default
+  `'mybky'`, so existing usages are unchanged.
 - **`@org/ui-kit` — minor, additive:** `baps-paginator` takes
   `rowsPerPagePosition` (`'start'` default, `'end'`). `'end'` puts the
   rows-per-page select after the arrows, SPM's order (report → arrows →
@@ -51,6 +64,9 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch, visual (Sampark):** a disabled Sampark
+  `baps-toggleswitch` renders at 0.6 opacity, as in SPM dev (was full
+  opacity). MyBKY unchanged.
 - **`@org/ui-kit` — patch, visual (both brands, raw PrimeNG only):** the
   select trigger's `width: 100% !important` (`.p-select`, `.p-multiselect`,
   `.p-cascadeselect`, `.p-treeselect`) now applies only inside a kit host

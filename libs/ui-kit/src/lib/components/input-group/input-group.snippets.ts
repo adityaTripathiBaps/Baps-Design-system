@@ -96,4 +96,11 @@ export const inputGroupSnippets: Record<string, SnippetSet> = {
     </>`,
     ),
   },
+  /* Angular only: the stretch / chromeless / joined-button rules key off the
+     Angular baps-input-number host, which the React component does not render. */
+  WithInputNumber: {
+    primeng: `<baps-input-group brand="sampark" prefix="min" suffix="days">
+  <baps-input-number brand="sampark" [(ngModel)]="count" [showButtons]="true" [min]="1" [max]="100" />
+</baps-input-group>`,
+  },
 };
