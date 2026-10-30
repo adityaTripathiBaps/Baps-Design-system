@@ -71,6 +71,9 @@ classification and deprecation policy.
   `.p-datepicker-input-icon-container` rather than the kit's input group,
   pushed the calendar icon outside the field (spm-ui AT-034). `:where()` keeps
   the old specificity, so kit datepickers render unchanged in both brands.
+- **`@org/ui-kit` — patch, visual (Sampark):** a Sampark `baps-menu` panel
+  keeps its 200px minimum width when the app also ships legacy
+  `.p-menu { min-width: fit-content }` (spm-ui: 98px before). MyBKY unchanged.
 - **`@org/ui-kit` — patch, visual (Sampark):** a disabled Sampark
   `baps-toggleswitch` renders at 0.6 opacity, as in SPM dev (was full
   opacity). MyBKY unchanged.

@@ -370,6 +370,11 @@ Blocked on design, not on implementation. Never invent these.
   dialogs show PrimeNG's default `rgba(0, 0, 0, 0.32)` scrim; the kit's
   `--drawer-sampark-mask-background` is `rgba(14, 13, 13, 0.45)`, visibly
   darker in spm-ui. Which one Sampark wants is a design call; the token stays.
+- **Ask at demo.** Sampark menu panel (2026-10-30): SPM dev's row-action
+  menu is 200px with a 6px radius and a lighter two-layer shadow
+  (`0 4px 6px -1px rgba(0,0,0,.1), …`); the kit Sampark panel uses
+  `--radius-sampark-default` (4px) and `--shadow-sampark-dropdown`. Only the
+  200px width was restored; radius and shadow stay on the Sampark tokens.
 - **Ask at demo.** Sampark paginator text (2026-10-29): SPM dev sets the
   page report and rows-per-page value at 13px; the type scale has 12 and
   14px only, so the kit keeps 14px. Its nav glyph is ~12.8px; the kit uses

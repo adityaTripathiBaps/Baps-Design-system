@@ -72,6 +72,15 @@
   --baps-menu-shadow: var(--shadow-sampark-dropdown, 0 12px 40px rgba(0, 0, 0, 0.15));
 }
 
+/* Sampark apps still ship legacy `.p-menu { min-width: fit-content }` (spm-ui),
+   which ties with `.baps-menu-panel` above and wins on order: the panel shrank
+   to its labels (98px vs SPM dev's 200px). (0,3,0) restates the 200px for
+   Sampark only; MyBKY keeps the base rule. */
+:is(.baps-ds-sampark, .baps-menu-sampark).p-menu.baps-menu-panel,
+.baps-ds-sampark .p-menu.baps-menu-panel {
+  min-width: 12.5rem;
+}
+
 /* ── Dark ────────────────────────────────────────────────────────────── */
 
 .baps-dark .baps-menu-panel {
