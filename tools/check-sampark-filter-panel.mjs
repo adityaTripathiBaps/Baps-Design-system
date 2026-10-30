@@ -108,6 +108,19 @@ expect('accordion label size', label.fontSize, '14px');
 expect('accordion label weight', label.fontWeight, '500');
 expect('chevron box', chevron.width, '28px');
 expect('field layout', row.display, 'grid');
+// SPM dev: 8px between an open section's divider and its first field.
+const dividerGap = await page.evaluate(() => {
+  const d = [...document.querySelectorAll('.baps-accordion-divider')].find(
+    (e) => e.getBoundingClientRect().height > 0,
+  );
+  const next = d?.nextElementSibling;
+  return d && next
+    ? Math.round(
+        next.getBoundingClientRect().top - d.getBoundingClientRect().bottom,
+      ) + 'px'
+    : 'no divider';
+});
+expect('divider-to-field gap', dividerGap, '8px');
 expect('field column gap', row.gap, '12px');
 expect('checkbox size', checkbox.width, '16px');
 expect('checkbox label size', checkboxLabel.fontSize, '14px');

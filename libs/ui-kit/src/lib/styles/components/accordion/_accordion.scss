@@ -372,6 +372,13 @@ p-accordion .baps-accordion-clear__sampark {
   padding-block: var(--space-2);
 }
 
+/* SPM dev: header, 8px, divider, 8px, first field. The divider sits at the top
+   of the body, so the gap below it has to be its own. */
+:is(p-accordion.baps-sampark, .baps-ds-sampark p-accordion)
+  .baps-accordion-divider {
+  margin-block-end: var(--space-2);
+}
+
 :is(p-accordion.baps-sampark, .baps-ds-sampark p-accordion)
   .baps-accordion-row {
   display: grid;

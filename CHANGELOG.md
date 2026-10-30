@@ -51,6 +51,10 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch, visual (Sampark):** an open `baps-accordion-panel`
+  with a divider leaves 8px between the divider and its first field
+  (`--space-2`), as in SPM dev (header, 8px, divider, 8px, field); the field
+  sat 1px under the divider. MyBKY unchanged.
 - **`@org/ui-kit` — patch, visual (Sampark):** the `baps-accordion-panel`
   clear icon is Sampark Mono/100 (#151414), as in SPM dev; it fell back to
   MyBKY Mono/500 (#6f777d) on Sampark pages, the one MyBKY colour spm-ui's
