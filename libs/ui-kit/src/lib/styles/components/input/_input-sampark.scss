@@ -109,10 +109,10 @@
   --input-bg-disabled: var(--color-sampark-secondary-0, #f8f7f7);
 
   /* ── Text ────────────────────────────────────────────────────────── */
-  --input-text-placeholder: var(
-    --color-sampark-text-placeholder,
-    #979493
-  ); /* Mono/60 */
+  /* SPM dev's placeholder is #9f9c9c, which is the existing text-muted token
+     (Mono/60). --color-sampark-text-placeholder holds #979493 despite its
+     "Mono/60" note, so the field points at text-muted instead. */
+  --input-text-placeholder: var(--color-sampark-text-muted, #9f9c9c);
   --input-text-filled: var(
     --color-sampark-text-primary,
     #151414

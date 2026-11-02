@@ -64,6 +64,9 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch, visual (Sampark):** input placeholders read
+  `--color-sampark-text-muted` (#9f9c9c), SPM dev's colour; they used
+  `--color-sampark-text-placeholder` (#979493) (spm AT-035). MyBKY unchanged.
 - **`@org/ui-kit` — patch, visual (raw PrimeNG only):** the datepicker input
   structure (input group, leading input icon, clear icon and their padding) now
   applies only inside `baps-datepicker`. Unscoped, it reached every raw
