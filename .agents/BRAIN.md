@@ -387,6 +387,9 @@ Blocked on design, not on implementation. Never invent these.
   so it stays `--font-size-sm` (14px); weight, padding and tint now match
   dev. A disabled Sampark input reads Figma Mono/40 (`#9f9c9c`); dev's
   disabled Min/Max text is `#151414`. Kept Figma.
+- **Ask at demo.** Sampark tree-select selected node background (2026-11-02,
+  spm AT-041): dev `#fbecec` has no token; the kit keeps Figma Primary/10
+  `#f8ecec` by user ruling. Only the weight (400) was matched.
 - **Ask at demo.** Sampark paginator text (2026-10-29): SPM dev sets the
   page report and rows-per-page value at 13px; the type scale has 12 and
   14px only, so the kit keeps 14px. Its nav glyph is ~12.8px; the kit uses

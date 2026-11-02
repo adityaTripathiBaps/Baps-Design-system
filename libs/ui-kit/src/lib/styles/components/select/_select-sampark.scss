@@ -471,6 +471,8 @@
   .p-tree-node-content.p-tree-node-selected:hover {
     background: var(--select-option-selected-bg) !important;
     color: var(--select-option-text) !important;
+    /* SPM dev's selected tree node stays 400; base _select.scss sets 500. */
+    font-weight: var(--font-weight-regular) !important;
   }
 
   /* SPM dev: tree hover is Mono/10 with no bar (Select/MultiSelect keep

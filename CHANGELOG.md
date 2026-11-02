@@ -85,6 +85,10 @@ classification and deprecation policy.
   with the disabled-input surface (`--color-sampark-secondary-0`) and keeps
   its border on hover. Dev's 13px addon label has no type-scale step, so the
   size stays 14px (ask-at-demo). MyBKY unchanged.
+- **`@org/ui-kit` — patch, visual (Sampark):** the selected `baps-tree-select`
+  node is weight 400, as in SPM dev; the base selected-option rule made it 500
+  (spm AT-041). Its background stays Figma Primary/10 (ask-at-demo). MyBKY
+  unchanged.
 - **`@org/ui-kit` — patch, visual (Sampark):** a left-icon field has 8px on
   its right, as in SPM dev; it kept MyBKY's 14px (spm AT-036). MyBKY
   unchanged.
