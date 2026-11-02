@@ -93,6 +93,13 @@
   line-height: 1;
 }
 
+/* SPM dev's item icon is 12px. PrimeNG's `.pi { font-size: var(--p-icon-size) }`
+   gave 16px, which stretched the rows to 38px. */
+:is(.baps-ds-sampark, .baps-menu-sampark).baps-menu-panel .p-menu-item-icon,
+.baps-ds-sampark .baps-menu-panel .p-menu-item-icon {
+  font-size: var(--font-size-xs);
+}
+
 /* ── Dark ────────────────────────────────────────────────────────────── */
 
 .baps-dark .baps-menu-panel {
