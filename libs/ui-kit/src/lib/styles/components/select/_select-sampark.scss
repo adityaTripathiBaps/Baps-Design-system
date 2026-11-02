@@ -417,10 +417,11 @@
     padding-inline-start: var(--space-3-5) !important;
   }
 
+  /* The selected row is excluded: SPM dev's selected root label is 400. */
   .p-tree-root-children
     > p-treenode
     > .p-tree-node
-    > .p-tree-node-content
+    > .p-tree-node-content:not(.p-tree-node-selected)
     .p-tree-node-label {
     font-weight: var(--font-weight-medium) !important;
   }
