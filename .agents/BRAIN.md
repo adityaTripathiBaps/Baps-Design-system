@@ -375,6 +375,13 @@ Blocked on design, not on implementation. Never invent these.
   (`0 4px 6px -1px rgba(0,0,0,.1), …`); the kit Sampark panel uses
   `--radius-sampark-default` (4px) and `--shadow-sampark-dropdown`. Only the
   200px width was restored; radius and shadow stay on the Sampark tokens.
+- **Ask at demo.** Sampark drawer shadow and mask (2026-11-02, spm AT-038):
+  the kit drawer keeps the Figma shadow and `--drawer-sampark-mask-background`;
+  SPM dev's v17 sidebar differs. Kept as Figma by user ruling, no change.
+- **Ask at demo.** Sampark dark mode (2026-11-02, spm AT-033 / AT-039): Sampark
+  has no dark tokens, so input, table and tabs fall back to MyBKY mono greys
+  under `.baps-dark` (brand-scan: 68 / 29 MyBKY hits). spm-ui keeps dark mode
+  off (selector inert) until Sampark dark tokens exist; no action meanwhile.
 - **Ask at demo.** Sampark paginator text (2026-10-29): SPM dev sets the
   page report and rows-per-page value at 13px; the type scale has 12 and
   14px only, so the kit keeps 14px. Its nav glyph is ~12.8px; the kit uses
