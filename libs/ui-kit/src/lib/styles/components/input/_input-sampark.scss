@@ -435,6 +435,14 @@
   padding-left: 0.5rem !important; /* 8px */
 }
 
+/* The mirror case: a LEFT icon (input is the last child, the base file's
+   :has() rule at (0,3,1)) left the right side at MyBKY's 14px. SPM dev: 8px. */
+:is(.baps-ds-sampark, .baps-sampark)
+  p-iconfield:has(> .p-inputtext:last-child)
+  .p-inputtext {
+  padding-right: var(--space-2) !important; /* 8px */
+}
+
 /* ══════════════════════════════════════════════════════════════════════
    INPUT GROUPS (.p-inputgroup)
    Group container owns the visible border; the inner input is
