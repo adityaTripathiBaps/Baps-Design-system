@@ -72,6 +72,9 @@ classification and deprecation policy.
 - **`@org/ui-kit` — patch, visual (Sampark):** input placeholders read
   `--color-sampark-text-muted` (#9f9c9c), SPM dev's colour; they used
   `--color-sampark-text-placeholder` (#979493) (spm AT-035). MyBKY unchanged.
+- **`@org/ui-kit` — patch, visual (Sampark):** `baps-menu` items are 36px
+  rows with 14px text, 12px inline padding and line-height 1, measured on SPM
+  dev; the preset left 32px rows in spm-ui (spm AT-040). MyBKY unchanged.
 - **`@org/ui-kit` — patch, visual (Sampark):** a left-icon field has 8px on
   its right, as in SPM dev; it kept MyBKY's 14px (spm AT-036). MyBKY
   unchanged.

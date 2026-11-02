@@ -81,6 +81,18 @@
   min-width: 12.5rem;
 }
 
+/* Sampark item geometry from SPM dev (measured 2026-11-02, Sant Availability
+   row menu): 14px/400 text at line-height 14px, 12px inline padding, 36px rows
+   (10.88px block padding). Without this the preset left 32px rows (spm AT-040).
+   The block padding is computed so the row lands on --space-9. */
+:is(.baps-ds-sampark, .baps-menu-sampark).baps-menu-panel .p-menu-item-link,
+.baps-ds-sampark .baps-menu-panel .p-menu-item-link {
+  padding-block: calc((var(--space-9) - var(--font-size-sm)) / 2);
+  padding-inline: var(--space-3);
+  font-size: var(--font-size-sm);
+  line-height: 1;
+}
+
 /* ── Dark ────────────────────────────────────────────────────────────── */
 
 .baps-dark .baps-menu-panel {
