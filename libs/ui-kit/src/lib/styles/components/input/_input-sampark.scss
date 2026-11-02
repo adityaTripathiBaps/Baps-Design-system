@@ -443,6 +443,18 @@
   padding-right: var(--space-2) !important; /* 8px */
 }
 
+/* Raw PrimeNG 21 datepicker with iconDisplay="input": PrimeNG reserves room
+   for the trailing icon with padding-inline-end, but this file's !important
+   .p-inputtext shorthand above resets it to 8px, so text ran under the icon.
+   SPM dev: 40px. Kit baps-datepicker hosts keep their own input structure. */
+:is(.baps-ds-sampark, .baps-sampark)
+  p-datepicker:not(baps-datepicker p-datepicker):has(
+    .p-datepicker-input-icon-container
+  )
+  .p-datepicker-input {
+  padding-right: var(--space-10) !important; /* 40px */
+}
+
 /* ══════════════════════════════════════════════════════════════════════
    INPUT GROUPS (.p-inputgroup)
    Group container owns the visible border; the inner input is

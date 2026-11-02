@@ -64,6 +64,11 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch, visual (Sampark):** a raw PrimeNG `p-datepicker`
+  with `iconDisplay="input"` keeps 40px (`--space-10`) on the right of its
+  input, as in SPM dev; the Sampark `.p-inputtext` padding shorthand reset it
+  to 8px, so typed dates ran under the calendar icon (spm AT-034). Kit
+  `baps-datepicker` hosts are excluded. MyBKY unchanged.
 - **`@org/ui-kit` — patch, visual (Sampark):** input placeholders read
   `--color-sampark-text-muted` (#9f9c9c), SPM dev's colour; they used
   `--color-sampark-text-placeholder` (#979493) (spm AT-035). MyBKY unchanged.
