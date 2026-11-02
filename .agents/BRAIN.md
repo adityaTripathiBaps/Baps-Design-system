@@ -382,6 +382,11 @@ Blocked on design, not on implementation. Never invent these.
   has no dark tokens, so input, table and tabs fall back to MyBKY mono greys
   under `.baps-dark` (brand-scan: 68 / 29 MyBKY hits). spm-ui keeps dark mode
   off (selector inert) until Sampark dark tokens exist; no action meanwhile.
+- **Ask at demo.** Sampark input-group addon and disabled text (2026-11-02,
+  spm Min/Max): SPM dev's addon label is 13px, which has no type-scale step,
+  so it stays `--font-size-sm` (14px); weight, padding and tint now match
+  dev. A disabled Sampark input reads Figma Mono/40 (`#9f9c9c`); dev's
+  disabled Min/Max text is `#151414`. Kept Figma.
 - **Ask at demo.** Sampark paginator text (2026-10-29): SPM dev sets the
   page report and rows-per-page value at 13px; the type scale has 12 and
   14px only, so the kit keeps 14px. Its nav glyph is ~12.8px; the kit uses

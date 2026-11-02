@@ -173,11 +173,14 @@ export const Brands: StoryObj<BapsInputGroup> = {
  * integration rules are scoped to the Sampark brand, so MyBKY is unchanged. */
 export const WithInputNumber: StoryObj<BapsInputGroup> = {
   render: () => ({
-    props: { count: 10 },
+    props: { count: 10, locked: 60 },
     template: `
       <div style="display:flex; flex-direction:column; gap:1rem; width:220px">
         <baps-input-group brand="sampark" prefix="min" suffix="days">
           <baps-input-number brand="sampark" [(ngModel)]="count" [showButtons]="true" [min]="1" [max]="100" />
+        </baps-input-group>
+        <baps-input-group brand="sampark" prefix="max" suffix="days">
+          <baps-input-number brand="sampark" [(ngModel)]="locked" [showButtons]="false" [disabled]="true" />
         </baps-input-group>
       </div>
     `,

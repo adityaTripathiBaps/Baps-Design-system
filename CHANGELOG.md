@@ -78,6 +78,13 @@ classification and deprecation policy.
 - **`@org/ui-kit` — patch, visual (Sampark):** `baps-menu` item icons are
   12px, as in SPM dev; PrimeNG's 16px `.pi` stretched the rows to 38px
   (spm AT-040). MyBKY unchanged.
+- **`@org/ui-kit` — patch, visual (Sampark):** `baps-input-group` addons are
+  weight 500 with 12px (`--space-3`) sides, and the suffix takes the prefix's
+  `--color-sampark-mono-alpha4` tint, as SPM dev's Min/Max; they were 400,
+  10px and a lighter alpha2 suffix. A group whose input is disabled fills
+  with the disabled-input surface (`--color-sampark-secondary-0`) and keeps
+  its border on hover. Dev's 13px addon label has no type-scale step, so the
+  size stays 14px (ask-at-demo). MyBKY unchanged.
 - **`@org/ui-kit` — patch, visual (Sampark):** a left-icon field has 8px on
   its right, as in SPM dev; it kept MyBKY's 14px (spm AT-036). MyBKY
   unchanged.
