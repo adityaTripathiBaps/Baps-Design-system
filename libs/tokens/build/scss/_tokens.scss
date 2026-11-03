@@ -334,12 +334,14 @@ $toggle-switch-mybky-track-width-lg: 2.5rem; // 40px — events-ui size="large"
 $toggle-switch-mybky-track-height-lg: 1.5rem; // 24px
 $toggle-switch-mybky-thumb-size-lg: 1.3125rem; // 21px
 $toggle-switch-mybky-gap: 0.09375rem; // 1.5px thumb inset — PrimeNG's checked-position term reproduces events-ui's translate table exactly: md 36-17-1.5 = 17.5px, sm 13.5px, lg 17.5px
+$toggle-switch-mybky-disabled-opacity: 1; // MyBKY keeps its disabled track colours at full opacity; recorded for brand parity, with no new base CSS rule
 $toggle-switch-sampark-gap: 2px; // thumb inset from track edge, all sizes — also PrimeNG's checked-position term (width - thumb - gap)
 $toggle-switch-sampark-radius: 0.25rem; // 4px — md/lg track; SQUARE, not Material's pill. xs/sm round to radiusSm
 $toggle-switch-sampark-radius-sm: 0.1875rem; // 3px — xs/sm track
 $toggle-switch-sampark-thumb-radius: 0.125rem; // 2px — thumb, all sizes
 $toggle-switch-sampark-shadow-track: inset 0 0 4px 0 #00000026; // black @ 15%
 $toggle-switch-sampark-shadow-track-disabled: inset 0 0 4px 0 #0000001a; // black @ 10%
+$toggle-switch-sampark-disabled-opacity: 0.6; // Signed-in SPM dev measurement requested 2026-10-28. Legacy origin/develop _switch.scss says 1, so the rendered dev value wins and the source conflict stays documented here.
 $toggle-switch-sampark-track-xs-width: 1.75rem; // 28px — spm-ui switchsize xs/s, radius 3px, thumb 12px
 $toggle-switch-sampark-track-xs-height: 1rem; // 16px
 $toggle-switch-sampark-track-sm-width: 2rem; // 32px, radius 3px, thumb 16px

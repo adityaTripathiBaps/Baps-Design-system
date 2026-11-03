@@ -6923,6 +6923,18 @@
     "comment": "1.5px thumb inset — PrimeNG's checked-position term reproduces events-ui's translate table exactly: md 36-17-1.5 = 17.5px, sm 13.5px, lg 17.5px"
   },
   {
+    "name": "ToggleSwitchMybkyDisabledOpacity",
+    "path": [
+      "toggleSwitch",
+      "mybky",
+      "disabledOpacity"
+    ],
+    "value": "1",
+    "original": "1",
+    "legacyMapping": {},
+    "comment": "MyBKY keeps its disabled track colours at full opacity; recorded for brand parity, with no new base CSS rule"
+  },
+  {
     "name": "ToggleSwitchSamparkTrackOff",
     "path": [
       "toggleSwitch",
@@ -7060,6 +7072,18 @@
       "spmUi": "--switch-shadow-disabled"
     },
     "comment": "black @ 10%"
+  },
+  {
+    "name": "ToggleSwitchSamparkDisabledOpacity",
+    "path": [
+      "toggleSwitch",
+      "sampark",
+      "disabledOpacity"
+    ],
+    "value": "0.6",
+    "original": "0.6",
+    "legacyMapping": {},
+    "comment": "Signed-in SPM dev measurement requested 2026-10-28. Legacy origin/develop _switch.scss says 1, so the rendered dev value wins and the source conflict stays documented here."
   },
   {
     "name": "ToggleSwitchSamparkTrackXsWidth",
