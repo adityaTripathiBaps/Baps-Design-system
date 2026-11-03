@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
@@ -214,5 +216,20 @@ describe('BapsInputGroup', () => {
     expect(addonsList.length).toBe(2);
     expect(addonsList[0].textContent?.trim()).toBe('min');
     expect(addonsList[1].textContent?.trim()).toBe('days');
+  });
+});
+
+describe('BapsInputGroup styling source', () => {
+  // The shared partial (_input-group.scss) is the only stylesheet: it is also
+  // what build-styles ships to React/CSS consumers. A second inline copy here
+  // silently overrode it in Angular and let the two drift apart.
+  // jest-preset-angular strips styles/styleUrls, so read the source.
+  it('declares no inline styles of its own', () => {
+    const source = readFileSync(
+      join(__dirname, 'input-group.component.ts'),
+      'utf8',
+    );
+    expect(source).not.toMatch(/^\s*styles:/m);
+    expect(source).toContain('_input-group.scss');
   });
 });

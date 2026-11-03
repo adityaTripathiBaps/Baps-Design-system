@@ -4,8 +4,10 @@ baps-input-group {
   --baps-ig-border: var(--color-mybky-border-default);
   --baps-ig-text: var(--color-mybky-text-primary);
   --baps-ig-border-hover: var(--color-mybky-blue-400);
+  /* --input-shadow-focused lives in the global input sheet, not tokens.css;
+     the fallback keeps the MyBKY ring when only tokens are loaded. */
   --baps-ig-ring: 0 0 0 var(--input-group-focus-ring-width)
-    var(--input-shadow-focused);
+    var(--input-shadow-focused, rgba(95, 120, 184, 0.35));
 }
 
 :is(baps-input-group.baps-sampark, .baps-ds-sampark baps-input-group) {
@@ -16,6 +18,10 @@ baps-input-group {
   --baps-ig-ring: var(--shadow-sampark-input-focus);
 }
 
+/* PrimeNG's inputgroup tokens cover addons only, so the root ring, radius,
+   fill and height are CSS. height is !important because _input.scss pins
+   .p-inputgroup to 2.25rem !important; overflow clips addon fills to the
+   radius. */
 baps-input-group .p-inputgroup {
   box-sizing: border-box;
   display: flex;
@@ -128,6 +134,9 @@ baps-input-group .p-inputgroup .p-inputtext {
   }
 }
 
+/* Addons: one hairline on the inner edge only (first/last-child below), and
+   NO vertical padding: PrimeNG's 8px would squeeze the label in a 32px
+   group, so align-items centres it instead (holds for .ig-sm too). */
 baps-input-group .p-inputgroup > .p-inputgroupaddon {
   box-sizing: border-box;
   display: flex;
@@ -142,6 +151,25 @@ baps-input-group .p-inputgroup > .p-inputgroupaddon {
   font-weight: var(--input-group-addon-font-weight);
   line-height: var(--input-group-addon-line-height);
   white-space: nowrap;
+}
+
+/* Projection slots need a stable PrimeNG addon parent even when empty.
+   Hide that parent when neither projected nor string content exists, and
+   hide the string fallback when projected content is present. :empty
+   ignores Angular's comment anchors, so conditional projected content
+   still follows the same rule. */
+baps-input-group
+  .baps-input-group__addon:has(.baps-input-group__addon-content:empty):not(
+    :has(.baps-input-group__addon-fallback)
+  ) {
+  display: none;
+}
+
+baps-input-group .baps-input-group__addon-content:empty,
+baps-input-group
+  .baps-input-group__addon-content:not(:empty)
+  ~ .baps-input-group__addon-fallback {
+  display: none;
 }
 
 /* Sampark: an addon keeps its text width and the field shrinks instead.
