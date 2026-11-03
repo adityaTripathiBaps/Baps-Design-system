@@ -15,7 +15,11 @@ import { BapsButton } from '../button/button.component';
  * (see tooltip.directive.ts fix). Both are fixed here: a real `baps-button`
  * with visible text, and content wired through the injected Tooltip instance.
  */
-type TooltipArgs = BapsTooltip & { tooltipPosition?: 'top' | 'bottom' | 'left' | 'right' };
+type TooltipArgs = BapsTooltip & {
+  tooltipPosition?: 'top' | 'bottom' | 'left' | 'right';
+  tooltipDisabled?: boolean;
+  appendTo?: 'body' | 'self';
+};
 
 const meta: Meta<TooltipArgs> = {
   title: 'Components/Atoms/Tooltip',
@@ -35,6 +39,8 @@ const meta: Meta<TooltipArgs> = {
     tooltipLinkLabel: { control: 'text' },
     tooltipPosition: { control: 'select', options: ['top', 'bottom', 'left', 'right'] },
     tooltipStyleClass: { control: 'text' },
+    tooltipDisabled: { control: 'boolean' },
+    appendTo: { control: 'inline-radio', options: [undefined, 'body', 'self'] },
   },
   args: {
     bapsTooltip: 'This is a Sampark tooltip',
@@ -62,6 +68,9 @@ const meta: Meta<TooltipArgs> = {
           [tooltipPosition]="tooltipPosition"
           [tooltipTitle]="tooltipTitle"
           [tooltipLinkLabel]="tooltipLinkLabel"
+          [tooltipStyleClass]="tooltipStyleClass"
+          [tooltipDisabled]="tooltipDisabled"
+          [appendTo]="appendTo"
         ></baps-button>
       </div>
     `,
@@ -184,5 +193,23 @@ export const FocusInteraction: StoryObj = {
     trigger.focus();
     await expect(trigger).toHaveFocus();
     await waitFor(() => expect(page.getByText('This is a Sampark tooltip')).toBeVisible());
+  },
+};
+
+/** A conditional tooltip must remain absent even when its trigger is hovered. */
+export const DisabledInteraction: StoryObj<TooltipArgs> = {
+  name: 'Interaction — disabled',
+  args: {
+    bapsTooltip: 'This tooltip is disabled',
+    tooltipDisabled: true,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const page = within(canvasElement.ownerDocument.body);
+    const trigger = canvas.getByRole('button', { name: 'Hover me' });
+
+    await userEvent.hover(trigger);
+    await new Promise((resolve) => setTimeout(resolve, 250));
+    await expect(page.queryByText('This tooltip is disabled')).not.toBeInTheDocument();
   },
 };

@@ -54,7 +54,19 @@ function escapeHtml(value: string): string {
       // the same gesture, making it unreadable on a phone. `[autoHide]="false"`
       // is the documented escape hatch and was previously unreachable through
       // this wrapper.
-      inputs: ['tooltipPosition', 'tooltipEvent', 'showDelay', 'hideDelay', 'life', 'autoHide'],
+      // tooltipDisabled and appendTo are plain PrimeNG inputs used by SPM.
+      // escape stays private to this directive because the rich-card path
+      // deliberately switches it only after escaping every consumer string.
+      inputs: [
+        'tooltipPosition',
+        'tooltipEvent',
+        'showDelay',
+        'hideDelay',
+        'life',
+        'autoHide',
+        'tooltipDisabled',
+        'appendTo',
+      ],
     },
   ],
 })

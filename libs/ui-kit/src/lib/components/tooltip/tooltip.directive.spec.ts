@@ -1,5 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { Tooltip } from 'primeng/tooltip';
 import { BapsTooltip } from './tooltip.directive';
 
@@ -261,5 +262,70 @@ describe('BapsTooltip runtime updates', () => {
     await fixture.whenStable();
     expect(options().escape).toBe(false);
     expect(options().tooltipLabel).toContain('baps-tooltip-title');
+  });
+});
+
+describe('BapsTooltip PrimeNG passthroughs', () => {
+  @Component({
+    imports: [BapsTooltip],
+    template: `<button
+      type="button"
+      bapsTooltip="Locked by the template"
+      [tooltipDisabled]="disabled()"
+    >
+      Owner
+    </button>`,
+  })
+  class DisabledHost {
+    readonly disabled = signal(false);
+  }
+
+  async function hover(disabled: boolean): Promise<Element | null> {
+    document
+      .querySelectorAll('.p-tooltip')
+      .forEach((element) => element.remove());
+    const fixture = TestBed.createComponent(DisabledHost);
+    fixture.componentInstance.disabled.set(disabled);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.nativeElement
+      .querySelector('button')
+      .dispatchEvent(new MouseEvent('mouseenter'));
+    await new Promise((resolve) => setTimeout(resolve, 50));
+    fixture.detectChanges();
+    const shown = document.querySelector('.p-tooltip');
+    fixture.destroy();
+    return shown;
+  }
+
+  it('shows nothing on hover when tooltipDisabled is true', async () => {
+    expect(await hover(true)).toBeNull();
+    expect(await hover(false)).not.toBeNull();
+  });
+
+  it('forwards an appendTo element without changing PrimeNG positioning', async () => {
+    @Component({
+      imports: [BapsTooltip],
+      template: `
+        <div #overlayHost>
+          <button type="button" bapsTooltip="Owner" [appendTo]="overlayHost">
+            Owner
+          </button>
+        </div>
+      `,
+    })
+    class AppendToHost {}
+
+    const fixture = TestBed.createComponent(AppendToHost);
+    await fixture.whenStable();
+
+    const overlayHost = fixture.debugElement.query(By.css('div'))
+      .nativeElement as HTMLElement;
+    const tooltip = fixture.debugElement
+      .query(By.css('button'))
+      .injector.get(Tooltip);
+
+    expect(tooltip.appendTo()).toBe(overlayHost);
+    fixture.destroy();
   });
 });

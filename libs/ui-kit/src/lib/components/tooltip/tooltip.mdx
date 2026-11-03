@@ -13,6 +13,15 @@ Informational tooltip on hover/focus. `bapsTooltip` is a host directive wrapping
 ```html
 <button bapsTooltip="Save changes" tooltipPosition="top">Save</button>
 
+<!-- Disable it conditionally and choose the overlay container when needed. -->
+<button
+  bapsTooltip="Only owners can edit this field"
+  [tooltipDisabled]="canEdit"
+  appendTo="body"
+>
+  Edit
+</button>
+
 <!-- Sampark rich card -->
 <baps-button
   label="Info"
@@ -60,6 +69,6 @@ Inputs, outputs and their types, read from the component's own source.
 
 ## Accessibility
 
-- Relies entirely on PrimeNG's `Tooltip` for show/hide triggers — hover and focus by default (`tooltipEvent`), so the wrapped element must itself be focusable/keyboard-reachable (e.g. `baps-button` already is) for the tooltip to be keyboard-accessible at all.
+- Relies entirely on PrimeNG's `Tooltip` for show/hide triggers. Its default is hover; set `tooltipEvent="both"` when a keyboard user must receive the same information on focus. The wrapped element must itself be focusable/keyboard-reachable (for example, `baps-button` already is).
 - `tooltipLinkLabel` renders as plain text with a Unicode arrow (`&#8594;`) — it is **not** a real `<a>`/`<button>`, so it is not keyboard-actionable or announced as a link. Treat it as decorative label text, not a functioning navigation affordance, when deciding whether a tooltip's "Learn more" needs to actually go anywhere.
 - Rich-card content is escaped before insertion (`escapeHtml()`), so title/body text is safe from markup injection even though the tooltip is built from an HTML string.
