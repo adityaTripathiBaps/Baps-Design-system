@@ -38,8 +38,12 @@ reports are useful inventory, but are not independently certified here.
 - Input-group rules still exist in both `styleUrls` and the inline `styles`
   block. Remove the duplicate only after both-brand screenshot comparison;
   changing it blindly risks appearance drift.
-- The tooltip wrapper still does not expose `tooltipDisabled` or `appendTo`.
-  This remains a valid kit API gap for a later isolated item.
+- `bapsTooltip` now forwards PrimeNG's `tooltipDisabled` and `appendTo`
+  (`275fd17`). Defaults unchanged. The docs now state PrimeNG's real
+  `tooltipEvent` default (`'hover'`; focus needs `tooltipEvent="both"`).
+- Tracked token outputs (`tokens.css`, `_tokens.scss`, `tokens.flat.json`)
+  were stale after `ec71c89`; regenerated in `be891f6`. Only the two
+  `disabledOpacity` tokens were added.
 - The base table partial still references a MyBKY-tier header token. It renders
   correctly under the Sampark override today, but remains a token-hygiene item.
 
@@ -48,7 +52,8 @@ reports are useful inventory, but are not independently certified here.
 ### Design System
 
 1. Remove the input-group duplicate styles after visual comparison.
-2. Decide and implement tooltip `tooltipDisabled` and `appendTo` passthroughs.
+2. ~~Tooltip `tooltipDisabled` and `appendTo` passthroughs~~ — done in
+   `275fd17`.
 3. Replace the base table's MyBKY-tier token reference with a neutral contract.
 4. Resolve logged app-leak selectors and APIs only through approved generic
    contracts; do not encode SPM component names in shared styles.
@@ -82,3 +87,18 @@ The supplied reports are best treated as a migration inventory, not a final
 certification. Their broad positive direction is reasonable, but the corrected
 preset target, artifact age, overlay boundary limits, and ownership split above
 must be carried into the next SPM migration pass.
+
+## Follow-up — 2026-11-03 (later session)
+
+| Item                                               | Commit    | Verification                                                                                                                                                                                        |
+| -------------------------------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Token build outputs synced                         | `be891f6` | `tokens:generate` + `tsc -b libs/tokens`; diff limited to the two opacity tokens                                                                                                                    |
+| Tooltip `tooltipDisabled` / `appendTo` passthrough | `275fd17` | `ui-kit:test` 56 suites / 796 tests pass (2 new); story typecheck pass; strict AOT check of the story bindings pass; tooltip lint 0 errors; style-literal, snippet and component-status guards pass |
+
+Not verified in a browser: the Storybook dev server ran out of memory twice
+(`Fatal process out of memory: Zone`), so the `DisabledInteraction` play test
+has not executed. The equivalent unit spec covers the same behaviour.
+`ui-kit:build` was not re-run this session.
+
+Still open (not started): input-group duplicate styles, neutral table token,
+app-leak selector cleanup, fresh tarball pair, and all SPM UI items.
