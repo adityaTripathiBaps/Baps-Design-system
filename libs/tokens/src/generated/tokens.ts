@@ -556,6 +556,7 @@ export const ToggleSwitchMybkyTrackWidthLg = "2.5rem"; // 40px — events-ui siz
 export const ToggleSwitchMybkyTrackHeightLg = "1.5rem"; // 24px
 export const ToggleSwitchMybkyThumbSizeLg = "1.3125rem"; // 21px
 export const ToggleSwitchMybkyGap = "0.09375rem"; // 1.5px thumb inset — PrimeNG's checked-position term reproduces events-ui's translate table exactly: md 36-17-1.5 = 17.5px, sm 13.5px, lg 17.5px
+export const ToggleSwitchMybkyDisabledOpacity = "1"; // MyBKY keeps its disabled track colours at full opacity; recorded for brand parity, with no new base CSS rule
 export const ToggleSwitchSamparkTrackOff = "#bcb9b9";
 export const ToggleSwitchSamparkTrackOn = "#c96868";
 export const ToggleSwitchSamparkTrackOffDisabled = "#f3f2f2";
@@ -568,6 +569,7 @@ export const ToggleSwitchSamparkThumbRadius = "0.125rem"; // 2px — thumb, all 
 export const ToggleSwitchSamparkShadowTrack = "inset 0 0 4px 0 #00000026"; // black @ 15%
 export const ToggleSwitchSamparkShadowTrackDisabled =
   "inset 0 0 4px 0 #0000001a"; // black @ 10%
+export const ToggleSwitchSamparkDisabledOpacity = "0.6"; // Signed-in SPM dev measurement requested 2026-10-28. Legacy origin/develop _switch.scss says 1, so the rendered dev value wins and the source conflict stays documented here.
 export const ToggleSwitchSamparkTrackXsWidth = "1.75rem"; // 28px — spm-ui switchsize xs/s, radius 3px, thumb 12px
 export const ToggleSwitchSamparkTrackXsHeight = "1rem"; // 16px
 export const ToggleSwitchSamparkTrackSmWidth = "2rem"; // 32px, radius 3px, thumb 16px

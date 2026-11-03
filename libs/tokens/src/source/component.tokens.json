@@ -1502,6 +1502,10 @@
         "legacyMapping": {
           "eventsUi": "--switch-padding"
         }
+      },
+      "disabledOpacity": {
+        "value": "1",
+        "comment": "MyBKY keeps its disabled track colours at full opacity; recorded for brand parity, with no new base CSS rule"
       }
     },
     "sampark": {
@@ -1561,6 +1565,10 @@
         "legacyMapping": {
           "spmUi": "--switch-shadow-disabled"
         }
+      },
+      "disabledOpacity": {
+        "value": "0.6",
+        "comment": "Signed-in SPM dev measurement requested 2026-10-28. Legacy origin/develop _switch.scss says 1, so the rendered dev value wins and the source conflict stays documented here."
       },
       "track": {
         "xs": {
