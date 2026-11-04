@@ -29,7 +29,7 @@ border now follows the accent. Verified in the browser: at `accent:rose`,
 `rgb(246, 99, 125)`; at `accent:brand` both are the original `#9fadd9`.
 
 Sweeping every `var()` in `libs/ui-kit/src` against every place a custom
-property is declared: **837 properties read, 42 BAPS-owned names never
+property is declared: **837 properties read, 41 BAPS-owned names never
 defined.** The PrimeNG `--p-*` names in the raw count are not included —
 those are declared by the preset at runtime, and so are the ramp steps the
 accent theme writes from a prefix.
@@ -47,7 +47,6 @@ exist:
 | `--avatar-mybky-radius-square` / `-xl-square` / `-2xl-square` | avatar | `4px` / `6px` / `8px` |
 | `--card-background` | `_select.scss:597` | `#ffffff` |
 | `--input-text` | input | `#181b1d` |
-| `--table-mybky-header-bg` | table | `#ffffff` |
 | `--font-size-base`, `--font-family-mono` | card, docs | `1rem`, `monospace` |
 | `--baps-chip-icon-size`, `--baps-chip-gap`, `--tag-max-width`, `--listbox-max-height`, `--slider-tooltip-*`, `--select-option-*`, `--stepper-mybky-connector-lend`, `--red-500` | various | their literals |
 

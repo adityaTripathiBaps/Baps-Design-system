@@ -29,6 +29,9 @@ baps-table {
   --baps-table-cell-color: var(--color-mybky-text-primary, #181b1d);
   --baps-table-cell-secondary: var(--color-mybky-text-muted, #6f777d);
   --baps-table-cell-secondary-wrap: nowrap;
+  /* Header fill. mono-0 is not re-pointed in dark, so this stays the white it
+     always painted (the old --table-mybky-header-bg was never defined). */
+  --baps-table-header-bg: var(--color-mybky-mono-0, #ffffff);
 }
 
 /* SAMPARK RE-POINTS THE VARIABLES, and this block is not optional.
@@ -45,6 +48,9 @@ baps-table {
  * depend on which file loads last. */
 :is(baps-table.baps-sampark, .baps-ds-sampark baps-table) {
   --baps-table-row-bg: var(--color-sampark-surface-card, #ffffff);
+  /* _table-sampark.scss paints the header from --table-header-bg with
+     !important; re-pointed here too so no MyBKY value reaches Sampark. */
+  --baps-table-header-bg: var(--table-header-bg, #f8f7f7);
   --baps-table-border: var(--color-sampark-border-default, #e1e0e0);
   /* Sampark's own partial already wins this one with !important. Re-pointed
      anyway so the value is right even where that rule does not reach — the
@@ -99,7 +105,7 @@ baps-table {
 baps-table .p-datatable-thead > tr > th {
   padding: var(--baps-table-header-py) var(--baps-table-cell-px);
   border-color: var(--baps-table-border);
-  background: var(--table-mybky-header-bg, #ffffff);
+  background: var(--baps-table-header-bg);
   color: var(--baps-table-cell-secondary);
   font-weight: 500;
   border-bottom: 1px solid var(--baps-table-border);
