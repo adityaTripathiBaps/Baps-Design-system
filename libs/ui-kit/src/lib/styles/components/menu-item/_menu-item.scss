@@ -22,7 +22,11 @@ baps-menu-item {
   display: block;
 }
 
-baps-menu-item.baps-mybky {
+/* The brand input defaults to 'mybky', so a Sampark app that forgets
+   brand="sampark" still gets .baps-mybky. The page-level .baps-ds-sampark
+   wins over that default. :where keeps specificity at (0,1,1) so
+   `.baps-dark baps-menu-item` still overrides this block in MyBKY dark. */
+baps-menu-item.baps-mybky:where(:not(.baps-ds-sampark baps-menu-item)) {
   --menu-item-bg-selected: var(--color-mybky-mono-50);
   --menu-item-text: var(--color-mybky-mono-900);
   --menu-item-subtitle: var(--color-mybky-mono-500);

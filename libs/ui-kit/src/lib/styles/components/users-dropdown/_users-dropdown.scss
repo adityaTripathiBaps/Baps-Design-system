@@ -18,7 +18,18 @@
   --users-dropdown-shadow: var(--shadow-sampark-dropdown);
 }
 
-:is(baps-users-dropdown.baps-mybky, .baps-users-dropdown-panel.baps-mybky) {
+/* .baps-mybky comes from the brand input's 'mybky' default; under a
+   page-level .baps-ds-sampark it must not apply. :where keeps specificity
+   unchanged so the .baps-dark block below still wins in MyBKY dark. */
+:is(
+  baps-users-dropdown.baps-mybky,
+  .baps-users-dropdown-panel.baps-mybky
+):where(
+  :not(
+    .baps-ds-sampark baps-users-dropdown,
+    .baps-ds-sampark .baps-users-dropdown-panel
+  )
+) {
   --users-dropdown-radius: var(--card-mybky-radius);
   --users-dropdown-field-radius: var(--form-field-mybky-border-radius);
   --users-dropdown-bg: var(--input-bg-default);
@@ -74,7 +85,8 @@ baps-users-dropdown .ud__trigger:focus-visible {
   box-shadow: var(--shadow-sampark-input-focus);
 }
 
-baps-users-dropdown.baps-mybky .ud__trigger:focus-visible {
+baps-users-dropdown.baps-mybky:where(:not(.baps-ds-sampark baps-users-dropdown))
+  .ud__trigger:focus-visible {
   box-shadow: 0 0 0 var(--space-1) var(--color-mybky-blue-100);
 }
 
