@@ -59,7 +59,7 @@ import { Select, type SelectLazyLoadEvent } from 'primeng/select';
       (onChange)="onSelectChange($event)"
       (onFilter)="onSelectFilter($event)"
       (onClick)="onSelectClick()"
-      (onClear)="cleared.emit()"
+      (onClear)="onSelectClear()"
       (onLazyLoad)="lazyLoad.emit($event)"
     >
       <!-- Template forwarding, as baps-tree-select does. PrimeNG collects its
@@ -189,8 +189,14 @@ export class BapsSelect implements ControlValueAccessor {
 
   /** Emits the filter query on every keystroke when `filter` is enabled. */
   @Output() filterQueryChange = new EventEmitter<string>();
-  /** Fires when the clear icon empties the field. */
-  @Output() cleared = new EventEmitter<void>();
+  /**
+   * Fires when the clear icon empties the field, with the value it held.
+   * PrimeNG nulls the model before its onClear, so the wrapper keeps the last
+   * non-null value itself.
+   */
+  @Output() cleared = new EventEmitter<unknown>();
+
+  private lastValue: unknown = null;
   /** PrimeNG's lazy-load event (first/last visible index) in lazy mode. */
   @Output() lazyLoad = new EventEmitter<SelectLazyLoadEvent>();
 
@@ -228,6 +234,7 @@ export class BapsSelect implements ControlValueAccessor {
 
   onSelectChange(event: any): void {
     this.value = event.value;
+    if (event.value != null) this.lastValue = event.value;
     this.onChange(this.value);
     this.onTouched();
   }
@@ -240,6 +247,7 @@ export class BapsSelect implements ControlValueAccessor {
     const valueOf = (o: unknown): unknown => (key ? (o as Record<string, unknown>)?.[key] : o);
     const index = this.options.findIndex((o) => valueOf(o) === this.value);
     this.value = valueOf(this.options[(index + 1) % this.options.length]);
+    this.lastValue = this.value;
     this.onChange(this.value);
     this.onTouched();
   }
@@ -248,8 +256,15 @@ export class BapsSelect implements ControlValueAccessor {
     this.filterQueryChange.emit(event.filter);
   }
 
+  onSelectClear(): void {
+    const previous = this.lastValue;
+    this.lastValue = null;
+    this.cleared.emit(previous);
+  }
+
   writeValue(value: any): void {
     this.value = value;
+    if (value != null) this.lastValue = value;
   }
   registerOnChange(fn: any): void {
     this.onChange = fn;

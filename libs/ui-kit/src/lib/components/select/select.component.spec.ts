@@ -167,6 +167,16 @@ describe('BapsSelect PrimeNG pass-through (AT-042/043)', () => {
     expect(fixture.componentInstance.value).toBe('R');
   });
 
+  it('cleared emits the value the field held', async () => {
+    const fixture = await renderTemplateHost();
+    const wrapper = fixture.debugElement.query(By.directive(BapsSelect)).componentInstance as BapsSelect;
+    const seen: unknown[] = [];
+    wrapper.cleared.subscribe((v) => seen.push(v));
+    wrapper.onSelectChange({ value: null }); // PrimeNG's clear() emits onChange(null) first
+    wrapper.onSelectClear();
+    expect(seen).toEqual(['R']);
+  });
+
   it('does nothing on click when toggleOnClick is off', async () => {
     const fixture = await renderTemplateHost(false);
     const wrapper = fixture.debugElement.query(By.directive(BapsSelect)).componentInstance as BapsSelect;

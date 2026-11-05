@@ -14,7 +14,7 @@ classification and deprecation policy.
   they were silently ignored. New inputs `loading`, `dataKey`,
   `toggleOnClick` (a click cycles to the next option), `lazy`,
   `virtualScroll`, `virtualScrollItemSize`, `scrollHeight` and outputs
-  `cleared`, `lazyLoad`. All default off or to PrimeNG's default, so
+  `cleared` (with the value it held), `lazyLoad`. All default off or to PrimeNG's default, so
   existing usages render unchanged (spm AT-042, AT-043).
 - **`@org/ui-kit` — minor, additive:** `baps-multi-select` forwards
   `pTemplate` slots the same way (`item`, `group`, `selecteditems`,
