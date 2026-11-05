@@ -8,6 +8,10 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/ui-kit` — minor, additive:** `baps-tree-select` `bare`: the trigger
+  shows only the consumer's `pTemplate="value"` (no border, fill, padding or
+  dropdown icon), for a self-drawn trigger such as spm-ui's globe pill. Default
+  off (spm AT-047).
 - **`@org/ui-kit` — minor, additive:** `baps-input-number` `clampOn`
   (`input` default, unchanged; `blur` keeps a typed out-of-range value until the
   field loses focus, as raw PrimeNG does, so a form validator can report it)

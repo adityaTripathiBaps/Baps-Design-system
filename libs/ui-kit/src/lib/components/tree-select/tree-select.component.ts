@@ -94,6 +94,35 @@ import type { TreeNode } from 'primeng/api';
     baps-tree-select {
       display: block;
     }
+
+    /* bare: only the consumer's value template shows. The repeated classes
+       outrank the brand skins' hover/focus/open rules on the trigger. */
+    baps-tree-select.baps-tree-select--bare {
+      display: inline-block;
+    }
+
+    baps-tree-select.baps-tree-select--bare.baps-tree-select--bare
+      .p-treeselect.p-treeselect.p-treeselect {
+      width: auto !important;
+      min-width: 0 !important;
+      height: auto !important;
+      min-height: 0 !important;
+      padding: 0 !important;
+      border: 0 !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      outline: 0 !important;
+    }
+
+    baps-tree-select.baps-tree-select--bare.baps-tree-select--bare
+      :is(.p-treeselect-label-container, .p-treeselect-label) {
+      padding: 0 !important;
+    }
+
+    baps-tree-select.baps-tree-select--bare.baps-tree-select--bare
+      .p-treeselect-dropdown {
+      display: none !important;
+    }
   `,
   providers: [
     {
@@ -104,6 +133,7 @@ import type { TreeNode } from 'primeng/api';
   ],
   host: {
     '[class.baps-sampark]': "brand === 'sampark'",
+    '[class.baps-tree-select--bare]': 'bare',
   },
 })
 export class BapsTreeSelect implements ControlValueAccessor {
@@ -147,6 +177,12 @@ export class BapsTreeSelect implements ControlValueAccessor {
   @Input() styleClass?: string;
   @Input() panelStyleClass?: string;
   @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  /**
+   * The trigger shows only the consumer's `pTemplate="value"`: no border,
+   * fill, padding or dropdown icon. For a trigger the consumer draws itself,
+   * such as spm-ui's globe pill. Default off.
+   */
+  @Input() bare = false;
   /** Accessible name for the trigger when there's no visible `<label for>`. */
   @Input() ariaLabel?: string;
   @Input() ariaLabelledBy?: string;

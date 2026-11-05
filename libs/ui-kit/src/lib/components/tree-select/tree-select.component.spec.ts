@@ -199,3 +199,15 @@ describe('BapsTreeSelect defaults', () => {
     expect(TestBed.createComponent(BapsTreeSelect).componentInstance.size).toBeUndefined();
   });
 });
+
+describe('BapsTreeSelect bare', () => {
+  it('marks the host only when bare is set, so the skins stay untouched by default', () => {
+    const fixture = TestBed.createComponent(BapsTreeSelect);
+    fixture.detectChanges();
+    const host = fixture.nativeElement as HTMLElement;
+    expect(host.classList).not.toContain('baps-tree-select--bare');
+    fixture.componentRef.setInput('bare', true);
+    fixture.detectChanges();
+    expect(host.classList).toContain('baps-tree-select--bare');
+  });
+});
