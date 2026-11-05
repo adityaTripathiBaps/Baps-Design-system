@@ -386,7 +386,10 @@ Blocked on design, not on implementation. Never invent these.
   spm Min/Max): SPM dev's addon label is 13px, which has no type-scale step,
   so it stays `--font-size-sm` (14px); weight, padding and tint now match
   dev. A disabled Sampark input reads Figma Mono/40 (`#9f9c9c`); dev's
-  disabled Min/Max text is `#151414`. Kept Figma.
+  disabled Min/Max text is `#151414`. Kept Figma. Same call for a disabled
+  select in a table cell (2026-11-05, spm AT-054, user ruling): dev's
+  published project-owner table reads as plain text (no border, no chevron,
+  `#151414`); the kit keeps the Figma disabled select.
 - **Ask at demo.** Sampark tree-select selected node background (2026-11-02,
   spm AT-041): dev `#fbecec` has no token; the kit keeps Figma Primary/10
   `#f8ecec` by user ruling. Only the weight (400) was matched.
