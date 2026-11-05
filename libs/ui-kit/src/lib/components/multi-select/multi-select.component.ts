@@ -185,9 +185,10 @@ export class BapsMultiSelect implements ControlValueAccessor {
   /** The overlay header row, which carries the filter and the toggle-all box. */
   @Input() showHeader = true;
   /**
-   * The "Select All" checkbox in the overlay header. PrimeNG owns the
-   * indeterminate state and the announcement, which is why this is a wrapper
-   * input rather than a hand-built header row.
+   * The "Select All" checkbox in the overlay header. PrimeNG owns its state
+   * (checked only when every option is; never indeterminate, as on SPM dev)
+   * and the announcement, which is why this is a wrapper input rather than a
+   * hand-built header row.
    */
   @Input() showToggleAll = true;
   @Input() selectionLimit?: number;

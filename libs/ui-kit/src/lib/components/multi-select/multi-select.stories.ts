@@ -120,7 +120,7 @@ export const Chips: Story = {
 
 /**
  * Filter row plus the header's "Select All" box. Both are PrimeNG's — it owns
- * the indeterminate state and the announcement, which is why the wrapper
+ * the checked state (all selected only, never indeterminate) and the announcement, which is why the wrapper
  * exposes `showToggleAll` rather than building a header row by hand.
  */
 export const FilterAndSelectAll: Story = {

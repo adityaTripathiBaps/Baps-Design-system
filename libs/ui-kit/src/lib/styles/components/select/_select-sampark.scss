@@ -551,11 +551,18 @@
    app CSS written against the overlay at (0,3,0) !important (spm-ui
    _dropdown.scss paints the focused — i.e. just-opened, selected — row
    #f8f7f7). */
-.baps-ds-sampark .p-select-overlay .p-select-option.p-select-option-selected,
+.baps-ds-sampark .p-select-overlay .p-select-option.p-select-option-selected {
+  background: var(--overlay-list-sampark-hover-background, #f6f5f5) !important;
+}
+
+/* MultiSelect: the checked box is the only selected cue on SPM dev, so a
+   selected row keeps no fill until it is hovered or focused. */
 .baps-ds-sampark
   .p-multiselect-overlay
-  .p-multiselect-option.p-multiselect-option-selected {
-  background: var(--overlay-list-sampark-hover-background, #f6f5f5) !important;
+  .p-multiselect-option.p-multiselect-option-selected:not(:hover):not(
+    .p-focus
+  ) {
+  background: transparent !important;
 }
 
 .baps-ds-sampark
@@ -578,4 +585,40 @@
   .baps-ds-sampark .p-multiselect-overlay
 ) {
   border-color: var(--color-sampark-mono-40, #bcb9b9) !important;
+}
+
+/* ── MultiSelect header (SPM dev) ──────────────────────────────────────
+   SPM dev's header is 91px: a Mono/20 search strip (8px around the 32px
+   field, hairline under it, 49px) over a white 42px "Select All" row
+   (12px padding, 12px gap, 14px/400 label, hairline). The checkbox shares
+   the options' 12px rail. Base _select.scss draws the strip in the MyBKY
+   header grey and the row at 48px with a 500 label. */
+:is(
+    .baps-ds-sampark.p-multiselect-overlay,
+    .baps-ds-sampark .p-multiselect-overlay
+  )
+  .p-multiselect-header {
+  > .p-multiselect-filter-container {
+    padding: var(--space-2) !important;
+    background: var(--color-sampark-mono-20, #f3f2f2) !important;
+    border-bottom: 1px solid var(--select-overlay-border) !important;
+  }
+
+  > p-checkbox {
+    gap: var(--space-3);
+    height: auto !important;
+    min-height: auto !important;
+    padding: var(--space-3) !important;
+  }
+
+  > p-checkbox::after {
+    margin-inline-start: 0;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-regular);
+  }
+
+  > p-checkbox.p-disabled::after {
+    color: var(--select-option-disabled-text);
+    cursor: default;
+  }
 }

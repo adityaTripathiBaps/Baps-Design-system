@@ -79,6 +79,11 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch, visual (Sampark):** the MultiSelect panel header
+  matches SPM dev: 91px, a Mono/20 search strip with a hairline over a white
+  42px "Select All" row (14px/400 label, 12px padding and gap, on the options'
+  12px rail; greyed when disabled). A selected MultiSelect row has no fill;
+  only hover and focus paint one. MyBKY unchanged (spm AT-044).
 - **`@org/ui-kit` — patch, visual (Sampark):** a raw PrimeNG `p-datepicker`
   with `iconDisplay="input"` keeps 40px (`--space-10`) on the right of its
   input, as in SPM dev; the Sampark `.p-inputtext` padding shorthand reset it
