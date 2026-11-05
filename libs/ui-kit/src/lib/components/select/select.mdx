@@ -34,6 +34,30 @@ A dropdown / single-select form field. `baps-select` (`BapsSelect`) wraps PrimeN
 
 <Controls of={SelectStories.Default} />
 
+### Item template
+
+A `pTemplate="item"` inside `baps-select` reaches PrimeNG and renders each option.
+
+<Canvas of={SelectStories.ItemTemplate} sourceState="none" />
+
+<FrameworkTabs of={SelectStories.ItemTemplate} snippets={selectSnippets.ItemTemplate} />
+
+### Toggle on click
+
+`toggleOnClick` makes a two-value field flip on click instead of opening the panel.
+
+<Canvas of={SelectStories.ToggleOnClick} sourceState="none" />
+
+<FrameworkTabs of={SelectStories.ToggleOnClick} snippets={selectSnippets.ToggleOnClick} />
+
+### Loading
+
+`loading` shows the loading icon while options are fetched.
+
+<Canvas of={SelectStories.Loading} sourceState="none" />
+
+<FrameworkTabs of={SelectStories.Loading} snippets={selectSnippets.Loading} />
+
 ## Forms
 
 A full `ControlValueAccessor`, including `setDisabledState`, so it behaves like a

@@ -119,6 +119,22 @@ export class RegionFilter {
   snippets={multiSelectSnippets.Disabled}
 />
 
+### Item template
+
+A `pTemplate="item"` inside `baps-multi-select` reaches PrimeNG and renders each option.
+
+<Canvas of={MultiSelectStories.ItemTemplate} sourceState="none" />
+
+<FrameworkTabs of={MultiSelectStories.ItemTemplate} snippets={multiSelectSnippets.ItemTemplate} />
+
+### Locked values
+
+`lockedValues` keep values selected; `keepOneSelected` never lets the selection go empty.
+
+<Canvas of={MultiSelectStories.LockedValues} sourceState="none" />
+
+<FrameworkTabs of={MultiSelectStories.LockedValues} snippets={multiSelectSnippets.LockedValues} />
+
 ## Forms
 
 A full `ControlValueAccessor`, including `setDisabledState`, so it behaves like a
