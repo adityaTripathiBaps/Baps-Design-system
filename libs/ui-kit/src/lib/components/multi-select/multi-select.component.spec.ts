@@ -2,6 +2,8 @@ import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MultiSelect } from 'primeng/multiselect';
+import { FormsModule } from '@angular/forms';
+import { SharedModule } from 'primeng/api';
 import { BapsMultiSelect } from './multi-select.component';
 
 /**
@@ -203,5 +205,77 @@ describe('BapsMultiSelect defaults', () => {
 
   it('leaves size unset so the standard height rule owns it', () => {
     expect(TestBed.createComponent(BapsMultiSelect).componentInstance.size).toBeUndefined();
+  });
+});
+
+@Component({
+  imports: [BapsMultiSelect, FormsModule, SharedModule],
+  template: `
+    <baps-multi-select
+      [options]="options"
+      optionLabel="name"
+      optionValue="code"
+      [lockedValues]="locked"
+      [keepOneSelected]="keepOne"
+      [(ngModel)]="value"
+    >
+      <ng-template pTemplate="item" let-option><b>{{ option.name }}</b></ng-template>
+    </baps-multi-select>
+  `,
+})
+class LockHost {
+  options = [
+    { name: 'A', code: 'a' },
+    { name: 'B', code: 'b' },
+    { name: 'C', code: 'c' },
+  ];
+  locked: string[] = [];
+  keepOne = false;
+  value: string[] = [];
+}
+
+describe('BapsMultiSelect PrimeNG pass-through (AT-042/044)', () => {
+  async function renderLock(overrides: Partial<LockHost> = {}) {
+    const fixture = TestBed.createComponent(LockHost);
+    Object.assign(fixture.componentInstance, overrides);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const wrapper = fixture.debugElement.query(By.directive(BapsMultiSelect))
+      .componentInstance as BapsMultiSelect;
+    return { fixture, wrapper };
+  }
+
+  it('forwards a consumer pTemplate="item" to the inner p-multiselect', async () => {
+    const { fixture } = await renderLock();
+    const inner = fixture.debugElement.query(By.directive(MultiSelect)).componentInstance as unknown as {
+      _itemTemplate?: unknown;
+    };
+    expect(inner._itemTemplate).toBeTruthy();
+  });
+
+  it('passes options through untouched when nothing is locked', async () => {
+    const { fixture, wrapper } = await renderLock();
+    expect(wrapper.resolvedOptions).toBe(fixture.componentInstance.options);
+    expect(wrapper.resolvedOptionDisabled).toBeUndefined();
+  });
+
+  it('disables locked options and re-adds them after any change', async () => {
+    const { fixture, wrapper } = await renderLock({ locked: ['a'], value: ['a', 'b'] });
+    const flagged = (wrapper.resolvedOptions as Record<string, unknown>[]).find((o) => o['code'] === 'a') as Record<string, unknown>;
+    expect(flagged[wrapper.resolvedOptionDisabled as string]).toBe(true);
+    expect(wrapper.resolvedOptions).toBe(wrapper.resolvedOptions); // cached, no churn
+    wrapper.onMultiSelectChange({ value: ['b'] });
+    await fixture.whenStable();
+    expect(fixture.componentInstance.value).toEqual(['b', 'a']);
+  });
+
+  it('keepOneSelected restores the last value instead of emptying', async () => {
+    const { fixture, wrapper } = await renderLock({ keepOne: true, value: ['c'] });
+    const kept = (wrapper.resolvedOptions as Record<string, unknown>[]).find((o) => o['code'] === 'c') as Record<string, unknown>;
+    expect(kept[wrapper.resolvedOptionDisabled as string]).toBe(true);
+    wrapper.onMultiSelectChange({ value: [] });
+    await fixture.whenStable();
+    expect(fixture.componentInstance.value).toEqual(['c']);
   });
 });

@@ -118,4 +118,15 @@ export function Example() {
     next: next(component('disabled defaultValue={["AMD"]}')),
     primeng: `<baps-multi-select ariaLabel="Select cities" [disabled]="true" [options]="cities" optionLabel="name" [(ngModel)]="selected" />`,
   },
+  ItemTemplate: {
+    primeng: `<baps-multi-select brand="sampark" ariaLabel="Select cities" appendTo="body" optionLabel="name" optionValue="code" [options]="cities" [(ngModel)]="selected">
+  <ng-template pTemplate="item" let-option>
+    <span><strong>{{ option.code }}</strong> · {{ option.name }}</span>
+  </ng-template>
+</baps-multi-select>`,
+  },
+  LockedValues: {
+    primeng: `<baps-multi-select brand="sampark" ariaLabel="Locked cities" appendTo="body" display="chip" optionLabel="name" optionValue="code" [options]="cities" [lockedValues]="['AMD']" [(ngModel)]="selected" />
+<baps-multi-select brand="sampark" ariaLabel="At least one city" appendTo="body" optionLabel="name" optionValue="code" [options]="cities" [keepOneSelected]="true" [(ngModel)]="selected" />`,
+  },
 };

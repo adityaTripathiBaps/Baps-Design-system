@@ -1,6 +1,21 @@
-import { Component, EventEmitter, Input, Output, forwardRef, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  ContentChildren,
+  EventEmitter,
+  Input,
+  Output,
+  QueryList,
+  TemplateRef,
+  ViewEncapsulation,
+  forwardRef,
+} from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
+import { PrimeTemplate, SharedModule } from 'primeng/api';
 import { MultiSelect } from 'primeng/multiselect';
+
+/** Option flag the wrapper adds when lockedValues / keepOneSelected disable an option. */
+const LOCK_FLAG = '__bapsLocked';
 
 /**
  * baps-multi-select — multi-value dropdown form field.
@@ -21,14 +36,14 @@ import { MultiSelect } from 'primeng/multiselect';
  */
 @Component({
   selector: 'baps-multi-select',
-  imports: [MultiSelect, FormsModule],
+  imports: [MultiSelect, FormsModule, SharedModule, NgTemplateOutlet],
   template: `
     <p-multiselect
       [(ngModel)]="value"
-      [options]="options"
+      [options]="resolvedOptions"
       [optionLabel]="optionLabel"
       [optionValue]="optionValue"
-      [optionDisabled]="optionDisabled"
+      [optionDisabled]="resolvedOptionDisabled!"
       [optionGroupLabel]="optionGroupLabel"
       [optionGroupChildren]="optionGroupChildren!"
       [placeholder]="placeholder"
@@ -59,11 +74,64 @@ import { MultiSelect } from 'primeng/multiselect';
       [ariaLabel]="ariaLabel!"
       [ariaLabelledBy]="ariaLabelledBy!"
       [inputId]="inputId!"
+      [loading]="loading"
+      [dataKey]="dataKey!"
+      [virtualScroll]="virtualScroll"
+      [virtualScrollItemSize]="virtualScrollItemSize!"
       (onChange)="onMultiSelectChange($event)"
+      (onClear)="cleared.emit()"
       (onFilter)="onMultiSelectFilter($event)"
       (onSelectAllChange)="selectAllChange.emit($event)"
       (onRemove)="itemRemove.emit($event)"
     >
+      <!-- Template forwarding: see baps-select. PrimeNG never sees a
+           pTemplate projected through this host, so each slot is re-declared
+           with the context PrimeNG 21 passes it. -->
+      @if (tpl('item'); as t) {
+        <ng-template pTemplate="item" let-option>
+          <ng-container *ngTemplateOutlet="t; context: { $implicit: option }" />
+        </ng-template>
+      }
+      @if (tpl('group'); as t) {
+        <ng-template pTemplate="group" let-group>
+          <ng-container *ngTemplateOutlet="t; context: { $implicit: group }" />
+        </ng-template>
+      }
+      @if (tpl('selecteditems'); as t) {
+        <ng-template pTemplate="selecteditems" let-selected let-removeChip="removeChip">
+          <ng-container *ngTemplateOutlet="t; context: { $implicit: selected, removeChip: removeChip }" />
+        </ng-template>
+      }
+      @if (tpl('filter'); as t) {
+        <ng-template pTemplate="filter" let-options="options">
+          <ng-container *ngTemplateOutlet="t; context: { options: options }" />
+        </ng-template>
+      }
+      @if (tpl('dropdownicon'); as t) {
+        <ng-template pTemplate="dropdownicon" let-dataP="dataP">
+          <ng-container *ngTemplateOutlet="t; context: { dataP: dataP }" />
+        </ng-template>
+      }
+      @if (tpl('chipicon'); as t) {
+        <ng-template pTemplate="chipicon" let-cls="class">
+          <ng-container *ngTemplateOutlet="t; context: { class: cls }" />
+        </ng-template>
+      }
+      @if (tpl('clearicon'); as t) {
+        <ng-template pTemplate="clearicon"><ng-container *ngTemplateOutlet="t" /></ng-template>
+      }
+      @if (tpl('header'); as t) {
+        <ng-template pTemplate="header"><ng-container *ngTemplateOutlet="t" /></ng-template>
+      }
+      @if (tpl('footer'); as t) {
+        <ng-template pTemplate="footer"><ng-container *ngTemplateOutlet="t" /></ng-template>
+      }
+      @if (tpl('empty'); as t) {
+        <ng-template pTemplate="empty"><ng-container *ngTemplateOutlet="t" /></ng-template>
+      }
+      @if (tpl('emptyfilter'); as t) {
+        <ng-template pTemplate="emptyfilter"><ng-container *ngTemplateOutlet="t" /></ng-template>
+      }
       <ng-content></ng-content>
     </p-multiselect>
   `,
@@ -154,9 +222,78 @@ export class BapsMultiSelect implements ControlValueAccessor {
   @Input() ariaLabel?: string;
   @Input() ariaLabelledBy?: string;
   @Input() inputId?: string;
+  /** Shows PrimeNG's loading icon in the trigger. Default off. */
+  @Input() loading = false;
+  /** Property that uniquely identifies an option; PrimeNG pass-through. */
+  @Input() dataKey?: string;
+  @Input() virtualScroll = false;
+  /** Row height for the virtual scroller; must equal the rendered option height. */
+  @Input() virtualScrollItemSize?: number;
+  /**
+   * Values that stay selected: their options are disabled (so Select All and
+   * clicks keep them, as PrimeNG keeps selected disabled options) and any
+   * change, including a chip removal, re-adds them. Default none.
+   */
+  @Input() lockedValues: unknown[] = [];
+  /**
+   * Never let the selection go empty: the last selected option is disabled,
+   * and a change that would empty it restores the previous last value.
+   * Default off.
+   */
+  @Input() keepOneSelected = false;
 
   /** Emits the filter query on every keystroke when `filter` is enabled. */
   @Output() filterQueryChange = new EventEmitter<string>();
+  /** Fires when the clear icon empties the field. */
+  @Output() cleared = new EventEmitter<void>();
+
+  @ContentChildren(PrimeTemplate) templates?: QueryList<PrimeTemplate>;
+
+  /** A consumer's pTemplate of the given type, if any. */
+  tpl(type: string): TemplateRef<unknown> | undefined {
+    return this.templates?.find((t) => t.getType() === type)?.template;
+  }
+
+  private lockCache?: { key: string; options: unknown[]; result: Record<string, unknown>[] };
+
+  /** Values the panel must not let the user deselect right now. */
+  private get lockedNow(): unknown[] {
+    const locked = [...(this.lockedValues ?? [])];
+    if (this.keepOneSelected && Array.isArray(this.value) && this.value.length === 1) {
+      locked.push(this.value[0]);
+    }
+    return locked;
+  }
+
+  private valueOf(option: Record<string, unknown>): unknown {
+    return this.optionValue ? option?.[this.optionValue] : option;
+  }
+
+  /**
+   * `options` unchanged unless something is locked; then a copy carrying
+   * LOCK_FLAG, cached so PrimeNG sees a new array only when the lock set or
+   * the options change.
+   */
+  get resolvedOptions(): unknown[] {
+    const locked = this.lockedNow;
+    if (!locked.length || !Array.isArray(this.options)) return this.options;
+    const key = JSON.stringify(locked) + '|' + (this.optionDisabled ?? '');
+    if (this.lockCache?.options === this.options && this.lockCache.key === key) {
+      return this.lockCache.result;
+    }
+    const lockSet = new Set(locked);
+    const disabledKey = this.optionDisabled ?? 'disabled';
+    const result = (this.options as Record<string, unknown>[]).map((o) => ({
+      ...o,
+      [LOCK_FLAG]: lockSet.has(this.valueOf(o)) || !!o?.[disabledKey],
+    }));
+    this.lockCache = { key, options: this.options, result };
+    return result;
+  }
+
+  get resolvedOptionDisabled(): string | undefined {
+    return this.lockedNow.length ? LOCK_FLAG : this.optionDisabled;
+  }
   /** Fires when the header's toggle-all box changes. */
   @Output() selectAllChange = new EventEmitter<any>();
   /** Fires when a single chip is dismissed in `display="chip"`. */
@@ -182,7 +319,14 @@ export class BapsMultiSelect implements ControlValueAccessor {
   }
 
   onMultiSelectChange(event: any): void {
-    this.value = event.value;
+    let next = event.value;
+    if (this.lockedValues?.length) {
+      next = [...new Set([...(Array.isArray(next) ? next : []), ...this.lockedValues])];
+    }
+    if (this.keepOneSelected && Array.isArray(this.value) && this.value.length && !next?.length) {
+      next = [this.value[this.value.length - 1]];
+    }
+    this.value = next;
     this.onChange(this.value);
     this.onTouched();
   }

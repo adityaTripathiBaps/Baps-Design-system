@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/angular';
 import { expect, userEvent, waitFor, within } from '@storybook/test';
 import { moduleMetadata } from '@storybook/angular';
 import { FormsModule } from '@angular/forms';
+import { SharedModule } from 'primeng/api';
 import { BapsMultiSelect } from './multi-select.component';
 
 /**
@@ -281,4 +282,40 @@ export const MultiSelectInteraction: Story = {
     await waitFor(() => expect(options[0]).toHaveAttribute('aria-selected', 'true'));
     await expect(options[1]).toHaveAttribute('aria-selected', 'true');
   },
+};
+
+/** A consumer `pTemplate="item"` reaches the inner p-multiselect (AT-042). */
+export const ItemTemplate: Story = {
+  decorators: [moduleMetadata({ imports: [FormsModule, SharedModule] })],
+  render: () => ({
+    props: { options: CITIES, model: ['AMD'] },
+    template: `
+      <div style="display:flex; gap:1rem; max-width:40rem">
+        @for (brand of ['mybky', 'sampark']; track brand) {
+          <baps-multi-select [brand]="brand" ariaLabel="Select cities" appendTo="body" optionLabel="name" optionValue="code" [options]="options" [ngModel]="model">
+            <ng-template pTemplate="item" let-option>
+              <span><strong>{{ option.code }}</strong> · {{ option.name }}</span>
+            </ng-template>
+          </baps-multi-select>
+        }
+      </div>
+    `,
+  }),
+};
+
+/**
+ * `lockedValues` keep a value selected (its option is disabled and a removal
+ * re-adds it); `keepOneSelected` never lets the selection go empty.
+ */
+export const LockedValues: Story = {
+  decorators: [moduleMetadata({ imports: [FormsModule] })],
+  render: () => ({
+    props: { options: CITIES, locked: ['AMD', 'LDN'], one: ['NBO'] },
+    template: `
+      <div style="display:flex; flex-direction:column; gap:1rem; max-width:20rem">
+        <baps-multi-select brand="sampark" ariaLabel="Locked cities" appendTo="body" display="chip" optionLabel="name" optionValue="code" [options]="options" [lockedValues]="['AMD']" [(ngModel)]="locked" />
+        <baps-multi-select brand="sampark" ariaLabel="At least one city" appendTo="body" optionLabel="name" optionValue="code" [options]="options" [keepOneSelected]="true" [(ngModel)]="one" />
+      </div>
+    `,
+  }),
 };
