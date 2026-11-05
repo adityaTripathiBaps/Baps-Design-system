@@ -125,7 +125,7 @@ const MAX_OVERFLOW_LABELS = 20;
             </div>
           }
           @if (hiddenChipCount) {
-            <div class="p-multiselect-chip-item">
+            <div class="p-multiselect-chip-item baps-multi-select__overflow">
               <p-chip
                 class="p-multiselect-chip"
                 [label]="'+' + hiddenChipCount"

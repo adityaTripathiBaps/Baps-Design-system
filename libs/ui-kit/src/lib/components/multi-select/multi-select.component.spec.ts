@@ -314,6 +314,7 @@ describe('BapsMultiSelect chipOverflow', () => {
     fixture.detectChanges();
     const chips = [...fixture.nativeElement.querySelectorAll('.p-multiselect-chip-item .p-chip')] as HTMLElement[];
     expect(chips.map((c) => c.textContent?.trim())).toEqual(['A', 'B', '+2']);
+    expect(chips[2].closest('.p-multiselect-chip-item')?.classList).toContain('baps-multi-select__overflow');
     expect(chips[0].querySelector('.p-chip-remove-icon')).toBeNull();
     expect(chips[1].querySelector('.p-chip-remove-icon')).not.toBeNull();
     const wrapper = fixture.debugElement.query(By.directive(BapsMultiSelect)).componentInstance as BapsMultiSelect;

@@ -88,6 +88,12 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch, visual (Sampark):** chip MultiSelects stay on one
+  line in the 32px field, as on SPM dev: chips shrink with an ellipsis and the
+  `chipOverflow` "+N" chip never shrinks (a block label let them spill out of
+  the field). A consumer `dropdownicon` svg keeps its own size instead of the
+  chevron size, with no baseline gap (spm's 26x32 "switch" trigger). MyBKY
+  unchanged (spm AT-045).
 - **`@org/ui-kit` — patch, visual (Sampark):** MultiSelect chips match SPM dev:
   22px, Mono/20 fill, Mono/100 text, Mono/borders hairline (was MyBKY's tag
   grey), 500 weight, 8px sides; the label stays 12px (dev 13px, ask at demo).

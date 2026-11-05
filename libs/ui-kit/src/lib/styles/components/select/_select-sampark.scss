@@ -359,11 +359,29 @@
   }
 
   /* ── 10. MultiSelect Chip styling (4px radius, tighter margin) ── */
+  /* SPM dev keeps chips on one line inside the 32px field: chips shrink
+     with an ellipsis and the "+N" chip (chipOverflow) never does. The base
+     wraps (MyBKY grows the field), and a block label let them spill out. */
   .p-multiselect .p-multiselect-label:has(.p-multiselect-chip-item) {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    gap: var(--space-1) !important;
+    overflow: hidden !important;
     padding: 0 0.375rem !important;
   }
 
+  .p-multiselect .p-multiselect-chip-item {
+    flex: 0 1 auto !important;
+    min-width: 0 !important;
+  }
+
+  .p-multiselect .p-multiselect-chip-item.baps-multi-select__overflow {
+    flex-shrink: 0 !important;
+  }
+
   .p-multiselect .p-multiselect-chip-item .p-chip {
+    max-width: 100% !important;
     border-radius: var(--select-chip-radius) !important;
     height: var(--select-chip-height) !important;
   }
@@ -638,4 +656,31 @@
 .baps-ds-sampark .p-multiselect-overlay .p-multiselect-option .p-checkbox {
   width: var(--space-4) !important;
   height: var(--space-4) !important;
+}
+
+/* ── Consumer dropdown icon (SPM dev) ──────────────────────────────────
+   The chevron block above leaves a non-chevron dropdownicon "as supplied",
+   but base _select.scss sizes every trigger svg to the chevron size, so
+   SPM's 26x32 up/down "switch" icon shrank to 10px. A consumer svg (not
+   PrimeNG's .p-icon) keeps its own size, and its wrapper is flex so no
+   inline baseline gap grows the trigger. */
+:is(
+    .baps-ds-sampark,
+    baps-select.baps-sampark,
+    baps-multi-select.baps-sampark
+  )
+  :is(.p-select-dropdown, .p-multiselect-dropdown)
+  svg:not(.p-icon) {
+  width: auto !important;
+  height: auto !important;
+}
+
+:is(
+    .baps-ds-sampark,
+    baps-select.baps-sampark,
+    baps-multi-select.baps-sampark
+  )
+  :is(.p-select-dropdown, .p-multiselect-dropdown):has(svg:not(.p-icon))
+  > * {
+  display: flex;
 }
