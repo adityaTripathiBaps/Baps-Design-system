@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SharedModule } from 'primeng/api';
 import { Select } from 'primeng/select';
 import { BapsSelect } from './select.component';
@@ -183,5 +183,41 @@ describe('BapsSelect PrimeNG pass-through (AT-042/043)', () => {
     wrapper.onSelectClick();
     await fixture.whenStable();
     expect(fixture.componentInstance.value).toBe('R');
+  });
+});
+
+@Component({
+  imports: [BapsSelect, ReactiveFormsModule],
+  template: `
+    <baps-select [brand]="brand" [options]="['a', 'b']" [formControl]="ctrl" />
+  `,
+})
+class InvalidHost {
+  brand: 'mybky' | 'sampark' = 'sampark';
+  ctrl = new FormControl<string | null>(null, Validators.required);
+}
+
+describe('BapsSelect invalid state', () => {
+  function render(brand: 'mybky' | 'sampark') {
+    const fixture = TestBed.createComponent(InvalidHost);
+    fixture.componentInstance.brand = brand;
+    fixture.detectChanges();
+    const select = () => fixture.nativeElement.querySelector('p-select') as HTMLElement;
+    return { fixture, select };
+  }
+
+  it('a Sampark field shows p-invalid once its invalid control is touched', () => {
+    const { fixture, select } = render('sampark');
+    expect(select().classList).not.toContain('p-invalid');
+    fixture.componentInstance.ctrl.markAsTouched();
+    fixture.detectChanges();
+    expect(select().classList).toContain('p-invalid');
+  });
+
+  it('leaves MyBKY on PrimeNG default', () => {
+    const { fixture, select } = render('mybky');
+    fixture.componentInstance.ctrl.markAsTouched();
+    fixture.detectChanges();
+    expect(select().classList).not.toContain('p-invalid');
   });
 });

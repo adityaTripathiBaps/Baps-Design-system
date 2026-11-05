@@ -77,3 +77,9 @@
     border-right-color: var(--color-sampark-surface-card, #ffffff);
   }
 }
+
+/* baps-multi-select chipOverflow: the "+N" chip lists one hidden label per
+   line. Only that opt-in tooltip carries the class. */
+.p-tooltip.baps-multiselect-overflow-tooltip .p-tooltip-text {
+  white-space: pre-line;
+}

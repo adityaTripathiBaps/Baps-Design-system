@@ -129,4 +129,7 @@ export function Example() {
     primeng: `<baps-multi-select brand="sampark" ariaLabel="Locked cities" appendTo="body" display="chip" optionLabel="name" optionValue="code" [options]="cities" [lockedValues]="['AMD']" [(ngModel)]="selected" />
 <baps-multi-select brand="sampark" ariaLabel="At least one city" appendTo="body" optionLabel="name" optionValue="code" [options]="cities" [keepOneSelected]="true" [(ngModel)]="selected" />`,
   },
+  ChipOverflow: {
+    primeng: `<baps-multi-select brand="sampark" ariaLabel="Cities" appendTo="body" display="chip" [chipOverflow]="true" [maxSelectedLabels]="2" optionLabel="name" optionValue="code" [options]="cities" [lockedValues]="['AMD']" [(ngModel)]="selected" />`,
+  },
 };

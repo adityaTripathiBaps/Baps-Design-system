@@ -319,3 +319,19 @@ export const LockedValues: Story = {
     `,
   }),
 };
+
+/**
+ * `chipOverflow`: past `maxSelectedLabels` the field keeps that many chips and
+ * adds a "+N" chip whose tooltip lists the rest. A locked chip has no remove icon.
+ */
+export const ChipOverflow: Story = {
+  decorators: [moduleMetadata({ imports: [FormsModule] })],
+  render: () => ({
+    props: { options: CITIES, model: ['AMD', 'LDN', 'NBO', 'NJ'] },
+    template: `
+      <div style="max-width:20rem">
+        <baps-multi-select brand="sampark" ariaLabel="Cities" appendTo="body" display="chip" [chipOverflow]="true" [maxSelectedLabels]="2" optionLabel="name" optionValue="code" [options]="options" [lockedValues]="['AMD']" [(ngModel)]="model" />
+      </div>
+    `,
+  }),
+};

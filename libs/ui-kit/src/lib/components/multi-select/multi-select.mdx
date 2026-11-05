@@ -135,6 +135,14 @@ A `pTemplate="item"` inside `baps-multi-select` reaches PrimeNG and renders each
 
 <FrameworkTabs of={MultiSelectStories.LockedValues} snippets={multiSelectSnippets.LockedValues} />
 
+### Chip overflow
+
+`chipOverflow` keeps `maxSelectedLabels` chips and adds a "+N" chip whose tooltip lists the rest, instead of switching to `selectedItemsLabel`. A locked chip has no remove icon.
+
+<Canvas of={MultiSelectStories.ChipOverflow} sourceState="none" />
+
+<FrameworkTabs of={MultiSelectStories.ChipOverflow} snippets={multiSelectSnippets.ChipOverflow} />
+
 ## Forms
 
 A full `ControlValueAccessor`, including `setDisabledState`, so it behaves like a

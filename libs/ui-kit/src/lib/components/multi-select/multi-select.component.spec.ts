@@ -279,3 +279,47 @@ describe('BapsMultiSelect PrimeNG pass-through (AT-042/044)', () => {
     expect(fixture.componentInstance.value).toEqual(['c']);
   });
 });
+
+@Component({
+  imports: [BapsMultiSelect, FormsModule],
+  template: `
+    <baps-multi-select
+      [options]="options"
+      optionLabel="name"
+      optionValue="code"
+      display="chip"
+      [chipOverflow]="true"
+      [maxSelectedLabels]="2"
+      [lockedValues]="locked"
+      [(ngModel)]="value"
+    />
+  `,
+})
+class OverflowHost {
+  options = [
+    { name: 'A', code: 'a' },
+    { name: 'B', code: 'b' },
+    { name: 'C', code: 'c' },
+    { name: 'D', code: 'd' },
+  ];
+  locked: string[] = ['a'];
+  value: string[] = ['a', 'b', 'c', 'd'];
+}
+
+describe('BapsMultiSelect chipOverflow', () => {
+  it('keeps maxSelectedLabels chips, adds a "+N" chip and hides the locked chip remove icon', async () => {
+    const fixture = TestBed.createComponent(OverflowHost);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const chips = [...fixture.nativeElement.querySelectorAll('.p-multiselect-chip-item .p-chip')] as HTMLElement[];
+    expect(chips.map((c) => c.textContent?.trim())).toEqual(['A', 'B', '+2']);
+    expect(chips[0].querySelector('.p-chip-remove-icon')).toBeNull();
+    expect(chips[1].querySelector('.p-chip-remove-icon')).not.toBeNull();
+    const wrapper = fixture.debugElement.query(By.directive(BapsMultiSelect)).componentInstance as BapsMultiSelect;
+    expect(wrapper.hiddenChipLabels).toBe('C\nD');
+    wrapper.removeChip('b', new MouseEvent('click'));
+    await fixture.whenStable();
+    expect(fixture.componentInstance.value).toEqual(['a', 'c', 'd']);
+  });
+});

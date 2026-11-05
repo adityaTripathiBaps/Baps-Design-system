@@ -2,6 +2,7 @@ import {
   Component,
   ContentChildren,
   EventEmitter,
+  Injector,
   Input,
   Output,
   QueryList,
@@ -9,9 +10,10 @@ import {
   ViewChild,
   ViewEncapsulation,
   forwardRef,
+  inject,
 } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule, NgControl } from '@angular/forms';
 import { PrimeTemplate, SharedModule } from 'primeng/api';
 import { Select, type SelectLazyLoadEvent } from 'primeng/select';
 
@@ -39,6 +41,8 @@ import { Select, type SelectLazyLoadEvent } from 'primeng/select';
       [filter]="filter"
       [filterBy]="filterBy"
       [filterPlaceholder]="filterPlaceholder"
+      [resetFilterOnHide]="resetFilterOnHide"
+      [autofocusFilter]="autofocusFilter"
       [showClear]="showClear"
       [editable]="editable"
       [appendTo]="appendTo"
@@ -51,6 +55,7 @@ import { Select, type SelectLazyLoadEvent } from 'primeng/select';
       [ariaLabelledBy]="ariaLabelledBy"
       [inputId]="inputId"
       [loading]="loading"
+      [invalid]="resolvedInvalid"
       [dataKey]="dataKey!"
       [lazy]="lazy"
       [virtualScroll]="virtualScroll"
@@ -150,6 +155,10 @@ export class BapsSelect implements ControlValueAccessor {
    * has a name worth using.
    */
   @Input() filterPlaceholder = 'Search';
+  /** Clears the search when the panel closes. PrimeNG default (off). */
+  @Input() resetFilterOnHide = false;
+  /** Focuses the search when the panel opens. PrimeNG default (on). */
+  @Input() autofocusFilter = true;
   @Input() showClear = false;
   @Input() editable = false;
   @Input() appendTo?: any;
@@ -169,6 +178,26 @@ export class BapsSelect implements ControlValueAccessor {
   @Input() inputId?: string;
   /** Shows PrimeNG's loading icon in the trigger. Default off. */
   @Input() loading = false;
+  /**
+   * Error state. Left unset, a Sampark field follows its own form control
+   * (invalid and dirty or touched): the host carries `ng-invalid`, but the
+   * inner PrimeNG control only sees its private ngModel, so the error border
+   * never showed. MyBKY keeps PrimeNG's default unless this is set.
+   */
+  @Input() invalid?: boolean;
+
+  private readonly injector = inject(Injector);
+  private hostControl?: NgControl | null;
+
+  get resolvedInvalid(): boolean | undefined {
+    if (this.invalid !== undefined) return this.invalid;
+    if (this.brand !== 'sampark') return undefined;
+    // Read lazily: injecting NgControl in the constructor is circular, it
+    // needs this component as its value accessor.
+    this.hostControl ??= this.injector.get(NgControl, null, { self: true, optional: true });
+    const c = this.hostControl;
+    return !!(c?.invalid && (c.dirty || c.touched));
+  }
   /** Property that uniquely identifies an option; PrimeNG pass-through. */
   @Input() dataKey?: string;
   /**

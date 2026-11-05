@@ -23,6 +23,15 @@ classification and deprecation policy.
   `virtualScroll`, `virtualScrollItemSize`, `lockedValues` (stay selected;
   a removed chip is re-added) and `keepOneSelected` (never empty), and output
   `cleared`. Defaults leave existing usages unchanged (spm AT-042, AT-044).
+- **`@org/ui-kit` — minor, additive:** `baps-multi-select` `chipOverflow`
+  (with `display="chip"`: keep `maxSelectedLabels` chips plus a "+N" chip whose
+  tooltip lists the rest; chips carry their label as a tooltip and a locked chip
+  has no remove icon) and a `virtualScrollOptions` pass-through. `baps-select`
+  gains `resetFilterOnHide` and `autofocusFilter` (PrimeNG defaults). Both take
+  an `invalid` input; left unset, a Sampark field now shows the error border
+  when its form control is invalid and dirty or touched (the inner PrimeNG
+  control never saw the host control). MyBKY unchanged unless `invalid` is set
+  (spm AT-045).
 - **`@org/ui-kit` — minor, additive (Sampark):** `baps-input-number` inside a
   Sampark `baps-input-group` fills the group: chromeless input, spinner buttons
   joined to the group border, no double border. A Sampark group also takes

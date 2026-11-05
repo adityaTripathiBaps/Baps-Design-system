@@ -2,20 +2,26 @@ import {
   Component,
   ContentChildren,
   EventEmitter,
+  Injector,
   Input,
   Output,
   QueryList,
   TemplateRef,
   ViewEncapsulation,
   forwardRef,
+  inject,
 } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
-import { PrimeTemplate, SharedModule } from 'primeng/api';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule, NgControl } from '@angular/forms';
+import { PrimeTemplate, SharedModule, type ScrollerOptions } from 'primeng/api';
 import { MultiSelect } from 'primeng/multiselect';
+import { Chip } from 'primeng/chip';
+import { BapsTooltip } from '../tooltip/tooltip.directive';
 
 /** Option flag the wrapper adds when lockedValues / keepOneSelected disable an option. */
 const LOCK_FLAG = '__bapsLocked';
+/** Labels the "+N" chip tooltip lists before the rest collapse into one "+N" line. */
+const MAX_OVERFLOW_LABELS = 20;
 
 /**
  * baps-multi-select — multi-value dropdown form field.
@@ -36,7 +42,7 @@ const LOCK_FLAG = '__bapsLocked';
  */
 @Component({
   selector: 'baps-multi-select',
-  imports: [MultiSelect, FormsModule, SharedModule, NgTemplateOutlet],
+  imports: [MultiSelect, Chip, BapsTooltip, FormsModule, SharedModule, NgTemplateOutlet],
   template: `
     <p-multiselect
       [(ngModel)]="value"
@@ -75,9 +81,11 @@ const LOCK_FLAG = '__bapsLocked';
       [ariaLabelledBy]="ariaLabelledBy!"
       [inputId]="inputId!"
       [loading]="loading"
+      [invalid]="resolvedInvalid"
       [dataKey]="dataKey!"
       [virtualScroll]="virtualScroll"
       [virtualScrollItemSize]="virtualScrollItemSize!"
+      [virtualScrollOptions]="virtualScrollOptions!"
       (onChange)="onMultiSelectChange($event)"
       (onClear)="cleared.emit()"
       (onFilter)="onMultiSelectFilter($event)"
@@ -100,6 +108,34 @@ const LOCK_FLAG = '__bapsLocked';
       @if (tpl('selecteditems'); as t) {
         <ng-template pTemplate="selecteditems" let-selected let-removeChip="removeChip">
           <ng-container *ngTemplateOutlet="t; context: { $implicit: selected, removeChip: removeChip }" />
+        </ng-template>
+      } @else if (display === 'chip' && chipOverflow) {
+        <ng-template pTemplate="selecteditems">
+          @for (v of visibleChips; track v) {
+            <div class="p-multiselect-chip-item">
+              <p-chip
+                class="p-multiselect-chip"
+                [label]="labelOf(v)"
+                [removable]="canRemove(v)"
+                (onRemove)="removeChip(v, $event)"
+                [bapsTooltip]="labelOf(v)"
+                [brand]="brand"
+                tooltipPosition="top"
+              />
+            </div>
+          }
+          @if (hiddenChipCount) {
+            <div class="p-multiselect-chip-item">
+              <p-chip
+                class="p-multiselect-chip"
+                [label]="'+' + hiddenChipCount"
+                [bapsTooltip]="hiddenChipLabels"
+                [brand]="brand"
+                tooltipPosition="top"
+                tooltipStyleClass="baps-multiselect-overflow-tooltip"
+              />
+            </div>
+          }
         </ng-template>
       }
       @if (tpl('filter'); as t) {
@@ -225,11 +261,37 @@ export class BapsMultiSelect implements ControlValueAccessor {
   @Input() inputId?: string;
   /** Shows PrimeNG's loading icon in the trigger. Default off. */
   @Input() loading = false;
+  /**
+   * Error state. Left unset, a Sampark field follows its own form control
+   * (invalid and dirty or touched): the host carries `ng-invalid`, but the
+   * inner PrimeNG control only sees its private ngModel, so the error border
+   * never showed. MyBKY keeps PrimeNG's default unless this is set.
+   */
+  @Input() invalid?: boolean;
+
+  private readonly injector = inject(Injector);
+  private hostControl?: NgControl | null;
+
+  get resolvedInvalid(): boolean | undefined {
+    if (this.invalid !== undefined) return this.invalid;
+    if (this.brand !== 'sampark') return undefined;
+    // Read lazily: injecting NgControl in the constructor is circular, it
+    // needs this component as its value accessor.
+    this.hostControl ??= this.injector.get(NgControl, null, { self: true, optional: true });
+    const c = this.hostControl;
+    return !!(c?.invalid && (c.dirty || c.touched));
+  }
   /** Property that uniquely identifies an option; PrimeNG pass-through. */
   @Input() dataKey?: string;
   @Input() virtualScroll = false;
   /** Row height for the virtual scroller; must equal the rendered option height. */
   @Input() virtualScrollItemSize?: number;
+  /**
+   * PrimeNG pass-through. PrimeNG sizes the panel from `scrollHeight` but never
+   * hands it to the scroller, which re-measures after a search and grows a
+   * second scrollbar; pass `{ scrollHeight }` to cap both.
+   */
+  @Input() virtualScrollOptions?: ScrollerOptions;
   /**
    * Values that stay selected: their options are disabled (so Select All and
    * clicks keep them, as PrimeNG keeps selected disabled options) and any
@@ -242,6 +304,13 @@ export class BapsMultiSelect implements ControlValueAccessor {
    * Default off.
    */
   @Input() keepOneSelected = false;
+  /**
+   * `display="chip"` only: past `maxSelectedLabels`, keep that many chips and
+   * add a "+N" chip whose tooltip lists the rest, instead of PrimeNG's switch
+   * to `selectedItemsLabel`. Each chip carries its label as a tooltip, and a
+   * locked chip has no remove icon. Default off.
+   */
+  @Input() chipOverflow = false;
 
   /** Emits the filter query on every keystroke when `filter` is enabled. */
   @Output() filterQueryChange = new EventEmitter<string>();
@@ -294,6 +363,55 @@ export class BapsMultiSelect implements ControlValueAccessor {
 
   get resolvedOptionDisabled(): string | undefined {
     return this.lockedNow.length ? LOCK_FLAG : this.optionDisabled;
+  }
+
+  private labelCache?: { options: unknown[]; labels: Map<unknown, unknown> };
+
+  /** An option's label from its value (chipOverflow chips). */
+  labelOf(v: unknown): string {
+    if (v && typeof v === 'object') {
+      return String((v as Record<string, unknown>)[this.optionLabel ?? 'label'] ?? '');
+    }
+    if (this.labelCache?.options !== this.options) {
+      const labels = new Map<unknown, unknown>();
+      for (const o of (this.options ?? []) as Record<string, unknown>[]) {
+        const key = this.valueOf(o);
+        if (!labels.has(key)) labels.set(key, this.optionLabel ? o?.[this.optionLabel] : o);
+      }
+      this.labelCache = { options: this.options, labels };
+    }
+    return String(this.labelCache.labels.get(v) ?? v);
+  }
+
+  private get selectedValues(): unknown[] {
+    return Array.isArray(this.value) ? this.value : [];
+  }
+
+  get visibleChips(): unknown[] {
+    const max = this.maxSelectedLabels;
+    return max ? this.selectedValues.slice(0, max) : this.selectedValues;
+  }
+
+  get hiddenChipCount(): number {
+    return this.selectedValues.length - this.visibleChips.length;
+  }
+
+  /** One label per line; the tooltip class keeps the line breaks. */
+  get hiddenChipLabels(): string {
+    const hidden = this.selectedValues.slice(this.visibleChips.length);
+    const lines = hidden.slice(0, MAX_OVERFLOW_LABELS).map((v) => this.labelOf(v));
+    if (hidden.length > MAX_OVERFLOW_LABELS) lines.push(`+${hidden.length - MAX_OVERFLOW_LABELS}`);
+    return lines.join('\n');
+  }
+
+  canRemove(v: unknown): boolean {
+    return !this.disabled && !this.readonly && !this.lockedNow.includes(v);
+  }
+
+  removeChip(v: unknown, event: Event): void {
+    event.stopPropagation();
+    this.onMultiSelectChange({ value: this.selectedValues.filter((x) => x !== v) });
+    this.itemRemove.emit({ originalEvent: event, value: v });
   }
   /** Fires when the header's toggle-all box changes. */
   @Output() selectAllChange = new EventEmitter<any>();
