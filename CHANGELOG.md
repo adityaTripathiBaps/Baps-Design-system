@@ -88,6 +88,12 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch, visual (Sampark):** MultiSelect chips match SPM dev:
+  22px, Mono/20 fill, Mono/100 text, Mono/borders hairline (was MyBKY's tag
+  grey), 500 weight, 8px sides; the label stays 12px (dev 13px, ask at demo).
+  Option rows are 33px under any preset: the option checkbox host is pinned
+  to its 16px box (spm-ui's preset made it 20px, rows 36px). MyBKY unchanged
+  (spm AT-045).
 - **`@org/ui-kit` — patch, visual (Sampark):** the MultiSelect panel header
   matches SPM dev: 91px, a Mono/20 search strip with a hairline over a white
   42px "Select All" row (14px/400 label, 12px padding and gap, on the options'

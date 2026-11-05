@@ -77,14 +77,22 @@
   --select-filter-bg: var(--color-sampark-secondary-0, #f8f7f7);
   --select-filter-radius: var(--radius-sampark-default, 0.25rem);
 
-  /* ── MultiSelect chips ───────────────────────────────────────────── */
-  --select-chip-bg: var(--color-sampark-secondary-0, #f8f7f7);
-  --select-chip-text: var(--color-sampark-text-secondary, #595656);
+  /* ── MultiSelect chips ───────────────────────────────────────────────
+     SPM dev: 22px, Mono/20 fill, Mono/100 text, Mono/borders hairline, 500
+     weight, 8px sides. The base border is MyBKY's tag grey, which leaked
+     into every Sampark chip. Dev's 13px label has no type-scale step, so it
+     stays 12px (ask at demo, BRAIN). */
+  --select-chip-bg: var(--color-sampark-mono-20, #f3f2f2);
+  --select-chip-text: var(--color-sampark-mono-100, #151414);
+  --select-chip-border: var(--color-sampark-border-default, #e1e0e0);
+  --select-chip-border-hover: var(--color-sampark-border-hover);
+  --select-chip-font-weight: var(--font-weight-medium);
+  --select-chip-padding: 0 var(--space-2);
   --select-chip-radius: var(
     --radius-sampark-default,
     0.25rem
   ); /* chips are rounded rects, NOT pills */
-  --select-chip-height: 1.5rem;
+  --select-chip-height: var(--space-5-5); /* 22px */
   --select-chip-font-size: 0.75rem;
 
   /* ── DatePicker calendar ─────────────────────────────────────────── */
@@ -621,4 +629,13 @@
     color: var(--select-option-disabled-text);
     cursor: default;
   }
+}
+
+/* ── MultiSelect option checkbox (SPM dev) ─────────────────────────────
+   The box is 16px, but p-checkbox's host takes the preset's checkbox size;
+   under spm-ui's preset that is 20px, which made every option 36px (dev 33).
+   Pin the host to the box. */
+.baps-ds-sampark .p-multiselect-overlay .p-multiselect-option .p-checkbox {
+  width: var(--space-4) !important;
+  height: var(--space-4) !important;
 }

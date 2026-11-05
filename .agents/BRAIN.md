@@ -390,6 +390,9 @@ Blocked on design, not on implementation. Never invent these.
 - **Ask at demo.** Sampark tree-select selected node background (2026-11-02,
   spm AT-041): dev `#fbecec` has no token; the kit keeps Figma Primary/10
   `#f8ecec` by user ruling. Only the weight (400) was matched.
+- **Ask at demo.** Sampark MultiSelect chip label (2026-11-05, spm AT-045):
+  SPM dev's chip label is 13px; no type-scale step, so it stays 12px. Height
+  (22px), fill, text, border, weight and padding now match dev.
 - **Ask at demo.** Sampark paginator text (2026-10-29): SPM dev sets the
   page report and rows-per-page value at 13px; the type scale has 12 and
   14px only, so the kit keeps 14px. Its nav glyph is ~12.8px; the kit uses
