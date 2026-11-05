@@ -99,6 +99,10 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch:** `bapsTooltip` with `[appendTo]` bound to
+  `undefined` attaches to `<body>` again. PrimeNG copied the undefined over its
+  default and threw "Cannot append ... to undefined", so the tooltip never
+  showed (the Storybook hover story regressed with 275fd17) (spm AT-053).
 - **`@org/ui-kit` — patch, visual (Sampark):** chip MultiSelects stay on one
   line in the 32px field, as on SPM dev: chips shrink with an ellipsis and the
   `chipOverflow` "+N" chip never shrinks (a block label let them spill out of

@@ -54,7 +54,10 @@ function escapeHtml(value: string): string {
       // the same gesture, making it unreadable on a phone. `[autoHide]="false"`
       // is the documented escape hatch and was previously unreachable through
       // this wrapper.
-      // tooltipDisabled and appendTo are plain PrimeNG inputs used by SPM.
+      // tooltipDisabled is a plain PrimeNG input used by SPM. appendTo is
+      // declared below instead: PrimeNG copies any bound value, undefined
+      // included, over its 'body' default, and the tooltip then fails to
+      // attach ("Cannot append ... to undefined").
       // escape stays private to this directive because the rich-card path
       // deliberately switches it only after escaping every consumer string.
       inputs: [
@@ -65,7 +68,6 @@ function escapeHtml(value: string): string {
         'life',
         'autoHide',
         'tooltipDisabled',
-        'appendTo',
       ],
     },
   ],
@@ -81,6 +83,8 @@ export class BapsTooltip implements OnChanges {
   @Input() tooltipLinkLabel?: string;
   @Input() tooltipStyleClass?: string;
   @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  /** Overlay container, as PrimeNG's appendTo; unset or null means 'body'. */
+  @Input() appendTo?: unknown;
 
   private get isRich(): boolean {
     return !!this.tooltipTitle;
@@ -91,6 +95,7 @@ export class BapsTooltip implements OnChanges {
       tooltipLabel: this.computedContent,
       escape: !this.isRich,
       tooltipStyleClass: this.computedStyleClass,
+      appendTo: this.appendTo ?? 'body',
     });
   }
 

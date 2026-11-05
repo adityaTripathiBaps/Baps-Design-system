@@ -325,7 +325,24 @@ describe('BapsTooltip PrimeNG passthroughs', () => {
       .query(By.css('button'))
       .injector.get(Tooltip);
 
-    expect(tooltip.appendTo()).toBe(overlayHost);
+    expect(tooltip.getOption('appendTo')).toBe(overlayHost);
+    fixture.destroy();
+  });
+
+  it('falls back to body when appendTo is bound to undefined', async () => {
+    @Component({
+      imports: [BapsTooltip],
+      template: `<button type="button" bapsTooltip="Owner" [appendTo]="target">Owner</button>`,
+    })
+    class UnsetAppendToHost {
+      target: HTMLElement | undefined = undefined;
+    }
+
+    const fixture = TestBed.createComponent(UnsetAppendToHost);
+    await fixture.whenStable();
+    const tooltip = fixture.debugElement.query(By.css('button')).injector.get(Tooltip);
+
+    expect(tooltip.getOption('appendTo')).toBe('body');
     fixture.destroy();
   });
 });
