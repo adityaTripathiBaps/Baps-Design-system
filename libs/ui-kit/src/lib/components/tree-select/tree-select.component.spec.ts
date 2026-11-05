@@ -98,6 +98,16 @@ describe('BapsTreeSelect value accessor', () => {
     component.onTreeSelectFilter({ filter: 'lon' });
     expect(seen).toEqual(['lon']);
   });
+
+  it('re-emits the panel closing as panelHide', () => {
+    const fixture = TestBed.createComponent(BapsTreeSelect);
+    fixture.detectChanges();
+    let hidden = 0;
+    fixture.componentInstance.panelHide.subscribe(() => hidden++);
+    const inner = fixture.debugElement.query(By.directive(TreeSelect)).componentInstance as TreeSelect;
+    inner.onHide.emit({});
+    expect(hidden).toBe(1);
+  });
 });
 
 describe('BapsTreeSelect brand scoping', () => {

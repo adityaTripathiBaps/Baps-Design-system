@@ -70,6 +70,7 @@ import type { TreeNode } from 'primeng/api';
       (onNodeCollapse)="nodeCollapse.emit($event)"
       (onFilter)="onTreeSelectFilter($event)"
       (onClear)="cleared.emit()"
+      (onHide)="panelHide.emit($event)"
     >
       <!-- Template forwarding, the same shape baps-table uses.
            A bare ng-content is not enough: PrimeNG collects its slots with
@@ -174,6 +175,8 @@ export class BapsTreeSelect implements ControlValueAccessor {
   /** Emits the filter query on every keystroke when `filter` is enabled. */
   @Output() filterQueryChange = new EventEmitter<string>();
   @Output() cleared = new EventEmitter<void>();
+  /** Fires when the panel closes; PrimeNG's onHide. */
+  @Output() panelHide = new EventEmitter<unknown>();
 
   value: any;
 

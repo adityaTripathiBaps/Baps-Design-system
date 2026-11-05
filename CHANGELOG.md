@@ -8,6 +8,9 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/ui-kit` — minor, additive:** `baps-tree-select` `panelHide` output
+  (PrimeNG's `onHide`), so a consumer can reset its expand state when the panel
+  closes (spm AT-047).
 - **`@org/ui-kit` — minor, additive:** `baps-select` forwards a consumer's
   `pTemplate` slots (`item`, `group`, `selectedItem`, `filter`, `header`,
   `footer`, `empty`, `emptyfilter`, `dropdownicon`, `clearicon`) to PrimeNG;
