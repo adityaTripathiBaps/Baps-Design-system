@@ -393,6 +393,10 @@ Blocked on design, not on implementation. Never invent these.
 - **Ask at demo.** Sampark tree-select selected node background (2026-11-02,
   spm AT-041): dev `#fbecec` has no token; the kit keeps Figma Primary/10
   `#f8ecec` by user ruling. Only the weight (400) was matched.
+- **Ask at demo.** Sampark disabled text/link button (2026-11-05, spm AT-057,
+  user ruling): the kit keeps Figma Mono/40 at full opacity (node
+  13197:92178); SPM dev shows Mono/80 at 0.6 and there is no button opacity
+  token. spm-ui's `styles.scss:17-27` override stays until the demo.
 - **Ask at demo.** Sampark MultiSelect chip label (2026-11-05, spm AT-045):
   SPM dev's chip label is 13px; no type-scale step, so it stays 12px. Height
   (22px), fill, text, border, weight and padding now match dev.
