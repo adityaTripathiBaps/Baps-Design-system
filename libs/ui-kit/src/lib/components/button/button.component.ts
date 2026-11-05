@@ -137,6 +137,18 @@ import { SAMPARK_BUTTON_TOKENS } from '../../theme/sampark.theme';
       opacity: 1;
     }
 
+    /* SPM dev: a disabled outlined button keeps its white fill (AT-050). */
+    :is(baps-button.baps-sampark, .baps-ds-sampark baps-button) .p-button-outlined:disabled {
+      background: var(--color-sampark-mono-0, #ffffff);
+    }
+
+    /* SPM dev's default-size label is 14px. PrimeNG hard-codes
+       .p-button { font-size: 1rem }, so it followed the host's root size
+       (16px in spm-ui). sm/lg keep their preset font sizes. */
+    :is(baps-button.baps-sampark, .baps-ds-sampark baps-button) .p-button:not(.p-button-sm):not(.p-button-lg) {
+      font-size: var(--font-size-sm, 0.875rem);
+    }
+
     /* A button label never wraps. The height is fixed by the size step, so a
        second line either overflows the box or pushes the glyph off-centre —
        "Ad-hoc" broke at its hyphen and "Button Text" at its space whenever the

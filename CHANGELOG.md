@@ -99,6 +99,11 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch, visual (Sampark):** `baps-button` matches SPM dev:
+  default-size label 14px and padding 8px 10px (`--space-2` / `--space-2-5`)
+  whatever the host preset, and a disabled outlined button keeps a white fill.
+  Before, the label and padding followed the host preset (16px, 0 12px in
+  spm-ui). MyBKY unchanged (spm AT-050).
 - **`@org/ui-kit` — patch:** `bapsTooltip` with `[appendTo]` bound to
   `undefined` attaches to `<body>` again. PrimeNG copied the undefined over its
   default and threw "Cannot append ... to undefined", so the tooltip never

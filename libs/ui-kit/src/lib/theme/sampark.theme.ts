@@ -21,6 +21,10 @@ export const SAMPARK_BUTTON_TOKENS = {
   root: {
     borderRadius: tokens.ButtonSamparkRadius,
     gap: tokens.ButtonSamparkGap,
+    // SPM dev: 8px 10px (AT-050). Left unset, the host app's preset decided,
+    // so spm-ui's preset gave 0 12px and the kit preset 0 16px.
+    paddingX: 'var(--space-2-5)',
+    paddingY: 'var(--space-2)',
     label: { fontWeight: tokens.ButtonSamparkFontWeight },
     // spm-ui's dedicated icon-only scale is square — width equals the
     // explicit height per step (28/32/36/40, button.mapping.mdx). PrimeNG's
