@@ -256,6 +256,13 @@
   background-image: none;
 }
 
+/* SPM dev's 10px sides at the default and XL steps, the token the
+   component's Sampark preset sets; s, l and icon-only keep their own. */
+.baps-button.baps-sampark:not(.baps-button--s, .baps-button--l, .baps-button--icon-only),
+.baps-ds-sampark .baps-button:not(.baps-button--s, .baps-button--l, .baps-button--icon-only) {
+  padding-inline: var(--space-2-5, 0.625rem);
+}
+
 .baps-button.baps-sampark.baps-button--primary,
 .baps-ds-sampark .baps-button.baps-button--primary {
   background-color: var(--button-sampark-primary-default, #c96868);
