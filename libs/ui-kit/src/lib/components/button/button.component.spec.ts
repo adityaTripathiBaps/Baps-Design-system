@@ -160,3 +160,15 @@ describe('BapsButton', () => {
     });
   });
 });
+
+describe('BapsButton styleClass', () => {
+  it('lands on the inner .p-button, not the host', async () => {
+    const fixture = TestBed.createComponent(BapsButton);
+    fixture.componentRef.setInput('styleClass', 'custom-img-btn');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const host = fixture.nativeElement as HTMLElement;
+    expect(host.querySelector('.p-button')?.classList).toContain('custom-img-btn');
+    expect(host.classList).not.toContain('custom-img-btn');
+  });
+});

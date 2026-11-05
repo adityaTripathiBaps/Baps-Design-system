@@ -8,6 +8,9 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/ui-kit` — minor, additive:** `baps-button` `styleClass`, passed to
+  the inner `.p-button` (spm-ui's 28px image buttons size `.p-button` through it)
+  (spm AT-014).
 - **`@org/ui-kit` — minor, additive:** `baps-tree-select` `bare`: the trigger
   shows only the consumer's `pTemplate="value"` (no border, fill, padding or
   dropdown icon), for a self-drawn trigger such as spm-ui's globe pill. Default

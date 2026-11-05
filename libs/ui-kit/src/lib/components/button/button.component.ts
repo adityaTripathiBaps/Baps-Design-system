@@ -17,6 +17,7 @@ import { SAMPARK_BUTTON_TOKENS } from '../../theme/sampark.theme';
       [loading]="loading"
       [loadingIcon]="loadingIcon"
       [severity]="severity"
+      [styleClass]="styleClass"
       [raised]="raised"
       [rounded]="rounded"
       [text]="text"
@@ -226,6 +227,8 @@ export class BapsButton {
   @Input() size?: 'small' | 'large' | 'xlarge';
   @Input() plain = false;
   @Input() fluid = false;
+  /** Classes on the inner .p-button, PrimeNG pass-through. */
+  @Input() styleClass?: string;
   @Input() disabled = false;
   @Input() autofocus = false;
   /** Required on icon-only buttons — without it screen readers announce nothing. */
