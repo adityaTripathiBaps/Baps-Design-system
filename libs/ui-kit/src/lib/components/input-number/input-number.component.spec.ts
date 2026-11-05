@@ -194,3 +194,33 @@ describe('BapsInputNumber', () => {
     );
   });
 });
+
+describe('BapsInputNumber clampOn', () => {
+  function setup(clampOn: 'input' | 'blur') {
+    const c = TestBed.createComponent(BapsInputNumber).componentInstance;
+    c.min = 1;
+    c.clampOn = clampOn;
+    const sent: (number | null)[] = [];
+    c.registerOnChange((v) => sent.push(v));
+    c.writeValue(5);
+    return { c, sent };
+  }
+  const typed = (value: number) => ({ value }) as InputNumberInputEvent;
+
+  it('clamps on every keystroke by default', () => {
+    const { c, sent } = setup('input');
+    c.handleInput(typed(0));
+    expect(sent).toEqual([1]);
+  });
+
+  it('with blur, keeps the typed value until blur, then clamps once', () => {
+    const { c, sent } = setup('blur');
+    c.handleInput(typed(0));
+    expect(sent).toEqual([0]);
+    c.value = 1; // PrimeNG's own blur clamp lands through the inner [(ngModel)]
+    c.handleBlur();
+    expect(sent).toEqual([0, 1]);
+    c.handleBlur();
+    expect(sent).toEqual([0, 1]);
+  });
+});

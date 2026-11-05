@@ -8,6 +8,10 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/ui-kit` — minor, additive:** `baps-input-number` `clampOn`
+  (`input` default, unchanged; `blur` keeps a typed out-of-range value until the
+  field loses focus, as raw PrimeNG does, so a form validator can report it)
+  (spm AT-051).
 - **`@org/ui-kit` — minor, additive:** `baps-tree-select` `panelHide` output
   (PrimeNG's `onHide`), so a consumer can reset its expand state when the panel
   closes (spm AT-047).

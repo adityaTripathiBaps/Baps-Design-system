@@ -99,11 +99,20 @@ export class BapsInputNumber implements ControlValueAccessor {
   @Input() disabled = false;
   @Input() size?: 'small' | 'large';
   @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  /**
+   * When min/max apply. `input` (default) clamps on every keystroke, so a
+   * typed 0 with min 1 becomes 1 at once. `blur` keeps the typed value until
+   * the field loses focus, as raw PrimeNG does, so a form validator can still
+   * see and report the out-of-range value while the user is typing.
+   */
+  @Input() clampOn: 'input' | 'blur' = 'input';
 
   /** Mirrors PrimeNG's input event with the clamped numeric value. */
   @Output() readonly valueChange = new EventEmitter<InputNumberInputEvent>();
 
   value: number | null = null;
+  /** The last value handed to the form. */
+  private sent: number | null = null;
 
   private onChange: (value: number | null) => void = () => {
     /* empty */
@@ -121,13 +130,20 @@ export class BapsInputNumber implements ControlValueAccessor {
   }
 
   handleInput(event: InputNumberInputEvent): void {
-    const next = this.normalise(event.value);
+    const next = this.normalise(event.value, this.clampOn === 'input');
     this.value = next;
-    this.onChange(next);
+    this.emit(next);
     this.valueChange.emit({ ...event, value: next });
   }
 
   handleBlur(): void {
+    // Compare with what the form last received: PrimeNG's own blur may already
+    // have clamped `value` through the inner [(ngModel)].
+    if (this.clampOn === 'blur') {
+      const next = this.normalise(this.value);
+      this.value = next;
+      if (next !== this.sent) this.emit(next);
+    }
     this.onTouched();
   }
 
@@ -137,7 +153,7 @@ export class BapsInputNumber implements ControlValueAccessor {
     const base = this.value ?? 0;
     const next = this.normalise(base + direction);
     this.value = next;
-    this.onChange(next);
+    this.emit(next);
     this.onTouched();
     this.valueChange.emit({
       originalEvent: event,
@@ -148,6 +164,12 @@ export class BapsInputNumber implements ControlValueAccessor {
 
   writeValue(value: number | null): void {
     this.value = this.normalise(value);
+    this.sent = this.value;
+  }
+
+  private emit(next: number | null): void {
+    this.sent = next;
+    this.onChange(next);
   }
 
   registerOnChange(fn: (value: number | null) => void): void {
@@ -162,12 +184,12 @@ export class BapsInputNumber implements ControlValueAccessor {
     this.disabled = isDisabled;
   }
 
-  private normalise(value: number | null): number | null {
+  private normalise(value: number | null, clamp = true): number | null {
     if (value == null || Number.isNaN(value)) return null;
 
     let next = value;
-    if (this.min != null) next = Math.max(this.min, next);
-    if (this.max != null) next = Math.min(this.max, next);
+    if (clamp && this.min != null) next = Math.max(this.min, next);
+    if (clamp && this.max != null) next = Math.min(this.max, next);
 
     if (this.maxFractionDigits != null) {
       const factor = 10 ** this.maxFractionDigits;
