@@ -137,8 +137,10 @@ import { SAMPARK_BUTTON_TOKENS } from '../../theme/sampark.theme';
       opacity: 1;
     }
 
-    /* SPM dev: a disabled outlined button keeps its white fill (AT-050). */
-    :is(baps-button.baps-sampark, .baps-ds-sampark baps-button) .p-button-outlined:disabled {
+    /* SPM dev: a disabled outlined button keeps its white fill (AT-050). Same
+       :not() chain as the disabled-fill rule above plus .p-button-outlined,
+       so it outranks that rule instead of losing to it. */
+    :is(baps-button.baps-sampark, .baps-ds-sampark baps-button) .p-button.p-button-outlined:disabled:not(.p-button-text):not(.p-button-link) {
       background: var(--color-sampark-mono-0, #ffffff);
     }
 
