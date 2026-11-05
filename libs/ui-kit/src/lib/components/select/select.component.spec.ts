@@ -1,6 +1,9 @@
 import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { SharedModule } from 'primeng/api';
+import { Select } from 'primeng/select';
 import { BapsSelect } from './select.component';
 
 /**
@@ -106,5 +109,69 @@ describe('BapsSelect brand scoping', () => {
       const fixture = await render({ brand: 'sampark', panelStyleClass: 'baps-ds-sampark' });
       expect(panelClassOf(fixture)).toBe('baps-ds-sampark');
     });
+  });
+});
+
+@Component({
+  imports: [BapsSelect, FormsModule, SharedModule],
+  template: `
+    <baps-select [options]="options" optionLabel="name" optionValue="code" [toggleOnClick]="toggle" [(ngModel)]="value">
+      <ng-template pTemplate="item" let-option><b class="custom-item">{{ option.name }}</b></ng-template>
+    </baps-select>
+  `,
+})
+class TemplateHost {
+  options = [
+    { name: 'Region', code: 'R' },
+    { name: 'Centre', code: 'C' },
+  ];
+  toggle = false;
+  value: string | null = 'R';
+}
+
+describe('BapsSelect PrimeNG pass-through (AT-042/043)', () => {
+  async function renderTemplateHost(toggle = false) {
+    const fixture = TestBed.createComponent(TemplateHost);
+    fixture.componentInstance.toggle = toggle;
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    return fixture;
+  }
+
+  it('forwards a consumer pTemplate="item" to the inner p-select', async () => {
+    const fixture = await renderTemplateHost();
+    const inner = fixture.debugElement.query(By.directive(Select)).componentInstance as unknown as {
+      _itemTemplate?: unknown;
+    };
+    expect(inner._itemTemplate).toBeTruthy();
+  });
+
+  it('leaves the PrimeNG defaults in place when no new input is set', async () => {
+    const fixture = await renderTemplateHost();
+    const inner = fixture.debugElement.query(By.directive(Select)).componentInstance;
+    expect(inner.loading).toBe(false);
+    expect(inner.lazy).toBe(false);
+    expect(inner.virtualScroll).toBe(false);
+    expect(inner.scrollHeight).toBe('200px');
+  });
+
+  it('toggleOnClick cycles to the next option instead of opening the panel', async () => {
+    const fixture = await renderTemplateHost(true);
+    const wrapper = fixture.debugElement.query(By.directive(BapsSelect)).componentInstance as BapsSelect;
+    wrapper.onSelectClick();
+    await fixture.whenStable();
+    expect(fixture.componentInstance.value).toBe('C');
+    wrapper.onSelectClick();
+    await fixture.whenStable();
+    expect(fixture.componentInstance.value).toBe('R');
+  });
+
+  it('does nothing on click when toggleOnClick is off', async () => {
+    const fixture = await renderTemplateHost(false);
+    const wrapper = fixture.debugElement.query(By.directive(BapsSelect)).componentInstance as BapsSelect;
+    wrapper.onSelectClick();
+    await fixture.whenStable();
+    expect(fixture.componentInstance.value).toBe('R');
   });
 });

@@ -1,4 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/angular';
+import { moduleMetadata } from '@storybook/angular';
+import { FormsModule } from '@angular/forms';
+import { SharedModule } from 'primeng/api';
 import { expect, userEvent, waitFor, within } from '@storybook/test';
 import { BapsSelect } from './select.component';
 
@@ -142,4 +145,57 @@ export const KeyboardInteraction: StoryObj<BapsSelect> = {
     await userEvent.keyboard('{Enter}');
     await waitFor(() => expect(trigger).toHaveAttribute('aria-expanded', 'true'));
   },
+};
+
+const ROLES = [
+  { name: 'Region', code: 'R' },
+  { name: 'Centre', code: 'C' },
+];
+
+/**
+ * A consumer `pTemplate="item"` reaches the inner p-select. Before AT-042 the
+ * template was projected through `ng-content`, where PrimeNG's own
+ * ContentChildren query never saw it, and the default label rendered instead.
+ */
+export const ItemTemplate: StoryObj<BapsSelect> = {
+  decorators: [moduleMetadata({ imports: [FormsModule, SharedModule] })],
+  render: () => ({
+    props: { roles: ROLES, a: 'R', b: 'R' },
+    template: `
+      <div style="display:flex; gap:1rem; max-width:30rem">
+        @for (brand of ['mybky', 'sampark']; track brand) {
+          <baps-select [brand]="brand" ariaLabel="Role" appendTo="body" [options]="roles" optionLabel="name" optionValue="code" [ngModel]="a">
+            <ng-template pTemplate="item" let-option>
+              <span><strong>{{ option.code }}</strong> · {{ option.name }}</span>
+            </ng-template>
+          </baps-select>
+        }
+      </div>
+    `,
+  }),
+};
+
+/** `toggleOnClick`: a two-value field flips on click instead of opening a panel. */
+export const ToggleOnClick: StoryObj<BapsSelect> = {
+  decorators: [moduleMetadata({ imports: [FormsModule] })],
+  render: () => ({
+    props: { roles: ROLES, value: 'R' },
+    template: `
+      <div style="max-width:15rem">
+        <baps-select brand="sampark" ariaLabel="Role" [options]="roles" optionLabel="name" optionValue="code" [toggleOnClick]="true" [(ngModel)]="value" />
+      </div>
+    `,
+  }),
+};
+
+/** `loading`: PrimeNG's loading icon in the trigger while options load. */
+export const Loading: StoryObj<BapsSelect> = {
+  render: () => ({
+    props: { roles: ROLES },
+    template: `
+      <div style="max-width:15rem">
+        <baps-select brand="sampark" ariaLabel="Role" placeholder="Loading roles" [options]="roles" optionLabel="name" [loading]="true" />
+      </div>
+    `,
+  }),
 };

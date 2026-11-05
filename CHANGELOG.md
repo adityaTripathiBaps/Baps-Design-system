@@ -8,6 +8,14 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/ui-kit` — minor, additive:** `baps-select` forwards a consumer's
+  `pTemplate` slots (`item`, `group`, `selectedItem`, `filter`, `header`,
+  `footer`, `empty`, `emptyfilter`, `dropdownicon`, `clearicon`) to PrimeNG;
+  they were silently ignored. New inputs `loading`, `dataKey`,
+  `toggleOnClick` (a click cycles to the next option), `lazy`,
+  `virtualScroll`, `virtualScrollItemSize`, `scrollHeight` and outputs
+  `cleared`, `lazyLoad`. All default off or to PrimeNG's default, so
+  existing usages render unchanged (spm AT-042, AT-043).
 - **`@org/ui-kit` — minor, additive (Sampark):** `baps-input-number` inside a
   Sampark `baps-input-group` fills the group: chromeless input, spinner buttons
   joined to the group border, no double border. A Sampark group also takes

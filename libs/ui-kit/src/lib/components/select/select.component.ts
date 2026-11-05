@@ -1,6 +1,19 @@
-import { Component, EventEmitter, Input, Output, forwardRef, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  ContentChildren,
+  EventEmitter,
+  Input,
+  Output,
+  QueryList,
+  TemplateRef,
+  ViewChild,
+  ViewEncapsulation,
+  forwardRef,
+} from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
-import { Select } from 'primeng/select';
+import { PrimeTemplate, SharedModule } from 'primeng/api';
+import { Select, type SelectLazyLoadEvent } from 'primeng/select';
 
 /**
  * baps-select — dropdown / single-select form field.
@@ -11,7 +24,7 @@ import { Select } from 'primeng/select';
  */
 @Component({
   selector: 'baps-select',
-  imports: [Select, FormsModule],
+  imports: [Select, FormsModule, SharedModule, NgTemplateOutlet],
   template: `
     <p-select
       [(ngModel)]="value"
@@ -37,9 +50,65 @@ import { Select } from 'primeng/select';
       [ariaLabel]="ariaLabel"
       [ariaLabelledBy]="ariaLabelledBy"
       [inputId]="inputId"
+      [loading]="loading"
+      [dataKey]="dataKey!"
+      [lazy]="lazy"
+      [virtualScroll]="virtualScroll"
+      [virtualScrollItemSize]="virtualScrollItemSize!"
+      [scrollHeight]="scrollHeight"
       (onChange)="onSelectChange($event)"
       (onFilter)="onSelectFilter($event)"
+      (onClick)="onSelectClick()"
+      (onClear)="cleared.emit()"
+      (onLazyLoad)="lazyLoad.emit($event)"
     >
+      <!-- Template forwarding, as baps-tree-select does. PrimeNG collects its
+           slots with @ContentChildren(PrimeTemplate), which never sees a
+           template projected through this host's ng-content, so a consumer's
+           pTemplate here was silently ignored. Each slot is re-declared with
+           the context PrimeNG 21 passes it. -->
+      @if (tpl('item'); as t) {
+        <ng-template pTemplate="item" let-option>
+          <ng-container *ngTemplateOutlet="t; context: { $implicit: option }" />
+        </ng-template>
+      }
+      @if (tpl('group'); as t) {
+        <ng-template pTemplate="group" let-group>
+          <ng-container *ngTemplateOutlet="t; context: { $implicit: group }" />
+        </ng-template>
+      }
+      @if (tpl('selectedItem'); as t) {
+        <ng-template pTemplate="selectedItem" let-selected>
+          <ng-container *ngTemplateOutlet="t; context: { $implicit: selected }" />
+        </ng-template>
+      }
+      @if (tpl('filter'); as t) {
+        <ng-template pTemplate="filter" let-options="options">
+          <ng-container *ngTemplateOutlet="t; context: { options: options }" />
+        </ng-template>
+      }
+      @if (tpl('dropdownicon'); as t) {
+        <ng-template pTemplate="dropdownicon" let-cls="class">
+          <ng-container *ngTemplateOutlet="t; context: { class: cls }" />
+        </ng-template>
+      }
+      @if (tpl('clearicon'); as t) {
+        <ng-template pTemplate="clearicon" let-cls="class">
+          <ng-container *ngTemplateOutlet="t; context: { class: cls }" />
+        </ng-template>
+      }
+      @if (tpl('header'); as t) {
+        <ng-template pTemplate="header"><ng-container *ngTemplateOutlet="t" /></ng-template>
+      }
+      @if (tpl('footer'); as t) {
+        <ng-template pTemplate="footer"><ng-container *ngTemplateOutlet="t" /></ng-template>
+      }
+      @if (tpl('empty'); as t) {
+        <ng-template pTemplate="empty"><ng-container *ngTemplateOutlet="t" /></ng-template>
+      }
+      @if (tpl('emptyfilter'); as t) {
+        <ng-template pTemplate="emptyfilter"><ng-container *ngTemplateOutlet="t" /></ng-template>
+      }
       <ng-content></ng-content>
     </p-select>
   `,
@@ -98,9 +167,40 @@ export class BapsSelect implements ControlValueAccessor {
   @Input() ariaLabel?: string;
   @Input() ariaLabelledBy?: string;
   @Input() inputId?: string;
+  /** Shows PrimeNG's loading icon in the trigger. Default off. */
+  @Input() loading = false;
+  /** Property that uniquely identifies an option; PrimeNG pass-through. */
+  @Input() dataKey?: string;
+  /**
+   * A click cycles to the next option instead of opening the panel, for a
+   * two-value field used as a switch. Default off.
+   */
+  @Input() toggleOnClick = false;
+  /** PrimeNG lazy mode; pair with `virtualScroll` and listen to `lazyLoad`. */
+  @Input() lazy = false;
+  @Input() virtualScroll = false;
+  /**
+   * Row height the virtual scroller positions rows by. It must equal the
+   * rendered option height: the Sampark Select row is 37px, MyBKY 48px.
+   */
+  @Input() virtualScrollItemSize?: number;
+  /** Panel list height; PrimeNG's default (200px) when unset. */
+  @Input() scrollHeight = '200px';
 
   /** Emits the filter query on every keystroke when `filter` is enabled. */
   @Output() filterQueryChange = new EventEmitter<string>();
+  /** Fires when the clear icon empties the field. */
+  @Output() cleared = new EventEmitter<void>();
+  /** PrimeNG's lazy-load event (first/last visible index) in lazy mode. */
+  @Output() lazyLoad = new EventEmitter<SelectLazyLoadEvent>();
+
+  @ViewChild(Select) private select?: Select;
+  @ContentChildren(PrimeTemplate) templates?: QueryList<PrimeTemplate>;
+
+  /** A consumer's pTemplate of the given type, if any. */
+  tpl(type: string): TemplateRef<unknown> | undefined {
+    return this.templates?.find((t) => t.getType() === type)?.template;
+  }
 
   value: any;
 
@@ -128,6 +228,18 @@ export class BapsSelect implements ControlValueAccessor {
 
   onSelectChange(event: any): void {
     this.value = event.value;
+    this.onChange(this.value);
+    this.onTouched();
+  }
+
+  /** toggleOnClick: close the panel PrimeNG just opened and pick the next option. */
+  onSelectClick(): void {
+    if (!this.toggleOnClick || this.disabled || !this.options?.length) return;
+    this.select?.hide();
+    const key = this.optionValue;
+    const valueOf = (o: unknown): unknown => (key ? (o as Record<string, unknown>)?.[key] : o);
+    const index = this.options.findIndex((o) => valueOf(o) === this.value);
+    this.value = valueOf(this.options[(index + 1) % this.options.length]);
     this.onChange(this.value);
     this.onTouched();
   }

@@ -55,4 +55,17 @@ ${EXAMPLE.replace('export function Default()', 'export default function Default(
   [showClear]="true"
 />`,
   },
+  ItemTemplate: {
+    primeng: `<baps-select brand="sampark" ariaLabel="Role" appendTo="body" [options]="roles" optionLabel="name" optionValue="code" [(ngModel)]="role">
+  <ng-template pTemplate="item" let-option>
+    <span><strong>{{ option.code }}</strong> · {{ option.name }}</span>
+  </ng-template>
+</baps-select>`,
+  },
+  ToggleOnClick: {
+    primeng: `<baps-select brand="sampark" ariaLabel="Role" [options]="roles" optionLabel="name" optionValue="code" [toggleOnClick]="true" [(ngModel)]="role" />`,
+  },
+  Loading: {
+    primeng: `<baps-select brand="sampark" ariaLabel="Role" placeholder="Loading roles" [options]="roles" optionLabel="name" [loading]="true" />`,
+  },
 };
