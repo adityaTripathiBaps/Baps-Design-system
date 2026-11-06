@@ -114,6 +114,10 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch:** `baps-select`, `baps-multi-select` and
+  `baps-tree-select` mark their form control touched on blur, as PrimeNG does;
+  before, a required select opened and left empty stayed untouched (spm AT-065).
+
 - **`@org/ui-kit` — patch (Sampark):** an open `appendTo="body"` tree-select's scrim
   catches outside clicks at z-index 3000 like SPM dev (the panel's overlay is lifted
   to 3001), so an outside click only closes it. Inline panels and MyBKY keep the

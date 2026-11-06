@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { TreeSelect } from 'primeng/treeselect';
 import type { TreeNode } from 'primeng/api';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { BapsTreeSelect } from './tree-select.component';
 
 /**
@@ -209,5 +210,24 @@ describe('BapsTreeSelect bare', () => {
     fixture.componentRef.setInput('bare', true);
     fixture.detectChanges();
     expect(host.classList).toContain('baps-tree-select--bare');
+  });
+});
+
+@Component({
+  imports: [BapsTreeSelect, ReactiveFormsModule],
+  template: `<baps-tree-select [options]="[{ key: 'a', label: 'A' }]" [formControl]="ctrl" />`,
+})
+class TouchedHost {
+  ctrl = new FormControl<TreeNode | null>(null);
+}
+
+describe('BapsTreeSelect touched state (AT-065)', () => {
+  it('blur marks touched', () => {
+    const fixture = TestBed.createComponent(TouchedHost);
+    fixture.detectChanges();
+    const ctrl = fixture.componentInstance.ctrl;
+    expect(ctrl.touched).toBe(false);
+    fixture.debugElement.query(By.directive(TreeSelect)).componentInstance.onBlur.emit(new Event('blur'));
+    expect(ctrl.touched).toBe(true);
   });
 });

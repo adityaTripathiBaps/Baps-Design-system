@@ -89,6 +89,7 @@ const MAX_OVERFLOW_LABELS = 20;
       (onChange)="onMultiSelectChange($event)"
       (onClear)="cleared.emit()"
       (onFilter)="onMultiSelectFilter($event)"
+      (onBlur)="onTouched()"
       (onSelectAllChange)="selectAllChange.emit($event)"
       (onRemove)="itemRemove.emit($event)"
     >
@@ -421,7 +422,7 @@ export class BapsMultiSelect implements ControlValueAccessor {
   value: any;
 
   private onChange: any = () => { /* empty */ };
-  private onTouched: any = () => { /* empty */ };
+  protected onTouched: any = () => { /* empty */ };
 
   /**
    * Same portal problem `baps-select` has: the option overlay is appended to

@@ -71,6 +71,7 @@ import type { TreeNode } from 'primeng/api';
       (onFilter)="onTreeSelectFilter($event)"
       (onClear)="cleared.emit()"
       (onHide)="panelHide.emit($event)"
+      (onBlur)="onTouched()"
     >
       <!-- Template forwarding, the same shape baps-table uses.
            A bare ng-content is not enough: PrimeNG collects its slots with
@@ -217,7 +218,7 @@ export class BapsTreeSelect implements ControlValueAccessor {
   value: any;
 
   private onChange: any = () => { /* empty */ };
-  private onTouched: any = () => { /* empty */ };
+  protected onTouched: any = () => { /* empty */ };
 
   /**
    * The overlay is appended to `<body>`, so it escapes both the

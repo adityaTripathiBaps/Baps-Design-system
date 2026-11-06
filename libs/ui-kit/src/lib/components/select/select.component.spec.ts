@@ -221,3 +221,14 @@ describe('BapsSelect invalid state', () => {
     expect(select().classList).not.toContain('p-invalid');
   });
 });
+
+describe('BapsSelect touched state (AT-065)', () => {
+  it('blur marks touched', () => {
+    const fixture = TestBed.createComponent(InvalidHost);
+    fixture.detectChanges();
+    const ctrl = fixture.componentInstance.ctrl;
+    expect(ctrl.touched).toBe(false);
+    fixture.debugElement.query(By.directive(Select)).componentInstance.onBlur.emit(new Event('blur'));
+    expect(ctrl.touched).toBe(true);
+  });
+});

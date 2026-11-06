@@ -65,6 +65,7 @@ import { Select, type SelectLazyLoadEvent } from 'primeng/select';
       (onFilter)="onSelectFilter($event)"
       (onClick)="onSelectClick()"
       (onClear)="onSelectClear()"
+      (onBlur)="onTouched()"
       (onLazyLoad)="lazyLoad.emit($event)"
     >
       <!-- Template forwarding, as baps-tree-select does. PrimeNG collects its
@@ -240,7 +241,7 @@ export class BapsSelect implements ControlValueAccessor {
   value: any;
 
   private onChange: any = () => { /* empty */ };
-  private onTouched: any = () => { /* empty */ };
+  protected onTouched: any = () => { /* empty */ };
 
   get primeSize(): 'small' | 'large' | undefined {
     return this.size;

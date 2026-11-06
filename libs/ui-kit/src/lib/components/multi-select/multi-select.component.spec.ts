@@ -2,7 +2,7 @@ import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MultiSelect } from 'primeng/multiselect';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'primeng/api';
 import { BapsMultiSelect } from './multi-select.component';
 
@@ -322,5 +322,24 @@ describe('BapsMultiSelect chipOverflow', () => {
     wrapper.removeChip('b', new MouseEvent('click'));
     await fixture.whenStable();
     expect(fixture.componentInstance.value).toEqual(['a', 'c', 'd']);
+  });
+});
+
+@Component({
+  imports: [BapsMultiSelect, ReactiveFormsModule],
+  template: `<baps-multi-select [options]="['a', 'b']" [formControl]="ctrl" />`,
+})
+class TouchedHost {
+  ctrl = new FormControl<string[]>([]);
+}
+
+describe('BapsMultiSelect touched state (AT-065)', () => {
+  it('blur marks touched', () => {
+    const fixture = TestBed.createComponent(TouchedHost);
+    fixture.detectChanges();
+    const ctrl = fixture.componentInstance.ctrl;
+    expect(ctrl.touched).toBe(false);
+    fixture.debugElement.query(By.directive(MultiSelect)).componentInstance.onBlur.emit(new Event('blur'));
+    expect(ctrl.touched).toBe(true);
   });
 });
