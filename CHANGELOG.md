@@ -8,6 +8,10 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/ui-kit` — minor, additive:** `baps-confirm-dialog` `source="primeng"`
+  (opt-in; default `baps` unchanged) listens to PrimeNG's `ConfirmationService`, and
+  `header` / `message` / `footer` `pTemplate` slots are forwarded (footer context
+  also carries `accept` and `reject`) (spm AT-026).
 - **`@org/ui-kit` — minor, additive:** `baps-button` `type` (`button` default,
   `submit`, `reset`) so a kit button can submit its form (spm AT-060).
 - **`@org/ui-kit` — minor, additive:** `baps-datepicker` `timeOnly`, `showTime`,

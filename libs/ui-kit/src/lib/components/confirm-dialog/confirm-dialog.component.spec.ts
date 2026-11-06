@@ -1,6 +1,7 @@
 import { Component, ViewChild, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ConfirmationService, SharedModule } from 'primeng/api';
 import { BapsDialog } from '../dialog/dialog.component';
 import { BapsConfirmDialog } from './confirm-dialog.component';
 import { BapsConfirmationService } from './confirmation.service';
@@ -216,5 +217,51 @@ describe('BapsConfirmDialog', () => {
     const id = panel!.getAttribute('aria-describedby');
     expect(id).toBeTruthy();
     expect(document.getElementById(id!)!.textContent).toContain('Delete this member?');
+  });
+});
+
+@Component({
+  imports: [BapsConfirmDialog, SharedModule],
+  template: `
+    <baps-confirm-dialog source="primeng" key="app">
+      <ng-template pTemplate="message" let-c><span class="custom-msg">{{ c?.message }}</span></ng-template>
+      <ng-template pTemplate="footer" let-c let-reject="reject">
+        <button type="button" class="custom-reject" (click)="reject()">{{ c?.rejectLabel }}</button>
+      </ng-template>
+    </baps-confirm-dialog>
+  `,
+})
+class PrimeSourceHost {}
+
+describe('BapsConfirmDialog source="primeng" and templates', () => {
+  it('opens from PrimeNG ConfirmationService, renders the forwarded templates and closes on close()', async () => {
+    TestBed.configureTestingModule({ providers: [ConfirmationService] });
+    const fixture = TestBed.createComponent(PrimeSourceHost);
+    fixture.detectChanges();
+    const svc = TestBed.inject(ConfirmationService);
+    let rejected = 0;
+    svc.confirm({ key: 'app', message: 'Save changes?', rejectLabel: 'No', reject: () => rejected++ });
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const dlg = fixture.debugElement.query(By.directive(BapsConfirmDialog)).componentInstance as BapsConfirmDialog;
+    expect(dlg.visible).toBe(true);
+    const doc = document.body;
+    expect(doc.querySelector('.custom-msg')?.textContent).toBe('Save changes?');
+    (doc.querySelector('.custom-reject') as HTMLButtonElement).click();
+    expect(rejected).toBe(1);
+    expect(dlg.visible).toBe(false);
+    svc.confirm({ key: 'app', message: 'Again' });
+    fixture.detectChanges();
+    expect(dlg.visible).toBe(true);
+    svc.close();
+    expect(dlg.visible).toBe(false);
+  });
+
+  it('ignores PrimeNG ConfirmationService by default', () => {
+    TestBed.configureTestingModule({ imports: [BapsConfirmDialog], providers: [ConfirmationService] });
+    const fixture = TestBed.createComponent(BapsConfirmDialog);
+    fixture.detectChanges();
+    TestBed.inject(ConfirmationService).confirm({ message: 'x' });
+    expect(fixture.componentInstance.visible).toBe(false);
   });
 });

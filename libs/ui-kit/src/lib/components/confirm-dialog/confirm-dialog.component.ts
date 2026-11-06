@@ -1,13 +1,20 @@
 import {
   ChangeDetectorRef,
   Component,
+  ContentChildren,
   EventEmitter,
   Input,
   OnDestroy,
+  OnInit,
   Output,
+  QueryList,
+  TemplateRef,
   ViewEncapsulation,
   inject,
 } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
+import { ConfirmationService, PrimeTemplate } from 'primeng/api';
+import type { Subscription } from 'rxjs';
 import { BapsButton } from '../button/button.component';
 import { BapsDialog } from '../dialog/dialog.component';
 import {
@@ -28,11 +35,11 @@ let nextConfirmDialogId = 0;
  */
 @Component({
   selector: 'baps-confirm-dialog',
-  imports: [BapsDialog, BapsButton],
+  imports: [BapsDialog, BapsButton, NgTemplateOutlet],
   template: `
     <baps-dialog
       [visible]="visible"
-      [header]="activeHeader"
+      [header]="tpl('header') ? undefined : activeHeader"
       [ariaLabel]="activeAriaLabel"
       [role]="'alertdialog'"
       [ariaDescribedBy]="activeMessage ? messageId : undefined"
@@ -48,6 +55,15 @@ let nextConfirmDialogId = 0;
       (visibleChange)="onDialogVisibleChange($event)"
       (hidden)="onDialogHide()"
     >
+      <!-- pTemplate forwarding (header, message, footer), as in baps-select:
+           each slot gets the active confirmation as $implicit, and the footer
+           also gets accept and reject. -->
+      @if (tpl('header'); as t) {
+        <div dialog-title>
+          <ng-container *ngTemplateOutlet="t; context: { $implicit: confirmation }" />
+        </div>
+      }
+
       @if (activeIcon) {
         <div dialog-media class="baps-confirm-dialog__icon-wrapper">
           <i
@@ -58,12 +74,23 @@ let nextConfirmDialogId = 0;
         </div>
       }
 
-      @if (activeMessage) {
+      @if (tpl('message'); as t) {
+        <div [id]="messageId">
+          <ng-container *ngTemplateOutlet="t; context: { $implicit: confirmation }" />
+        </div>
+      } @else if (activeMessage) {
         <p class="baps-confirm-dialog__message" [id]="messageId">
           {{ activeMessage }}
         </p>
       }
 
+      @if (tpl('footer'); as t) {
+        <div dialog-footer class="baps-confirm-dialog__actions">
+          <ng-container
+            *ngTemplateOutlet="t; context: { $implicit: confirmation, accept: acceptFn, reject: rejectFn }"
+          />
+        </div>
+      } @else {
       <div dialog-footer class="baps-confirm-dialog__actions">
         @if (activeRejectVisible) {
           <baps-button
@@ -87,12 +114,13 @@ let nextConfirmDialogId = 0;
           />
         }
       </div>
+      }
     </baps-dialog>
   `,
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['../../styles/components/confirm-dialog/_confirm-dialog.scss'],
 })
-export class BapsConfirmDialog implements OnDestroy {
+export class BapsConfirmDialog implements OnInit, OnDestroy {
   /** Stable per instance: aria-describedby points the alertdialog here. */
   protected readonly messageId = `baps-confirm-dialog-message-${nextConfirmDialogId++}`;
   private readonly confirmationService = inject(BapsConfirmationService);
@@ -120,14 +148,47 @@ export class BapsConfirmDialog implements OnDestroy {
   @Input() style?: Record<string, string | number>;
   @Input() baseZIndex = 0;
   @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  /**
+   * Where confirmations come from. 'baps' (default): BapsConfirmationService.
+   * 'primeng': PrimeNG's ConfirmationService, so an app that already calls
+   * confirmationService.confirm(...) can render this dialog without changing
+   * its callers. Its close() closes this dialog too.
+   */
+  @Input() source: 'baps' | 'primeng' = 'baps';
+
+  @ContentChildren(PrimeTemplate) templates?: QueryList<PrimeTemplate>;
+
+  private readonly primeConfirmations = inject(ConfirmationService, { optional: true });
+  private primeSub?: Subscription;
+
+  /** A consumer pTemplate of the given type (header, message, footer). */
+  tpl(type: string): TemplateRef<unknown> | undefined {
+    return this.templates?.find((t) => t.getType() === type)?.template;
+  }
+
+  protected readonly acceptFn = () => this.accept();
+  protected readonly rejectFn = () => this.reject();
 
   @Output() hide = new EventEmitter<void>();
 
   visible = false;
   confirmation?: BapsConfirmation;
 
+  ngOnInit(): void {
+    if (this.source !== 'primeng' || !this.primeConfirmations) return;
+    this.primeSub = this.primeConfirmations.requireConfirmation$.subscribe((confirmation) => {
+      if (confirmation) {
+        this.handleConfirmation(confirmation as BapsConfirmation);
+      } else {
+        this.close();
+      }
+      this.cdr.markForCheck();
+    });
+  }
+
   ngOnDestroy(): void {
     this.unsubscribe();
+    this.primeSub?.unsubscribe();
   }
 
   private handleConfirmation(confirmation: BapsConfirmation): void {
