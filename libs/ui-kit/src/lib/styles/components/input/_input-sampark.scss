@@ -542,3 +542,21 @@
      compound selectors, datepicker-compact — PrimeNG v17-only quirks or
      components not yet wrapped in this ui-kit.
    ══════════════════════════════════════════════════════════════════════ */
+
+/* ── Tree-select scrim catches outside clicks (SPM dev, AT-012) ─────────
+   SPM dev's scrim behind an open tree-select sits at z-index 3000 and
+   swallows the click, so clicking outside only closes the panel. The base
+   backdrop (_input.scss) is pointer-events: none at 500 for every brand; read
+   its comment first. That choice protects panels trapped inside a nested
+   stacking context, so this override applies only when the panel's overlay is
+   a direct child of <body> (appendTo="body"), and lifts that overlay to 3001
+   so it stays above the scrim. Inline panels keep the base behaviour. */
+html.baps-ds-sampark
+  body:has(> .p-overlay .p-treeselect-overlay:not([style*='display: none']))::before {
+  pointer-events: auto !important;
+  z-index: 3000 !important;
+}
+
+html.baps-ds-sampark body > .p-overlay:has(.p-treeselect-overlay) {
+  z-index: 3001 !important;
+}

@@ -102,6 +102,10 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** an open `appendTo="body"` tree-select's scrim
+  catches outside clicks at z-index 3000 like SPM dev (the panel's overlay is lifted
+  to 3001), so an outside click only closes it. Inline panels and MyBKY keep the
+  base pass-through scrim (spm AT-012).
 - **`@org/ui-kit` — patch, visual (Sampark):** `baps-button` matches SPM dev:
   default-size label 14px and padding 8px 10px (`--space-2` / `--space-2-5`)
   whatever the host preset, and a disabled outlined button keeps a white fill.
