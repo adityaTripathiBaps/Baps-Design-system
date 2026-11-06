@@ -11,6 +11,7 @@ import { SAMPARK_BUTTON_TOKENS } from '../../theme/sampark.theme';
   imports: [Button, BapsIcon],
   template: `
     <p-button
+      [type]="type"
       [label]="label"
       [icon]="primeIcon"
       [iconPos]="iconPos"
@@ -229,6 +230,8 @@ export class BapsButton {
   @Input() fluid = false;
   /** Classes on the inner .p-button, PrimeNG pass-through. */
   @Input() styleClass?: string;
+  /** Native button type; 'submit' submits the enclosing form. Default 'button'. */
+  @Input() type: 'button' | 'submit' | 'reset' = 'button';
   @Input() disabled = false;
   @Input() autofocus = false;
   /** Required on icon-only buttons — without it screen readers announce nothing. */

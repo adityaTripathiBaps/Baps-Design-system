@@ -172,3 +172,16 @@ describe('BapsButton styleClass', () => {
     expect(host.classList).not.toContain('custom-img-btn');
   });
 });
+
+describe('BapsButton type', () => {
+  it('renders type="button" by default and type="submit" when asked', async () => {
+    const fixture = TestBed.createComponent(BapsButton);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const native = () => (fixture.nativeElement as HTMLElement).querySelector('button') as HTMLButtonElement;
+    expect(native().type).toBe('button');
+    fixture.componentRef.setInput('type', 'submit');
+    fixture.detectChanges();
+    expect(native().type).toBe('submit');
+  });
+});

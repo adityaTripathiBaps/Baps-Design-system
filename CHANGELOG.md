@@ -8,6 +8,8 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/ui-kit` — minor, additive:** `baps-button` `type` (`button` default,
+  `submit`, `reset`) so a kit button can submit its form (spm AT-060).
 - **`@org/ui-kit` — minor, additive:** `baps-datepicker` `timeOnly`, `showTime`,
   `hourFormat` and `hideOnDateTimeSelect` (PrimeNG defaults) (spm AT-059).
 - **`@org/ui-kit` — minor, additive:** `baps-button` `styleClass`, passed to
