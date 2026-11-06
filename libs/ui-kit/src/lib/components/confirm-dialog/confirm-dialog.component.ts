@@ -14,7 +14,6 @@ import {
 } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { ConfirmationService, PrimeTemplate } from 'primeng/api';
-import type { Subscription } from 'rxjs';
 import { BapsButton } from '../button/button.component';
 import { BapsDialog } from '../dialog/dialog.component';
 import {
@@ -159,7 +158,7 @@ export class BapsConfirmDialog implements OnInit, OnDestroy {
   @ContentChildren(PrimeTemplate) templates?: QueryList<PrimeTemplate>;
 
   private readonly primeConfirmations = inject(ConfirmationService, { optional: true });
-  private primeSub?: Subscription;
+  private primeSub?: { unsubscribe(): void };
 
   /** A consumer pTemplate of the given type (header, message, footer). */
   tpl(type: string): TemplateRef<unknown> | undefined {
@@ -275,7 +274,8 @@ export class BapsConfirmDialog implements OnInit, OnDestroy {
 
   protected get activeAcceptSeverity():
     'primary' | 'secondary' | 'danger' | 'success' | 'warn' | 'info' {
-    return this.confirmation?.acceptSeverity ?? 'danger';
+    // PrimeNG's accept button is primary; keep that look for its confirmations.
+    return this.confirmation?.acceptSeverity ?? (this.source === 'primeng' ? 'primary' : 'danger');
   }
 
   protected get activeRejectSeverity():

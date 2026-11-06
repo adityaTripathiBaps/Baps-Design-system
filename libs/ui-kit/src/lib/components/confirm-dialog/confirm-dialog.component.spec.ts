@@ -257,6 +257,15 @@ describe('BapsConfirmDialog source="primeng" and templates', () => {
     expect(dlg.visible).toBe(false);
   });
 
+  it('defaults the accept button to primary for PrimeNG confirmations', () => {
+    TestBed.configureTestingModule({ imports: [BapsConfirmDialog], providers: [ConfirmationService] });
+    const fixture = TestBed.createComponent(BapsConfirmDialog);
+    fixture.componentRef.setInput('source', 'primeng');
+    fixture.detectChanges();
+    TestBed.inject(ConfirmationService).confirm({ message: 'x' });
+    expect((fixture.componentInstance as unknown as { activeAcceptSeverity: string }).activeAcceptSeverity).toBe('primary');
+  });
+
   it('ignores PrimeNG ConfirmationService by default', () => {
     TestBed.configureTestingModule({ imports: [BapsConfirmDialog], providers: [ConfirmationService] });
     const fixture = TestBed.createComponent(BapsConfirmDialog);
