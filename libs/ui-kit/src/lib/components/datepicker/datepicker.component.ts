@@ -123,6 +123,10 @@ const DATEPICKER_TOKENS = {
       [showIcon]="showIcon"
       [iconDisplay]="iconDisplay"
       [showButtonBar]="showButtonBar"
+      [timeOnly]="timeOnly"
+      [showTime]="showTime"
+      [hourFormat]="hourFormat"
+      [hideOnDateTimeSelect]="hideOnDateTimeSelect"
       [showClear]="showClear"
       [showOtherMonths]="showOtherMonths"
       [selectOtherMonths]="selectOtherMonths"
@@ -204,6 +208,14 @@ export class BapsDatepicker implements ControlValueAccessor {
   @Input() iconDisplay: 'input' | 'button' = 'button';
   /** PrimeNG's Today / Clear footer. Hidden in the Figma frames. */
   @Input() showButtonBar = false;
+  /** Time picker only, no calendar (PrimeNG timeOnly). Default off. */
+  @Input() timeOnly = false;
+  /** Adds the time picker under the calendar (PrimeNG showTime). Default off. */
+  @Input() showTime = false;
+  /** 12 or 24 hour clock for the time picker; PrimeNG default 24. */
+  @Input() hourFormat: '12' | '24' = '24';
+  /** Closes the panel once a date and time are picked; PrimeNG default on. */
+  @Input() hideOnDateTimeSelect = true;
   @Input() showClear = false;
   @Input() showOtherMonths = true;
   @Input() selectOtherMonths = false;

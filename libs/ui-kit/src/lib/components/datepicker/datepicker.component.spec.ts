@@ -1,6 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { DatePicker } from 'primeng/datepicker';
 import { BapsDatepicker } from './datepicker.component';
 
 /**
@@ -153,5 +154,20 @@ describe('BapsDatepicker form control', () => {
     const dp = instanceOf(await render());
     dp.setDisabledState(true);
     expect(dp.disabled).toBe(true);
+  });
+});
+
+describe('BapsDatepicker time inputs', () => {
+  it('forwards timeOnly and hourFormat to PrimeNG, defaults unchanged', () => {
+    const fixture = TestBed.createComponent(BapsDatepicker);
+    fixture.detectChanges();
+    const inner = fixture.debugElement.query(By.directive(DatePicker)).componentInstance as DatePicker;
+    expect(inner.timeOnly).toBe(false);
+    expect(inner.hourFormat).toBe('24');
+    fixture.componentRef.setInput('timeOnly', true);
+    fixture.componentRef.setInput('hourFormat', '12');
+    fixture.detectChanges();
+    expect(inner.timeOnly).toBe(true);
+    expect(inner.hourFormat).toBe('12');
   });
 });

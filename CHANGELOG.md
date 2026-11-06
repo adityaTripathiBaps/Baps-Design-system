@@ -8,6 +8,8 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/ui-kit` — minor, additive:** `baps-datepicker` `timeOnly`, `showTime`,
+  `hourFormat` and `hideOnDateTimeSelect` (PrimeNG defaults) (spm AT-059).
 - **`@org/ui-kit` — minor, additive:** `baps-button` `styleClass`, passed to
   the inner `.p-button` (spm-ui's 28px image buttons size `.p-button` through it)
   (spm AT-014).
