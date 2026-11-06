@@ -55,6 +55,13 @@ export const datepickerSnippets: Record<string, SnippetSet> = {
     next: next(example('selectionMode="range" showIcon')),
     primeng: `<baps-datepicker ariaLabel="Visit date range" selectionMode="range" [showIcon]="true" [(ngModel)]="range" />`,
   },
+  CustomInputIcon: {
+    primeng: `<baps-datepicker brand="sampark" ariaLabel="From" [showIcon]="true" iconDisplay="input" [(ngModel)]="date">
+  <ng-template pTemplate="inputicon" let-clickCallBack="clickCallBack">
+    <i class="pi pi-calendar-plus" (click)="clickCallBack($event)"></i>
+  </ng-template>
+</baps-datepicker>`,
+  },
   Constrained: {
     react: `${SETUP}
 

@@ -8,6 +8,10 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/ui-kit` — minor, additive:** `baps-datepicker` forwards PrimeNG
+  `pTemplate` slots (`inputicon` with `clickCallBack`, `date`, `disabledDate`,
+  `decade`, `header`, `footer`, `triggericon`, `clearicon`) like `baps-select`;
+  defaults unchanged (spm AT-063).
 - **`@org/ui-kit` — minor, additive:** `baps-confirm-dialog` `source="primeng"`
   (opt-in; default `baps` unchanged) listens to PrimeNG's `ConfirmationService`, and
   `header` / `message` / `footer` `pTemplate` slots are forwarded (footer context

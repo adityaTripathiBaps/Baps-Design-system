@@ -1,11 +1,16 @@
 import {
   Component,
+  ContentChildren,
   EventEmitter,
   Input,
   Output,
+  QueryList,
+  TemplateRef,
   forwardRef,
   ViewEncapsulation,
 } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
+import { PrimeTemplate, SharedModule } from 'primeng/api';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
 import { DatePicker } from 'primeng/datepicker';
 
@@ -108,7 +113,7 @@ const DATEPICKER_TOKENS = {
  */
 @Component({
   selector: 'baps-datepicker',
-  imports: [DatePicker, FormsModule],
+  imports: [DatePicker, FormsModule, SharedModule, NgTemplateOutlet],
   template: `
     <p-datepicker
       [(ngModel)]="value"
@@ -146,6 +151,41 @@ const DATEPICKER_TOKENS = {
       (onClose)="panelClose.emit($event)"
       (onClear)="onDateClear()"
     >
+      <!-- pTemplate forwarding, as baps-select does: PrimeNG never sees a
+           template projected through this host, so each slot is re-declared
+           with the context DatePicker passes it. -->
+      @if (tpl('inputicon'); as t) {
+        <ng-template pTemplate="inputicon" let-clickCallBack="clickCallBack">
+          <ng-container *ngTemplateOutlet="t; context: { clickCallBack: clickCallBack }" />
+        </ng-template>
+      }
+      @if (tpl('date'); as t) {
+        <ng-template pTemplate="date" let-date>
+          <ng-container *ngTemplateOutlet="t; context: { $implicit: date }" />
+        </ng-template>
+      }
+      @if (tpl('disabledDate'); as t) {
+        <ng-template pTemplate="disabledDate" let-date>
+          <ng-container *ngTemplateOutlet="t; context: { $implicit: date }" />
+        </ng-template>
+      }
+      @if (tpl('decade'); as t) {
+        <ng-template pTemplate="decade" let-years>
+          <ng-container *ngTemplateOutlet="t; context: { $implicit: years }" />
+        </ng-template>
+      }
+      @if (tpl('header'); as t) {
+        <ng-template pTemplate="header"><ng-container *ngTemplateOutlet="t" /></ng-template>
+      }
+      @if (tpl('footer'); as t) {
+        <ng-template pTemplate="footer"><ng-container *ngTemplateOutlet="t" /></ng-template>
+      }
+      @if (tpl('triggericon'); as t) {
+        <ng-template pTemplate="triggericon"><ng-container *ngTemplateOutlet="t" /></ng-template>
+      }
+      @if (tpl('clearicon'); as t) {
+        <ng-template pTemplate="clearicon"><ng-container *ngTemplateOutlet="t" /></ng-template>
+      }
       <ng-content></ng-content>
     </p-datepicker>
   `,
@@ -216,6 +256,13 @@ export class BapsDatepicker implements ControlValueAccessor {
   @Input() hourFormat: '12' | '24' = '24';
   /** Closes the panel once a date and time are picked; PrimeNG default on. */
   @Input() hideOnDateTimeSelect = true;
+
+  @ContentChildren(PrimeTemplate) templates?: QueryList<PrimeTemplate>;
+
+  /** A consumer pTemplate of the given type (inputicon, date, header, footer, ...). */
+  tpl(type: string): TemplateRef<unknown> | undefined {
+    return this.templates?.find((t) => t.getType() === type)?.template;
+  }
   @Input() showClear = false;
   @Input() showOtherMonths = true;
   @Input() selectOtherMonths = false;

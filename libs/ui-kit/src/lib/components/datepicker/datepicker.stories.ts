@@ -3,6 +3,7 @@ import { expect, userEvent, waitFor } from '@storybook/test';
 import { moduleMetadata } from '@storybook/angular';
 import { FormsModule } from '@angular/forms';
 import { BapsDatepicker } from './datepicker.component';
+import { SharedModule } from 'primeng/api';
 
 /**
  * DatePicker — Figma file xc0L2xnREMgjyb5XcKyLIz:
@@ -280,4 +281,22 @@ export const KeyboardInteraction: StoryObj<BapsDatepicker> = {
       expect(canvasElement.ownerDocument.activeElement).not.toBe(selected),
     );
   },
+};
+
+/**
+ * A consumer `pTemplate="inputicon"` reaches PrimeNG through the wrapper; the
+ * click callback opens the calendar, as spm-ui's filter drawer uses it.
+ */
+export const CustomInputIcon: StoryObj<BapsDatepicker> = {
+  decorators: [moduleMetadata({ imports: [FormsModule, SharedModule] })],
+  render: () => ({
+    props: { date: null },
+    template: `
+      <baps-datepicker brand="sampark" ariaLabel="From" [showIcon]="true" iconDisplay="input" [(ngModel)]="date">
+        <ng-template pTemplate="inputicon" let-clickCallBack="clickCallBack">
+          <i class="pi pi-calendar-plus" style="cursor: pointer" (click)="clickCallBack($event)"></i>
+        </ng-template>
+      </baps-datepicker>
+    `,
+  }),
 };

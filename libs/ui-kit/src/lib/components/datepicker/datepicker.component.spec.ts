@@ -2,6 +2,7 @@ import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DatePicker } from 'primeng/datepicker';
+import { SharedModule } from 'primeng/api';
 import { BapsDatepicker } from './datepicker.component';
 
 /**
@@ -169,5 +170,25 @@ describe('BapsDatepicker time inputs', () => {
     fixture.detectChanges();
     expect(inner.timeOnly).toBe(true);
     expect(inner.hourFormat).toBe('12');
+  });
+});
+
+@Component({
+  imports: [BapsDatepicker, SharedModule],
+  template: `
+    <baps-datepicker [showIcon]="true" iconDisplay="input">
+      <ng-template pTemplate="inputicon" let-clickCallBack="clickCallBack"><i class="custom-icon"></i></ng-template>
+    </baps-datepicker>
+  `,
+})
+class TemplateHost {}
+
+describe('BapsDatepicker template forwarding', () => {
+  it('forwards a consumer pTemplate="inputicon" to the inner p-datepicker', () => {
+    const fixture = TestBed.createComponent(TemplateHost);
+    fixture.detectChanges();
+    const inner = fixture.debugElement.query(By.directive(DatePicker)).componentInstance as unknown as { _inputIconTemplate?: unknown };
+    expect(inner._inputIconTemplate).toBeTruthy();
+    expect((fixture.nativeElement as HTMLElement).querySelector('.custom-icon')).not.toBeNull();
   });
 });
