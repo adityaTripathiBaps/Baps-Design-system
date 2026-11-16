@@ -371,6 +371,13 @@
     padding: 0 0.375rem !important;
   }
 
+  /* The base chip field (_select.scss) top-aligns its children because MyBKY
+     chips wrap and the field grows. Sampark keeps them on one line in the
+     32px field, so they centre like the value of any other field (spm AT-083). */
+  .p-multiselect:has(.p-multiselect-chip-item) {
+    align-items: center !important;
+  }
+
   .p-multiselect .p-multiselect-chip-item {
     flex: 0 1 auto !important;
     min-width: 0 !important;

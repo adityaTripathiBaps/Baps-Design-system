@@ -11,7 +11,6 @@ classification and deprecation policy.
 - **`@org/ui-kit` — minor, additive:** `baps-datepicker` `shown` output (PrimeNG
   `onShow`), a read-only `datePicker` handle on the inner PrimeNG DatePicker, and
   `keepInvalid` (PrimeNG default off). Defaults unchanged (spm AT-081).
-
 - **`@org/ui-kit` — minor, additive:** `baps-datepicker` `defaultDate`, passed to
   PrimeNG (the month an empty picker opens on); default undefined (spm AT-068).
 - **`@org/ui-kit` — minor, additive:** `baps-datepicker` forwards PrimeNG
@@ -120,6 +119,9 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** a chip multiselect centres its chips and
+  "+N" chip vertically in the 32px field; the base top-alignment stays for MyBKY,
+  where chips wrap and the field grows (spm AT-083).
 - **`@org/ui-kit` — patch (Sampark):** an accordion panel no longer grows wider
   than its accordion: the collapsible wrapper, its p-motion, the content and the
   body (and the body's direct children) take `min-width: 0`, so a wide child such
