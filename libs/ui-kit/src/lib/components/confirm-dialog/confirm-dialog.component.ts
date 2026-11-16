@@ -56,8 +56,11 @@ let nextConfirmDialogId = 0;
     >
       <!-- pTemplate forwarding (header, message, footer), as in baps-select:
            each slot gets the active confirmation as $implicit, and the footer
-           also gets accept and reject. -->
-      @if (tpl('header'); as t) {
+           also gets accept and reject. Rendered only while a confirmation is
+           active, as PrimeNG does: a template reading message.x would
+           otherwise throw on every change detection, which stalls every
+           PrimeNG overlay on the page (AT-064). -->
+      @if (confirmation && tpl('header'); as t) {
         <div dialog-title>
           <ng-container *ngTemplateOutlet="t; context: { $implicit: confirmation }" />
         </div>
@@ -73,7 +76,7 @@ let nextConfirmDialogId = 0;
         </div>
       }
 
-      @if (tpl('message'); as t) {
+      @if (confirmation && tpl('message'); as t) {
         <div [id]="messageId">
           <ng-container *ngTemplateOutlet="t; context: { $implicit: confirmation }" />
         </div>
@@ -83,7 +86,7 @@ let nextConfirmDialogId = 0;
         </p>
       }
 
-      @if (tpl('footer'); as t) {
+      @if (confirmation && tpl('footer'); as t) {
         <div dialog-footer class="baps-confirm-dialog__actions">
           <ng-container
             *ngTemplateOutlet="t; context: { $implicit: confirmation, accept: acceptFn, reject: rejectFn }"

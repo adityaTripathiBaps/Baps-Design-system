@@ -233,6 +233,16 @@ describe('BapsConfirmDialog', () => {
 })
 class PrimeSourceHost {}
 
+@Component({
+  imports: [BapsConfirmDialog, SharedModule],
+  template: `
+    <baps-confirm-dialog source="primeng" key="app">
+      <ng-template pTemplate="message" let-c><span class="strict-msg">{{ c.message }}</span></ng-template>
+    </baps-confirm-dialog>
+  `,
+})
+class StrictTemplateHost {}
+
 describe('BapsConfirmDialog source="primeng" and templates', () => {
   it('opens from PrimeNG ConfirmationService, renders the forwarded templates and closes on close()', async () => {
     TestBed.configureTestingModule({ providers: [ConfirmationService] });
@@ -255,6 +265,18 @@ describe('BapsConfirmDialog source="primeng" and templates', () => {
     expect(dlg.visible).toBe(true);
     svc.close();
     expect(dlg.visible).toBe(false);
+  });
+
+  it('renders a forwarded slot only while a confirmation is active (AT-064)', () => {
+    // spm-ui reads message.imageSrc without ?. ; with no confirmation that threw
+    // on every change detection and stalled every PrimeNG overlay on the page.
+    TestBed.configureTestingModule({ providers: [ConfirmationService] });
+    const fixture = TestBed.createComponent(StrictTemplateHost);
+    expect(() => fixture.detectChanges()).not.toThrow();
+    expect(document.body.querySelector('.strict-msg')).toBeNull();
+    TestBed.inject(ConfirmationService).confirm({ key: 'app', message: 'Save?' });
+    fixture.detectChanges();
+    expect(document.body.querySelector('.strict-msg')?.textContent).toBe('Save?');
   });
 
   it('defaults the accept button to primary for PrimeNG confirmations', () => {

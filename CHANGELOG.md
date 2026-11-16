@@ -116,6 +116,11 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch:** `baps-confirm-dialog` renders forwarded `header` /
+  `message` / `footer` templates only while a confirmation is active, as PrimeNG
+  does. With none active, a template reading `message.imageSrc` threw on every
+  change detection, and that stalled every PrimeNG overlay on the page (selects
+  opened with an invisible panel) (spm AT-069, root cause of AT-064).
 - **`@org/ui-kit` — patch:** `baps-select`, `baps-multi-select` and
   `baps-tree-select` mark their form control touched on blur, as PrimeNG does;
   before, a required select opened and left empty stayed untouched (spm AT-065).
