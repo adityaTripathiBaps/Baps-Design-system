@@ -8,6 +8,10 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/ui-kit` — minor, additive:** `baps-datepicker` `shown` output (PrimeNG
+  `onShow`), a read-only `datePicker` handle on the inner PrimeNG DatePicker, and
+  `keepInvalid` (PrimeNG default off). Defaults unchanged (spm AT-081).
+
 - **`@org/ui-kit` — minor, additive:** `baps-datepicker` `defaultDate`, passed to
   PrimeNG (the month an empty picker opens on); default undefined (spm AT-068).
 - **`@org/ui-kit` — minor, additive:** `baps-datepicker` forwards PrimeNG

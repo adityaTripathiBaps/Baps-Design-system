@@ -209,3 +209,33 @@ describe('BapsDatepicker template forwarding', () => {
     expect((fixture.nativeElement as HTMLElement).querySelector('.custom-icon')).not.toBeNull();
   });
 });
+
+describe('BapsDatepicker AT-081 pass-throughs', () => {
+  it('forwards keepInvalid, default off as in PrimeNG', () => {
+    const fixture = TestBed.createComponent(BapsDatepicker);
+    fixture.detectChanges();
+    const inner = fixture.debugElement.query(By.directive(DatePicker)).componentInstance as DatePicker;
+    expect(inner.keepInvalid).toBe(false);
+    fixture.componentRef.setInput('keepInvalid', true);
+    fixture.detectChanges();
+    expect(inner.keepInvalid).toBe(true);
+  });
+
+  it('re-emits PrimeNG onShow as shown', () => {
+    const fixture = TestBed.createComponent(BapsDatepicker);
+    fixture.detectChanges();
+    const inner = fixture.debugElement.query(By.directive(DatePicker)).componentInstance as DatePicker;
+    const seen: unknown[] = [];
+    fixture.componentInstance.shown.subscribe((e) => seen.push(e));
+    const event = { element: document.createElement('div') };
+    inner.onShow.emit(event);
+    expect(seen).toEqual([event]);
+  });
+
+  it('exposes the inner PrimeNG DatePicker as datePicker', () => {
+    const fixture = TestBed.createComponent(BapsDatepicker);
+    fixture.detectChanges();
+    const inner = fixture.debugElement.query(By.directive(DatePicker)).componentInstance as DatePicker;
+    expect(fixture.componentInstance.datePicker).toBe(inner);
+  });
+});

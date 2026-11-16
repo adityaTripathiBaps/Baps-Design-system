@@ -7,6 +7,7 @@ import {
   QueryList,
   TemplateRef,
   forwardRef,
+  ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
@@ -132,6 +133,7 @@ const DATEPICKER_TOKENS = {
       [showTime]="showTime"
       [hourFormat]="hourFormat"
       [hideOnDateTimeSelect]="hideOnDateTimeSelect"
+      [keepInvalid]="keepInvalid"
       [showClear]="showClear"
       [showOtherMonths]="showOtherMonths"
       [selectOtherMonths]="selectOtherMonths"
@@ -149,6 +151,7 @@ const DATEPICKER_TOKENS = {
       [ariaLabelledBy]="ariaLabelledBy!"
       [dt]="dt"
       (onSelect)="onDateSelect($event)"
+      (onShow)="shown.emit($event)"
       (onClose)="panelClose.emit($event)"
       (onClear)="onDateClear()"
     >
@@ -257,6 +260,8 @@ export class BapsDatepicker implements ControlValueAccessor {
   @Input() hourFormat: '12' | '24' = '24';
   /** Closes the panel once a date and time are picked; PrimeNG default on. */
   @Input() hideOnDateTimeSelect = true;
+  /** Keeps a typed value PrimeNG cannot parse instead of clearing it; PrimeNG default off. */
+  @Input() keepInvalid = false;
 
   @ContentChildren(PrimeTemplate) templates?: QueryList<PrimeTemplate>;
 
@@ -285,6 +290,15 @@ export class BapsDatepicker implements ControlValueAccessor {
 
   @Output() dateSelect = new EventEmitter<Date>();
   @Output() panelClose = new EventEmitter<HTMLElement>();
+  /** The panel opened (PrimeNG `onShow`), e.g. to adjust the inner picker on open. */
+  @Output() shown = new EventEmitter<unknown>();
+
+  /**
+   * The inner PrimeNG DatePicker, for consumers that must reach its API (month/year
+   * navigation, `currentMonth`) from a `shown` handler. Read-only; undefined until
+   * the view initialises.
+   */
+  @ViewChild(DatePicker) readonly datePicker?: DatePicker;
 
   value: any = null;
 
