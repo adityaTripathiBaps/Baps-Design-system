@@ -8,6 +8,8 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/ui-kit` — minor, additive:** `baps-datepicker` `defaultDate`, passed to
+  PrimeNG (the month an empty picker opens on); default undefined (spm AT-068).
 - **`@org/ui-kit` — minor, additive:** `baps-datepicker` forwards PrimeNG
   `pTemplate` slots (`inputicon` with `clickCallBack`, `date`, `disabledDate`,
   `decade`, `header`, `footer`, `triggericon`, `clearicon`) like `baps-select`;

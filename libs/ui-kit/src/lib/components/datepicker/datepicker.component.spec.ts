@@ -171,6 +171,23 @@ describe('BapsDatepicker time inputs', () => {
     expect(inner.timeOnly).toBe(true);
     expect(inner.hourFormat).toBe('12');
   });
+
+  it('forwards defaultDate to PrimeNG (AT-068)', () => {
+    const fixture = TestBed.createComponent(BapsDatepicker);
+    const date = new Date(2026, 0, 15);
+    fixture.componentRef.setInput('defaultDate', date);
+    fixture.detectChanges();
+    const inner = fixture.debugElement.query(By.directive(DatePicker)).componentInstance as DatePicker;
+    expect(inner.defaultDate).toBe(date);
+  });
+
+  it('leaves PrimeNG on the current month when defaultDate is unset', () => {
+    const fixture = TestBed.createComponent(BapsDatepicker);
+    fixture.detectChanges();
+    const inner = fixture.debugElement.query(By.directive(DatePicker)).componentInstance as DatePicker;
+    expect(inner.defaultDate).toBeUndefined();
+    expect(inner.currentMonth).toBe(new Date().getMonth());
+  });
 });
 
 @Component({

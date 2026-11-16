@@ -137,6 +137,7 @@ const DATEPICKER_TOKENS = {
       [selectOtherMonths]="selectOtherMonths"
       [minDate]="minDate!"
       [maxDate]="maxDate!"
+      [defaultDate]="defaultDate!"
       [disabledDates]="disabledDates!"
       [disabledDays]="disabledDays!"
       [appendTo]="appendTo"
@@ -268,6 +269,8 @@ export class BapsDatepicker implements ControlValueAccessor {
   @Input() selectOtherMonths = false;
   @Input() minDate?: Date;
   @Input() maxDate?: Date;
+  /** Month the panel opens on while the field is empty (PrimeNG `defaultDate`). */
+  @Input() defaultDate?: Date;
   @Input() disabledDates?: Date[];
   @Input() disabledDays?: number[];
   @Input() appendTo: any = 'body';
