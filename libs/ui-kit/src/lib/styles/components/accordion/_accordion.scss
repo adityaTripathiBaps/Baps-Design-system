@@ -372,6 +372,16 @@ p-accordion .baps-accordion-clear__sampark {
   padding-block: var(--space-2);
 }
 
+/* A panel never grows wider than its accordion. PrimeNG's collapsible lays the
+   content out as grid items (the wrapper and its p-motion) and the body is a
+   flex row, all with min-width: auto, so a wide child (a chip multiselect after
+   Select All: 470px in a 436px panel) widened the whole chain and the drawer
+   scrolled sideways (spm AT-074). */
+:is(p-accordion.baps-sampark, .baps-ds-sampark p-accordion)
+  :is(.p-accordioncontent-wrapper, .p-accordioncontent .p-motion, .p-accordioncontent-content, .baps-accordion-body, .baps-accordion-body > *) {
+  min-width: 0;
+}
+
 /* SPM dev: header, 8px, divider, 8px, first field. The divider sits at the top
    of the body, so the gap below it has to be its own. */
 :is(p-accordion.baps-sampark, .baps-ds-sampark p-accordion)

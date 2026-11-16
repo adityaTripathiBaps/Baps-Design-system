@@ -120,6 +120,11 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** an accordion panel no longer grows wider
+  than its accordion: the collapsible wrapper, its p-motion, the content and the
+  body (and the body's direct children) take `min-width: 0`, so a wide child such
+  as a chip multiselect after Select All stays inside a drawer instead of making it
+  scroll sideways (spm AT-074).
 - **`@org/ui-kit` — patch:** `baps-confirm-dialog` renders forwarded `header` /
   `message` / `footer` templates only while a confirmation is active, as PrimeNG
   does. With none active, a template reading `message.imageSrc` threw on every
