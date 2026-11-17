@@ -598,6 +598,14 @@
   background: transparent !important;
 }
 
+/* …and the label keeps the primary text colour (#151414 on dev, also when
+   hovered or focused); the selected-text token is for single Select. */
+.baps-ds-sampark
+  .p-multiselect-overlay
+  .p-multiselect-option.p-multiselect-option-selected {
+  color: var(--color-sampark-text-primary) !important;
+}
+
 .baps-ds-sampark
   .p-select-overlay
   .p-select-option.p-select-option-selected::before,

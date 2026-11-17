@@ -119,6 +119,9 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** a selected MultiSelect option keeps the
+  primary text colour (#151414), as on SPM dev; the checkbox is the only
+  selected cue (spm AT-094).
 - **`@org/ui-kit` — patch (Sampark):** a checked checkbox in a MultiSelect or
   TreeSelect panel is outlined like SPM dev (white box, 1px primary border,
   primary tick) instead of the preset's filled box (spm AT-094).
