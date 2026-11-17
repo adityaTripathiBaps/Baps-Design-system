@@ -494,6 +494,18 @@
   border-radius: 0.25rem !important;
 }
 
+/* A bare p-inputgroup (not inside baps-input-group) draws no border of its
+   own, so chromeless inputs there showed no frame at rest. SPM dev (AT-093:
+   Day/s, Min/Max, time fields) keeps each input's own 1px Mono/borders frame
+   and white fill. Same specificity as the rule above and later, so hover,
+   focus and invalid rules still win. */
+:is(.baps-ds-sampark, .baps-sampark)
+  .p-inputgroup:where(:not(baps-input-group .p-inputgroup))
+  .p-inputtext {
+  border: 1px solid var(--input-border-default) !important;
+  background: var(--input-bg-default) !important;
+}
+
 /* Addon colors flow through the --input-addon-* tokens re-pointed in
    the token block — no geometry differences from the base file. */
 

@@ -648,6 +648,9 @@
    #f8f7f7). */
 .baps-ds-sampark .p-select-overlay .p-select-option.p-select-option-selected {
   background: var(--overlay-list-sampark-hover-background, #f6f5f5) !important;
+  /* SPM dev: the selected row reads #151414/500 in every state (rest, hover,
+     another row hovered); the primary selected-text token is not used here. */
+  color: var(--color-sampark-text-primary) !important;
 }
 
 /* MultiSelect: the checked box is the only selected cue on SPM dev, so a
@@ -670,11 +673,19 @@
 
 .baps-ds-sampark
   .p-select-overlay
-  .p-select-option.p-select-option-selected::before,
+  .p-select-option.p-select-option-selected:not(:hover)::before,
 .baps-ds-sampark
   .p-multiselect-overlay
-  .p-multiselect-option.p-multiselect-option-selected::before {
+  .p-multiselect-option:not(:hover)::before {
   opacity: 0;
+}
+
+/* SPM dev (multiselect): the 4px bar is a pointer-hover cue only, on checked
+   rows too; a row that is only keyboard-focused gets Mono/10 and no bar. */
+.baps-ds-sampark
+  .p-multiselect-overlay
+  .p-multiselect-option.p-focus:not(:hover):not(.p-disabled) {
+  background: var(--color-sampark-mono-10, #f8f7f7) !important;
 }
 
 /* ── Panel frame (SPM dev) ──────────────────────────────────────────────

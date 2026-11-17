@@ -3,6 +3,8 @@ import { moduleMetadata } from '@storybook/angular';
 import { expect, within } from '@storybook/test';
 import { FormsModule } from '@angular/forms';
 import { InputText } from 'primeng/inputtext';
+import { InputGroup } from 'primeng/inputgroup';
+import { InputGroupAddon } from 'primeng/inputgroupaddon';
 import { BapsInputNumber } from '../input-number/input-number.component';
 import { BapsInputGroup } from './input-group.component';
 
@@ -185,4 +187,28 @@ export const WithInputNumber: StoryObj<BapsInputGroup> = {
       </div>
     `,
   }),
+};
+
+/** A bare PrimeNG p-inputgroup on a Sampark page (not baps-input-group): the
+ * group draws no frame, so each input keeps its own 1px Mono/borders frame and
+ * white fill, as on SPM dev (spm AT-093: Day/s, Min/Max). */
+export const SamparkBarePInputGroup: StoryObj<BapsInputGroup> = {
+  decorators: [moduleMetadata({ imports: [InputGroup, InputGroupAddon] })],
+  render: () => ({
+    props: { days: 1 },
+    template: `
+      <div class="baps-ds-sampark" style="width:166px">
+        <p-inputgroup>
+          <input pInputText type="number" aria-label="Days" [(ngModel)]="days" />
+          <p-inputgroup-addon>Day/s</p-inputgroup-addon>
+        </p-inputgroup>
+      </div>
+    `,
+  }),
+  play: async ({ canvasElement }) => {
+    const input = within(canvasElement).getByLabelText('Days');
+    const s = getComputedStyle(input);
+    await expect(s.borderTopWidth).toBe('1px');
+    await expect(s.borderTopStyle).toBe('solid');
+  },
 };

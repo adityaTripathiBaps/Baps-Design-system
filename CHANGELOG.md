@@ -119,6 +119,14 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** an input inside a bare PrimeNG
+  `p-inputgroup` (not `baps-input-group`) keeps its own 1px Mono/borders frame and
+  white fill at rest; it was chromeless with no group frame, as on SPM dev (spm
+  AT-093).
+- **`@org/ui-kit` — patch (Sampark):** a MultiSelect panel row shows the 4px
+  accent bar on pointer hover, checked rows included, and a keyboard-focused row
+  without hover is Mono/10 with no bar; a selected Select row keeps #151414 text
+  and shows the bar on hover, as on SPM dev.
 - **`@org/ui-kit` — patch (Sampark):** in a table cell the Select / TreeSelect clear
   icon is hidden at rest and shown on hover, focus or open, as on SPM dev (spm
   AT-096).

@@ -106,4 +106,10 @@ export const inputGroupSnippets: Record<string, SnippetSet> = {
   <baps-input-number brand="sampark" [(ngModel)]="locked" [showButtons]="false" [disabled]="true" />
 </baps-input-group>`,
   },
+  SamparkBarePInputGroup: {
+    primeng: `<p-inputgroup>
+  <input pInputText type="number" aria-label="Days" [(ngModel)]="days" />
+  <p-inputgroup-addon>Day/s</p-inputgroup-addon>
+</p-inputgroup>`,
+  },
 };
