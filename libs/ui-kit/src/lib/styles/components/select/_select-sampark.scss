@@ -294,6 +294,14 @@
     color: var(--input-text-disabled) !important;
   }
 
+  /* SPM dev (AT-102): a disabled field that HAS a value reads in the primary
+     text colour (#151414) — read-only templates show their values, not a
+     greyed-out field. An empty disabled field keeps the placeholder colour. */
+  .p-select.p-disabled .p-select-label:not(.p-placeholder),
+  .p-multiselect.p-disabled .p-multiselect-label:not(.p-placeholder) {
+    color: var(--color-sampark-text-primary) !important;
+  }
+
   /* ── 8. Size Modifiers ── */
   /* Small Size (28px height, 12px font) */
   .p-select.p-select-sm,

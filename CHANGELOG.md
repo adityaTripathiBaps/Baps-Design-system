@@ -119,6 +119,10 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** a disabled Select / MultiSelect with a value
+  shows it in the primary text colour (#151414) and a disabled checkbox label
+  reads text-secondary (#595656), as on SPM dev read-only screens; empty
+  disabled fields keep the placeholder colour; MyBKY unchanged (spm AT-102).
 - **`@org/ui-kit` — patch (Sampark):** a selected MultiSelect option keeps the
   primary text colour (#151414), as on SPM dev; the checkbox is the only
   selected cue (spm AT-094).
