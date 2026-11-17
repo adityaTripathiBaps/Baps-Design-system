@@ -119,6 +119,10 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** checkboxes in MultiSelect and TreeSelect
+  panels (Select All and options) draw the SPM dev box themselves: 16px, 1px
+  Mono/60 border, 4px radius, white fill. Before, a consumer's legacy CSS drew
+  them; without it they fell back to the 20px preset box (spm AT-094).
 - **`@org/ui-kit` — patch (Sampark):** a chip multiselect centres its chips and
   "+N" chip vertically in the 32px field; the base top-alignment stays for MyBKY,
   where chips wrap and the field grows (spm AT-083).

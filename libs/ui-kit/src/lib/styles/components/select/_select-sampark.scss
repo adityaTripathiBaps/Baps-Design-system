@@ -665,6 +665,35 @@
   height: var(--space-4) !important;
 }
 
+/* ── Panel checkbox box (SPM dev, AT-094) ──────────────────────────────
+   Every checkbox in a Sampark MultiSelect / TreeSelect panel (Select All
+   and each option) is a 16px box, 1px Mono/60 (#9f9c9c) border, 4px radius,
+   white fill on SPM dev. The panel's p-checkbox is not a baps-checkbox, so
+   the kit checkbox skin never reached it; spm's legacy CSS used to draw it,
+   and once spm stopped legacy reaching kit panels it fell back to the 20px
+   preset box. Unchecked only: checked colours stay with the preset. */
+:is(
+    .baps-ds-sampark.p-multiselect-overlay,
+    .baps-ds-sampark .p-multiselect-overlay,
+    .baps-ds-sampark.p-treeselect-overlay,
+    .baps-ds-sampark .p-treeselect-overlay
+  )
+  .p-checkbox {
+  width: var(--space-4) !important;
+  height: var(--space-4) !important;
+
+  .p-checkbox-box {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: var(--space-1) !important;
+  }
+
+  &:not(.p-checkbox-checked) .p-checkbox-box {
+    background: var(--color-sampark-surface-card) !important;
+    border: 1px solid var(--color-sampark-mono-60) !important;
+  }
+}
+
 /* ── Consumer dropdown icon (SPM dev) ──────────────────────────────────
    The chevron block above leaves a non-chevron dropdownicon "as supplied",
    but base _select.scss sizes every trigger svg to the chevron size, so
