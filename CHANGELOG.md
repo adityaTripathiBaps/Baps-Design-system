@@ -119,6 +119,11 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (both brands):** `baps-drawer` closes on the first mask
+  click. PrimeNG's mask listener can run with no change detection after it, so
+  under an OnPush consumer the mask faded while the panel stayed open until a
+  second click; the wrapper now pushes the new `visible` into `p-drawer` at once
+  (spm AT-076).
 - **`@org/ui-kit` — patch (Sampark):** with a Select, MultiSelect or DatePicker
   popup appended to body, the scrim catches the outside click (z-index 3000,
   pointer-events auto) and the panel sits above it, so one click outside closes

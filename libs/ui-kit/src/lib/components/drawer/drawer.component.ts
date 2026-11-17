@@ -1,9 +1,11 @@
 import {
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
   Output,
   ViewEncapsulation,
+  inject,
 } from '@angular/core';
 import { SharedModule } from 'primeng/api';
 import { Drawer } from 'primeng/drawer';
@@ -150,6 +152,8 @@ export type BapsDrawerPosition = 'left' | 'right' | 'top' | 'bottom';
   },
 })
 export class BapsDrawer {
+  private readonly cdr = inject(ChangeDetectorRef);
+
   /** Whether the panel is open. Two-way bindable: `[(visible)]`. */
   @Input() visible = false;
   @Output() visibleChange = new EventEmitter<boolean>();
@@ -215,6 +219,12 @@ export class BapsDrawer {
   protected onVisibleChange(next: boolean): void {
     this.visible = next;
     this.visibleChange.emit(next);
+    // PrimeNG's mask click can arrive with no change detection after it (spm
+    // AT-076, measured: wrapper and consumer read visible=false while p-drawer
+    // still read true; the mask faded, the panel stayed until the next click,
+    // and forcing change detection closed it). Push the new value into
+    // p-drawer now instead of waiting for a tick that may not come.
+    this.cdr.detectChanges();
   }
 
   /**

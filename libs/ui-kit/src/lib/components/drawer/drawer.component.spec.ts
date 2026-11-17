@@ -1,4 +1,6 @@
-import { Component, signal } from '@angular/core';
+import { Component, NgZone, signal } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { Drawer } from 'primeng/drawer';
 import { TestBed } from '@angular/core/testing';
 import { BapsDrawer, BapsDrawerPosition } from './drawer.component';
 
@@ -97,6 +99,19 @@ describe('BapsDrawer', () => {
       closeEl!.click();
       await fixture.whenStable();
       expect(fixture.componentInstance.visible()).toBe(false);
+    });
+
+    it('pushes a PrimeNG close into p-drawer with no tick after it (spm AT-076)', async () => {
+      const fixture = await setup();
+      const inner = fixture.debugElement.query(By.directive(Drawer))
+        .componentInstance as Drawer;
+      expect(inner.visible).toBe(true);
+      // The mask click path: PrimeNG closes from a body listener and nothing
+      // runs change detection afterwards. No fixture.detectChanges() here.
+      TestBed.inject(NgZone).runOutsideAngular(() =>
+        inner.close(new MouseEvent('click')),
+      );
+      expect(inner.visible).toBe(false);
     });
 
     it('does not render a panel while visible is false', async () => {
