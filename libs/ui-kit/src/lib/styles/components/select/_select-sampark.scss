@@ -679,12 +679,10 @@
     .baps-ds-sampark .p-treeselect-overlay
   )
   .p-checkbox {
-  width: var(--space-4) !important;
-  height: var(--space-4) !important;
-
+  /* The box, not the host: the Select All host is a padded 42px row. */
   .p-checkbox-box {
-    width: 100% !important;
-    height: 100% !important;
+    width: var(--space-4) !important;
+    height: var(--space-4) !important;
     border-radius: var(--space-1) !important;
   }
 
