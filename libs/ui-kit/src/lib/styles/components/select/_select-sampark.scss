@@ -193,6 +193,13 @@
   opacity: 1;
 }
 
+/* SPM dev's clear icon is an 18px glyph (app-select's svg-icon 'clear-icon');
+   the base 14px box squeezed a forwarded 18px icon to 14px wide. */
+.baps-ds-sampark :is(.p-select .p-select-clear-icon, .p-treeselect .p-treeselect-clear-icon) {
+  width: var(--font-size-lg) !important;
+  height: var(--font-size-lg) !important;
+}
+
 /* The clear icon follows the same rule in a table cell (dev: opacity 0 at
    rest, 1 on hover). It keeps its box, so it stays clickable on hover. */
 .baps-ds-sampark

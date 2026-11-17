@@ -119,6 +119,9 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** the Select / TreeSelect clear icon box is
+  18px, the SPM dev glyph size (was 14px, which squeezed a forwarded icon) (spm
+  AT-096).
 - **`@org/ui-kit` — patch (Sampark):** an input inside a bare PrimeNG
   `p-inputgroup` (not `baps-input-group`) keeps its own 1px Mono/borders frame and
   white fill at rest; it was chromeless with no group frame, as on SPM dev (spm
