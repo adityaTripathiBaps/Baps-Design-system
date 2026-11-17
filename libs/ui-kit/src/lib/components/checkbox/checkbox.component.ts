@@ -83,7 +83,8 @@ let nextCheckboxId = 0;
       --sel-disabled-checked-bg: var(--color-sampark-mono-40, #bcb9b9);
       --sel-disabled-checked-icon: var(--color-sampark-mono-0, #ffffff);
       --sel-label: var(--color-sampark-text-primary, #151414);
-      --sel-label-disabled: var(--color-sampark-text-disabled, #bcb9b9);
+      /* SPM dev (AT-102): read-only labels are text-secondary. */
+      --sel-label-disabled: var(--color-sampark-text-secondary, #595656);
     }
 
     baps-checkbox .baps-checkbox-wrapper {
