@@ -193,6 +193,32 @@
   opacity: 1;
 }
 
+/* The clear icon follows the same rule in a table cell (dev: opacity 0 at
+   rest, 1 on hover). It keeps its box, so it stays clickable on hover. */
+.baps-ds-sampark
+  .p-datatable-tbody
+  > tr
+  > td
+  :is(.p-select, .p-treeselect)
+  :is(.p-select-clear-icon, .p-treeselect-clear-icon) {
+  opacity: 0;
+  transition: opacity var(--motion-duration-base) var(--motion-easing-standard);
+}
+
+.baps-ds-sampark
+  .p-datatable-tbody
+  > tr
+  > td
+  :is(.p-select, .p-treeselect):not(.p-disabled):is(
+    :hover,
+    .p-focus,
+    .p-select-open,
+    .p-treeselect-open
+  )
+  :is(.p-select-clear-icon, .p-treeselect-clear-icon) {
+  opacity: 1;
+}
+
 :is(.baps-ds-sampark, baps-multi-select.baps-sampark) .p-multiselect-dropdown {
   --select-trigger-icon-size: var(--font-size-xs, 0.75rem);
 }

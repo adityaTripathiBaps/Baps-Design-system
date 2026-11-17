@@ -119,6 +119,9 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** in a table cell the Select / TreeSelect clear
+  icon is hidden at rest and shown on hover, focus or open, as on SPM dev (spm
+  AT-096).
 - **`@org/ui-kit` — patch (Sampark):** a filterable Select panel header is the SPM
   dev 49px Mono/20 strip with a 1px Mono/borders line, 8px padding and a search
   field with 6px/8px padding and no icon (spm AT-096).
