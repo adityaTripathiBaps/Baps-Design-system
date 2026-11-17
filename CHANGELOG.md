@@ -119,6 +119,9 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** a filterable Select panel header is the SPM
+  dev 49px Mono/20 strip with a 1px Mono/borders line, 8px padding and a search
+  field with 6px/8px padding and no icon (spm AT-096).
 - **`@org/ui-kit` — patch (Sampark):** in a table body cell a Select, MultiSelect or
   TreeSelect hides its chevron at rest and shows it on hover, focus or open; a
   disabled one never shows it, as on SPM dev (spm AT-097).
