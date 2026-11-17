@@ -119,6 +119,9 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** the paginator report reads in the primary
+  text colour (#151414) with 4px inline padding, as on SPM dev; MyBKY unchanged
+  (spm AT-078).
 - **`@org/ui-kit` — patch (Sampark):** checkboxes in MultiSelect and TreeSelect
   panels (Select All and options) draw the SPM dev box themselves: 16px, 1px
   Mono/60 border, 4px radius, white fill. Before, a consumer's legacy CSS drew
