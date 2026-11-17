@@ -671,7 +671,7 @@
    white fill on SPM dev. The panel's p-checkbox is not a baps-checkbox, so
    the kit checkbox skin never reached it; spm's legacy CSS used to draw it,
    and once spm stopped legacy reaching kit panels it fell back to the 20px
-   preset box. Unchecked only: checked colours stay with the preset. */
+   preset box. Checked is outlined in primary, as on dev. */
 :is(
     .baps-ds-sampark.p-multiselect-overlay,
     .baps-ds-sampark .p-multiselect-overlay,
@@ -689,6 +689,18 @@
   &:not(.p-checkbox-checked) .p-checkbox-box {
     background: var(--color-sampark-surface-card) !important;
     border: 1px solid var(--color-sampark-mono-60) !important;
+  }
+
+  /* Checked on SPM dev is outlined, not filled: white box, 1px primary
+     (#c96868) border, primary tick. The preset fills it primary with a
+     white tick. */
+  &.p-checkbox-checked .p-checkbox-box {
+    background: var(--color-sampark-surface-card) !important;
+    border: 1px solid var(--color-sampark-primary-default) !important;
+  }
+
+  &.p-checkbox-checked .p-checkbox-icon {
+    color: var(--color-sampark-primary-default) !important;
   }
 }
 

@@ -119,6 +119,9 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** a checked checkbox in a MultiSelect or
+  TreeSelect panel is outlined like SPM dev (white box, 1px primary border,
+  primary tick) instead of the preset's filled box (spm AT-094).
 - **`@org/ui-kit` — patch (Sampark):** the paginator report reads in the primary
   text colour (#151414) with 4px inline padding, as on SPM dev; MyBKY unchanged
   (spm AT-078).
