@@ -395,9 +395,12 @@ export interface BapsPageEvent {
       line-height: 1.3;
     }
 
+    /* SPM dev (AT-078): primary text colour, 4px inline padding. Mirrors the
+       shared _pagination.scss partial, which this host rule outranks. */
     :is(baps-paginator.baps-sampark, .baps-ds-sampark baps-paginator)
       .baps-paginator__report {
-      color: var(--color-sampark-text-secondary, #595656);
+      color: var(--color-sampark-text-primary, #151414);
+      padding-inline: var(--space-1);
       white-space: nowrap;
     }
 
