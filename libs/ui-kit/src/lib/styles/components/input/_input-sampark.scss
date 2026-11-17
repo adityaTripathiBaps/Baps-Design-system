@@ -564,11 +564,31 @@
    a direct child of <body> (appendTo="body"), and lifts that overlay to 3001
    so it stays above the scrim. Inline panels keep the base behaviour. */
 html.baps-ds-sampark
-  body:has(> .p-overlay .p-treeselect-overlay:not([style*='display: none']))::before {
+  body:has(
+    > :is(.p-overlay, .p-motion)
+      :is(
+        .p-treeselect-overlay,
+        .p-select-overlay,
+        .p-multiselect-overlay,
+        .p-datepicker-panel:not(.p-datepicker-panel-inline)
+      ):not([style*='display: none'])
+  )::before {
   pointer-events: auto !important;
   z-index: 3000 !important;
 }
 
-html.baps-ds-sampark body > .p-overlay:has(.p-treeselect-overlay) {
+/* AT-076/AT-090: SPM dev does the same for Select, MultiSelect and the
+   DatePicker popup (measured: scrim 3000, pointer-events auto, panel 3200).
+   The DatePicker's body child is its p-motion wrapper (1002 before this). */
+html.baps-ds-sampark
+  body
+  > :is(.p-overlay, .p-motion):has(
+    :is(
+      .p-treeselect-overlay,
+      .p-select-overlay,
+      .p-multiselect-overlay,
+      .p-datepicker-panel:not(.p-datepicker-panel-inline)
+    )
+  ) {
   z-index: 3001 !important;
 }

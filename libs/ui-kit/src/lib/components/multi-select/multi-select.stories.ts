@@ -335,3 +335,21 @@ export const ChipOverflow: Story = {
     `,
   }),
 };
+
+/**
+ * Sampark page, panel appended to body: the scrim catches the outside click
+ * (z-index 3000, pointer-events auto) and the panel sits above it, so one
+ * click outside closes only the panel, as on SPM dev (spm AT-076 / AT-090).
+ * Open the panel, then click the dimmed page.
+ */
+export const SamparkScrimCatchesOutsideClick: Story = {
+  decorators: [moduleMetadata({ imports: [FormsModule] })],
+  render: () => ({
+    props: { options: CITIES, model: ['AMD'] },
+    template: `
+      <div style="max-width:20rem">
+        <baps-multi-select brand="sampark" ariaLabel="Cities on a Sampark page" appendTo="body" optionLabel="name" optionValue="code" [options]="options" [(ngModel)]="model" />
+      </div>
+    `,
+  }),
+};

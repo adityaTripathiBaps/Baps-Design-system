@@ -119,6 +119,10 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** with a Select, MultiSelect or DatePicker
+  popup appended to body, the scrim catches the outside click (z-index 3000,
+  pointer-events auto) and the panel sits above it, so one click outside closes
+  only the panel, as SPM dev already did for TreeSelect (spm AT-076 / AT-090).
 - **`@org/ui-kit` — patch (Sampark):** the Select / TreeSelect clear icon box is
   18px, the SPM dev glyph size (was 14px, which squeezed a forwarded icon) (spm
   AT-096).

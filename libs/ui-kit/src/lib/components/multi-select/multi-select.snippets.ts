@@ -132,4 +132,7 @@ export function Example() {
   ChipOverflow: {
     primeng: `<baps-multi-select brand="sampark" ariaLabel="Cities" appendTo="body" display="chip" [chipOverflow]="true" [maxSelectedLabels]="2" optionLabel="name" optionValue="code" [options]="cities" [lockedValues]="['AMD']" [(ngModel)]="selected" />`,
   },
+  SamparkScrimCatchesOutsideClick: {
+    primeng: `<baps-multi-select brand="sampark" ariaLabel="Cities on a Sampark page" appendTo="body" optionLabel="name" optionValue="code" [options]="options" [(ngModel)]="model" />`,
+  },
 };
