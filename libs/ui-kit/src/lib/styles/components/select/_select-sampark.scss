@@ -165,6 +165,34 @@
   speak: none;
 }
 
+/* In a table body cell (SPM dev, AT-097/102): the chevron is hidden at rest
+   and shows on hover, focus or open; a disabled field never shows it. The
+   trigger stays clickable — only the glyph fades. */
+.baps-ds-sampark
+  .p-datatable-tbody
+  > tr
+  > td
+  :is(.p-select, .p-multiselect, .p-treeselect)
+  :is(.p-select-dropdown, .p-multiselect-dropdown, .p-treeselect-dropdown)::before {
+  opacity: 0;
+  transition: opacity var(--motion-duration-base) var(--motion-easing-standard);
+}
+
+.baps-ds-sampark
+  .p-datatable-tbody
+  > tr
+  > td
+  :is(.p-select, .p-multiselect, .p-treeselect):not(.p-disabled):is(
+    :hover,
+    .p-focus,
+    .p-select-open,
+    .p-multiselect-open,
+    .p-treeselect-open
+  )
+  :is(.p-select-dropdown, .p-multiselect-dropdown, .p-treeselect-dropdown)::before {
+  opacity: 1;
+}
+
 :is(.baps-ds-sampark, baps-multi-select.baps-sampark) .p-multiselect-dropdown {
   --select-trigger-icon-size: var(--font-size-xs, 0.75rem);
 }

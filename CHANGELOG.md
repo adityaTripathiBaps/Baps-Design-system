@@ -119,6 +119,9 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** in a table body cell a Select, MultiSelect or
+  TreeSelect hides its chevron at rest and shows it on hover, focus or open; a
+  disabled one never shows it, as on SPM dev (spm AT-097).
 - **`@org/ui-kit` — patch (Sampark):** a disabled Select / MultiSelect with a value
   shows it in the primary text colour (#151414) and a disabled checkbox label
   reads text-secondary (#595656), as on SPM dev read-only screens; empty
