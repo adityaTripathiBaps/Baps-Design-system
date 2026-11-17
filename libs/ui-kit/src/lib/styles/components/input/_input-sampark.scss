@@ -592,3 +592,15 @@ html.baps-ds-sampark
   ) {
   z-index: 3001 !important;
 }
+
+/* A drawer whose MultiSelect has its panel on <body> stays under the scrim, as
+   on SPM dev (measured: drawer 2204, mask 2900, scrim 3000; a click inside the
+   drawer lands on the scrim and only closes the panel). PrimeNG 21 stamps
+   .p-overlay-open on the MultiSelect, which v17 never did, so an app rule
+   raising .p-drawer:has(.p-overlay-open) to its host tier (spm 3001) now lifted
+   the whole drawer above the scrim. Only when the panel is NOT inside the
+   drawer: an inline panel still needs its host raised. */
+html.baps-ds-sampark
+  .p-drawer:has(.p-multiselect.p-overlay-open):not(:has(.p-overlay)) {
+  z-index: auto !important;
+}

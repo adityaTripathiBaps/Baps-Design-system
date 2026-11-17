@@ -119,6 +119,10 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** a drawer whose MultiSelect panel is on
+  <body> stays under the scrim, as on SPM dev. PrimeNG 21 marks the MultiSelect
+  `.p-overlay-open`, so an app rule raising `.p-drawer:has(.p-overlay-open)` lifted
+  the drawer above the scrim and clicks inside it reached its controls (spm AT-076).
 - **`@org/ui-kit` — patch (both brands):** `baps-drawer` closes on the first mask
   click. PrimeNG's mask listener can run with no change detection after it, so
   under an OnPush consumer the mask faded while the panel stayed open until a
