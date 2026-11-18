@@ -169,6 +169,7 @@ const MYBKY_DIALOG_TOKENS = {
       [modal]="modal"
       [role]="role"
       [closable]="closable"
+      [showHeader]="showHeader"
       [closeOnEscape]="closeOnEscape"
       [dismissableMask]="dismissableMask"
       [blockScroll]="blockScroll"
@@ -335,6 +336,12 @@ export class BapsDialog {
   @Input() modal = true;
   /** Show a close button in the header. Off by default — see the class doc. */
   @Input() closable = false;
+  /**
+   * Render the title bar. Default true. False drops PrimeNG's header (title,
+   * media and close button) for a dialog whose body carries its own heading,
+   * e.g. a confirm dialog with an illustrated message template (spm AT-098).
+   */
+  @Input() showHeader = true;
   /** Close on Escape. */
   @Input() closeOnEscape = true;
   /** Close when the mask is clicked. Off by default — see the class doc. */

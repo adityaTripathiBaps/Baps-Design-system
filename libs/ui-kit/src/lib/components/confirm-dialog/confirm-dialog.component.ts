@@ -51,6 +51,7 @@ let nextConfirmDialogId = 0;
       [styleClass]="panelClass"
       [style]="style"
       [baseZIndex]="baseZIndex"
+      [showHeader]="showHeader"
       (visibleChange)="onDialogVisibleChange($event)"
       (hidden)="onDialogHide()"
     >
@@ -149,6 +150,12 @@ export class BapsConfirmDialog implements OnInit, OnDestroy {
   @Input() closable = false;
   @Input() style?: Record<string, string | number>;
   @Input() baseZIndex = 0;
+  /**
+   * Render the dialog title bar. Default true. False when a message template
+   * draws its own heading, so the header is not shown twice (spm AT-098: SPM
+   * dev hid it with CSS that PrimeNG 21's renamed class no longer matches).
+   */
+  @Input() showHeader = true;
   @Input() brand: 'mybky' | 'sampark' = 'mybky';
   /**
    * Where confirmations come from. 'baps' (default): BapsConfirmationService.

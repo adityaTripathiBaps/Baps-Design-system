@@ -25,6 +25,7 @@ import { BapsConfirmationService } from './confirmation.service';
       [key]="key"
       [brand]="brand"
       [closable]="closable"
+      [showHeader]="showHeader"
       [baseZIndex]="baseZIndex"
       [acceptButtonStyleClass]="acceptButtonStyleClass"
       [rejectButtonStyleClass]="rejectButtonStyleClass"
@@ -38,6 +39,7 @@ class ConfirmDialogDemo {
   @Input() key?: string;
   @Input() brand: 'mybky' | 'sampark' = 'mybky';
   @Input() closable = false;
+  @Input() showHeader = true;
   @Input() baseZIndex = 0;
   @Input() acceptButtonStyleClass?: string;
   @Input() rejectButtonStyleClass?: string;
@@ -197,6 +199,28 @@ export const Sampark: Story = {
       <div class="baps-ds-sampark">
         <baps-confirm-dialog-demo #demo brand="sampark" (hide)="onHide()">
           <baps-button label="Confirm (Sampark)" brand="sampark" (click)="open(demo.svc)" />
+        </baps-confirm-dialog-demo>
+      </div>
+    `,
+  }),
+};
+
+/**
+ * `[showHeader]="false"`: no title bar. For a dialog whose message template
+ * draws its own heading (SPM's illustrated "You have unsaved changes"), so the
+ * title is not shown twice (spm AT-098).
+ */
+export const WithoutHeader: Story = {
+  render: () => ({
+    props: {
+      open(svc: BapsConfirmationService) {
+        svc.confirm({ header: 'You have unsaved changes', message: 'Leave without saving?' });
+      },
+    },
+    template: `
+      <div class="baps-ds-sampark">
+        <baps-confirm-dialog-demo #demo brand="sampark" [showHeader]="false">
+          <baps-button label="Open without header" brand="sampark" (click)="open(demo.svc)" />
         </baps-confirm-dialog-demo>
       </div>
     `,

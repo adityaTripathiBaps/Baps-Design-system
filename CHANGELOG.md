@@ -8,6 +8,9 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/ui-kit` — minor, additive:** `showHeader` on `baps-dialog` and
+  `baps-confirm-dialog` (PrimeNG `showHeader`), default true. False drops the title
+  bar for a dialog whose body draws its own heading (spm AT-098).
 - **`@org/ui-kit` — minor, additive:** `baps-datepicker` `shown` output (PrimeNG
   `onShow`), a read-only `datePicker` handle on the inner PrimeNG DatePicker, and
   `keepInvalid` (PrimeNG default off). Defaults unchanged (spm AT-081).

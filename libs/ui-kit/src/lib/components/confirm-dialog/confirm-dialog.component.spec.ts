@@ -243,7 +243,31 @@ class PrimeSourceHost {}
 })
 class StrictTemplateHost {}
 
+@Component({
+  imports: [BapsConfirmDialog, SharedModule],
+  template: `
+    <baps-confirm-dialog source="primeng" key="app" [showHeader]="showHeader">
+      <ng-template pTemplate="message" let-c><h2 class="own-heading">{{ c?.header }}</h2></ng-template>
+    </baps-confirm-dialog>
+  `,
+})
+class OwnHeadingHost {
+  showHeader = false;
+}
+
 describe('BapsConfirmDialog source="primeng" and templates', () => {
+  it('drops the title bar with showHeader=false, so a message template heading is the only title (spm AT-098)', async () => {
+    TestBed.configureTestingModule({ providers: [ConfirmationService] });
+    const fixture = TestBed.createComponent(OwnHeadingHost);
+    fixture.detectChanges();
+    TestBed.inject(ConfirmationService).confirm({ key: 'app', header: 'You have unsaved changes', message: 'Leave?' });
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(document.body.querySelector('.own-heading')?.textContent).toBe('You have unsaved changes');
+    expect(document.body.querySelector('.p-dialog-header')).toBeNull();
+    expect(document.body.textContent?.split('You have unsaved changes').length).toBe(2);
+  });
+
   it('opens from PrimeNG ConfirmationService, renders the forwarded templates and closes on close()', async () => {
     TestBed.configureTestingModule({ providers: [ConfirmationService] });
     const fixture = TestBed.createComponent(PrimeSourceHost);

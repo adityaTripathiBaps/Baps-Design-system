@@ -141,4 +141,7 @@ export function SamparkApp() {
   );
 }`,
   },
+  WithoutHeader: {
+    primeng: `<baps-confirm-dialog brand="sampark" [showHeader]="false" />`,
+  },
 };
