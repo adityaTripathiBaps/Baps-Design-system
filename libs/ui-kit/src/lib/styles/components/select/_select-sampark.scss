@@ -660,6 +660,16 @@
   color: var(--color-sampark-text-primary) !important;
 }
 
+/* SPM dev: hovering the selected row tints it #f8e5e5 (rest stays #f6f5f5). */
+.baps-ds-sampark
+  .p-select-overlay
+  .p-select-option.p-select-option-selected:not(.p-disabled):hover {
+  background: var(
+    --overlay-list-sampark-selected-hover-background,
+    #f8e5e5
+  ) !important;
+}
+
 /* MultiSelect: the checked box is the only selected cue on SPM dev, so a
    selected row keeps no fill until it is hovered or focused. */
 .baps-ds-sampark

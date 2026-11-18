@@ -8,6 +8,9 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/tokens` — minor, additive:** `--overlay-list-sampark-selected-hover-background`
+  (#f8e5e5) and `--input-group-sampark-addon-font-size` (13px), both measured on
+  SPM dev and approved by the user (2026-11-18).
 - **`@org/ui-kit` — minor, additive:** `showHeader` on `baps-dialog` and
   `baps-confirm-dialog` (PrimeNG `showHeader`), default true. False drops the title
   bar for a dialog whose body draws its own heading (spm AT-098).
@@ -122,6 +125,9 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** a selected Select row tints #f8e5e5 on
+  hover, and a `baps-input-group` addon label is 13px, as on SPM dev (spm AT-096,
+  AT-093).
 - **`@org/ui-kit` — patch (both brands):** `baps-button` no longer carries a DOM
   `autofocus` attribute. PrimeNG 21 set `autofocus="true"` on every button
   (`false || undefined` reached its AutoFocus directive), so the browser focused

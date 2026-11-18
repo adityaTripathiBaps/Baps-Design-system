@@ -176,14 +176,15 @@ baps-input-group
    In a narrow column (spm-ui duration Min/Max, 166px) the "Day/s" suffix
    otherwise collapsed below its text and overflowed its own padding.
    SPM dev's Min/Max addons are weight 500 with 12px sides, and prefix and
-   suffix share one tint. Dev's 13px label has no type-scale step, so the
-   size stays --font-size-sm (ask at demo, BRAIN). */
+   suffix share one tint, and the label is 13px (input-group token
+   samparkAddonFontSize, user-approved 2026-11-18). */
 :is(baps-input-group.baps-sampark, .baps-ds-sampark baps-input-group)
   .p-inputgroup
   > .p-inputgroupaddon {
   flex-shrink: 0;
   padding: 0 var(--space-3);
   background: var(--color-sampark-mono-alpha4);
+  font-size: var(--input-group-sampark-addon-font-size, 0.8125rem);
   font-weight: var(--font-weight-medium);
 }
 

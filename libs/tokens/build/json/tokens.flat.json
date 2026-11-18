@@ -8342,6 +8342,17 @@
     "legacyMapping": {}
   },
   {
+    "name": "InputGroupSamparkAddonFontSize",
+    "path": [
+      "inputGroup",
+      "samparkAddonFontSize"
+    ],
+    "value": "0.8125rem",
+    "original": "0.8125rem",
+    "legacyMapping": {},
+    "comment": "13px: SPM dev Min/Max/Day/s addon label (measured 2026-11-17, user-approved token 2026-11-18)"
+  },
+  {
     "name": "SegmentedContainerHeight",
     "path": [
       "segmented",
@@ -8575,6 +8586,18 @@
     "original": "#f6f5f5",
     "legacyMapping": {},
     "comment": "Measured Sampark overlay-row hover surface"
+  },
+  {
+    "name": "OverlayListSamparkSelectedHoverBackground",
+    "path": [
+      "overlayList",
+      "sampark",
+      "selectedHoverBackground"
+    ],
+    "value": "#f8e5e5",
+    "original": "#f8e5e5",
+    "legacyMapping": {},
+    "comment": "SPM dev: a selected Select row on hover (measured 2026-11-17, user-approved token 2026-11-18)"
   },
   {
     "name": "OverlayListSamparkBarWidth",
