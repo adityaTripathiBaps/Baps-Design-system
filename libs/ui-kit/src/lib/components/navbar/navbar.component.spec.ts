@@ -192,3 +192,25 @@ describe('BapsNavbar', () => {
     });
   });
 });
+
+describe('BapsNavbar fixed and mobile-only menu button (spm-ui shell)', () => {
+  it('stamps the opt-in host classes', async () => {
+    const fixture = TestBed.createComponent(BapsNavbar);
+    fixture.componentRef.setInput('fixed', true);
+    fixture.componentRef.setInput('menuButton', 'mobile');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const host = fixture.nativeElement as HTMLElement;
+    expect(host.classList.contains('baps-navbar-fixed')).toBe(true);
+    expect(host.classList.contains('baps-navbar-menu-mobile-only')).toBe(true);
+    expect(host.querySelector('.baps-navbar__menu-button')).not.toBeNull();
+  });
+
+  it('adds neither class by default', async () => {
+    const fixture = TestBed.createComponent(BapsNavbar);
+    fixture.detectChanges();
+    const host = fixture.nativeElement as HTMLElement;
+    expect(host.classList.contains('baps-navbar-fixed')).toBe(false);
+    expect(host.classList.contains('baps-navbar-menu-mobile-only')).toBe(false);
+  });
+});

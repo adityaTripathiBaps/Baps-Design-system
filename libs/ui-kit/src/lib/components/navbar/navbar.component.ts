@@ -50,12 +50,12 @@ import { Ripple } from 'primeng/ripple';
  * the contract silently breaks.
  *
  * ### Deliberately not implemented
- * - **Fixed positioning** (`position: fixed; z-index: 999`) — the app shell owns
- *   page layout; a design-system bar that escapes its container breaks every
- *   Storybook frame and every embedded usage. Set it at the consumer.
- * - **The slim-plus logo swap** (`.layout-topbar-logo-full` ⇄ `-slim` at ≥768px)
- *   and hiding the menu button there — both keyed off the sidebar's `menuMode`,
- *   which this component has no knowledge of.
+ * - **Fixed positioning** is opt-in (`[fixed]="true"`): a design-system bar
+ *   that escapes its container breaks Storybook frames and embedded usages, so
+ *   it stays off by default; spm-ui's shell turns it on.
+ * - **The slim-plus logo swap** (`.layout-topbar-logo-full` ⇄ `-slim` at ≥768px),
+ *   keyed off the sidebar's `menuMode`. Hiding the menu button there is
+ *   `menuButton="mobile"`.
  */
 @Component({
   selector: 'baps-navbar',
@@ -154,6 +154,8 @@ import { Ripple } from 'primeng/ripple';
     '[class.baps-navbar-topbar-light]': "topbarTheme === 'light'",
     '[class.baps-navbar-menu-open]': 'menuOpen',
     '[class.baps-navbar-mobile-open]': 'mobileMenuOpen',
+    '[class.baps-navbar-fixed]': 'fixed',
+    '[class.baps-navbar-menu-mobile-only]': "menuButton === 'mobile'",
   },
 })
 export class BapsNavbar {
@@ -183,11 +185,19 @@ export class BapsNavbar {
    * Show the yellow sidebar chevron (spm-ui `.layout-menu-button`). Sampark
    * skin only — the MyBKY bar has no equivalent.
    */
-  @Input() menuButton = false;
+  @Input() menuButton: boolean | 'mobile' = false;
   /** Chevron rotation state. The sidebar itself is the consumer's to own. */
   @Input() menuOpen = false;
   /** Emits the requested next `menuOpen` value. */
   @Output() menuToggle = new EventEmitter<boolean>();
+
+  /**
+   * Pin the bar to the top of the viewport (position fixed, full width,
+   * z-index 999), as spm-ui's `.layout-topbar`. Opt-in: the shell normally
+   * owns layout, but an app whose content offsets assume a fixed 50px bar
+   * (spm-ui `.layout-content-wrapper` padding-top) needs it here.
+   */
+  @Input() fixed = false;
 
   /** Whether the mobile actions row is expanded (spm-ui `.layout-topbar-menu-active`). */
   @Input() mobileMenuOpen = false;

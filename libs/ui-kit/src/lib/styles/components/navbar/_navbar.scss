@@ -380,3 +380,26 @@ baps-navbar .baps-navbar__mobile-button {
   --navbar-text: var(--color-mybky-mono-50, #f8fafb);
   --navbar-item-hover-bg: var(--color-mybky-mono-800, #2b2f32);
 }
+
+/* ── fixed (opt-in) ──────────────────────────────────────────────────────
+   spm-ui .layout-topbar: position fixed, top 0, full width, z-index 999
+   (measured on SPM dev 2026-11-18). */
+baps-navbar.baps-navbar-fixed {
+  --navbar-z-index: 999;
+}
+
+baps-navbar.baps-navbar-fixed .baps-navbar {
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline: 0;
+  z-index: var(--navbar-z-index);
+}
+
+/* ── menuButton="mobile" ─────────────────────────────────────────────────
+   spm-ui's slim-plus layout hides .layout-menu-button above 767px; the
+   sidebar rail is always on screen there. */
+@media (min-width: 768px) {
+  baps-navbar.baps-navbar-menu-mobile-only .baps-navbar__menu-button {
+    display: none;
+  }
+}

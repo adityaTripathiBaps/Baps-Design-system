@@ -136,6 +136,25 @@ export const Sampark: Story = {
 };
 
 /**
+ * spm-ui shell usage: `[fixed]="true"` pins the 50px bar to the top (as
+ * `.layout-topbar`), and `menuButton="mobile"` shows the chevron below 768px
+ * only (slim-plus rail). The transformed frame contains the fixed bar here.
+ */
+export const SamparkFixedShell: Story = {
+  tags: ['!ds:mybky'],
+  parameters: { controls: { disable: true } },
+  render: () => ({
+    template: `
+      <div class="baps-ds-sampark" style="transform: translateZ(0); height: 120px; overflow: hidden">
+        <baps-navbar brand="sampark" title="Sampark" version="v1.1.0" [fixed]="true" menuButton="mobile">
+          <baps-avatar navbar-end brand="sampark" size="m" label="HP"></baps-avatar>
+        </baps-navbar>
+      </div>
+    `,
+  }),
+};
+
+/**
  * `topbarTheme="light"` — the bar as it renders at `localhost:4200`: white,
  * maroon wordmark, dark text.
  *

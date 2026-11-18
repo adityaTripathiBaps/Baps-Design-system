@@ -554,4 +554,7 @@ export default function Topbar() {
   );
 }`,
   },
+  SamparkFixedShell: {
+    primeng: `<baps-navbar brand="sampark" title="Sampark" version="v1.1.0" [fixed]="true" menuButton="mobile">…</baps-navbar>`,
+  },
 };
