@@ -82,6 +82,23 @@ export const SamparkRail: StoryObj<BapsInternalNavbar> = {
   }),
 };
 
+/**
+ * `[compact]="true"`: the live SPM Portal rail, 80px wide (72px tiles 4px from
+ * the edges) and filling its column's height, instead of Figma's 104px frame
+ * (spm AT-103).
+ */
+export const SamparkRailCompact: StoryObj<BapsInternalNavbar> = {
+  tags: ['!ds:mybky'],
+  render: () => ({
+    props: { items: RAIL_ITEMS },
+    template: `
+      <div style="height: 360px">
+        <baps-internal-navbar brand="sampark" [collapsed]="true" [compact]="true" [items]="items" activeItem="Settings" />
+      </div>
+    `,
+  }),
+};
+
 const NESTED_ITEMS: InternalNavItem[] = [
   { label: 'Dashboard', iconName: 'widget' },
   {

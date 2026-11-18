@@ -147,6 +147,7 @@ export interface InternalNavRow {
   styleUrls: ['../../styles/components/internal-navbar/_internal-navbar.scss'],
   host: {
     '[class.baps-sampark]': "brand === 'sampark'",
+    '[class.baps-internal-navbar-compact]': 'compact',
     /* title is BOTH this component's @Input and a native global attribute, so
        writing title="Navigation" on the element sets the input AND leaves the
        attribute on the host. The browser then draws its own unstyled tooltip
@@ -168,6 +169,12 @@ export class BapsInternalNavbar {
   @Input() title?: string;
   /** Whether the sidebar is collapsed to icon-only mode. */
   @Input() collapsed = false;
+  /**
+   * Sampark rail only: the live SPM Portal geometry, an 80px rail (72px tile,
+   * 4px padding) that fills its column's height, instead of Figma's 104px
+   * frame. Opt-in; spm-ui's layout offsets content by 80px (spm AT-103).
+   */
+  @Input() compact = false;
   @Input() ariaLabel?: string;
   @Input() brand: 'mybky' | 'sampark' = 'mybky';
 

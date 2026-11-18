@@ -415,3 +415,20 @@ baps-internal-navbar.baps-sampark .baps-internal-nav--collapsed .baps-internal-n
 .baps-dark baps-internal-navbar .baps-internal-nav__title {
   color: var(--color-mybky-mono-500, #6f777d);
 }
+
+/* ── compact Sampark rail (opt-in) ─────────────────────────────────────
+   SPM Portal live geometry (dev, measured 2026-11-18): 80px rail, 72x72
+   tiles 4px from the edges, rail filling the column's full height. */
+baps-internal-navbar.baps-sampark.baps-internal-navbar-compact {
+  display: block;
+  height: 100%;
+}
+
+baps-internal-navbar.baps-sampark.baps-internal-navbar-compact .baps-internal-nav--collapsed {
+  width: 80px;
+  height: 100%;
+}
+
+baps-internal-navbar.baps-sampark.baps-internal-navbar-compact .baps-internal-nav--collapsed .baps-internal-nav__list {
+  padding: var(--space-1);
+}

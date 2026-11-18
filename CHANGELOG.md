@@ -8,6 +8,10 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/ui-kit` — minor, additive (Sampark):** `baps-internal-navbar` `compact`: the
+  live SPM Portal rail (80px, 72px tiles 4px from the edges, full column height)
+  instead of Figma's 104px frame. Default unchanged (spm AT-103). Story
+  SamparkRailCompact.
 - **`@org/ui-kit` — minor, additive:** `baps-navbar` `fixed` (position fixed, top 0,
   full width, z-index 999, as spm-ui's `.layout-topbar`) and `menuButton="mobile"`
   (chevron below 768px only). Defaults unchanged (spm AT-103). Story

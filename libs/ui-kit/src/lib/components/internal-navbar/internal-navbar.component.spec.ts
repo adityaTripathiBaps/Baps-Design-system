@@ -437,3 +437,16 @@ describe('BapsInternalNavbar', () => {
     });
   });
 });
+
+describe('BapsInternalNavbar compact (spm-ui 80px rail)', () => {
+  it('stamps baps-internal-navbar-compact only when asked', async () => {
+    const fixture = TestBed.createComponent(BapsInternalNavbar);
+    fixture.componentRef.setInput('brand', 'sampark');
+    fixture.componentRef.setInput('collapsed', true);
+    fixture.detectChanges();
+    expect((fixture.nativeElement as HTMLElement).classList.contains('baps-internal-navbar-compact')).toBe(false);
+    fixture.componentRef.setInput('compact', true);
+    fixture.detectChanges();
+    expect((fixture.nativeElement as HTMLElement).classList.contains('baps-internal-navbar-compact')).toBe(true);
+  });
+});
