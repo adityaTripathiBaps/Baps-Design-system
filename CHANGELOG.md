@@ -140,6 +140,8 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** a focused table header cell draws the
+  Sampark focus ring (1px primary, inset 2px) instead of the browser default.
 - **`@org/ui-kit` — patch (Sampark):** a danger button (`severity="danger"` or
   `p-button-danger`) is the primary maroon, as on SPM dev, not Material red.
 - **`@org/ui-kit` — patch (Sampark):** a MultiSelect panel's search field has no

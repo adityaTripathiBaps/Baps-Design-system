@@ -783,3 +783,12 @@ $s: ':is(baps-table.baps-sampark, .baps-ds-sampark baps-table)';
 #{$s} .p-datatable.baps-table-form .p-datatable-tbody > tr > td:has(> :is(baps-select, baps-multi-select, baps-tree-select)) {
   padding: var(--space-2) var(--space-1) !important;
 }
+
+/* Keyboard focus on a header cell (sortable headers take tabindex). SPM dev
+   showed none and the browser default ring read as a stray black box; the
+   Sampark focus ring (1px primary) is drawn inside the cell. User decision
+   2026-11-18: accessible ring over dev's none. */
+#{$s} .p-datatable .p-datatable-thead > tr > th:focus-visible {
+  outline: 1px solid var(--color-sampark-primary-default) !important;
+  outline-offset: -2px !important;
+}
