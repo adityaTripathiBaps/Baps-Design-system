@@ -4,6 +4,9 @@ import { BapsToolbar } from './toolbar.component';
 import { BapsButton } from '../button/button.component';
 import { BapsInputText } from '../form-field/directives/input-text.directive';
 import { BapsOverlayBadge } from '../badge/overlay-badge.component';
+import { BapsDivider } from '../divider/divider.component';
+import { BapsIconField } from '../form-field/icon-field.component';
+import { BapsInputIcon } from '../form-field/input-icon.component';
 
 const meta: Meta<BapsToolbar> = {
   title: 'Components/Organisms/Toolbar',
@@ -28,7 +31,7 @@ const meta: Meta<BapsToolbar> = {
   tags: ['ds:sampark'],
   decorators: [
     moduleMetadata({
-      imports: [BapsToolbar, BapsButton, BapsInputText, BapsOverlayBadge],
+      imports: [BapsToolbar, BapsButton, BapsInputText, BapsOverlayBadge, BapsDivider, BapsIconField, BapsInputIcon],
     }),
   ],
   args: {
@@ -65,6 +68,34 @@ export const Playground: Story = {
         </baps-overlaybadge>
         <baps-button toolbar-right icon="pi pi-sort-alt" ariaLabel="Sort" [text]="true" severity="secondary" />
       </baps-toolbar>
+    `,
+  }),
+};
+
+/**
+ * SPM dev Templates list toolbar, as spm-ui renders it: title left; search,
+ * vertical dividers, Add, Filter (badged) and Sort right. Measured on dev:
+ * bar 49 tall, 8px padding, title 20/600, search 400x32, icon buttons 32x32.
+ */
+export const SamparkListPage: Story = {
+  render: () => ({
+    template: `
+      <div class="baps-ds-sampark">
+        <baps-toolbar title="Templates">
+          <baps-iconfield toolbar-right styleClass="search-input" brand="sampark">
+            <baps-inputicon brand="sampark"><i class="pi pi-search"></i></baps-inputicon>
+            <input bapsInputText brand="sampark" class="w-full" placeholder="Search templates" aria-label="Search templates" />
+          </baps-iconfield>
+          <baps-divider toolbar-right layout="vertical" size="compact" brand="sampark"></baps-divider>
+          <baps-button toolbar-right label="Add Template" icon="plus" brand="sampark"></baps-button>
+          <baps-divider toolbar-right layout="vertical" size="compact" brand="sampark"></baps-divider>
+          <baps-overlaybadge toolbar-right brand="sampark" value="2" severity="danger" badgeSize="small">
+            <baps-button icon="filter" ariaLabel="Filter" [text]="true" severity="secondary" brand="sampark"></baps-button>
+          </baps-overlaybadge>
+          <baps-divider toolbar-right layout="vertical" size="compact" brand="sampark"></baps-divider>
+          <baps-button toolbar-right icon="sort-list" ariaLabel="Sort" [text]="true" severity="secondary" brand="sampark"></baps-button>
+        </baps-toolbar>
+      </div>
     `,
   }),
 };

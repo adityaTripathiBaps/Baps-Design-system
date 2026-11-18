@@ -155,6 +155,9 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/tokens` — patch (Sampark):** `toolbar.sampark.searchWidth` is 25rem
+  (400px), the width SPM dev renders the Templates/Projects toolbar search at
+  (was 16rem). `baps-toolbar` gains a SamparkListPage story mirroring that bar.
 - **`@org/ui-kit` — patch (Sampark):** the DatePicker popup is SPM dev's compact
   calendar: 4px panel/header padding, 28px day cells, 28px round nav buttons,
   20px weekday row, 500 title (spm AT-085). Nav buttons and the title row also

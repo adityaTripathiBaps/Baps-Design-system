@@ -354,7 +354,7 @@ $toggle-switch-sampark-thumb-xs: 0.75rem; // 12px
 $toggle-switch-sampark-thumb-sm: 1rem; // 16px
 $toggle-switch-sampark-thumb-md: 1.125rem; // 18px
 $toggle-switch-sampark-thumb-lg: 1.25rem; // 20px
-$toolbar-sampark-search-width: 16rem; // 256px — compact, matches the reference toolbar (title left / search+action right, single line, no wrap)
+$toolbar-sampark-search-width: 25rem; // 400px. SPM dev Templates/Projects toolbar search measured 400 wide (computed, 2026-11-18); spm-ui _styles-legacy.scss .page-toolbar .right .search-input width 400px. Was 16rem (256).
 $dashboard-mybky-hero-radius: 1rem; // 16px
 $dashboard-mybky-hero-min-height: 5.75rem;
 $dashboard-mybky-hero-invited-gradient: linear-gradient(90deg, #4B536C 0%, #1F2945 100%); // Was hardcoded in event-dashboard.ts with no token behind it — the one screen that broke the token pattern.

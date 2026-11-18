@@ -1667,8 +1667,8 @@
         "value": "{color.sampark.mono.100}"
       },
       "searchWidth": {
-        "value": "16rem",
-        "comment": "256px — compact, matches the reference toolbar (title left / search+action right, single line, no wrap)"
+        "value": "25rem",
+        "comment": "400px. SPM dev Templates/Projects toolbar search measured 400 wide (computed, 2026-11-18); spm-ui _styles-legacy.scss .page-toolbar .right .search-input width 400px. Was 16rem (256)."
       }
     }
   },

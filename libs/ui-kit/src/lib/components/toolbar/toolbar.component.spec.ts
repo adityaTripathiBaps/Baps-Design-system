@@ -117,4 +117,18 @@ describe('BapsToolbar', () => {
       expect(fixture.nativeElement.querySelector('.p-toolbar-end')).not.toBeNull();
     });
   });
+
+  describe('Sampark search width (SPM dev parity)', () => {
+    it('token is 25rem — dev Templates toolbar search measured 400px', () => {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const fs = require('fs');
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const path = require('path');
+      const css: string = fs.readFileSync(
+        path.resolve(__dirname, '../../../../../tokens/build/css/tokens.css'),
+        'utf8',
+      );
+      expect(css).toMatch(/--toolbar-sampark-search-width:\s*25rem;/);
+    });
+  });
 });
