@@ -40,6 +40,12 @@ export const dividerSnippets: Record<string, SnippetSet> = {
       '<BapsDivider align="center">OR</BapsDivider>',
     ),
   },
+  SamparkHeaderSeparator: {
+    ...examples(
+      'SamparkHeaderSeparator',
+      '<BapsDivider layout="vertical" brand="sampark" />',
+    ),
+  },
   ToolbarSeparator: {
     primeng: `<baps-divider layout="vertical" brand="sampark" />`,
     ...examples(

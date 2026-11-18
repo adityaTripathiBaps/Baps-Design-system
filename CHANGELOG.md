@@ -130,6 +130,10 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** the default vertical `baps-divider` has no
+  margin or padding and a 20px rule, so a row's gap spaces it, as SPM dev's
+  header separator (was a 24px box with MyBKY margins, 24px gaps). Compact
+  unchanged (spm AT-084).
 - **`@org/ui-kit` — patch (Sampark):** a MultiSelect chip's remove icon is the SPM
   dev 14px box with a 10px cross in #979493 (was 14x16 in MyBKY slate).
 - **`@org/ui-kit` — patch (Sampark):** a locked (disabled) MultiSelect option is

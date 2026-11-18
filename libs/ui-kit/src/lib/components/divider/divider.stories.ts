@@ -80,6 +80,23 @@ export const ToolbarSeparator: StoryObj<BapsDivider> = {
 };
 
 /**
+ * Sampark default vertical divider in a header row (SPM Template header,
+ * between Publish and close): no margin or padding, a 20px rule, spaced only by
+ * the row's 8px gap.
+ */
+export const SamparkHeaderSeparator: StoryObj<BapsDivider> = {
+  render: () => ({
+    template: `
+      <div class="baps-ds-sampark" style="display:flex; align-items:center; gap:8px; padding:1.5rem; background:#fff">
+        <span style="height:2rem; line-height:2rem; padding:0 .75rem; border-radius:4px; background:#c96868; color:#fff; font-size:.875rem">Publish</span>
+        <baps-divider layout="vertical" brand="sampark" />
+        <span style="width:2rem; height:2rem; display:inline-flex; align-items:center; justify-content:center">&#10005;</span>
+      </div>
+    `,
+  }),
+};
+
+/**
  * Every type in both layouts, and the line is drawn on ONE side only.
  *
  * The rule is a `::before` with a width on one side. A bare `border-style`

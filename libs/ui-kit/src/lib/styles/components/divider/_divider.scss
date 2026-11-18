@@ -140,3 +140,28 @@ baps-divider[data-size='compact'] .p-divider-vertical {
   color: var(--color-sampark-dark-text-muted);
   background: var(--color-sampark-dark-surface-card);
 }
+
+/* Sampark default vertical divider = SPM dev's header separator (measured
+   2026-11-18, Template header between Publish and close): no margin, no
+   padding, a 20px rule, so the row's own gap spaces it (8px either side on
+   dev). The MyBKY margin and PrimeNG's 8px block padding gave a 24px box with
+   24px gaps. Compact keeps its own 16px toolbar rule. */
+:is(baps-divider.baps-sampark, .baps-ds-sampark baps-divider):not(
+    [data-size='compact']
+  ) {
+  display: flex;
+  align-items: center;
+  align-self: center;
+}
+
+:is(baps-divider.baps-sampark, .baps-ds-sampark baps-divider):not(
+    [data-size='compact']
+  )
+  .p-divider-vertical {
+  width: var(--divider-sampark-border-width);
+  min-width: 0;
+  height: var(--space-5);
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+}
