@@ -403,3 +403,22 @@ baps-navbar.baps-navbar-fixed .baps-navbar {
     display: none;
   }
 }
+
+/* ── A Select in the Sampark end slot (spm-ui topbar position switcher) ───
+   Renders as plain text on the bar: no box, border, fill or chevron, in
+   every state (SPM dev, measured 2026-11-18: transparent, 108x36, two-line
+   item template). (0,7,1) on purpose: the kit Select's hover / open / focus
+   rules are (0,6,0) !important and would paint a white input box. */
+:is(baps-navbar.baps-sampark, .baps-ds-sampark baps-navbar)
+  .baps-navbar
+  .baps-navbar__end
+  .p-select.p-component.p-inputwrapper:not(.baps-navbar-select-boxed) {
+  height: auto !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+
+  .p-select-dropdown {
+    display: none !important;
+  }
+}

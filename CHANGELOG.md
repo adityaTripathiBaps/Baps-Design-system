@@ -144,6 +144,9 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** a Select in `baps-navbar`'s end slot renders as
+  plain text on the bar (no box, fill or chevron in any state), as SPM dev's
+  position switcher (spm AT-103).
 - **`@org/ui-kit` — patch (Sampark):** a focused table header cell draws the
   Sampark focus ring (1px primary, inset 2px) instead of the browser default.
 - **`@org/ui-kit` — patch (Sampark):** a danger button (`severity="danger"` or
