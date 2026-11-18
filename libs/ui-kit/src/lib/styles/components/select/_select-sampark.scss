@@ -683,7 +683,7 @@
 /* SPM dev: a locked (disabled) option is dimmed to 0.6, so the values a
    published template cannot drop read apart from the ones still addable. */
 .baps-ds-sampark .p-multiselect-overlay .p-multiselect-option.p-disabled {
-  opacity: var(--overlay-list-sampark-disabled-opacity, 0.6);
+  opacity: var(--overlay-list-sampark-disabled-opacity, 0.6) !important; /* beats the base disabled-option opacity: 1 !important */
 }
 
 /* …and the label keeps the primary text colour (#151414 on dev, also when
