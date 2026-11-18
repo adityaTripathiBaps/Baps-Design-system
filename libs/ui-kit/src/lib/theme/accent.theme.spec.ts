@@ -1,4 +1,4 @@
-import { Sampark } from './sampark.theme';
+import { Sampark, SAMPARK_BUTTON_TOKENS } from './sampark.theme';
 import { MyBky } from './baps.theme';
 import {
   withPrimaryRamp,

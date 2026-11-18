@@ -58,6 +58,9 @@ export const SAMPARK_BUTTON_TOKENS = {
           color: tokens.ButtonSamparkSecondaryText,
           hoverColor: tokens.ButtonSamparkSecondaryText,
           activeColor: tokens.ButtonSamparkSecondaryText,
+          // SPM dev: a focused secondary/text button rings in the primary
+          // (#c96868), not Material's {surface.600} slate (measured 2026-11-18).
+          focusRing: { color: '{primary.color}', shadow: 'none' },
         },
       },
       outlined: {

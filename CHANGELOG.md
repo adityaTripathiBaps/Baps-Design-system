@@ -128,6 +128,7 @@ classification and deprecation policy.
 - **`@org/ui-kit` — patch (Sampark):** the `Sampark` preset draws a keyboard focus
   ring (1px solid primary, 2px offset, as on SPM dev). It inherited Material's
   `focusRing` of width 0 / style none, so focused buttons showed no outline.
+  A secondary/text button rings in the primary too (Material used slate).
 - **`@org/ui-kit` — patch (both brands):** `baps-drawer` removes PrimeNG's body
   mask when it is destroyed. PrimeNG 21 only did that while still visible, so a
   drawer unmounted on close (`@if (open)`) left its mask on the page, dimming it
