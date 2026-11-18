@@ -122,6 +122,11 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (both brands):** `baps-button` no longer carries a DOM
+  `autofocus` attribute. PrimeNG 21 set `autofocus="true"` on every button
+  (`false || undefined` reached its AutoFocus directive), so the browser focused
+  the first button of each new page and flashed its focus ring (spm Templates
+  filter button). `autofocus` input unchanged.
 - **`@org/ui-kit` — patch (Sampark):** a drawer whose MultiSelect panel is on
   <body> stays under the scrim, as on SPM dev. PrimeNG 21 marks the MultiSelect
   `.p-overlay-open`, so an app rule raising `.p-drawer:has(.p-overlay-open)` lifted

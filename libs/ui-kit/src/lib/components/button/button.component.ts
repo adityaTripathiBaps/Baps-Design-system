@@ -29,6 +29,7 @@ import { SAMPARK_BUTTON_TOKENS } from '../../theme/sampark.theme';
       [fluid]="fluid"
       [disabled]="disabled"
       [autofocus]="autofocus"
+      [buttonProps]="noAutofocusProps"
       [ariaLabel]="ariaLabel"
       [dt]="dt"
     >
@@ -207,6 +208,18 @@ import { SAMPARK_BUTTON_TOKENS } from '../../theme/sampark.theme';
   },
 })
 export class BapsButton {
+  /**
+   * PrimeNG 21 binds `[pAutoFocus]="autofocus || buttonProps?.autofocus"`. With
+   * no buttonProps that is `false || undefined` = undefined, and AutoFocus only
+   * removes the attribute for `=== false`, so EVERY button got a DOM
+   * `autofocus="true"`. The browser then focuses the first one on a page it
+   * inserts, which flashed a focus ring on the Templates filter button on each
+   * visit (spm, not on SPM dev). An explicit false makes the expression false;
+   * `autofocus = true` still wins through the `||`. Every other buttonProps
+   * field is read by PrimeNG as a `||` fallback, so nothing else changes.
+   */
+  protected readonly noAutofocusProps = { autofocus: false };
+
   @Input() label?: string;
   @Input() icon?: string;
   @Input() iconPos: 'left' | 'right' | 'top' | 'bottom' = 'left';

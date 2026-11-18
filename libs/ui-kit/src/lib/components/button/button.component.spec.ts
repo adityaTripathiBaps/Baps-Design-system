@@ -68,6 +68,14 @@ const buttonEl = (fixture: { nativeElement: HTMLElement }) =>
   fixture.nativeElement.querySelector('button') as HTMLButtonElement;
 
 describe('BapsButton', () => {
+  describe('autofocus', () => {
+    it('leaves no autofocus attribute on the button unless asked (PrimeNG 21 set it on every button)', async () => {
+      const fixture = await setup();
+      await new Promise((r) => setTimeout(r));
+      expect(buttonEl(fixture).hasAttribute('autofocus')).toBe(false);
+    });
+  });
+
   describe('size', () => {
     it('keeps xlarge out of the PrimeNG size input and paints it with a class', async () => {
       const fixture = await setup();
