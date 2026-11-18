@@ -881,3 +881,35 @@
   > * {
   display: flex;
 }
+
+/* ── DatePicker panel geometry (SPM dev, AT-085, measured 2026-11-18) ───
+   Dev's popup calendar is compact: 4px panel and header padding, 28px day
+   cells in 32px tds, 28px round nav buttons, a 20px weekday row and a 500
+   title. The kit default (12px padding, 32px cells, 32px nav) made the
+   Duration panel 578x331 against dev's 475. The nav button is a p-button
+   host whose inner .p-button takes the Sampark icon-only width, so both
+   are sized. */
+:is(.baps-ds-sampark.p-datepicker-panel, .baps-ds-sampark .p-datepicker-panel) {
+  --datepicker-cell-size: var(--space-7);
+  padding: var(--space-1) !important;
+
+  .p-datepicker-header {
+    padding: var(--space-1) !important;
+  }
+
+  :is(.p-datepicker-prev-button, .p-datepicker-next-button),
+  :is(.p-datepicker-prev-button, .p-datepicker-next-button) .p-button {
+    width: var(--space-7) !important;
+    min-width: var(--space-7) !important;
+    height: var(--space-7) !important;
+    border-radius: 50% !important;
+  }
+
+  .p-datepicker-calendar th {
+    height: var(--space-5) !important;
+  }
+
+  .p-datepicker-title :is(.p-datepicker-select-month, .p-datepicker-select-year) {
+    font-weight: var(--font-weight-medium) !important;
+  }
+}
