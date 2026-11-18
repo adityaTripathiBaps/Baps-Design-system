@@ -153,6 +153,8 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** PrimeNG's own checkboxes and radios (panel
+  Select All / options) draw no Material hover or focus halo, as on SPM dev.
 - **`@org/ui-kit` — patch (Sampark):** a Select in `baps-navbar`'s end slot renders as
   plain text on the bar (no box, fill or chevron in any state), as SPM dev's
   position switcher (spm AT-103).

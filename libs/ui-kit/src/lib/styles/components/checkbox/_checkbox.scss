@@ -269,3 +269,14 @@ baps-checkbox.baps-checkbox-lg .p-checkbox-label {
   --sel-label: var(--color-sampark-dark-text-primary);
   --sel-label-disabled: var(--color-sampark-dark-text-disabled);
 }
+
+/* Sampark: no Material hover/focus halo on PrimeNG's own checkboxes and
+   radios (panel Select All and options, table selects). The Material base
+   draws `0 0 1px 10px` around the box on hover and focus; SPM dev shows none
+   (user report 2026-11-18: a shadow box on hovering Select All). The kit's
+   baps-checkbox / baps-radio keep their own 2px ring. */
+.baps-ds-sampark
+  :is(.p-checkbox, .p-radiobutton):not(baps-checkbox *, baps-radio *)
+  :is(.p-checkbox-box, .p-radiobutton-box) {
+  box-shadow: none !important;
+}
