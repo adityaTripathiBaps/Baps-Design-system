@@ -422,3 +422,17 @@ baps-navbar.baps-navbar-fixed .baps-navbar {
     display: none !important;
   }
 }
+
+/* Sampark wordmark + version read as one line of text, as spm-ui's
+   `<span class="logo-text">Sampark <small>v1.1.0</small></span>`: the version
+   sits on the title's baseline a word-space after it (SPM dev 2026-11-18:
+   version x 104 after a 92px wordmark), not centred 12px away. */
+:is(baps-navbar.baps-sampark, .baps-ds-sampark baps-navbar)
+  .baps-navbar__start:has(.baps-navbar__version) {
+  column-gap: var(--space-1);
+}
+
+:is(baps-navbar.baps-sampark, .baps-ds-sampark baps-navbar)
+  :is(.baps-navbar__title, .baps-navbar__version) {
+  align-self: baseline;
+}
