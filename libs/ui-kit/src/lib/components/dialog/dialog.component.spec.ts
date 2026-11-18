@@ -57,7 +57,7 @@ class Host {
   readonly visible = signal(true);
   readonly brand = signal<'mybky' | 'sampark'>('mybky');
   readonly align = signal<BapsDialogAlign>('center');
-  readonly actionsAlign = signal<'center' | 'end'>('center');
+  readonly actionsAlign = signal<'center' | 'end' | 'center-auto'>('center');
   readonly styleClass = signal<string | undefined>(undefined);
   readonly closable = signal(false);
   readonly describedBy = signal<string | undefined>(undefined);
@@ -66,7 +66,7 @@ class Host {
 type Overrides = Partial<{
   brand: 'mybky' | 'sampark';
   align: BapsDialogAlign;
-  actionsAlign: 'center' | 'end';
+  actionsAlign: 'center' | 'end' | 'center-auto';
   styleClass: string;
   closable: boolean;
   visible: boolean;
@@ -205,6 +205,12 @@ describe('BapsDialog', () => {
   });
 
   describe('panel classes (portal scoping and layout)', () => {
+    it("stamps baps-dialog-actions-auto for actionsAlign='center-auto' (SPM dev intrinsic pair)", async () => {
+      await setup({ actionsAlign: 'center-auto' });
+      expect(panel()!.classList.contains('baps-dialog-actions-auto')).toBe(true);
+      expect(panel()!.classList.contains('baps-dialog-actions-end')).toBe(false);
+    });
+
     it('always stamps the styling hook onto the portaled panel', async () => {
       await setup();
       expect(panel()!.classList.contains('baps-dialog-panel')).toBe(true);

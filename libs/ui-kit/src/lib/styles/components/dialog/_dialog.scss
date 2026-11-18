@@ -126,6 +126,19 @@
 .baps-dialog-panel.baps-dialog-actions-end .p-dialog-footer > [dialog-footer] > * .p-button {
   width: auto;
 }
+/* 'center-auto': centred pair at intrinsic widths, 16px apart (SPM dev
+   confirm dialog: Cancel 70px, Discard Changes 136px, gap 16px). */
+.baps-dialog-panel.baps-dialog-actions-auto .p-dialog-footer {
+  gap: var(--space-4);
+}
+.baps-dialog-panel.baps-dialog-actions-auto .p-dialog-footer > *,
+.baps-dialog-panel.baps-dialog-actions-auto .p-dialog-footer > [dialog-footer] > * {
+  flex: 0 0 auto;
+}
+.baps-dialog-panel.baps-dialog-actions-auto .p-dialog-footer > * .p-button,
+.baps-dialog-panel.baps-dialog-actions-auto .p-dialog-footer > [dialog-footer] > * .p-button {
+  width: auto;
+}
 
 /* The footer template is declared unconditionally so PrimeNG always
    renders the region; this is what makes an action-less dialog not show

@@ -71,7 +71,7 @@ const meta: Meta<BapsDialog> = {
     visibleChange: { control: false },
     brand: { control: 'inline-radio', options: ['mybky', 'sampark'] },
     align: { control: 'inline-radio', options: ['center', 'start'] },
-    actionsAlign: { control: 'inline-radio', options: ['center', 'end'] },
+    actionsAlign: { control: 'inline-radio', options: ['center', 'end', 'center-auto'] },
     role: { control: 'inline-radio', options: ['dialog', 'alertdialog'] },
     appendTo: { control: 'inline-radio', options: ['self', 'body'] },
   },
@@ -319,6 +319,15 @@ export const FormModal: Story = {
 export const ActionsEnd: Story = {
   ...Default,
   args: { actionsAlign: 'end', visible: false },
+};
+
+/**
+ * `actionsAlign="center-auto"`: the pair stays centred but at intrinsic widths,
+ * 16px apart, as SPM dev's confirm dialogs (spm AT-098).
+ */
+export const ActionsCenterAuto: Story = {
+  ...Default,
+  args: { actionsAlign: 'center-auto', visible: false },
 };
 
 /* ── Interactions ──────────────────────────────────────────────────────────

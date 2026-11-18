@@ -8,6 +8,9 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/ui-kit` — minor, additive:** `actionsAlign="center-auto"` on `baps-dialog` and
+  `baps-confirm-dialog`: centred actions at intrinsic widths, 16px apart (SPM dev
+  confirm dialogs, spm AT-098). Default unchanged.
 - **`@org/ui-kit` — minor, additive (Sampark):** `baps-table` `styleClass="baps-table-form"`
   pads cells whose direct child is a select-family field 8px 4px, as SPM dev's
   Template Project Owner table (AT-082). Story SamparkFormDensity.

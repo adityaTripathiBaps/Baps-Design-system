@@ -322,8 +322,10 @@ export class BapsDialog {
    * Footer layout. `'center'` is the Figma pair — centred, equal 150px
    * widths, 8px apart. `'end'` is the conventional right-aligned row with
    * intrinsic widths, for consumers whose footer is not a two-button pair.
+   * `'center-auto'` keeps the pair centred but at intrinsic widths, 16px apart
+   * (SPM dev's confirm dialogs, spm AT-098).
    */
-  @Input() actionsAlign: 'center' | 'end' = 'center';
+  @Input() actionsAlign: 'center' | 'end' | 'center-auto' = 'center';
 
   /**
    * `'alertdialog'` for a destructive or otherwise consequential confirm —
@@ -430,6 +432,7 @@ export class BapsDialog {
       'baps-dialog-panel',
       this.align === 'start' ? 'baps-dialog-align-start' : null,
       this.actionsAlign === 'end' ? 'baps-dialog-actions-end' : null,
+      this.actionsAlign === 'center-auto' ? 'baps-dialog-actions-auto' : null,
       this.brand === 'sampark' ? 'baps-ds-sampark' : null,
       this.styleClass,
     ]

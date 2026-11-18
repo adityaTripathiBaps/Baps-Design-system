@@ -257,4 +257,7 @@ export default function MyBkyDialog({ open, onOpenChange }) {
   );
 }`,
   },
+  ActionsCenterAuto: {
+    primeng: `<baps-dialog brand="sampark" actionsAlign="center-auto" header="You have unsaved changes">…</baps-dialog>`,
+  },
 };

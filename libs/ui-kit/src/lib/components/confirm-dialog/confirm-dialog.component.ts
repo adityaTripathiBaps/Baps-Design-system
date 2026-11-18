@@ -52,6 +52,7 @@ let nextConfirmDialogId = 0;
       [style]="style"
       [baseZIndex]="baseZIndex"
       [showHeader]="showHeader"
+      [actionsAlign]="actionsAlign"
       (visibleChange)="onDialogVisibleChange($event)"
       (hidden)="onDialogHide()"
     >
@@ -156,6 +157,9 @@ export class BapsConfirmDialog implements OnInit, OnDestroy {
    * dev hid it with CSS that PrimeNG 21's renamed class no longer matches).
    */
   @Input() showHeader = true;
+  /** Footer layout, passed to baps-dialog: 'center' (150px pair), 'end', or
+   * 'center-auto' (centred, intrinsic widths, 16px apart; SPM dev). */
+  @Input() actionsAlign: 'center' | 'end' | 'center-auto' = 'center';
   @Input() brand: 'mybky' | 'sampark' = 'mybky';
   /**
    * Where confirmations come from. 'baps' (default): BapsConfirmationService.
