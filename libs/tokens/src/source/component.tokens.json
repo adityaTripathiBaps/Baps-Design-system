@@ -1950,6 +1950,10 @@
         "value": "#f6f5f5",
         "comment": "Measured Sampark overlay-row hover surface"
       },
+      "disabledOpacity": {
+        "value": "0.6",
+        "comment": "SPM dev: a locked (disabled) MultiSelect option renders at opacity 0.6 (measured 2026-11-18, user-approved token 2026-11-18)"
+      },
       "selectedHoverBackground": {
         "value": "#f8e5e5",
         "comment": "SPM dev: a selected Select row on hover (measured 2026-11-17, user-approved token 2026-11-18)"

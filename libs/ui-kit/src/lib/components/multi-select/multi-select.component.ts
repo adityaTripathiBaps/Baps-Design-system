@@ -71,6 +71,7 @@ const MAX_OVERFLOW_LABELS = 20;
       [resetFilterOnHide]="resetFilterOnHide"
       [scrollHeight]="scrollHeight"
       [appendTo]="appendTo"
+      [autoOptionFocus]="autoOptionFocus ?? brand === 'sampark'"
       [group]="group"
       [size]="size!"
       [fluid]="fluid"
@@ -244,6 +245,13 @@ export class BapsMultiSelect implements ControlValueAccessor {
   @Input() resetFilterOnHide = false;
   @Input() scrollHeight = '200px';
   @Input() appendTo?: any;
+  /**
+   * Focus the first enabled option when the panel opens (PrimeNG
+   * autoOptionFocus). Unset: on for Sampark, off for MyBKY. SPM dev (PrimeNG
+   * 17, where it defaulted on) opens every MultiSelect with the first enabled
+   * row focused and tinted Mono/10; v21 defaults it off.
+   */
+  @Input() autoOptionFocus?: boolean;
   @Input() group = false;
   /**
    * PrimeNG size: 'small' or 'large'. Default (no value) maps to the standard

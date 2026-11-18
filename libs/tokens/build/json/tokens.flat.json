@@ -8588,6 +8588,18 @@
     "comment": "Measured Sampark overlay-row hover surface"
   },
   {
+    "name": "OverlayListSamparkDisabledOpacity",
+    "path": [
+      "overlayList",
+      "sampark",
+      "disabledOpacity"
+    ],
+    "value": "0.6",
+    "original": "0.6",
+    "legacyMapping": {},
+    "comment": "SPM dev: a locked (disabled) MultiSelect option renders at opacity 0.6 (measured 2026-11-18, user-approved token 2026-11-18)"
+  },
+  {
     "name": "OverlayListSamparkSelectedHoverBackground",
     "path": [
       "overlayList",

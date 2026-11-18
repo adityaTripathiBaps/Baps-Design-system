@@ -401,6 +401,7 @@
   --segmented-multiple-min-width: 2.125rem;
   --overlay-list-mybky-bar-width: 0.1875rem; /** 3px selection accent measured in the MyBKY list treatment */
   --overlay-list-sampark-hover-background: #f6f5f5; /** Measured Sampark overlay-row hover surface */
+  --overlay-list-sampark-disabled-opacity: 0.6; /** SPM dev: a locked (disabled) MultiSelect option renders at opacity 0.6 (measured 2026-11-18, user-approved token 2026-11-18) */
   --overlay-list-sampark-selected-hover-background: #f8e5e5; /** SPM dev: a selected Select row on hover (measured 2026-11-17, user-approved token 2026-11-18) */
   --stepper-mybky-rail-radius: 1rem;
   --stepper-mybky-rail-padding-y: 0.9rem; /** Per spec. Pill height then follows the 40px slot rather than being pinned. */

@@ -708,6 +708,7 @@ export const SegmentedMultipleHeight = "2rem";
 export const OverlayListMybkyHoverBackground = "#eef0f8";
 export const OverlayListMybkyBarWidth = "0.1875rem"; // 3px selection accent measured in the MyBKY list treatment
 export const OverlayListSamparkHoverBackground = "#f6f5f5"; // Measured Sampark overlay-row hover surface
+export const OverlayListSamparkDisabledOpacity = "0.6"; // SPM dev: a locked (disabled) MultiSelect option renders at opacity 0.6 (measured 2026-11-18, user-approved token 2026-11-18)
 export const OverlayListSamparkSelectedHoverBackground = "#f8e5e5"; // SPM dev: a selected Select row on hover (measured 2026-11-17, user-approved token 2026-11-18)
 export const OverlayListSamparkBarWidth = "0.25rem"; // 4px selection accent measured in the Sampark list treatment
 export const StepperMybkyRailBackground = "#eef0f8"; // Primary/0. The pill behind the whole rail.

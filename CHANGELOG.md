@@ -8,6 +8,11 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/tokens` — minor, additive:** `--overlay-list-sampark-disabled-opacity` (0.6),
+  SPM dev's locked MultiSelect option (user-approved 2026-11-18).
+- **`@org/ui-kit` — minor, additive:** `baps-multi-select` `autoOptionFocus`. Unset, it is
+  on for Sampark (SPM dev opens with the first enabled row focused) and off for
+  MyBKY (unchanged).
 - **`@org/tokens` — minor, additive:** `--overlay-list-sampark-selected-hover-background`
   (#f8e5e5) and `--input-group-sampark-addon-font-size` (13px), both measured on
   SPM dev and approved by the user (2026-11-18).
@@ -125,6 +130,8 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** a locked (disabled) MultiSelect option is
+  dimmed to 0.6, as on SPM dev.
 - **`@org/ui-kit` — patch (Sampark):** the `Sampark` preset draws a keyboard focus
   ring (1px solid primary, 2px offset, as on SPM dev). It inherited Material's
   `focusRing` of width 0 / style none, so focused buttons showed no outline.

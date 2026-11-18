@@ -343,3 +343,13 @@ describe('BapsMultiSelect touched state (AT-065)', () => {
     expect(ctrl.touched).toBe(true);
   });
 });
+
+describe('BapsMultiSelect autoOptionFocus default (SPM dev opens with the first row focused)', () => {
+  const inner = (f: { debugElement: { query: (p: unknown) => { componentInstance: { autoOptionFocus: boolean } } } }) =>
+    f.debugElement.query(By.directive(MultiSelect)).componentInstance;
+
+  it('is on for Sampark and off for MyBKY when unset', async () => {
+    expect(inner(await render({ brand: 'sampark' })).autoOptionFocus).toBe(true);
+    expect(inner(await render({ brand: 'mybky' })).autoOptionFocus).toBe(false);
+  });
+});
