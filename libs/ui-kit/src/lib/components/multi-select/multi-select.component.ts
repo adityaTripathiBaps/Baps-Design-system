@@ -45,6 +45,7 @@ const MAX_OVERFLOW_LABELS = 20;
   imports: [MultiSelect, Chip, BapsTooltip, FormsModule, SharedModule, NgTemplateOutlet],
   template: `
     <p-multiselect
+      [autofocus]="autofocus"
       [(ngModel)]="value"
       [options]="resolvedOptions"
       [optionLabel]="optionLabel"
@@ -199,6 +200,12 @@ export class BapsMultiSelect implements ControlValueAccessor {
   @Input() optionGroupChildren: string | undefined;
   @Input() placeholder?: string;
   @Input() disabled = false;
+  /**
+   * Focus on first render (PrimeNG autofocus). Default false. PrimeNG 21 leaves
+   * a DOM autofocus attribute whenever its input is undefined, and the browser
+   * then focuses that element on page load (spm: topbar / paginator selects).
+   */
+  @Input() autofocus = false;
   @Input() readonly = false;
   @Input() filter = false;
   @Input() filterBy?: string;

@@ -37,6 +37,7 @@ import type { TreeNode } from 'primeng/api';
   imports: [TreeSelect, FormsModule, SharedModule, NgTemplateOutlet],
   template: `
     <p-treeselect
+      [autofocus]="autofocus"
       [ngModel]="value"
       (ngModelChange)="onValueChange($event)"
       [options]="options"
@@ -151,6 +152,12 @@ export class BapsTreeSelect implements ControlValueAccessor {
   @Input() display: 'comma' | 'chip' = 'comma';
   @Input() placeholder?: string;
   @Input() disabled = false;
+  /**
+   * Focus on first render (PrimeNG autofocus). Default false. PrimeNG 21 leaves
+   * a DOM autofocus attribute whenever its input is undefined, and the browser
+   * then focuses that element on page load (spm: topbar / paginator selects).
+   */
+  @Input() autofocus = false;
   @Input() filter = false;
   @Input() filterBy = 'label';
   /** Named to match `baps-select`; TreeSelect happens to agree on the spelling. */

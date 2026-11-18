@@ -8,6 +8,10 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/ui-kit` — minor, additive:** `autofocus` input (default false) on `baps-select`,
+  `baps-multi-select`, `baps-tree-select` and `baps-datepicker`; the paginator's
+  rows-per-page select passes false. PrimeNG 21 left a DOM `autofocus` attribute
+  whenever its input was undefined.
 - **`@org/ui-kit` — minor, additive:** `actionsAlign="center-auto"` on `baps-dialog` and
   `baps-confirm-dialog`: centred actions at intrinsic widths, 16px apart (SPM dev
   confirm dialogs, spm AT-098). Default unchanged.

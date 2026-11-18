@@ -117,6 +117,7 @@ const DATEPICKER_TOKENS = {
   imports: [DatePicker, FormsModule, SharedModule, NgTemplateOutlet],
   template: `
     <p-datepicker
+      [autofocus]="autofocus"
       [(ngModel)]="value"
       [selectionMode]="selectionMode"
       [numberOfMonths]="numberOfMonths"
@@ -245,6 +246,12 @@ export class BapsDatepicker implements ControlValueAccessor {
   @Input() dateFormat?: string;
   @Input() placeholder?: string;
   @Input() disabled = false;
+  /**
+   * Focus on first render (PrimeNG autofocus). Default false. PrimeNG 21 leaves
+   * a DOM autofocus attribute whenever its input is undefined, and the browser
+   * then focuses that element on page load (spm: topbar / paginator selects).
+   */
+  @Input() autofocus = false;
   @Input() readonlyInput = false;
   /** Render the calendar in the page instead of an overlay. */
   @Input() inline = false;

@@ -157,6 +157,7 @@ export interface BapsPageEvent {
 
     <ng-template #rpp>
       <p-select
+        [autofocus]="false"
         class="baps-paginator__rpp"
         [options]="rowsPerPageOptions!"
         [ngModel]="rows"

@@ -232,3 +232,14 @@ describe('BapsSelect touched state (AT-065)', () => {
     expect(ctrl.touched).toBe(true);
   });
 });
+
+describe('BapsSelect autofocus (PrimeNG 21 left a DOM autofocus attribute)', () => {
+  it('renders no autofocus attribute unless asked', async () => {
+    const fixture = TestBed.createComponent(BapsSelect);
+    fixture.componentRef.setInput('options', [{ label: 'A', value: 'a' }]);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('[autofocus]')).toBeNull();
+  });
+});
