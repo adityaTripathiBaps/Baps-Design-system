@@ -48,6 +48,21 @@ export const SAMPARK_BUTTON_TOKENS = {
           hoverColor: tokens.ButtonSamparkPrimaryText,
           activeColor: tokens.ButtonSamparkPrimaryText,
         },
+        // SPM dev renders a danger button (e.g. the unsaved-changes
+        // "Discard Changes", styleClass p-button-danger) in the primary
+        // maroon #c96868, not Material's red.500 (measured 2026-11-18).
+        danger: {
+          background: 'var(--color-sampark-primary-default)',
+          hoverBackground: 'var(--color-sampark-primary-hover)',
+          activeBackground: 'var(--color-sampark-primary-100)',
+          borderColor: 'transparent',
+          hoverBorderColor: 'transparent',
+          activeBorderColor: 'transparent',
+          color: tokens.ButtonSamparkPrimaryText,
+          hoverColor: tokens.ButtonSamparkPrimaryText,
+          activeColor: tokens.ButtonSamparkPrimaryText,
+          focusRing: { color: '{primary.color}', shadow: 'none' },
+        },
         secondary: {
           background: tokens.ButtonSamparkSecondaryDefault,
           hoverBackground: tokens.ButtonSamparkSecondaryHover,
