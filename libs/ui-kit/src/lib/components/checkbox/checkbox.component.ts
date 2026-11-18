@@ -76,12 +76,13 @@ let nextCheckboxId = 0;
     :is(baps-checkbox.baps-sampark, .baps-ds-sampark baps-checkbox) {
       --sel-border-hover: var(--color-sampark-primary-hover, #b44141);
       --sel-border-checked: var(--color-sampark-primary-default, #c96868);
-      --sel-disabled-border: var(--color-sampark-mono-40, #bcb9b9);
-      /* Sampark is the brand whose disabled+checked box fills SOLID; MyBKY
-         keeps the pale ground and only greys the tick. The two frames really
-         do differ here, so this is not an oversight to unify. */
-      --sel-disabled-checked-bg: var(--color-sampark-mono-40, #bcb9b9);
-      --sel-disabled-checked-icon: var(--color-sampark-mono-0, #ffffff);
+      /* SPM dev (AT-095, measured 2026-11-18): a disabled box keeps its
+         enabled look, white with a Mono/60 border (checked: primary outline
+         and tick), dimmed to 0.6 below. The Figma frame's solid grey
+         disabled+checked fill is not what the live portal renders. */
+      --sel-disabled-border: var(--color-sampark-mono-60, #9f9c9c);
+      --sel-disabled-checked-bg: var(--color-sampark-surface-card, #ffffff);
+      --sel-disabled-checked-icon: var(--color-sampark-primary-default, #c96868);
       --sel-label: var(--color-sampark-text-primary, #151414);
       /* SPM dev (AT-102): read-only labels are text-secondary. */
       --sel-label-disabled: var(--color-sampark-text-secondary, #595656);
@@ -196,6 +197,15 @@ let nextCheckboxId = 0;
     }
     baps-checkbox .p-checkbox-checked.p-disabled .p-checkbox-icon {
       color: var(--sel-disabled-checked-icon);
+    }
+
+    /* Sampark: dev dims the disabled box instead of re-inking it, and a
+       checked one keeps the primary outline. */
+    :is(baps-checkbox.baps-sampark, .baps-ds-sampark baps-checkbox) .p-checkbox.p-disabled .p-checkbox-box {
+      opacity: var(--toggle-switch-sampark-disabled-opacity, 0.6);
+    }
+    :is(baps-checkbox.baps-sampark, .baps-ds-sampark baps-checkbox) .p-checkbox-checked.p-disabled .p-checkbox-box {
+      border-color: var(--sel-border-checked);
     }
 
     /* .p-checkbox-label is BAPS's own markup, not PrimeNG's, so no checkbox

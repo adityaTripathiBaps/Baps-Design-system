@@ -65,15 +65,18 @@ baps-checkbox {
 }
 
 :is(baps-checkbox.baps-sampark, .baps-ds-sampark baps-checkbox) {
-  --sel-border: var(--color-sampark-border-default);
+  /* SPM dev (AT-095, 2026-11-18): resting box border is Mono/60 (#9f9c9c). */
+  --sel-border: var(--color-sampark-mono-60);
   --sel-border-hover: var(--color-sampark-primary-hover);
   --sel-border-checked: var(--color-sampark-primary-default);
   --sel-ring: 0 0 0 2px var(--color-sampark-primary-10);
   --sel-background: var(--color-sampark-surface-card);
-  --sel-disabled-background: var(--color-sampark-mono-10);
-  --sel-disabled-border: var(--color-sampark-mono-40);
-  --sel-disabled-checked-bg: var(--color-sampark-mono-40);
-  --sel-disabled-checked-icon: var(--color-sampark-mono-0);
+  /* SPM dev: a disabled box keeps its enabled look (white, Mono/60 or the
+     primary outline and tick when checked) and dims to 0.6 (below). */
+  --sel-disabled-background: var(--color-sampark-surface-card);
+  --sel-disabled-border: var(--color-sampark-mono-60);
+  --sel-disabled-checked-bg: var(--color-sampark-surface-card);
+  --sel-disabled-checked-icon: var(--color-sampark-primary-default);
   --sel-label: var(--color-sampark-text-primary);
   /* SPM dev (AT-102): a disabled label reads text-secondary (#595656), the
      read-only values of a published template, not text-disabled. */
@@ -286,4 +289,17 @@ baps-checkbox.baps-checkbox-lg .p-checkbox-label {
   :is(.p-checkbox, .p-radiobutton):not(baps-checkbox *, baps-radio *):not(.p-disabled):hover
   :is(.p-checkbox-box, .p-radiobutton-box) {
   box-shadow: var(--shadow-sampark-checkbox-hover, 0 0 0 2px #f2f1f0) !important;
+}
+
+/* Sampark disabled: dimmed, checked keeps the primary outline (SPM dev:
+   opacity 0.6, white, 1px #c96868, #c96868 tick). */
+:is(baps-checkbox.baps-sampark, .baps-ds-sampark baps-checkbox) .p-checkbox.p-disabled .p-checkbox-box {
+  opacity: var(--toggle-switch-sampark-disabled-opacity, 0.6);
+}
+
+:is(baps-checkbox.baps-sampark, .baps-ds-sampark baps-checkbox)
+  .p-checkbox.p-disabled
+  .p-checkbox-input:checked
+  + .p-checkbox-box {
+  border-color: var(--sel-border-checked);
 }

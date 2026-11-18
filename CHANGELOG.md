@@ -155,6 +155,9 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** `baps-checkbox` resting border is Mono/60, and a
+  disabled box keeps its enabled look (white; checked: primary outline and tick)
+  dimmed to 0.6, as on SPM dev, instead of the grey fill (spm AT-095).
 - **`@org/ui-kit` — patch (Sampark):** PrimeNG's own checkboxes and radios (panel
   Select All / options) draw no Material hover or focus halo, as on SPM dev.
 - **`@org/ui-kit` — patch (Sampark):** a Select in `baps-navbar`'s end slot renders as
