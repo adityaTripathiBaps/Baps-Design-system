@@ -450,3 +450,104 @@ describe('BapsInternalNavbar compact (spm-ui 80px rail)', () => {
     expect((fixture.nativeElement as HTMLElement).classList.contains('baps-internal-navbar-compact')).toBe(true);
   });
 });
+
+describe('BapsInternalNavbar Sampark rail flyout (SPM Portal slim-plus menu)', () => {
+  const ITEMS: InternalNavItem[] = [
+    { label: 'Sampark', children: [{ label: 'Dashboard' }, { label: 'Templates' }, { label: 'Projects' }] },
+  ];
+
+  async function render() {
+    const fixture = TestBed.createComponent(BapsInternalNavbar);
+    fixture.componentRef.setInput('brand', 'sampark');
+    fixture.componentRef.setInput('collapsed', true);
+    fixture.componentRef.setInput('items', ITEMS);
+    fixture.componentRef.setInput('activeItem', 'Templates');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    return fixture;
+  }
+
+  it('opens the children beside the tile on click, marks the current page, and emits only for a child', async () => {
+    const fixture = await render();
+    const el = fixture.nativeElement as HTMLElement;
+    const emitted: string[] = [];
+    fixture.componentInstance.itemClick.subscribe((i) => emitted.push(i.label));
+    expect(el.querySelector('.baps-internal-nav__flyout')).toBeNull();
+
+    (el.querySelector('.baps-internal-nav__link') as HTMLButtonElement).click();
+    fixture.detectChanges();
+    const links = [...el.querySelectorAll<HTMLButtonElement>('.baps-internal-nav__flyout-link')];
+    expect(links.map((b) => b.textContent!.trim())).toEqual(['Dashboard', 'Templates', 'Projects']);
+    expect(links[1].classList.contains('baps-internal-nav__flyout-link--active')).toBe(true);
+    expect(el.querySelector('.baps-internal-nav__link')!.getAttribute('aria-expanded')).toBe('true');
+    expect(emitted).toEqual([]);
+
+    links[2].click();
+    fixture.detectChanges();
+    expect(emitted).toEqual(['Projects']);
+    expect(el.querySelector('.baps-internal-nav__flyout')).toBeNull();
+  });
+
+  it('closes on an outside click and on Escape', async () => {
+    const fixture = await render();
+    const el = fixture.nativeElement as HTMLElement;
+    (el.querySelector('.baps-internal-nav__link') as HTMLButtonElement).click();
+    fixture.detectChanges();
+    document.body.click();
+    fixture.detectChanges();
+    expect(el.querySelector('.baps-internal-nav__flyout')).toBeNull();
+
+    (el.querySelector('.baps-internal-nav__link') as HTMLButtonElement).click();
+    fixture.detectChanges();
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+    fixture.detectChanges();
+    expect(el.querySelector('.baps-internal-nav__flyout')).toBeNull();
+  });
+});
+
+describe('BapsInternalNavbar Sampark rail flyout (SPM slim-plus menu)', () => {
+  const ITEMS: InternalNavItem[] = [
+    { label: 'Sampark', iconName: 'widget', children: [{ label: 'Dashboard', iconName: 'widget' }, { label: 'Templates', iconName: 'layers' }] },
+  ];
+  const setup = () => {
+    const fixture = TestBed.createComponent(BapsInternalNavbar);
+    fixture.componentRef.setInput('brand', 'sampark');
+    fixture.componentRef.setInput('collapsed', true);
+    fixture.componentRef.setInput('items', ITEMS);
+    fixture.componentRef.setInput('activeItem', 'Templates');
+    fixture.detectChanges();
+    return fixture;
+  };
+  const el = (f: { nativeElement: HTMLElement }) => f.nativeElement;
+
+  it('opens the children beside the tile on click, marks the current page, closes on child click', () => {
+    const fixture = setup();
+    const emitted: InternalNavItem[] = [];
+    fixture.componentInstance.itemClick.subscribe((i) => emitted.push(i));
+    expect(el(fixture).querySelector('.baps-internal-nav__flyout')).toBeNull();
+    (el(fixture).querySelector('.baps-internal-nav__link') as HTMLButtonElement).click();
+    fixture.detectChanges();
+    const links = el(fixture).querySelectorAll('.baps-internal-nav__flyout-link');
+    expect(links.length).toBe(2);
+    expect(links[1].classList.contains('baps-internal-nav__flyout-link--active')).toBe(true);
+    expect(emitted.length).toBe(0);
+    (links[0] as HTMLButtonElement).click();
+    fixture.detectChanges();
+    expect(emitted.map((i) => i.label)).toEqual(['Dashboard']);
+    expect(el(fixture).querySelector('.baps-internal-nav__flyout')).toBeNull();
+  });
+
+  it('closes on an outside click and on Escape', () => {
+    const fixture = setup();
+    (el(fixture).querySelector('.baps-internal-nav__link') as HTMLButtonElement).click();
+    fixture.detectChanges();
+    document.body.click();
+    fixture.detectChanges();
+    expect(el(fixture).querySelector('.baps-internal-nav__flyout')).toBeNull();
+    (el(fixture).querySelector('.baps-internal-nav__link') as HTMLButtonElement).click();
+    fixture.detectChanges();
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+    fixture.detectChanges();
+    expect(el(fixture).querySelector('.baps-internal-nav__flyout')).toBeNull();
+  });
+});

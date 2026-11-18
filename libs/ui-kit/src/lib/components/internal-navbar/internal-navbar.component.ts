@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewEncapsulation, inject } from '@angular/core';
 import { BapsIcon } from '../icon/icon.component';
 import type { BapsIconName } from '../icon/icon-set';
 
@@ -88,14 +88,16 @@ export interface InternalNavRow {
                 [attr.data-level]="row.level || null"
                 [attr.aria-level]="hasNesting ? row.level + 1 : null"
                 [class.baps-internal-nav__item--active]="activeItem === item.label"
-                [class.baps-internal-nav__item--disabled]="item.disabled">
+                [class.baps-internal-nav__item--disabled]="item.disabled"
+                [class.baps-internal-nav__item--flyout-open]="isFlyoutOpen(item)">
               <button
                 class="baps-internal-nav__link"
                 [disabled]="item.disabled"
                 (click)="onItemClick(item)"
                 [attr.aria-current]="activeItem === item.label ? 'page' : null"
                 [attr.aria-label]="!collapsed || brand === 'sampark' ? null : item.label"
-                [attr.aria-expanded]="hasChildren(item) ? isExpanded(item) : null"
+                [attr.aria-expanded]="hasChildren(item) ? (usesFlyout ? isFlyoutOpen(item) : isExpanded(item)) : null"
+                [attr.aria-haspopup]="usesFlyout && hasChildren(item) ? 'menu' : null"
                 type="button"
               >
                 <span class="baps-internal-nav__bar" aria-hidden="true"></span>
@@ -131,6 +133,30 @@ export interface InternalNavRow {
                   <span class="baps-internal-nav__status-dot" aria-hidden="true"></span>
                 }
               </button>
+              @if (isFlyoutOpen(item)) {
+                <ul class="baps-internal-nav__flyout" role="menu" [attr.aria-label]="item.label">
+                  @for (child of item.children; track child) {
+                    <li role="none">
+                      <button
+                        type="button"
+                        role="menuitem"
+                        class="baps-internal-nav__flyout-link"
+                        [class.baps-internal-nav__flyout-link--active]="activeItem === child.label"
+                        [attr.aria-current]="activeItem === child.label ? 'page' : null"
+                        [disabled]="child.disabled"
+                        (click)="onFlyoutClick(child)"
+                      >
+                        @if (child.iconName) {
+                          <baps-icon class="baps-internal-nav__flyout-icon" [name]="child.iconName" />
+                        } @else if (child.icon) {
+                          <i class="baps-internal-nav__flyout-icon pi" [class]="child.icon" aria-hidden="true"></i>
+                        }
+                        <span class="baps-internal-nav__flyout-label">{{ child.label }}</span>
+                      </button>
+                    </li>
+                  }
+                </ul>
+              }
             </li>
           }
         }
@@ -224,8 +250,49 @@ export class BapsInternalNavbar {
     return out;
   }
 
+  private readonly host = inject(ElementRef<HTMLElement>);
+
+  /**
+   * Sampark collapsed rail: a parent's children open as a flyout panel beside
+   * the tile, as on the live SPM Portal (slim-plus menu: click the root,
+   * 240px panel 8px right of the rail). Collapsed rails never nest inline.
+   */
+  private flyoutItem: InternalNavItem | null = null;
+
+  /** True for the Sampark rail parent whose flyout is showing. */
+  isFlyoutOpen(item: InternalNavItem): boolean {
+    return this.flyoutItem === item;
+  }
+
+  protected get usesFlyout(): boolean {
+    return this.collapsed && this.brand === 'sampark';
+  }
+
+  onFlyoutClick(child: InternalNavItem): void {
+    if (child.disabled) return;
+    this.flyoutItem = null;
+    if (child.command) child.command();
+    this.itemClick.emit(child);
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (this.flyoutItem && !this.host.nativeElement.contains(event.target as Node)) {
+      this.flyoutItem = null;
+    }
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    this.flyoutItem = null;
+  }
+
   onItemClick(item: InternalNavItem): void {
     if (item.disabled) return;
+    if (this.usesFlyout && this.hasChildren(item)) {
+      this.flyoutItem = this.flyoutItem === item ? null : item;
+      return;
+    }
     // A parent row is its own disclosure control: one button, one accessible
     // name, `aria-expanded` on it. itemClick still fires so a consumer can
     // treat the parent as a destination as well as a branch.

@@ -8,6 +8,11 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/ui-kit` — minor, additive (Sampark):** `baps-internal-navbar` collapsed
+  Sampark rail opens a parent's `children` in a flyout beside the tile (click;
+  outside click / Escape close), as the live SPM Portal's slim-plus menu: 240px
+  panel, 40px rows, current page bold on Secondary/60 (spm AT-103). Story
+  SamparkRailFlyout.
 - **`@org/ui-kit` — minor, additive (Sampark):** `baps-internal-navbar` `compact`: the
   live SPM Portal rail (80px, 72px tiles 4px from the edges, full column height)
   instead of Figma's 104px frame. Default unchanged (spm AT-103). Story

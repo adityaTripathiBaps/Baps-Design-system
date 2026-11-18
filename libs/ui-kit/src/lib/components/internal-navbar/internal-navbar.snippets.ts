@@ -416,4 +416,7 @@ export default function Example({ pathname = '/overview' }) {
   SamparkRailCompact: {
     primeng: `<baps-internal-navbar brand="sampark" [collapsed]="true" [compact]="true" [items]="items" [activeItem]="active" />`,
   },
+  SamparkRailFlyout: {
+    primeng: `<baps-internal-navbar brand="sampark" [collapsed]="true" [compact]="true" [items]="[{ label: 'Sampark', iconName: 'users-2', children: [...] }]" [activeItem]="active" />`,
+  },
 };

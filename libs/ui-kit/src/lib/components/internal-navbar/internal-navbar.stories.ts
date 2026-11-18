@@ -99,6 +99,31 @@ export const SamparkRailCompact: StoryObj<BapsInternalNavbar> = {
   }),
 };
 
+/**
+ * Sampark rail flyout, as the live SPM Portal: a parent tile ("Sampark") opens
+ * its children in a 240px panel beside the rail on click; the current page is
+ * bold on Secondary/60. Outside click or Escape closes it (spm AT-103).
+ */
+export const SamparkRailFlyout: StoryObj<BapsInternalNavbar> = {
+  tags: ['!ds:mybky'],
+  render: () => ({
+    props: {
+      items: [
+        { label: 'Sampark', iconName: 'users-2', children: [
+          { label: 'Dashboard', iconName: 'widget' },
+          { label: 'Templates', iconName: 'window-frame' },
+          { label: 'Projects', iconName: 'briefcase' },
+        ] },
+      ] as InternalNavItem[],
+    },
+    template: `
+      <div style="height: 320px">
+        <baps-internal-navbar brand="sampark" [collapsed]="true" [compact]="true" [items]="items" activeItem="Templates" />
+      </div>
+    `,
+  }),
+};
+
 const NESTED_ITEMS: InternalNavItem[] = [
   { label: 'Dashboard', iconName: 'widget' },
   {

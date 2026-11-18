@@ -432,3 +432,88 @@ baps-internal-navbar.baps-sampark.baps-internal-navbar-compact .baps-internal-na
 baps-internal-navbar.baps-sampark.baps-internal-navbar-compact .baps-internal-nav--collapsed .baps-internal-nav__list {
   padding: var(--space-1);
 }
+
+/* ── Sampark rail flyout ──────────────────────────────────────────────
+   A parent in the collapsed Sampark rail opens its children beside the
+   tile, as the live SPM Portal's slim-plus menu (dev, measured 2026-11-18):
+   panel 240px wide, 12px right of the 72px tile (8px past the 80px rail),
+   4px below its top, 8px 0 padding, Secondary/100 fill, 4px radius, the
+   overlay shadow; rows 40px, 8px 16px padding, 24px icon, 8px gap, 14px
+   white text; hover and the current page fill Secondary/60, the current
+   page also 700. The open parent keeps its hover fill. */
+baps-internal-navbar.baps-sampark .baps-internal-nav--collapsed .baps-internal-nav__item {
+  position: relative;
+}
+
+baps-internal-navbar.baps-sampark
+  .baps-internal-nav--collapsed
+  .baps-internal-nav__item--flyout-open
+  > .baps-internal-nav__link {
+  background: var(--color-sampark-secondary-60, #4a4947);
+}
+
+baps-internal-navbar.baps-sampark .baps-internal-nav__flyout {
+  position: absolute;
+  inset-block-start: var(--space-1);
+  inset-inline-start: calc(100% + var(--space-3));
+  z-index: 1000;
+  width: 15rem;
+  margin: 0;
+  padding: var(--space-2) 0;
+  list-style: none;
+  background: var(--color-sampark-secondary-100, #1d1c1b);
+  border-radius: var(--radius-sampark-default, 0.25rem);
+  box-shadow: var(--p-overlay-select-shadow);
+}
+
+baps-internal-navbar.baps-sampark .baps-internal-nav__flyout-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  height: var(--space-10);
+  padding: var(--space-2) var(--space-4);
+  border: 0;
+  background: transparent;
+  color: var(--color-sampark-mono-0, #ffffff);
+  font: inherit;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  text-align: start;
+  cursor: pointer;
+}
+
+baps-internal-navbar.baps-sampark .baps-internal-nav__flyout-link:hover,
+baps-internal-navbar.baps-sampark .baps-internal-nav__flyout-link--active {
+  background: var(--color-sampark-secondary-60, #4a4947);
+}
+
+baps-internal-navbar.baps-sampark .baps-internal-nav__flyout-link--active {
+  font-weight: var(--font-weight-bold);
+}
+
+baps-internal-navbar.baps-sampark .baps-internal-nav__flyout-link:focus-visible {
+  outline: 1px solid var(--color-sampark-primary-default);
+  outline-offset: -2px;
+}
+
+baps-internal-navbar.baps-sampark .baps-internal-nav__flyout-icon {
+  flex: none;
+  width: 24px;
+  height: 24px;
+}
+
+/* The list scrolls (overflow-y: auto, which forces overflow-x: auto too), and
+   that would clip the flyout to the rail. A Sampark rail carries a handful of
+   tiles, so it does not scroll. */
+baps-internal-navbar.baps-sampark .baps-internal-nav--collapsed .baps-internal-nav__list {
+  overflow: visible;
+}
+
+/* The list scrolls (overflow-y: auto), which would clip the flyout; while one
+   is open the list lets it out. */
+baps-internal-navbar.baps-sampark
+  .baps-internal-nav--collapsed
+  .baps-internal-nav__list:has(.baps-internal-nav__flyout) {
+  overflow: visible;
+}
