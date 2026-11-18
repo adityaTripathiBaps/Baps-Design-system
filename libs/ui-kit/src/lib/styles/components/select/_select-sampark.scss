@@ -902,6 +902,7 @@
     width: var(--space-7) !important;
     min-width: var(--space-7) !important;
     height: var(--space-7) !important;
+    min-height: var(--space-7) !important;
     border-radius: 50% !important;
   }
 
@@ -909,7 +910,10 @@
     height: var(--space-5) !important;
   }
 
+  /* The title row's 32px min-height set the header to 40 (dev 38). */
+  .p-datepicker-title,
   .p-datepicker-title :is(.p-datepicker-select-month, .p-datepicker-select-year) {
+    min-height: var(--space-7) !important;
     font-weight: var(--font-weight-medium) !important;
   }
 }

@@ -157,7 +157,8 @@ classification and deprecation policy.
 
 - **`@org/ui-kit` — patch (Sampark):** the DatePicker popup is SPM dev's compact
   calendar: 4px panel/header padding, 28px day cells, 28px round nav buttons,
-  20px weekday row, 500 title (spm AT-085).
+  20px weekday row, 500 title (spm AT-085). Nav buttons and the title row also
+  drop their 32px min-height, so the nav is 28x28 and the header 36.
 - **`@org/ui-kit` — patch (Sampark):** `baps-checkbox` resting border is Mono/60, and a
   disabled box keeps its enabled look (white; checked: primary outline and tick)
   dimmed to 0.6, as on SPM dev, instead of the grey fill (spm AT-095).
