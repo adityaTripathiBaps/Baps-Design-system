@@ -130,6 +130,8 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** a MultiSelect chip's remove icon is the SPM
+  dev 14px box with a 10px cross in #979493 (was 14x16 in MyBKY slate).
 - **`@org/ui-kit` — patch (Sampark):** a locked (disabled) MultiSelect option is
   dimmed to 0.6, as on SPM dev.
 - **`@org/ui-kit` — patch (Sampark):** the `Sampark` preset draws a keyboard focus

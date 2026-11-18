@@ -83,6 +83,9 @@
      into every Sampark chip. Dev's 13px label has no type-scale step, so it
      stays 12px (ask at demo, BRAIN). */
   --select-chip-bg: var(--color-sampark-mono-20, #f3f2f2);
+  /* SPM dev chip remove icon #979493 (measured 2026-11-18); unset, the MyBKY
+     mono-500 slate (#6f777d) applied. */
+  --select-chip-remove-color: var(--color-sampark-text-placeholder, #979493);
   --select-chip-text: var(--color-sampark-mono-100, #151414);
   --select-chip-border: var(--color-sampark-border-default, #e1e0e0);
   --select-chip-border-hover: var(--color-sampark-border-hover);
@@ -678,6 +681,15 @@
     .p-focus
   ) {
   background: transparent !important;
+}
+
+/* SPM dev chip remove icon: a 14px box with a 10px times-circle glyph
+   (PrimeIcons at 10px). PrimeNG 21 renders a full-size svg instead, 14x16, so
+   the cross read larger. 2px padding keeps the 14px box and its fill. */
+.baps-ds-sampark .p-multiselect .p-multiselect-chip-item .p-chip .p-chip-remove-icon {
+  box-sizing: border-box !important;
+  height: 0.875rem !important;
+  padding: var(--space-0-5) !important;
 }
 
 /* SPM dev: a locked (disabled) option is dimmed to 0.6, so the values a
