@@ -763,6 +763,7 @@ export const ShadowSamparkL2 = "0 12px 16px -4px rgba(16,24,40,.08)";
 export const ShadowSamparkToast =
   "0 4px 6px -2px rgba(16,24,40,.16), 0 12px 16px -4px rgba(16,24,40,.08)";
 export const ShadowSamparkInputFocus = "0 0 0 3px #f2f1f0";
+export const ShadowSamparkCheckboxHover = "0 0 0 2px #f2f1f0"; // SPM dev: hovered panel checkbox (Select All / option), measured 2026-11-18; user-approved token
 export const ShadowSamparkInputError = "0 0 0 3px #ffe5e5";
 export const ShadowSamparkSwitchThumb = "0px 1px 2px #0000001a";
 export const ShadowSamparkSwitchTrack = "inset 0px 0px 4px 0px #00000026";

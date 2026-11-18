@@ -70,6 +70,10 @@
           "spmUi": "--input-shadow-focused"
         }
       },
+      "checkboxHover": {
+        "value": "0 0 0 2px #f2f1f0",
+        "comment": "SPM dev: hovered panel checkbox (Select All / option), measured 2026-11-18; user-approved token"
+      },
       "inputError": {
         "value": "0 0 0 3px #ffe5e5",
         "legacyMapping": {

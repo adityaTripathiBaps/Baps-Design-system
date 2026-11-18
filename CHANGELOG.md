@@ -8,6 +8,8 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/tokens` — minor, additive:** `--shadow-sampark-checkbox-hover` (0 0 0 2px #f2f1f0),
+  SPM dev's hovered panel checkbox (user-approved 2026-11-18).
 - **`@org/ui-kit` — minor, additive (Sampark):** `baps-internal-navbar` collapsed
   Sampark rail opens a parent's `children` in a flyout beside the tile (click;
   outside click / Escape close), as the live SPM Portal's slim-plus menu: 240px

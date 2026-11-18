@@ -9125,6 +9125,18 @@
     }
   },
   {
+    "name": "ShadowSamparkCheckboxHover",
+    "path": [
+      "shadow",
+      "sampark",
+      "checkboxHover"
+    ],
+    "value": "0 0 0 2px #f2f1f0",
+    "original": "0 0 0 2px #f2f1f0",
+    "legacyMapping": {},
+    "comment": "SPM dev: hovered panel checkbox (Select All / option), measured 2026-11-18; user-approved token"
+  },
+  {
     "name": "ShadowSamparkInputError",
     "path": [
       "shadow",
