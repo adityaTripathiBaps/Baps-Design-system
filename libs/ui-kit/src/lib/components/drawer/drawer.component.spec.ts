@@ -79,7 +79,35 @@ async function setup(
 // fixture.nativeElement.
 const panel = () => document.querySelector('.p-drawer');
 
+@Component({
+  imports: [BapsDrawer],
+  template: `
+    @if (mounted()) {
+      <baps-drawer [(visible)]="visible" header="Filters" />
+    }
+  `,
+})
+class UnmountHost {
+  readonly mounted = signal(true);
+  readonly visible = signal(true);
+}
+
 describe('BapsDrawer', () => {
+  it('leaves no mask on <body> when the consumer unmounts it on close (spm Filters)', async () => {
+    const fixture = TestBed.createComponent(UnmountHost);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(document.querySelector('.p-drawer-mask')).not.toBeNull();
+    // The real sequence: PrimeNG's own visible is already false (closed) but
+    // its leave animation has not finished when the consumer unmounts it.
+    const inner = fixture.debugElement.query(By.directive(Drawer)).componentInstance as Drawer;
+    inner.visible = false;
+    fixture.componentInstance.mounted.set(false);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(document.querySelector('.p-drawer-mask')).toBeNull();
+  });
+
   describe('visible two-way binding', () => {
     it('renders the panel when visible starts true', async () => {
       await setup();

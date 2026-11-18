@@ -3,7 +3,9 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnDestroy,
   Output,
+  ViewChild,
   ViewEncapsulation,
   inject,
 } from '@angular/core';
@@ -151,7 +153,9 @@ export type BapsDrawerPosition = 'left' | 'right' | 'top' | 'bottom';
     '[class.baps-sampark]': "brand === 'sampark'",
   },
 })
-export class BapsDrawer {
+export class BapsDrawer implements OnDestroy {
+  @ViewChild(Drawer) private primeDrawer?: Drawer;
+
   private readonly cdr = inject(ChangeDetectorRef);
 
   /** Whether the panel is open. Two-way bindable: `[(visible)]`. */
@@ -232,6 +236,21 @@ export class BapsDrawer {
    * PrimeNG dismiss paths use, so a consumer sees one visibleChange whichever
    * way the drawer was closed.
    */
+  /**
+   * PrimeNG 21 removes its body mask on destroy only while `visible` is still
+   * true. A consumer that unmounts the drawer when it closes (`@if (open)`, as
+   * spm's Filters panel does) sets visible=false first, so the leave animation
+   * that would remove the mask never finishes: the mask stayed on <body>,
+   * dimming the page and swallowing every click (spm, measured: one
+   * `p-drawer-mask ... enter-active` left behind after the close button).
+   * Clear whatever mask is still attached; destroyModal also unblocks scroll.
+   */
+  ngOnDestroy(): void {
+    if (this.primeDrawer?.mask) {
+      this.primeDrawer.destroyModal();
+    }
+  }
+
   protected close(): void {
     this.onVisibleChange(false);
   }

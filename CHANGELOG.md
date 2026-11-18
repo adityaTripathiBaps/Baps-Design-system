@@ -125,6 +125,10 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (both brands):** `baps-drawer` removes PrimeNG's body
+  mask when it is destroyed. PrimeNG 21 only did that while still visible, so a
+  drawer unmounted on close (`@if (open)`) left its mask on the page, dimming it
+  and blocking clicks (spm Filters).
 - **`@org/ui-kit` — patch (Sampark):** a selected Select row tints #f8e5e5 on
   hover, and a `baps-input-group` addon label is 13px, as on SPM dev (spm AT-096,
   AT-093).
