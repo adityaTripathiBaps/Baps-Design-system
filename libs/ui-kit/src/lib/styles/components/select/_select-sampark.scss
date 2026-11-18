@@ -776,6 +776,16 @@
     padding: var(--space-2) !important;
     background: var(--color-sampark-mono-20, #f3f2f2) !important;
     border-bottom: 1px solid var(--select-overlay-border) !important;
+
+    /* SPM dev's search field has no search icon (measured 2026-11-18, Owner
+       Role / Location Type / Category); padding as the Select filter. */
+    :is(p-inputicon, .p-inputicon, .p-multiselect-filter-icon) {
+      display: none !important;
+    }
+
+    .p-multiselect-filter {
+      padding: var(--space-1-5) var(--space-2) !important;
+    }
   }
 
   > p-checkbox {

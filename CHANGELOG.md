@@ -133,6 +133,8 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** a MultiSelect panel's search field has no
+  search icon and 6px/8px padding, as on SPM dev (same as the Select filter).
 - **`@org/ui-kit` — patch (Sampark):** the default vertical `baps-divider` has no
   margin or padding and a 20px rule, so a row's gap spaces it, as SPM dev's
   header separator (was a 24px box with MyBKY margins, 24px gaps). Compact
