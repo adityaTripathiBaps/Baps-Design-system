@@ -773,3 +773,13 @@ $s: ':is(baps-table.baps-sampark, .baps-ds-sampark baps-table)';
   height: 2.75rem;
   padding: 0.375rem 0.75rem !important;
 }
+
+/* ── Form table density (opt-in: styleClass="baps-table-form") ─────────────
+   A table whose cells hold form fields (SPM Template Project Owner table).
+   SPM dev pads those cells 8px 4px (measured 2026-11-18, AT-082) so a 180px
+   column carries a 171px field; the 12px default left 155px. Only cells whose
+   direct child is a select-family field; toggle and action cells keep 8px 12px
+   as on dev. */
+#{$s} .p-datatable.baps-table-form .p-datatable-tbody > tr > td:has(> :is(baps-select, baps-multi-select, baps-tree-select)) {
+  padding: var(--space-2) var(--space-1) !important;
+}

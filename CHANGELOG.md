@@ -8,6 +8,9 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/ui-kit` — minor, additive (Sampark):** `baps-table` `styleClass="baps-table-form"`
+  pads cells whose direct child is a select-family field 8px 4px, as SPM dev's
+  Template Project Owner table (AT-082). Story SamparkFormDensity.
 - **`@org/tokens` — minor, additive:** `--overlay-list-sampark-disabled-opacity` (0.6),
   SPM dev's locked MultiSelect option (user-approved 2026-11-18).
 - **`@org/ui-kit` — minor, additive:** `baps-multi-select` `autoOptionFocus`. Unset, it is

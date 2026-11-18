@@ -1024,4 +1024,7 @@ ${TABLE_BODY}
   );
 }`,
   },
+  SamparkFormDensity: {
+    primeng: `<baps-table [value]="rows" brand="sampark" styleClass="baps-table-form">…</baps-table>`,
+  },
 };

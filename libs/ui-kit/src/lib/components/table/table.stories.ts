@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
+import { BapsSelect } from '../select/select.component';
 import { action } from '@storybook/addon-actions';
 import { expect, userEvent, waitFor, within } from '@storybook/test';
 import { FormsModule } from '@angular/forms';
@@ -1518,6 +1519,34 @@ export const Empty: StoryObj<BapsTable> = {
           <tr><td colspan="2">No templates match these filters</td></tr>
         </ng-template>
       </baps-table>
+    `,
+  }),
+};
+
+/**
+ * `styleClass="baps-table-form"` (Sampark): cells whose direct child is a
+ * select-family field pad 8px 4px, as SPM dev's Template Project Owner table
+ * (AT-082). Other cells keep the default.
+ */
+export const SamparkFormDensity: StoryObj<BapsTable> = {
+  decorators: [moduleMetadata({ imports: [BapsSelect] })],
+  render: () => ({
+    props: { rows: [{ level: 'Zone', dept: 'Yuvati' }], levels: [{ label: 'Zone', value: 'Zone' }, { label: 'Region', value: 'Region' }], depts: [{ label: 'Yuvati', value: 'Yuvati' }] },
+    template: `
+      <div class="baps-ds-sampark" style="max-width:480px">
+        <baps-table [value]="rows" brand="sampark" styleClass="baps-table-form">
+          <ng-template pTemplate="header">
+            <tr><th style="width:180px">Location Level</th><th style="width:200px">Owner Department</th><th>Note</th></tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-row>
+            <tr>
+              <td><baps-select brand="sampark" [options]="levels" [(ngModel)]="row.level" ariaLabel="Location level" /></td>
+              <td><baps-select brand="sampark" [options]="depts" [(ngModel)]="row.dept" ariaLabel="Owner department" /></td>
+              <td>Text cell keeps 12px</td>
+            </tr>
+          </ng-template>
+        </baps-table>
+      </div>
     `,
   }),
 };
