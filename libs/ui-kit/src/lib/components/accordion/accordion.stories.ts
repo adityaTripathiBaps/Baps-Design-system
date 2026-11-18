@@ -472,3 +472,34 @@ export const KeyboardInteraction: Story = {
     await waitFor(() => expect(header).toHaveAttribute('aria-expanded', 'true'));
   },
 };
+
+/**
+ * SPM dev Templates filter drawer, Sampark: an open section (count 1, divider,
+ * checkbox row) above two closed ones with nothing selected. Dev parity
+ * checks: closed sections show chevron-right, the open one chevron-down; a 0
+ * count sits on the neutral 4% ink tint; the open body has 8px above it and
+ * no padding below, so the accordion's 8px gap is the only space before the
+ * next header.
+ */
+export const SamparkFilterSections: Story = {
+  render: () => ({
+    props: { open: ['type'], checked: true },
+    template: `
+      <div style="width: 436px">
+        <baps-accordion brand="sampark" [multiple]="true" [value]="open">
+          <baps-accordion-panel value="type" label="Project Type" [count]="1" [divider]="true">
+            <div style="display: flex; gap: 12px">
+              <baps-checkbox brand="sampark" [binary]="true" [(ngModel)]="checked" label="Regular"></baps-checkbox>
+            </div>
+          </baps-accordion-panel>
+          <baps-accordion-panel value="sampark" label="Sampark Type" [count]="0" [divider]="true">
+            <div>Body</div>
+          </baps-accordion-panel>
+          <baps-accordion-panel value="scope" label="Location Scope" [count]="0">
+            <div>Body</div>
+          </baps-accordion-panel>
+        </baps-accordion>
+      </div>
+    `,
+  }),
+};

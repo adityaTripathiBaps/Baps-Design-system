@@ -155,6 +155,11 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** accordion matches the SPM dev filter
+  drawer: closed sections show chevron-right and open ones chevron-down, a 0
+  count sits on Mono/alpha4 (`.baps-accordion-count--zero`), and an open body
+  has no bottom padding, so the 8px accordion gap is the only space before the
+  next header (was 16).
 - **`@org/tokens` — patch (Sampark):** `toolbar.sampark.searchWidth` is 25rem
   (400px), the width SPM dev renders the Templates/Projects toolbar search at
   (was 16rem). `baps-toolbar` gains a SamparkListPage story mirroring that bar.

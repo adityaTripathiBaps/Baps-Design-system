@@ -85,7 +85,11 @@ export type AccordionValue =
         <p-accordion-panel [value]="panel.value" [disabled]="panel.disabled">
           <p-accordion-header>
             @if (panel.count !== undefined && panel.count !== null) {
-              <span class="baps-accordion-count" aria-hidden="true">{{
+              <span
+                class="baps-accordion-count"
+                [class.baps-accordion-count--zero]="+panel.count === 0"
+                aria-hidden="true"
+                >{{
                 panel.count
               }}</span>
             }

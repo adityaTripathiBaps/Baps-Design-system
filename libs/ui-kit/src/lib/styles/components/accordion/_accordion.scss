@@ -367,9 +367,32 @@ p-accordion .baps-accordion-clear__sampark {
   margin-inline-end: var(--space-1);
 }
 
+/* SPM dev: 8px above the body, none below — the accordion's own 8px gap is
+   the only space before the next header. 8px both ways measured an expanded
+   section 8px taller than dev (Templates filter, 2026-11-18). */
 :is(p-accordion.baps-sampark, .baps-ds-sampark p-accordion)
   .baps-accordion-body {
-  padding-block: var(--space-2);
+  padding-block: var(--space-2) 0;
+}
+
+/* SPM dev: a section with nothing selected shows its 0 on the neutral 4% ink
+   tint (.cf-count without .highlight); only a non-zero count is primary. */
+:is(p-accordion.baps-sampark, .baps-ds-sampark p-accordion)
+  .baps-accordion-count--zero {
+  background: var(--color-sampark-mono-alpha4, rgba(21, 20, 20, 0.04));
+}
+
+/* SPM dev: chevron-right on a closed section, chevron-down on an open one.
+   PrimeNG v21 swaps chevron-down (closed) for chevron-up (open), so the glyph
+   is turned rather than replaced, keeping MyBKY on PrimeNG's own pair. */
+:is(p-accordion.baps-sampark, .baps-ds-sampark p-accordion)
+  .p-accordionheader[aria-expanded='false'] svg.p-icon {
+  transform: rotate(-90deg);
+}
+
+:is(p-accordion.baps-sampark, .baps-ds-sampark p-accordion)
+  .p-accordionheader[aria-expanded='true'] svg.p-icon {
+  transform: rotate(180deg);
 }
 
 /* A panel never grows wider than its accordion. PrimeNG's collapsible lays the
