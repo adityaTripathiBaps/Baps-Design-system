@@ -427,6 +427,9 @@ baps-internal-navbar.baps-sampark.baps-internal-navbar-compact {
 baps-internal-navbar.baps-sampark.baps-internal-navbar-compact .baps-internal-nav--collapsed {
   width: 80px;
   height: 100%;
+  /* No 1px edge: it cost the tile a pixel (71px vs dev 72) and shifted the
+     flyout to 87 (dev 88). The rail meets the content directly on dev. */
+  border-right-width: 0;
 }
 
 baps-internal-navbar.baps-sampark.baps-internal-navbar-compact .baps-internal-nav--collapsed .baps-internal-nav__list {
@@ -447,8 +450,14 @@ baps-internal-navbar.baps-sampark .baps-internal-nav--collapsed .baps-internal-n
 
 baps-internal-navbar.baps-sampark
   .baps-internal-nav--collapsed
-  .baps-internal-nav__item--flyout-open
-  > .baps-internal-nav__link {
+  .baps-internal-nav__item.baps-internal-nav__item--flyout-open
+  > .baps-internal-nav__link,
+baps-internal-navbar.baps-sampark
+  .baps-internal-nav--collapsed
+  .baps-internal-nav__item.baps-internal-nav__item--flyout-open
+  > .baps-internal-nav__link:hover {
+  /* Beats the rail's own hover fill (Secondary/80): the open parent reads
+     Secondary/60 on SPM dev, pointer over it or not. */
   background: var(--color-sampark-secondary-60, #4a4947);
 }
 
