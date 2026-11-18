@@ -532,6 +532,16 @@ export const Sampark = definePreset(Material, {
 
   semantic: {
     fontSize: '14px',
+    // Material's base sets focusRing to width 0 / style none, so on its own the
+    // Sampark preset drew NO keyboard focus outline at all. SPM dev (measured
+    // 2026-11-18, Templates header buttons after Tab): 1px solid #c96868 with a
+    // 2px offset. The colour follows the primary ramp, like the rest.
+    focusRing: {
+      width: '1px',
+      style: 'solid',
+      color: '{primary.color}',
+      offset: '2px',
+    },
     formField: {
       borderRadius: tokens.FormFieldSamparkBorderRadius,
     },

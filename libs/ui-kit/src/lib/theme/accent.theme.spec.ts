@@ -225,3 +225,10 @@ describe('One Ramp, Two Sinks Theme Architecture', () => {
     });
   });
 });
+
+describe('Sampark preset focus ring (SPM dev, 2026-11-18)', () => {
+  it('draws a 1px primary outline with a 2px offset instead of Material\'s none', () => {
+    const ring = (Sampark as { semantic?: { focusRing?: Record<string, string> } }).semantic?.focusRing;
+    expect(ring).toEqual({ width: '1px', style: 'solid', color: '{primary.color}', offset: '2px' });
+  });
+});
