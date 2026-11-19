@@ -233,3 +233,27 @@ describe('BapsInputGroup styling source', () => {
     expect(source).toContain('_input-group.scss');
   });
 });
+
+@Component({
+  imports: [BapsInputGroup, InputText],
+  template: `
+    <baps-input-group brand="sampark" suffix="day/s">
+      <button input-group-control type="button">AM</button>
+      <input pInputText aria-label="Every" />
+    </baps-input-group>
+  `,
+})
+class ControlHost {}
+
+describe('BapsInputGroup control addon (AT-080)', () => {
+  it('places an input-group-control element straight after the field, before the suffix addon', async () => {
+    const fixture = TestBed.createComponent(ControlHost);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const group = (fixture.nativeElement as HTMLElement).querySelector('.p-inputgroup')!;
+    const order = [...group.children].map((e) =>
+      e.matches('[input-group-control]') ? 'control' : e.tagName === 'INPUT' ? 'field' : e.classList.contains('baps-input-group__addon--suffix') ? 'suffix' : e.classList.contains('baps-input-group__addon--prefix') ? 'prefix' : e.tagName.toLowerCase(),
+    );
+    expect(order).toEqual(['prefix', 'field', 'control', 'suffix']);
+  });
+});

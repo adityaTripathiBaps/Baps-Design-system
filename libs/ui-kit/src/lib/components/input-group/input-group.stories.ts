@@ -7,6 +7,8 @@ import { InputGroup } from 'primeng/inputgroup';
 import { InputGroupAddon } from 'primeng/inputgroupaddon';
 import { BapsInputNumber } from '../input-number/input-number.component';
 import { BapsInputGroup } from './input-group.component';
+import { BapsSelect } from '../select/select.component';
+import { BapsDatepicker } from '../datepicker/datepicker.component';
 
 /**
  * InputGroup — Sampark Portal. One bordered field split into segments by text
@@ -211,4 +213,39 @@ export const SamparkBarePInputGroup: StoryObj<BapsInputGroup> = {
     await expect(s.borderTopWidth).toBe('1px');
     await expect(s.borderTopStyle).toBe('solid');
   },
+};
+
+/**
+ * AT-080 control addons, as SPM dev's Template form: Set Reminder / Frequency
+ * is [number | unit select] in a 166px column, At is [time | AM/PM button].
+ * The control sits in the input-group-control slot: one ring, a hairline on
+ * its inner edge, the addon tint and a 13px/500 label.
+ */
+export const SamparkControlAddons: StoryObj<BapsInputGroup> = {
+  decorators: [moduleMetadata({ imports: [BapsSelect, BapsDatepicker] })],
+  render: () => ({
+    props: {
+      every: 0,
+      unit: 'd',
+      units: [
+        { id: 'd', name: 'Day/s' },
+        { id: 'w', name: 'Week/s' },
+        { id: 'm', name: 'Month/s' },
+      ],
+      time: null,
+      period: 'AM',
+    },
+    template: `
+      <div class="baps-ds-sampark" style="display: grid; gap: 16px; width: 166px">
+        <baps-input-group brand="sampark">
+          <baps-input-number [(ngModel)]="every" [showButtons]="false" [min]="0" brand="sampark"></baps-input-number>
+          <baps-select input-group-control brand="sampark" [options]="units" optionLabel="name" optionValue="id" [(ngModel)]="unit" appendTo="body"></baps-select>
+        </baps-input-group>
+        <baps-input-group class="w-auto" brand="sampark">
+          <baps-datepicker brand="sampark" [(ngModel)]="time" [timeOnly]="true" hourFormat="12" placeholder="Select time" appendTo="body"></baps-datepicker>
+          <button input-group-control type="button" (click)="period = period === 'AM' ? 'PM' : 'AM'">{{ period }}</button>
+        </baps-input-group>
+      </div>
+    `,
+  }),
 };

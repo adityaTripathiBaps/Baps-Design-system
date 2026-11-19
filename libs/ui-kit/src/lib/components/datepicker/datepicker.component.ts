@@ -232,6 +232,7 @@ const DATEPICKER_TOKENS = {
   host: {
     '[class.baps-sampark]': "brand === 'sampark'",
     '[class.baps-ds-sampark]': "brand === 'sampark'",
+    '[class.baps-datepicker-time-only]': 'timeOnly',
   },
 })
 export class BapsDatepicker implements ControlValueAccessor {

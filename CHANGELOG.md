@@ -155,6 +155,12 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — minor:** `baps-input-group` gains an `input-group-control`
+  slot for a control addon (a unit `baps-select`, or a button such as an AM/PM
+  toggle) after the field: one ring, inner hairline, addon tint, 13px/500 label
+  (AT-080, SPM dev Template form). A datepicker as the field is chromeless; a
+  Sampark time-only one is 104px (dev). `baps-datepicker` marks its host
+  `baps-datepicker-time-only`. Story SamparkControlAddons.
 - **`@org/ui-kit` — minor (Sampark):** `baps-checkbox` gains
   `labelTone: 'default' | 'muted'`; muted is SPM dev's Template-form label
   (Mono/80, 500). A disabled Sampark label now keeps the primary ink, as dev's

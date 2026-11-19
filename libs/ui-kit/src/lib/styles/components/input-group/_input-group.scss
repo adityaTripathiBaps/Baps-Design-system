@@ -215,6 +215,101 @@ baps-input-group .p-inputgroup > .p-inputgroupaddon:last-child {
   border-end-start-radius: 0;
 }
 
+/* ── Control addon (input-group-control slot, AT-080) ──────────────────
+   SPM dev Template form, measured 2026-11-19: Set Reminder / Frequency / For
+   are [number | unit select], At is [time | AM/PM button]. The control is a
+   trailing segment: hairline on its inner edge, the addon tint, 13px/500
+   label with 12px start / 8px end padding, and none of its own border or
+   radius (the group ring and overflow clip draw the outer corners). Dev:
+   number 85 + select 81 (24px chevron cell) in a 166 group; time 104 +
+   button 74. */
+baps-input-group .p-inputgroup > [input-group-control] {
+  flex: none;
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+  border-inline-start: var(--input-group-border-width) solid var(--baps-ig-border);
+  background: var(--color-sampark-mono-alpha2);
+  color: var(--baps-ig-text);
+}
+
+:is(baps-input-group.baps-sampark, .baps-ds-sampark baps-input-group)
+  .p-inputgroup
+  > [input-group-control] {
+  background: var(--color-sampark-mono-alpha4);
+  font-size: var(--input-group-sampark-addon-font-size, 0.8125rem);
+  font-weight: var(--font-weight-medium);
+}
+
+baps-input-group .p-inputgroup > [input-group-control] .p-select {
+  width: auto !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: none;
+}
+
+baps-input-group .p-inputgroup > [input-group-control] .p-select-label {
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-2) 0 var(--space-3) !important;
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  color: var(--baps-ig-text) !important;
+}
+
+baps-input-group .p-inputgroup > [input-group-control] .p-select-dropdown {
+  width: var(--space-6) !important;
+}
+
+baps-input-group .p-inputgroup > button[input-group-control] {
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1-5);
+  margin: 0;
+  padding: 0 var(--space-2) 0 var(--space-3);
+  border-block: 0;
+  border-inline-end: 0;
+  border-radius: 0;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+baps-input-group .p-inputgroup > button[input-group-control]:disabled {
+  cursor: default;
+}
+
+baps-input-group .p-inputgroup > button[input-group-control]:focus-visible {
+  outline: 2px solid var(--baps-ig-border-hover);
+  outline-offset: -2px;
+}
+
+/* A datepicker as the field: chromeless like the other fields. */
+baps-input-group .p-inputgroup > baps-datepicker {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 100%;
+
+  .p-datepicker,
+  .p-datepicker-input-group {
+    height: 100%;
+    width: 100%;
+  }
+}
+
+/* SPM dev's At field is 104px (time-only, 12h); a time-only Sampark
+   datepicker in a group sizes to that rather than the select-width default.
+   6.5rem is the dev-measured geometry; the spacing scale stops at 2.5rem. */
+:is(baps-input-group.baps-sampark, .baps-ds-sampark baps-input-group)
+  .p-inputgroup
+  > baps-datepicker.baps-datepicker-time-only {
+  flex: none;
+  width: 6.5rem;
+}
+
 .baps-dark baps-input-group {
   --baps-ig-surface: var(--color-mybky-mono-800);
   --baps-ig-border: var(--color-mybky-mono-600);

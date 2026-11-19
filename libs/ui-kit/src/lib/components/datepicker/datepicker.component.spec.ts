@@ -239,3 +239,15 @@ describe('BapsDatepicker AT-081 pass-throughs', () => {
     expect(fixture.componentInstance.datePicker).toBe(inner);
   });
 });
+
+describe('BapsDatepicker time-only host class', () => {
+  it('marks the host baps-datepicker-time-only only when timeOnly is set', async () => {
+    const fixture = TestBed.createComponent(BapsDatepicker);
+    fixture.detectChanges();
+    const host = fixture.nativeElement as HTMLElement;
+    expect(host.classList.contains('baps-datepicker-time-only')).toBe(false);
+    fixture.componentRef.setInput('timeOnly', true);
+    fixture.detectChanges();
+    expect(host.classList.contains('baps-datepicker-time-only')).toBe(true);
+  });
+});

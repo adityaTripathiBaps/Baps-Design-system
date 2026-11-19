@@ -44,7 +44,17 @@ const ADDON_TOKENS = {
  *   </baps-input-group>
  *
  * Arbitrary content can use the input-group-prefix and input-group-suffix
- * slots. Projected content takes precedence over the matching string input,
+ * slots. A CONTROL addon (a unit baps-select, or a button such as an AM/PM
+ * toggle) goes in the input-group-control slot instead: it is placed straight
+ * after the field as its own segment, shares the group's ring, and loses its
+ * own border, so it is not wrapped in a text-addon box (AT-080).
+ *
+ *   <baps-input-group brand="sampark">
+ *     <baps-input-number formControlName="every" brand="sampark" />
+ *     <baps-select input-group-control [options]="units" formControlName="unit" brand="sampark" />
+ *   </baps-input-group>
+ *
+ * Projected content takes precedence over the matching string input,
  * so adding a richer addon never renders duplicate text.
  *
  * ## Figma values (17512:82916 "Min", 168x32)
@@ -80,6 +90,7 @@ const ADDON_TOKENS = {
         }
       </p-inputgroup-addon>
       <ng-content></ng-content>
+      <ng-content select="[input-group-control]"></ng-content>
       <p-inputgroup-addon
         class="baps-input-group__addon baps-input-group__addon--suffix"
       >
