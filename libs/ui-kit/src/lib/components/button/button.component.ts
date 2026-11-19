@@ -182,14 +182,16 @@ import { SAMPARK_BUTTON_TOKENS } from '../../theme/sampark.theme';
     }
 
     /* SPM dev row actions (Templates edit/delete, owner-table trash): a
-       disabled icon-only secondary ghost button is the Mono/80 glyph at 0.6,
-       PrimeNG 17's .p-disabled dim on a Mono/80 icon. Pixel-measured
-       2026-11-19: darkest glyph pixel rgb(155,154,154) = #595656 @ 0.6 on
-       white; the Mono/40 rule above gave rgb(188,185,185). Only this one
-       shape, so labelled and primary ghost buttons keep Figma's Mono/40. */
+       disabled icon-only secondary ghost button is its normal glyph at 0.6,
+       PrimeNG 17's .p-disabled dim, not Figma's Mono/40 at full strength.
+       Pixel-measured 2026-11-19 on a 28px button, total glyph ink: dev 5770;
+       Mono/40 at 1 drew 4346, Mono/80 at 0.6 drew 4346, Mono/100 at 0.6 drew
+       5719. Mono/100 because the kit glyph's stroke is finer than dev's svg:
+       its enabled Mono/100 already matches dev's enabled weight (8939 vs
+       9010). Only this one shape; labelled and primary ghosts keep Mono/40. */
     :is(baps-button.baps-sampark, .baps-ds-sampark baps-button) .p-button.p-button-icon-only.p-button-secondary.p-button-text:disabled,
     :is(baps-button.baps-sampark, .baps-ds-sampark baps-button) .p-button.p-button-icon-only.p-button-secondary.p-button-text:disabled .p-button-icon {
-      color: var(--color-sampark-mono-80, #595656);
+      color: var(--color-sampark-mono-100, #151414);
     }
     :is(baps-button.baps-sampark, .baps-ds-sampark baps-button) .p-button.p-button-icon-only.p-button-secondary.p-button-text:disabled {
       opacity: var(--toggle-switch-sampark-disabled-opacity, 0.6);
