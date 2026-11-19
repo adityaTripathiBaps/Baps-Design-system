@@ -155,6 +155,11 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** a Select, MultiSelect or TreeSelect
+  opened inside a drawer or dialog no longer greys the drawer out: the drawer
+  (and a dialog's mask) is raised to 3001 above the 3000 page scrim and its
+  local dim is off; the list panel stays on top. Replaces the rule that sent
+  the drawer under the scrim to copy SPM dev (user decision 2026-11-19).
 - **`@org/ui-kit` — patch (Sampark):** `baps-table` body rows are 56px by
   height, not only by padding (SPM dev `td { height: 56px }`); a two-line cell
   rowed at 54.8. Compact (`size="small"`) is untouched.

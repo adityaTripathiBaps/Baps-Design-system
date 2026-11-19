@@ -384,3 +384,48 @@ export const EscapeInteraction: Story = {
     );
   },
 };
+
+/**
+ * Sampark: a MultiSelect opened inside a drawer leaves the drawer clear and on
+ * top of the page scrim; only the page behind greys out, and the list panel
+ * sits above the drawer (spm Templates filters > Location Type). The play
+ * asserts the drawer is raised to 3001 and its local dim (::after) is off.
+ */
+export const SamparkOverlayInsideDrawerInteraction: Story = {
+  name: 'Interaction — Sampark list open inside drawer',
+  render: () => ({
+    props: {
+      visible: true,
+      types: [{ name: 'Center' }, { name: 'Region' }, { name: 'Zone' }],
+      picked: [],
+    },
+    template: `
+      <baps-drawer [(visible)]="visible" header="Filters" brand="sampark" position="right" width="31.25rem">
+        <baps-multi-select
+          brand="sampark"
+          [options]="types"
+          optionLabel="name"
+          [(ngModel)]="picked"
+          placeholder="Select Location Type"
+          appendTo="body"
+        ></baps-multi-select>
+      </baps-drawer>
+    `,
+  }),
+  play: async ({ canvasElement }) => {
+    const doc = canvasElement.ownerDocument;
+    const root = doc.documentElement;
+    const hadClass = root.classList.contains('baps-ds-sampark');
+    root.classList.add('baps-ds-sampark');
+    try {
+      const page = within(doc.body);
+      const drawer = await waitFor(() => doc.querySelector('.p-drawer') as HTMLElement, { timeout: 8000 });
+      await userEvent.click(page.getByText('Select Location Type'));
+      await waitFor(() => expect(doc.querySelector('.p-multiselect-overlay')).toBeInTheDocument(), { timeout: 8000 });
+      await waitFor(() => expect(getComputedStyle(drawer).zIndex).toBe('3001'));
+      await expect(getComputedStyle(drawer, '::after').content).toBe('none');
+    } finally {
+      if (!hadClass) root.classList.remove('baps-ds-sampark');
+    }
+  },
+};

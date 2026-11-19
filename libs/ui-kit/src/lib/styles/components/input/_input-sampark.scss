@@ -593,20 +593,27 @@ html.baps-ds-sampark
   z-index: 3001 !important;
 }
 
-/* A drawer whose MultiSelect has its panel on <body> stays under the scrim, as
-   on SPM dev (measured: drawer 2204, mask 2900, scrim 3000; a click inside the
-   drawer lands on the scrim and only closes the panel). The base rule in
-   _input.scss raises .p-drawer:has(.p-multiselect-open) to 3001 and dims it
-   with its own ::after; measured in spm it put the drawer above the scrim, so
-   a click inside it reached its controls. Only when the panel is NOT inside
-   the drawer: an inline panel still needs its host raised. Select keeps the
-   raise (SPM dev raises a sidebar holding an open dropdown). */
+/* A drawer or dialog holding an open Select / MultiSelect / TreeSelect stays
+   ABOVE the 3000 scrim and is not dimmed: only the page behind it greys out,
+   and its body-level panel (3001 above, later in the DOM) sits on top of it.
+   This replaced a rule that dropped the drawer to z-index:auto to copy SPM dev,
+   where the drawer (2204) sits under its own mask (2900) and the whole panel
+   greys while the list is open. User call 2026-11-19: that grey drawer reads
+   as a stacking bug (Templates filters > Location Type, Sort > "then by").
+   3001 rather than the backdrop variable: the scrim above is a fixed 3000, and
+   an app may set --overlay-backdrop-z-index to anything (spm sets 3000, the
+   kit default is 500, which would park the drawer under the scrim). The
+   ::after is the base rule's local dim from _input.scss, switched off. */
 html.baps-ds-sampark
-  .p-drawer:has(.p-multiselect-open):not(:has(.p-overlay)) {
-  z-index: auto !important;
+  :is(.p-drawer, .p-dialog, .p-dialog-mask):has(
+    :is(.p-select-open, .p-multiselect-open, .p-treeselect-open)
+  ) {
+  z-index: 3001 !important;
 }
 
 html.baps-ds-sampark
-  .p-drawer:has(.p-multiselect-open):not(:has(.p-overlay))::after {
-  content: none;
+  :is(.p-drawer, .p-dialog):has(
+    :is(.p-select-open, .p-multiselect-open, .p-treeselect-open)
+  )::after {
+  content: none !important;
 }
