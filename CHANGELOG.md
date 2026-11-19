@@ -155,6 +155,9 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** `baps-table` body rows are 56px by
+  height, not only by padding (SPM dev `td { height: 56px }`); a two-line cell
+  rowed at 54.8. Compact (`size="small"`) is untouched.
 - **`@org/ui-kit` — patch (Sampark):** accordion matches the SPM dev filter
   drawer: closed sections show chevron-right and open ones chevron-down, a 0
   count sits on Mono/alpha4 (`.baps-accordion-count--zero`), and an open body
