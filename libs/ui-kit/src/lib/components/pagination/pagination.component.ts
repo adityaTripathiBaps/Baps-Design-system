@@ -206,6 +206,12 @@ export interface BapsPageEvent {
       flex-wrap: nowrap;
       gap: 0.25rem;
       overflow-x: auto;
+      /* overflow-x: auto turns overflow-y into auto as well, and the 30px
+         rows-per-page label in a 28px strip then grew a 15px vertical
+         scrollbar that ate the strip's right edge: the last control ended
+         19px short of the table (spm Templates, 2026-11-19). Nothing here
+         needs vertical overflow (see above), so clip it. */
+      overflow-y: hidden;
     }
 
     .baps-paginator > * {

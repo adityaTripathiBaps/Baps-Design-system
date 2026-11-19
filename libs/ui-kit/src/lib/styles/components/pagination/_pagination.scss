@@ -194,6 +194,18 @@ select.baps-paginator__rpp {
   white-space: nowrap;
 }
 
+/* SPM dev spacing (2026-11-19): report 10px before the prev button, rows-per-
+   page 10px after next and flush with the table's right edge. With the 8px
+   gap that is 2px on each side, and none of the 4px end margins the MyBKY
+   strip gives the report and the select. */
+:is(.baps-ds-sampark) baps-paginator .baps-paginator__report {
+  margin-inline-end: var(--space-0-5);
+}
+
+:is(.baps-ds-sampark) baps-paginator .baps-paginator__rpp {
+  margin-inline: var(--space-0-5) 0;
+}
+
 :is(.baps-ds-sampark) .baps-paginator__rpp .p-select,
 :is(.baps-ds-sampark) .baps-paginator__rpp .p-dropdown,
 :is(.baps-ds-sampark) select.baps-paginator__rpp {

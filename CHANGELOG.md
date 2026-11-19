@@ -155,6 +155,10 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch:** `baps-paginator` clips vertical overflow; its
+  `overflow-x: auto` had turned a 30px rows-per-page label into a 15px
+  vertical scrollbar that pushed the controls 19px off the right edge.
+  Sampark spacing as SPM dev: 10px report→prev and next→rows, rows flush right.
 - **`@org/ui-kit` — patch (Sampark):** a disabled icon-only secondary ghost
   `baps-button` is its Mono/100 glyph at 0.6 (SPM dev row actions,
   pixel-measured glyph weight 5719 vs dev 5770), not Mono/40 at full opacity; labelled and primary ghost buttons are unchanged.
