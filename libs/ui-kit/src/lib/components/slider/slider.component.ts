@@ -6,6 +6,7 @@ import {
 } from '@angular/forms';
 import { Slider } from 'primeng/slider';
 import { SAMPARK_SLIDER_TOKENS } from '../../theme/sampark.theme';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 @Component({
   selector: 'baps-slider',
@@ -58,7 +59,7 @@ export class BapsSlider implements ControlValueAccessor {
   @Input() disabled = false;
   @Input() style?: Record<string, string | number>;
   @Input() styleClass?: string;
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
   @Input() ariaLabel?: string;
   @Input() ariaLabelledBy?: string;
   @Input() showValueTooltip = false;

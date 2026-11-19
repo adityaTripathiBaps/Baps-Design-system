@@ -1,4 +1,5 @@
 import { Directive, Input } from '@angular/core';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 /**
  * bapsAccordion — Sampark skin opt-in for a PrimeNG v21 accordion.
@@ -104,5 +105,5 @@ export class BapsAccordion {
    * 'sampark' adds the `.baps-sampark` host class that `_accordion.scss` keys
    * its Mono/10 header and Primary/10% count badge off.
    */
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
 }

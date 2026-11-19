@@ -8,6 +8,13 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/ui-kit` — minor, additive:** `provideBapsBrand(brand)`, `BAPS_BRAND`,
+  `injectBapsBrand()` and the `BapsBrand` type. One provider sets the default
+  `brand` for every kit component and directive (54), so a Sampark app no longer
+  needs `brand="sampark"` on each tag. An explicit `brand` input still wins; with
+  no provider the default stays `'mybky'`, so existing apps are unchanged. Note:
+  `brand` defaults now come from `inject()`, so a kit component constructed with
+  `new` outside an injection context throws (affects tests only).
 - **`@org/tokens` — minor, additive:** `--shadow-sampark-checkbox-hover` (0 0 0 2px #f2f1f0),
   SPM dev's hovered panel checkbox (user-approved 2026-11-18).
 - **`@org/ui-kit` — minor, additive (Sampark):** `baps-internal-navbar` collapsed

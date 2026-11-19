@@ -6,6 +6,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { Ripple } from 'primeng/ripple';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 /**
  * baps-navbar — top application navigation bar.
@@ -167,7 +168,7 @@ export class BapsNavbar {
   @Input() version?: string;
   /** Accessible label for the nav element. */
   @Input() ariaLabel?: string;
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
 
   /**
    * Sampark topbar colour theme — upstream's `topbarTheme`, applied there as a

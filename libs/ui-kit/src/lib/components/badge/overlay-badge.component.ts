@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { OverlayBadge } from 'primeng/overlaybadge';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 @Component({
   selector: 'baps-overlaybadge',
@@ -33,5 +34,5 @@ export class BapsOverlayBadge {
    * design tokens to it, so the Sampark badge tokens arrive through
    * _badge-sampark.scss, keyed on this host class (or a .baps-ds-sampark page).
    */
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
 }

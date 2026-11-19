@@ -17,6 +17,7 @@ import {
 import { AutoComplete } from 'primeng/autocomplete';
 
 import { BapsChip } from '../chip/chip.component';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 /** A free-text, multi-value field that renders each committed value as a chip. */
 @Component({
@@ -68,7 +69,7 @@ export class BapsChipsInput implements ControlValueAccessor, AfterViewInit {
   @Input() placeholder?: string;
   @Input() disabled = false;
   @Input() size?: 'small' | 'large';
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
   @Input() separator?: string;
 
   value: string[] = [];

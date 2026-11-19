@@ -14,6 +14,7 @@ import { Dialog } from 'primeng/dialog';
 // same way sampark.theme.ts reaches for it.
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import * as tokens from '@org/tokens/generated/tokens';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 /**
  * Which way the shell aligns its title and body text.
@@ -370,7 +371,7 @@ export class BapsDialog {
   @Input() baseZIndex = 0;
 
   /** Visual skin. 'sampark' also arrives page-wide via `.baps-ds-sampark`. */
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
 
   /**
    * Mirrors PrimeNG's close back onto `visible` and re-emits it. Written out

@@ -17,6 +17,7 @@ import { PrimeTemplate, SharedModule, type ScrollerOptions } from 'primeng/api';
 import { MultiSelect } from 'primeng/multiselect';
 import { Chip } from 'primeng/chip';
 import { BapsTooltip } from '../tooltip/tooltip.directive';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 /** Option flag the wrapper adds when lockedValues / keepOneSelected disable an option. */
 const LOCK_FLAG = '__bapsLocked';
@@ -270,7 +271,7 @@ export class BapsMultiSelect implements ControlValueAccessor {
   @Input() style?: Record<string, string | number>;
   @Input() styleClass?: string;
   @Input() panelStyleClass?: string;
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
   /** Accessible name for the trigger when there's no visible `<label for>`. */
   @Input() ariaLabel?: string;
   @Input() ariaLabelledBy?: string;

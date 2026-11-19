@@ -1,4 +1,5 @@
 import { Directive, Input } from '@angular/core';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 /**
  * bapsTabs — Sampark skin opt-in for a PrimeNG v21 tab strip.
@@ -83,7 +84,7 @@ export class BapsTabs {
    * 'sampark' adds the `.baps-sampark` host class that
    * `_tabs-sampark.scss` keys its maroon underline / 14px Inter rules off.
    */
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
   /**
    * Figma defines three steps (node 13197:90538 "Tab"): S 28px / 12px text,
    * M 32px / 14px, L 42px / 16px (mobile). Left undefined the strip keeps the

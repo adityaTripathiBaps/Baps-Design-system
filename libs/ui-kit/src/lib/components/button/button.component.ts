@@ -5,6 +5,7 @@ import { BAPS_ICONS } from '../icon/icon-set';
 // Sampark button skin lives in the theme layer so the same token block drives
 // both the whole-preview Sampark preset and this per-instance dt scoping.
 import { SAMPARK_BUTTON_TOKENS } from '../../theme/sampark.theme';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 @Component({
   selector: 'baps-button',
@@ -270,7 +271,7 @@ export class BapsButton {
    * radius, gradient fills. 'sampark' applies the flat Sampark Portal
    * language (4px radius, flat #c96868 primary) via scoped design tokens.
    */
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
 
   get isBapsIcon(): boolean {
     if (!this.icon) return false;

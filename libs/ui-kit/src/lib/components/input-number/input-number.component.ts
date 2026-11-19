@@ -14,6 +14,7 @@ import {
 import { InputNumber, InputNumberInputEvent } from 'primeng/inputnumber';
 
 import { BapsIcon } from '../icon/icon.component';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 /**
  * A numeric field with the spinner treatment used throughout Sampark forms.
@@ -98,7 +99,7 @@ export class BapsInputNumber implements ControlValueAccessor {
   @Input() placeholder?: string;
   @Input() disabled = false;
   @Input() size?: 'small' | 'large';
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
   /**
    * When min/max apply. `input` (default) clamps on every keystroke, so a
    * typed 0 with min 1 becomes 1 at once. `blur` keeps the typed value until

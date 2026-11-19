@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
 import { ToggleSwitch } from 'primeng/toggleswitch';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 // Deterministic per-instance id, matching baps-checkbox — Math.random() here
 // would break SSR hydration, and `label [for]` needs an id that actually
@@ -62,7 +63,7 @@ export class BapsToggleSwitch implements ControlValueAccessor {
    * Sampark renders spm-ui's square switch (_switch-sampark.scss): 3–4px track
    * radius, inset track shadow. Also applied page-wide by .baps-ds-sampark.
    */
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
   /**
    * The new state, emitted only when the USER toggles. A value written by the
    * form (setValue / patchValue) does not emit, so a handler that patches the

@@ -7,6 +7,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { Popover } from 'primeng/popover';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 /**
  * baps-popover — a small floating panel anchored to the element that opened it.
@@ -82,7 +83,7 @@ export class BapsPopover {
   /** Extra class(es) for the portalled panel. */
   @Input() styleClass?: string;
   /** Visual skin: 'mybky' (default) or 'sampark'. */
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
 
   @Output() show = new EventEmitter<void>();
   @Output() hide = new EventEmitter<void>();

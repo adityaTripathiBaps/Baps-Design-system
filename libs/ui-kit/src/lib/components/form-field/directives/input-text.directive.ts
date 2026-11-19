@@ -1,5 +1,6 @@
 import { Directive, Input } from '@angular/core';
 import { InputText } from 'primeng/inputtext';
+import { BapsBrand, injectBapsBrand } from '../../../theme/brand';
 
 @Directive({
   selector: '[bapsInputText]',
@@ -19,5 +20,5 @@ export class BapsInputText {
    * element itself, which _input-sampark.scss also matches (spm-ui sets no
    * root class, so a bare [bapsInputText] there rendered the MyBKY pill).
    */
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
 }

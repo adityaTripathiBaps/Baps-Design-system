@@ -1,5 +1,6 @@
 import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { Skeleton } from 'primeng/skeleton';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 /**
  * baps-skeleton — a placeholder block shown while real content loads.
@@ -91,5 +92,5 @@ export class BapsSkeleton {
   /** Additional CSS class(es) forwarded to the PrimeNG root. */
   @Input() styleClass?: string;
   /** Visual skin: 'mybky' (default) or 'sampark'. */
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
 }

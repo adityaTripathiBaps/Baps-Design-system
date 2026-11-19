@@ -12,6 +12,7 @@ import {
   FormsModule,
 } from '@angular/forms';
 import { SelectButton, SelectButtonChangeEvent } from 'primeng/selectbutton';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 /**
  * SelectButton's entire token surface is root.borderRadius and
@@ -358,7 +359,7 @@ export class BapsSegmented implements ControlValueAccessor {
   /** Id of an existing element that labels the group. */
   @Input() ariaLabelledBy?: string;
   /** Visual skin. */
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
 
   value: unknown = null;
 

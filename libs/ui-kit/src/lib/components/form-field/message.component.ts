@@ -1,5 +1,6 @@
 import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { Message } from 'primeng/message';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 @Component({
   selector: 'baps-message',
@@ -37,5 +38,5 @@ export class BapsMessage {
    * ignored before (the input did not exist), so a Sampark app with no root
    * class rendered the MyBKY message.
    */
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
 }

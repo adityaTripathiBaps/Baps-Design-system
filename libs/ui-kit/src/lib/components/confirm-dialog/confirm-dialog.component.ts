@@ -21,6 +21,7 @@ import {
   BapsConfirmationService,
   subscribeToBapsConfirmations,
 } from './confirmation.service';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 let nextConfirmDialogId = 0;
 
@@ -160,7 +161,7 @@ export class BapsConfirmDialog implements OnInit, OnDestroy {
   /** Footer layout, passed to baps-dialog: 'center' (150px pair), 'end', or
    * 'center-auto' (centred, intrinsic widths, 16px apart; SPM dev). */
   @Input() actionsAlign: 'center' | 'end' | 'center-auto' = 'center';
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
   /**
    * Where confirmations come from. 'baps' (default): BapsConfirmationService.
    * 'primeng': PrimeNG's ConfirmationService, so an app that already calls

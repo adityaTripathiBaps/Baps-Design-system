@@ -6,6 +6,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { BapsAvatar } from '../avatar/avatar.component';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 @Component({
   selector: 'baps-menu-item',
@@ -138,7 +139,7 @@ export class BapsMenuItem {
   @Input() severity: 'default' | 'danger' = 'default';
   @Input() selected = false;
   @Input() disabled = false;
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
   @Output() activated = new EventEmitter<void>();
 
   get role(): string {

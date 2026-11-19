@@ -68,14 +68,37 @@ correctly and still used MyBKY `dt` tokens, because `brand` defaulted to
 enough.** `baps-chip` does not (page scope suffices, and its 4px radius proves
 it). `baps-datepicker` does.
 
+### 4. App-wide default — `provideBapsBrand()`
+
+Mechanisms 2 and 3 need `brand` on every instance, and one forgotten tag falls
+back to MyBKY tokens, panel classes and behaviour. A single-brand app sets the
+default once instead:
+
+```ts
+// app.config.ts
+providers: [provideBapsBrand('sampark')]
+```
+
+Every kit `brand` input starts from `injectBapsBrand()`: the provided
+`BAPS_BRAND`, else `'mybky'`. An explicit `[brand]` on a tag still wins, and an
+app with no provider is unchanged.
+
+**Authoring rule:** declare a new `brand` input as
+`@Input() brand: BapsBrand = injectBapsBrand();` (from `theme/brand.ts`), never
+with a literal `'mybky'` default, or the provider skips that component. A
+Sampark-only component may default to `'sampark'`. A component built with
+`new` outside an injection context (some specs) must be wrapped in
+`TestBed.runInInjectionContext`.
+
 ## One app, one brand
 
 A consuming app renders exactly one brand, never both. Side-by-side brands are
 for Storybook and docs only.
 
 - **Sampark app:** `<html class="baps-ds-sampark">`; the `Sampark` preset;
-  `brand="sampark"` on every kit component that has a `brand` input (mechanism
-  3 means the root class alone is not enough). Raw PrimeNG controls with no kit
+  `provideBapsBrand('sampark')` (mechanism 4), or `brand="sampark"` on every
+  kit component that has a `brand` input (mechanism 3 means the root class
+  alone is not enough). Raw PrimeNG controls with no kit
   wrapper rely on the root class alone. Never `brand="mybky"`, the `MyBky`/`Baps` preset or `--color-mybky-*` in app
   code.
 - **MyBKY app:** no `baps-ds-sampark` / `baps-sampark` class, no

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
 import { Tag } from 'primeng/tag';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 /**
  * MyBKY tag/chip — Figma "Badge" component set (node 22465:95582), rendered
@@ -277,7 +278,7 @@ export class BapsTag {
    * Sampark renders spm-ui's "Badge" spec (_tag-sampark.scss): 4px radius,
    * 20/22/28px boxes. Also applied page-wide by the .baps-ds-sampark scope.
    */
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
   @Input() style?: Record<string, string | number>;
   @Input() styleClass?: string;
 }
