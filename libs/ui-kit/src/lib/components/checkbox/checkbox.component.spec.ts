@@ -26,6 +26,19 @@ describe('BapsCheckbox', () => {
     expect(fixture.componentInstance.inputId).toBe('my-custom-id');
   });
 
+  describe('labelTone', () => {
+    it('adds baps-checkbox-label-muted only for labelTone="muted"', () => {
+      const fixture = TestBed.createComponent(BapsCheckbox);
+      fixture.componentRef.setInput('label', 'Start Date');
+      fixture.detectChanges();
+      const host = fixture.nativeElement as HTMLElement;
+      expect(host.classList.contains('baps-checkbox-label-muted')).toBe(false);
+      fixture.componentRef.setInput('labelTone', 'muted');
+      fixture.detectChanges();
+      expect(host.classList.contains('baps-checkbox-label-muted')).toBe(true);
+    });
+  });
+
   describe('ControlValueAccessor', () => {
     it('writeValue sets the internal value PrimeNG binds to', () => {
       const component = TestBed.createComponent(BapsCheckbox).componentInstance;

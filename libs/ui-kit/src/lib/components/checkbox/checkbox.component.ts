@@ -84,8 +84,11 @@ let nextCheckboxId = 0;
       --sel-disabled-checked-bg: var(--color-sampark-surface-card, #ffffff);
       --sel-disabled-checked-icon: var(--color-sampark-primary-default, #c96868);
       --sel-label: var(--color-sampark-text-primary, #151414);
-      /* SPM dev (AT-102): read-only labels are text-secondary. */
-      --sel-label-disabled: var(--color-sampark-text-secondary, #595656);
+      /* SPM dev keeps a disabled label in the primary ink (Templates filters:
+         the locked "Family" option, 14/400 #151414, 2026-11-19). The
+         #595656 AT-102 measured is the Template FORM's label tone, which is
+         now labelTone="muted", not a disabled state. */
+      --sel-label-disabled: var(--color-sampark-text-primary, #151414);
     }
 
     baps-checkbox .baps-checkbox-wrapper {
@@ -222,6 +225,13 @@ let nextCheckboxId = 0;
       color: var(--sel-label-disabled);
       cursor: not-allowed;
     }
+    /* labelTone="muted": SPM dev's Template form labels its checkboxes
+       Mono/80 at 500 (Start Date / End Date, gender), checked, unchecked or
+       disabled alike, where filter panels use the primary 400 label. */
+    :is(baps-checkbox.baps-sampark, .baps-ds-sampark baps-checkbox).baps-checkbox-label-muted .p-checkbox-label {
+      color: var(--color-sampark-text-secondary, #595656);
+      font-weight: var(--font-weight-medium, 500);
+    }
 
     /* ── Size L (mobile) ──
        22px, not 24. Figma names the step "L (24) (Mob)" but draws a 22px box
@@ -291,11 +301,18 @@ let nextCheckboxId = 0;
   host: {
     '[class.baps-sampark]': "brand === 'sampark'",
     '[class.baps-checkbox-lg]': "size === 'large'",
+    '[class.baps-checkbox-label-muted]': "labelTone === 'muted'",
   },
 })
 export class BapsCheckbox implements ControlValueAccessor {
   /** Label displayed next to the checkbox. */
   @Input() label?: string;
+  /**
+   * Label ink. 'muted' is the Sampark form tone (Mono/80, 500) SPM dev uses for
+   * checkboxes inside a form section; 'default' (primary, 400) is the filter
+   * and list tone. MyBKY ignores it.
+   */
+  @Input() labelTone: 'default' | 'muted' = 'default';
   /** When true, the checkbox works as a boolean toggle instead of array-based. */
   @Input() binary = true;
   @Input() disabled = false;

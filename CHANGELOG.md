@@ -155,6 +155,10 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — minor (Sampark):** `baps-checkbox` gains
+  `labelTone: 'default' | 'muted'`; muted is SPM dev's Template-form label
+  (Mono/80, 500). A disabled Sampark label now keeps the primary ink, as dev's
+  filter panels (was Mono/80, which was the form tone mistaken for disabled).
 - **`@org/ui-kit` — patch:** `baps-paginator` clips vertical overflow; its
   `overflow-x: auto` had turned a 30px rows-per-page label into a 15px
   vertical scrollbar that pushed the controls 19px off the right edge.

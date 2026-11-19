@@ -78,9 +78,10 @@ baps-checkbox {
   --sel-disabled-checked-bg: var(--color-sampark-surface-card);
   --sel-disabled-checked-icon: var(--color-sampark-primary-default);
   --sel-label: var(--color-sampark-text-primary);
-  /* SPM dev (AT-102): a disabled label reads text-secondary (#595656), the
-     read-only values of a published template, not text-disabled. */
-  --sel-label-disabled: var(--color-sampark-text-secondary);
+  /* SPM dev keeps a disabled label in the primary ink (Templates filters,
+     2026-11-19). The #595656 AT-102 read on a published template is the form's
+     label tone, now baps-checkbox labelTone="muted", not a disabled state. */
+  --sel-label-disabled: var(--color-sampark-text-primary);
 }
 
 baps-checkbox .baps-checkbox-wrapper {

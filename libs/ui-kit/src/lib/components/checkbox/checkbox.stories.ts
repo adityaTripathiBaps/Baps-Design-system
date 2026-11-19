@@ -258,3 +258,21 @@ export const DisabledInteraction: StoryObj<BapsCheckbox> = {
     await expect(canvas.getByText('Disabled')).toHaveStyle({ pointerEvents: 'none' });
   },
 };
+
+/**
+ * SPM dev Template form: checkboxes inside a form section carry the muted
+ * label (Mono/80, 500), checked or not; a disabled filter option keeps the
+ * primary label.
+ */
+export const SamparkLabelTones: StoryObj<BapsCheckbox> = {
+  render: () => ({
+    props: { a: false, b: true, c: true },
+    template: `
+      <div class="baps-ds-sampark" style="display: grid; gap: 12px">
+        <baps-checkbox brand="sampark" labelTone="muted" label="Start Date" [(ngModel)]="a"></baps-checkbox>
+        <baps-checkbox brand="sampark" labelTone="muted" label="Female" [(ngModel)]="b"></baps-checkbox>
+        <baps-checkbox brand="sampark" label="Family (locked filter option)" [(ngModel)]="c" [disabled]="true"></baps-checkbox>
+      </div>
+    `,
+  }),
+};
