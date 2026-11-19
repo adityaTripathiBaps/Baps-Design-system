@@ -463,3 +463,18 @@ export const KeyboardInteraction: SpyStory = {
     await expect(button).toHaveFocus();
   },
 };
+
+/**
+ * SPM dev Templates list row actions: 28px icon-only text buttons with an 18px
+ * glyph, the trash disabled in Mono/40 at full opacity.
+ */
+export const SamparkRowActions: Story = {
+  render: () => ({
+    template: `
+      <div style="display: flex; gap: 1rem">
+        <baps-button icon="edit" [text]="true" severity="secondary" size="small" brand="sampark" ariaLabel="Edit"></baps-button>
+        <baps-button icon="trash" [text]="true" severity="secondary" size="small" brand="sampark" ariaLabel="Delete" [disabled]="true"></baps-button>
+      </div>
+    `,
+  }),
+};

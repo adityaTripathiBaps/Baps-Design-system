@@ -155,6 +155,9 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** an icon-only `size="small"` Sampark
+  `baps-button` draws an 18px glyph (was 16), as SPM dev's 28px row actions;
+  labelled small buttons and MyBKY keep 16. Story SamparkRowActions.
 - **`@org/ui-kit` — patch (Sampark):** a Select, MultiSelect or TreeSelect
   opened inside a drawer or dialog no longer greys the drawer out: the drawer
   (and a dialog's mask) is raised to 3001 above the 3000 page scrim and its

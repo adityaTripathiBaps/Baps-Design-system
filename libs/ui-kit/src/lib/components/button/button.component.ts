@@ -285,6 +285,11 @@ export class BapsButton {
    * artwork's own ramp, while these are the sizes the button frames specify.
    */
   get iconSize(): BapsIconSize | number {
+    // SPM dev's 28px row-action buttons (Templates list edit/delete, owner
+    // table trash) draw an 18px icon, the M step; the S step's 16 read small
+    // against them. Only the Sampark icon-only small button: a labelled small
+    // button keeps the ramp's 16 (measured 2026-11-19, user approved).
+    if (this.size === 'small' && this.brand === 'sampark' && !this.label) return 18;
     if (this.size === 'small') return 16;
     if (this.size === 'large') return 20;
     if (this.size === 'xlarge') return 24;

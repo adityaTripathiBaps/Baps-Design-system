@@ -125,6 +125,20 @@ describe('BapsButton', () => {
       expect(cmp.primeIcon).toBeUndefined();
     });
 
+    it('draws 18px in a Sampark icon-only small button, 16px everywhere else small (SPM dev row actions)', async () => {
+      const fixture = await setup();
+      const cmp = fixture.debugElement.children[0].componentInstance as BapsButton;
+      cmp.size = 'small';
+      cmp.label = undefined;
+      cmp.brand = 'sampark';
+      expect(cmp.iconSize).toBe(18);
+      cmp.label = 'Save';
+      expect(cmp.iconSize).toBe(16);
+      cmp.label = undefined;
+      cmp.brand = 'mybky';
+      expect(cmp.iconSize).toBe(16);
+    });
+
     it('reports no icon at all when the input is unset', async () => {
       const fixture = await setup();
       const cmp = fixture.debugElement.children[0].componentInstance as BapsButton;
