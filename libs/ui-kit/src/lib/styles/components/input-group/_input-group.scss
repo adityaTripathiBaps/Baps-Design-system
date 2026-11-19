@@ -50,6 +50,9 @@ baps-input-group .p-inputgroup:focus-within {
      AM/PM button. */
   width: fit-content;
   max-width: 100%;
+  /* primeflex's .w-auto (width: auto !important) beats fit-content, and an
+     auto-width flex-column item stretches; not stretching is what holds. */
+  align-self: flex-start;
 
   .p-inputgroup {
     width: auto;
