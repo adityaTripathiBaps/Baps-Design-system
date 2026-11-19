@@ -155,6 +155,9 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** a disabled icon-only secondary ghost
+  `baps-button` is Mono/80 at 0.6 (SPM dev row actions, pixel-measured), not
+  Mono/40 at full opacity; labelled and primary ghost buttons are unchanged.
 - **`@org/ui-kit` — patch (Sampark):** an icon-only `size="small"` Sampark
   `baps-button` draws an 18px glyph (was 16), as SPM dev's 28px row actions;
   labelled small buttons and MyBKY keep 16. Story SamparkRowActions.

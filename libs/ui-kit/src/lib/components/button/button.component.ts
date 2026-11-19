@@ -181,6 +181,20 @@ import { SAMPARK_BUTTON_TOKENS } from '../../theme/sampark.theme';
       opacity: 1;
     }
 
+    /* SPM dev row actions (Templates edit/delete, owner-table trash): a
+       disabled icon-only secondary ghost button is the Mono/80 glyph at 0.6,
+       PrimeNG 17's .p-disabled dim on a Mono/80 icon. Pixel-measured
+       2026-11-19: darkest glyph pixel rgb(155,154,154) = #595656 @ 0.6 on
+       white; the Mono/40 rule above gave rgb(188,185,185). Only this one
+       shape, so labelled and primary ghost buttons keep Figma's Mono/40. */
+    :is(baps-button.baps-sampark, .baps-ds-sampark baps-button) .p-button.p-button-icon-only.p-button-secondary.p-button-text:disabled,
+    :is(baps-button.baps-sampark, .baps-ds-sampark baps-button) .p-button.p-button-icon-only.p-button-secondary.p-button-text:disabled .p-button-icon {
+      color: var(--color-sampark-mono-80, #595656);
+    }
+    :is(baps-button.baps-sampark, .baps-ds-sampark baps-button) .p-button.p-button-icon-only.p-button-secondary.p-button-text:disabled {
+      opacity: var(--toggle-switch-sampark-disabled-opacity, 0.6);
+    }
+
     /* spm-ui's p-button-link underlines on hover. */
     :is(baps-button.baps-sampark, .baps-ds-sampark baps-button) .p-button-link:not(:disabled):hover .p-button-label {
       text-decoration: underline;
