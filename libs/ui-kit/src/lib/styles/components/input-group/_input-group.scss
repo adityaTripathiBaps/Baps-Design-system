@@ -256,8 +256,10 @@ baps-input-group .p-inputgroup > [input-group-control] .p-select-label {
   display: flex;
   align-items: center;
   padding: 0 var(--space-2) 0 var(--space-3) !important;
-  font-size: inherit !important;
-  font-weight: inherit !important;
+  /* Not inherit: the label's parent is the .p-select at 14px, not the 13px
+     control segment, so inherit read 14/400 on spm. */
+  font-size: var(--input-group-sampark-addon-font-size, 0.8125rem) !important;
+  font-weight: var(--font-weight-medium) !important;
   color: var(--baps-ig-text) !important;
 }
 
