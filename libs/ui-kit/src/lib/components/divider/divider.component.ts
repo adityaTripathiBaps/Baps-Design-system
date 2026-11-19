@@ -1,5 +1,6 @@
 import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { Divider } from 'primeng/divider';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 /**
  * baps-divider — visual separator between content sections.
@@ -116,5 +117,5 @@ export class BapsDivider {
   @Input() size: 'default' | 'compact' = 'default';
 
   /** Visual skin: 'mybky' (default) or 'sampark'. */
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
 }

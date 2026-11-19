@@ -4,6 +4,7 @@ import { ProgressBar } from 'primeng/progressbar';
 // whole-preview Sampark preset and this per-instance dt scoping — same
 // convention as baps-button / baps-badge / baps-avatar.
 import { SAMPARK_PROGRESSBAR_TOKENS } from '../../theme/sampark.theme';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 /**
  * baps-progressbar — determinate or indeterminate progress indicator.
@@ -165,7 +166,7 @@ export class BapsProgressBar {
   @Input() severity?: 'success' | 'info' | 'warning' | 'error';
   @Input() style?: Record<string, string | number>;
   @Input() styleClass?: string;
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
 
   get computedStyleClass(): string {
     return this.styleClass || '';

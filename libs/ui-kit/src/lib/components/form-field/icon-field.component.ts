@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { IconField } from 'primeng/iconfield';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 @Component({
   selector: 'baps-iconfield',
@@ -21,5 +22,5 @@ export class BapsIconField {
   @Input() iconPosition: 'left' | 'right' = 'left';
   @Input() style?: Record<string, string | number>;
   @Input() styleClass?: string;
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
 }

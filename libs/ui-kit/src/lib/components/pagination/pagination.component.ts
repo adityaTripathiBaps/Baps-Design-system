@@ -10,6 +10,7 @@ import {
 import { NgTemplateOutlet } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Select } from 'primeng/select';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 /** What `pageChange` emits — the same shape PrimeNG's paginator emits, so a
  *  consumer migrating from `p-paginator` needs no handler changes. */
@@ -726,13 +727,14 @@ export class BapsPaginator {
   /** The trailing "Go to [ n ]" field. */
   @Input() showJumpToPage = false;
   @Input() ariaLabel = 'Pagination';
-  @Input() set brand(v: 'mybky' | 'sampark') {
-    this._brand.set(v || 'mybky');
+  @Input() set brand(v: BapsBrand) {
+    this._brand.set(v || this.defaultBrand);
   }
-  get brand(): 'mybky' | 'sampark' {
+  get brand(): BapsBrand {
     return this._brand();
   }
-  private readonly _brand = signal<'mybky' | 'sampark'>('mybky');
+  private readonly defaultBrand = injectBapsBrand();
+  private readonly _brand = signal<BapsBrand>(this.defaultBrand);
 
   /** Emitted whenever the page or the rows-per-page changes. */
   @Output() pageChange = new EventEmitter<BapsPageEvent>();

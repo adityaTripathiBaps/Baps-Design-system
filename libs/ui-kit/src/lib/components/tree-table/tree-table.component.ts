@@ -12,6 +12,7 @@ import { NgTemplateOutlet } from '@angular/common';
 import { TreeTable, TreeTableModule } from 'primeng/treetable';
 import { PrimeTemplate, SharedModule } from 'primeng/api';
 import type { TreeNode } from 'primeng/api';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 /**
  * baps-tree-table — a table whose rows nest, for data that is a hierarchy
@@ -144,7 +145,7 @@ export class BapsTreeTable {
   @Input() styleClass?: string;
   @Input() tableStyle?: Record<string, string | number>;
   /** Visual skin: 'mybky' (default) or 'sampark'. */
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
 
   @Output() nodeExpand = new EventEmitter<unknown>();
   @Output() nodeCollapse = new EventEmitter<unknown>();

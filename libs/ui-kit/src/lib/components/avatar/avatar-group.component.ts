@@ -2,6 +2,7 @@ import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { AvatarGroup } from 'primeng/avatargroup';
 
 import type { BapsAvatarSize } from './avatar.component';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 /** The overlap Figma draws at each size, in px. */
 const OVERLAP: Record<'xs' | 's' | 'm' | 'l' | 'xl' | '2xl', number> = {
@@ -105,7 +106,7 @@ export class BapsAvatarGroup {
    * Host-class only. Group chrome is identical across brands — what differs is
    * the avatars inside it, which carry their own `brand`.
    */
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
 
   protected get overlapPx(): number {
     const s = this.size;

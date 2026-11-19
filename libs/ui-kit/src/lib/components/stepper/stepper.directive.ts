@@ -1,4 +1,5 @@
 import { Directive, Input } from '@angular/core';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 /**
  * bapsStepper — BAPS skin opt-in for a PrimeNG v21 stepper.
@@ -76,5 +77,5 @@ export class BapsStepper {
    * 'sampark' adds the `.baps-sampark` host class that `_stepper.scss` keys
    * its maroon accent off.
    */
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
 }

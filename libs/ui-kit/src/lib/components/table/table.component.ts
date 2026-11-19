@@ -16,6 +16,7 @@ import type { TableColumnReorderEvent } from 'primeng/table';
 import { NgTemplateOutlet } from '@angular/common';
 import { PrimeTemplate, SharedModule, SortMeta } from 'primeng/api';
 import type { ScrollerOptions } from 'primeng/api';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 /**
  * baps-table — data table with sorting, filtering, pagination, and selection.
@@ -246,7 +247,7 @@ export class BapsTable implements OnChanges {
   @Input() styleClass?: string;
   @Input() tableStyle?: Record<string, string | number>;
   @Input() dataKey?: string;
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
 
   /**
    * Sort by one column, replacing any existing order.

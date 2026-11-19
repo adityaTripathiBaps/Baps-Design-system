@@ -1,5 +1,6 @@
 import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { Toast } from 'primeng/toast';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 /**
  * baps-toast — transient notifications, rendered once near the app root.
@@ -73,7 +74,7 @@ export class BapsToast {
   /** Extra class(es) for the portalled container. */
   @Input() styleClass?: string;
   /** Visual skin: 'mybky' (default) or 'sampark'. */
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
 
   protected get panelClass(): string {
     const brandClass = this.brand === 'sampark' ? 'baps-ds-sampark baps-toast-sampark' : '';

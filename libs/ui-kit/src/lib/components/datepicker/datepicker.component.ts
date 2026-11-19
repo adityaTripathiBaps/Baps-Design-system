@@ -14,6 +14,7 @@ import { NgTemplateOutlet } from '@angular/common';
 import { PrimeTemplate, SharedModule } from 'primeng/api';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
 import { DatePicker } from 'primeng/datepicker';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 /**
  * Per-brand PrimeNG `datepicker` design tokens, passed through the `dt`
@@ -294,7 +295,7 @@ export class BapsDatepicker implements ControlValueAccessor {
   /** Accessible name for the input when there is no visible `<label for>`. */
   @Input() ariaLabel?: string;
   @Input() ariaLabelledBy?: string;
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
 
   @Output() dateSelect = new EventEmitter<Date>();
   @Output() panelClose = new EventEmitter<HTMLElement>();

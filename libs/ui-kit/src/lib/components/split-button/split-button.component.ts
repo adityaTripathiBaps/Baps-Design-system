@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
 import { SplitButton } from 'primeng/splitbutton';
 import { MenuItem, PrimeTemplate } from 'primeng/api';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 /**
  * baps-split-button — primary action + dropdown of secondary actions
@@ -58,7 +59,7 @@ export class BapsSplitButton {
   @Input() size?: 'small' | 'large' | 'xlarge';
   @Input() disabled = false;
   @Input() menuStyleClass?: string;
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
   /**
    * Figma "Button Notification Counts" (node 13197:92212) — the tally pill
    * that sits after the label, inside the action segment.

@@ -1,4 +1,5 @@
 import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 /**
  * baps-link — styled anchor / navigation link.
@@ -65,5 +66,5 @@ export class BapsLink {
    */
   @Input() size?: 'small' | 'large' | 'xlarge';
   /** Visual skin. */
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
 }

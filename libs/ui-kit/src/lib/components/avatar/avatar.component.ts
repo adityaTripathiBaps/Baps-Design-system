@@ -3,6 +3,7 @@ import { Avatar } from 'primeng/avatar';
 // Sampark avatar skin lives in the theme layer so the same token block drives
 // both the whole-preview Sampark preset and this per-instance dt scoping.
 import { SAMPARK_AVATAR_TOKENS } from '../../theme/sampark.theme';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 /** Figma steps (xs…2xl) plus PrimeNG's own size names, kept for compatibility. */
 export type BapsAvatarSize = 'xs' | 's' | 'm' | 'l' | 'xl' | '2xl' | 'normal' | 'large' | 'xlarge';
@@ -540,7 +541,7 @@ export class BapsAvatar {
    * circle, blue.50 fill. 'sampark' applies spm-ui's bordered square with
    * the primary.0 fill via scoped design tokens.
    */
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
   @Input() style?: Record<string, string | number>;
   @Input() styleClass?: string;
 

@@ -256,10 +256,21 @@ MyBKY is the default (unscoped). A Sampark app puts `.baps-ds-sampark` on
 
 Put it on `<html>`, never on a subtree such as `<main>`: portalled panels
 (select, tree-select and datepicker overlays, drawers, dialogs, tooltips) are
-appended to `<body>`, so a subtree scope leaves them in MyBKY. Also pass
-`brand="sampark"` to every kit component that has a `brand` input; some pick
-their PrimeNG `dt` tokens from it in TypeScript, so the root class alone is not
-enough for them.
+appended to `<body>`, so a subtree scope leaves them in MyBKY. The root class
+alone is not enough: some components pick their PrimeNG `dt` tokens, panel
+classes and behaviour from their `brand` input in TypeScript. Set that default
+once for the whole app:
+
+```ts
+// app.config.ts
+import { provideBapsBrand } from '@org/ui-kit';
+
+providers: [provideBapsBrand('sampark')];
+```
+
+Every kit component then starts as Sampark; an explicit `brand="…"` on a tag
+still wins. Without the provider, pass `brand="sampark"` to every kit component
+that has a `brand` input.
 
 ### One app, one brand
 
@@ -267,7 +278,8 @@ An app that adopts the kit renders exactly one brand, MyBKY or Sampark, never
 both. Decide it at integration start and record it in the app's README.
 
 - **Sampark app:** `<html class="baps-ds-sampark">`, the `Sampark` preset,
-  `brand="sampark"` on every kit component that takes `brand`. Never
+  `provideBapsBrand('sampark')` (or `brand="sampark"` on every kit component
+  that takes `brand`). Never
   `brand="mybky"`, the `MyBky`/`Baps` preset, or `--color-mybky-*` in app code.
 - **MyBKY app:** no `baps-ds-sampark` / `baps-sampark` class, no
   `brand="sampark"`, the `MyBky` preset, and no `--color-sampark-*` in app code.

@@ -4,6 +4,9 @@ import { SAMPARK_AVATAR_TOKENS } from '../../theme/sampark.theme';
 import { BapsAvatar, BapsAvatarSize } from './avatar.component';
 import { BapsAvatarGroup } from './avatar-group.component';
 
+// brand defaults through inject(), so the group must be built in an injection context.
+const newGroup = () => TestBed.runInInjectionContext(() => new BapsAvatarGroup());
+
 /**
  * `BapsAvatarSize` accepts nine values but PrimeNG's `size` input accepts
  * three, and the gap is bridged twice: legacy `normal`/`large`/`xlarge` alias
@@ -200,14 +203,14 @@ describe('BapsAvatarGroup overlap', () => {
 
   for (const [size, px] of cases) {
     it(`uses ${px}px at size ${size}`, () => {
-      const group = new BapsAvatarGroup();
+      const group = newGroup();
       group.size = size as never;
       expect((group as unknown as { overlapPx: number }).overlapPx).toBe(px);
     });
   }
 
   it('maps the legacy PrimeNG size names onto the Figma steps', () => {
-    const group = new BapsAvatarGroup();
+    const group = newGroup();
     const overlap = () => (group as unknown as { overlapPx: number }).overlapPx;
 
     group.size = 'normal';
@@ -219,6 +222,6 @@ describe('BapsAvatarGroup overlap', () => {
   });
 
   it('defaults to the m step', () => {
-    expect((new BapsAvatarGroup() as unknown as { overlapPx: number }).overlapPx).toBe(10);
+    expect((newGroup() as unknown as { overlapPx: number }).overlapPx).toBe(10);
   });
 });

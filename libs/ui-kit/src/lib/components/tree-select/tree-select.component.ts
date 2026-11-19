@@ -13,6 +13,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule } from '@angular/f
 import { TreeSelect } from 'primeng/treeselect';
 import { PrimeTemplate, SharedModule } from 'primeng/api';
 import type { TreeNode } from 'primeng/api';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 /**
  * baps-tree-select — hierarchy dropdown: a select whose options are a tree
@@ -184,7 +185,7 @@ export class BapsTreeSelect implements ControlValueAccessor {
   @Input() style?: Record<string, string | number>;
   @Input() styleClass?: string;
   @Input() panelStyleClass?: string;
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
   /**
    * The trigger shows only the consumer's `pTemplate="value"`: no border,
    * fill, padding or dropdown icon. For a trigger the consumer draws itself,

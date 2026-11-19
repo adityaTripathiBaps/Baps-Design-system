@@ -1,4 +1,5 @@
 import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 /** Circumference of the r=14 ring in the 32-unit viewBox. */
 const CIRCUMFERENCE = 2 * Math.PI * 14;
@@ -65,7 +66,7 @@ export class BapsSpinner {
   @Input() size: 'small' | 'large' = 'large';
   /** Accessible name announced in place of the graphic. */
   @Input() ariaLabel = 'Loading';
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
 
   get isDeterminate(): boolean {
     return this.value != null && !Number.isNaN(this.value);

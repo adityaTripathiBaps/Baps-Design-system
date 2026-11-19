@@ -8,6 +8,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { BapsButton } from '../button/button.component';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 /**
  * baps-file-upload — click-or-drag dropzone (Sampark Portal "Web File Upload",
@@ -110,7 +111,7 @@ export class BapsFileUpload {
   @Input() buttonLabel = 'Upload Image';
   @Input() hint = 'Click to upload or drag and drop';
   @Input() description = 'SVG, PNG, JPG or GIF (max. 800×400px)';
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
 
   /** Emits the chosen files on picker selection or drop. */
   @Output() filesSelected = new EventEmitter<File[]>();

@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 /**
  * baps-alert — inline notification / message banner.
@@ -178,7 +179,7 @@ export class BapsAlert {
   /** Whether a close button is shown. */
   @Input() closable = false;
   /** Visual skin. Defaults to 'mybky' (matching every other brand-switchable component). */
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
 
   /**
    * 'inline' (default) is the accent-bar banner; 'card' is the Sampark

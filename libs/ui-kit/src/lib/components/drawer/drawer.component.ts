@@ -12,6 +12,7 @@ import {
 import { SharedModule } from 'primeng/api';
 import { Drawer } from 'primeng/drawer';
 import { BapsButton } from '../button/button.component';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 /** Edge the panel slides in from. Mirrors PrimeNG's own `position`. */
 export type BapsDrawerPosition = 'left' | 'right' | 'top' | 'bottom';
@@ -208,7 +209,7 @@ export class BapsDrawer implements OnDestroy {
   @Input() styleClass?: string;
 
   /** Visual skin. 'sampark' also arrives page-wide via `.baps-ds-sampark`. */
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
 
   /**
    * Mirrors PrimeNG's close back onto `visible` and re-emits it.

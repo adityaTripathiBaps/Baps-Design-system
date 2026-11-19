@@ -1,6 +1,7 @@
 import { Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewEncapsulation, inject } from '@angular/core';
 import { BapsIcon } from '../icon/icon.component';
 import type { BapsIconName } from '../icon/icon-set';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 export interface InternalNavItem {
   label: string;
@@ -202,7 +203,7 @@ export class BapsInternalNavbar {
    */
   @Input() compact = false;
   @Input() ariaLabel?: string;
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
 
   /** Emitted when a menu item is clicked. */
   @Output() itemClick = new EventEmitter<InternalNavItem>();

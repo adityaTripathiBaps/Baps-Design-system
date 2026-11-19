@@ -4,6 +4,7 @@ import { RadioButton } from 'primeng/radiobutton';
 // Sampark skin lives in the theme layer so one token block drives both the
 // whole-preview Sampark preset and this per-instance dt scoping.
 import { SAMPARK_RADIO_TOKENS } from '../../theme/sampark.theme';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 // Deterministic per-instance id — Math.random() would break SSR hydration
 // (server and client render different ids for the same label/input pair).
@@ -220,7 +221,7 @@ export class BapsRadio implements ControlValueAccessor {
    */
   @Input() size?: 'small' | 'large';
   /** Visual skin. */
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
 
   value: any = null;
 

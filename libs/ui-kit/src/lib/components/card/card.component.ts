@@ -1,4 +1,5 @@
 import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 /** Inner padding step. `compact` (16px) suits dense/table-adjacent cards. */
 export type BapsCardPadding = 'default' | 'compact' | 'none';
@@ -140,5 +141,5 @@ export class BapsCard {
    */
   @Input() interactive = false;
   /** Visual skin. 'sampark' also arrives page-wide via `.baps-ds-sampark`. */
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
 }

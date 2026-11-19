@@ -1,6 +1,7 @@
 import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { InputGroup } from 'primeng/inputgroup';
 import { InputGroupAddon } from 'primeng/inputgroupaddon';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 /**
  * The addon skin, through PrimeNG's own tokens. Six properties is the whole
@@ -121,7 +122,7 @@ export class BapsInputGroup {
    */
   @Input() suffix?: string;
   /** Visual skin. */
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
 
   /**
    * dt on p-inputgroup emits --p-inputgroup-addon-* onto the group element

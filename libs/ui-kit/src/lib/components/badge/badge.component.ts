@@ -4,6 +4,7 @@ import { Badge } from 'primeng/badge';
 // both the whole-preview Sampark preset and this per-instance dt scoping —
 // same convention as baps-button / baps-avatar.
 import { SAMPARK_BADGE_TOKENS } from '../../theme/sampark.theme';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 @Component({
   selector: 'baps-badge',
@@ -56,7 +57,7 @@ export class BapsBadge {
    * That scale used to be tag's (4px, 20/22/28) — p-tag is the status label,
    * p-badge is the count, and the two had been sharing one set of numbers.
    */
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
 
   get dt(): object | undefined {
     return this.brand === 'sampark' ? SAMPARK_BADGE_TOKENS : undefined;

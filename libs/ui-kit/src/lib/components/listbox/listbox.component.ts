@@ -15,6 +15,7 @@ import { Listbox } from 'primeng/listbox';
 import { PrimeTemplate, SharedModule } from 'primeng/api';
 import { BapsMenuItem } from '../menu-item/menu-item.component';
 import { NgTemplateOutlet } from '@angular/common';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 export interface BapsListboxOption {
   value: any;
@@ -138,7 +139,7 @@ export class BapsListbox implements ControlValueAccessor {
   @Input() readonly = false;
   @Input() style?: Record<string, string | number>;
   @Input() styleClass?: string;
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
 
   @ContentChildren(PrimeTemplate) templates!: QueryList<PrimeTemplate>;
 

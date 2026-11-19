@@ -6,6 +6,7 @@ import {
 } from '@angular/core';
 import type { MenuItem as PrimeMenuItem } from 'primeng/api';
 import { Menu } from 'primeng/menu';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 type BapsMenuModelItemBase = Pick<
   PrimeMenuItem,
@@ -64,7 +65,7 @@ export class BapsMenu {
   /** Extra class(es) for the menu panel. */
   @Input() styleClass?: string;
   /** Visual skin: 'mybky' (default) or 'sampark'. */
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
 
   /**
    * The panel is portalled out of this host, so the brand cannot be carried by

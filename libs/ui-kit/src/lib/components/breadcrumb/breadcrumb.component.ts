@@ -11,6 +11,7 @@ import { Breadcrumb } from 'primeng/breadcrumb';
 // emitDecoratorMetadata + isolatedModules, and a value import referenced by a
 // decorated signature (`@Input() home?: MenuItem`) is TS1272 there.
 import type { MenuItem } from 'primeng/api';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 /**
  * baps-breadcrumb — navigation breadcrumb trail.
@@ -107,7 +108,7 @@ export class BapsBreadcrumb implements AfterViewChecked {
   @Input() home?: MenuItem;
   @Input() style?: Record<string, string | number>;
   @Input() styleClass?: string;
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
 
   private readonly host = inject(ElementRef<HTMLElement>);
 

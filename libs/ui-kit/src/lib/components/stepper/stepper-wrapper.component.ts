@@ -12,6 +12,7 @@ import { StepperModule } from 'primeng/stepper';
 import { BapsIcon } from '../icon/icon.component';
 import { BapsOverlayBadge } from '../badge/overlay-badge.component';
 import { BapsStep } from './step.component';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 /**
  * baps-stepper — a multi-step flow, in the house shape.
@@ -205,7 +206,7 @@ export class BapsStepperWrapper {
    * A class rather than PrimeNG's `dt`, for the reason the directive spells
    * out: v21 declares `dt` as a signal input, which is read-only from outside.
    */
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
 
   /**
    * Which side of the panels the rail sits on.

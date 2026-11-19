@@ -6,6 +6,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { Chip } from 'primeng/chip';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 /** A compact selected-value, filter or entity label. */
 @Component({
@@ -41,7 +42,7 @@ export class BapsChip {
   @Input() removable = false;
   @Input() removeIcon?: string;
   @Input() styleClass?: string;
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
   @Input() disabled = false;
 
   protected get resolvedClass(): string | undefined {

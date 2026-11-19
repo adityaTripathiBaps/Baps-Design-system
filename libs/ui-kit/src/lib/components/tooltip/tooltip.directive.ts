@@ -1,5 +1,6 @@
 import { Directive, Input, OnChanges, inject } from '@angular/core';
 import { Tooltip } from 'primeng/tooltip';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 /**
  * bapsTooltip — informational tooltip on hover/focus.
@@ -82,7 +83,7 @@ export class BapsTooltip implements OnChanges {
   /** Optional trailing link text (rendered with a "→" arrow, Sampark clay color). */
   @Input() tooltipLinkLabel?: string;
   @Input() tooltipStyleClass?: string;
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
   /** Overlay container, as PrimeNG's appendTo; unset or null means 'body'. */
   @Input() appendTo?: unknown;
 

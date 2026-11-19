@@ -1,6 +1,7 @@
 export * from './lib/theme/baps.theme';
 export * from './lib/theme/sampark.theme';
 export * from './lib/theme/accent.theme';
+export * from './lib/theme/brand';
 export * from './lib/components/button/button.component';
 export * from './lib/components/avatar/avatar.component';
 export * from './lib/components/icon/icon.component';

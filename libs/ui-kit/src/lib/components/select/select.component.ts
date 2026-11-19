@@ -16,6 +16,7 @@ import { NgTemplateOutlet } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule, NgControl } from '@angular/forms';
 import { PrimeTemplate, SharedModule } from 'primeng/api';
 import { Select, type SelectLazyLoadEvent } from 'primeng/select';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 /**
  * baps-select — dropdown / single-select form field.
@@ -179,7 +180,7 @@ export class BapsSelect implements ControlValueAccessor {
   @Input() style?: Record<string, string | number>;
   @Input() styleClass?: string;
   @Input() panelStyleClass?: string;
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
   /** Accessible name for the trigger when there's no visible `<label for>`. */
   @Input() ariaLabel?: string;
   @Input() ariaLabelledBy?: string;

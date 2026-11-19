@@ -15,6 +15,7 @@ import {
   AccordionContent,
 } from 'primeng/accordion';
 import { BapsAccordionPanel } from './accordion-panel.component';
+import { BapsBrand, injectBapsBrand } from '../../theme/brand';
 
 /**
  * PrimeNG's own accordion value type, mirrored so this passes straight
@@ -162,7 +163,7 @@ export class BapsAccordionWrapper {
    * A class rather than PrimeNG's `dt`, for the reason the directive spells
    * out: v21 declares `dt` as a signal input, which is read-only from outside.
    */
-  @Input() brand: 'mybky' | 'sampark' = 'mybky';
+  @Input() brand: BapsBrand = injectBapsBrand();
 
   @ContentChildren(BapsAccordionPanel) panels!: QueryList<BapsAccordionPanel>;
 }
