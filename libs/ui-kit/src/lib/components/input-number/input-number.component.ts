@@ -162,9 +162,15 @@ export class BapsInputNumber implements ControlValueAccessor {
     });
   }
 
+  /**
+   * Shows the form's value as it is, out of range or not, as raw PrimeNG does.
+   * Clamping here displayed min while the form still held the stored value:
+   * SPM dev shows a saved 0 in a min-1 field, the kit showed 1 (Templates
+   * reminder, 2026-11-19). Range applies when the user edits (clampOn).
+   */
   writeValue(value: number | null): void {
-    this.value = this.normalise(value);
-    this.sent = this.value;
+    this.value = value;
+    this.sent = value;
   }
 
   private emit(next: number | null): void {

@@ -224,3 +224,15 @@ describe('BapsInputNumber clampOn', () => {
     expect(sent).toEqual([0, 1]);
   });
 });
+
+describe('BapsInputNumber writeValue', () => {
+  it('shows a written out-of-range value as is and sends nothing back to the form', () => {
+    const c = TestBed.createComponent(BapsInputNumber).componentInstance;
+    c.min = 1;
+    const sent: (number | null)[] = [];
+    c.registerOnChange((v) => sent.push(v));
+    c.writeValue(0);
+    expect(c.value).toBe(0);
+    expect(sent).toEqual([]);
+  });
+});

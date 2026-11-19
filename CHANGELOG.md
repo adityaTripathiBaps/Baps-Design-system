@@ -155,6 +155,11 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch:** `baps-input-number` shows a written form value
+  as is (raw PrimeNG behaviour); it clamped to min on write, so a saved 0 in a
+  min-1 field displayed 1 while the form held 0. A Sampark `w-auto`
+  `baps-input-group` sizes to its content instead of stretching in a flex
+  column.
 - **`@org/ui-kit` — minor:** `baps-input-group` gains an `input-group-control`
   slot for a control addon (a unit `baps-select`, or a button such as an AM/PM
   toggle) after the field: one ring, inner hairline, addon tint, 13px/500 label

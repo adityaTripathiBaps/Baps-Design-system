@@ -45,7 +45,11 @@ baps-input-group .p-inputgroup:focus-within {
 
 :is(baps-input-group.baps-sampark, .baps-ds-sampark baps-input-group).w-auto {
   display: inline-block;
-  width: auto;
+  /* fit-content, not auto: as a flex-column item the host stretched to the
+     column (231px on spm's At row) and the ring drew an empty tail past the
+     AM/PM button. */
+  width: fit-content;
+  max-width: 100%;
 
   .p-inputgroup {
     width: auto;
