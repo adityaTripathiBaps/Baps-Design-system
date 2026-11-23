@@ -162,6 +162,8 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** select / multiselect clear (×) icon is
+  Sampark text-primary, not MyBKY Mono/900 (`--input-clear-btn-color`), as SPM dev.
 - **`@org/ui-kit` — patch:** `baps-input-number` shows a written form value
   as is (raw PrimeNG behaviour); it clamped to min on write, so a saved 0 in a
   min-1 field displayed 1 while the form held 0. A Sampark `w-auto`

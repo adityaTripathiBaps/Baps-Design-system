@@ -152,6 +152,11 @@
      has no token; Sampark's primary text colour is the nearest (ask-at-demo). */
   --input-leading-icon-color: var(--color-sampark-text-primary, #151414);
 
+  /* Clear (×) icon: the :root value is MyBKY Mono/900 (#181b1d), a MyBKY
+     colour on every Sampark select clear icon (brand-scan, 2026-11-23). SPM dev
+     paints .p-dropdown-clear-icon rgb(21,20,20), Sampark text-primary. */
+  --input-clear-btn-color: var(--color-sampark-text-primary, #151414);
+
   /* Labels, hints (default), char count, shortcut, trailing icon and
      overlay backdrop tokens are IDENTICAL across both design systems —
      inherited from the :root set in _input.scss. */
