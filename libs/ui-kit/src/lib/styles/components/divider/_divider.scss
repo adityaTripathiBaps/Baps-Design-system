@@ -168,3 +168,13 @@ baps-divider[data-size='compact'] .p-divider-vertical {
   padding: 0;
   margin: 0;
 }
+
+/* Sampark horizontal divider margin, SPM dev parity (2026-11-23): dev's global
+   legacy rule gives every horizontal divider 2px block margin; the kit's shared
+   rule (baps-divider .p-divider-horizontal, --divider-mybky-horizontal-margin,
+   16px) applied to Sampark too. No !important, so a consumer class with
+   !important (spm .dpc-divider, 8px) still wins. */
+:is(baps-divider.baps-sampark, .baps-ds-sampark baps-divider)[data-layout='horizontal']
+  .p-divider-horizontal {
+  margin-block: var(--space-0-5);
+}

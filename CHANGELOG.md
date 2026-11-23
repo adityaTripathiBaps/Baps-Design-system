@@ -162,6 +162,8 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** horizontal divider block margin is 2px
+  (`--space-0-5`), as SPM dev's global divider rule; was the MyBKY 16px.
 - **`@org/ui-kit` — patch (Sampark):** select / multiselect / treeselect
   panels open 10px below the field (`--space-2-5`), as SPM dev; was 6px (parity T-17).
 - **`@org/ui-kit` — patch (Sampark):** drawer close button is Mono/100 in a
