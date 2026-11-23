@@ -145,8 +145,11 @@ baps-divider[data-size='compact'] .p-divider-vertical {
    2026-11-18, Template header between Publish and close): no margin, no
    padding, a 20px rule, so the row's own gap spaces it (8px either side on
    dev). The MyBKY margin and PrimeNG's 8px block padding gave a 24px box with
-   24px gaps. Compact keeps its own 16px toolbar rule. */
-:is(baps-divider.baps-sampark, .baps-ds-sampark baps-divider):not(
+   24px gaps. Compact keeps its own 16px toolbar rule.
+   Vertical only: on a horizontal divider align-self: center shrank the host
+   to its content in a flex column, so the full-width rule drew as a short
+   centred dash (spm Default Project Creation card, Reminder row, 2026-11-23). */
+:is(baps-divider.baps-sampark, .baps-ds-sampark baps-divider)[data-layout='vertical']:not(
     [data-size='compact']
   ) {
   display: flex;

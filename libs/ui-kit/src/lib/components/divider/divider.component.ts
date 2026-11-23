@@ -97,6 +97,7 @@ import { BapsBrand, injectBapsBrand } from '../../theme/brand';
   host: {
     '[class.baps-sampark]': "brand === 'sampark'",
     '[attr.data-size]': "size",
+    '[attr.data-layout]': 'layout',
   },
 })
 export class BapsDivider {

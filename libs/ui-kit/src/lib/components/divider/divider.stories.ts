@@ -148,3 +148,20 @@ export const TypesAndLayoutsInteraction: StoryObj<BapsDivider> = {
     }
   },
 };
+
+/**
+ * Sampark horizontal divider inside a flex column (spm Default Project
+ * Creation card, Reminder row): it spans the column. Only the vertical
+ * header separator is centred and content-sized.
+ */
+export const SamparkHorizontalInColumn: StoryObj<BapsDivider> = {
+  render: () => ({
+    template: `
+      <div class="baps-ds-sampark" style="display: flex; flex-direction: column; gap: 8px; width: 420px">
+        <span>Default Project Creation</span>
+        <baps-divider brand="sampark"></baps-divider>
+        <span>Turn this on to auto-create the project.</span>
+      </div>
+    `,
+  }),
+};

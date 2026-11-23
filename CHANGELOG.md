@@ -162,6 +162,9 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** a horizontal `baps-divider` spans its
+  flex column again; the header-separator rule (display flex, align-self
+  center) now applies to `layout="vertical"` only. Host writes `data-layout`.
 - **`@org/ui-kit` — patch (Sampark):** a field inside `baps-input-group` no
   longer paints its own hover/focus border; the group's ring is the only one
   (spm showed a box inside the box on focus).

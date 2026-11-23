@@ -81,6 +81,16 @@ describe('BapsDivider', () => {
     });
   });
 
+  describe('layout attribute', () => {
+    it('writes data-layout so the Sampark vertical-only rule can key off it', async () => {
+      const fixture = await setup();
+      expect(hostEl(fixture).getAttribute('data-layout')).toBe('horizontal');
+      fixture.componentInstance.layout.set('vertical');
+      await apply(fixture);
+      expect(hostEl(fixture).getAttribute('data-layout')).toBe('vertical');
+    });
+  });
+
   describe('brand', () => {
     it('is absent for mybky and present for sampark', async () => {
       const fixture = await setup();
