@@ -162,6 +162,8 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** select / multiselect / treeselect
+  panels open 10px below the field (`--space-2-5`), as SPM dev; was 6px (parity T-17).
 - **`@org/ui-kit` — patch (Sampark):** drawer close button is Mono/100 in a
   4px-radius box, and the accordion count cell has the header's left corners
   and 8px side padding, as SPM dev (parity T-09, T-10).

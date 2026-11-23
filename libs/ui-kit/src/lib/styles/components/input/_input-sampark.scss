@@ -625,3 +625,13 @@ html.baps-ds-sampark
   )::after {
   content: none !important;
 }
+
+/* Overlay gap from its trigger: SPM dev opens every select / multiselect /
+   treeselect panel 10px below the field (parity T-17, Templates, measured
+   2026-11-23); the kit's shared 6px (.p-overlay in _input.scss) read tight.
+   --space-2-5 is 10px. Page-wide Sampark, or a panel that carries the
+   Sampark scope class itself. */
+html.baps-ds-sampark .p-overlay,
+.p-overlay:has(> .p-overlay-content > .baps-ds-sampark) {
+  margin-top: var(--space-2-5) !important;
+}
