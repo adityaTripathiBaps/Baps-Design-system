@@ -162,6 +162,10 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch:** `baps-table-column-config` styles are scoped to
+  its `.ct-cfg` root (header actions and divider excepted). Unscoped, they hit
+  any app markup reusing the `ct-cfg-*` class names: spm's own column panel
+  took the pin-button padding and its rows grew 41 to 49 (parity T-13).
 - **`@org/ui-kit` — patch (Sampark):** two-month DatePicker lays the months
   edge to edge as SPM dev (232px groups, 32px cells, title buttons 4px
   padding; panel 514 to 472, dev 475; parity T-28), and the toast detail text

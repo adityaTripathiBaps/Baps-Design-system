@@ -11,6 +11,12 @@
 // ViewEncapsulation.None scope, so the rendering is identical; only the
 // location is new.
 
+/* Scope: every rule except the header pieces (.ct-cfg-actions, .ct-cfg-divider,
+   which sit outside the .ct-cfg body in both the Angular and React versions)
+   lives under the component's .ct-cfg root. Unscoped, they hit spm-ui's own
+   column panel, which reuses the ct-cfg-* class names without that root:
+   its pin baps-button host took this padding (0.25rem) and rows grew 41 -> 49
+   (parity T-13, 2026-11-23). */
 .ct-cfg-actions {
   display: flex;
   align-items: center;
@@ -23,16 +29,16 @@
   height: 100%;
   min-height: 0;
 }
-.ct-cfg-section {
+.ct-cfg .ct-cfg-section {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-.ct-cfg-section-label {
+.ct-cfg .ct-cfg-section-label {
   font-weight: 600;
   font-size: 0.875rem;
 }
-.ct-cfg-active-toggle {
+.ct-cfg .ct-cfg-active-toggle {
   display: flex;
   align-items: center;
   gap: 0.25rem;
@@ -44,19 +50,19 @@
   cursor: pointer;
   color: var(--color-sampark-primary-default, #c96868);
 }
-.ct-cfg-list {
+.ct-cfg .ct-cfg-list {
   display: flex;
   flex-direction: column;
   overflow-y: auto;
   min-height: 0;
 }
-.ct-cfg-group-label {
+.ct-cfg .ct-cfg-group-label {
   padding: 0.5rem 0 0.25rem;
   font-size: 0.75rem;
   font-weight: 600;
   color: var(--color-sampark-text-muted, #9f9c9c);
 }
-.ct-cfg-item {
+.ct-cfg .ct-cfg-item {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -64,15 +70,15 @@
   border-bottom: 1px solid var(--color-sampark-border-default, #e1e0e0);
   cursor: move;
 }
-.ct-cfg-list .ct-cfg-item:last-child {
+.ct-cfg .ct-cfg-list .ct-cfg-item:last-child {
   border-bottom: none;
 }
-.ct-cfg-item--locked,
-.ct-cfg-item--pinned {
+.ct-cfg .ct-cfg-item--locked,
+.ct-cfg .ct-cfg-item--pinned {
   cursor: default;
   opacity: 0.85;
 }
-.ct-cfg-drag-handle {
+.ct-cfg .ct-cfg-drag-handle {
   display: inline-flex;
   width: 1.0625rem;
   height: 1.125rem;
@@ -90,19 +96,19 @@
    it is dimmed to read as inert. Was an inline style="opacity: 0.4" on
    three separate spans; moved here per the no-inline-styling rule — it is
    static design-system styling, not a runtime value. */
-.ct-cfg-drag-handle--static {
+.ct-cfg .ct-cfg-drag-handle--static {
   opacity: 0.4;
 }
-.ct-cfg-drag-handle:focus-visible {
+.ct-cfg .ct-cfg-drag-handle:focus-visible {
   outline: 2px solid var(--color-sampark-primary-default, #c96868);
   outline-offset: 2px;
   border-radius: 2px;
 }
-.ct-cfg-drag-handle svg {
+.ct-cfg .ct-cfg-drag-handle svg {
   width: 100%;
   height: 100%;
 }
-.ct-cfg-item-title {
+.ct-cfg .ct-cfg-item-title {
   flex: 1;
   min-width: 0;
   overflow: hidden;
@@ -117,7 +123,7 @@
   height: 1rem;
   background: var(--color-sampark-border-default, #e1e0e0);
 }
-.ct-cfg-pin-btn {
+.ct-cfg .ct-cfg-pin-btn {
   display: inline-flex;
   visibility: hidden;
   background: none;
@@ -126,16 +132,16 @@
   cursor: pointer;
   color: var(--color-sampark-text-muted, #9f9c9c);
 }
-.ct-cfg-pin-btn svg,
-.ct-cfg-pin-btn i {
+.ct-cfg .ct-cfg-pin-btn svg,
+.ct-cfg .ct-cfg-pin-btn i {
   width: 1.125rem;
   height: 1.125rem;
   font-size: 1.125rem;
 }
-.ct-cfg-item:hover .ct-cfg-pin-btn,
-.ct-cfg-pin-btn--active {
+.ct-cfg .ct-cfg-item:hover .ct-cfg-pin-btn,
+.ct-cfg .ct-cfg-pin-btn--active {
   visibility: visible;
 }
-.ct-cfg-pin-btn--active {
+.ct-cfg .ct-cfg-pin-btn--active {
   color: var(--color-sampark-primary-default, #c96868);
 }
