@@ -162,6 +162,9 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** a field inside `baps-input-group` no
+  longer paints its own hover/focus border; the group's ring is the only one
+  (spm showed a box inside the box on focus).
 - **`@org/ui-kit` — patch (Sampark):** select / multiselect clear (×) icon is
   Sampark text-primary, not MyBKY Mono/900 (`--input-clear-btn-color`), as SPM dev.
 - **`@org/ui-kit` — patch:** `baps-input-number` shows a written form value

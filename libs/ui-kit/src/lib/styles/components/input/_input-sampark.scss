@@ -275,10 +275,13 @@
    │ #94928F    │ #FFFFFF │ unchanged │
    └────────────┴─────────┴───────────┘
    Border stays 1px — width never changes in Sampark.
+   A field inside baps-input-group is excluded from hover and focus: the
+   group draws the one ring, so the field painting its own border again drew
+   a box inside the box (spm Set Reminder / Families-Pair, 2026-11-23).
    ══════════════════════════════════════════════════════════════════════ */
-:is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark):hover#{input.$input-guard}:not(.p-inputtext-ghost),
-:is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark).p-filled:hover#{input.$input-enabled}#{input.$input-valid},
-:is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark):not(:placeholder-shown):hover#{input.$input-enabled}#{input.$input-valid} {
+:is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark):hover#{input.$input-guard}:not(.p-inputtext-ghost):not(baps-input-group *),
+:is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark).p-filled:hover#{input.$input-enabled}#{input.$input-valid}:not(baps-input-group *),
+:is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark):not(:placeholder-shown):hover#{input.$input-enabled}#{input.$input-valid}:not(baps-input-group *) {
   @include input.input-state(1px solid var(--input-border-hover));
 }
 
@@ -290,8 +293,8 @@
    │ #94928F    │ #FFFFFF │ #151414 │ 0 0 0 3px #F2F1F0                │
    └────────────┴─────────┴─────────┴──────────────────────────────────┘
    ══════════════════════════════════════════════════════════════════════ */
-:is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark):focus#{input.$input-guard},
-:is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark):focus-visible#{input.$input-guard} {
+:is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark):focus#{input.$input-guard}:not(baps-input-group *),
+:is(.baps-ds-sampark .p-inputtext, .baps-sampark .p-inputtext, .p-inputtext.baps-sampark):focus-visible#{input.$input-guard}:not(baps-input-group *) {
   @include input.input-state(
     1px solid var(--input-border-hover),
     var(--input-shadow-focused)
