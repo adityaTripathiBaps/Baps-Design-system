@@ -67,6 +67,14 @@
   opacity: 0.85;
 }
 
+/* Sampark detail ink: unset, it fell back to PrimeNG's message token (slate
+   #334155), a non-Sampark colour on every Sampark toast (spm, 2026-11-23,
+   reported by session 39). It reads the toast's own text token. */
+.baps-ds-sampark .p-toast .p-toast-detail,
+.p-toast.baps-toast-sampark .p-toast-detail {
+  color: var(--baps-toast-text);
+}
+
 /* ── Dark ── */
 .baps-dark .p-toast {
   --baps-toast-bg: var(--color-mybky-dark-surface-card, #2b2f32);

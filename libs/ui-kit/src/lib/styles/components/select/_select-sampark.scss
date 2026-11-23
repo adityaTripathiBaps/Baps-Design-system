@@ -897,6 +897,26 @@
     padding: var(--space-1) !important;
   }
 
+  /* Range (two months), parity T-28 2026-11-23: dev lays the months edge to
+     edge with 4px each side (232px groups, 7 x 32px cells); PrimeNG v21 put
+     16px inner padding on each calendar plus an 8px gap, and the wider first
+     header stretched its cells to 33px, so the panel was 514 against 475. */
+  .p-datepicker-calendar-container {
+    gap: 0 !important;
+  }
+
+  .p-datepicker-calendar-container > .p-datepicker-calendar {
+    padding: 0 var(--space-1) !important;
+  }
+
+  .p-datepicker-title {
+    gap: 0 !important;
+  }
+
+  .p-datepicker-title :is(.p-datepicker-select-month, .p-datepicker-select-year) {
+    padding: var(--space-1) !important;
+  }
+
   :is(.p-datepicker-prev-button, .p-datepicker-next-button),
   :is(.p-datepicker-prev-button, .p-datepicker-next-button) .p-button {
     width: var(--space-7) !important;

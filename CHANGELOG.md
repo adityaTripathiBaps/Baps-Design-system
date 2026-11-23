@@ -162,6 +162,10 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** two-month DatePicker lays the months
+  edge to edge as SPM dev (232px groups, 32px cells, title buttons 4px
+  padding; panel 514 to 472, dev 475; parity T-28), and the toast detail text
+  uses the toast text token instead of PrimeNG's slate #334155.
 - **`@org/ui-kit` — patch (Sampark):** horizontal divider block margin is 2px
   (`--space-0-5`), as SPM dev's global divider rule; was the MyBKY 16px.
 - **`@org/ui-kit` — patch (Sampark):** select / multiselect / treeselect
