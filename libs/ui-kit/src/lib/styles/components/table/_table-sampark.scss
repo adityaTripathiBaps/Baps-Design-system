@@ -254,7 +254,9 @@ $s: ':is(baps-table.baps-sampark, .baps-ds-sampark baps-table)';
    whose content is 37.8px (two-line name + caption) still rows at 56, where
    padding alone gave 54.8 (Templates list, measured 2026-11-18). A table-cell
    height is a floor, so taller content still grows the row. */
-#{$s} .p-datatable:not(.p-datatable-sm) .p-datatable-tbody > tr > td {
+/* Not the opt-in form table: its rows are dev's 49px form density (Project
+   Owner table, parity T-14), which this 56px floor overrode. */
+#{$s} .p-datatable:not(.p-datatable-sm):not(.baps-table-form) .p-datatable-tbody > tr > td {
   height: 3.5rem;
 }
 

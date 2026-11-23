@@ -162,6 +162,10 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** accordion chevrons are PrimeNG's pair
+  again (down closed, up open), as SPM dev renders them; the 2026-11-19
+  rotation (right / down) was wrong. `baps-table-form` rows keep their form
+  density: the 56px body-row floor no longer applies to them (parity T-07, T-14).
 - **`@org/ui-kit` — patch (Sampark):** a horizontal `baps-divider` spans its
   flex column again; the header-separator rule (display flex, align-self
   center) now applies to `layout="vertical"` only. Host writes `data-layout`.

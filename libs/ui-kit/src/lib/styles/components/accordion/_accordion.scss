@@ -382,18 +382,11 @@ p-accordion .baps-accordion-clear__sampark {
   background: var(--color-sampark-mono-alpha4, rgba(21, 20, 20, 0.04));
 }
 
-/* SPM dev: chevron-right on a closed section, chevron-down on an open one.
-   PrimeNG v21 swaps chevron-down (closed) for chevron-up (open), so the glyph
-   is turned rather than replaced, keeping MyBKY on PrimeNG's own pair. */
-:is(p-accordion.baps-sampark, .baps-ds-sampark p-accordion)
-  .p-accordionheader[aria-expanded='false'] svg.p-icon {
-  transform: rotate(-90deg);
-}
-
-:is(p-accordion.baps-sampark, .baps-ds-sampark p-accordion)
-  .p-accordionheader[aria-expanded='true'] svg.p-icon {
-  transform: rotate(180deg);
-}
+/* Chevrons: PrimeNG v21's own pair, down when closed and up when open, is
+   what SPM dev's Templates filter drawer shows (pixel shot pair
+   parity-2026-11-23/templates-drw-b0). A rotation added here on 2026-11-19
+   (closed right / open down) read dev's icon component names, not the
+   rendered glyph, and was wrong; removed. */
 
 /* A panel never grows wider than its accordion. PrimeNG's collapsible lays the
    content out as grid items (the wrapper and its p-motion) and the body is a

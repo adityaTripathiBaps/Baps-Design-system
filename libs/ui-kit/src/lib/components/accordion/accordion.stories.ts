@@ -476,7 +476,7 @@ export const KeyboardInteraction: Story = {
 /**
  * SPM dev Templates filter drawer, Sampark: an open section (count 1, divider,
  * checkbox row) above two closed ones with nothing selected. Dev parity
- * checks: closed sections show chevron-right, the open one chevron-down; a 0
+ * checks: closed sections show chevron-down, the open one chevron-up (PrimeNG pair, dev); a 0
  * count sits on the neutral 4% ink tint; the open body has 8px above it and
  * no padding below, so the accordion's 8px gap is the only space before the
  * next header.
