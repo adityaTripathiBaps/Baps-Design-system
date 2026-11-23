@@ -222,7 +222,10 @@
   .p-button {
   order: 2;
   flex: none;
-  color: var(--color-sampark-text-secondary, #595656);
+  /* SPM dev's drawer close is Mono/100 in a 4px-radius box (parity T-10,
+     2026-11-23); the kit drew Mono/80 in a circle ([rounded] on the button). */
+  color: var(--color-sampark-text-primary, #151414);
+  border-radius: var(--radius-sampark-default, 0.25rem);
   /* PrimeNG's icon-only button defaults to --p-button-icon-only-width (48px)
      — the Figma close button is 32px, so pin the box directly rather than
      retheme the shared token every icon-only button reads from. */

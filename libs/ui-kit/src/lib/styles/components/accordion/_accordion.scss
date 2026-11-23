@@ -365,6 +365,12 @@ p-accordion .baps-accordion-clear__sampark {
 :is(p-accordion.baps-sampark, .baps-ds-sampark p-accordion)
   .baps-accordion-count {
   margin-inline-end: var(--space-1);
+  /* SPM dev (parity T-09): the count cell keeps the header's left corners and
+     8px side padding inside its 32px. */
+  box-sizing: border-box;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-sampark-default, 0.25rem) 0 0
+    var(--radius-sampark-default, 0.25rem);
 }
 
 /* SPM dev: 8px above the body, none below — the accordion's own 8px gap is

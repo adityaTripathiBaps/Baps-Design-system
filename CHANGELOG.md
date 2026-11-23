@@ -162,6 +162,9 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** drawer close button is Mono/100 in a
+  4px-radius box, and the accordion count cell has the header's left corners
+  and 8px side padding, as SPM dev (parity T-09, T-10).
 - **`@org/ui-kit` — patch (Sampark):** accordion chevrons are PrimeNG's pair
   again (down closed, up open), as SPM dev renders them; the 2026-11-19
   rotation (right / down) was wrong. `baps-table-form` rows keep their form
