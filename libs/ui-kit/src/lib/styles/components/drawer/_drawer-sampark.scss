@@ -337,3 +337,93 @@
   .p-drawer-footer {
   border-color: var(--p-content-border-color, rgba(255, 255, 255, 0.12));
 }
+
+/* ── Bottom sheet (opt-in: position="bottom" styleClass="baps-drawer-sheet") ──
+   Figma "🟢 Component Library" Bottom Sheet (Mob), 7776:96792:
+     32px top corners · 48×4 pill handle 16px from the top
+     header 32px from the top edge, 20px sides · content 16px sides
+     footer 16px 20px 32px, no rule, actions share the width 8px apart
+   The handle is a visual affordance only; the sheet closes the usual way
+   (close button, scrim, Escape). No token: the 48px handle width. ── */
+:is(
+  .p-drawer.baps-drawer-sampark,
+  .baps-ds-sampark .p-drawer:is(.baps-drawer-mybky, .baps-drawer-sampark)
+).p-drawer-bottom.baps-drawer-sheet {
+  height: auto;
+  max-height: 90vh;
+  border-radius: var(--space-8) var(--space-8) 0 0;
+}
+
+:is(
+  .p-drawer.baps-drawer-sampark,
+  .baps-ds-sampark .p-drawer:is(.baps-drawer-mybky, .baps-drawer-sampark)
+).p-drawer-bottom.baps-drawer-sheet::before {
+  content: '';
+  position: absolute;
+  top: var(--space-4);
+  left: 50%;
+  width: 3rem; /* 48px, Figma handle; no token */
+  height: var(--space-1);
+  border-radius: 999px;
+  background: var(--drawer-sampark-border-color, #e1e0e0);
+  transform: translateX(-50%);
+}
+
+:is(
+    .p-drawer.baps-drawer-sampark,
+    .baps-ds-sampark .p-drawer:is(.baps-drawer-mybky, .baps-drawer-sampark)
+  ).p-drawer-bottom.baps-drawer-sheet
+  .p-drawer-header {
+  padding: var(--space-8) var(--space-5) var(--space-2);
+}
+
+:is(
+    .p-drawer.baps-drawer-sampark,
+    .baps-ds-sampark .p-drawer:is(.baps-drawer-mybky, .baps-drawer-sampark)
+  ).p-drawer-bottom.baps-drawer-sheet
+  .p-drawer-content {
+  padding: 0 var(--space-4);
+}
+
+:is(
+    .p-drawer.baps-drawer-sampark,
+    .baps-ds-sampark .p-drawer:is(.baps-drawer-mybky, .baps-drawer-sampark)
+  ).p-drawer-bottom.baps-drawer-sheet
+  .p-drawer-footer {
+  display: flex;
+  gap: var(--space-2);
+  margin-inline: 0;
+  padding: var(--space-4) var(--space-5) var(--space-8);
+  border-top: 0;
+}
+
+:is(
+    .p-drawer.baps-drawer-sampark,
+    .baps-ds-sampark .p-drawer:is(.baps-drawer-mybky, .baps-drawer-sampark)
+  ).p-drawer-bottom.baps-drawer-sheet
+  .p-drawer-footer
+  baps-button {
+  flex: 1 1 0;
+}
+
+:is(
+    .p-drawer.baps-drawer-sampark,
+    .baps-ds-sampark .p-drawer:is(.baps-drawer-mybky, .baps-drawer-sampark)
+  ).p-drawer-bottom.baps-drawer-sheet
+  .p-drawer-footer
+  baps-button
+  .p-button {
+  width: 100%;
+}
+
+/* A projected footer wrapper (<div drawer-footer>) is laid out the same way. */
+:is(
+    .p-drawer.baps-drawer-sampark,
+    .baps-ds-sampark .p-drawer:is(.baps-drawer-mybky, .baps-drawer-sampark)
+  ).p-drawer-bottom.baps-drawer-sheet
+  .p-drawer-footer
+  > [drawer-footer]:not(baps-button) {
+  display: flex;
+  flex: 1 1 auto;
+  gap: var(--space-2);
+}

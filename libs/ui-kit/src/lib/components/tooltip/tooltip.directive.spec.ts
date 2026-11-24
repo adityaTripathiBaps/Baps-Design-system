@@ -65,6 +65,7 @@ function options(): SetOption {
       [tooltipTitle]="tooltipTitle"
       [tooltipLinkLabel]="tooltipLinkLabel"
       [tooltipStyleClass]="tooltipStyleClass"
+      [tooltipAlign]="tooltipAlign"
       [brand]="brand"
     >
       Trigger
@@ -76,6 +77,7 @@ class Host {
   tooltipTitle?: string;
   tooltipLinkLabel?: string;
   tooltipStyleClass?: string;
+  tooltipAlign: 'start' | 'center' | 'end' = 'center';
   brand: 'mybky' | 'sampark' = 'mybky';
 }
 
@@ -218,6 +220,21 @@ describe('BapsTooltip style class', () => {
   it('passes a consumer class through alone under mybky', async () => {
     await render({ tooltipTitle: 'T', brand: 'mybky', tooltipStyleClass: 'wide' });
     expect(options().tooltipStyleClass).toBe('wide');
+  });
+});
+
+describe('BapsTooltip arrow alignment', () => {
+  it('adds no class for the centred default', async () => {
+    await render();
+    expect(options().tooltipStyleClass).toBe('');
+  });
+
+  it('adds baps-tooltip-align-start / -end, alongside other classes', async () => {
+    await render({ tooltipAlign: 'start', tooltipStyleClass: 'wide' });
+    expect(options().tooltipStyleClass).toBe('wide baps-tooltip-align-start');
+    TestBed.resetTestingModule();
+    await render({ tooltipAlign: 'end' });
+    expect(options().tooltipStyleClass).toBe('baps-tooltip-align-end');
   });
 });
 

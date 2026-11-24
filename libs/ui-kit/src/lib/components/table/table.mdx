@@ -44,6 +44,25 @@ Data table with sorting, filtering, pagination, selection, and row grouping. `ba
 
 <Canvas of={TableStories.Compact} />
 
+### Cell types
+
+This story shows every Figma "Secondary Table Cell" type (5599:1692) in one row. Cells that aren't plain text need a class on the `<td>`:
+
+- `baps-table-cell-num` for amounts (right-aligned)
+- `baps-table-cell-center` for a checkbox, toggle, priority icon or avatar
+- `baps-table-cell-input` for a field that fills the cell
+- `baps-table-cell-end` for row actions
+
+<Canvas of={TableStories.CellTypes} sourceState="none" />
+
+<FrameworkTabs of={TableStories.CellTypes} snippets={tableSnippets.CellTypes} />
+
+The same row at 44px density (`size="small"`). Avatars drop to `size="s"`, as in Figma.
+
+<Canvas of={TableStories.CellTypesCompact} sourceState="none" />
+
+<FrameworkTabs of={TableStories.CellTypesCompact} snippets={tableSnippets.CellTypesCompact} />
+
 ### With Column Config
 
 <Canvas of={TableStories.WithColumnConfig} />

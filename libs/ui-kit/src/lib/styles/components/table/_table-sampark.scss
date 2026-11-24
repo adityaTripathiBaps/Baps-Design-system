@@ -300,6 +300,50 @@ $s: ':is(baps-table.baps-sampark, .baps-ds-sampark baps-table)';
   text-overflow: ellipsis;
 }
 
+/* ── CELL TYPES ──
+   Figma "Secondary Table Cell" (🟢 Component Library 5599:1692) pads each
+   cell type differently from the 12px text cell. Put the class on the <td>:
+     .baps-table-cell-num     Amount: right-aligned, 8px 12px
+     .baps-table-cell-center  Checkbox, Toggle, Priority, Avatar (group):
+                              centred, 8px
+     .baps-table-cell-input   Input box: 8px 4px, the field fills the cell
+     .baps-table-cell-end     Actions: right-aligned row, 8px gap, 8px 12px
+   The row height (56px, or 44px compact) is unchanged. */
+#{$s} .p-datatable .p-datatable-tbody > tr > td.baps-table-cell-num {
+  padding: 0.5rem 0.75rem !important;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#{$s} .p-datatable .p-datatable-tbody > tr > td.baps-table-cell-center {
+  padding: 0.5rem !important;
+  text-align: center;
+}
+
+#{$s} .p-datatable .p-datatable-tbody > tr > td.baps-table-cell-center > * {
+  vertical-align: middle;
+}
+
+#{$s} .p-datatable .p-datatable-tbody > tr > td.baps-table-cell-input {
+  padding: 0.5rem 0.25rem !important;
+}
+
+#{$s} .p-datatable .p-datatable-tbody > tr > td.baps-table-cell-input .p-inputtext,
+#{$s} .p-datatable .p-datatable-tbody > tr > td.baps-table-cell-input p-select {
+  width: 100%;
+}
+
+#{$s} .p-datatable .p-datatable-tbody > tr > td.baps-table-cell-end {
+  padding: 0.5rem 0.75rem !important;
+}
+
+#{$s} .p-datatable .p-datatable-tbody > tr > td.baps-table-cell-end > .baps-table-cell-end__row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
 /* Figma "Table Cell Avatar" is the standard Sampark avatar — use
    <baps-avatar brand="sampark" variant="secondary"> (size m = 36px box,
    4px radius, Mono/10 fill, Mono/40 hairline, 24px icon slot, all from
@@ -776,6 +820,18 @@ $s: ':is(baps-table.baps-sampark, .baps-ds-sampark baps-table)';
 
 #{$s} .p-datatable.p-datatable-sm .p-datatable-tbody > tr > td.spm-name-col {
   padding: 0.375rem 0.75rem 0.375rem calc(3rem + var(--table-level-indent)) !important;
+}
+
+/* Cell types (see CELL TYPES) at 44px: keep their own side padding and
+   take the compact 6px top and bottom. A 32px field plus 8px each way would
+   overshoot 44px, even though Figma's frame lists 8px. Amount and actions
+   cells already match the compact default, so they need no rule. */
+#{$s} .p-datatable.p-datatable-sm .p-datatable-tbody > tr > td.baps-table-cell-center {
+  padding: 0.375rem 0.5rem !important;
+}
+
+#{$s} .p-datatable.p-datatable-sm .p-datatable-tbody > tr > td.baps-table-cell-input {
+  padding: 0.375rem 0.25rem !important;
 }
 
 /* The group subheader pins its own height, so it has to be told too or it

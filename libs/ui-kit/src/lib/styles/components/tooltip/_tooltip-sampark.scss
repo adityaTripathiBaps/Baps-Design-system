@@ -83,3 +83,43 @@
 .p-tooltip.baps-multiselect-overflow-tooltip .p-tooltip-text {
   white-space: pre-line;
 }
+
+/* ── Arrow alignment: bapsTooltip tooltipAlign="start" | "end" ─────────
+   Figma "🟢 Component Library" Tooltips 653:7324 draws a 24px beak box at
+   the start, centre or end of an edge, so the arrow's centre is 12px from
+   that edge. PrimeNG always centres the tooltip on its host and writes the
+   arrow's left/top inline, so:
+     - the tooltip is shifted by half its own width minus 12px. translate()
+       percentages are of the element itself, so this works at any width
+       and the arrow still points at the host's centre;
+     - the arrow is moved with !important, because its position is an inline
+       style.
+   Brand-neutral: placement is the same in both brands. */
+.p-tooltip.baps-tooltip-align-start:is(.p-tooltip-top, .p-tooltip-bottom) {
+  transform: translateX(calc(50% - var(--space-3)));
+}
+.p-tooltip.baps-tooltip-align-start:is(.p-tooltip-top, .p-tooltip-bottom)
+  .p-tooltip-arrow {
+  left: var(--space-3) !important;
+}
+.p-tooltip.baps-tooltip-align-end:is(.p-tooltip-top, .p-tooltip-bottom) {
+  transform: translateX(calc(-50% + var(--space-3)));
+}
+.p-tooltip.baps-tooltip-align-end:is(.p-tooltip-top, .p-tooltip-bottom)
+  .p-tooltip-arrow {
+  left: calc(100% - var(--space-3)) !important;
+}
+.p-tooltip.baps-tooltip-align-start:is(.p-tooltip-left, .p-tooltip-right) {
+  transform: translateY(calc(50% - var(--space-3)));
+}
+.p-tooltip.baps-tooltip-align-start:is(.p-tooltip-left, .p-tooltip-right)
+  .p-tooltip-arrow {
+  top: var(--space-3) !important;
+}
+.p-tooltip.baps-tooltip-align-end:is(.p-tooltip-left, .p-tooltip-right) {
+  transform: translateY(calc(-50% + var(--space-3)));
+}
+.p-tooltip.baps-tooltip-align-end:is(.p-tooltip-left, .p-tooltip-right)
+  .p-tooltip-arrow {
+  top: calc(100% - var(--space-3)) !important;
+}

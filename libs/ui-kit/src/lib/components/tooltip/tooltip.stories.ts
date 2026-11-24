@@ -213,3 +213,45 @@ export const DisabledInteraction: StoryObj<TooltipArgs> = {
     await expect(page.queryByText('This tooltip is disabled')).not.toBeInTheDocument();
   },
 };
+
+/**
+ * The twelve Figma beak types ("🟢 Component Library" Tooltips, 653:7324).
+ * Figma names a type by where the BEAK sits on the card. "Bottom Left" is a
+ * beak on the card's bottom edge, toward the left, so the card is above the
+ * host and extends to the right. In the kit that is `tooltipPosition="top"`
+ * plus `tooltipAlign="start"`. Hover or focus a button to see its tooltip.
+ */
+export const ArrowAlignments: StoryObj<TooltipArgs> = {
+  render: () => ({
+    props: {
+      types: [
+        { name: 'Bottom Left', position: 'top', align: 'start' },
+        { name: 'Bottom Center', position: 'top', align: 'center' },
+        { name: 'Bottom Right', position: 'top', align: 'end' },
+        { name: 'Top Left', position: 'bottom', align: 'start' },
+        { name: 'Top Center', position: 'bottom', align: 'center' },
+        { name: 'Top Right', position: 'bottom', align: 'end' },
+        { name: 'Left Top', position: 'right', align: 'start' },
+        { name: 'Left Center', position: 'right', align: 'center' },
+        { name: 'Left Bottom', position: 'right', align: 'end' },
+        { name: 'Right Top', position: 'left', align: 'start' },
+        { name: 'Right Center', position: 'left', align: 'center' },
+        { name: 'Right Bottom', position: 'left', align: 'end' },
+      ],
+    },
+    template: `
+      <div style="display:grid; grid-template-columns:repeat(3, 10rem); gap:5rem 9rem; padding:6rem 12rem; justify-content:start">
+        @for (t of types; track t.name) {
+          <baps-button
+            severity="secondary"
+            [outlined]="true"
+            [label]="t.name"
+            [bapsTooltip]="'Beak: ' + t.name"
+            [tooltipPosition]="t.position"
+            [tooltipAlign]="t.align"
+          />
+        }
+      </div>
+    `,
+  }),
+};

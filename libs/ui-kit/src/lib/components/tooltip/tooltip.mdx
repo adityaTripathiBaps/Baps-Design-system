@@ -1,6 +1,7 @@
 import { Meta, Canvas, Controls } from '@storybook/blocks';
-import { BrandOnly, PropsTable } from '@baps/docs-blocks';
+import { BrandOnly, FrameworkTabs, PropsTable } from '@baps/docs-blocks';
 import * as TooltipStories from './tooltip.stories';
+import { tooltipSnippets } from './tooltip.snippets';
 
 <Meta of={TooltipStories} />
 
@@ -47,6 +48,14 @@ Informational tooltip on hover/focus. `bapsTooltip` is a host directive wrapping
 <Canvas of={TooltipStories.SamparkRichCard} />
 
 </BrandOnly>
+
+### Arrow alignments
+
+Figma names twelve beak types by where the arrow sits on the card. `tooltipPosition` picks the side and `tooltipAlign` (`start` | `center` | `end`) picks where along that edge the arrow sits. With `start` or `end`, the arrow is 12px from that edge and the card extends past the host on the other side. The arrow always points at the host's centre. For example, "Bottom Left" is `tooltipPosition="top" tooltipAlign="start"`.
+
+<Canvas of={TooltipStories.ArrowAlignments} sourceState="none" />
+
+<FrameworkTabs of={TooltipStories.ArrowAlignments} snippets={tooltipSnippets.ArrowAlignments} />
 
 ## API
 

@@ -121,4 +121,9 @@ export default function LockedFieldHint({ onLearnMore }) {
   );
 }`,
   },
+  // Angular only: tooltipAlign is an input of the bapsTooltip directive.
+  ArrowAlignments: {
+    primeng: `<!-- Figma "Bottom Left": card above, arrow 12px from its left edge -->
+<baps-button label="Share" bapsTooltip="Copy the link" tooltipPosition="top" tooltipAlign="start" />`,
+  },
 };

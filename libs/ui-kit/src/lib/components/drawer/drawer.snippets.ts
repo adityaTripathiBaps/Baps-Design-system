@@ -234,4 +234,14 @@ export function NonDismissible() {
   );
 }`,
   },
+  // Angular only: the sheet is a styleClass on the Angular drawer.
+  SamparkBottomSheet: {
+    primeng: `<baps-drawer [(visible)]="open" header="Tags" position="bottom" styleClass="baps-drawer-sheet" brand="sampark">
+  …list…
+  <div drawer-footer>
+    <baps-button label="Clear All" severity="secondary" [outlined]="true" size="xlarge" />
+    <baps-button label="Apply" size="xlarge" />
+  </div>
+</baps-drawer>`,
+  },
 };

@@ -12,6 +12,13 @@ import { BapsTag } from '../tag/tag.component';
 import { BapsProgressBar } from '../progress-bar/progress-bar.component';
 import { BapsAvatar } from '../avatar/avatar.component';
 import { BapsPaginator } from '../pagination/pagination.component';
+import { BapsAvatarGroup } from '../avatar/avatar-group.component';
+import { BapsCheckbox } from '../checkbox/checkbox.component';
+import { BapsToggleSwitch } from '../toggle-switch/toggle-switch.component';
+import { BapsButton } from '../button/button.component';
+import { BapsLink } from '../link/link.component';
+import { BapsIcon } from '../icon/icon.component';
+import { BapsInputText } from '../form-field/directives/input-text.directive';
 import {
   BapsTableColumnConfig,
   type BapsTableColumnConfigColumn,
@@ -351,6 +358,13 @@ const meta: Meta<BapsTable> = {
         BapsAvatar,
         BapsPaginator,
         BapsTableColumnConfig,
+        BapsAvatarGroup,
+        BapsCheckbox,
+        BapsToggleSwitch,
+        BapsButton,
+        BapsLink,
+        BapsIcon,
+        BapsInputText,
         SharedModule,
         TableModule,
         FormsModule,
@@ -1595,4 +1609,103 @@ export const PageScopeLeavesRawTableInteraction: StoryObj<BapsTable> = {
     await expect(header('raw').textOverflow).not.toBe('ellipsis');
     await expect(header('raw').whiteSpace).not.toBe('nowrap');
   },
+};
+
+/**
+ * Every Figma "Secondary Table Cell" type in one row (🟢 Component Library
+ * 5599:1692): text, link, badge group, input box, avatar, avatar group,
+ * progress bar, checkbox, priority, toggle switch, amount and actions.
+ *
+ * Cells that are not plain text take a type class on the `<td>`
+ * (`baps-table-cell-num`, `-center`, `-input`, `-end`); see CELL TYPES in
+ * _table-sampark.scss. CellTypesCompact is the same table at the 44px density.
+ */
+export const CellTypes: StoryObj<BapsTable> = {
+  render: (args) => ({
+    props: {
+      ...args,
+      rows: [
+        { name: 'Regional Leadership Seminar 2024', edited: 'Last Edited : 23/07/2024, 2:00 PM', groups: '2 Groups', badge: 'Badge Text', owner: 'Gaurang Patel', done: 20, priority: true, active: false, amount: 1000, selected: false },
+        { name: 'Youth Shibir 2024', edited: 'Last Edited : 21/07/2024, 4:30 PM', groups: '5 Groups', badge: 'Outreach', owner: '', done: 64, priority: false, active: true, amount: 125000, selected: true },
+      ],
+    },
+    template: `
+      <baps-table [value]="rows" [brand]="brand" [size]="size" [tableStyle]="{ 'min-width': '122rem' }">
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 2.5rem"><span class="p-hidden-accessible">Select</span></th>
+            <th style="width: 21rem">Text</th>
+            <th style="width: 14.6875rem">Link</th>
+            <th style="width: 12rem">Badge Group</th>
+            <th style="width: 15rem">Input Box</th>
+            <th style="width: 3.25rem"><span class="p-hidden-accessible">Avatar</span></th>
+            <th style="width: 9.75rem">Avatar Group</th>
+            <th style="width: 9.375rem">Progress</th>
+            <th style="width: 2.5rem"><span class="p-hidden-accessible">Priority</span></th>
+            <th style="width: 3.25rem"><span class="p-hidden-accessible">Active</span></th>
+            <th style="width: 9.8125rem; text-align: right">Amount</th>
+            <th style="width: 12.5rem"><span class="p-hidden-accessible">Actions</span></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-row>
+          <tr>
+            <td class="baps-table-cell-center">
+              <baps-checkbox [binary]="true" [(ngModel)]="row.selected" [inputId]="'ct-sel-' + row.name" />
+              <label class="p-hidden-accessible" [for]="'ct-sel-' + row.name">Select {{ row.name }}</label>
+            </td>
+            <td>
+              <span class="baps-table-cell">{{ row.name }}<small>{{ row.edited }}</small></span>
+            </td>
+            <td>
+              <span class="baps-table-cell">
+                <baps-link href="#">{{ row.groups }}</baps-link>
+                <small>{{ row.edited }}</small>
+              </span>
+            </td>
+            <td><baps-tag [value]="row.badge" /></td>
+            <td class="baps-table-cell-input">
+              <input bapsInputText [(ngModel)]="row.owner" placeholder="Enter user name" [attr.aria-label]="'Owner of ' + row.name" />
+            </td>
+            <td class="baps-table-cell-center">
+              <baps-avatar label="GP" shape="square" variant="secondary" [size]="size === 'small' ? 's' : 'm'" />
+            </td>
+            <td class="baps-table-cell-center">
+              <baps-avatargroup [size]="size === 'small' ? 's' : 'm'">
+                <baps-avatar label="RW" shape="square" variant="secondary" [size]="size === 'small' ? 's' : 'm'" />
+                <baps-avatar label="SP" shape="square" variant="secondary" [size]="size === 'small' ? 's' : 'm'" />
+                <baps-avatar label="DG" shape="square" variant="secondary" [size]="size === 'small' ? 's' : 'm'" />
+                <baps-avatar label="+2" shape="square" variant="secondary" [size]="size === 'small' ? 's' : 'm'" />
+              </baps-avatargroup>
+            </td>
+            <td>
+              <baps-progressbar severity="success" [value]="row.done" [ariaLabel]="row.done + '% complete'" />
+            </td>
+            <td class="baps-table-cell-center">
+              @if (row.priority) {
+                <baps-icon name="double-alt-arrow-up" size="lg" label="High priority" style="color: var(--color-sampark-error-80)" />
+              }
+            </td>
+            <td class="baps-table-cell-center">
+              <baps-toggleswitch size="xs" [(ngModel)]="row.active" [inputId]="'ct-act-' + row.name" />
+              <label class="p-hidden-accessible" [for]="'ct-act-' + row.name">Active: {{ row.name }}</label>
+            </td>
+            <td class="baps-table-cell-num">{{ row.amount | number }}</td>
+            <td class="baps-table-cell-end">
+              <span class="baps-table-cell-end__row">
+                <baps-button label="Button Text" severity="secondary" outlined size="small" />
+                <button type="button" class="baps-table-action" [attr.aria-label]="'More actions for ' + row.name">
+                  <i class="pi pi-ellipsis-h" aria-hidden="true"></i>
+                </button>
+              </span>
+            </td>
+          </tr>
+        </ng-template>
+      </baps-table>
+    `,
+  }),
+};
+
+export const CellTypesCompact: StoryObj<BapsTable> = {
+  ...CellTypes,
+  args: { size: 'small' },
 };

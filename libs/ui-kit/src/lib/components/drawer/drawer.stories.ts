@@ -7,6 +7,7 @@ import { InputText } from 'primeng/inputtext';
 import { BapsDrawer } from './drawer.component';
 import { BapsButton } from '../button/button.component';
 import { BapsIcon } from '../icon/icon.component';
+import { BapsToggleSwitch } from '../toggle-switch/toggle-switch.component';
 import { BapsAccordionWrapper } from '../accordion/accordion-wrapper.component';
 import { BapsAccordionPanel } from '../accordion/accordion-panel.component';
 import { BapsMultiSelect } from '../multi-select/multi-select.component';
@@ -41,6 +42,7 @@ const meta: Meta<Args> = {
         BapsDatepicker,
         BapsSlider,
         BapsInputGroup,
+        BapsToggleSwitch,
       ],
     }),
   ],
@@ -428,4 +430,57 @@ export const SamparkOverlayInsideDrawerInteraction: Story = {
       if (!hadClass) root.classList.remove('baps-ds-sampark');
     }
   },
+};
+
+/**
+ * Mobile bottom sheet — Figma "🟢 Component Library" Bottom Sheet (Mob),
+ * 7776:96792. A bottom drawer with `styleClass="baps-drawer-sheet"`: 32px top
+ * corners, a 48×4 handle, 20px header sides, and two footer actions sharing
+ * the width. The list inside is ordinary content.
+ */
+export const SamparkBottomSheet: Story = {
+  tags: ['!ds:mybky'],
+  parameters: { viewport: { defaultViewport: 'mobile2' } },
+  render: (args) => ({
+    props: {
+      ...args,
+      open: true,
+      query: '',
+      options: [
+        { label: 'Satsang', on: false, count: 8 },
+        { label: 'Seva', on: true, count: 3 },
+        { label: 'Shibir', on: false, count: 12 },
+        { label: 'Sabha', on: false, count: 5 },
+        { label: 'Utsav', on: false, count: 1 },
+      ],
+    },
+    template: `
+      <div class="baps-ds-sampark" style="padding:1.5rem">
+        <baps-button label="Open sheet" brand="sampark" (click)="open = true" />
+        <baps-drawer
+          [visible]="open"
+          (visibleChange)="open = $event"
+          header="Tags"
+          position="bottom"
+          styleClass="baps-drawer-sheet"
+          brand="sampark"
+        >
+          <div style="padding: 0 0.25rem 0.5rem">
+            <input pInputText [(ngModel)]="query" placeholder="Search" aria-label="Search tags" style="width:100%" />
+          </div>
+          @for (o of options; track o.label) {
+            <label style="display:flex; align-items:center; gap:0.5rem; min-height:3.25rem; padding:0.5rem; font-size:1rem">
+              <span style="flex:1">{{ o.label }}</span>
+              <baps-toggleswitch [(ngModel)]="o.on" size="sm" brand="sampark" />
+              <span style="min-width:1.25rem; text-align:center; font-size:0.875rem; font-weight:600">{{ o.count }}</span>
+            </label>
+          }
+          <div drawer-footer>
+            <baps-button label="Clear All" severity="secondary" [outlined]="true" size="xlarge" brand="sampark" (click)="open = false" />
+            <baps-button label="Apply" size="xlarge" brand="sampark" (click)="open = false" />
+          </div>
+        </baps-drawer>
+      </div>
+    `,
+  }),
 };

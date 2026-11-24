@@ -8,6 +8,21 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/ui-kit` — minor, additive:** `bapsTooltip` `tooltipAlign`
+  (`'start' | 'center' | 'end'`, default `'center'`). With `tooltipPosition`
+  it covers Figma's 12 beak types (653:7324). With `start` or `end` the arrow
+  sits 12px from that edge and still points at the host's centre. The shift
+  is CSS only (`baps-tooltip-align-*`), so it works at any tooltip width.
+- **`@org/ui-kit/styles` — minor, additive (Sampark):** bottom sheet: a
+  `baps-drawer` with `position="bottom"` and `styleClass="baps-drawer-sheet"`
+  (Figma 7776:96792). It has 32px top corners, a 48×4 handle, a 20px header
+  inset, and footer actions that share the width. Story: Drawer › Sampark
+  Bottom Sheet.
+- **`@org/ui-kit/styles` — minor, additive (Sampark):** table cell-type classes
+  for the `<td>` (Figma 5599:1692): `baps-table-cell-num` (amount, right-aligned),
+  `-center` (checkbox, toggle, priority, avatar), `-input` (8px 4px field cell)
+  and `-end` (row actions), with compact-density variants. Stories: Table ›
+  Cell Types and Cell Types Compact.
 - **`@org/ui-kit` — minor, additive (Sampark default):** `baps-select`
   `autoOptionFocus` input, as on `baps-multi-select`. Unset, it is on for
   Sampark and off for MyBKY: SPM dev opens an empty Select with its first row

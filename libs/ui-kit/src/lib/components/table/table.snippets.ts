@@ -1027,4 +1027,20 @@ ${TABLE_BODY}
   SamparkFormDensity: {
     primeng: `<baps-table [value]="rows" brand="sampark" styleClass="baps-table-form">…</baps-table>`,
   },
+  // Angular only: the cell-type classes are on the <td>, inside a body template.
+  CellTypes: {
+    primeng: `<td class="baps-table-cell-center"><baps-checkbox [binary]="true" [(ngModel)]="row.selected" /></td>
+<td class="baps-table-cell-input"><input bapsInputText [(ngModel)]="row.owner" aria-label="Owner" /></td>
+<td class="baps-table-cell-center"><baps-toggleswitch size="xs" [(ngModel)]="row.active" /></td>
+<td class="baps-table-cell-num">{{ row.amount | number }}</td>
+<td class="baps-table-cell-end">
+  <span class="baps-table-cell-end__row">
+    <baps-button label="Open" severity="secondary" outlined size="small" />
+    <button type="button" class="baps-table-action" aria-label="More actions"><i class="pi pi-ellipsis-h" aria-hidden="true"></i></button>
+  </span>
+</td>`,
+  },
+  CellTypesCompact: {
+    primeng: `<baps-table [value]="rows" size="small">…same cells, avatars at size="s"…</baps-table>`,
+  },
 };

@@ -86,6 +86,19 @@ export class BapsTooltip implements OnChanges {
   @Input() brand: BapsBrand = injectBapsBrand();
   /** Overlay container, as PrimeNG's appendTo; unset or null means 'body'. */
   @Input() appendTo?: unknown;
+  /**
+   * Where the arrow sits along the tooltip's edge. This gives the twelve
+   * Figma beak types ("🟢 Component Library" 653:7324): four sides from
+   * tooltipPosition, times start, center or end from this input.
+   * - `center` (default): PrimeNG's centred tooltip.
+   * - `start`: the arrow sits 12px from the left (top/bottom) or top
+   *   (left/right) edge, and the tooltip extends past the host toward the
+   *   end side.
+   * - `end`: the mirror image.
+   * The arrow still points at the host's centre. The shift is CSS only
+   * (_tooltip-sampark.scss), so it works with any tooltip width.
+   */
+  @Input() tooltipAlign: 'start' | 'center' | 'end' = 'center';
 
   private get isRich(): boolean {
     return !!this.tooltipTitle;
@@ -118,7 +131,11 @@ export class BapsTooltip implements OnChanges {
     // Rich-card layout only has a Sampark spec today (Figma node
     // 13197:90046) — no MyBKY design exists, so the class is gated on
     // both isRich and brand rather than added unconditionally.
-    const classes = [this.tooltipStyleClass, this.isRich && this.brand === 'sampark' ? 'baps-tooltip-sampark' : ''];
+    const classes = [
+      this.tooltipStyleClass,
+      this.isRich && this.brand === 'sampark' ? 'baps-tooltip-sampark' : '',
+      this.tooltipAlign !== 'center' ? `baps-tooltip-align-${this.tooltipAlign}` : '',
+    ];
     return classes.filter(Boolean).join(' ');
   }
 }

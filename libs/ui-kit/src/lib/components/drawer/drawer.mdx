@@ -89,6 +89,17 @@ A slide-in panel anchored to an edge of the screen. `baps-drawer` wraps PrimeNG 
   snippets={drawerSnippets.NonDismissible}
 />
 
+### Sampark Bottom Sheet
+
+The mobile bottom sheet (Figma 7776:96792). Use `position="bottom"` and add `styleClass="baps-drawer-sheet"`. That gives the sheet 32px top corners, a 48×4 handle and a 20px header inset. Actions in `drawer-footer` share the width equally. The handle is only a visual cue: the sheet still closes from its close button, the scrim or Escape, not by dragging.
+
+<Canvas of={DrawerStories.SamparkBottomSheet} sourceState="none" />
+
+<FrameworkTabs
+  of={DrawerStories.SamparkBottomSheet}
+  snippets={drawerSnippets.SamparkBottomSheet}
+/>
+
 ## API
 
 Inputs, outputs and their types, read from the component's own source.
