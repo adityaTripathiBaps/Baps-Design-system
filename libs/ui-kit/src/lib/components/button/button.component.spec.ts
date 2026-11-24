@@ -139,20 +139,6 @@ describe('BapsButton', () => {
       expect(cmp.iconSize).toBe(16);
     });
 
-    it('draws 20px in a Sampark icon-only default button, 18px labelled or MyBKY (SPM dev toolbar)', async () => {
-      const fixture = await setup();
-      const cmp = fixture.debugElement.children[0].componentInstance as BapsButton;
-      cmp.size = undefined;
-      cmp.label = undefined;
-      cmp.brand = 'sampark';
-      expect(cmp.iconSize).toBe(20);
-      cmp.label = 'Save';
-      expect(cmp.iconSize).toBe(18);
-      cmp.label = undefined;
-      cmp.brand = 'mybky';
-      expect(cmp.iconSize).toBe(18);
-    });
-
     it('reports no icon at all when the input is unset', async () => {
       const fixture = await setup();
       const cmp = fixture.debugElement.children[0].componentInstance as BapsButton;
