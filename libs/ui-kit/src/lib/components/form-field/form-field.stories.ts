@@ -9,6 +9,8 @@ import { BapsFloatLabel } from './float-label.component';
 import { BapsIconField } from './icon-field.component';
 import { BapsInputIcon } from './input-icon.component';
 import { BapsMessage } from './message.component';
+import { BapsIcon } from '../icon/icon.component';
+import { BapsLink } from '../link/link.component';
 
 import { SelectModule } from 'primeng/select';
 import { MultiSelectModule } from 'primeng/multiselect';
@@ -42,6 +44,8 @@ const meta: Meta = {
         BapsIconField,
         BapsInputIcon,
         BapsMessage,
+        BapsIcon,
+        BapsLink,
         FormsModule,
         SelectModule,
         MultiSelectModule,
@@ -489,6 +493,69 @@ export const SamparkWithIcon: Story = {
           <baps-inputicon styleClass="pi pi-search" />
           <input bapsInputText [(ngModel)]="value" placeholder="Search events" />
         </baps-iconfield>
+      </div>
+    `,
+  }),
+};
+
+/**
+ * Label beside an underlined field — Figma "🟢 Component Library" Horizontal
+ * Input Text Field (6304:53807). Opt in with `.field--horizontal`; the row
+ * (`.field__control`) carries the rule, and holds an optional leading icon,
+ * trailing actions and a character count. States: placeholder, filled with
+ * actions, error, disabled. Hover a row to see its rule darken.
+ */
+export const SamparkHorizontal: Story = {
+  tags: ['!ds:mybky'],
+  name: 'Sampark Horizontal',
+  render: () => ({
+    props: { empty: '', filled: 'Aditya', bad: 'Aditya' },
+    template: `
+      <div class="baps-ds-sampark" style="display:flex; flex-direction:column; gap:24px; max-width:960px;">
+        <div class="field field--horizontal">
+          <label for="h-1">User name <span class="p-error">*</span></label>
+          <div class="field__control">
+            <baps-icon class="field__icon" name="user" size="sm" />
+            <input id="h-1" bapsInputText [(ngModel)]="empty" placeholder="Enter user name" maxlength="200" />
+            <span class="input-char-count">{{ empty.length }} / 200</span>
+          </div>
+          <small class="input-hint">This is a hint text to help user.</small>
+        </div>
+
+        <div class="field field--horizontal">
+          <label for="h-2">User name <span class="p-error">*</span></label>
+          <div class="field__control">
+            <baps-icon class="field__icon" name="user" size="sm" />
+            <input id="h-2" bapsInputText [(ngModel)]="filled" placeholder="Enter user name" maxlength="200" />
+            <span class="field__actions">
+              <baps-link href="#">Link Text</baps-link>
+              <span class="field__divider" aria-hidden="true"></span>
+              <baps-link href="#">Link Text</baps-link>
+            </span>
+            <span class="input-char-count">{{ filled.length }} / 200</span>
+          </div>
+          <small class="input-hint">This is a hint text to help user.</small>
+        </div>
+
+        <div class="field field--horizontal">
+          <label for="h-3">User name <span class="p-error">*</span></label>
+          <div class="field__control">
+            <baps-icon class="field__icon" name="user" size="sm" />
+            <input id="h-3" bapsInputText class="p-invalid" [(ngModel)]="bad" placeholder="Enter user name" maxlength="200" />
+            <span class="input-char-count">{{ bad.length }} / 200</span>
+          </div>
+          <small class="input-hint p-error">This is a hint text to help user.</small>
+        </div>
+
+        <div class="field field--horizontal">
+          <label for="h-4">User name</label>
+          <div class="field__control">
+            <baps-icon class="field__icon" name="user" size="sm" />
+            <input id="h-4" bapsInputText disabled placeholder="Enter user name" />
+            <span class="input-char-count">0 / 200</span>
+          </div>
+          <small class="input-hint">This is a hint text to help user.</small>
+        </div>
       </div>
     `,
   }),

@@ -405,6 +405,16 @@ Blocked on design, not on implementation. Never invent these.
   14px only, so the kit keeps 14px. Its nav glyph is ~12.8px; the kit uses
   `--font-size-xs` (12px).
 
+- **Ask at demo.** `.field--horizontal` label column (2026-11-24, Figma
+  6304:53807): the 150px column has no token, because the spacing scale stops
+  at `--space-10`. It ships as the literal `9.375rem` behind the
+  `--field-label-width` custom property, so forms can override it.
+- **Ask at demo.** Sampark default progress bar height (2026-11-24): the
+  current Figma "🟢 Component Library" (754:10530) draws a 4px track, but the
+  kit's default Sampark bar is 8px (`SAMPARK_PROGRESSBAR_TOKENS.root.height`,
+  from the older Sampark Portal file). Only the new `labelLayout` bars use 4px.
+  Changing the default would visibly change every bar spm-ui already shows.
+
 ## Approved token exceptions — *2026-10-08*
 
 - `var(--token, #fallback)` fallbacks. Defensive, not hardcoding.

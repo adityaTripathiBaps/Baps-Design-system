@@ -1,0 +1,20 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as DateFilterStories from './date-filter.stories';
+
+<Meta of={DateFilterStories} />
+
+# Date filter
+
+A table filter for a date column (Figma "🟢 Component Library" Calendar, 10069:3032). It combines a condition with an inline calendar.
+
+The filter is built from existing kit parts, so there is no component to import:
+
+- `baps-select` holds the condition: *Date is*, *before*, *after*, *on or before*, *on or after* or *in between*.
+- Read-only `bapsInputText` fields show the chosen date.
+- An inline `baps-datepicker` sits under the fields. *In between* switches it to a two-month range and adds the end-date field.
+
+<Canvas of={DateFilterStories.Default} sourceState="none" />
+
+## Known difference from Figma
+
+The inline calendar keeps the kit datepicker's own width and 1px border, which were tuned to SPM dev. In Figma the calendar fills the panel and has no border of its own. Changing that belongs to the datepicker, not to this pattern.

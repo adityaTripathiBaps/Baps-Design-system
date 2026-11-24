@@ -18,6 +18,7 @@ export * from './lib/components/avatar/avatar-group.component';
 export * from './lib/components/badge/badge.component';
 export * from './lib/components/badge/overlay-badge.component';
 export * from './lib/components/toggle-switch/toggle-switch.component';
+export * from './lib/components/input-otp/input-otp.component';
 export * from './lib/components/tag/tag.component';
 export * from './lib/components/menu-item/menu-item.component';
 export * from './lib/components/users-dropdown/users-dropdown.component';

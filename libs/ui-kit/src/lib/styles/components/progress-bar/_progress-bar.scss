@@ -159,3 +159,58 @@ baps-progressbar .p-progressbar-indeterminate .p-progressbar-value::after {
     transform: scaleX(0.35);
   }
 }
+
+/* ── Outside label: labelLayout="compact" | "detailed" ──────────────────
+   Figma "🟢 Component Library" Progress bar 754:10530. Both types draw a
+   4px bar with a 12px label outside it, 8px away:
+     compact   label to the right, 40px column, right-aligned
+     detailed  label under the bar, right-aligned
+   The selector is (0,2,2) so it beats the brand track-height rules,
+   which are at most (0,2,1), whatever order the stylesheets load in. */
+baps-progressbar.baps-progressbar--compact {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+baps-progressbar.baps-progressbar--detailed {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-2);
+}
+
+baps-progressbar.baps-progressbar--compact > p-progressbar {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+baps-progressbar.baps-progressbar--detailed > p-progressbar {
+  align-self: stretch;
+}
+
+:is(
+    baps-progressbar.baps-progressbar--compact,
+    baps-progressbar.baps-progressbar--detailed
+  )
+  p-progressbar.p-progressbar {
+  height: var(--space-1);
+}
+
+.baps-progressbar__caption {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-regular);
+  line-height: 1.3;
+  text-align: right;
+  white-space: nowrap;
+  color: var(--color-mybky-text-secondary);
+}
+
+baps-progressbar.baps-progressbar--compact .baps-progressbar__caption {
+  flex: 0 0 var(--space-10);
+}
+
+:is(baps-progressbar.baps-sampark, .baps-ds-sampark baps-progressbar)
+  .baps-progressbar__caption {
+  color: var(--color-sampark-text-secondary);
+}

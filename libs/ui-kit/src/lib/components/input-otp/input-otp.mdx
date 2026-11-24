@@ -1,0 +1,40 @@
+import { Meta, Canvas, Controls } from '@storybook/blocks';
+import { FrameworkTabs } from '@baps/docs-blocks';
+import * as InputOtpStories from './input-otp.stories';
+import { inputOtpSnippets } from './input-otp.snippets';
+
+<Meta of={InputOtpStories} />
+
+# Input OTP
+
+A one-time-code field with one box per digit. `baps-input-otp` wraps PrimeNG's `p-inputotp`.
+
+- Each box is a `pInputText`, so border, hover, focus ring, error and disabled come from the brand input skin, the same as a text field.
+- Figma ships 4 and 6 digits. Six digits are split 3-3 with a "-", as in Figma. Set `separator` to override that.
+- Typing moves to the next box, Backspace on an empty box moves back, and pasting a whole code fills every box.
+- The first box gets `autocomplete="one-time-code"`, so phones offer the code from the SMS.
+
+Label and hint are not part of the component. Compose them around it like any other field.
+
+```html
+<label for="otp">Verification code</label>
+<baps-input-otp inputId="otp" [(ngModel)]="code" [length]="6" />
+```
+
+## Examples
+
+### Playground
+
+<Canvas of={InputOtpStories.Playground} sourceState="none" />
+
+<Controls of={InputOtpStories.Playground} />
+
+<FrameworkTabs of={InputOtpStories.Playground} snippets={inputOtpSnippets.Playground} />
+
+### Sampark states
+
+Placeholder, filled, error and disabled for 4 and 6 digits (Figma 754:4740). Hover over a box or tab into it to see its hover and focus states.
+
+<Canvas of={InputOtpStories.SamparkStates} sourceState="none" />
+
+<FrameworkTabs of={InputOtpStories.SamparkStates} snippets={inputOtpSnippets.SamparkStates} />

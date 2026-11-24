@@ -222,3 +222,45 @@ describe('BapsProgressBar accessibility', () => {
     expect(el.getAttribute('aria-valuenow')).toBe('40');
   });
 });
+
+describe('BapsProgressBar labelLayout', () => {
+  @Component({
+    imports: [BapsProgressBar],
+    template: `<baps-progressbar [value]="value()" [labelLayout]="layout()" [label]="label()" ariaLabel="Upload" />`,
+  })
+  class LayoutHost {
+    readonly value = signal(39.6);
+    readonly layout = signal<'compact' | 'detailed' | undefined>(undefined);
+    readonly label = signal<string | undefined>(undefined);
+  }
+
+  async function render(init: (h: LayoutHost) => void) {
+    const fixture = TestBed.createComponent(LayoutHost);
+    init(fixture.componentInstance);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const host: HTMLElement = fixture.nativeElement.querySelector('baps-progressbar');
+    return { host, caption: host.querySelector('.baps-progressbar__caption') };
+  }
+
+  it('renders no outside label by default', async () => {
+    const { host, caption } = await render(() => undefined);
+    expect(caption).toBeNull();
+    expect(host.className).not.toContain('baps-progressbar--');
+  });
+
+  it('compact shows the rounded value and sets the layout class', async () => {
+    const { host, caption } = await render((h) => h.layout.set('compact'));
+    expect(host.classList).toContain('baps-progressbar--compact');
+    expect(caption?.textContent).toBe('40%');
+  });
+
+  it('detailed uses the given label text', async () => {
+    const { host, caption } = await render((h) => {
+      h.layout.set('detailed');
+      h.label.set('40% uploaded...');
+    });
+    expect(host.classList).toContain('baps-progressbar--detailed');
+    expect(caption?.textContent).toBe('40% uploaded...');
+  });
+});

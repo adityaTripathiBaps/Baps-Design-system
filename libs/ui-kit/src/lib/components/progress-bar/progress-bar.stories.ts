@@ -135,3 +135,23 @@ export const TableCellProgress: StoryObj<BapsProgressBar> = {
     `,
   }),
 };
+
+/**
+ * The two Figma types ("🟢 Component Library" Progress bar 754:10530): a 4px
+ * bar with its label outside. Compact puts the value in a 40px column to the
+ * right; Detailed puts the label under the bar, right-aligned.
+ */
+export const LabelLayouts: StoryObj<BapsProgressBar> = {
+  args: {},
+  render: () => ({
+    props: { steps: [0, 40, 100] },
+    template: `
+      <div class="baps-ds-sampark" style="display: grid; grid-template-columns: repeat(2, 25rem); gap: 1.5rem 3rem;">
+        @for (v of steps; track v) {
+          <baps-progressbar severity="success" labelLayout="compact" [value]="v" ariaLabel="Profile completion"></baps-progressbar>
+          <baps-progressbar severity="success" labelLayout="detailed" [value]="v" [label]="v + '% uploaded...'" ariaLabel="Upload progress"></baps-progressbar>
+        }
+      </div>
+    `,
+  }),
+};

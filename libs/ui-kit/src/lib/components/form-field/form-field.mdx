@@ -123,6 +123,17 @@ The two other controls that share this stories file have their own pages: [Listb
   snippets={formFieldSnippets.SamparkWithIcon}
 />
 
+### Sampark Horizontal
+
+The label sits beside the field, and the field is a single underlined row (Figma 6304:53807). Add `field--horizontal` to a `.field`, then put the input inside a `.field__control` row. The row can also hold a leading `.field__icon`, trailing `.field__actions` separated by a `.field__divider`, and an `.input-char-count`. The hint goes under the row. The label column is 150px; set `--field-label-width` on the field to change it.
+
+<Canvas of={FormControlsStories.SamparkHorizontal} sourceState="none" />
+
+<FrameworkTabs
+  of={FormControlsStories.SamparkHorizontal}
+  snippets={formFieldSnippets.SamparkHorizontal}
+/>
+
 </BrandOnly>
 
 ### Textarea Example

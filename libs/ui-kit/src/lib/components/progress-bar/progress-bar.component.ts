@@ -25,6 +25,9 @@ import { BapsBrand, injectBapsBrand } from '../../theme/brand';
       [dt]="dt"
       [attr.aria-label]="ariaLabel || null"
     ></p-progressbar>
+    @if (labelLayout) {
+      <span class="baps-progressbar__caption" aria-hidden="true">{{ caption }}</span>
+    }
   `,
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['../../styles/components/progress-bar/_progress-bar.scss'],
@@ -140,6 +143,8 @@ import { BapsBrand, injectBapsBrand } from '../../theme/brand';
   host: {
     '[class.baps-sampark]': "brand === 'sampark'",
     '[class.baps-progressbar-has-value]': 'showValue',
+    '[class.baps-progressbar--compact]': "labelLayout === 'compact'",
+    '[class.baps-progressbar--detailed]': "labelLayout === 'detailed'",
     '[class.baps-progressbar-success]': "severity === 'success'",
     '[class.baps-progressbar-info]': "severity === 'info'",
     '[class.baps-progressbar-warning]': "severity === 'warning'",
@@ -162,6 +167,23 @@ export class BapsProgressBar {
   @Input() mode: 'determinate' | 'indeterminate' = 'determinate';
   /** Whether to display the value label inside the bar. */
   @Input() showValue = false;
+  /**
+   * Puts the label outside a 4px bar, as the two Figma types do
+   * ("🟢 Component Library" Progress bar 754:10530):
+   * - `compact`: the label sits to the right of the bar, in a 40px column.
+   * - `detailed`: the label sits under the bar, right-aligned.
+   * Unset keeps the plain bar, which is unchanged.
+   */
+  @Input() labelLayout?: 'compact' | 'detailed';
+  /**
+   * Text for the outside label. Defaults to the rounded value, e.g. "40%".
+   * Figma's detailed example reads "40% uploaded...".
+   */
+  @Input() label?: string;
+
+  get caption(): string {
+    return this.label ?? `${Math.round(this.value)}%`;
+  }
   /** Semantic colour for the fill bar. */
   @Input() severity?: 'success' | 'info' | 'warning' | 'error';
   @Input() style?: Record<string, string | number>;

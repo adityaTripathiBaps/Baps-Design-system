@@ -67,6 +67,17 @@ A determinate or indeterminate progress indicator. `baps-progressbar` (`BapsProg
   snippets={progressBarSnippets.TableCellProgress}
 />
 
+### Label layouts
+
+The two Figma types: a 4px bar with its label outside. With `labelLayout="compact"` the value sits to the right of the bar. With `labelLayout="detailed"` the label sits under it. `label` replaces the default text, which is the rounded value (for example "40%").
+
+<Canvas of={ProgressBarStories.LabelLayouts} sourceState="none" />
+
+<FrameworkTabs
+  of={ProgressBarStories.LabelLayouts}
+  snippets={progressBarSnippets.LabelLayouts}
+/>
+
 ## API
 
 Inputs, outputs and their types, read from the component's own source.

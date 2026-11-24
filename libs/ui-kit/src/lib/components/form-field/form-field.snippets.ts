@@ -167,6 +167,23 @@ export const formFieldSnippets: Record<string, SnippetSet> = {
     </BapsIconField>`,
     ),
   },
+  // Angular only: a layout over existing field markup, with no React example yet.
+  SamparkHorizontal: {
+    primeng: `<div class="field field--horizontal">
+  <label for="name">User name <span class="p-error">*</span></label>
+  <div class="field__control">
+    <baps-icon class="field__icon" name="user" size="sm" />
+    <input id="name" bapsInputText [(ngModel)]="name" maxlength="200" />
+    <span class="field__actions">
+      <baps-link href="#">Edit</baps-link>
+      <span class="field__divider" aria-hidden="true"></span>
+      <baps-link href="#">Reset</baps-link>
+    </span>
+    <span class="input-char-count">{{ name.length }} / 200</span>
+  </div>
+  <small class="input-hint">Shown on your profile.</small>
+</div>`,
+  },
   TextareaExample: {
     primeng: `<textarea bapsTextarea autoResize aria-label="Notes"></textarea>`,
     ...examples(

@@ -1,0 +1,156 @@
+/* =====================================================================
+   libs/ui-kit/src/lib/styles/components/input/_field-horizontal.scss
+   .field--horizontal: label beside an underlined field.
+
+   Figma "🟢 Component Library" Horizontal Input Text Field 6304:53807.
+
+     ┌ label 150 ┐ 8 ┌ control row: 12 · 28 · 12, 1px bottom rule ──────┐
+     │ User name*│   │ [icon] input text ........ links | links  0 / 200 │
+     └───────────┘   └──────────────────────────────────────────────────┘
+                     12
+                     hint text
+
+   Markup (only `.field--horizontal` and `.field__*` are new; the rest is
+   the existing field vocabulary):
+
+     <div class="field field--horizontal">
+       <label for="name">User name <span class="p-error">*</span></label>
+       <div class="field__control">
+         <baps-icon class="field__icon" name="user" />          (optional)
+         <input id="name" bapsInputText />
+         <span class="field__actions">…links / buttons…</span>  (optional)
+         <span class="input-char-count">0 / 200</span>           (optional)
+       </div>
+       <small class="input-hint">Hint</small>                     (optional)
+     </div>
+
+   The row, not the input, carries the border, so the field reads as one
+   line with the icon and actions inside it. Its colours reuse the brand
+   input variables: rest, hover/focus, error, disabled.
+
+   The input skins pin padding, height, border and background on
+   .p-inputtext with !important at (0,2,0); the input rule below is (0,3,0)
+   with !important, so it wins whatever order the files load in.
+
+   No token: the 150px label column (Figma's fixed frame). It is a custom
+   property, so a form can change it.
+   ===================================================================== */
+
+.field.field--horizontal {
+  --field-label-width: 9.375rem; /* 150px, Figma label frame; no token */
+  /* 14px / 500 here, against 12px / 400 for a stacked field. Set through
+     the label variables so it wins over every label rule that reads them. */
+  --label-font-size: var(--font-size-sm);
+  --label-font-weight: var(--font-weight-medium);
+
+  display: grid !important;
+  grid-template-columns: var(--field-label-width) minmax(0, 1fr);
+  column-gap: var(--space-2);
+  row-gap: var(--space-3);
+  align-items: center;
+}
+
+.field.field--horizontal > label {
+  grid-column: 1;
+  margin-bottom: 0 !important;
+  padding-inline: var(--space-1);
+}
+
+.field--horizontal > .field__control {
+  grid-column: 2;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  /* 12 · 28 · 12 with the 1px rule inside, as Figma's inside stroke. */
+  padding-block: var(--space-3) calc(var(--space-3) - 1px);
+  border-bottom: 1px solid var(--input-border-default);
+  transition: border-color var(--motion-duration-fast, 120ms) ease;
+}
+
+/* Figma overlaps neighbours by 8px (item spacing -8) because each one
+   already carries 8px of side padding; this keeps the same 8px between
+   their contents. */
+.field--horizontal > .field__control > * + * {
+  margin-inline-start: calc(var(--space-2) * -1);
+}
+.field--horizontal > .field__control:hover,
+.field--horizontal > .field__control:focus-within {
+  border-bottom-color: var(--input-border-hover);
+}
+
+.field--horizontal > .field__control:has(.p-invalid, .ng-invalid.ng-dirty) {
+  border-bottom-color: var(--input-border-error);
+}
+
+.field--horizontal > .field__control:has(:disabled, .p-disabled) {
+  border-bottom-color: var(--input-border-default);
+}
+
+/* The input is chromeless inside the row. The skins' state rules carry
+   long :not() chains, so instead of out-ranking each one, the input's own
+   border, background and ring variables are cleared on the input itself.
+   The row above still reads the brand values. */
+.field--horizontal .field__control .p-inputtext {
+  --input-border-default: transparent;
+  --input-border-hover: transparent;
+  --input-border-error: transparent;
+  --input-border-warning: transparent;
+  --input-bg-default: transparent;
+  --input-bg-ghost-hover: transparent;
+  --input-bg-disabled: transparent;
+  --input-shadow-focused: transparent;
+  --input-shadow-error: transparent;
+  --input-shadow-warning: transparent;
+
+  flex: 1 1 auto;
+  min-width: 0;
+  height: var(--space-7) !important; /* 28px */
+  min-height: var(--space-7) !important;
+  padding: 0 var(--space-2) !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Margin, not padding: baps-icon is a fixed-size border-box, so padding
+   would eat the glyph. */
+.field--horizontal .field__icon {
+  flex: none;
+  margin-inline: var(--space-2);
+  color: var(--input-text-placeholder);
+}
+
+.field--horizontal .field__actions {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-2);
+  padding-inline: var(--space-2);
+  /* baps-link inherits its size; Figma's actions are 14px. */
+  font-size: var(--font-size-sm);
+}
+
+/* A 1 × 16 rule between two actions. */
+.field--horizontal .field__divider {
+  width: 1px;
+  height: var(--space-4);
+  background: var(--input-border-default);
+}
+
+.field--horizontal .field__control > .input-char-count {
+  margin-top: 0 !important;
+  padding-inline: var(--space-2);
+}
+
+.field.field--horizontal > .input-hint {
+  grid-column: 2;
+  margin-top: 0 !important;
+  padding-inline: var(--space-2);
+}
+
+/* The base error-hint rule keys off ng-dirty; a field marked p-invalid by
+   hand needs this too. */
+.field.field--horizontal:has(.p-invalid) > .input-hint {
+  color: var(--input-hint-color-error) !important;
+}

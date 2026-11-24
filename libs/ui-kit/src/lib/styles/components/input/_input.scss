@@ -1,5 +1,6 @@
 @use 'sass:list';
 @use 'sass:string';
+@use 'field-horizontal'; // .field--horizontal layout (Figma 6304:53807)
 
 /* =====================================================================
    libs/ui-kit/src/lib/styles/components/input/_input.scss

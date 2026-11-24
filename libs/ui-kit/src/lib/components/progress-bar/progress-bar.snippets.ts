@@ -71,4 +71,9 @@ export const progressBarSnippets: Record<string, SnippetSet> = {
       '<BapsProgressBar value={82} aria-label="82 percent complete" />',
     ),
   },
+  // Angular only: the React BapsProgressBar has no labelLayout yet.
+  LabelLayouts: {
+    primeng: `<baps-progressbar labelLayout="compact" [value]="40" ariaLabel="Profile completion" />
+<baps-progressbar labelLayout="detailed" [value]="40" label="40% uploaded..." ariaLabel="Upload progress" />`,
+  },
 };

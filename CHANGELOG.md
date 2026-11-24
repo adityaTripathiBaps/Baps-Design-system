@@ -8,6 +8,25 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/ui-kit` — minor, additive:** `baps-input-otp` (`BapsInputOtp`), a
+  one-time-code field wrapping PrimeNG `p-inputotp`. It supports 4 or 6 digits,
+  and a 6-digit code is split 3-3 with a "-" as in Figma "🟢 Component Library"
+  754:4740. Each box is a `pInputText`, so the brand input skin draws every
+  state. Implemented as a ControlValueAccessor. Angular only; no React port yet.
+- **`@org/ui-kit` — minor, additive:** `baps-progressbar` `labelLayout`
+  (`'compact' | 'detailed'`) and `label`. These are the two Figma types (754:10530):
+  a 4px bar with its label outside, either to the right in a 40px column or
+  under the bar and right-aligned. The label defaults to the rounded value.
+  When `labelLayout` is unset the bar is unchanged. Angular only for now.
+- **`@org/ui-kit/styles` — minor, additive:** `.field--horizontal` layout
+  (Figma 6304:53807): the label sits in a 150px column beside a single
+  underlined `.field__control` row. The row can hold an optional `.field__icon`,
+  `.field__actions` with a `.field__divider`, and an `.input-char-count`. It
+  ships in the input stylesheet. Existing `.field` markup is unchanged. Story:
+  Form Controls › Sampark Horizontal.
+- **Docs:** pattern Patterns › Date filter (Figma 10069:3032). A condition
+  select and read-only date fields above an inline calendar; *in between*
+  switches to a two-month range. It is a composition only, with no new API.
 - **`@org/ui-kit` — minor, additive:** `provideBapsBrand(brand)`, `BAPS_BRAND`,
   `injectBapsBrand()` and the `BapsBrand` type. One provider sets the default
   `brand` for every kit component and directive (54), so a Sampark app no longer
