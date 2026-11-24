@@ -937,3 +937,16 @@
     font-weight: var(--font-weight-medium) !important;
   }
 }
+
+/* MultiSelect panel footer and list rhythm, SPM dev parity T-12 (Templates
+   Sort > then-by, 2026-11-23): dev pads the footer 8px with a 1px top rule and
+   gives the list 4px above and below. PrimeNG v21 renders the footer as a
+   class-less div (the only one in the overlay), so it is matched by that. */
+.p-multiselect-overlay.baps-ds-sampark > div:not([class]) {
+  padding: var(--space-2);
+  border-top: 1px solid var(--color-sampark-border-default, #e1e0e0);
+}
+
+.p-multiselect-overlay.baps-ds-sampark .p-multiselect-list-container {
+  padding-block: var(--space-1);
+}

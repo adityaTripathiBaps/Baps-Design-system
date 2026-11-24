@@ -181,6 +181,8 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch (Sampark):** MultiSelect panel footer has 8px padding
+  and a 1px top rule, and the list 4px block padding, as SPM dev (parity T-12).
 - **`@org/ui-kit` — patch:** `baps-table-column-config` styles are scoped to
   its `.ct-cfg` root (header actions and divider excepted). Unscoped, they hit
   any app markup reusing the `ct-cfg-*` class names: spm's own column panel
