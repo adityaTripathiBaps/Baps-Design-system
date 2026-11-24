@@ -8,6 +8,9 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/ui-kit` — patch (Sampark):** a disabled `baps-checkbox` label keeps
+  full opacity (PrimeNG's `.p-disabled` dimmed it to 0.38); only the box dims,
+  as SPM dev (parity T-08).
 - **`@org/ui-kit` — minor, additive:** `baps-input-otp` (`BapsInputOtp`), a
   one-time-code field wrapping PrimeNG `p-inputotp`. It supports 4 or 6 digits,
   and a 6-digit code is split 3-3 with a "-" as in Figma "🟢 Component Library"

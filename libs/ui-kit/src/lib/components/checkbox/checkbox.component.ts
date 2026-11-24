@@ -226,6 +226,13 @@ let nextCheckboxId = 0;
       color: var(--sel-label-disabled);
       cursor: not-allowed;
     }
+    /* The label carries .p-disabled for the cursor and a11y, and PrimeNG's
+       generic .p-disabled dims it to 0.38. SPM dev keeps a disabled Sampark
+       label at full strength (Templates filter locked "Family", parity T-08,
+       2026-11-24); only the box dims. */
+    :is(baps-checkbox.baps-sampark, .baps-ds-sampark baps-checkbox) .p-checkbox-label.p-disabled {
+      opacity: 1;
+    }
     /* labelTone="muted": SPM dev's Template form labels its checkboxes
        Mono/80 at 500 (Start Date / End Date, gender), checked, unchecked or
        disabled alike, where filter panels use the primary 400 label. */
