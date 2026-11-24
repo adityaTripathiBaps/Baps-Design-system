@@ -123,6 +123,18 @@ export const Default: StoryObj<BapsDatepicker> = {
 };
 
 /**
+ * Sampark today marker: a solid primary fill with white text, as SPM dev draws
+ * it (T-28). No value is bound, so the calendar opens on the current month and
+ * today is always on screen; the selected fill shares the colour, as on dev.
+ */
+export const SamparkToday: StoryObj<BapsDatepicker> = {
+  tags: ['!ds:mybky'],
+  render: () => ({
+    template: `<baps-datepicker brand="sampark" [inline]="true" ariaLabel="Today marker"></baps-datepicker>`,
+  }),
+};
+
+/**
  * Dual-month range — Figma 17512:78298. Jan 10 → Feb 20 reproduces the
  * frame exactly: solid Primary/60 endpoints, a continuous 10%-primary
  * band across the interior, Jan 8 carrying the today marker.

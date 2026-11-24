@@ -148,9 +148,11 @@ body.baps-dark {
   --datepicker-range-bg: var(--color-sampark-primary-alpha10, #8730301a);
   --datepicker-range-text: var(--color-sampark-mono-100, #151414);
 
-  /* Figma 17512:78298 fills today rather than outlining it. */
-  --datepicker-today-bg: var(--color-sampark-primary-10, #f8ecec);
-  --datepicker-today-text: var(--color-sampark-primary-default, #c96868);
+  /* Today is a solid primary fill with white text, as SPM dev draws it
+     (computed bg rgb(201,104,104), color #fff; T-28, user chose dev over
+     Figma 17512:78298's Primary/10 tint on 2026-11-24). */
+  --datepicker-today-bg: var(--color-sampark-primary-default, #c96868);
+  --datepicker-today-text: var(--color-sampark-mono-0, #ffffff);
 
   /* Panels are 250px wide inside a 500px card — 12px panel padding on
      each side already supplies the visual gutter. */
@@ -180,10 +182,12 @@ body.baps-dark {
     color: var(--color-sampark-mono-40, #bcb9b9) !important;
   }
 
-  /* Filled today marker, no ring. */
-  .p-datepicker-day.p-datepicker-today:not(.p-datepicker-day-selected):not(
-      .p-datepicker-day-selected-range
-    ) {
+  /* Filled today marker, no ring. PrimeNG 21 puts .p-datepicker-today on
+     the <td> cell, not the day <span>; the span-only selector this used to be
+     never matched, so today showed PrimeNG's slate #e2e8f0 instead. */
+  :is(.p-datepicker-today > .p-datepicker-day, .p-datepicker-day.p-datepicker-today):not(
+      .p-datepicker-day-selected
+    ):not(.p-datepicker-day-selected-range) {
     background: var(--datepicker-today-bg) !important;
     border-color: transparent !important;
     color: var(--datepicker-today-text) !important;

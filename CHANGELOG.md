@@ -211,6 +211,11 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit/styles` — patch (Sampark):** datepicker today marker is a
+  solid primary fill with white text, as SPM dev (T-28). The old rule keyed
+  `.p-datepicker-day.p-datepicker-today`, but PrimeNG 21 puts the today class
+  on the <td>, so it never matched and today showed PrimeNG slate #e2e8f0.
+  Story: DatePicker › Sampark Today. MyBKY rules untouched.
 - **`@org/ui-kit` — minor, additive (Sampark):** a table `emptymessage` row
   with `class="baps-table-empty"` (or `p-datatable-empty-message`) fills the
   scroll viewport under the header and centres its content, as SPM dev's

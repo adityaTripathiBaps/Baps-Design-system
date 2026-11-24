@@ -472,7 +472,7 @@
   }
 
   /* Outlined unselected today cell */
-  .p-datepicker-day.p-datepicker-today:not(.p-datepicker-day-selected) {
+  :is(.p-datepicker-today > .p-datepicker-day, .p-datepicker-day.p-datepicker-today):not(.p-datepicker-day-selected) {
     border-color: var(--datepicker-today-border) !important;
   }
 
