@@ -1,0 +1,176 @@
+/* =====================================================================
+   libs/ui-kit/src/lib/styles/components/editor/_editor.scss
+   baps-editor: PrimeNG Editor (Quill 2) as Figma's rich-text text area.
+
+   Figma "🟢 Component Library" 585:4268 / Richtext Bar 585:5287:
+     one 1px field, 4px radius, holding top to bottom
+       text      8px padding, 79px minimum
+       count     "n / max", 12px, right, 8px padding
+       toolbar   1px top rule, 4px padding, 4px gaps, 28 × 28 buttons with
+                 4px radius, a 16px rule between groups
+
+   PrimeNG renders the toolbar before the content. <p-editor> is made
+   display: contents so its toolbar and content become flex items of the
+   field beside the count, and `order` puts the toolbar last as Figma does.
+
+   States reuse the brand input variables (border, hover, focus ring,
+   error, disabled), so the field matches a text input in every state.
+   ===================================================================== */
+
+baps-editor {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--input-border-default);
+  border-radius: var(--form-field-sampark-border-radius, 0.25rem);
+  background: var(--input-bg-default);
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+baps-editor:hover:not(.baps-editor--disabled) {
+  border-color: var(--input-border-hover);
+}
+
+baps-editor:focus-within:not(.baps-editor--disabled) {
+  border-color: var(--input-border-hover);
+  box-shadow: 0 0 0 3px var(--input-shadow-focused);
+}
+
+baps-editor.baps-editor--invalid,
+baps-editor.baps-editor--invalid:hover {
+  border-color: var(--input-border-error);
+}
+
+baps-editor.baps-editor--invalid:focus-within {
+  box-shadow: 0 0 0 3px var(--input-shadow-error);
+}
+
+baps-editor.baps-editor--disabled {
+  background: var(--input-bg-disabled);
+  color: var(--input-text-disabled);
+}
+
+/* Figma's disabled text area has no formatting bar. */
+baps-editor.baps-editor--disabled .p-editor-toolbar {
+  display: none;
+}
+
+baps-editor > p-editor.p-editor {
+  display: contents;
+}
+
+/* ── Text ── */
+baps-editor .p-editor-content {
+  order: 1;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+
+baps-editor .p-editor-content .ql-editor {
+  min-height: 4.9375rem; /* 79px: Figma's text frame, padding included (border-box); no token */
+  padding: var(--space-2);
+  font-size: var(--font-size-sm);
+  line-height: 1.3;
+  color: var(--input-text-filled);
+}
+
+baps-editor .p-editor-content .ql-editor.ql-blank::before {
+  left: var(--space-2);
+  right: var(--space-2);
+  font-style: normal;
+  color: var(--input-text-placeholder);
+}
+
+/* ── Count ── */
+.baps-editor__count {
+  order: 2;
+  padding: var(--space-2);
+  text-align: right;
+  font-size: var(--font-size-xs);
+  line-height: 1.3;
+  color: var(--input-text-placeholder);
+}
+
+/* ── Toolbar ── */
+baps-editor .p-editor-toolbar {
+  order: 3;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) !important;
+  border: 0 !important;
+  border-top: 1px solid var(--input-border-default) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+
+baps-editor .p-editor-toolbar .ql-formats {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin: 0 !important;
+}
+
+/* A 16px rule between groups, with the toolbar's 4px gap either side. */
+baps-editor .p-editor-toolbar .ql-formats + .ql-formats::before {
+  content: '';
+  width: 1px;
+  height: var(--space-4);
+  margin-inline-end: 0;
+  background: var(--input-border-default);
+}
+
+baps-editor .p-editor-toolbar button,
+baps-editor .p-editor-toolbar .ql-picker-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--space-7) !important;
+  height: var(--space-7) !important;
+  padding: var(--space-1-5) !important;
+  border-radius: var(--space-1);
+}
+
+baps-editor .p-editor-toolbar .ql-picker {
+  height: var(--space-7) !important;
+}
+
+baps-editor .p-editor-toolbar .ql-picker.ql-size {
+  width: auto !important;
+}
+
+baps-editor .p-editor-toolbar .ql-picker.ql-size .ql-picker-label {
+  width: auto !important;
+  padding-inline: var(--space-1-5) var(--space-5) !important;
+}
+
+baps-editor .p-editor-toolbar button:hover:not(:disabled),
+baps-editor .p-editor-toolbar .ql-picker-label:hover {
+  background: var(--p-content-hover-background, rgba(0, 0, 0, 0.04));
+}
+
+baps-editor .p-editor-toolbar button:focus-visible {
+  outline: 2px solid var(--input-border-hover);
+  outline-offset: 1px;
+}
+
+.baps-editor__attach {
+  border: 0;
+  background: transparent;
+  color: var(--input-text-placeholder);
+  cursor: pointer;
+}
+
+.baps-editor__attach svg {
+  width: var(--space-4);
+  height: var(--space-4);
+}
+
+.baps-editor__attach:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}

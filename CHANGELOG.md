@@ -8,6 +8,15 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/ui-kit` — minor, additive:** `baps-editor` (`BapsEditor`), a
+  rich-text field wrapping PrimeNG Editor (Figma 585:4268, Richtext Bar
+  585:5287). One bordered field holds the text, an optional "n / max" count and
+  the formatting bar. The bar comes in two forms, `toolbar="default" | "compact"`,
+  and its attach button emits `attach`. The editor is a ControlValueAccessor
+  whose value is HTML, and its states come from the input skin. Angular only.
+- **Dependency — minor:** `quill` `2.0.3` added to the workspace and declared
+  as an **optional** peer of `@org/ui-kit` (`^2.0.3`), needed only by
+  `baps-editor`. Compatibility matrix updated.
 - **`@org/ui-kit` — minor, additive:** `baps-button` `iconSize` input
   (`BapsIconSize | number`). Overrides the glyph ramp; unset keeps it. For
   SPM dev's list toolbar Filter/Sort, 32px buttons with a 20px glyph (T-02).

@@ -1,0 +1,34 @@
+import { Meta, Canvas, Controls } from '@storybook/blocks';
+import { FrameworkTabs } from '@baps/docs-blocks';
+import * as EditorStories from './editor.stories';
+import { editorSnippets } from './editor.snippets';
+
+<Meta of={EditorStories} />
+
+# Editor
+
+A rich-text field with a formatting bar. `baps-editor` wraps PrimeNG's `p-editor`, which runs on Quill 2. It matches the Figma text area with the Richtext Bar (585:4268 and 585:5287).
+
+- **Install:** `quill` (`^2.0.3`) is an optional peer. An app that renders a `baps-editor` must install it; other apps don't need it.
+- **Layout:** the field shows the text, then the "n / max" count when `maxLength` is set, then the formatting bar, all inside one bordered field.
+- **States:** border, hover, focus ring, error and disabled come from the brand input skin, so the editor matches a text field.
+- **Toolbars:** `toolbar="default"` is the full bar. `toolbar="compact"` puts alignment in a dropdown and keeps a single list button.
+- **Attach:** the attach button emits `attach`, and your app decides what attaching does.
+- **Value:** the form gets the HTML. The count counts characters of text, not HTML.
+- **Label:** the editable area is a `contenteditable` element, which `<label for>` cannot reach. Name it with `ariaLabelledBy` or `ariaLabel`.
+
+## Examples
+
+### Playground
+
+<Canvas of={EditorStories.Playground} sourceState="none" />
+
+<Controls of={EditorStories.Playground} />
+
+<FrameworkTabs of={EditorStories.Playground} snippets={editorSnippets.Playground} />
+
+### Sampark states
+
+<Canvas of={EditorStories.SamparkStates} sourceState="none" />
+
+<FrameworkTabs of={EditorStories.SamparkStates} snippets={editorSnippets.SamparkStates} />

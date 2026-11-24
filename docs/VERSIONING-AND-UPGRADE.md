@@ -15,6 +15,12 @@ upgrade-first path rather than receiving compatibility shims.
 | `@org/ui-kit` 0.1.x       | `^21.2.0` | `^21.1.3` | `^2.0.3`           | n/a       | n/a                                                                                 | Angular 21 accepts `>=5.9 <6.1`; workspace verified with 6.0.3 | `^20.19.0 \|\| ^22.12.0 \|\| >=24.0.0`; verified with 22.22.2 | exactly `0.0.1` in built artefacts |
 | `@org/ui-kit-react` 0.1.x | n/a       | n/a       | n/a                | `^19.2.7` | App Router client/server fixture is type-checked; no Next package version is pinned | workspace verified with 6.0.3; not a package peer              | no package engine declared; verified with 22.22.2             | exactly `0.0.1` when packed        |
 
+**Optional peer:** `@org/ui-kit` declares `quill` `^2.0.3` as an optional
+peer (`peerDependenciesMeta`). Only `baps-editor` needs it: PrimeNG Editor
+loads it lazily, so an app that never renders the editor does not install it.
+Verified in Storybook with 2.0.3, the version the workspace now uses; no
+consumer build has been run with it yet.
+
 The Angular package's source manifest uses `workspace:*` for `@org/tokens`, but
 the build rewrites it to the exact token package version. The React package is
 rewritten by `pnpm pack`. Consumers install the matching tokens artefact; they
