@@ -243,3 +243,13 @@ describe('BapsSelect autofocus (PrimeNG 21 left a DOM autofocus attribute)', () 
     expect(fixture.nativeElement.querySelector('[autofocus]')).toBeNull();
   });
 });
+
+describe('BapsSelect autoOptionFocus default (SPM dev opens with the first row focused, T-32)', () => {
+  const inner = (f: { debugElement: { query: (p: unknown) => { componentInstance: { autoOptionFocus: boolean } } } }) =>
+    f.debugElement.query(By.directive(Select)).componentInstance;
+
+  it('is on for Sampark and off for MyBKY when unset', async () => {
+    expect(inner(await render({ brand: 'sampark' })).autoOptionFocus).toBe(true);
+    expect(inner(await render({ brand: 'mybky' })).autoOptionFocus).toBe(false);
+  });
+});

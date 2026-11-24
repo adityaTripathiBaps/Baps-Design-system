@@ -8,6 +8,14 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/ui-kit` — minor, additive (Sampark default):** `baps-select`
+  `autoOptionFocus` input, as on `baps-multi-select`. Unset, it is on for
+  Sampark and off for MyBKY: SPM dev opens an empty Select with its first row
+  tinted (parity T-32). MyBKY is unchanged.
+- **`@org/ui-kit/styles` — patch (Sampark):** Select lists get 4px above and
+  below like MultiSelect (T-19/T-27/T-32); a checked MultiSelect row stays
+  400 (T-20); the "No results" message is Mono/60 with 16px padding (T-21); a
+  MultiSelect with no options hides its "Select All" row (T-25). As SPM dev.
 - **`@org/ui-kit` — patch (Sampark):** a disabled `baps-checkbox` label keeps
   full opacity (PrimeNG's `.p-disabled` dimmed it to 0.38); only the box dims,
   as SPM dev (parity T-08).

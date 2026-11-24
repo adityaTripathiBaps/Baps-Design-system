@@ -48,6 +48,7 @@ import { BapsBrand, injectBapsBrand } from '../../theme/brand';
       [showClear]="showClear"
       [editable]="editable"
       [appendTo]="appendTo"
+      [autoOptionFocus]="autoOptionFocus ?? brand === 'sampark'"
       [group]="group"
       [size]="primeSize"
       [style]="style"
@@ -171,6 +172,13 @@ export class BapsSelect implements ControlValueAccessor {
   @Input() showClear = false;
   @Input() editable = false;
   @Input() appendTo?: any;
+  /**
+   * Focus the first enabled option when the panel opens (PrimeNG
+   * autoOptionFocus). Unset: on for Sampark, off for MyBKY, as on
+   * `baps-multi-select`. SPM dev (PrimeNG 17, where it defaulted on) opens
+   * an empty Select with its first row tinted Mono/10 (parity T-32).
+   */
+  @Input() autoOptionFocus?: boolean;
   @Input() group = false;
   /**
    * PrimeNG size: 'small' or 'large'. Default (no value) maps to the

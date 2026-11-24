@@ -950,3 +950,35 @@
 .p-multiselect-overlay.baps-ds-sampark .p-multiselect-list-container {
   padding-block: var(--space-1);
 }
+
+/* Select list rhythm, SPM dev parity T-19/T-27/T-32 (2026-11-24): dev gives
+   every Select list 4px above and below, as the MultiSelect above (Templates
+   rows-per-page 64x88 vs 67x76, Location Level / owner Location Level 215 vs
+   199). */
+.p-select-overlay.baps-ds-sampark .p-select-list-container {
+  padding-block: var(--space-1);
+}
+
+/* MultiSelect selected row weight, SPM dev parity T-20: a checked MultiSelect
+   row keeps 14px/400 on dev (the checkbox marks it); only the single Select's
+   selected row is 500. Base _select.scss sets 500 for both. */
+.p-multiselect-overlay.baps-ds-sampark {
+  --select-option-selected-weight: var(--font-weight-regular);
+}
+
+/* Empty list ("No results"), SPM dev parity T-21/T-25 (Templates Filters
+   Location Type / Mandal / Category): Mono/60 text with 16px padding, and a
+   MultiSelect with nothing to list hides its "Select All" row so the header is
+   the 49px search strip only. Dev sets the message at 13px, which has no type
+   step; it stays 14px (BRAIN, open design decisions). */
+:is(.p-select-overlay, .p-multiselect-overlay).baps-ds-sampark
+  :is(.p-select-empty-message, .p-multiselect-empty-message) {
+  padding: var(--space-4) !important;
+  color: var(--color-sampark-text-muted, #9f9c9c) !important;
+}
+
+.p-multiselect-overlay.baps-ds-sampark:has(.p-multiselect-empty-message)
+  .p-multiselect-header
+  > p-checkbox {
+  display: none !important;
+}
