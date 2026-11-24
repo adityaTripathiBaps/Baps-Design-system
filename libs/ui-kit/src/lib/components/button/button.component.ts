@@ -308,6 +308,10 @@ export class BapsButton {
     // button keeps the ramp's 16 (measured 2026-11-19, user approved).
     if (this.size === 'small' && this.brand === 'sampark' && !this.label) return 18;
     if (this.size === 'small') return 16;
+    // SPM dev's 32px toolbar icon buttons (Templates filter/sort) draw a 20px
+    // svg, the icon scale's md step (measured 2026-11-24, parity T-02). Only
+    // the Sampark icon-only default step; labelled and MyBKY buttons keep 18.
+    if (!this.size && this.brand === 'sampark' && !this.label) return 20;
     if (this.size === 'large') return 20;
     if (this.size === 'xlarge') return 24;
     return 18;
