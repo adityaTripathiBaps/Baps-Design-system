@@ -767,6 +767,24 @@ $s: ':is(baps-table.baps-sampark, .baps-ds-sampark baps-table)';
   padding: 2rem !important;
 }
 
+/* Empty state fills the body. SPM dev (Projects list, Sampark dashboard,
+   Project detail, 2026-11-23) centres "No Records Found" in the whole
+   scroll viewport under the header; the bare empty row only took its own
+   height and left a ruled band with white below it. PrimeNG puts no class
+   on the consumer's emptymessage row, so the row opts in with
+   `baps-table-empty` (or PrimeNG's own `p-datatable-empty-message`). The
+   table then takes the container's height and the extra height lands on
+   that one body row. Only a container with a height (scrollHeight, or a
+   flex parent) grows; an auto-height table is unchanged. */
+#{$s} .p-datatable-table-container:has(> .p-datatable-table > .p-datatable-tbody > tr:is(.baps-table-empty, .p-datatable-empty-message)) > .p-datatable-table {
+  height: 100%;
+}
+
+#{$s} .p-datatable .p-datatable-tbody > tr:is(.baps-table-empty, .p-datatable-empty-message) > td {
+  vertical-align: middle;
+  border-bottom: 0 !important;
+}
+
 /* ── PAGINATOR (inline) ── */
 #{$s} .p-datatable .p-paginator {
   border: none !important;

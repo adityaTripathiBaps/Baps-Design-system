@@ -103,6 +103,12 @@ The same row at 44px density (`size="small"`). Avatars drop to `size="s"`, as in
 
 <Canvas of={TableStories.Empty} />
 
+### Sampark empty state fills the body
+
+Put `class="baps-table-empty"` (or PrimeNG's `p-datatable-empty-message`) on the `emptymessage` row. In a table with a height (`scrollHeight`, or a flex parent), the row then takes the whole body under the header and centres its content, as SPM dev does. Without a height the table is unchanged.
+
+<Canvas of={TableStories.SamparkEmptyFillsBody} />
+
 ## API
 
 ### Virtual scroll, column reorder and collapsible groups

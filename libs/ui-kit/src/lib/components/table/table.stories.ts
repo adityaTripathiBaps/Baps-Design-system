@@ -1538,6 +1538,28 @@ export const Empty: StoryObj<BapsTable> = {
 };
 
 /**
+ * Sampark: an empty row marked `baps-table-empty` fills the scroll viewport
+ * and centres its message, as SPM dev's Projects list, Sampark dashboard and
+ * Project detail do. It needs a container with a height (here scrollHeight).
+ */
+export const SamparkEmptyFillsBody: StoryObj<BapsTable> = {
+  args: { value: [], brand: 'sampark' },
+  render: (args) => ({
+    props: args,
+    template: `
+      <baps-table [value]="value" [brand]="brand" [scrollable]="true" scrollHeight="320px">
+        <ng-template pTemplate="header">
+          <tr><th>Project Name</th><th>Duration</th></tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr class="baps-table-empty"><td colspan="2">No Records Found</td></tr>
+        </ng-template>
+      </baps-table>
+    `,
+  }),
+};
+
+/**
  * `styleClass="baps-table-form"` (Sampark): cells whose direct child is a
  * select-family field pad 8px 4px, as SPM dev's Template Project Owner table
  * (AT-082). Other cells keep the default.

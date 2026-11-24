@@ -207,6 +207,12 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — minor, additive (Sampark):** a table `emptymessage` row
+  with `class="baps-table-empty"` (or `p-datatable-empty-message`) fills the
+  scroll viewport under the header and centres its content, as SPM dev's
+  Projects list, Sampark dashboard and Project detail. Needs a container with
+  a height; tables without the class, or without a height, are unchanged.
+  Story: Table / Sampark Empty Fills Body.
 - **`@org/ui-kit` — patch (Sampark):** MultiSelect panel footer has 8px padding
   and a 1px top rule, and the list 4px block padding, as SPM dev (parity T-12).
 - **`@org/ui-kit` — patch:** `baps-table-column-config` styles are scoped to
