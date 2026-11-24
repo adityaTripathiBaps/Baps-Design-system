@@ -301,7 +301,18 @@ export class BapsButton {
    * (xs 12 · sm 16 · md 20 · lg 24 · xl 32), and that is fine: the scale is the
    * artwork's own ramp, while these are the sizes the button frames specify.
    */
+  /**
+   * Explicit glyph size, overriding the ramp below. For a toolbar that draws a
+   * bigger icon than its button step, e.g. SPM dev's Filter/Sort 32px buttons
+   * draw a 20px glyph (T-02, user approved 2026-11-24). Unset = the ramp.
+   */
+  @Input() set iconSize(value: BapsIconSize | number | undefined) {
+    this.iconSizeOverride = value ?? undefined;
+  }
+  private iconSizeOverride?: BapsIconSize | number;
+
   get iconSize(): BapsIconSize | number {
+    if (this.iconSizeOverride != null) return this.iconSizeOverride;
     // SPM dev's 28px row-action buttons (Templates list edit/delete, owner
     // table trash) draw an 18px icon, the M step; the S step's 16 read small
     // against them. Only the Sampark icon-only small button: a labelled small

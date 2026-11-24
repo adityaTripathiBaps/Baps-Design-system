@@ -342,6 +342,24 @@ export const SamparkIconOnly: Story = {
 };
 
 /**
+ * `iconSize` overrides the glyph ramp. SPM dev's list toolbar Filter/Sort are
+ * default 32px text buttons drawing a 20px glyph (T-02); the ramp's default
+ * step is 18. Left: ramp (18). Right: `[iconSize]="20"`.
+ */
+export const SamparkToolbarIconSize: Story = {
+  tags: ['!ds:mybky'],
+  render: () => ({
+    template: `
+      <div style="display:flex; gap: 12px; align-items: center;">
+        <baps-button brand="sampark" icon="filter" ariaLabel="Filter" severity="secondary" [text]="true" />
+        <baps-button brand="sampark" icon="filter" ariaLabel="Filter" severity="secondary" [text]="true" [iconSize]="20" />
+        <baps-button brand="sampark" icon="sort-list" ariaLabel="Sort" severity="secondary" [text]="true" [iconSize]="20" />
+      </div>
+    `,
+  }),
+};
+
+/**
  * Sampark's disabled state is a distinct fill (bg #f3eaea, border #e1e0e0,
  * text #bcb9b9), not PrimeNG's generic opacity dim — see button.mapping.mdx.
  */

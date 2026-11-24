@@ -8,6 +8,10 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/ui-kit` — minor, additive:** `baps-button` `iconSize` input
+  (`BapsIconSize | number`). Overrides the glyph ramp; unset keeps it. For
+  SPM dev's list toolbar Filter/Sort, 32px buttons with a 20px glyph (T-02).
+  Story: Button › Sampark Toolbar Icon Size.
 - **`@org/ui-kit` — minor, additive:** `bapsTooltip` `tooltipAlign`
   (`'start' | 'center' | 'end'`, default `'center'`). With `tooltipPosition`
   it covers Figma's 12 beak types (653:7324). With `start` or `end` the arrow

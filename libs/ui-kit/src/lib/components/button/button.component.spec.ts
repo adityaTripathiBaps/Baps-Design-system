@@ -139,6 +139,17 @@ describe('BapsButton', () => {
       expect(cmp.iconSize).toBe(16);
     });
 
+    it('iconSize input overrides the ramp; unset falls back to it (T-02)', async () => {
+      const fixture = await setup();
+      const cmp = fixture.debugElement.children[0].componentInstance as BapsButton;
+      cmp.brand = 'sampark';
+      expect(cmp.iconSize).toBe(18);
+      cmp.iconSize = 20;
+      expect(cmp.iconSize).toBe(20);
+      cmp.iconSize = undefined;
+      expect(cmp.iconSize).toBe(18);
+    });
+
     it('reports no icon at all when the input is unset', async () => {
       const fixture = await setup();
       const cmp = fixture.debugElement.children[0].componentInstance as BapsButton;
