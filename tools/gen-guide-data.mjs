@@ -146,9 +146,44 @@ const describe = (path) => {
     (l, i) =>
       i > 0 && l.trim() && !/^[#>|`-]/.test(l.trim()) && !l.startsWith('<!--'),
   );
+  // Each ## section with its bullet points and first paragraph, for the guide's Guidelines tab.
+  const sections = [];
+  let cur = null;
+  let inCode = false;
+  for (const l of lines) {
+    if (l.startsWith('```')) {
+      inCode = !inCode;
+      continue;
+    }
+    if (inCode) continue;
+    if (l.startsWith('## ')) {
+      cur = { heading: l.slice(3).trim(), points: [] };
+      sections.push(cur);
+      continue;
+    }
+    if (!cur) continue;
+    const t = l.trim();
+    if (!t) {
+      cur.open = false;
+      continue;
+    }
+    if (/^[-*] /.test(t)) {
+      if (cur.points.length < 8) {
+        cur.points.push(t.slice(2));
+        cur.open = true;
+      } else cur.open = false;
+    } else if (cur.open && !/^[#>|<]/.test(t)) {
+      cur.points[cur.points.length - 1] += ' ' + t; // a wrapped line continues the point above it
+    } else if (!/^[#>|<]/.test(t) && !cur.points.length) {
+      cur.points.push(t);
+      cur.open = true;
+    }
+  }
+  sections.forEach((s) => delete s.open);
   return {
     title: h1 ? h1.slice(2) : '',
     summary: body ? body.trim().slice(0, 220) : '',
+    sections: sections.filter((s) => s.points.length).slice(0, 14),
   };
 };
 const listMd = (dir, skip = []) =>
@@ -383,6 +418,122 @@ const swaps = existsSync(SPM)
       .filter(Boolean)
   : [];
 
+// Which screenshot shows each code change, read from the files it touches.
+// First matching rule wins; a null key carries the reason the page shows instead.
+const SCREEN_RULES = [
+  [
+    /features\/sant-padhramani/,
+    null,
+    'Sant-padhramani screen: outside the SPM parity scope, so no screenshot was taken.',
+  ],
+  [
+    /\/helpers\//,
+    null,
+    'Behaviour only (it scrolls to the first error); nothing changes on screen.',
+  ],
+  [/src\/app\/app\.config/, 'preset-ab-2026-11-02--1-templates'],
+  [
+    /confirm-dialog|server-error-dialog|upload-file-dialog/,
+    'template-migration--boundary-dialog',
+  ],
+  [/location-selector/, 'fp-form-02-location-scope'],
+  [/badge-list/, 'spm-full-audit-2026-10-30--tags'],
+  [/select-template/, 'template-migration--select-template-view-template'],
+  [/add-edit-templates/, 'tpl-form'],
+  [/common-grid-simple-filter|document-viewer/, 'templates-drw-b0'],
+  [/dashboard\/project-detail/, 'project-detail'],
+  [/common-table\/sort-panel/, 'templates-drw-b1-panel0'],
+  [/common-table\/column-panel/, 'templates-drw-b2'],
+  [/common-filter|common-table\/filter/, 'templates-drw-b0'],
+  [/common-table\//, 'templates'],
+  [/common-skeleton/, 'template-migration--boundary-skeleton'],
+  [/features\/sampark\/dashboard/, 'sampark-dashboard'],
+  [/project-info|manage-projects/, 'project-detail'],
+  [/features\/sampark\/projects/, 'projects'],
+  [/\/templates?\//, 'templates'],
+  [/topbar|sidebar/, 'spm-visual-gaps-2026-10-29--topbar'],
+  [
+    /treetable-c\//,
+    null,
+    'Tree-grid used by the padhramani lists, which are outside the screenshot scope.',
+  ],
+  [/src\/app\/app\.component/, 'templates'],
+];
+for (const c of swaps) {
+  // The first file is the one the commit is about; the others only count if it matches nothing.
+  const paths = c.files.map((f) => f.file).join('\n');
+  const rule =
+    SCREEN_RULES.find(([re]) => re.test(c.files[0].file)) ??
+    SCREEN_RULES.find(([re]) => re.test(paths));
+  const key = rule ? rule[1] : null;
+  c.screenKey = key && screens.some((s) => s.key === key) ? key : null;
+  c.noScreen = c.screenKey
+    ? null
+    : rule && rule[2]
+      ? rule[2]
+      : 'No audit screenshot of this part of spm-ui yet.';
+}
+
+// Kit standard: raw PrimeNG tags and directives still in spm-ui templates (sant-padhramani is out of scope).
+// The kit keeps these raw on purpose (docs/CONSUMER-INTEGRATION-GUIDE.md, "No kit equivalent").
+const ALLOWED_RAW = [
+  'p-editor',
+  'p-chart',
+  'p-progressspinner',
+  'p-progressSpinner',
+  'p-scrollpanel',
+  'p-togglebutton',
+  'p-autocomplete',
+  'p-autoComplete',
+  'p-template',
+];
+const RAW_RE =
+  /<(p-[A-Za-z][A-Za-z0-9-]*)|\s(pButton|pTooltip|pInputText|pTemplate)\b/g;
+const rawFound = new Map();
+if (existsSync(SPM)) {
+  for (const abs of walk(join(SPM, 'src/app')).filter((f) =>
+    f.endsWith('.html'),
+  )) {
+    const rel = abs.slice(SPM.length + 1).replace(/\\/g, '/');
+    if (/sant-padhramani/.test(rel)) continue;
+    for (const m of readFileSync(abs, 'utf8').matchAll(RAW_RE)) {
+      const tag = m[1] || m[2];
+      if (tag === 'pTemplate') continue;
+      if (!rawFound.has(tag))
+        rawFound.set(tag, { tag, count: 0, files: new Set() });
+      const r = rawFound.get(tag);
+      r.count++;
+      r.files.add(rel);
+    }
+  }
+}
+const rawTags = [...rawFound.values()]
+  .map((r) => ({
+    tag: r.tag,
+    count: r.count,
+    files: [...r.files].sort(),
+    allowed: ALLOWED_RAW.includes(r.tag),
+  }))
+  .sort((a, b) => b.count - a.count);
+
+// Flag code changes whose new code still names a raw PrimeNG tag or selector.
+for (const c of swaps) {
+  const after = c.files
+    .flatMap((f) =>
+      f.hunks.flatMap((h) =>
+        h.lines.filter((l) => l[0] !== '-').map((l) => l.slice(1)),
+      ),
+    )
+    .join('\n');
+  c.rawAfter = [
+    ...new Set(
+      [...after.matchAll(/<(p-[a-z][a-z0-9-]*)|\b(p-[a-z]+)\[/gi)].map(
+        (m) => m[1] || m[2],
+      ),
+    ),
+  ].filter((t) => !ALLOWED_RAW.includes(t) && t !== 'p-template');
+}
+
 const byDay = {};
 for (const c of commits) byDay[c.date] = (byDay[c.date] ?? 0) + 1;
 
@@ -401,6 +552,7 @@ writeFileSync(
     previews,
     screens,
     swaps,
+    rawTags,
     commits,
     spmCommits,
     byDay,
