@@ -503,3 +503,32 @@ export const SamparkFilterSections: Story = {
     `,
   }),
 };
+
+/**
+ * A collapsed panel adds no height to a scrolling parent. PrimeNG 21 keeps the
+ * collapsed body in the DOM (visibility: hidden, 0px grid row); without a clip
+ * its height leaked into SPM's Filters drawer and drew a scrollbar with only
+ * two sections. The play test asserts the scroller has nothing to scroll.
+ */
+export const SamparkCollapsedInScroller: Story = {
+  tags: ['!ds:mybky'],
+  render: () => ({
+    props: { open: ['location'], period: 'week' },
+    template: `
+      <div data-testid="scroller" style="width: 436px; max-height: 300px; overflow-y: auto">
+        <baps-accordion brand="sampark" [multiple]="true" [value]="open">
+          <baps-accordion-panel value="location" label="Location" [count]="0">
+            <div>Robbinsville</div>
+          </baps-accordion-panel>
+          <baps-accordion-panel value="duration" label="Duration" [count]="0" [divider]="true">
+            <div style="height: 400px">Tall collapsed body</div>
+          </baps-accordion-panel>
+        </baps-accordion>
+      </div>
+    `,
+  }),
+  play: async ({ canvasElement }) => {
+    const scroller = within(canvasElement).getByTestId('scroller');
+    await waitFor(() => expect(scroller.scrollHeight).toBeLessThanOrEqual(scroller.clientHeight));
+  },
+};

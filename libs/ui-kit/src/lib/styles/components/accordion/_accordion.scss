@@ -461,3 +461,17 @@ p-accordion .baps-accordion-clear:focus-visible {
   outline: 2px solid var(--baps-accordion-bar, currentColor);
   outline-offset: 1px;
 }
+
+/* A collapsed panel must not scroll its container. PrimeNG 21 collapses the
+   body by shrinking the p-motion grid row to 0 and hiding it with
+   visibility, never removing it, and nothing clips the overflow, so the
+   hidden body still adds its height to the nearest scroller. In SPM's
+   Filters drawer, Location open + Duration collapsed gave the .cf-content
+   scroller 176px of content in 72px and a scrollbar; SPM dev (PrimeNG 17)
+   removes collapsed content, so it has none. Collapsed panels only: an open
+   panel keeps visible overflow so field focus rings are not clipped. */
+:is(p-accordion.baps-sampark, .baps-ds-sampark p-accordion)
+  .p-accordionpanel:not(.p-accordionpanel-active)
+  :is(.p-accordioncontent .p-motion, .p-accordioncontent-wrapper) {
+  overflow: hidden;
+}

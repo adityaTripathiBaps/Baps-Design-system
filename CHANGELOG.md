@@ -220,6 +220,12 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit/styles` — patch (Sampark):** a collapsed accordion panel no
+  longer scrolls its container. PrimeNG 21 keeps the collapsed body in the DOM
+  (0px grid row, visibility hidden) with nothing clipping it, so in SPM's
+  Filters drawer two sections gave .cf-content 176px of content in 72px and a
+  scrollbar. Collapsed panels now clip; open panels keep visible overflow.
+  Story: Accordion › Sampark Collapsed In Scroller (play test).
 - **`@org/ui-kit/styles` — patch (Sampark):** datepicker today marker is a
   solid primary fill with white text, as SPM dev (T-28). The old rule keyed
   `.p-datepicker-day.p-datepicker-today`, but PrimeNG 21 puts the today class
