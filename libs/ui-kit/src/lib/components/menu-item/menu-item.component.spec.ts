@@ -39,6 +39,7 @@ import { BapsMenuItem } from './menu-item.component';
       [selected]="selected()"
       [disabled]="disabled()"
       [brand]="brand()"
+      [shortcut]="shortcut()"
       (activated)="count = count + 1"
     />
   `,
@@ -54,6 +55,7 @@ class Host {
   readonly selected = signal(false);
   readonly disabled = signal(false);
   readonly brand = signal<'mybky' | 'sampark'>('mybky');
+  readonly shortcut = signal<string | undefined>(undefined);
   count = 0;
 }
 
@@ -75,6 +77,19 @@ const row = (fixture: { nativeElement: HTMLElement }) =>
   fixture.nativeElement.querySelector('.menu-item') as HTMLElement;
 
 describe('BapsMenuItem', () => {
+  describe('shortcut', () => {
+    it('renders a <kbd> at the end of the row only when set', async () => {
+      const fixture = await setup();
+      expect(row(fixture).querySelector('.menu-item__shortcut')).toBeNull();
+      fixture.componentInstance.shortcut.set('⌘C');
+      await apply(fixture);
+      const kbd = row(fixture).querySelector('.menu-item__shortcut');
+      expect(kbd?.tagName).toBe('KBD');
+      expect(kbd?.textContent).toBe('⌘C');
+      expect(row(fixture).lastElementChild).toBe(kbd);
+    });
+  });
+
   describe('role and aria-checked', () => {
     it('is a plain menuitem with no checked state when control is none', async () => {
       const fixture = await setup();

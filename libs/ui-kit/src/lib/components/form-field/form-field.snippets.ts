@@ -184,6 +184,15 @@ export const formFieldSnippets: Record<string, SnippetSet> = {
   <small class="input-hint">Shown on your profile.</small>
 </div>`,
   },
+  // Angular only: a layout over existing field markup.
+  SamparkInputShell: {
+    primeng: `<div class="baps-input-shell">
+  <baps-avatar class="baps-input-shell__avatar" label="GP" size="xs" shape="square" />
+  <input bapsInputText [(ngModel)]="owner" aria-label="Owner" />
+  <baps-icon class="baps-input-shell__chevron" name="down" [size]="10" />
+  <span class="baps-input-shell__segment"><baps-toggleswitch size="xs" inputId="notify" /></span>
+</div>`,
+  },
   TextareaExample: {
     primeng: `<textarea bapsTextarea autoResize aria-label="Notes"></textarea>`,
     ...examples(

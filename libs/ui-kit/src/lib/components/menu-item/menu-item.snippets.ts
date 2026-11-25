@@ -258,4 +258,12 @@ export default function MyBkyMenuItem({ onSelect }) {
 }`,
   },
 
+  // Angular only: the slots are content projection on baps-menu-item.
+  SamparkSlots: {
+    primeng: `<baps-menu-item title="Copy" shortcut="⌘C" />
+<baps-menu-item title="Notifications">
+  <baps-indicator menu-item-leading severity="success" size="s" ariaLabel="On" />
+  <baps-indicator menu-item-trailing severity="error" size="l" ariaLabel="8 unread">8</baps-indicator>
+</baps-menu-item>`,
+  },
 };

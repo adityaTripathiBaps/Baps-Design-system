@@ -1,6 +1,7 @@
 @use 'sass:list';
 @use 'sass:string';
 @use 'field-horizontal'; // .field--horizontal layout (Figma 6304:53807)
+@use 'input-shell'; // .baps-input-shell, Figma 6333:66494 / 561:3587
 
 /* =====================================================================
    libs/ui-kit/src/lib/styles/components/input/_input.scss

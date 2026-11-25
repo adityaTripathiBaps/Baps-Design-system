@@ -1,0 +1,62 @@
+/* =====================================================================
+   libs/ui-kit/src/lib/styles/components/priority/_priority.scss
+   baps-priority: Figma "🟢 Component Library" Priority (5959:99251).
+
+   A 24 × 24 mark drawn in its level colour. With .baps-priority--interactive,
+   hovering shows Figma's Hover row: a filled square with a 4px radius in the
+   level colour, and the glyph turns white.
+   ===================================================================== */
+
+baps-priority {
+  display: inline-flex;
+  flex: none;
+  width: var(--space-6);
+  height: var(--space-6);
+  border-radius: var(--space-1);
+  --baps-priority-color: var(--color-mybky-mono-400, #b6b6af);
+  color: var(--baps-priority-color);
+  transition:
+    background-color 120ms ease,
+    color 120ms ease;
+}
+
+baps-priority .baps-priority__glyph,
+baps-priority svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* MyBKY status steps (the default brand). */
+baps-priority.baps-priority--high {
+  --baps-priority-color: var(--color-mybky-error-80, #e05255);
+}
+baps-priority.baps-priority--medium {
+  --baps-priority-color: var(--color-mybky-warning-60, #e0a652);
+}
+baps-priority.baps-priority--low {
+  --baps-priority-color: var(--color-mybky-info-60, #528de0);
+}
+
+/* Sampark: Figma's own values (Error/80, Warning/60, Info/60, Mono/60). */
+:is(baps-priority.baps-sampark, .baps-ds-sampark baps-priority).baps-priority--high {
+  --baps-priority-color: var(--color-sampark-error-80, #ea151a);
+}
+:is(baps-priority.baps-sampark, .baps-ds-sampark baps-priority).baps-priority--medium {
+  --baps-priority-color: var(--color-sampark-warning-60, #faab38);
+}
+:is(baps-priority.baps-sampark, .baps-ds-sampark baps-priority).baps-priority--low {
+  --baps-priority-color: var(--color-sampark-info-60, #3889fa);
+}
+:is(baps-priority.baps-sampark, .baps-ds-sampark baps-priority).baps-priority--none {
+  --baps-priority-color: var(--color-sampark-text-placeholder, #979493);
+}
+
+baps-priority.baps-priority--interactive {
+  cursor: pointer;
+}
+
+baps-priority.baps-priority--interactive:hover {
+  background: var(--baps-priority-color);
+  color: var(--color-sampark-text-inverse, #ffffff);
+}

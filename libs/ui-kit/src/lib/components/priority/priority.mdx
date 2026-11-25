@@ -1,0 +1,29 @@
+import { Meta, Canvas, Controls } from '@storybook/blocks';
+import { FrameworkTabs } from '@baps/docs-blocks';
+import * as PriorityStories from './priority.stories';
+import { prioritySnippets } from './priority.snippets';
+
+<Meta of={PriorityStories} />
+
+# Priority
+
+The 24px priority mark from the Figma Icon page (5959:99251). It has four levels: `high` ⇈, `medium` =, `low` ⇊ and `none` ○, each drawn in its own status colour.
+
+- **Accessibility:** screen readers announce the mark as an image named "High priority" and so on. Pass `label` to change the text.
+- **Hover:** set `interactive` when the mark does something on click, such as opening a priority picker. Hovering then shows Figma's hover state, a filled square with a white glyph. Leave `interactive` off for a read-only mark in a table cell.
+
+## Examples
+
+### Playground
+
+<Canvas of={PriorityStories.Playground} sourceState="none" />
+
+<Controls of={PriorityStories.Playground} />
+
+<FrameworkTabs of={PriorityStories.Playground} snippets={prioritySnippets.Playground} />
+
+### Levels
+
+<Canvas of={PriorityStories.Levels} sourceState="none" />
+
+<FrameworkTabs of={PriorityStories.Levels} snippets={prioritySnippets.Levels} />

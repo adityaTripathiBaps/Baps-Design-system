@@ -203,3 +203,21 @@ baps-menu-item .menu-item__avatar {
   --menu-item-control-border: var(--color-sampark-dark-border-control);
   --menu-item-text-danger: var(--color-sampark-error-40);
 }
+
+/* ── Shortcut — Figma "Base Shortcut" (702:9079) ──
+   12px placeholder-grey text at the row's end, e.g. "⌘C". A <kbd> so
+   assistive tech reads it as a key combination. */
+baps-menu-item .menu-item__shortcut {
+  flex: none;
+  font-family: inherit;
+  font-size: var(--font-size-xs);
+  line-height: 1.3;
+  color: var(--menu-item-subtitle);
+  white-space: nowrap;
+}
+
+/* Projected trailing controls sit at the end and never shrink. */
+baps-menu-item .menu-item > [menu-item-trailing],
+baps-menu-item .menu-item > [menu-item-leading] {
+  flex: none;
+}

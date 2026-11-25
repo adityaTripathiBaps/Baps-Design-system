@@ -17,7 +17,7 @@ import { BapsCheckbox } from '../checkbox/checkbox.component';
 import { BapsToggleSwitch } from '../toggle-switch/toggle-switch.component';
 import { BapsButton } from '../button/button.component';
 import { BapsLink } from '../link/link.component';
-import { BapsIcon } from '../icon/icon.component';
+import { BapsPriority } from '../priority/priority.component';
 import { BapsInputText } from '../form-field/directives/input-text.directive';
 import {
   BapsTableColumnConfig,
@@ -363,7 +363,7 @@ const meta: Meta<BapsTable> = {
         BapsToggleSwitch,
         BapsButton,
         BapsLink,
-        BapsIcon,
+        BapsPriority,
         BapsInputText,
         SharedModule,
         TableModule,
@@ -1703,9 +1703,7 @@ export const CellTypes: StoryObj<BapsTable> = {
               <baps-progressbar severity="success" [value]="row.done" [ariaLabel]="row.done + '% complete'" />
             </td>
             <td class="baps-table-cell-center">
-              @if (row.priority) {
-                <baps-icon name="double-alt-arrow-up" size="lg" label="High priority" style="color: var(--color-sampark-error-80)" />
-              }
+              <baps-priority [level]="row.priority ? 'high' : 'none'" />
             </td>
             <td class="baps-table-cell-center">
               <baps-toggleswitch size="xs" [(ngModel)]="row.active" [inputId]="'ct-act-' + row.name" />

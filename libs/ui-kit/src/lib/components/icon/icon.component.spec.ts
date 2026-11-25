@@ -34,6 +34,22 @@ describe('BapsIcon', () => {
     }
   });
 
+  it('draws the Figma chevron set (5098:23753)', () => {
+    for (const name of ['down', 'up', 'left', 'right', 'double-down', 'double-up', 'double-left', 'double-right', 'switch', 'dash'] as const) {
+      render({ name });
+      expect(host.querySelector('svg path')).toBeTruthy();
+    }
+  });
+
+  it('resolves a Figma name to the glyph the sheet stored under another name', () => {
+    render({ name: 'mail' });
+    const viaAlias = host.querySelector('svg')?.innerHTML;
+    render({ name: 'icon-mail' });
+    expect(viaAlias).toBeTruthy();
+    expect(host.querySelector('svg')?.innerHTML).toBe(viaAlias);
+    expect(fixture.componentInstance.name).toBe('icon-mail');
+  });
+
   it('renders nothing for an unknown name instead of throwing', () => {
     render({ name: 'not-a-real-icon' as never });
     expect(host.querySelector('svg')).toBeNull();

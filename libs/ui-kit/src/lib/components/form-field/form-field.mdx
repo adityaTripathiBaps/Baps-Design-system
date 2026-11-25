@@ -134,6 +134,26 @@ The label sits beside the field, and the field is a single underlined row (Figma
   snippets={formFieldSnippets.SamparkHorizontal}
 />
 
+### Sampark Input Shell
+
+Extras that Figma draws *inside* the field border (6333:66494, 561:3587). Wrap the input and its extras in `.baps-input-shell`. Supported extras:
+
+- a leading `.baps-input-shell__icon` or `.baps-input-shell__avatar`
+- a `.baps-input-shell__chevron`
+- an `.baps-input-shell__action` icon button
+- a `.baps-input-shell__segment` behind a 1px rule, for example for a switch
+- an attached `.baps-input-shell__button` at either end
+- a `.baps-input-shell__badge` before or after the text
+
+The shell draws the border, so hover, focus, error and disabled show on the whole field.
+
+<Canvas of={FormControlsStories.SamparkInputShell} sourceState="none" />
+
+<FrameworkTabs
+  of={FormControlsStories.SamparkInputShell}
+  snippets={formFieldSnippets.SamparkInputShell}
+/>
+
 </BrandOnly>
 
 ### Textarea Example

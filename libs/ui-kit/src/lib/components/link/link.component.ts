@@ -41,6 +41,10 @@ import { BapsBrand, injectBapsBrand } from '../../theme/brand';
     '[class.baps-sampark]': "brand === 'sampark'",
     '[class.baps-link--primary]': "variant === 'primary'",
     '[class.baps-link--secondary]': "variant === 'secondary'",
+    '[class.baps-link--info]': "variant === 'info'",
+    '[class.baps-link--success]': "variant === 'success'",
+    '[class.baps-link--warning]': "variant === 'warning'",
+    '[class.baps-link--error]': "variant === 'error'",
     '[class.baps-link-sm]': "size === 'small'",
     '[class.baps-link-lg]': "size === 'large'",
     '[class.baps-link-xl]': "size === 'xlarge'",
@@ -57,8 +61,11 @@ export class BapsLink {
    * Figma node 13197:91800 draws two: Primary (the brand ramp — maroon for
    * Sampark, blue for MyBKY) and Secondary (the shared mono ramp, #595656 →
    * #151414 on hover). Primary is the default, so nothing existing moves.
+   *
+   * "🟢 Component Library" (178:8538) adds four status links, Info, Success,
+   * Warning and Error: the status colour at rest, underlined on hover.
    */
-  @Input() variant: 'primary' | 'secondary' = 'primary';
+  @Input() variant: 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'error' = 'primary';
   /**
    * S / L / XL from the same node, named after the rendered box height
    * (16 / 18 / 20px) — the type is 12 / 14 / 16px at 1.3 line-height.

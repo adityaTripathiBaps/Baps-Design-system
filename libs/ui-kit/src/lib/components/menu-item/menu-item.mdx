@@ -1,5 +1,6 @@
 import { Meta, Canvas, Controls } from '@storybook/blocks';
-import { BrandOnly } from '@baps/docs-blocks';
+import { BrandOnly, FrameworkTabs } from '@baps/docs-blocks';
+import { menuItemSnippets } from './menu-item.snippets';
 
 <Meta of={MenuItemStories} />
 
@@ -45,6 +46,20 @@ It is a **molecule**, not an atom — it composes `baps-avatar` with its own two
 <Canvas of={MenuItemStories.AllVariantsMyBKY} />
 
 </BrandOnly>
+
+### Slots
+
+The optional parts of Figma's menu item (702:8768):
+
+- **Status dot:** put a `baps-indicator` in the `[menu-item-leading]` slot.
+- **Shortcut:** use the `shortcut` input, for example `"⌘C"`. It only shows the text; your app binds the key.
+- **Trailing controls:** a badge, switch, notification count, chevron or action icon goes in the `[menu-item-trailing]` slot, using the kit components.
+
+A click on a projected control also reaches the row. Stop propagation in the app if that control must not activate the item.
+
+<Canvas of={MenuItemStories.SamparkSlots} sourceState="none" />
+
+<FrameworkTabs of={MenuItemStories.SamparkSlots} snippets={menuItemSnippets.SamparkSlots} />
 
 ## When Not to Use
 

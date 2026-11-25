@@ -11,6 +11,9 @@ import { BapsInputIcon } from './input-icon.component';
 import { BapsMessage } from './message.component';
 import { BapsIcon } from '../icon/icon.component';
 import { BapsLink } from '../link/link.component';
+import { BapsAvatar } from '../avatar/avatar.component';
+import { BapsTag } from '../tag/tag.component';
+import { BapsToggleSwitch } from '../toggle-switch/toggle-switch.component';
 
 import { SelectModule } from 'primeng/select';
 import { MultiSelectModule } from 'primeng/multiselect';
@@ -46,6 +49,9 @@ const meta: Meta = {
         BapsMessage,
         BapsIcon,
         BapsLink,
+        BapsAvatar,
+        BapsTag,
+        BapsToggleSwitch,
         FormsModule,
         SelectModule,
         MultiSelectModule,
@@ -555,6 +561,103 @@ export const SamparkHorizontal: Story = {
             <span class="input-char-count">0 / 200</span>
           </div>
           <small class="input-hint">This is a hint text to help user.</small>
+        </div>
+      </div>
+    `,
+  }),
+};
+
+/**
+ * Extras inside one bordered field: Figma "Base Web Input Action Component"
+ * (6333:66494) and "Base Web Input Text Component" (561:3587). Wrap the input
+ * and its extras in `.baps-input-shell`: leading icon or avatar, chevron,
+ * action icon, a switch behind a rule, an attached leading or trailing
+ * button, and a leading or trailing badge. Hover, focus, error and disabled
+ * read on the whole shell. Several badges as the value is MultiSelect's
+ * chip display (Multi Select › Chip Overflow).
+ */
+export const SamparkInputShell: Story = {
+  tags: ['!ds:mybky'],
+  name: 'Sampark Input Shell',
+  render: () => ({
+    props: { v: '', name: 'Gaurang Patel', on: true },
+    template: `
+      <div class="baps-ds-sampark" style="display:grid; grid-template-columns:repeat(2, 18.75rem); gap:20px 32px;">
+        <div class="field" style="display:flex; flex-direction:column;">
+          <label for="sh-1">Icon · count · chevron</label>
+          <div class="baps-input-shell">
+            <baps-icon class="baps-input-shell__icon" name="user" size="sm" />
+            <input id="sh-1" bapsInputText [(ngModel)]="v" placeholder="Enter user name" maxlength="200" />
+            <span class="input-char-count">{{ v.length }} / 200</span>
+            <baps-icon class="baps-input-shell__chevron" name="down" [size]="10" />
+          </div>
+        </div>
+        <div class="field" style="display:flex; flex-direction:column;">
+          <label for="sh-2">Avatar</label>
+          <div class="baps-input-shell">
+            <baps-avatar class="baps-input-shell__avatar" label="GP" size="xs" shape="square" />
+            <input id="sh-2" bapsInputText [(ngModel)]="name" />
+          </div>
+        </div>
+        <div class="field" style="display:flex; flex-direction:column;">
+          <label for="sh-3">Chevron with switch</label>
+          <div class="baps-input-shell">
+            <input id="sh-3" bapsInputText placeholder="Enter user name" />
+            <baps-icon class="baps-input-shell__chevron" name="down" [size]="10" />
+            <span class="baps-input-shell__segment"><baps-toggleswitch size="xs" inputId="sh-3-sw" [(ngModel)]="on" /><label class="p-hidden-accessible" for="sh-3-sw">Enabled</label></span>
+          </div>
+        </div>
+        <div class="field" style="display:flex; flex-direction:column;">
+          <label for="sh-4">Action icon with switch</label>
+          <div class="baps-input-shell">
+            <input id="sh-4" bapsInputText placeholder="Enter user name" />
+            <button type="button" class="baps-input-shell__action" aria-label="Pick a time"><baps-icon name="clock" [size]="18" /></button>
+            <span class="baps-input-shell__segment"><baps-toggleswitch size="xs" inputId="sh-4-sw" /><label class="p-hidden-accessible" for="sh-4-sw">Reminder</label></span>
+          </div>
+        </div>
+        <div class="field" style="display:flex; flex-direction:column;">
+          <label for="sh-5">Leading action button</label>
+          <div class="baps-input-shell">
+            <button type="button" class="baps-input-shell__button">Button Text</button>
+            <input id="sh-5" bapsInputText placeholder="Enter user name" />
+          </div>
+        </div>
+        <div class="field" style="display:flex; flex-direction:column;">
+          <label for="sh-6">Trailing action button</label>
+          <div class="baps-input-shell">
+            <input id="sh-6" bapsInputText placeholder="Enter user name" />
+            <button type="button" class="baps-input-shell__button">Button Text</button>
+          </div>
+        </div>
+        <div class="field" style="display:flex; flex-direction:column;">
+          <label for="sh-7">Leading badge</label>
+          <div class="baps-input-shell">
+            <baps-tag class="baps-input-shell__badge" value="Badge Text" />
+            <input id="sh-7" bapsInputText placeholder="Enter user name" />
+          </div>
+        </div>
+        <div class="field" style="display:flex; flex-direction:column;">
+          <label for="sh-8">Trailing badge</label>
+          <div class="baps-input-shell">
+            <input id="sh-8" bapsInputText placeholder="Enter user name" />
+            <baps-tag class="baps-input-shell__badge" value="Badge Text" />
+          </div>
+        </div>
+        <div class="field" style="display:flex; flex-direction:column;">
+          <label for="sh-9">Error <span class="p-error">*</span></label>
+          <div class="baps-input-shell">
+            <baps-icon class="baps-input-shell__icon" name="user" size="sm" />
+            <input id="sh-9" bapsInputText class="p-invalid" [ngModel]="'Gaurang'" />
+          </div>
+          <small class="input-hint p-error">This is a hint text to help user.</small>
+        </div>
+        <div class="field" style="display:flex; flex-direction:column;">
+          <label for="sh-10">Disabled</label>
+          <div class="baps-input-shell">
+            <baps-icon class="baps-input-shell__icon" name="user" size="sm" />
+            <input id="sh-10" bapsInputText disabled placeholder="Enter user name" />
+            <baps-icon class="baps-input-shell__chevron" name="down" [size]="10" />
+          </div>
         </div>
       </div>
     `,

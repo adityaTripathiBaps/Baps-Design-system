@@ -9,6 +9,7 @@ import {
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { inject } from '@angular/core';
 import { BAPS_ICONS, type BapsIconName } from './icon-set';
+import { BAPS_ICON_ALIASES, type BapsIconAlias } from './icon-set-extra';
 
 /** The named size steps. A raw pixel number is also accepted. */
 export type BapsIconSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
@@ -70,8 +71,10 @@ export class BapsIcon {
 
   /** Which glyph to draw. Unknown names render nothing rather than throwing. */
   @Input({ required: true })
-  set name(value: BapsIconName) {
-    this._name.set(value);
+  set name(value: BapsIconName | BapsIconAlias) {
+    // A Figma name the sheet stored differently (e.g. "mail") resolves to
+    // the kit name ("icon-mail"); see BAPS_ICON_ALIASES.
+    this._name.set((BAPS_ICON_ALIASES as Record<string, BapsIconName>)[value] ?? (value as BapsIconName));
   }
   get name(): BapsIconName | null {
     return this._name();

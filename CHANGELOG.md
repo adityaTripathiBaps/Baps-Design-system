@@ -8,6 +8,27 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/ui-kit` — minor, additive:** `baps-link` `variant` gains `info`,
+  `success`, `warning` and `error` (Figma 178:8538): the status colour at rest,
+  underlined on hover. Primary and Secondary are unchanged.
+- **`@org/ui-kit` — minor, additive:** `baps-priority` (`BapsPriority`,
+  `BapsPriorityLevel`), the High / Medium / Low / None mark (Figma 5959:99251).
+  Set `interactive` to show the hover state, a filled square.
+- **`@org/ui-kit` — minor, additive:** `baps-icon` adds Figma's Chevron set
+  (5098:23753): `down`, `up`, `left`, `right`, `double-*`, `switch` and `dash`.
+  It also accepts the Figma names `mail`, `mail-opened`, `mail-unread`,
+  `mailbox`, `like`, `list`, `search` and `users` as aliases
+  (`BAPS_ICON_ALIASES`) of the sheet's stored names.
+- **`@org/ui-kit` — minor, additive:** `baps-menu-item` `shortcut` input (Figma
+  Base Shortcut 702:9079), plus `[menu-item-leading]` and
+  `[menu-item-trailing]` projection slots for a status dot, badge, switch,
+  count, chevron or action icon.
+- **`@org/ui-kit/styles` — minor, additive:** `.baps-input-shell` (Figma
+  6333:66494 / 561:3587): one bordered field holding an input plus an icon,
+  avatar, chevron, action icon, switch segment, attached button or badge.
+  Story: Form Controls › Sampark Input Shell.
+- **Docs:** `docs/FIGMA-COMPONENT-LIBRARY-COVERAGE.md` maps every set in the
+  Figma file to the kit.
 - **`@org/ui-kit` — minor, additive:** `baps-editor` (`BapsEditor`), a
   rich-text field wrapping PrimeNG Editor (Figma 585:4268, Richtext Bar
   585:5287). One bordered field holds the text, an optional "n / max" count and

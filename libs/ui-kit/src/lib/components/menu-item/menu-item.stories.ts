@@ -2,6 +2,10 @@ import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
 import { expect, userEvent, within } from '@storybook/test';
 import { BapsMenuItem } from './menu-item.component';
+import { BapsIndicator } from '../indicator/indicator.component';
+import { BapsTag } from '../tag/tag.component';
+import { BapsToggleSwitch } from '../toggle-switch/toggle-switch.component';
+import { BapsIcon } from '../icon/icon.component';
 
 const meta: Meta = {
   title: 'Components/Molecules/Menu Item',
@@ -15,7 +19,7 @@ const meta: Meta = {
   tags: ['ds:mybky', 'ds:sampark'],
   decorators: [
     moduleMetadata({
-      imports: [BapsMenuItem],
+      imports: [BapsMenuItem, BapsIndicator, BapsTag, BapsToggleSwitch, BapsIcon],
     }),
   ],
 };
@@ -183,4 +187,43 @@ export const AllVariantsMyBKY: Story = {
   name: 'Menu Item — All Variants (MyBKY)',
   parameters: { controls: { disable: true } },
   render: () => menuItemMatrix('mybky'),
+};
+
+/**
+ * Figma "Base Menu Item" (702:8768) optional slots, one row each: leading
+ * status dot, keyboard shortcut, trailing badge, switch, notification count,
+ * chevron and action icon. The dot goes in `[menu-item-leading]`; the rest
+ * go in `[menu-item-trailing]`, apart from `shortcut`, which is an input.
+ * A projected control's click also reaches the row: stop propagation in the
+ * app when the control must not activate the item.
+ */
+export const SamparkSlots: Story = {
+  tags: ['!ds:mybky'],
+  name: 'Menu Item — Slots',
+  parameters: { controls: { disable: true } },
+  render: () => ({
+    template: `
+      <div class="baps-ds-sampark" style="width: 20rem; display:flex; flex-direction:column;">
+        <baps-menu-item title="Status dot">
+          <baps-indicator menu-item-leading severity="success" size="s" ariaLabel="Active" />
+        </baps-menu-item>
+        <baps-menu-item title="Copy" shortcut="⌘C" />
+        <baps-menu-item title="Trailing badge">
+          <baps-tag menu-item-trailing value="New" />
+        </baps-menu-item>
+        <baps-menu-item title="Switch">
+          <baps-toggleswitch menu-item-trailing size="xs" />
+        </baps-menu-item>
+        <baps-menu-item title="Notification count">
+          <baps-indicator menu-item-trailing severity="error" size="l" ariaLabel="8 unread">8</baps-indicator>
+        </baps-menu-item>
+        <baps-menu-item title="Chevron">
+          <baps-icon menu-item-trailing name="right" size="xs" />
+        </baps-menu-item>
+        <baps-menu-item title="Action icon">
+          <baps-icon menu-item-trailing name="plus" size="md" label="Add" />
+        </baps-menu-item>
+      </div>
+    `,
+  }),
 };

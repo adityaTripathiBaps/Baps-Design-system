@@ -27,6 +27,8 @@ import { BapsBrand, injectBapsBrand } from '../../theme/brand';
       (keydown.space)="$event.preventDefault(); activate()"
     >
       <span class="menu-item__bar" aria-hidden="true"></span>
+      <!-- Figma "Menu Item Status Dot": project a baps-indicator here. -->
+      <ng-content select="[menu-item-leading]"></ng-content>
       @if (control === 'checkbox') {
         <span
           class="menu-item__control menu-item__control--check"
@@ -118,6 +120,12 @@ import { BapsBrand, injectBapsBrand } from '../../theme/brand';
           <span class="menu-item__subtitle">{{ subtitle }}</span>
         }
       </span>
+      @if (shortcut) {
+        <kbd class="menu-item__shortcut">{{ shortcut }}</kbd>
+      }
+      <!-- Figma's trailing slots (badge, switch, notification count, chevron,
+           action icon): project kit components here, in Figma's order. -->
+      <ng-content select="[menu-item-trailing]"></ng-content>
     </div>
   `,
   encapsulation: ViewEncapsulation.None,
@@ -137,6 +145,12 @@ export class BapsMenuItem {
   @Input() avatarLabel?: string;
   @Input() avatarIcon?: string;
   @Input() severity: 'default' | 'danger' = 'default';
+  /**
+   * Keyboard shortcut shown at the end of the row, e.g. "⌘C" or "Ctrl+C"
+   * (Figma "Base Shortcut", 702:9079). It is only displayed: binding the
+   * key is the app's job.
+   */
+  @Input() shortcut?: string;
   @Input() selected = false;
   @Input() disabled = false;
   @Input() brand: BapsBrand = injectBapsBrand();

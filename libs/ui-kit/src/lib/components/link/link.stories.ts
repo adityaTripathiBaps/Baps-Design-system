@@ -21,7 +21,7 @@ const meta: Meta<BapsLink> = {
   // inputs a control a reader can actually drive — a select with the real
   // option list instead of a free-text box that accepts nonsense.
   argTypes: {
-    variant: { control: 'inline-radio', options: [undefined, 'primary', 'secondary'] },
+    variant: { control: 'inline-radio', options: [undefined, 'primary', 'secondary', 'info', 'success', 'warning', 'error'] },
     size: { control: 'inline-radio', options: [undefined, 'small', 'large', 'xlarge'] },
     brand: { control: 'inline-radio', options: [undefined, 'mybky', 'sampark'] },
     disabled: { control: 'boolean' },
@@ -66,6 +66,10 @@ export const Variants: StoryObj<BapsLink> = {
       <div style="display:flex; gap:32px;">
         <baps-link [href]="href" [brand]="brand" variant="primary">Primary link</baps-link>
         <baps-link [href]="href" [brand]="brand" variant="secondary">Secondary link</baps-link>
+        <baps-link [href]="href" [brand]="brand" variant="info">Info link</baps-link>
+        <baps-link [href]="href" [brand]="brand" variant="success">Success link</baps-link>
+        <baps-link [href]="href" [brand]="brand" variant="warning">Warning link</baps-link>
+        <baps-link [href]="href" [brand]="brand" variant="error">Error link</baps-link>
       </div>
     `,
   }),

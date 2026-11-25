@@ -415,6 +415,13 @@ Blocked on design, not on implementation. Never invent these.
   from the older Sampark Portal file). Only the new `labelLayout` bars use 4px.
   Changing the default would visibly change every bar spm-ui already shows.
 
+- **Ask at demo.** Status links fail WCAG AA in places (2026-11-25, Figma
+  178:8538). Sampark's `warning-80` (#e08705) on white measures 2.75:1, and
+  `success-80` (#089152) 4.05:1, against the 4.5:1 AA needs for normal
+  text. They are Figma's own values (labelled Warning/100 and Success/100), so
+  they ship as drawn. A darker step is a designer's call, the same open
+  question as the primary link above.
+
 ## Approved token exceptions — *2026-10-08*
 
 - `var(--token, #fallback)` fallbacks. Defensive, not hardcoding.

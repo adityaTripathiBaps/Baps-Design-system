@@ -92,6 +92,10 @@ export default function Example() {
     primeng: `<div style="display:flex; gap:32px;">
   <baps-link href="#" variant="primary">Primary link</baps-link>
   <baps-link href="#" variant="secondary">Secondary link</baps-link>
+  <baps-link href="#" variant="info">Info link</baps-link>
+  <baps-link href="#" variant="success">Success link</baps-link>
+  <baps-link href="#" variant="warning">Warning link</baps-link>
+  <baps-link href="#" variant="error">Error link</baps-link>
 </div>`,
     custom: `<!-- baps-link stays as the outer element: every selector in _link.scss is
      anchored to it, so a bare <a> would be unstyled. It is an unregistered
@@ -99,6 +103,10 @@ export default function Example() {
 <div style="display:flex; gap:32px;">
 ${anchor('baps-link--primary', 'Primary link')}
 ${anchor('baps-link--secondary', 'Secondary link')}
+${anchor('baps-link--info', 'Info link')}
+${anchor('baps-link--success', 'Success link')}
+${anchor('baps-link--warning', 'Warning link')}
+${anchor('baps-link--error', 'Error link')}
 </div>`,
     react: `${SETUP}
 

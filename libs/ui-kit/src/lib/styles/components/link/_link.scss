@@ -82,6 +82,46 @@ baps-link.baps-link--secondary .baps-link__anchor:hover {
   text-decoration: underline;
 }
 
+/* ── Status — "🟢 Component Library" 178:8538: Info, Success, Warning, Error ──
+   The status colour at rest, the same colour underlined on hover; no
+   separate hover or active colour is drawn. Figma labels them Info/100,
+   Success/100, Warning/100 and Error/100; the hex values match the kit's
+   sampark info-80, success-80, warning-80 and error-100. MyBKY uses its
+   own status steps. */
+baps-link.baps-link--info .baps-link__anchor:not(.baps-link--disabled) {
+  color: var(--color-mybky-info-80, #2265c3);
+}
+baps-link.baps-link--success .baps-link__anchor:not(.baps-link--disabled) {
+  color: var(--color-mybky-success-600, #2a9c68);
+}
+baps-link.baps-link--warning .baps-link__anchor:not(.baps-link--disabled) {
+  color: var(--color-mybky-warning-80, #c38222);
+}
+baps-link.baps-link--error .baps-link__anchor:not(.baps-link--disabled) {
+  color: var(--color-mybky-error-100, #c32226);
+}
+:is(baps-link.baps-sampark, .baps-ds-sampark baps-link).baps-link--info .baps-link__anchor:not(.baps-link--disabled) {
+  color: var(--color-sampark-info-80, #0661e0);
+}
+:is(baps-link.baps-sampark, .baps-ds-sampark baps-link).baps-link--success .baps-link__anchor:not(.baps-link--disabled) {
+  color: var(--color-sampark-success-80, #089152);
+}
+:is(baps-link.baps-sampark, .baps-ds-sampark baps-link).baps-link--warning .baps-link__anchor:not(.baps-link--disabled) {
+  color: var(--color-sampark-warning-80, #e08705);
+}
+:is(baps-link.baps-sampark, .baps-ds-sampark baps-link).baps-link--error .baps-link__anchor:not(.baps-link--disabled) {
+  color: var(--color-sampark-error-100, #cc0005);
+}
+:is(
+    baps-link.baps-link--info,
+    baps-link.baps-link--success,
+    baps-link.baps-link--warning,
+    baps-link.baps-link--error
+  )
+  .baps-link__anchor:hover {
+  text-decoration: underline;
+}
+
 /* ── Disabled ──
    This rule is (0,2,1) and every variant colour rule above out-specifies
    it: the brand blocks reach (0,3,1) and their dark-mode counterparts
