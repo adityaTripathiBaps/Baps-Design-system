@@ -13,7 +13,15 @@
   font-family: inherit;
   font-weight: 500;
   font-size: var(--avatar-mybky-font-size-m);
-  transition: border-color var(--motion-duration-base);
+  /* The default is the primary look, as <baps-avatar> defaults to
+     variant="primary": without a modifier the HTML avatar had no border, so
+     its hover (a border-colour change) showed nothing. Status modifiers below
+     replace the border and the hover colour. */
+  border: 1px solid var(--color-mybky-blue-400);
+  --baps-avatar-border-hover: var(--color-mybky-blue-600);
+  transition:
+    border-color var(--motion-duration-base),
+    box-shadow var(--motion-duration-base);
   user-select: none;
 
   &--xs {
@@ -112,6 +120,26 @@
     border-color: var(--baps-avatar-border-hover, var(--color-mybky-blue-400));
   }
 
+  /* Primary (the default) lifts on hover, as baps-avatar's primary does; the
+     status modifiers only darken the border. */
+  &:not(
+      .baps-avatar-html--secondary,
+      .baps-avatar-html--success,
+      .baps-avatar-html--error,
+      .baps-avatar-html--warning,
+      .baps-avatar-html--info
+    ):hover {
+    box-shadow:
+      0 1px 4px 0 rgba(16, 24, 40, 0.12),
+      0 2px 4px 0 rgba(16, 24, 40, 0.06);
+  }
+
+  /* A photo renders clean, as baps-avatar's image type: no fill, no border. */
+  &:has(> img) {
+    background: transparent;
+    border: none;
+  }
+
   img {
     display: block;
     width: 100%;
@@ -158,6 +186,7 @@
   font-weight: var(--avatar-sampark-font-weight);
   font-size: var(--avatar-sampark-font-size-m);
   border: var(--avatar-sampark-border-width) solid var(--avatar-sampark-border);
+  --baps-avatar-border-hover: var(--avatar-sampark-border-hover);
 }
 
 .baps-avatar-html--xs.baps-sampark,
@@ -254,6 +283,14 @@
   background: var(--avatar-sampark-warning-background);
   color: var(--avatar-sampark-text);
   --baps-avatar-border-hover: var(--avatar-sampark-warning-border-hover);
+}
+
+/* A photo renders clean in Sampark too, as baps-avatar's image type (0px
+   border, measured): the Sampark base rule above restates the border. */
+.baps-avatar-html.baps-sampark:has(> img),
+.baps-ds-sampark .baps-avatar-html:has(> img) {
+  background: transparent;
+  border: none;
 }
 
 .baps-avatar-html.baps-sampark,

@@ -241,6 +241,12 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit/styles` — patch, visual:** the HTML/CSS avatar
+  (`.baps-avatar-html`) without a status modifier now looks and hovers like
+  `<baps-avatar>`'s default primary: MyBKY 1px #9fadd9 border, hover #5f78b8
+  plus the lift shadow (it had no border, so its hover showed nothing).
+  Sampark's hover colour no longer falls back to MyBKY blue, and a photo avatar
+  renders without border or fill in both brands, as `baps-avatar` does.
 - **`@org/ui-kit/styles` — patch, visual (both brands):** hover states as
   PrimeNG has them, on three parts that had none. Accordion header, input-number
   spinner buttons and the file-upload button (under a zone hover; the button is
