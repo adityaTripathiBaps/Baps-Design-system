@@ -241,6 +241,12 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit/styles` — patch:** `baps-tree-table`'s expand/collapse button
+  shows its hover background (MyBKY #eef0f8, Sampark #f8f7f7, the row-hover
+  tokens). The button reset (no border, transparent background) moved from an
+  inline style in the story into the stylesheet: the inline `background:none`
+  beat the hover rule, so the toggler never reacted, and the React tree-table,
+  which has no inline style, drew the browser's grey button.
 - **`@org/ui-kit` — patch:** the 12 form-control wrappers (checkbox, radio,
   select, multi-select, datepicker, tree-select, slider, toggle-switch,
   segmented, listbox, chips-input, input-number) repaint a value written from

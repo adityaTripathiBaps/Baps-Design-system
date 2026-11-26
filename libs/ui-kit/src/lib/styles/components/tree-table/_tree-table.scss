@@ -93,12 +93,23 @@ baps-tree-table .p-treetable-tbody > tr.baps-tree-row-error > td {
 /* The toggler is a control, not decoration — it keeps a real hit area even
    though the glyph inside it is small. */
 baps-tree-table .p-treetable-node-toggle-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 1.75rem;
   height: 1.75rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
   color: var(--baps-tt-toggler);
   border-radius: 50%;
+  cursor: pointer;
 }
-baps-tree-table .p-treetable-node-toggle-button:hover {
+/* The reset lives here, not inline: the story used to set background:none on
+   the element, and an inline style beats this hover rule, so the toggler never
+   showed its hover. A leaf's placeholder span carries the class too; only the
+   button reacts. */
+baps-tree-table button.p-treetable-node-toggle-button:hover {
   background: var(--baps-tt-row-hover);
 }
 

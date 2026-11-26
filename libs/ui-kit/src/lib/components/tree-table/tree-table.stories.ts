@@ -115,7 +115,6 @@ export const Default: Story = {
                     class="p-treetable-node-toggle-button"
                     [attr.aria-expanded]="tt.isExpanded(rowNode)"
                     [attr.aria-label]="(tt.isExpanded(rowNode) ? 'Collapse ' : 'Expand ') + rowData.name"
-                    style="border:0; background:none; cursor:pointer; display:inline-flex; align-items:center; justify-content:center"
                     (click)="tt.toggle(rowNode, $event)"
                   >
                     <svg width="12" height="12" viewBox="0 0 16 16" aria-hidden="true"
