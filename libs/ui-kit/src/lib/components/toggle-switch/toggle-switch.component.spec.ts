@@ -23,8 +23,7 @@ import { BapsToggleSwitch } from './toggle-switch.component';
  * The size and brand host classes are the sole hooks `_switch.scss` /
  * `_switch-sampark.scss` key off — wrong class, default geometry, no error.
  *
- * One current limitation is pinned rather than assumed — see the
- * `registerOnTouched` test.
+ * A user toggle reports `touched`; a value written by the form does not.
  */
 @Component({
   imports: [BapsToggleSwitch, ReactiveFormsModule],
@@ -169,22 +168,18 @@ describe('BapsToggleSwitch', () => {
       expect(fixture.componentInstance.control.value).toBe(false);
     });
 
-    it('registerOnTouched is stored but never invoked — the control stays untouched', async () => {
-      // KNOWN GAP, pinned so it is visible rather than assumed: the template
-      // forwards PrimeNG's (onChange) but not its blur, so the callback
-      // registered here is dead code and validation UI keyed on `touched`
-      // never lights up. Wire blur and this test should be inverted.
+    it('marks the control touched when the user toggles', async () => {
+      // Was a pinned KNOWN GAP: the registered callback was dead code, so
+      // validation keyed on `touched` never lit up. A user toggle now reports
+      // touched; a value written by the form does not.
       const fixture = await setup();
-      const onTouched = jest.fn();
-      instance(fixture).registerOnTouched(onTouched);
-
-      const input = switchInput(fixture);
-      input.click();
-      input.dispatchEvent(new FocusEvent('blur'));
+      fixture.componentInstance.control.setValue(true);
       await fixture.whenStable();
-
-      expect(onTouched).not.toHaveBeenCalled();
       expect(fixture.componentInstance.control.touched).toBe(false);
+
+      switchInput(fixture).click();
+      await fixture.whenStable();
+      expect(fixture.componentInstance.control.touched).toBe(true);
     });
   });
 

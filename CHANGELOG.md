@@ -241,6 +241,10 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch:** `baps-toggleswitch` marks its form control
+  `touched` when the user toggles it. The registered callback was never
+  called, so validation gated on `touched` never showed. A value written by the
+  form still leaves it untouched.
 - **`@org/ui-kit` — patch:** `baps-datepicker`'s button-bar Clear now clears
   the form value. PrimeNG emits `onClearClick` for it, not `onClear` (the
   input's x icon), and the wrapper only listened to `onClear`, so the form kept

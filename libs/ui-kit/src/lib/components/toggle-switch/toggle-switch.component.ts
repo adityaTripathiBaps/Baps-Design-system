@@ -78,6 +78,9 @@ export class BapsToggleSwitch implements ControlValueAccessor {
 
   onUserChange(checked: boolean): void {
     this.onModelChange(checked);
+    // A user toggle is the touch: without it, validation gated on `touched`
+    // never showed.
+    this.onModelTouched();
     this.valueChange.emit(checked);
   }
 
