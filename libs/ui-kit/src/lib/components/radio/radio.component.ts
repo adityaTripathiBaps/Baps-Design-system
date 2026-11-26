@@ -1,4 +1,11 @@
-import { Component, Input, forwardRef, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  Input,
+  forwardRef,
+  ViewEncapsulation,
+  ChangeDetectorRef,
+  inject,
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
 import { RadioButton } from 'primeng/radiobutton';
 // Sampark skin lives in the theme layer so one token block drives both the
@@ -204,6 +211,8 @@ let nextRadioId = 0;
   },
 })
 export class BapsRadio implements ControlValueAccessor {
+  /** A value written from code has no template event behind it to schedule a render. */
+  private readonly cdr = inject(ChangeDetectorRef);
   /** Label displayed next to the control. */
   @Input() label?: string;
   /** The value this radio contributes to its group when selected. */
@@ -245,6 +254,7 @@ export class BapsRadio implements ControlValueAccessor {
   }
 
   writeValue(value: any): void {
+    this.cdr.markForCheck();
     this.value = value;
   }
   registerOnChange(fn: any): void {
@@ -254,6 +264,7 @@ export class BapsRadio implements ControlValueAccessor {
     this.onTouched = fn;
   }
   setDisabledState(isDisabled: boolean): void {
+    this.cdr.markForCheck();
     this.disabled = isDisabled;
   }
 }

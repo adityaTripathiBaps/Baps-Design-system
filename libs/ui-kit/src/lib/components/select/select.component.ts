@@ -11,6 +11,7 @@ import {
   ViewEncapsulation,
   forwardRef,
   inject,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule, NgControl } from '@angular/forms';
@@ -139,6 +140,8 @@ import { BapsBrand, injectBapsBrand } from '../../theme/brand';
   },
 })
 export class BapsSelect implements ControlValueAccessor {
+  /** A value written from code has no template event behind it to schedule a render. */
+  private readonly cdr = inject(ChangeDetectorRef);
   @Input() options: any[] = [];
   @Input() optionLabel?: string;
   @Input() optionValue?: string;
@@ -309,6 +312,7 @@ export class BapsSelect implements ControlValueAccessor {
   }
 
   writeValue(value: any): void {
+    this.cdr.markForCheck();
     this.value = value;
     if (value != null) this.lastValue = value;
   }
@@ -319,6 +323,7 @@ export class BapsSelect implements ControlValueAccessor {
     this.onTouched = fn;
   }
   setDisabledState(isDisabled: boolean): void {
+    this.cdr.markForCheck();
     this.disabled = isDisabled;
   }
 }

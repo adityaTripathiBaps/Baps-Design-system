@@ -10,6 +10,7 @@ import {
   ViewEncapsulation,
   forwardRef,
   inject,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule, NgControl } from '@angular/forms';
@@ -193,6 +194,8 @@ const MAX_OVERFLOW_LABELS = 20;
   },
 })
 export class BapsMultiSelect implements ControlValueAccessor {
+  /** A value written from code has no template event behind it to schedule a render. */
+  private readonly cdr = inject(ChangeDetectorRef);
   @Input() options: any[] = [];
   @Input() optionLabel?: string;
   @Input() optionValue?: string;
@@ -472,6 +475,7 @@ export class BapsMultiSelect implements ControlValueAccessor {
   }
 
   writeValue(value: any): void {
+    this.cdr.markForCheck();
     this.value = value;
   }
   registerOnChange(fn: any): void {
@@ -481,6 +485,7 @@ export class BapsMultiSelect implements ControlValueAccessor {
     this.onTouched = fn;
   }
   setDisabledState(isDisabled: boolean): void {
+    this.cdr.markForCheck();
     this.disabled = isDisabled;
   }
 }

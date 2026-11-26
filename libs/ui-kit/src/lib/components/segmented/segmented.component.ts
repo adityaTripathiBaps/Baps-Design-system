@@ -5,6 +5,7 @@ import {
   ViewEncapsulation,
   forwardRef,
   inject,
+  ChangeDetectorRef,
 } from '@angular/core';
 import {
   ControlValueAccessor,
@@ -335,6 +336,8 @@ const SELECTBUTTON_TOKENS = { root: { borderRadius: '4px' } };
   },
 })
 export class BapsSegmented implements ControlValueAccessor {
+  /** A value written from code has no template event behind it to schedule a render. */
+  private readonly cdr = inject(ChangeDetectorRef);
   /** Options to render as pills. Plain strings, or objects with optionLabel/optionValue. */
   @Input() options: unknown[] = [];
   /** Property holding the visible label when options are objects. */
@@ -425,6 +428,7 @@ export class BapsSegmented implements ControlValueAccessor {
   }
 
   writeValue(value: unknown): void {
+    this.cdr.markForCheck();
     this.value = value;
   }
   registerOnChange(fn: (value: unknown) => void): void {
@@ -434,6 +438,7 @@ export class BapsSegmented implements ControlValueAccessor {
     this.onTouched = fn;
   }
   setDisabledState(isDisabled: boolean): void {
+    this.cdr.markForCheck();
     this.disabled = isDisabled;
   }
 }

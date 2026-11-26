@@ -241,6 +241,14 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch:** the 12 form-control wrappers (checkbox, radio,
+  select, multi-select, datepicker, tree-select, slider, toggle-switch,
+  segmented, listbox, chips-input, input-number) repaint a value written from
+  code. In a zone app with an OnPush host, `setValue`/`patchValue` from an
+  async callback left the inner PrimeNG control on the old value (spm-ui has
+  54 OnPush components). `writeValue`/`setDisabledState` now mark the wrapper
+  for check. `cva-repaint.spec.ts` runs with zone change detection: 12/12 fail
+  without the fix, 12/12 pass with it.
 - **`@org/ui-kit/styles` — patch, visual (MyBKY):** `baps-iconfield`'s icon
   sits centred in apps that load the shipped stylesheet. PrimeNG's negative
   `margin-top` and the kit's `translateY(-50%)` both centred it, lifting it

@@ -7,6 +7,8 @@ import {
   QueryList,
   forwardRef,
   ViewEncapsulation,
+  ChangeDetectorRef,
+  inject,
 } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
@@ -140,6 +142,8 @@ import { BapsBrand, injectBapsBrand } from '../../theme/brand';
   },
 })
 export class BapsTreeSelect implements ControlValueAccessor {
+  /** A value written from code has no template event behind it to schedule a render. */
+  private readonly cdr = inject(ChangeDetectorRef);
   /** The hierarchy. PrimeNG's `TreeNode` shape — `label`, `children`, `data`. */
   @Input() options: TreeNode[] = [];
   /**
@@ -267,6 +271,7 @@ export class BapsTreeSelect implements ControlValueAccessor {
   }
 
   writeValue(value: any): void {
+    this.cdr.markForCheck();
     this.value = value;
   }
   registerOnChange(fn: any): void {
@@ -276,6 +281,7 @@ export class BapsTreeSelect implements ControlValueAccessor {
     this.onTouched = fn;
   }
   setDisabledState(isDisabled: boolean): void {
+    this.cdr.markForCheck();
     this.disabled = isDisabled;
   }
 }

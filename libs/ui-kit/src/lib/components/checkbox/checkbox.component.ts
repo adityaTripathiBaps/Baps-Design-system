@@ -1,4 +1,11 @@
-import { Component, Input, forwardRef, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  Input,
+  forwardRef,
+  ViewEncapsulation,
+  ChangeDetectorRef,
+  inject,
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
 import { Checkbox } from 'primeng/checkbox';
 // Sampark skin lives in the theme layer so one token block drives both the
@@ -313,6 +320,8 @@ let nextCheckboxId = 0;
   },
 })
 export class BapsCheckbox implements ControlValueAccessor {
+  /** A value written from code has no template event behind it to schedule a render. */
+  private readonly cdr = inject(ChangeDetectorRef);
   /** Label displayed next to the checkbox. */
   @Input() label?: string;
   /**
@@ -372,6 +381,7 @@ export class BapsCheckbox implements ControlValueAccessor {
   }
 
   writeValue(value: any): void {
+    this.cdr.markForCheck();
     this.value = value;
   }
   registerOnChange(fn: any): void {
@@ -381,6 +391,7 @@ export class BapsCheckbox implements ControlValueAccessor {
     this.onTouched = fn;
   }
   setDisabledState(isDisabled: boolean): void {
+    this.cdr.markForCheck();
     this.disabled = isDisabled;
   }
 }

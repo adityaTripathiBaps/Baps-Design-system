@@ -5,6 +5,8 @@ import {
   Output,
   ViewEncapsulation,
   forwardRef,
+  ChangeDetectorRef,
+  inject,
 } from '@angular/core';
 import {
   ControlValueAccessor,
@@ -86,6 +88,8 @@ import { BapsBrand, injectBapsBrand } from '../../theme/brand';
   },
 })
 export class BapsInputNumber implements ControlValueAccessor {
+  /** A value written from code has no template event behind it to schedule a render. */
+  private readonly cdr = inject(ChangeDetectorRef);
   /** Spinner controls are the default because all measured consumers use them. */
   @Input() showButtons = true;
   @Input() min?: number;
@@ -170,6 +174,7 @@ export class BapsInputNumber implements ControlValueAccessor {
    * reminder, 2026-11-19). Range applies when the user edits (clampOn).
    */
   writeValue(value: number | null): void {
+    this.cdr.markForCheck();
     this.value = value;
     this.sent = value;
   }
@@ -188,6 +193,7 @@ export class BapsInputNumber implements ControlValueAccessor {
   }
 
   setDisabledState(isDisabled: boolean): void {
+    this.cdr.markForCheck();
     this.disabled = isDisabled;
   }
 

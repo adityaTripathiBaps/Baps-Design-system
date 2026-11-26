@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, Output, forwardRef } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  forwardRef,
+  ChangeDetectorRef,
+  inject,
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
 import { ToggleSwitch } from 'primeng/toggleswitch';
 import { BapsBrand, injectBapsBrand } from '../../theme/brand';
@@ -42,6 +50,8 @@ let nextSwitchId = 0;
   },
 })
 export class BapsToggleSwitch implements ControlValueAccessor {
+  /** A value written from code has no template event behind it to schedule a render. */
+  private readonly cdr = inject(ChangeDetectorRef);
   /**
    * Trailing text. Every variant in Figma node 13197:89115 "Switch" is
    * `track + "Placeholder Text"`, so the label is the norm, not the
@@ -85,6 +95,7 @@ export class BapsToggleSwitch implements ControlValueAccessor {
   }
 
   writeValue(value: any): void {
+    this.cdr.markForCheck();
     this.value = !!value;
   }
   registerOnChange(fn: any): void {
@@ -94,6 +105,7 @@ export class BapsToggleSwitch implements ControlValueAccessor {
     this.onModelTouched = fn;
   }
   setDisabledState(isDisabled: boolean): void {
+    this.cdr.markForCheck();
     this.disabled = isDisabled;
   }
 }

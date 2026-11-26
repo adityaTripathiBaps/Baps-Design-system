@@ -1,4 +1,11 @@
-import { Component, Input, ViewEncapsulation, forwardRef } from '@angular/core';
+import {
+  Component,
+  Input,
+  ViewEncapsulation,
+  forwardRef,
+  ChangeDetectorRef,
+  inject,
+} from '@angular/core';
 import {
   ControlValueAccessor,
   FormsModule,
@@ -51,6 +58,8 @@ import { BapsBrand, injectBapsBrand } from '../../theme/brand';
   },
 })
 export class BapsSlider implements ControlValueAccessor {
+  /** A value written from code has no template event behind it to schedule a render. */
+  private readonly cdr = inject(ChangeDetectorRef);
   @Input() min = 0;
   @Input() max = 100;
   @Input() step = 1;
@@ -91,6 +100,7 @@ export class BapsSlider implements ControlValueAccessor {
   }
 
   writeValue(value: any): void {
+    this.cdr.markForCheck();
     this.value = value ?? (this.range ? [this.min, this.max] : this.min);
   }
 
@@ -103,6 +113,7 @@ export class BapsSlider implements ControlValueAccessor {
   }
 
   setDisabledState(isDisabled: boolean): void {
+    this.cdr.markForCheck();
     this.disabled = isDisabled;
   }
 }

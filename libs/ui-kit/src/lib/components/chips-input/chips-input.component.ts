@@ -8,6 +8,7 @@ import {
   ViewEncapsulation,
   forwardRef,
   inject,
+  ChangeDetectorRef,
 } from '@angular/core';
 import {
   ControlValueAccessor,
@@ -66,6 +67,8 @@ import { BapsBrand, injectBapsBrand } from '../../theme/brand';
   },
 })
 export class BapsChipsInput implements ControlValueAccessor, AfterViewInit {
+  /** A value written from code has no template event behind it to schedule a render. */
+  private readonly cdr = inject(ChangeDetectorRef);
   @Input() placeholder?: string;
   @Input() disabled = false;
   @Input() size?: 'small' | 'large';
@@ -142,6 +145,7 @@ export class BapsChipsInput implements ControlValueAccessor, AfterViewInit {
   }
 
   writeValue(value: string[] | null | undefined): void {
+    this.cdr.markForCheck();
     this.value = this.normalise(value);
   }
 
@@ -154,6 +158,7 @@ export class BapsChipsInput implements ControlValueAccessor, AfterViewInit {
   }
 
   setDisabledState(isDisabled: boolean): void {
+    this.cdr.markForCheck();
     this.disabled = isDisabled;
   }
 

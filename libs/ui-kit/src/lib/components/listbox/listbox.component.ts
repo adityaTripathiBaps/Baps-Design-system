@@ -5,6 +5,8 @@ import {
   ViewEncapsulation,
   ContentChildren,
   QueryList,
+  ChangeDetectorRef,
+  inject,
 } from '@angular/core';
 import {
   ControlValueAccessor,
@@ -112,6 +114,8 @@ export interface BapsListboxOption {
   },
 })
 export class BapsListbox implements ControlValueAccessor {
+  /** A value written from code has no template event behind it to schedule a render. */
+  private readonly cdr = inject(ChangeDetectorRef);
   @Input() options: any[] = [];
   @Input() ariaLabel?: string;
   @Input() optionLabel?: string;
@@ -153,6 +157,7 @@ export class BapsListbox implements ControlValueAccessor {
   };
 
   writeValue(value: any): void {
+    this.cdr.markForCheck();
     this.value = value;
   }
 
@@ -165,6 +170,7 @@ export class BapsListbox implements ControlValueAccessor {
   }
 
   setDisabledState(isDisabled: boolean): void {
+    this.cdr.markForCheck();
     this.disabled = isDisabled;
   }
 

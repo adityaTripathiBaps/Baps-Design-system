@@ -9,6 +9,8 @@ import {
   forwardRef,
   ViewChild,
   ViewEncapsulation,
+  ChangeDetectorRef,
+  inject,
 } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { PrimeTemplate, SharedModule } from 'primeng/api';
@@ -238,6 +240,8 @@ const DATEPICKER_TOKENS = {
   },
 })
 export class BapsDatepicker implements ControlValueAccessor {
+  /** A value written from code has no template event behind it to schedule a render. */
+  private readonly cdr = inject(ChangeDetectorRef);
   /**
    * 'single' yields a Date, 'range' a [start, end] tuple (end is null
    * until the second click), 'multiple' an array of Dates.
@@ -374,6 +378,7 @@ export class BapsDatepicker implements ControlValueAccessor {
   }
 
   writeValue(value: any): void {
+    this.cdr.markForCheck();
     this.value = value;
   }
   registerOnChange(fn: (value: any) => void): void {
@@ -383,6 +388,7 @@ export class BapsDatepicker implements ControlValueAccessor {
     this.onTouchedFn = fn;
   }
   setDisabledState(isDisabled: boolean): void {
+    this.cdr.markForCheck();
     this.disabled = isDisabled;
   }
 }
