@@ -987,6 +987,21 @@ body.baps-dark.baps-ds-sampark {
   font-weight: 400;
 }
 
+/* Storybook caps a docs page at 900px, table of contents included, which
+   leaves the gallery ~650px: three cards of ~200px. The old track overflowed
+   that column (its min-content forced it wider and pushed into the table of
+   contents). A gallery page gets a wider page instead, and its column takes
+   the room rather than sizing to its content. */
+.sbdocs-wrapper:has(.baps-docs-gallery) {
+  max-width: 1240px;
+}
+
+.sbdocs-wrapper .sbdocs-content:has(.baps-docs-gallery) {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 1040px;
+}
+
 .sbdocs-wrapper .baps-docs-row {
   margin: 0 0 var(--space-8, 2rem);
 }
@@ -1036,19 +1051,25 @@ body.baps-dark.baps-ds-sampark {
   position: relative;
 }
 
+/* Cards, not shared-border cells: three to a row with an even gap, the name
+   always visible under the preview. The earlier layout parked the name in a
+   hidden band that still took its height, so every cell had the frame stuck
+   to its top and an empty strip under it; the fourth cell was cut by the
+   arrow. The track's padding gives the hover shadow and focus ring room,
+   since overflow-x also clips vertically. */
 .sbdocs-wrapper .baps-docs-row__track {
+  --baps-docs-gap: var(--space-4, 1rem);
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: minmax(15rem, calc((100% - 2px) / 3));
-  margin: 0;
-  padding: 0;
+  grid-auto-columns: max(12rem, calc((100% - 2 * var(--baps-docs-gap)) / 3));
+  gap: var(--baps-docs-gap);
+  margin: 0 -0.25rem;
+  padding: 0.25rem 0.25rem var(--space-2, 0.5rem);
   list-style: none;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
+  scroll-padding-inline: 0.25rem;
   scrollbar-width: none;
-  border-top: 1px solid var(--baps-docs-divider);
-  border-bottom: 1px solid var(--baps-docs-divider);
-  border-left: 1px solid var(--baps-docs-divider);
 }
 
 .sbdocs-wrapper .baps-docs-row__track::-webkit-scrollbar {
@@ -1059,13 +1080,25 @@ body.baps-dark.baps-ds-sampark {
   margin: 0;
   overflow: hidden;
   scroll-snap-align: start;
-  border-right: 1px solid var(--baps-docs-divider);
-  background: var(--baps-docs-raised);
+  border: 1px solid var(--baps-docs-divider);
+  border-radius: var(--radius-mybky-md, 0.5rem);
+  background: var(--baps-docs-ground, #fff);
+  transition:
+    border-color var(--motion-duration-ui-transition, 220ms) var(--motion-easing-calm, ease),
+    box-shadow var(--motion-duration-ui-transition, 220ms) var(--motion-easing-calm, ease);
+}
+
+.baps-ds-sampark .sbdocs-wrapper .baps-docs-card {
+  border-radius: var(--radius-sampark-default, 0.25rem);
+}
+
+.sbdocs-wrapper .baps-docs-card:is(:hover, :focus-within) {
+  border-color: var(--baps-docs-control);
+  box-shadow: var(--baps-docs-lift);
 }
 
 .sbdocs-wrapper .baps-docs-card__link {
   display: block;
-  padding: var(--space-5, 1.25rem);
   color: inherit !important;
   text-decoration: none !important;
 }
@@ -1075,49 +1108,91 @@ body.baps-dark.baps-ds-sampark {
   outline-offset: -2px;
 }
 
-/* At rest the stack sits one meta-row low, so the name row is clipped by the
-   cell; hover or keyboard focus slides it up into view. */
 .sbdocs-wrapper .baps-docs-card__stack {
   display: block;
-  transform: translateY(var(--space-4, 1rem));
-  transition: transform var(--motion-duration-ui-transition, 220ms) var(--motion-easing-calm, ease);
 }
 
-.sbdocs-wrapper .baps-docs-card:is(:hover, :focus-within) .baps-docs-card__stack {
-  transform: translateY(0);
-}
-
+/* The preview fills the card's top edge to edge; a hairline divides it from
+   the name row. */
 .sbdocs-wrapper .baps-docs-card .baps-docs-frame {
   aspect-ratio: 4 / 3;
-  border: 1px solid var(--baps-docs-divider);
-  border-radius: var(--radius-mybky-sm, 0.375rem);
-  transition: box-shadow var(--motion-duration-ui-transition, 220ms) var(--motion-easing-calm, ease);
-}
-
-.baps-ds-sampark .sbdocs-wrapper .baps-docs-card .baps-docs-frame {
-  border-radius: var(--radius-sampark-default, 0.25rem);
-}
-
-.sbdocs-wrapper .baps-docs-card:is(:hover, :focus-within) .baps-docs-frame {
-  box-shadow: var(--baps-docs-lift);
+  border: 0;
+  border-bottom: 1px solid var(--baps-docs-divider);
+  border-radius: 0;
+  /* The ground, not the raised tier: a still is a white crop shorter than
+     the frame, and a grey frame showed under it as a band. */
+  background: var(--baps-docs-ground, #fff);
 }
 
 .sbdocs-wrapper .baps-docs-card__meta {
   display: flex;
   align-items: center;
-  min-height: 2rem;
-  padding-top: var(--space-2, 0.5rem);
+  justify-content: space-between;
+  gap: var(--space-2, 0.5rem);
+  position: relative;
+  min-height: 2.75rem;
+  padding: var(--space-2, 0.5rem) var(--space-3, 0.75rem);
+}
+
+/* Copy prompt waits for hover or focus, so a page of cards reads as names,
+   not as a wall of buttons. Opacity, not display: it stays in the tab order
+   and :focus-within shows it. */
+.sbdocs-wrapper .baps-docs-card__meta .baps-docs-prompt {
+  /* Laid over the row's right end, so at rest the name has the full width
+     and only truncates while the button is showing. */
+  position: absolute;
+  top: 50%;
+  right: var(--space-3, 0.75rem);
+  transform: translateY(-50%);
+  /* The outline button is transparent; the ground plus a short fade keeps
+     the name under it from showing through. */
+  background: var(--baps-docs-ground, #fff);
+  box-shadow: -1rem 0 0.75rem var(--baps-docs-ground, #fff);
   opacity: 0;
   transition: opacity var(--motion-duration-moderate, 200ms) var(--motion-easing-standard, ease);
 }
 
-.sbdocs-wrapper .baps-docs-card:is(:hover, :focus-within) .baps-docs-card__meta {
+.sbdocs-wrapper .baps-docs-card:is(:hover, :focus-within) .baps-docs-card__meta .baps-docs-prompt {
   opacity: 1;
 }
 
+/* No still for this brand or mode (stills are captured in MyBKY light): a
+   plate that reads as a placeholder by design, not an empty box. Booting the
+   live story here instead would mount every card on screen — the reason
+   cards wake on hover only (see showcase.tsx, "Preview frames"). */
+.sbdocs-wrapper .baps-docs-frame__plate {
+  grid-auto-flow: row;
+  align-content: center;
+  gap: var(--space-1, 0.25rem);
+  background:
+    radial-gradient(circle, color-mix(in srgb, var(--baps-docs-accent) 22%, transparent) 1px, transparent 1.5px) 0 0 / 14px 14px,
+    color-mix(in srgb, var(--baps-docs-accent) 5%, var(--baps-docs-ground, #fff));
+}
+
+.sbdocs-wrapper .baps-docs-frame__plate-hint {
+  color: var(--baps-docs-muted);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.sbdocs-wrapper .baps-docs-card__meta .baps-docs-prompt {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.sbdocs-wrapper .baps-docs-card__meta .baps-docs-prompt__fw {
+  display: none;
+}
+
 .sbdocs-wrapper .baps-docs-card__name {
+  flex: 1 1 auto;
+  min-width: 0;
   overflow: hidden;
-  color: var(--baps-docs-heading);
+  /* !important: the docs link colour otherwise paints every name in the
+     brand accent. */
+  color: var(--baps-docs-heading) !important;
+  text-decoration: none !important;
   font-size: 0.875rem;
   font-weight: 500;
   text-overflow: ellipsis;
@@ -1152,11 +1227,12 @@ body.baps-dark.baps-ds-sampark {
 }
 
 .sbdocs-wrapper .baps-docs-row__arrow--next {
-  right: var(--space-3, 0.75rem);
+  /* On the edge, half outside, so it never sits on a card's name. */
+  right: -1.125rem;
 }
 
 .sbdocs-wrapper .baps-docs-row__arrow--prev {
-  left: var(--space-3, 0.75rem);
+  left: -1.125rem;
 }
 
 .sbdocs-wrapper .baps-docs-row__arrow:hover {
@@ -1191,8 +1267,11 @@ body.baps-dark.baps-ds-sampark {
 
 .sbdocs-wrapper .baps-docs-frame__poster {
   position: absolute;
-  top: 0;
-  left: 0;
+  /* The live story has 1rem of padding (sb-main-padded), 8px at this zoom;
+     the still is a tight crop, so it sits 8px in to match and to keep the
+     component off the card edge. */
+  top: calc(1rem * var(--baps-docs-zoom));
+  left: calc(1rem * var(--baps-docs-zoom));
   width: calc(1248px * var(--baps-docs-zoom));
   max-width: none;
   height: auto;

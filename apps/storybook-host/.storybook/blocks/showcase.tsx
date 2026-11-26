@@ -304,18 +304,18 @@ const posterFile = (storyId: string): string | undefined =>
 
 const Poster = ({
   storyId,
-  name,
   show,
 }: {
   storyId: string;
-  name: string;
   show: boolean;
 }) => {
   const file = posterFile(storyId);
   if (!show || !file) {
     return (
       <span className="baps-docs-frame__plate" aria-hidden="true">
-        {name}
+        {/* The name is in the row under the frame; the plate only says
+            what hovering does, so a card does not print its name twice. */}
+        <span className="baps-docs-frame__plate-hint">Hover to preview</span>
       </span>
     );
   }
@@ -363,6 +363,10 @@ type Row = {
 const usableFor = (brand: Brand) => (s: IndexEntry) => {
   const tags = s.tags ?? [];
   if (/^interaction/i.test(s.name)) return false;
+  // `_DocsAnchor` (avatar) exists only to carry docs tags; it renders nothing.
+  if (s.id.endsWith('--docs-anchor')) return false;
+  // Some stories carry their brand only in the name ("HTML/CSS — MyBKY").
+  if ((brand === 'sampark' ? /my-?bky/i : /sampark/i).test(s.name)) return false;
   if (tags.includes('ds:comparison')) return false;
   const ds = tags.filter((t) => t.startsWith('ds:'));
   return ds.length === 0 || ds.includes(`ds:${brand}`);
@@ -464,7 +468,7 @@ const ExampleCard = ({
           aria-hidden="true"
         >
           <div className={`baps-docs-frame${ready ? ' is-live' : ''}`}>
-            <Poster storyId={example.id} name={example.name} show={poster} />
+            <Poster storyId={example.id} show={poster} />
             <PreviewFrame
               id={example.id}
               brand={brand}

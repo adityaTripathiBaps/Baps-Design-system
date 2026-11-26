@@ -1,7 +1,6 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "emitDecoratorMetadata": true,
     // main.ts resolves the docs-blocks alias with path/__dirname.
     "types": ["node"],
     // preview.ts imports the generated documentation.json for the API tables.

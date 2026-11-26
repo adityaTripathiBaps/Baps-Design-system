@@ -58,7 +58,12 @@
 
 // ── Guard fragments ──────────────────────────────────────────────────
 $input-enabled: ':not(:disabled):not(.p-disabled)';
-$input-valid: ':not(.ng-invalid):not(.p-invalid)';
+// "Not in the error state", matching $input-invalid-variants below: a
+// required field that is still pristine and untouched is ng-invalid but
+// shows no error, so it must keep its hover and focus. A bare
+// :not(.ng-invalid) left such fields with neither. Same (0,2,0)
+// specificity as before: :where() adds nothing, .ng-invalid adds one.
+$input-valid: ':not(.ng-invalid:where(.ng-dirty, .ng-touched)):not(.p-invalid)';
 // Full guard for hover/focus rules on the plain input
 $input-guard: '#{$input-enabled}#{$input-valid}:not(.p-inputtext-warning):not(.step-input--error)';
 
@@ -111,7 +116,10 @@ $input-invalid-variants: (
 :root {
   /* ── Border ──────────────────────────────────────────────────────── */
   --input-border-default: #e4ecf1; /* Mono/Borders — default stroke */
-  --input-border-hover: #9fadd9; /* Primary/40 — hover + focus stroke */
+  /* Primary/40 — hover + focus stroke. Read from the preset's primary ramp
+     (same #9fadd9 by default) so an app's withAccent() primary reaches the
+     field; a literal here kept every input blue under any accent. */
+  --input-border-hover: var(--p-primary-400, #9fadd9);
   --input-border-error: #e05255; /* Error/80 — all error strokes */
   --input-border-warning: #e0a652; /* Warning/80 — warning/updated stroke */
 
@@ -129,12 +137,11 @@ $input-invalid-variants: (
   --input-text-disabled: #8d9ba5; /* muted — disabled text */
 
   /* ── Focus Rings / Shadows ───────────────────────────────────────── */
-  --input-shadow-focused: rgba(
-    95,
-    120,
-    184,
-    0.35
-  ); /* Primary #5F78B8 @ 35% — visible ring */
+  --input-shadow-focused: color-mix(
+    in srgb,
+    var(--p-primary-600, #5f78b8) 35%,
+    transparent
+  ); /* Primary #5F78B8 @ 35% — visible ring, follows the accent */
   --input-shadow-error: rgba(224, 82, 85, 0.35); /* Error #E05255 @ 35% */
   --input-shadow-warning: rgba(224, 166, 82, 0.35); /* Warning #E0A652 @ 35% */
 

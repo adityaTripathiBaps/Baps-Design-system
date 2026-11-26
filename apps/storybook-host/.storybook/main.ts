@@ -104,6 +104,12 @@ const config: StorybookConfig = {
       from: '../static',
       to: '/',
     },
+    // The landing page (static/landing) is plain HTML, outside the bundle, so
+    // it reads the same generated token CSS preview.ts imports, from here.
+    {
+      from: '../../../libs/tokens/build/css',
+      to: '/tokens',
+    },
     // The Playwright baselines double as the still image on each Components
     // Overview card (ComponentGallery in blocks/showcase.tsx), 21st.dev-style:
     // a picture at rest, the live story on hover. Served read-only from where

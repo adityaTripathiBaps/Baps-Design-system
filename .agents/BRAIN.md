@@ -435,6 +435,11 @@ Blocked on design, not on implementation. Never invent these.
   thing that notices if they do. They become token references again when
   bucket B migrates tag off the preset literals. The reasoning is written
   above the rule itself.
+- **Landing page fonts (`apps/storybook-host/static/landing/index.html`),
+  approved by the user 2026-11-26.** Inter Tight, Instrument Serif and Geist
+  Mono load from Google Fonts for that one marketing page only, with the kit's
+  `--font-family-*` as fallbacks. No kit component, story or app uses them;
+  colour, spacing, radius and motion there are still kit tokens.
 
 **Measured 2026-10-09, over the whole styles tree and every component's inline
 `styles:` block, with comments, `--token:` definitions and nested

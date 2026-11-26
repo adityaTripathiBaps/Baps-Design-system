@@ -1,0 +1,1090 @@
+<!doctype html>
+<html lang="en" data-brand="mybky" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BAPS Design System</title>
+<meta name="description" content="Angular components, design tokens and patterns for every BAPS app. Two brands, light and dark, built on PrimeNG.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Landing-page-only fonts: an approved exception, see .agents/BRAIN.md. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@400;500&display=swap">
+<script>
+  /*
+    Where Storybook lives. Served by Storybook itself (also under a sub-path
+    when deployed) it is the parent folder. Opened any other way — from disk,
+    or an editor's preview server — links, live frames and token CSS fall back
+    to the local dev server, so "Get started" still opens the design system.
+  */
+  window.SB = location.protocol.startsWith('http') && /\/landing\/(index\.html)?$/.test(location.pathname)
+    ? new URL('../', location.href).href
+    : 'http://localhost:4400/';
+  document.write(`<link rel="stylesheet" href="${SB}tokens/tokens.css"><link rel="icon" href="${SB}favicon.svg" type="image/svg+xml">`);
+</script>
+<style>
+/*
+  BAPS Design System — landing page, "studio" edition.
+
+  An editorial page: paper ground, ink type, one brand accent, a dot grid and
+  Figma-style annotations. The middle of the page is a scroll story: the text
+  column scrolls, the canvas beside it stays put, and each step builds the
+  next layer of the system on that canvas.
+
+  Colour, spacing, radius, shadow and motion are kit tokens, mapped once per
+  brand x mode onto a local tier (--l-*). Only the three fonts are not (see
+  BRAIN.md), and display sizes are computed from --font-size-5xl.
+*/
+:root {
+  --f-sans: 'Inter Tight', var(--font-family-mybky);
+  --f-serif: 'Instrument Serif', Georgia, serif;
+  --f-mono: 'Geist Mono', ui-monospace, Consolas, monospace;
+  --l-paper: var(--color-mybky-mono-50);
+  --l-panel: var(--color-mybky-mono-0);
+  --l-panel-2: var(--color-mybky-mono-100);
+  --l-ink: var(--color-mybky-mono-900);
+  --l-text: var(--color-mybky-mono-800);
+  --l-muted: var(--color-mybky-mono-500);
+  --l-line: var(--color-mybky-mono-300);
+  --l-control: var(--color-mybky-mono-500);
+  --l-accent: var(--color-mybky-primary-hover);
+  --l-accent-press: var(--color-mybky-primary-active);
+  --l-on-accent: var(--color-mybky-text-inverse);
+  --l-redline: var(--color-mybky-error-80);
+  --l-ok-bg: var(--color-mybky-success-tint);
+  --l-ok: var(--color-mybky-success-600);
+  --l-warn-bg: var(--color-mybky-warning-tint);
+  --l-warn: var(--color-mybky-warning-80);
+  --l-r1: var(--radius-mybky-sm);
+  --l-r2: var(--radius-mybky-md);
+  --l-r3: var(--radius-mybky-pill);
+  --l-radius: var(--radius-mybky-md);
+  --l-radius-sm: var(--radius-mybky-sm);
+  --l-shadow: var(--shadow-mybky-xl);
+  --ease: var(--motion-easing-calm);
+  --t-micro: var(--motion-duration-fast);
+  --t-ui: var(--motion-duration-ui-transition);
+  --t-scene: var(--motion-duration-view-change);
+  --max: 80rem;
+  color-scheme: light;
+}
+:root[data-theme='dark'] {
+  --l-paper: var(--color-mybky-dark-surface-ground);
+  --l-panel: var(--color-mybky-dark-surface-card);
+  --l-panel-2: var(--color-mybky-dark-surface-hover);
+  --l-ink: var(--color-mybky-dark-text-primary);
+  --l-text: var(--color-mybky-dark-text-secondary);
+  --l-muted: var(--color-mybky-dark-text-muted);
+  --l-line: var(--color-mybky-dark-border-divider);
+  --l-control: var(--color-mybky-dark-border-control);
+  --l-accent: var(--color-mybky-dark-primary-default);
+  --l-accent-press: var(--color-mybky-dark-primary-hover);
+  --l-on-accent: var(--color-mybky-dark-text-inverse);
+  color-scheme: dark;
+}
+:root[data-brand='sampark'] {
+  --f-sans: 'Inter Tight', var(--font-family-sampark);
+  --l-paper: var(--color-sampark-mono-10);
+  --l-panel: var(--color-sampark-mono-0);
+  --l-panel-2: var(--color-sampark-mono-20);
+  --l-ink: var(--color-sampark-text-primary);
+  --l-text: var(--color-sampark-text-secondary);
+  --l-muted: var(--color-sampark-mono-80);
+  --l-line: var(--color-sampark-border-default);
+  --l-control: var(--color-sampark-border-hover);
+  --l-accent: var(--color-sampark-primary-hover);
+  --l-accent-press: var(--color-sampark-primary-100);
+  --l-on-accent: var(--color-sampark-text-inverse);
+  --l-redline: var(--color-sampark-error-60);
+  --l-ok-bg: var(--color-sampark-success-10);
+  --l-ok: var(--color-sampark-success-80);
+  --l-warn-bg: var(--color-sampark-warning-10);
+  --l-warn: var(--color-sampark-warning-80);
+  --l-r1: var(--radius-sampark-sm);
+  --l-r2: var(--radius-sampark-default);
+  --l-r3: var(--radius-sampark-md);
+  --l-radius: var(--radius-sampark-md);
+  --l-radius-sm: var(--radius-sampark-default);
+  --l-shadow: var(--shadow-sampark-xl);
+}
+:root[data-brand='sampark'][data-theme='dark'] {
+  --l-paper: var(--color-sampark-dark-surface-ground);
+  --l-panel: var(--color-sampark-dark-surface-card);
+  --l-panel-2: var(--color-sampark-dark-surface-hover);
+  --l-ink: var(--color-sampark-dark-text-primary);
+  --l-text: var(--color-sampark-dark-text-secondary);
+  --l-muted: var(--color-sampark-dark-text-muted);
+  --l-line: var(--color-sampark-dark-border-divider);
+  --l-control: var(--color-sampark-dark-border-control);
+  --l-accent: var(--color-sampark-dark-primary-default);
+  --l-accent-press: var(--color-sampark-dark-primary-hover);
+  --l-on-accent: var(--color-sampark-dark-text-inverse);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--l-paper); color: var(--l-text); font: var(--font-size-md) / var(--font-line-height-relaxed) var(--f-sans); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+/* Paper grain: a fixed SVG noise overlay, barely there. */
+body::after { content: ''; position: fixed; inset: 0; z-index: 100; pointer-events: none; opacity: 0.05; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+h1, h2, h3 { color: var(--l-ink); margin: 0; font-weight: 600; letter-spacing: -0.035em; line-height: 1.02; text-wrap: balance; }
+p { margin: 0; }
+a { color: var(--l-accent); }
+em.s { font-family: var(--f-serif); font-style: italic; font-weight: 400; letter-spacing: -0.01em; color: var(--l-accent); }
+:focus-visible { outline: 2px solid var(--l-accent); outline-offset: 3px; }
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 clamp(var(--space-4), 3vw, var(--space-10)); }
+.mono { font-family: var(--f-mono); font-size: var(--font-size-xs); letter-spacing: 0.1em; text-transform: uppercase; color: var(--l-muted); }
+.mono b { color: var(--l-accent); font-weight: 500; }
+.dots { background-image: radial-gradient(color-mix(in srgb, var(--l-ink) 10%, transparent) 1px, transparent 1.2px); background-size: 1.25rem 1.25rem; }
+.rule { border: 0; border-top: 1px solid var(--l-line); margin: 0; }
+
+/* Buttons */
+.btn { display: inline-flex; align-items: center; gap: var(--space-2); height: 3rem; padding: 0 var(--space-6); border: 1px solid var(--l-control); border-radius: 999px; background: transparent; color: var(--l-ink); font: inherit; font-weight: 500; text-decoration: none; white-space: nowrap; cursor: pointer; transition: transform var(--t-micro) var(--ease), background-color var(--t-micro) var(--ease), border-color var(--t-micro) var(--ease); }
+.btn:hover { border-color: var(--l-ink); transform: translateY(-1px); }
+.btn-ink { background: var(--l-ink); border-color: var(--l-ink); color: var(--l-paper); }
+.btn-ink:hover { background: var(--l-accent); border-color: var(--l-accent); color: var(--l-on-accent); }
+.btn .arr { transition: transform var(--t-micro) var(--ease); }
+.btn:hover .arr { transform: translateX(3px); }
+
+/* Top bar */
+.top { position: fixed; inset: 0 0 auto; z-index: 50; background: color-mix(in srgb, var(--l-paper) 80%, transparent); backdrop-filter: blur(14px); border-bottom: 1px solid transparent; transition: border-color var(--t-ui) var(--ease); }
+.top.solid { border-bottom-color: var(--l-line); }
+.top .wrap { display: flex; align-items: center; gap: var(--space-6); height: 4rem; }
+.logo { display: flex; align-items: center; gap: var(--space-3); text-decoration: none; color: var(--l-ink); white-space: nowrap; }
+.logo img { width: 2rem; height: 2rem; border-radius: var(--l-radius-sm); background: var(--color-mybky-mono-0); padding: 2px; border: 1px solid var(--l-line); }
+.logo span { display: grid; line-height: 1.15; }
+.logo b { font-weight: 600; font-size: var(--font-size-sm); }
+.logo small { font-family: var(--f-mono); font-size: var(--font-size-2xs); letter-spacing: 0.1em; text-transform: uppercase; color: var(--l-muted); }
+.nav { display: flex; gap: var(--space-5); margin-left: auto; }
+.nav a { white-space: nowrap; color: var(--l-text); text-decoration: none; font-size: var(--font-size-sm); }
+.nav a:hover { color: var(--l-ink); }
+.tools { display: flex; gap: var(--space-2); align-items: center; }
+.seg { display: inline-flex; border: 1px solid var(--l-line); border-radius: 999px; padding: 3px; background: var(--l-panel); }
+.seg button { font: inherit; font-family: var(--f-mono); font-size: var(--font-size-2xs); letter-spacing: 0.08em; text-transform: uppercase; border: 0; background: none; color: var(--l-muted); padding: var(--space-1) var(--space-3); border-radius: 999px; cursor: pointer; }
+.seg button[aria-pressed='true'] { background: var(--l-ink); color: var(--l-paper); }
+.top .btn { height: 2.5rem; padding: 0 var(--space-5); font-size: var(--font-size-sm); }
+
+/* ── Hero ── */
+.hero { position: relative; min-height: 100vh; isolation: isolate; display: flex; flex-direction: column; justify-content: center; padding: calc(4rem + var(--space-10)) 0 var(--space-10); }
+.hero .dots { position: absolute; inset: 0; z-index: -1; mask-image: radial-gradient(ellipse at 60% 40%, #000 20%, transparent 70%); }
+.frame-tag { align-self: flex-start; display: inline-flex; gap: var(--space-2); align-items: center; padding: var(--space-1) var(--space-2); border: 1px solid var(--l-accent); color: var(--l-accent); font-family: var(--f-mono); font-size: var(--font-size-2xs); letter-spacing: 0.08em; }
+.hero h1 { font-size: clamp(var(--font-size-5xl), min(8vw, 13vh), calc(var(--font-size-5xl) * 3.4)); margin-top: var(--space-6); max-width: 13ch; position: relative; }
+.hero h1 .sel { position: relative; display: inline-block; }
+/* Figma selection box around the accent word, with corner handles and a size tag. */
+.hero h1 .sel::before { content: ''; position: absolute; inset: -0.04em -0.08em -0.08em; border: 1.5px solid var(--l-accent); pointer-events: none; opacity: 0; transition: opacity var(--t-scene) var(--ease) 600ms; }
+.hero h1 .sel i { position: absolute; width: 0.4rem; height: 0.4rem; background: var(--l-panel); border: 1.5px solid var(--l-accent); opacity: 0; transition: opacity var(--t-scene) var(--ease) 700ms; }
+.hero h1 .sel i:nth-child(1) { left: -0.08em; top: -0.04em; translate: -50% -50%; } .hero h1 .sel i:nth-child(2) { right: -0.08em; top: -0.04em; translate: 50% -50%; }
+.hero h1 .sel i:nth-child(3) { left: -0.08em; bottom: -0.08em; translate: -50% 50%; } .hero h1 .sel i:nth-child(4) { right: -0.08em; bottom: -0.08em; translate: 50% 50%; }
+.hero h1 .sel small { position: absolute; left: 50%; bottom: -0.08em; translate: -50% 140%; font-family: var(--f-mono); font-size: var(--font-size-2xs); letter-spacing: 0.06em; font-weight: 500; background: var(--l-accent); color: var(--l-on-accent); padding: 2px var(--space-2); white-space: nowrap; opacity: 0; transition: opacity var(--t-scene) var(--ease) 800ms; }
+.hero.in h1 .sel::before, .hero.in h1 .sel i, .hero.in h1 .sel small { opacity: 1; }
+.inspect { position: absolute; right: clamp(var(--space-4), 3vw, var(--space-10)); top: 50%; translate: 0 -40%; width: 19rem; border: 1px solid var(--l-line); border-radius: calc(var(--l-radius) * 1.5); background: var(--l-panel); box-shadow: var(--l-shadow); font-size: var(--font-size-sm); overflow: hidden; }
+.inspect header { display: flex; justify-content: space-between; align-items: center; padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--l-line); }
+.inspect .prev { display: grid; place-items: center; padding: var(--space-6); border-bottom: 1px solid var(--l-line); }
+.inspect dl { margin: 0; padding: var(--space-2) var(--space-4) var(--space-4); display: grid; grid-template-columns: auto 1fr; gap: var(--space-2) var(--space-4); align-items: center; }
+.inspect dt { font-family: var(--f-mono); font-size: var(--font-size-2xs); letter-spacing: 0.08em; text-transform: uppercase; color: var(--l-muted); }
+.inspect dd { margin: 0; display: flex; align-items: center; gap: var(--space-2); color: var(--l-ink); font-family: var(--f-mono); font-size: var(--font-size-xs); }
+.inspect dd i { width: 0.875rem; height: 0.875rem; border-radius: 3px; border: 1px solid var(--l-line); }
+/* The inspector previews the real baps-button: these rules are the kit's own
+   (libs/ui-kit/src/lib/styles/components/button/_button.scss), reading the
+   same button tokens, with the Sampark scope keyed to the page's brand. */
+.baps-button { display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; border: 1px solid transparent; border-radius: var(--button-mybky-radius, 99px); height: var(--button-mybky-height-m, 2.25rem); padding: 0 var(--button-mybky-padding-x, 1rem); font-family: var(--font-family); font-size: 14px; font-weight: 400; line-height: normal; cursor: pointer; background-color: transparent; background-image: none; }
+.baps-button__label { white-space: nowrap; font-weight: var(--button-mybky-font-weight, 600); }
+.baps-button--primary { background-image: var(--button-mybky-primary-default); color: var(--button-mybky-primary-text, #fff); }
+.baps-button--primary:hover { background-image: var(--button-mybky-primary-hover); }
+[data-brand='sampark'] .baps-button { border-radius: var(--button-sampark-radius, 0.25rem); height: var(--button-sampark-height-default, 2rem); padding-inline: var(--space-2-5, 0.625rem); background-image: none; }
+[data-brand='sampark'] .baps-button__label { font-weight: var(--button-sampark-font-weight, 500); }
+[data-brand='sampark'] .baps-button--primary, [data-brand='sampark'] .baps-button--primary:hover { background-image: none; background-color: var(--button-sampark-primary-default, #c96868); color: var(--button-sampark-primary-text, #fff); }
+[data-brand='sampark'] .baps-button--primary:hover { background-color: var(--button-sampark-primary-hover); }
+@media (max-width: 1250px) { .inspect { display: none; } }
+.hero .lead { margin-top: var(--space-8); max-width: 36rem; font-size: var(--font-size-xl); color: var(--l-text); }
+.hero .ctas { display: flex; gap: var(--space-3); flex-wrap: wrap; margin-top: var(--space-8); }
+.hero .meta { display: flex; gap: var(--space-6); flex-wrap: wrap; margin-top: calc(var(--space-10) * 1.5); padding-top: var(--space-5); border-top: 1px solid var(--l-line); }
+.hero .meta span b { color: var(--l-ink); font-family: var(--f-sans); font-size: var(--font-size-md); letter-spacing: -0.01em; margin-right: var(--space-1); text-transform: none; }
+.cue { margin-top: var(--space-8); display: inline-flex; gap: var(--space-2); align-items: center; }
+.cue::after { content: '↓'; animation: bob 2s var(--ease) infinite; }
+@keyframes bob { 50% { transform: translateY(4px); } }
+
+/* ── Story: text scrolls, canvas stays ── */
+.story { position: relative; padding: calc(var(--space-10) * 2) 0; }
+.story-head { display: flex; justify-content: space-between; align-items: end; gap: var(--space-6); margin-bottom: var(--space-10); }
+.story-head h2 { font-size: clamp(var(--font-size-4xl), 5vw, calc(var(--font-size-5xl) * 1.6)); max-width: 16ch; }
+.story-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: calc(var(--space-10) * 1.25); }
+.steps { list-style: none; margin: 0; padding: 0; }
+.step { min-height: 95vh; display: flex; flex-direction: column; justify-content: center; gap: var(--space-4); padding: var(--space-10) 0; opacity: 0.28; transition: opacity var(--t-scene) var(--ease); }
+.step.on { opacity: 1; }
+.step h3 { font-size: clamp(var(--font-size-3xl), 3vw, var(--font-size-5xl)); }
+.step p { font-size: var(--font-size-lg); max-width: 30rem; }
+.step ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.step li { font-family: var(--f-mono); font-size: var(--font-size-2xs); letter-spacing: 0.06em; padding: var(--space-1) var(--space-2); border: 1px solid var(--l-line); border-radius: 999px; color: var(--l-text); }
+.canvas-col { position: relative; }
+.canvas { position: sticky; top: max(5rem, calc(50vh - 17rem)); height: min(34rem, calc(100vh - 6.5rem)); display: flex; flex-direction: column; border: 1px solid var(--l-line); border-radius: calc(var(--l-radius) * 2); background: var(--l-panel); box-shadow: var(--l-shadow); overflow: hidden; }
+.c-bar { display: flex; align-items: center; gap: var(--space-3); height: 2.75rem; padding: 0 var(--space-4); border-bottom: 1px solid var(--l-line); flex-shrink: 0; }
+.c-bar .lights { display: flex; gap: 6px; } .c-bar .lights i { width: 0.625rem; height: 0.625rem; border-radius: 50%; background: var(--l-line); }
+.c-bar .mono { font-size: var(--font-size-2xs); }
+.c-bar .zoom { margin-left: auto; }
+.c-body { position: relative; flex: 1; min-height: 0; }
+.c-progress { height: 2px; background: var(--l-line); flex-shrink: 0; }
+.c-progress i { display: block; height: 100%; width: 0; background: var(--l-accent); transition: width var(--t-scene) var(--ease); }
+.layer { position: absolute; inset: 0; display: grid; place-items: center; padding: var(--space-5); opacity: 0; transform: translateY(var(--space-6)) scale(0.98); transition: opacity var(--t-scene) var(--ease), transform var(--t-scene) var(--ease); pointer-events: none; }
+.layer.on { opacity: 1; transform: none; pointer-events: auto; }
+.layer.live { padding: 0; }
+.layer.live iframe { width: 100%; height: 100%; border: 0; background: var(--color-mybky-mono-0); }
+/* annotation chips */
+.ann { position: absolute; font-family: var(--f-mono); font-size: var(--font-size-2xs); letter-spacing: 0.06em; padding: 2px var(--space-2); background: var(--l-accent); color: var(--l-on-accent); white-space: nowrap; z-index: 2; }
+.ann.red { background: var(--l-redline); }
+.ann.ghost { background: var(--l-panel); color: var(--l-muted); border: 1px solid var(--l-line); }
+
+/* Items in a stage arrive one after another once it is on the canvas. */
+.layer [data-seq] { opacity: 0; translate: 0 var(--space-5); transition: opacity var(--t-scene) var(--ease), translate var(--t-scene) var(--ease); }
+.layer.on [data-seq] { opacity: 1; translate: none; transition-delay: calc(var(--seq) * 260ms + 200ms); }
+/* A live screen shows a shimmer until its story has drawn. */
+.layer.live { background: linear-gradient(90deg, var(--l-panel-2), var(--l-panel), var(--l-panel-2)); background-size: 200% 100%; animation: shimmer 1.4s linear infinite; }
+.layer.live::before { content: 'Loading live screen…'; position: absolute; font-family: var(--f-mono); font-size: var(--font-size-2xs); letter-spacing: 0.1em; text-transform: uppercase; color: var(--l-muted); }
+@keyframes shimmer { to { background-position: -200% 0; } }
+.layer.live iframe { position: relative; opacity: 0; transition: opacity var(--t-scene) var(--ease); }
+.layer.live iframe.ready { opacity: 1; }
+/* Boards: stages 1 and 2 fill the canvas with cards, not one small group. */
+.layer.board-layer { padding: var(--space-3); place-items: stretch; }
+.board { display: grid; gap: var(--space-2); width: 100%; height: 100%; min-height: 0; }
+.board.tokens { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: minmax(0, 1.1fr) minmax(0, 1fr); }
+.bcard { display: flex; flex-direction: column; gap: var(--space-2); min-height: 0; overflow: hidden; padding: var(--space-3); border: 1px solid var(--l-line); border-radius: var(--l-radius); background: var(--l-panel); }
+.bcard.wide { grid-column: 1 / -1; }
+.bcard header { display: flex; justify-content: space-between; gap: var(--space-2); }
+.bcard header .mono { font-size: var(--font-size-2xs); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bcard .row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); font-size: var(--font-size-sm); color: var(--l-text); }
+.ramp { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: var(--space-1); flex: 1; min-height: 2rem; }
+.ramp i { display: flex; align-items: end; padding: var(--space-1) var(--space-2); border-radius: var(--l-r1); font-family: var(--f-mono); font-size: var(--font-size-2xs); font-style: normal; transform: scaleY(0.4); transform-origin: bottom; opacity: 0; transition: transform var(--t-scene) var(--ease), opacity var(--t-scene) var(--ease); transition-delay: calc(var(--d) * 70ms + 400ms); }
+.layer.on .ramp i { transform: none; opacity: 1; }
+.sem { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-3); }
+.sem span { display: inline-flex; align-items: center; gap: var(--space-2); font-family: var(--f-mono); font-size: var(--font-size-2xs); color: var(--l-muted); }
+.sem i { width: 0.875rem; height: 0.875rem; border-radius: 50%; }
+.tscale { display: grid; gap: var(--space-1); align-content: center; flex: 1; }
+.tscale p { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-2); color: var(--l-ink); font-weight: 600; letter-spacing: -0.02em; line-height: 1.15; white-space: nowrap; overflow: hidden; }
+.tscale .mono { font-size: var(--font-size-2xs); font-weight: 400; letter-spacing: 0.06em; flex-shrink: 0; }
+.sscale { display: grid; gap: var(--space-2); align-content: center; flex: 1; }
+.sscale p { display: flex; align-items: center; gap: var(--space-3); }
+.sscale i { height: 1rem; background: color-mix(in srgb, var(--l-redline) 30%, transparent); border-inline: 1px solid var(--l-redline); }
+.sscale .mono { font-size: var(--font-size-2xs); }
+.rscale { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-2); flex: 1; align-items: center; }
+.rscale i { aspect-ratio: 1; border: 1.5px solid var(--l-accent); background: color-mix(in srgb, var(--l-accent) 10%, var(--l-panel)); }
+.rscale i.sh { border-color: var(--l-line); background: var(--l-panel); box-shadow: var(--l-shadow); }
+#radiusLabel { font-size: var(--font-size-2xs); }
+/* L7 shipped */
+.ship { width: 100%; height: 100%; display: grid; grid-template-rows: auto 1fr; gap: var(--space-3); padding: var(--space-5); }
+.wipe { position: relative; --p: 50%; border: 1px solid var(--l-line); border-radius: var(--l-radius); overflow: hidden; min-height: 0; background: var(--l-panel-2); }
+.wipe img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top left; }
+.wipe .over { position: absolute; inset: 0; clip-path: inset(0 calc(100% - var(--p)) 0 0); }
+.wipe .line { position: absolute; top: 0; bottom: 0; left: var(--p); width: 2px; margin-left: -1px; background: var(--l-accent); pointer-events: none; }
+.wipe .line::after { content: '⇆'; position: absolute; top: 50%; left: 50%; translate: -50% -50%; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: grid; place-items: center; background: var(--l-accent); color: var(--l-on-accent); }
+.wipe .ann { top: var(--space-3); }
+.wipe input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: ew-resize; margin: 0; }
+
+/* ── Metrics ── */
+.metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-4); }
+.metric { position: relative; padding: var(--space-6); border: 1px solid var(--l-line); border-radius: calc(var(--l-radius) * 1.5); background: var(--l-panel); display: grid; gap: var(--space-2); transition: border-color var(--t-ui) var(--ease); }
+.metric:hover { border-color: var(--l-accent); }
+.metric .num { font-size: clamp(var(--font-size-4xl), 4vw, calc(var(--font-size-5xl) * 1.4)); font-weight: 600; letter-spacing: -0.04em; color: var(--l-ink); line-height: 1; font-variant-numeric: tabular-nums; }
+.metric .ann { top: -1px; right: var(--space-4); translate: 0 -100%; opacity: 0; transition: opacity var(--t-ui) var(--ease); }
+.metric:hover .ann { opacity: 1; }
+
+/* Apps marquee */
+.apps { padding: var(--space-10) 0; overflow: hidden; border-block: 1px solid var(--l-line); mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
+.marquee { display: flex; gap: calc(var(--space-10) * 1.5); width: max-content; animation: marq 45s linear infinite; }
+.marquee span { display: grid; gap: 2px; white-space: nowrap; }
+.marquee span b { font-size: var(--font-size-2xl); font-weight: 600; letter-spacing: -0.03em; color: var(--l-ink); }
+.apps:hover .marquee { animation-play-state: paused; }
+@keyframes marq { to { transform: translateX(-50%); } }
+
+/* Sections */
+.section { padding: calc(var(--space-10) * 2.5) 0; }
+section[id] { scroll-margin-top: 4rem; }
+.head { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: calc(var(--space-10) * 1.5); margin-bottom: calc(var(--space-10) * 1.25); align-items: end; }
+.head h2 { font-size: clamp(var(--font-size-4xl), 4.5vw, calc(var(--font-size-5xl) * 1.5)); }
+.head p { font-size: var(--font-size-lg); max-width: 34rem; }
+
+/* Projects: an editorial list */
+.plist { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--l-line); }
+.plist li { display: grid; grid-template-columns: 3rem minmax(0, 3fr) minmax(0, 4fr) auto; gap: var(--space-6); align-items: baseline; padding: var(--space-6) 0; border-bottom: 1px solid var(--l-line); transition: background-color var(--t-ui) var(--ease), padding var(--t-ui) var(--ease); }
+.plist li:hover { background: var(--l-panel); padding-inline: var(--space-4); }
+.plist h3 { font-size: var(--font-size-2xl); }
+.plist p { font-size: var(--font-size-sm); }
+.pill { font-family: var(--f-mono); font-size: var(--font-size-2xs); letter-spacing: 0.08em; text-transform: uppercase; padding: 2px var(--space-2); border: 1px solid var(--l-accent); color: var(--l-accent); border-radius: 999px; white-space: nowrap; }
+
+/* Timeline */
+.tl { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: var(--space-4); margin-top: calc(var(--space-10) * 1.5); position: relative; }
+.tl::before { content: ''; position: absolute; left: 0; right: 0; top: 0.4375rem; height: 1px; background: var(--l-line); }
+.tl .fill { position: absolute; left: 0; top: 0.4375rem; height: 1px; width: 100%; background: var(--l-accent); transform-origin: left; transform: scaleX(var(--f, 0)); }
+.tl div { position: relative; padding-top: var(--space-6); }
+.tl div::before { content: ''; position: absolute; top: 0; left: 0; width: 0.875rem; height: 0.875rem; border-radius: 50%; background: var(--l-paper); border: 1.5px solid var(--l-control); transition: background-color var(--t-ui) var(--ease), border-color var(--t-ui) var(--ease); }
+.tl div.lit::before { background: var(--l-accent); border-color: var(--l-accent); }
+.tl b { display: block; font-family: var(--f-mono); font-size: var(--font-size-2xs); letter-spacing: 0.08em; text-transform: uppercase; color: var(--l-accent); font-weight: 500; }
+.tl p { font-size: var(--font-size-sm); margin-top: var(--space-2); }
+
+/* Quick start */
+.qs { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: calc(var(--space-10) * 1.5); align-items: center; }
+.term { border-radius: calc(var(--l-radius) * 1.5); overflow: hidden; border: 1px solid var(--l-line); background: var(--l-panel); box-shadow: var(--l-shadow); }
+.term-bar { display: flex; gap: var(--space-1); align-items: center; padding: var(--space-2); border-bottom: 1px solid var(--l-line); }
+.term-bar button { font-family: var(--f-mono); font-size: var(--font-size-2xs); letter-spacing: 0.08em; text-transform: uppercase; border: 0; background: none; color: var(--l-muted); padding: var(--space-2) var(--space-3); border-radius: 999px; cursor: pointer; }
+.term-bar button[aria-selected='true'] { background: var(--l-ink); color: var(--l-paper); }
+.term-bar .copy { margin-left: auto; border: 1px solid var(--l-line); }
+.term pre { margin: 0; padding: var(--space-6); font-family: var(--f-mono); font-size: var(--font-size-sm); line-height: 1.7; color: var(--l-ink); overflow-x: auto; min-height: 15rem; }
+.term .k { color: var(--l-accent); } .term .c { color: var(--l-muted); } .term .s { color: var(--l-text); }
+
+.facts { display: grid; grid-template-columns: auto 1fr; gap: var(--space-2) var(--space-5); margin: var(--space-6) 0 0; padding-top: var(--space-5); border-top: 1px solid var(--l-line); }
+.facts dt { font-family: var(--f-mono); font-size: var(--font-size-2xs); letter-spacing: 0.08em; text-transform: uppercase; color: var(--l-muted); padding-top: 2px; }
+.facts dd { margin: 0; color: var(--l-ink); font-size: var(--font-size-sm); }
+/* Custom themes */
+.themer { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-4); max-width: 64rem; margin: 0 auto; border: 1px solid var(--l-line); border-radius: calc(var(--l-radius) * 2); background: var(--l-panel); padding: var(--space-4); box-shadow: var(--l-shadow); }
+.themer-side { display: flex; flex-direction: column; gap: var(--space-4); padding: var(--space-4); }
+.swatches { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.swatches button { display: inline-flex; align-items: center; gap: var(--space-2); font: inherit; font-size: var(--font-size-sm); padding: var(--space-1) var(--space-3) var(--space-1) var(--space-1); border: 1px solid var(--l-line); border-radius: 999px; background: var(--l-paper); color: var(--l-ink); cursor: pointer; transition: border-color var(--t-micro) var(--ease); }
+.swatches button i { width: 1.5rem; height: 1.5rem; border-radius: 50%; }
+.swatches button[aria-checked='true'] { border-color: var(--l-ink); box-shadow: 0 0 0 1px var(--l-ink); }
+.snip { margin: 0; padding: var(--space-4); border-radius: var(--l-radius); background: var(--l-paper); border: 1px solid var(--l-line); font-family: var(--f-mono); font-size: var(--font-size-xs); line-height: 1.7; color: var(--l-ink); white-space: pre-wrap; }
+.snip .k { color: var(--l-accent); }
+.themer-side .btn { align-self: flex-start; }
+.themer-live.layer { position: relative; inset: auto; opacity: 1; transform: none; min-height: 24rem; height: 24rem; border-radius: var(--l-radius); overflow: hidden; border: 1px solid var(--l-line); }
+@media (max-width: 900px) { .themer { grid-template-columns: minmax(0, 1fr); } .themer-live.layer { min-height: 22rem; height: 22rem; } }
+
+/* Scroll progress: a hairline under the top bar that fills as you read. */
+.top::after { content: ''; position: absolute; left: 0; bottom: -1px; height: 2px; width: 100%; background: var(--l-accent); transform-origin: left; transform: scaleX(var(--read, 0)); }
+/* Spotlight: a soft brand glow follows the pointer across a card. */
+.spot { position: relative; isolation: isolate; }
+.spot::before { content: ''; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity var(--t-ui) var(--ease); background: radial-gradient(22rem circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, var(--l-accent) 10%, transparent), transparent 60%); }
+.spot:hover::before { opacity: 1; }
+/* Hero words rise one after another. */
+.hero h1 .w { display: inline-block; opacity: 0; translate: 0 0.35em; transition: opacity var(--t-scene) var(--ease), translate var(--t-scene) var(--ease); transition-delay: calc(var(--wi) * 70ms + 150ms); }
+.hero.in h1 .w { opacity: 1; translate: none; }
+
+/* Component gallery: every use case, rendered live from Storybook. */
+.gallery { display: grid; grid-template-columns: 15rem minmax(0, 1fr); border: 1px solid var(--l-line); border-radius: calc(var(--l-radius) * 2); background: var(--l-panel); box-shadow: var(--l-shadow); overflow: hidden; height: 38rem; }
+.g-list { overflow-y: auto; border-right: 1px solid var(--l-line); padding: var(--space-3); display: flex; flex-direction: column; gap: 2px; overscroll-behavior: contain; }
+.g-list .mono { font-size: var(--font-size-2xs); padding: var(--space-3) var(--space-2) var(--space-1); }
+.g-list button { display: flex; justify-content: space-between; align-items: center; gap: var(--space-2); text-align: left; border: 0; background: none; font: inherit; font-size: var(--font-size-sm); color: var(--l-text); padding: var(--space-2); border-radius: var(--l-r1); cursor: pointer; }
+.g-list button span { font-family: var(--f-mono); font-size: var(--font-size-2xs); color: var(--l-muted); }
+.g-list button:hover { background: var(--l-panel-2); color: var(--l-ink); }
+.g-list button[aria-current='true'] { background: var(--l-ink); color: var(--l-paper); }
+.g-list button[aria-current='true'] span { color: inherit; opacity: 0.7; }
+.g-main { display: flex; flex-direction: column; min-width: 0; }
+.g-bar { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-2) var(--space-3); border-bottom: 1px solid var(--l-line); }
+.g-cases { display: flex; gap: var(--space-1); overflow-x: auto; flex: 1; scrollbar-width: thin; }
+.g-cases button { flex-shrink: 0; font-family: var(--f-mono); font-size: var(--font-size-2xs); letter-spacing: 0.06em; text-transform: uppercase; border: 1px solid var(--l-line); background: none; color: var(--l-muted); padding: var(--space-1) var(--space-3); border-radius: 999px; cursor: pointer; }
+.g-cases button[aria-selected='true'] { background: var(--l-accent); border-color: var(--l-accent); color: var(--l-on-accent); }
+.g-bar .btn { flex-shrink: 0; }
+.g-live.layer { position: relative; inset: auto; opacity: 1; transform: none; flex: 1; min-height: 0; }
+.g-empty { padding: var(--space-6); color: var(--l-muted); }
+@media (max-width: 900px) { .gallery { grid-template-columns: minmax(0, 1fr); grid-template-rows: 11rem minmax(0, 1fr); height: 44rem; } .g-list { border-right: 0; border-bottom: 1px solid var(--l-line); } .g-bar .btn { display: none; } }
+
+/* Closing */
+.close { text-align: center; padding: calc(var(--space-10) * 3) 0; position: relative; }
+.close .dots { position: absolute; inset: 0; z-index: -1; mask-image: radial-gradient(ellipse at 50% 50%, #000 15%, transparent 65%); }
+.close h2 { font-size: clamp(var(--font-size-5xl), 8vw, calc(var(--font-size-5xl) * 3)); }
+.close p { margin: var(--space-6) auto var(--space-8); max-width: 32rem; font-size: var(--font-size-lg); }
+.close .ctas { display: flex; gap: var(--space-3); justify-content: center; flex-wrap: wrap; }
+footer { border-top: 1px solid var(--l-line); padding: var(--space-8) 0; }
+footer .wrap { display: flex; gap: var(--space-6); flex-wrap: wrap; justify-content: space-between; align-items: center; }
+footer nav { display: flex; gap: var(--space-5); flex-wrap: wrap; }
+footer a { color: var(--l-text); text-decoration: none; font-size: var(--font-size-sm); }
+footer a:hover { color: var(--l-accent); }
+
+/* Reveal */
+[data-reveal] { opacity: 0; translate: 0 var(--space-8); transition: opacity var(--t-scene) var(--ease), translate var(--t-scene) var(--ease); transition-delay: calc(var(--i, 0) * 80ms); }
+[data-reveal].in { opacity: 1; translate: none; }
+
+@media (max-width: 1100px) { .nav { display: none; } }
+@media (max-width: 900px) {
+  .story-grid, .head, .qs { grid-template-columns: minmax(0, 1fr); }
+  .canvas-col { order: -1; position: sticky; top: 4rem; z-index: 5; }
+  .canvas { position: relative; top: 0; height: 46vh; }
+  .step { min-height: 70vh; }
+  .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .plist li { grid-template-columns: minmax(0, 1fr) auto; }
+  .plist li > :first-child, .plist li > p { grid-column: 1 / -1; }
+  .tl { grid-template-columns: minmax(0, 1fr); }
+  .tl::before, .tl .fill { display: none; }
+}
+@media (max-width: 600px) {
+  .tools .seg[aria-label='Brand'], .top .btn, .logo small { display: none; }
+  .metrics { grid-template-columns: minmax(0, 1fr); }
+  .story-head { flex-direction: column; align-items: start; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .hero h1 .w { opacity: 1; translate: none; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  [data-reveal] { opacity: 1; translate: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="top" id="topbar">
+  <div class="wrap">
+    <a class="logo" href="#top"><img id="logoImg" alt=""><span><b>BAPS Design System</b><small>Angular · PrimeNG · Tokens</small></span></a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#story">How it's built</a>
+      <a href="#components">Components</a>
+      <a href="#start">React · Next.js</a>
+      <a href="#themes">Themes</a>
+      <a href="#work">Shipped</a>
+    </nav>
+    <div class="tools">
+      <div class="seg" role="group" aria-label="Brand">
+        <button type="button" data-brand="mybky" aria-pressed="true">MyBKY</button>
+        <button type="button" data-brand="sampark" aria-pressed="false">Sampark</button>
+      </div>
+      <div class="seg" role="group" aria-label="Colour mode">
+        <button type="button" data-mode="light" aria-pressed="true">Light</button>
+        <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+      </div>
+      <a class="btn btn-ink" data-sb="/docs/getting-started-installation--docs">Get started</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+<section class="hero wrap" id="hero" aria-labelledby="heroTitle">
+  <div class="dots" aria-hidden="true"></div>
+  <span class="frame-tag" data-reveal># Frame · BAPS design system</span>
+  <h1 id="heroTitle">One design language for every <span class="sel"><em class="s">BAPS</em><i></i><i></i><i></i><i></i><small id="selTag">baps-* · 54 components</small></span> app.</h1>
+  <p class="lead" data-reveal style="--i:2">Angular components, design tokens and tested patterns for member, event, donation and Satsang apps. Built on PrimeNG, in two brands, light and dark.</p>
+  <div class="ctas" data-reveal style="--i:3">
+    <a class="btn btn-ink" data-sb="/docs/getting-started-installation--docs">Get started <span class="arr" aria-hidden="true">→</span></a>
+    <a class="btn" data-sb="/docs/components-overview--docs">Browse components</a>
+  </div>
+  <div class="meta" data-reveal style="--i:4">
+    <span class="mono"><b id="mComp">54</b> components</span>
+    <span class="mono"><b id="mStories">397</b> live examples</span>
+    <span class="mono"><b>2</b> brands</span>
+    <span class="mono"><b>6</b> apps</span>
+  </div>
+  <a class="mono cue" href="#story" data-reveal style="--i:5">Scroll to watch it build</a>
+  <aside class="inspect" aria-label="Component inspector" data-reveal style="--i:4">
+    <header><span class="mono"><b>◆</b> baps-button</span><span class="mono">Design</span></header>
+    <div class="prev"><button type="button" class="baps-button baps-button--primary" tabindex="-1"><span class="baps-button__label">Register</span></button></div>
+    <dl>
+      <dt>Fill</dt><dd><i style="background:var(--l-accent)"></i><span id="insFill">button.primary.default</span></dd>
+      <dt>Text</dt><dd><i style="background:var(--l-on-accent)"></i>button.primary.text</dd>
+      <dt>Radius</dt><dd id="insRadius">pill · 99px</dd>
+      <dt>Height</dt><dd id="insHeight">m · 36px</dd>
+      <dt>Type</dt><dd id="insType">14 · 600</dd>
+      <dt>States</dt><dd>hover · focus · disabled</dd>
+      <dt>Brand</dt><dd id="insBrand">MyBKY</dd>
+    </dl>
+  </aside>
+</section>
+
+<section class="story" id="story" aria-labelledby="storyTitle">
+  <div class="wrap">
+    <div class="story-head" data-reveal>
+      <h2 id="storyTitle">From one token to <em class="s">every</em> screen.</h2>
+      <p class="mono">Seven stages · scroll at your pace</p>
+    </div>
+    <div class="story-grid">
+      <ol class="steps" id="steps"></ol>
+      <div class="canvas-col">
+        <div class="canvas" id="canvas" role="region" aria-label="Design system canvas">
+          <div class="c-bar">
+            <span class="lights" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="mono" id="cStage">Stage 01 / 07</span>
+            <span class="mono" id="cName">Tokens</span>
+            <span class="mono zoom" id="cZoom">100%</span>
+          </div>
+          <div class="c-progress" aria-hidden="true"><i id="cProg"></i></div>
+          <div class="c-body dots" id="cBody">
+            <div class="layer board-layer" data-layer="0">
+              <div class="board tokens">
+                <section class="bcard wide" data-seq style="--seq:0">
+                  <header><span class="mono"><b>◆</b> color.primary</span><span class="mono" id="rampName">mybky · blue</span></header>
+                  <div class="ramp" id="ramp"></div>
+                  <div class="sem">
+                    <span><i style="background:var(--l-ok)"></i>success</span>
+                    <span><i style="background:var(--l-warn)"></i>warning</span>
+                    <span><i style="background:var(--l-redline)"></i>error</span>
+                    <span><i style="background:var(--l-ink)"></i>text.primary</span>
+                    <span><i style="background:var(--l-line)"></i>border</span>
+                  </div>
+                </section>
+                <section class="bcard" data-seq style="--seq:1">
+                  <header><span class="mono"><b>◆</b> type</span><span class="mono">Inter</span></header>
+                  <div class="tscale">
+                    <p style="font-size:var(--font-size-3xl)">Aa<span class="mono">3xl · 28</span></p>
+                    <p style="font-size:var(--font-size-xl)">Satsang<span class="mono">xl · 20</span></p>
+                    <p style="font-size:var(--font-size-sm)">Sabha 6:30 PM<span class="mono">sm · 14</span></p>
+                    <p style="font-size:var(--font-size-xs)">Hint and label text<span class="mono">xs · 12</span></p>
+                  </div>
+                </section>
+                <section class="bcard" data-seq style="--seq:2">
+                  <header><span class="mono"><b>◆</b> space</span><span class="mono">4px grid</span></header>
+                  <div class="sscale">
+                    <p><i style="width:var(--space-1)"></i><span class="mono">space.1 · 4</span></p>
+                    <p><i style="width:var(--space-2)"></i><span class="mono">space.2 · 8</span></p>
+                    <p><i style="width:var(--space-4)"></i><span class="mono">space.4 · 16</span></p>
+                    <p><i style="width:var(--space-6)"></i><span class="mono">space.6 · 24</span></p>
+                    <p><i style="width:var(--space-10)"></i><span class="mono">space.10 · 40</span></p>
+                  </div>
+                </section>
+                <section class="bcard" data-seq style="--seq:3">
+                  <header><span class="mono"><b>◆</b> radius · shadow</span></header>
+                  <div class="rscale">
+                    <i style="border-radius:var(--l-r1)"></i><i style="border-radius:var(--l-r2)"></i><i style="border-radius:var(--l-r3)"></i><i class="sh" style="border-radius:var(--l-r2)"></i>
+                  </div>
+                  <p class="mono" id="radiusLabel">radius</p>
+                </section>
+              </div>
+            </div>
+            <div class="layer live" data-layer="1" data-frame="foundations-theme-preview--components" data-frame-zoom="0.78"></div>
+            <div class="layer live" data-layer="2" data-frame="patterns-crud-form--default" data-frame-zoom="0.9"></div>
+            <div class="layer live" data-layer="3" data-frame="patterns-login--default"></div>
+            <div class="layer live" data-layer="4" data-frame="components-table--full-listing-page"></div>
+            <div class="layer live" data-layer="5" data-frame="components-table--grouped-projects" data-frame-dark="1"></div>
+            <div class="layer" data-layer="6">
+              <div class="ship">
+                <p class="mono">Sampark Portal · <b>before</b> ⇆ <b>on the kit</b></p>
+                <div class="wipe" id="wipe">
+                  <img id="baAfter" alt="Sampark dashboard on the BAPS kit">
+                  <div class="over"><img id="baBefore" alt="Sampark dashboard before the BAPS kit"></div>
+                  <span class="ann ghost" style="left:var(--space-3)">Before</span><span class="ann" style="right:var(--space-3)">On the kit</span>
+                  <div class="line" aria-hidden="true"></div>
+                  <input type="range" min="0" max="100" value="50" id="baRange" aria-label="Compare before and after">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="apps" aria-label="Apps built on the design system">
+  <div class="marquee" aria-hidden="true" id="marquee"></div>
+</div>
+
+<section class="section" id="numbers" aria-labelledby="numTitle">
+  <div class="wrap">
+    <div class="head" data-reveal>
+      <h2 id="numTitle">Built to <em class="s">last</em>, measured as we go.</h2>
+      <p>Every number here comes from the repository and Storybook, not a slide.</p>
+    </div>
+    <div class="metrics">
+      <div class="metric" data-reveal><span class="ann">W 296 · H 168</span><p class="mono">01 · Library</p><span class="num" data-count id="nComp">54</span><p>Components, from button to tree table</p></div>
+      <div class="metric" data-reveal style="--i:1"><span class="ann">Auto layout · gap 8</span><p class="mono">02 · Proof</p><span class="num" data-count id="nStories">397</span><p>Live examples, each a test</p></div>
+      <div class="metric" data-reveal style="--i:2"><span class="ann">color.primary</span><p class="mono">03 · Brands</p><span class="num">2 × 2</span><p>MyBKY and Sampark, light and dark</p></div>
+      <div class="metric" data-reveal style="--i:3"><span class="ann">Since 1 July 2026</span><p class="mono">04 · Pace</p><span class="num" data-count>394</span><p>Commits to the kit</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="components" aria-labelledby="compTitle" style="padding-top:0">
+  <div class="wrap">
+    <div class="head" data-reveal>
+      <h2 id="compTitle">Every <em class="s">component</em>, every case.</h2>
+      <p>Nothing here is a drawing. Pick a component and a use case: the example is the real kit component, rendered live from Storybook in the brand and mode chosen at the top.</p>
+    </div>
+    <div class="gallery" data-reveal>
+      <nav class="g-list" id="gList" aria-label="Components"><p class="g-empty">Loading components…</p></nav>
+      <div class="g-main">
+        <div class="g-bar">
+          <div class="g-cases" id="gCases" role="tablist" aria-label="Use cases"></div>
+          <a class="btn" id="gOpen">Open in Storybook <span class="arr" aria-hidden="true">→</span></a>
+        </div>
+        <div class="g-live layer live on" id="gLive" data-frame=""></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="work" aria-labelledby="workTitle" style="padding-top:0">
+  <div class="wrap">
+    <div class="head" data-reveal>
+      <h2 id="workTitle">Six apps. <em class="s">One</em> kit.</h2>
+      <p>Where the design system runs today, and what it took to get there.</p>
+    </div>
+    <ol class="plist" id="projects"></ol>
+    <div class="tl" id="tl"><span class="fill" aria-hidden="true"></span></div>
+  </div>
+</section>
+
+<section class="section" id="start" aria-labelledby="startTitle" style="padding-top:0">
+  <div class="wrap qs">
+    <div data-reveal>
+      <p class="mono">Angular · React · Next.js · HTML</p>
+      <h2 id="startTitle" style="font-size:clamp(var(--font-size-4xl), 4vw, calc(var(--font-size-5xl) * 1.3));margin-top:var(--space-4)">Any <em class="s">stack</em>. Same look.</h2>
+      <p style="margin-top:var(--space-4);font-size:var(--font-size-lg)">Angular gets standalone components. React and Next.js get a typed React package built from the same CSS. A plain HTML page needs only the tokens and the stylesheet.</p>
+      <dl class="facts" id="stackFacts"></dl>
+      <div style="margin-top:var(--space-8)"><a class="btn btn-ink" data-sb="/docs/getting-started-installation--docs">Read the install guide <span class="arr" aria-hidden="true">→</span></a></div>
+    </div>
+    <div class="term" data-reveal style="--i:1">
+      <div class="term-bar" id="termTabs">
+        <div role="tablist" aria-label="Framework" style="display:flex;gap:var(--space-1);flex-wrap:wrap">
+          <button type="button" role="tab" aria-selected="true" data-step="0">Angular</button>
+          <button type="button" role="tab" aria-selected="false" data-step="1">React</button>
+          <button type="button" role="tab" aria-selected="false" data-step="2">Next.js</button>
+          <button type="button" role="tab" aria-selected="false" data-step="3">HTML</button>
+        </div>
+        <button type="button" class="copy" id="copyCode">Copy</button>
+      </div>
+      <pre id="termCode" role="tabpanel"></pre>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="themes" aria-labelledby="themesTitle" style="padding-top:0">
+  <div class="wrap">
+    <div class="head" data-reveal>
+      <h2 id="themesTitle">Make it <em class="s">yours</em>.</h2>
+      <p>Each brand ships its own palette. On top of it, an app can swap the primary colour and the neutral surface without touching a single component. Pick one: the live screen below redraws in it.</p>
+    </div>
+    <div class="themer" id="themer" data-reveal>
+      <div class="themer-side">
+        <p class="mono">Primary colour</p>
+        <div class="swatches" id="swatches" role="radiogroup" aria-label="Primary colour"></div>
+        <p class="mono" style="margin-top:var(--space-2)">+15 more primaries and 6 surfaces in the Theme builder</p>
+        <pre class="snip" id="themeCode"></pre>
+        <a class="btn" data-sb="/story/guidelines-theme-builder--builder">Open the Theme builder <span class="arr" aria-hidden="true">→</span></a>
+      </div>
+      <div class="themer-live layer live on" id="themeLive" data-frame="patterns-crud-form--default"></div>
+    </div>
+  </div>
+</section>
+
+<section class="close" aria-labelledby="closeTitle">
+  <div class="dots" aria-hidden="true"></div>
+  <div class="wrap">
+    <p class="mono" data-reveal>Stage 07 / 07 · Final experience</p>
+    <h2 id="closeTitle" data-reveal style="--i:1">Start <em class="s">building</em>.</h2>
+    <p data-reveal style="--i:2">Open a component, copy the code, ship the screen. Everything is documented, live and tested.</p>
+    <div class="ctas" data-reveal style="--i:3">
+      <a class="btn btn-ink" data-sb="/docs/getting-started-installation--docs">Get started <span class="arr" aria-hidden="true">→</span></a>
+      <a class="btn" data-sb="/docs/components-overview--docs">Browse components</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="mono">BAPS Design System · Angular 21 · PrimeNG 21 · Storybook 8.6</span>
+    <nav aria-label="Footer">
+      <a data-sb="/docs/getting-started-installation--docs">Installation</a>
+      <a data-sb="/docs/components-overview--docs">Components</a>
+      <a data-sb="/docs/foundations-design-tokens--docs">Foundations</a>
+      <a data-sb="/docs/guidelines-accessibility--docs">Accessibility</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+(() => {
+  'use strict';
+  const $ = (s) => document.querySelector(s);
+  const $$ = (s) => [...document.querySelectorAll(s)];
+  const root = document.documentElement;
+  const SB = window.SB;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const store = {
+    get: (k) => { try { return localStorage.getItem(k); } catch { return null; } },
+    set: (k, v) => { try { localStorage.setItem(k, v); } catch { /* private mode */ } },
+  };
+  const here = (p) => new URL(p, location.href).href;
+  $('#logoImg').src = `${SB}favicon.svg`;
+
+  let brand = store.get('baps-landing-brand') === 'sampark' ? 'sampark' : 'mybky';
+  let mode = store.get('baps-landing-mode') ?? 'light';
+  const other = () => (brand === 'mybky' ? 'sampark' : 'mybky');
+  const linkAll = () => $$('[data-sb]').forEach((a) => { a.href = `${SB}?path=${a.dataset.sb}&globals=designSystem:${brand}`; });
+
+  /* ── Live frames ──
+     Each is a whole Storybook preview; on the dev server each also holds a
+     live-reload connection, and a browser allows six per host. So only the
+     frame on the canvas is loaded; the rest are emptied. */
+  const frames = [];
+  const frameBrand = (f) => (f.dataset.frameBrand === 'other' ? other() : brand);
+  const frameSrc = (f) => `${SB}iframe.html?id=${f.dataset.id}&viewMode=story&globals=designSystem:${frameBrand(f)}${f.dataset.accent && f.dataset.accent !== 'brand' ? `;accent:${f.dataset.accent}` : ''}`;
+  const paint = (f) => {
+    try {
+      const d = f.contentDocument;
+      if (!d?.body) return;
+      // The dark-mode stage is always dark; the rest follow the page.
+      const dark = f.dataset.dark === '1' || mode === 'dark';
+      [d.documentElement, d.body].forEach((el) => { el.classList.toggle('baps-dark', dark); el.classList.toggle('baps-light', !dark); });
+      // A small preview box shows the whole screen scaled down rather than cut off.
+      if (f.dataset.zoom && !d.getElementById('landing-zoom')) d.head.insertAdjacentHTML('beforeend', `<style id="landing-zoom">html{zoom:${f.dataset.zoom}}</style>`);
+    } catch { /* another origin */ }
+  };
+  const want = (f, on) => {
+    if (!on) { if (f.dataset.src) { delete f.dataset.src; f.classList.remove('ready'); f.src = 'about:blank'; } return; }
+    const src = frameSrc(f);
+    if (f.dataset.src === src) { paint(f); return; }
+    f.classList.remove('ready');
+    f.dataset.src = src;
+    f.src = src;
+  };
+  $$('[data-frame]').forEach((layer) => {
+    const f = document.createElement('iframe');
+    f.dataset.id = layer.dataset.frame;
+    if (layer.dataset.frameBrand) f.dataset.frameBrand = layer.dataset.frameBrand;
+    if (layer.dataset.frameDark) f.dataset.dark = '1';
+    if (layer.dataset.frameZoom) f.dataset.zoom = layer.dataset.frameZoom;
+    f.title = 'Live screen from the kit';
+    f.addEventListener('load', () => {
+      paint(f);
+      if (f.dataset.src) setTimeout(() => f.classList.add('ready'), 900); // let the story draw first
+    });
+    layer.append(f);
+    layer.frame = f;
+    frames.push(f);
+  });
+
+  /* ── Brand / mode ── */
+  const apply = () => {
+    root.dataset.brand = brand;
+    root.dataset.theme = mode;
+    $$('button[data-brand]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.brand === brand)));
+    $$('button[data-mode]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.mode === mode)));
+    store.set('baps-landing-brand', brand);
+    store.set('baps-landing-mode', mode);
+    linkAll();
+    frames.forEach((f) => f.dataset.src && want(f, true));
+    ramp();
+    stepCopy();
+    if (typeof setAccent === 'function') setAccent(accent);
+    document.dispatchEvent(new Event('landing:brand'));
+  };
+  document.addEventListener('click', (e) => {
+    const t = e.target.closest('button');
+    if (!t) return;
+    if (t.dataset.brand) { brand = t.dataset.brand; apply(); }
+    if (t.dataset.mode) { mode = t.dataset.mode; apply(); }
+  });
+
+  /* ── Story ── */
+  const STEPS = [
+    ['Tokens', 'It starts as <em class="s">tokens</em>.', 'Colour, spacing, radius, type and motion, generated by Style Dictionary into CSS variables and TypeScript. One source for every app.', ['color.primary', 'space.4', 'radius.md']],
+    ['Components', 'Then <em class="s">parts</em>, not pages.', 'Each baps-* component wraps PrimeNG and reads only tokens. Built once, documented once, reused everywhere.', ['54 components', 'Standalone', 'Typed']],
+    ['Patterns', 'Parts become <em class="s">patterns</em>.', 'Login, CRUD form, data listing, date filter, delete confirmation: the seams between components, documented end to end.', ['Spacing 16', 'Validation', 'Keyboard']],
+    ['Screens', 'Patterns become <em class="s">screens</em>.', 'This is the real sign-in screen, running live from the kit. Type into it.', ['Live', 'Interactive', 'Accessible']],
+    ['Your brand', 'One markup, <em class="s">your</em> brand.', 'Set once at the app root.', ['MyBKY', 'Sampark', 'Same API']],
+    ['Dark mode', 'And it works in the <em class="s">dark</em>.', 'Every component ships a dark mode whose contrast is measured, not eyeballed.', ['WCAG AA', 'Light', 'Dark']],
+    ['Shipped', 'Then it <em class="s">ships</em>.', 'Sampark Portal moved onto the kit. Left is the app before, right is the app on the kit. Drag to compare.', ['spm-ui', 'Kit pack 3ead9fe', 'Parity']],
+  ];
+  const stepsEl = $('#steps');
+  const pad = (n) => String(n).padStart(2, '0');
+  const stepCopy = () => {
+    const name = brand === 'mybky' ? 'Sampark' : 'MyBKY';
+    const me = brand === 'mybky' ? 'MyBKY' : 'Sampark';
+    stepsEl.querySelector('[data-step="4"] p').textContent = `This listing is drawn in ${me}, set once at the app root. Switch to ${name} at the top and the same markup redraws.`;
+    $('#insBrand').textContent = me;
+    const sp = brand === 'sampark';
+    $('#insFill').textContent = sp ? 'button.sampark.primary' : 'button.mybky.primary';
+    $('#insRadius').textContent = sp ? 'default · 4px' : 'pill · 99px';
+    $('#insHeight').textContent = sp ? 'default · 32px' : 'm · 36px';
+    $('#insType').textContent = sp ? '14 · 500' : '14 · 600';
+    $('#radiusLabel').textContent = brand === 'mybky' ? 'radius · sm · md · pill · full' : 'radius · sm · default · md · full';
+  };
+  stepsEl.innerHTML = STEPS.map(([name, h, p, chips], i) => `
+    <li class="step" data-step="${i}">
+      <span class="mono"><b>${pad(i + 1)}</b> / ${pad(STEPS.length)} · ${name}</span>
+      <h3>${h}</h3>
+      <p>${p}</p>
+      <ul>${chips.map((c) => `<li>${c}</li>`).join('')}</ul>
+    </li>`).join('');
+  const layers = $$('#cBody .layer');
+  let cur = -1;
+  const show = (i) => {
+    if (i === cur) return;
+    cur = i;
+    $$('.step').forEach((s, n) => s.classList.toggle('on', n === i));
+    layers.forEach((l, n) => {
+      l.classList.toggle('on', n === i);
+      if (l.frame) want(l.frame, n >= i && n <= i + 2);
+    });
+    $('#cStage').textContent = `Stage ${pad(i + 1)} / ${pad(STEPS.length)}`;
+    $('#cName').textContent = STEPS[i][0];
+    $('#cZoom').textContent = i >= 3 && i <= 5 ? 'Live' : '100%';
+    $('#cProg').style.width = `${((i + 1) / STEPS.length) * 100}%`;
+    if (i === STEPS.length - 1) sweep();
+    if (i === 2) typeForm();
+  };
+  // The step crossing the middle of the screen owns the canvas.
+  const stepIo = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) show(+e.target.dataset.step); }), { rootMargin: '-45% 0px -45% 0px' });
+  $$('.step').forEach((s) => stepIo.observe(s));
+
+  // Token ramp follows the brand.
+  const ramp = () => {
+    const steps = brand === 'sampark' ? ['0', '10', '20', '40', '60', '80', '100', 'alpha20'] : ['50', '100', '200', '400', '600', '700', '800', '900'];
+    const base = brand === 'sampark' ? '--color-sampark-primary-' : '--color-mybky-blue-';
+    $('#ramp').innerHTML = steps.map((s, i) => `<i style="--d:${i};background:var(${base}${s}, var(--l-accent));color:${i < 4 ? 'var(--l-ink)' : 'var(--l-on-accent)'}">${s}</i>`).join('');
+    $('#rampName').textContent = brand === 'sampark' ? 'sampark · primary' : 'mybky · blue';
+  };
+
+  // The pattern stage types into the live form's own inputs, so Angular
+  // validation and the kit's focus styles react exactly as for a user.
+  let typing = 0;
+  function typeForm() {
+    const run = ++typing;
+    const f = layers[2].frame;
+    const VALUES = [['Full name', 'Aarav Patel'], ['you@baps.dev', 'aarav.patel@baps.dev']];
+    let tries = 0;
+    const start = () => {
+      if (run !== typing) return;
+      let d = null;
+      try { d = f.contentDocument; } catch { return; }
+      const inputs = VALUES.map(([ph]) => d?.querySelector(`input[placeholder="${ph}"]`));
+      if (inputs.some((el) => !el)) { if (++tries < 40) setTimeout(start, 250); return; }
+      const w = f.contentWindow;
+      const set = Object.getOwnPropertyDescriptor(w.HTMLInputElement.prototype, 'value').set;
+      const put = (el, v) => { set.call(el, v); el.dispatchEvent(new w.Event('input', { bubbles: true })); };
+      inputs.forEach((el) => put(el, ''));
+      let delay = reduced ? 0 : 700;
+      inputs.forEach((el, k) => {
+        const text = VALUES[k][1];
+        setTimeout(() => {
+          if (run !== typing) return;
+          if (reduced) { put(el, text); return; }
+          let n = 0;
+          const step = () => { if (run !== typing) return; put(el, text.slice(0, ++n)); if (n < text.length) setTimeout(step, 55); };
+          step();
+        }, delay);
+        delay += text.length * 55 + 350;
+      });
+    };
+    start();
+  }
+
+  /* ── Custom themes ── */
+  const ACCENTS = [
+    ['brand', 'Brand', 'var(--l-accent)'],
+    ['slate', 'Slate teal', 'var(--color-accent-slate-600)'],
+    ['clay', 'Clay', 'var(--color-accent-clay-600)'],
+    ['indigo', 'Indigo', 'var(--color-accent-indigo-600)'],
+    ['sage', 'Sage', 'var(--color-accent-sage-600)'],
+  ];
+  const themeFrame = $('#themeLive').frame;
+  themeFrame.dataset.zoom = '0.7';
+  let accent = 'brand';
+  const setAccent = (key) => {
+    accent = key;
+    $$('#swatches button').forEach((b) => b.setAttribute('aria-checked', String(b.dataset.accent === key)));
+    const preset = brand === 'sampark' ? 'Sampark' : 'MyBky';
+    $('#themeCode').innerHTML = key === 'brand'
+      ? `<span class="k">providePrimeNG</span>({\n  theme: { preset: ${preset} },\n});`
+      : `<span class="k">import</span> { ${preset}, withAccent } <span class="k">from</span> '@org/ui-kit';\n\n<span class="k">providePrimeNG</span>({\n  theme: { preset: withAccent(${preset}, '${key}') },\n});`;
+    themeFrame.dataset.accent = key;
+    if (themeFrame.dataset.src) want(themeFrame, true);
+  };
+  $('#swatches').innerHTML = ACCENTS.map(([k, label, c]) => `<button type="button" role="radio" aria-checked="false" data-accent="${k}"><i style="background:${c}"></i>${label}</button>`).join('');
+  $('#swatches').addEventListener('click', (e) => { const b = e.target.closest('[data-accent]'); if (b) setAccent(b.dataset.accent); });
+  new IntersectionObserver(([e]) => want(themeFrame, e.isIntersecting), { rootMargin: '25% 0px' }).observe($('#themeLive'));
+  setAccent('brand');
+
+  /* ── Before / after on the last stage ── */
+  const wipe = $('#wipe'), range = $('#baRange');
+  $('#baBefore').src = here('shots/before-sampark-dashboard.png');
+  $('#baAfter').src = here('shots/after-sampark-dashboard.png');
+  const setP = (v) => { wipe.style.setProperty('--p', `${v}%`); range.value = v; };
+  range.addEventListener('input', () => setP(range.value));
+  let swept = false;
+  function sweep() {
+    if (swept || reduced) return;
+    swept = true;
+    const start = performance.now(), keys = [50, 90, 10, 50], dur = 3600;
+    const tick = (t) => {
+      const k = Math.min(1, (t - start) / dur) * (keys.length - 1), i = Math.min(keys.length - 2, Math.floor(k));
+      setP(keys[i] + (keys[i + 1] - keys[i]) * (0.5 - Math.cos((k - i) * Math.PI) / 2));
+      if (k < keys.length - 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
+
+  /* ── Apps marquee ── */
+  const APPS = [['Sampark Portal', 'Live · Sampark'], ['MyBKY', 'Angular · MyBKY'], ['BAPS App Shell', 'Angular · Sampark'], ['React App Shell', 'React · Sampark'], ['Next.js App Shell', 'Next.js · MyBKY'], ['Events', 'Next up']];
+  $('#marquee').innerHTML = [...APPS, ...APPS].map(([n, k]) => `<span><small class="mono">${k}</small><b>${n}</b></span>`).join('');
+
+  /* ── Projects + milestones ── */
+  const PROJECTS = [
+    ['Sampark Portal', 'spm-ui · Angular 21 · PrimeNG 21', 'Main consumer. Template, dashboard and project screens moved onto kit components.', 'Live'],
+    ['MyBKY', 'baps-app-mybky · Angular 21', 'The MyBKY app on the same Angular and PrimeNG versions as the kit.', 'MyBKY'],
+    ['BAPS App Shell', 'baps-app-shell · Angular 21', 'Shared app shell with the Sampark root class and the AppSell preset.', 'Sampark'],
+    ['React App Shell', 'react-app-shell-sampark · React 18', 'React shell matched to the Sampark chrome with the React kit.', 'Sampark'],
+    ['Next.js App Shell', 'nextjs-app-shell-mybky · Next.js 14', 'Next.js shell for MyBKY on tokens and canonical CSS.', 'MyBKY'],
+    ['Events', 'events-ui · Angular 21', 'Table and panel style guide written for it; kit adoption is next.', 'Next'],
+  ];
+  $('#projects').innerHTML = PROJECTS.map(([n, st, note, tag], i) => `
+    <li data-reveal style="--i:${i % 3}"><span class="mono">${pad(i + 1)}</span><div><h3>${n}</h3><span class="mono">${st}</span></div><p>${note}</p><span class="pill">${tag}</span></li>`).join('');
+  const MILESTONES = [
+    ['1 Jul', 'Tokens, first components, Storybook.'],
+    ['15 Sep', 'Workspace, docs and tooling; Storybook per brand.'],
+    ['15 Oct', 'Live previews on every docs page.'],
+    ['30 Oct', 'Table grouping; Sampark select, drawer, form field.'],
+    ['6 Nov', 'Select, multi-select, date picker time mode.'],
+    ['19 Nov', 'SPM parity pass; provideBapsBrand.'],
+    ['25 Nov', 'Editor, bottom sheet, OTP, priority.'],
+  ];
+  $('#tl').insertAdjacentHTML('beforeend', MILESTONES.map(([d, t]) => `<div><b>${d}</b><p>${t}</p></div>`).join(''));
+
+  /* ── Quick start ── */
+  const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+  const PKG = 'pnpm add @org/tokens @org/ui-kit';
+  const CODE = [
+    "// pnpm add @org/tokens @org/ui-kit primeng @primeuix/themes primeicons\n\n// app.config.ts\nimport { providePrimeNG } from 'primeng/config';\nimport { MyBky } from '@org/ui-kit';\n\nprovidePrimeNG({\n  theme: { preset: MyBky, options: { darkModeSelector: '.baps-dark' } },\n});\n\n// app.component.ts\nimport { BapsButton } from '@org/ui-kit';\n\n@Component({\n  imports: [BapsButton],\n  template: `<baps-button label=\"Register\" />`,\n})",
+    "// pnpm add @org/tokens @org/ui-kit-react\n\nimport { BapsButton } from '@org/ui-kit-react';\nimport '@org/tokens/css';\nimport '@org/ui-kit-react/styles';\nimport 'primeicons/primeicons.css';\n\nexport function Example() {\n  return <BapsButton label=\"Register\" />;\n}",
+    "// app/layout.tsx — global CSS, token first\nimport '@org/tokens/css';\nimport '@org/ui-kit-react/styles';\nimport 'primeicons/primeicons.css';\nimport './globals.css';\n\n// app/skills-field.tsx — state lives in a client boundary\n'use client';\nimport { BapsChipsInput } from '@org/ui-kit-react';\nimport { useState } from 'react';\n\nexport function SkillsField() {\n  const [skills, setSkills] = useState<string[]>([]);\n  return <BapsChipsInput value={skills} onChange={setSkills} />;\n}",
+    "<!-- CSS only: tokens, then the kit stylesheet -->\n<link rel=\"stylesheet\" href=\"@org/tokens/css\">\n<link rel=\"stylesheet\" href=\"@org/ui-kit/styles\">\n\n<button type=\"button\" class=\"baps-button baps-button--primary\">\n  <span class=\"baps-button__label\">Register</span>\n</button>",
+  ];
+  const FACTS = [
+    [['Package', '@org/ui-kit'], ['Runtime', 'Angular 21, standalone'], ['Built on', 'PrimeNG 21 + the MyBky preset'], ['Components', '54, all documented']],
+    [['Package', '@org/ui-kit-react'], ['Runtime', 'React 19'], ['Status', '58 of 59 components done'], ['CSS', 'the same generated stylesheet']],
+    [['Package', '@org/ui-kit-react'], ['Router', 'App Router; CSS in the root layout'], ['State', "'use client' where a component holds state"], ['Version', 'type-checked, no Next release pinned yet']],
+    [['Needs', '@org/tokens/css + @org/ui-kit/styles'], ['Runtime', 'none: classes only'], ['Use for', 'static pages, emails, prototypes'], ['Markup', 'the Custom tab of each docs page']],
+  ];
+  void PKG;
+  // One pass over the raw source, so a keyword is never matched inside markup
+  // an earlier rule added (the old chain turned `class` in <span class> blue).
+  const TOKENS = /(\/\/[^\n]*|<!--[\s\S]*?-->)|('[^'\n]*'|`[^`]*`|"[^"\n]*")|\b(import|from|export|function|return|const|class|pnpm|add)\b/g;
+  const hl = (src) => {
+    let out = '', last = 0;
+    for (const m of src.matchAll(TOKENS)) {
+      out += esc(src.slice(last, m.index));
+      const cls = m[1] ? 'c' : m[2] ? 's' : 'k';
+      out += `<span class="${cls}">${esc(m[0])}</span>`;
+      last = m.index + m[0].length;
+    }
+    return out + esc(src.slice(last));
+  };
+  let codeStep = 0;
+  const showCode = (i) => {
+    codeStep = i;
+    $('#termCode').innerHTML = hl(CODE[i]);
+    $$('#termTabs [data-step]').forEach((b, n) => b.setAttribute('aria-selected', String(n === i)));
+    $('#stackFacts').innerHTML = FACTS[i].map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('');
+  };
+  $('#termTabs').addEventListener('click', (e) => { const b = e.target.closest('[data-step]'); if (b) showCode(+b.dataset.step); });
+  $('#copyCode').addEventListener('click', (e) => navigator.clipboard?.writeText(CODE[codeStep]).then(() => { e.target.textContent = 'Copied'; setTimeout(() => (e.target.textContent = 'Copy'), 1500); }));
+  showCode(0);
+
+  /* ── Component gallery ──
+     Every Components/* story except the -interaction tests, filtered to the
+     chosen brand: MyBKY hides the sampark-* cases, Sampark hides my-bky-*. */
+  const gFrame = $('#gLive').frame;
+  const gByTitle = new Map();
+  let gTitle = 'Components/Atoms/Button';
+  let gId = null;
+  let gVisible = false;
+  const gCases = () => {
+    const all = gByTitle.get(gTitle) ?? [];
+    const isSp = (st) => /sampark/i.test(st.id.split('--')[1] + st.name);
+    const isMy = (st) => /my-?bky/i.test(st.id.split('--')[1] + st.name);
+    if (brand !== 'sampark') return all.filter((st) => !isSp(st)).map((st) => ({ ...st, label: st.name }));
+    // Sampark: its own cases first, labelled without the prefix; a generic
+    // case is dropped when a Sampark one of the same name exists.
+    const own = all.filter(isSp).map((st) => ({ ...st, label: st.name.replace(/^Sampark\s+/i, '') }));
+    const names = new Set(own.map((st) => st.label.toLowerCase()));
+    return [...own, ...all.filter((st) => !isSp(st) && !isMy(st) && !names.has(st.name.toLowerCase())).map((st) => ({ ...st, label: st.name }))];
+  };
+  const gShow = () => {
+    gFrame.dataset.id = gId;
+    $('#gOpen').href = `${SB}?path=/story/${gId}&globals=designSystem:${brand}`;
+    $$('#gCases button').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.id === gId)));
+    want(gFrame, gVisible);
+  };
+  const gRender = () => {
+    if (!gByTitle.size) return;
+    $$('#gList button').forEach((b) => b.setAttribute('aria-current', String(b.dataset.title === gTitle)));
+    const cases = gCases();
+    if (!cases.some((st) => st.id === gId)) gId = cases[0]?.id ?? null;
+    $('#gCases').innerHTML = cases.map((st) => `<button type="button" role="tab" data-id="${st.id}">${st.label}</button>`).join('');
+    if (gId) gShow();
+  };
+  $('#gList').addEventListener('click', (e) => { const b = e.target.closest('[data-title]'); if (!b) return; gTitle = b.dataset.title; gId = null; gRender(); });
+  $('#gCases').addEventListener('click', (e) => { const b = e.target.closest('[data-id]'); if (!b) return; gId = b.dataset.id; gShow(); });
+  document.addEventListener('landing:brand', gRender);
+  new IntersectionObserver(([e]) => { gVisible = e.isIntersecting; if (gId) want(gFrame, gVisible); }, { rootMargin: '25% 0px' }).observe($('#gLive'));
+
+  /* ── Live numbers ── */
+  fetch(`${SB}index.json`).then((r) => r.json()).then((j) => {
+    const stories = Object.values(j.entries).filter((e) => e.type === 'story');
+    stories.filter((st) => st.title.startsWith('Components/') && !st.id.endsWith('-interaction') && !st.id.endsWith('--docs-anchor')).forEach((st) => {
+      if (!gByTitle.has(st.title)) gByTitle.set(st.title, []);
+      gByTitle.get(st.title).push(st);
+    });
+    const tiers = new Map();
+    [...gByTitle.keys()].forEach((t) => { const tier = t.split('/')[1]; if (!tiers.has(tier)) tiers.set(tier, []); tiers.get(tier).push(t); });
+    $('#gList').innerHTML = [...tiers].map(([tier, titles]) => `<p class="mono">${tier} · ${titles.length}</p>` + titles.map((t) => `<button type="button" data-title="${t}">${t.split('/').pop()}<span>${gByTitle.get(t).length}</span></button>`).join('')).join('');
+    gRender();
+    const comps = new Set(stories.filter((s) => s.id.startsWith('components-')).map((s) => s.id.split('--')[0])).size;
+    ['#mStories', '#nStories'].forEach((s) => ($(s).textContent = stories.length));
+    ['#mComp', '#nComp'].forEach((s) => ($(s).textContent = comps));
+    $('#selTag').textContent = `baps-* · ${comps} components`;
+  }).catch(() => { $('#gList').innerHTML = '<p class="g-empty">Start Storybook to load the live gallery.</p>'; });
+
+  /* ── Scroll: top bar, timeline fill ── */
+  const bar = $('#topbar'), tl = $('#tl');
+  let ticking = false;
+  const onScroll = () => {
+    ticking = false;
+    bar.classList.toggle('solid', scrollY > 20);
+    bar.style.setProperty('--read', (scrollY / Math.max(1, document.documentElement.scrollHeight - innerHeight)).toFixed(4));
+    const r = tl.getBoundingClientRect();
+    const f = Math.min(1, Math.max(0, (innerHeight * 0.75 - r.top) / (innerHeight * 0.5)));
+    tl.style.setProperty('--f', f.toFixed(3));
+    $$('#tl > div').forEach((d, i) => d.classList.toggle('lit', i / (MILESTONES.length - 1) <= f + 0.001));
+  };
+  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+
+  /* ── Reveal, count-up ── */
+  const count = (el) => {
+    const end = +el.textContent;
+    if (reduced || !end) return;
+    const start = performance.now();
+    const tick = (t) => { const k = Math.min(1, (t - start) / 1400); el.textContent = Math.round(end * (1 - (1 - k) ** 3)); if (k < 1) requestAnimationFrame(tick); };
+    requestAnimationFrame(tick);
+  };
+  const io = new IntersectionObserver((es) => es.forEach((e) => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('in');
+    e.target.querySelectorAll('[data-count]').forEach(count);
+    io.unobserve(e.target);
+  }), { threshold: 0.2 });
+  $$('[data-reveal]').forEach((el) => io.observe(el));
+  // Split the heading's plain words into spans; the selection box stays whole.
+  let wi = 0;
+  [...$('#heroTitle').childNodes].forEach((n) => {
+    if (n.nodeType === 3) {
+      const frag = document.createDocumentFragment();
+      n.textContent.split(/(\s+)/).forEach((part) => {
+        if (!part) return;
+        if (/^\s+$/.test(part)) { frag.append(part); return; }
+        const w = document.createElement('span');
+        w.className = 'w';
+        w.style.setProperty('--wi', wi++);
+        w.textContent = part;
+        frag.append(w);
+      });
+      n.replaceWith(frag);
+    } else if (n.classList?.contains('sel')) {
+      n.classList.add('w');
+      n.style.setProperty('--wi', wi++);
+    }
+  });
+  setTimeout(() => $('#hero').classList.add('in'), 200);
+
+  // Spotlight follows the pointer on cards.
+  const spots = () => $$('.metric, .bcard, .plist li, .themer, .term');
+  spots().forEach((el) => el.classList.add('spot'));
+  document.addEventListener('pointermove', (e) => {
+    const el = e.target.closest?.('.spot');
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    el.style.setProperty('--mx', `${e.clientX - r.left}px`);
+    el.style.setProperty('--my', `${e.clientY - r.top}px`);
+  }, { passive: true });
+
+  apply();
+  show(0);
+  onScroll();
+})();
+</script>
+</body>
+</html>

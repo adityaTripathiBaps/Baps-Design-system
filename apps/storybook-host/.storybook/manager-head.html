@@ -1,3 +1,11 @@
+<script>
+  // A bare visit (no ?path=) opens the landing page first, as primeng.dev
+  // does; its "Get started" links come back here with a path. Relative, so a
+  // Storybook hosted under a sub-path still finds it.
+  if (!new URLSearchParams(location.search).has('path')) {
+    location.replace('landing/index.html');
+  }
+</script>
 <!--
   Manager chrome. The counterpart to preview-head.html, for the OUTER frame —
   sidebar, toolbar, addon panel. Storybook's manager is a bundled React app, so

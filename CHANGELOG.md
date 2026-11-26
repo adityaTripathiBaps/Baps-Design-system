@@ -27,6 +27,19 @@ classification and deprecation policy.
   6333:66494 / 561:3587): one bordered field holding an input plus an icon,
   avatar, chevron, action icon, switch segment, attached button or badge.
   Story: Form Controls › Sampark Input Shell.
+- **Docs:** a landing page at `landing/index.html` that opens first; a bare
+  Storybook visit redirects there and "Get started" leads into the docs (also
+  when the file is opened from disk). Editorial "studio" layout: a scroll
+  story builds the system on one canvas in seven stages (tokens, components,
+  patterns, a live screen, the chosen brand, dark mode, the Sampark Portal
+  before/after), then setup per stack (Angular, React, Next.js, HTML), a
+  custom-theme picker whose live screen redraws through `withAccent`, the
+  six apps and milestones. No component on it is drawn by hand: the
+  components and patterns stages run the kit's Theme Preview and CRUD form
+  stories live, and a component gallery lists every `Components/*` story
+  from Storybook's index (all use cases, filtered to the chosen brand).
+  Kit tokens throughout; its three fonts are a page-only exception recorded in
+  `.agents/BRAIN.md`. Docs only; no package change.
 - **Docs:** `docs/FIGMA-COMPONENT-LIBRARY-COVERAGE.md` maps every set in the
   Figma file to the kit.
 - **`@org/ui-kit` — minor, additive:** `baps-editor` (`BapsEditor`), a
@@ -248,6 +261,21 @@ classification and deprecation policy.
   headers ran into each other ("ProviderCurrency"), "Updated by" climbed over
   "Status", names broke in two, a tag spilled out. Header titles no longer
   wrap. The docs no longer pin Location to 26rem. Scrollable mode unchanged.
+- **`@org/ui-kit/styles` — patch, visual:** MyBKY text inputs and selects
+  now take their hover/focus stroke and focus ring from the preset's primary
+  ramp (`--p-primary-400` / `--p-primary-600`), so a `withAccent()` primary
+  reaches them; they stayed blue under any accent. Default values are
+  unchanged (#9fadd9, rgba(95,120,184,.35)). Also: a required field that is
+  still pristine and untouched (`ng-invalid` but no error shown) now gets its
+  hover and focus states; before, it got neither.
+- **Docs:** Components overview drops the avatar `_DocsAnchor` helper and
+  stories whose name pins the other brand. Rows are now separate cards,
+  three to a row with an even gap, on a wider page (the old track overflowed
+  the 900px docs column into the table of contents). Each card's name sits
+  under its preview at all times, Copy prompt appears on hover over the end
+  of that row, stills sit on white with the story's own inset, and cards
+  without a still (Sampark, dark) show a "Hover to preview" plate instead of
+  a bare grey box.
 - **`@org/ui-kit/styles` — patch, visual:** the HTML/CSS avatar
   (`.baps-avatar-html`) without a status modifier now looks and hovers like
   `<baps-avatar>`'s default primary: MyBKY 1px #9fadd9 border, hover #5f78b8
