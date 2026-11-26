@@ -41,7 +41,7 @@ export const treeTableSnippets: Record<string, SnippetSet> = {
     primeng: `<baps-tree-table #tt [value]="nodes" dataKey="key">
   <ng-template pTemplate="header">
     <tr>
-      <th style="width:26rem">Location</th>
+      <th>Location</th>
       <th>Provider</th>
       <th>Currency</th>
       <th>Updated by</th>
@@ -79,7 +79,7 @@ const NODES = [
 ];
 
 const COLUMNS = [
-  { field: 'location', header: 'Location', width: '26rem' },
+  { field: 'location', header: 'Location' },
   { field: 'provider', header: 'Provider' },
   { field: 'currency', header: 'Currency' },
   { field: 'updatedBy', header: 'Updated by' },
@@ -127,7 +127,7 @@ const NODES = [
 ];
 
 const COLUMNS = [
-  { field: 'location', header: 'Location', width: '26rem' },
+  { field: 'location', header: 'Location' },
   { field: 'provider', header: 'Provider' },
   { field: 'currency', header: 'Currency' },
   { field: 'updatedBy', header: 'Updated by' },

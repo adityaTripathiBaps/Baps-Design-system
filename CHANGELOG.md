@@ -241,6 +241,13 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit/styles` — patch, visual (both brands):** `baps-tree-table`
+  sizes columns to their content (`table-layout: auto`, as `baps-table`) and a
+  table wider than its box scrolls inside it. PrimeNG's tree-table default is
+  `fixed`, so one width-pinned column took everything and the rest got 63px:
+  headers ran into each other ("ProviderCurrency"), "Updated by" climbed over
+  "Status", names broke in two, a tag spilled out. Header titles no longer
+  wrap. The docs no longer pin Location to 26rem. Scrollable mode unchanged.
 - **`@org/ui-kit/styles` — patch, visual:** the HTML/CSS avatar
   (`.baps-avatar-html`) without a status modifier now looks and hovers like
   `<baps-avatar>`'s default primary: MyBKY 1px #9fadd9 border, hover #5f78b8

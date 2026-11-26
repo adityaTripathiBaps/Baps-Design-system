@@ -95,7 +95,7 @@ export const Default: Story = {
       <baps-tree-table #tt [value]="nodes" [dataKey]="dataKey" [brand]="brand">
         <ng-template pTemplate="header">
           <tr>
-            <th style="width:26rem">Location</th>
+            <th>Location</th>
             <th>Provider</th>
             <th>Currency</th>
             <th>Updated by</th>
@@ -156,7 +156,7 @@ export const Empty: Story = {
       <baps-tree-table [value]="nodes" [dataKey]="dataKey" [brand]="brand">
         <ng-template pTemplate="header">
           <tr>
-            <th style="width:26rem">Location</th>
+            <th>Location</th>
             <th>Provider</th>
             <th>Currency</th>
             <th>Updated by</th>

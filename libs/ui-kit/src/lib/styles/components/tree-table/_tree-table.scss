@@ -42,6 +42,20 @@ baps-tree-table {
   --baps-tt-connector: var(--color-sampark-mono-40, #bcb9b9);
 }
 
+/* Auto layout, as baps-table. PrimeNG's tree-table defaults to
+   table-layout: fixed, which gave a width-pinned column everything and crushed
+   the rest to 63px (31px of text after padding): "Provider" and "Currency"
+   ran into each other, "Updated by" climbed over "Status", "A. Patel" broke in
+   two. Columns now size to their content, and a table wider than its box
+   scrolls inside it instead of spilling out. Not in scrollable mode, where
+   PrimeNG splits header and body into separate tables that must share widths. */
+baps-tree-table .p-treetable:not(.p-treetable-scrollable) > .p-treetable-wrapper {
+  overflow-x: auto;
+}
+baps-tree-table .p-treetable:not(.p-treetable-scrollable) > .p-treetable-wrapper > table {
+  table-layout: auto;
+}
+
 /* Both selectors are needed. PrimeNG puts .p-treetable-header-cell on the
    cells IT generates from [columns], but a forwarded header template is the
    consumer's own raw <th> and carries no class at all — measured, not
@@ -55,6 +69,8 @@ baps-tree-table .p-treetable-thead > tr > th {
   border-color: var(--baps-tt-border);
   font-size: 0.875rem;
   font-weight: 500;
+  /* A column title is one line: a wrapped one climbs over its neighbour. */
+  white-space: nowrap;
 }
 
 /* NO zebra striping — every row is the card surface. Confirmed against the
