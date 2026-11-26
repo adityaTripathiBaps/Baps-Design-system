@@ -4,6 +4,7 @@ import { moduleMetadata } from '@storybook/angular';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from 'primeng/api';
 import { BapsMultiSelect } from './multi-select.component';
+import { BapsButton } from '../button/button.component';
 
 /**
  * MultiSelect — multi-value dropdown, wrapping PrimeNG MultiSelect.
@@ -349,6 +350,34 @@ export const SamparkScrimCatchesOutsideClick: Story = {
     template: `
       <div style="max-width:20rem">
         <baps-multi-select brand="sampark" ariaLabel="Cities on a Sampark page" appendTo="body" optionLabel="name" optionValue="code" [options]="options" [(ngModel)]="model" />
+      </div>
+    `,
+  }),
+};
+
+/**
+ * Sampark panel with the built-in filter, "Select All" and a footer template
+ * holding one button, as spm-ui's Sort drawer "then by" field uses it (AT-092).
+ * The panel should be as wide as its 256px trigger. A disabled field sits next
+ * to it for comparison.
+ */
+export const SamparkFilterSelectAllFooter: Story = {
+  tags: ['!ds:mybky'],
+  decorators: [moduleMetadata({ imports: [FormsModule, SharedModule, BapsButton] })],
+  render: () => ({
+    props: { options: CITIES, model: null },
+    template: `
+      <div style="display:flex; gap:1rem; align-items:flex-start">
+        <div style="width:256px">
+          <baps-multi-select brand="sampark" ariaLabel="Then by" appendTo="body" optionLabel="name" placeholder="Select field(s)" [filter]="true" filterPlaceholder="Search" [showToggleAll]="true" [options]="options" [(ngModel)]="model">
+            <ng-template pTemplate="footer">
+              <baps-button brand="sampark" label="Add Field(s)" [disabled]="!model?.length"></baps-button>
+            </ng-template>
+          </baps-multi-select>
+        </div>
+        <div style="width:256px">
+          <baps-multi-select brand="sampark" ariaLabel="Locked field" optionLabel="name" placeholder="Select field(s)" [options]="options" [disabled]="true"></baps-multi-select>
+        </div>
       </div>
     `,
   }),
