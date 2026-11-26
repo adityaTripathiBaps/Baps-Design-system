@@ -49,6 +49,9 @@ p-accordion {
   --baps-accordion-header-height: 2rem;
   --baps-accordion-radius: 0.25rem;
   --baps-accordion-header-bg: var(--color-mybky-mono-50, #f8fafb);
+  /* Hover, as PrimeNG's header hover: one neutral step darker, the same
+     surface the secondary button hovers to. */
+  --baps-accordion-header-hover-bg: var(--color-mybky-mono-300, #e4ecf1);
   --baps-accordion-text: var(--color-mybky-text-primary, #181b1d);
   --baps-accordion-border: var(--color-mybky-border-default, #e4ecf1);
   /* Figma's Sampark badge is Primary/100 at 10% alpha. MyBKY's stand-in is
@@ -108,6 +111,13 @@ p-accordion .p-accordionheader {
   font-size: 0.875rem;
   font-weight: 500;
   line-height: 1.3;
+  transition: background-color 150ms ease;
+}
+
+/* PrimeNG gives the header a hover background; the kit's fixed plate had
+   none, so a header did not read as clickable. Disabled panels stay put. */
+p-accordion .p-accordionpanel:not(.p-disabled) > .p-accordionheader:hover {
+  background: var(--baps-accordion-header-hover-bg, var(--baps-accordion-header-bg));
 }
 
 /* Count badge — a full-height 32px cell with its own fill, flush left. */
@@ -293,6 +303,7 @@ p-accordion .baps-accordion-slider {
    changes; every rule above still describes the geometry. ═══ */
 :is(p-accordion.baps-sampark, .baps-ds-sampark p-accordion) {
   --baps-accordion-header-bg: var(--color-sampark-mono-10, #f8f7f7);
+  --baps-accordion-header-hover-bg: var(--color-sampark-mono-20, #f3f2f2);
   --baps-accordion-text: var(--color-sampark-mono-100, #151414);
   --baps-accordion-border: var(--color-sampark-mono-borders, #e1e0e0);
   /* Header clear icon: SPM dev strokes it Mono/100; without this it fell
@@ -310,6 +321,8 @@ p-accordion .baps-accordion-slider {
   /* One step above the card, like mono-50 over white in light. The content
      background here was the card's own fill, so the header plate vanished. */
   --baps-accordion-header-bg: var(--color-mybky-dark-surface-hover, #3d4144);
+  /* No darker-step token on the dark ramp yet: the plate keeps its fill. */
+  --baps-accordion-header-hover-bg: var(--baps-accordion-header-bg);
   --baps-accordion-text: var(--p-text-color, #e6e6e6);
   --baps-accordion-border: var(
     --p-content-border-color,
@@ -330,6 +343,7 @@ p-accordion .baps-accordion-slider {
 .baps-dark :is(p-accordion.baps-sampark, .baps-ds-sampark p-accordion),
 .baps-ds-sampark .baps-dark p-accordion {
   --baps-accordion-header-bg: var(--color-sampark-dark-surface-hover, #4a4947);
+  --baps-accordion-header-hover-bg: var(--baps-accordion-header-bg);
   --baps-accordion-muted: var(--baps-accordion-text);
 }
 

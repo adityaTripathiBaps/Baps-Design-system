@@ -241,6 +241,12 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit/styles` — patch, visual (both brands):** hover states as
+  PrimeNG has them, on three parts that had none. Accordion header, input-number
+  spinner buttons and the file-upload button (under a zone hover; the button is
+  inert) now take one neutral step darker: MyBKY #e4ecf1 (`mono-300`), Sampark
+  #f3f2f2 (`mono-20`), the secondary button's hover surface. Existing tokens
+  only; dark mode keeps the resting fill (no darker dark-ramp token yet).
 - **`@org/ui-kit/styles` — patch:** `baps-tree-table`'s expand/collapse button
   shows its hover background (MyBKY #eef0f8, Sampark #f8f7f7, the row-hover
   tokens). The button reset (no border, transparent background) moved from an

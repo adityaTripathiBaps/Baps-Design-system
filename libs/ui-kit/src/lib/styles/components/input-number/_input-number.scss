@@ -8,11 +8,20 @@
 
 baps-input-number {
   --baps-input-number-radius: var(--form-field-mybky-border-radius);
+  /* Spinner hover, as PrimeNG's inputnumber button hover: one neutral step
+     darker than the addon fill (the secondary button's hover surface). */
+  --baps-input-number-button-hover-bg: var(--color-mybky-mono-300, #e4ecf1);
   display: inline-block;
 }
 
 :is(baps-input-number.baps-sampark, .baps-ds-sampark baps-input-number) {
   --baps-input-number-radius: var(--form-field-sampark-border-radius);
+  --baps-input-number-button-hover-bg: var(--color-sampark-mono-20, #f3f2f2);
+}
+
+/* No darker-step token on the dark ramps yet: the button keeps its fill. */
+.baps-dark baps-input-number {
+  --baps-input-number-button-hover-bg: var(--input-addon-bg);
 }
 
 baps-input-number .baps-input-number__control {
@@ -62,6 +71,7 @@ baps-input-number .baps-input-number__button {
   color: var(--input-text-filled);
   font: inherit;
   cursor: pointer;
+  transition: background-color 150ms ease;
 }
 
 baps-input-number .baps-input-number__button--increment {
@@ -72,6 +82,10 @@ baps-input-number .baps-input-number__button--increment {
 baps-input-number .baps-input-number__button--decrement {
   border-width: 1px;
   border-end-end-radius: var(--baps-input-number-radius);
+}
+
+baps-input-number .baps-input-number__button:hover:not(:disabled) {
+  background: var(--baps-input-number-button-hover-bg);
 }
 
 baps-input-number .baps-input-number__button:focus-visible {

@@ -47,6 +47,19 @@ baps-file-upload
   border-color: var(--input-border-hover);
 }
 
+/* The inner button is inert (the zone is the control), so it never gets its
+   own :hover. Hovering the zone gives it the secondary button's hover, as a
+   PrimeNG button shows, so the call to action still reacts. */
+baps-file-upload
+  .baps-file-upload-zone:hover:not(.baps-file-upload-disabled):not(
+    .baps-file-upload-invalid
+  )
+  .p-button {
+  background: var(--p-button-secondary-hover-background);
+  border-color: var(--p-button-secondary-hover-border-color);
+  color: var(--p-button-secondary-hover-color);
+}
+
 baps-file-upload
   .baps-file-upload-zone:focus-within:not(.baps-file-upload-invalid) {
   border-color: var(--input-border-hover);
