@@ -241,6 +241,12 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit/styles` — patch, visual (MyBKY):** `baps-iconfield`'s icon
+  sits centred in apps that load the shipped stylesheet. PrimeNG's negative
+  `margin-top` and the kit's `translateY(-50%)` both centred it, lifting it
+  8px (measured with the packed `index.css`: -8px, now 0). Storybook does not
+  load `_form-field.scss`, so it always looked centred there. Sampark already
+  reset this.
 - **`@org/ui-kit` — patch:** `baps-toggleswitch` marks its form control
   `touched` when the user toggles it. The registered callback was never
   called, so validation gated on `touched` never showed. A value written by the

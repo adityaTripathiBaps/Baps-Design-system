@@ -54,9 +54,15 @@ baps-iconfield .p-iconfield {
   display: block;
 }
 
+/* One centring mechanism. PrimeNG also centres the icon with a negative
+   margin-top; together with the translateY below it lifted the icon 8px in
+   MyBKY wherever the shipped stylesheet loads (Storybook does not load this
+   partial, so it never showed there). Sampark resets it in
+   _input-icon-sampark.scss. */
 baps-iconfield .p-inputicon {
   position: absolute;
   inset-block-start: 50%;
+  margin-top: 0;
   z-index: 1;
   display: inline-flex;
   width: var(--font-size-md);
