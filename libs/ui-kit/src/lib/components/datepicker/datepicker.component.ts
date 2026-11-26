@@ -156,6 +156,7 @@ const DATEPICKER_TOKENS = {
       (onShow)="shown.emit($event)"
       (onClose)="panelClose.emit($event)"
       (onClear)="onDateClear()"
+      (onClearClick)="onDateClear()"
     >
       <!-- pTemplate forwarding, as baps-select does: PrimeNG never sees a
            template projected through this host, so each slot is re-declared

@@ -241,6 +241,10 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit` — patch:** `baps-datepicker`'s button-bar Clear now clears
+  the form value. PrimeNG emits `onClearClick` for it, not `onClear` (the
+  input's x icon), and the wrapper only listened to `onClear`, so the form kept
+  the old date. Spec covers it.
 - **`@org/ui-kit/styles` — patch (Sampark):** a collapsed accordion panel no
   longer scrolls its container. PrimeNG 21 keeps the collapsed body in the DOM
   (0px grid row, visibility hidden) with nothing clipping it, so in SPM's

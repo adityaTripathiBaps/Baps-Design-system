@@ -151,6 +151,24 @@ describe('BapsDatepicker form control', () => {
     expect(changes.at(-1)).toBeNull();
   });
 
+  // The button bar's Clear runs PrimeNG onClearButtonClick, which emits
+  // onClearClick, NOT onClear (that is the input's x icon). The wrapper only
+  // listened to onClear, so the form kept the old date.
+  it('reports null to the form when the button-bar Clear is used', async () => {
+    const fixture = await render();
+    const dp = instanceOf(fixture);
+    const changes: unknown[] = [];
+    dp.registerOnChange((v) => changes.push(v));
+    dp.writeValue(new Date(2025, 0, 10));
+
+    const prime = fixture.debugElement.query(By.directive(DatePicker))
+      .componentInstance as DatePicker;
+    prime.onClearButtonClick(new MouseEvent('click'));
+
+    expect(changes.at(-1)).toBeNull();
+    expect(dp.value).toBeNull();
+  });
+
   it('mirrors setDisabledState onto the disabled input', async () => {
     const dp = instanceOf(await render());
     dp.setDisabledState(true);
