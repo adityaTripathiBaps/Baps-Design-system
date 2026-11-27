@@ -254,6 +254,12 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit/styles` — patch, visual (Sampark):** every input group is
+  drawn per part, as SPM dev: label addons (Min | 1, Max | 100) too, not only
+  control groups. The field carries a full 1px border and the addons the three
+  sides away from it; hover and focus light the field alone. Before, label
+  groups kept one ring round the whole group, which lit as a unit. A bare
+  `pInputText` field no longer loses its border on hover. MyBKY unchanged.
 - **`@org/ui-kit/styles` — patch, visual (Sampark):** input groups with a
   control addon (`[input-group-control]`: number | unit select, time | AM/PM)
   behave like SPM dev. Hovering or focusing the input lights only that input

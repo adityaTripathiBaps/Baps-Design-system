@@ -337,17 +337,28 @@ baps-input-group .p-inputgroup > baps-datepicker {
   --baps-ig-text: var(--color-mybky-mono-50);
 }
 
-/* ── Sampark control group: each part draws its own border (SPM dev) ──────
-   SPM dev Template form, Set Reminder [0 | Day/s] and At [time | AM],
-   measured 2026-11-27: hovering the number or time input turns only THAT
-   input's border #94928f; focus adds a 3px #f2f1f0 ring round the input only;
-   the Day/s select and the AM/PM button never change on hover or focus. The
-   kit drew one ring round the whole group, so the whole group lit up. Here the
-   group ring goes away and the field and the control carry their own
-   hairlines, meeting on the field's inner edge as on dev. Label-addon groups
-   (Min | 1) are untouched: they have no [input-group-control]. */
-:is(baps-input-group.baps-sampark, .baps-ds-sampark baps-input-group)
-  .p-inputgroup:has(> [input-group-control]) {
+/* ── Sampark: every part draws its own border (SPM dev) ──────────────────
+   SPM dev Template form, measured 2026-11-27, on every input group there:
+   Set Reminder [0 | Day/s], At [time | AM], Families Min [Min | 1] and
+   Max [Max | 100]. Each part has its own hairline: the field a full 1px
+   border, an addon or control the three sides away from the field. Hovering
+   the field turns only the field's border #94928f; focus adds a 3px #f2f1f0
+   ring round the field only; addons, the unit select and the AM/PM button
+   never change. The kit drew one ring round the whole group, so the whole
+   group lit up. Dev sizes kept: Min 48 + field 83 = 131 (kit 132 before). */
+$ig-sampark: ':is(baps-input-group.baps-sampark, .baps-ds-sampark baps-input-group)';
+// :not(#baps-ig-field) matches every element and only adds id weight: the
+// global .p-inputgroup .p-inputtext:hover:not(...) x6 rules set border: none
+// !important at (0,9,0), which a class-only selector here cannot outrank, and
+// a bare pInputText field lost its border on hover.
+$ig-field: '> :not(.p-inputgroupaddon):not([input-group-control]):not(#baps-ig-field)';
+// An addon is on screen when it has projected content or a string fallback
+// (empty slots are display:none). Written as two flat :has() each, because
+// :has() cannot nest.
+$ig-pre-shown: '> .baps-input-group__addon--prefix :is(.baps-input-group__addon-content:not(:empty), .baps-input-group__addon-fallback)';
+$ig-suf-shown: '> .baps-input-group__addon--suffix :is(.baps-input-group__addon-content:not(:empty), .baps-input-group__addon-fallback)';
+
+#{$ig-sampark} .p-inputgroup {
   border-width: 0;
   overflow: visible;
 
@@ -356,58 +367,81 @@ baps-input-group .p-inputgroup > baps-datepicker {
     box-shadow: none;
   }
 
-  > :not([input-group-control]):not(.baps-input-group__addon) {
+  #{$ig-field} {
     position: relative;
     box-sizing: border-box;
     height: 100%;
-    border: var(--input-group-border-width) solid var(--baps-ig-border);
-    border-radius: var(--input-group-radius) 0 0 var(--input-group-radius);
+    border: var(--input-group-border-width) solid var(--baps-ig-border) !important;
+    border-radius: var(--input-group-radius) !important;
     transition:
       border-color 150ms ease,
       box-shadow 150ms ease;
 
     &:hover,
-    &:focus-within {
+    &:focus-within,
+    &:focus {
       z-index: 1;
-      border-color: var(--baps-ig-border-hover);
+      border-color: var(--baps-ig-border-hover) !important;
     }
 
-    &:focus-within {
-      box-shadow: var(--baps-ig-ring);
+    &:focus-within,
+    &:focus {
+      box-shadow: var(--baps-ig-ring) !important;
     }
   }
 
+  > .p-inputgroupaddon,
   > [input-group-control] {
     box-sizing: border-box;
+    height: 100%;
     border: var(--input-group-border-width) solid var(--baps-ig-border);
+  }
+
+  // Leading addon: no edge on the field side; its outer corners round.
+  > .baps-input-group__addon--prefix {
+    border-inline-end: 0;
+    border-radius: var(--input-group-radius) 0 0 var(--input-group-radius);
+  }
+
+  // Trailing addon or control: no edge on the field side.
+  > .baps-input-group__addon--suffix,
+  > [input-group-control] {
     border-inline-start: 0;
     border-radius: 0 var(--input-group-radius) var(--input-group-radius) 0;
   }
+
+  // A trailing addon after a control: the control loses its outer corners.
+}
+#{$ig-sampark} .p-inputgroup:has(#{$ig-suf-shown}) > [input-group-control] {
+  border-radius: 0;
+}
+
+// The field squares the corners that meet an addon or control.
+#{$ig-sampark} .p-inputgroup:has(#{$ig-pre-shown}) #{$ig-field} {
+  border-start-start-radius: 0 !important;
+  border-end-start-radius: 0 !important;
+}
+#{$ig-sampark} .p-inputgroup:has(#{$ig-suf-shown}) #{$ig-field},
+#{$ig-sampark} .p-inputgroup:has(> [input-group-control]) #{$ig-field} {
+  border-start-end-radius: 0 !important;
+  border-end-end-radius: 0 !important;
 }
 
 /* The ring carried invalid and disabled before; now the field does. */
-:is(baps-input-group.baps-sampark, .baps-ds-sampark baps-input-group):has(
-    .ng-invalid.ng-dirty,
-    .p-invalid
-  )
-  .p-inputgroup:has(> [input-group-control])
-  > :not([input-group-control]):not(.baps-input-group__addon) {
-  border-color: var(--color-sampark-error-100, #ea151a);
+#{$ig-sampark}:has(.ng-invalid.ng-dirty, .p-invalid) .p-inputgroup #{$ig-field} {
+  border-color: var(--color-sampark-error-100, #ea151a) !important;
 
-  &:focus-within {
+  &:focus-within,
+  &:focus {
     box-shadow: 0 0 0 var(--input-group-focus-ring-width)
-      var(--input-shadow-error, #ffe5e5);
+      var(--input-shadow-error, #ffe5e5) !important;
   }
 }
 
-:is(baps-input-group.baps-sampark, .baps-ds-sampark baps-input-group):has(
-    input:disabled
-  )
-  .p-inputgroup:has(> [input-group-control])
-  > :not([input-group-control]):not(.baps-input-group__addon) {
+#{$ig-sampark}:has(input:disabled) .p-inputgroup #{$ig-field} {
   &,
   &:hover {
-    border-color: var(--baps-ig-border);
-    background: var(--color-sampark-secondary-0);
+    border-color: var(--baps-ig-border) !important;
+    background: var(--color-sampark-secondary-0) !important;
   }
 }
