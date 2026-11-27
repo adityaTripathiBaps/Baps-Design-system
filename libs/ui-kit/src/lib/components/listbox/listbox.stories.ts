@@ -372,3 +372,85 @@ export const DisabledAndInvalid: Story = {
     `,
   }),
 };
+
+const box = (label: string, attrs: string, model = 'value') => `
+        <div style="display:grid;gap:8px;max-width:20rem">
+          <span style="font-size:13px;font-weight:600">${label}</span>
+          <baps-listbox ${attrs} [(ngModel)]="${model}"></baps-listbox>
+        </div>`;
+
+/** PrimeNG "Checkmark": a tick beside the selected option instead of a filled row. */
+export const Checkmark: Story = {
+  name: 'Listbox — Checkmark',
+  render: () => ({
+    props: { options: basicOptions, value: 'LHR' },
+    template: box('Checkmark', 'ariaLabel="Airport" [options]="options" optionLabel="label" optionValue="value" [checkmark]="true" [highlightOnSelect]="false"'),
+  }),
+};
+
+/** PrimeNG "Multiple" and "Meta Key Selection": without and with Ctrl/Cmd to add to the selection. */
+export const MultipleAndMetaKey: Story = {
+  name: 'Listbox — Multiple and Meta Key Selection',
+  render: () => ({
+    props: { options: basicOptions, a: ['JFK'], b: ['JFK'] },
+    template: `<div style="display:flex;gap:24px;flex-wrap:wrap">
+      ${box('Multiple', 'ariaLabel="Airports" [options]="options" optionLabel="label" optionValue="value" [multiple]="true" [metaKeySelection]="false"', 'a')}
+      ${box('Meta key selection (Ctrl/Cmd + click)', 'ariaLabel="Airports" [options]="options" optionLabel="label" optionValue="value" [multiple]="true" [metaKeySelection]="true"', 'b')}
+    </div>`,
+  }),
+};
+
+/** PrimeNG "Virtual Scroll": 10,000 rows rendered on demand, with filter, checkboxes, select all and stripes. */
+export const VirtualScroll: Story = {
+  name: 'Listbox — Virtual Scroll',
+  render: () => ({
+    props: {
+      options: Array.from({ length: 10000 }, (_, i) => ({ label: `Item #${i}`, value: i })),
+      value: [],
+    },
+    template: box('10,000 items', 'ariaLabel="Items" [options]="options" optionLabel="label" optionValue="value" [multiple]="true" [checkbox]="true" [filter]="true" [metaKeySelection]="false" [virtualScroll]="true" [virtualScrollItemSize]="40" scrollHeight="250px" [striped]="true"'),
+  }),
+};
+
+/** PrimeNG "Drag and Drop": reorder the options by dragging. */
+export const DragDrop: Story = {
+  name: 'Listbox — Drag and Drop',
+  render: () => ({
+    props: { options: basicOptions.slice(0, 5).map((o) => ({ ...o })), value: null },
+    template: box('Drag to reorder', 'ariaLabel="Airports" [options]="options" optionLabel="label" optionValue="value" [dragdrop]="true"'),
+  }),
+};
+
+/** PrimeNG "Focus Behavior": autoOptionFocus, selectOnFocus and focusOnHover. */
+export const FocusBehavior: Story = {
+  name: 'Listbox — Focus Behavior',
+  render: () => ({
+    props: { options: basicOptions, value: null },
+    template: box('Select on focus, first option focused', 'ariaLabel="Airport" [options]="options" optionLabel="label" optionValue="value" [autoOptionFocus]="true" [selectOnFocus]="true" [focusOnHover]="false"'),
+  }),
+};
+
+/** Empty list and empty filter result messages. */
+export const EmptyMessages: Story = {
+  name: 'Listbox — Empty Messages',
+  render: () => ({
+    props: { none: [], options: basicOptions, value: null },
+    template: `<div style="display:flex;gap:24px;flex-wrap:wrap">
+      ${box('No options', 'ariaLabel="Nothing" [options]="none" emptyMessage="No airports yet"')}
+      ${box('Filter with no match (type xyz)', 'ariaLabel="Airport" [options]="options" optionLabel="label" optionValue="value" [filter]="true" emptyFilterMessage="No airport matches"')}
+    </div>`,
+  }),
+};
+
+/** Invalid without a form, and fluid width. */
+export const InvalidAndFluid: Story = {
+  name: 'Listbox — Invalid and Fluid',
+  render: () => ({
+    props: { options: basicOptions, value: null },
+    template: `<div style="display:grid;gap:24px">
+      ${box('Invalid', 'ariaLabel="Airport" [options]="options" optionLabel="label" optionValue="value" [invalid]="true"')}
+      <div style="display:grid;gap:8px"><span style="font-size:13px;font-weight:600">Fluid</span>
+        <baps-listbox ariaLabel="Airport" [options]="options" optionLabel="label" optionValue="value" [fluid]="true" [(ngModel)]="value"></baps-listbox></div>
+    </div>`,
+  }),
+};

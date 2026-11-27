@@ -282,3 +282,76 @@ describe('BapsListbox scrollable region', () => {
     expect(sentinels.every((s) => s.getAttribute('tabindex') === '0')).toBe(true);
   });
 });
+
+describe('BapsListbox PrimeNG pass-through (primeng.dev/listbox)', () => {
+  @Component({
+    imports: [BapsListbox, ReactiveFormsModule],
+    template: `<baps-listbox
+      ariaLabel="Airport"
+      [formControl]="control"
+      [options]="options"
+      optionLabel="label"
+      optionValue="value"
+      [checkmark]="true"
+      [highlightOnSelect]="false"
+      [striped]="true"
+      scrollHeight="250px"
+      [invalid]="true"
+      [fluid]="true"
+      emptyFilterMessage="No match"
+      filterMatchMode="startsWith"
+      [dragdrop]="true"
+      (changed)="changes.push($event.value)"
+    />`,
+  })
+  class PassHost {
+    readonly control = new FormControl<string | null>(null);
+    readonly options = [
+      { label: 'Heathrow', value: 'LHR' },
+      { label: 'Changi', value: 'SIN' },
+    ];
+    readonly changes: unknown[] = [];
+  }
+
+  async function render() {
+    const f = TestBed.createComponent(PassHost);
+    f.detectChanges();
+    await f.whenStable();
+    f.detectChanges();
+    return f;
+  }
+
+  it('forwards the PrimeNG inputs', async () => {
+    const { Listbox } = await import('primeng/listbox');
+    const f = await render();
+    const p = f.debugElement.query(By.directive(Listbox)).componentInstance as any;
+    const read = (v: any) => (typeof v === 'function' ? v() : v);
+    expect(read(p.checkmark)).toBe(true);
+    expect(read(p.highlightOnSelect)).toBe(false);
+    expect(read(p.striped)).toBe(true);
+    expect(read(p.scrollHeight)).toBe('250px');
+    expect(read(p.invalid)).toBe(true);
+    expect(read(p.fluid)).toBe(true);
+    expect(read(p.emptyFilterMessage)).toBe('No match');
+    expect(read(p.filterMatchMode)).toBe('startsWith');
+    expect(read(p.dragdrop)).toBe(true);
+  });
+
+  it('re-emits onChange as (changed) and reports the value to the form', async () => {
+    const f = await render();
+    (f.nativeElement.querySelectorAll('.p-listbox-option')[1] as HTMLElement).click();
+    f.detectChanges();
+    expect(f.componentInstance.control.value).toBe('SIN');
+    expect(f.componentInstance.changes).toEqual(['SIN']);
+  });
+
+  it('marks the form control touched on blur', async () => {
+    const f = await render();
+    expect(f.componentInstance.control.touched).toBe(false);
+    const list = f.nativeElement.querySelector('.p-listbox-list') as HTMLElement;
+    list.dispatchEvent(new FocusEvent('focus'));
+    list.dispatchEvent(new FocusEvent('blur'));
+    f.detectChanges();
+    expect(f.componentInstance.control.touched).toBe(true);
+  });
+});

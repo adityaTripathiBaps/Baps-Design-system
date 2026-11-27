@@ -8,6 +8,20 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/ui-kit` — minor, additive:** `baps-listbox` covers PrimeNG's Listbox
+  demo. New pass-through inputs: `checkmark`, `highlightOnSelect`, `striped`
+  (even rows in the brand's light surface, not PrimeNG's slate),
+  `scrollHeight`, `virtualScroll`, `virtualScrollItemSize`,
+  `virtualScrollOptions`, `lazy`, `dragdrop`, `dropListData`, `showToggleAll`,
+  `selectAll`, `emptyMessage`, `emptyFilterMessage`, `filterMatchMode`,
+  `filterBy`, `filterLocale`, `filterValue`, `dataKey`, `autoOptionFocus`,
+  `selectOnFocus`, `focusOnHover`, `searchLocale`, `tabindex`, `listStyle`,
+  `listStyleClass`, `invalid`, `fluid`, `ariaFilterLabel` and the four
+  screen-reader messages. New outputs: `changed`, `clicked`, `dblClicked`,
+  `filtered`, `selectAllChange`, `lazyLoad`, `dropped`. Blur now marks the
+  form control touched. Stories and docs: Checkmark, Multiple and meta key,
+  Virtual scroll, Drag and drop, Focus behavior, Empty messages, Invalid and
+  fluid.
 - **`@org/ui-kit` — minor, additive:** `baps-input-number` covers PrimeNG's
   InputNumber demo. `buttonLayout` (`stacked` default | `horizontal` |
   `vertical`) with `step` (fractional steps round to the step's precision):

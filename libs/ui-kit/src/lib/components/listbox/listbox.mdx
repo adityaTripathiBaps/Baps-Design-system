@@ -86,6 +86,48 @@ Rows are rendered by [`baps-menu-item`](?path=/docs/components-menuitem--docs); 
   snippets={listboxSnippets.DisabledAndInvalid}
 />
 
+### Checkmark
+
+`[checkmark]="true"` with `[highlightOnSelect]="false"` marks the selected option with a tick instead of a filled row.
+
+<Canvas of={ListboxStories.Checkmark} />
+
+### Multiple and meta key selection
+
+`[multiple]="true"`. With `[metaKeySelection]="true"` a plain click replaces the selection and Ctrl/Cmd + click adds to it.
+
+<Canvas of={ListboxStories.MultipleAndMetaKey} />
+
+### Virtual scroll
+
+`[virtualScroll]="true"` with `virtualScrollItemSize` renders only the visible rows (10,000 options here). `[striped]="true"` tints even rows with the brand's light surface; `showToggleAll` adds the header select-all with `checkbox` + `multiple`.
+
+<Canvas of={ListboxStories.VirtualScroll} />
+
+### Drag and drop
+
+`[dragdrop]="true"` reorders the options in place; `(dropped)` reports the move.
+
+<Canvas of={ListboxStories.DragDrop} />
+
+### Focus behavior
+
+`autoOptionFocus`, `selectOnFocus` and `focusOnHover` control what keyboard focus and hover do.
+
+<Canvas of={ListboxStories.FocusBehavior} />
+
+### Empty messages
+
+`emptyMessage` for a list with no options, `emptyFilterMessage` when the filter matches nothing.
+
+<Canvas of={ListboxStories.EmptyMessages} />
+
+### Invalid and fluid
+
+`invalid` shows the error state without a form; `fluid` fills the container.
+
+<Canvas of={ListboxStories.InvalidAndFluid} />
+
 ## When Not to Use
 
 | Need                                          | Use                   | Not this                                         |

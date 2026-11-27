@@ -16,6 +16,8 @@ baps-listbox {
   --listbox-text-selected: var(--color-mybky-mono-900);
   --listbox-text-muted: var(--color-mybky-mono-500);
   --listbox-bar-color: var(--color-mybky-blue-600);
+  /* [striped] even rows: PrimeNG's own value is slate #f8fafc in both brands. */
+  --p-listbox-option-striped-background: var(--color-mybky-mono-50, #f8fafb);
 
   display: block;
 }
@@ -130,6 +132,7 @@ baps-listbox .p-checkbox {
 
 :is(baps-listbox.baps-sampark, .baps-ds-sampark baps-listbox) {
   --listbox-radius: var(--radius-sampark-default);
+  --p-listbox-option-striped-background: var(--color-sampark-secondary-0, #f8f7f7);
   --listbox-bg: var(--color-sampark-mono-0);
   --listbox-border: var(--color-sampark-border-default);
   --listbox-text: var(--color-sampark-text-primary);

@@ -1,6 +1,8 @@
 import {
   Component,
+  EventEmitter,
   Input,
+  Output,
   forwardRef,
   ViewEncapsulation,
   ContentChildren,
@@ -61,7 +63,47 @@ export interface BapsListboxOption {
       [optionGroupChildren]="optionGroupChildren!"
       [style]="style"
       [styleClass]="styleClass"
-      (onChange)="onModelChange($event.value)"
+      [checkmark]="checkmark"
+      [highlightOnSelect]="highlightOnSelect"
+      [striped]="striped"
+      [scrollHeight]="scrollHeight"
+      [virtualScroll]="virtualScroll"
+      [virtualScrollItemSize]="virtualScrollItemSize"
+      [virtualScrollOptions]="virtualScrollOptions"
+      [lazy]="lazy"
+      [dragdrop]="dragdrop"
+      [dropListData]="dropListData"
+      [showToggleAll]="showToggleAll"
+      [selectAll]="selectAll"
+      [emptyMessage]="emptyMessage"
+      [emptyFilterMessage]="emptyFilterMessage"
+      [filterMatchMode]="filterMatchMode"
+      [filterBy]="filterBy"
+      [filterLocale]="filterLocale"
+      [filterValue]="filterValue"
+      [dataKey]="dataKey"
+      [autoOptionFocus]="autoOptionFocus"
+      [selectOnFocus]="selectOnFocus"
+      [focusOnHover]="focusOnHover"
+      [searchLocale]="searchLocale"
+      [tabindex]="tabindex"
+      [listStyle]="listStyle"
+      [listStyleClass]="listStyleClass"
+      [invalid]="invalid"
+      [fluid]="fluid"
+      [ariaFilterLabel]="ariaFilterLabel"
+      [searchMessage]="searchMessage"
+      [emptySelectionMessage]="emptySelectionMessage"
+      [selectionMessage]="selectionMessage"
+      [filterMessage]="filterMessage"
+      (onChange)="onModelChange($event.value); changed.emit($event)"
+      (onClick)="clicked.emit($event)"
+      (onDblClick)="dblClicked.emit($event)"
+      (onFilter)="filtered.emit($event)"
+      (onSelectAllChange)="selectAllChange.emit($event)"
+      (onLazyLoad)="lazyLoad.emit($event)"
+      (onDrop)="dropped.emit($event)"
+      (onBlur)="onModelTouched()"
     >
       <!-- Forward custom templates if provided by user -->
       @for (t of templates; track t) {
@@ -144,6 +186,64 @@ export class BapsListbox implements ControlValueAccessor {
   @Input() style?: Record<string, string | number>;
   @Input() styleClass?: string;
   @Input() brand: BapsBrand = injectBapsBrand();
+  /** A check mark beside the selected option (single selection). */
+  @Input() checkmark = false;
+  /** Fill the selected option's row. Off with checkmark for a tick-only look. */
+  @Input() highlightOnSelect = true;
+  @Input() striped = false;
+  /** Height of the scrolling list, e.g. '250px'. */
+  @Input() scrollHeight = '14rem';
+  @Input() virtualScroll = false;
+  @Input() virtualScrollItemSize?: number;
+  @Input() virtualScrollOptions?: any;
+  @Input() lazy = false;
+  /** Reorder options by dragging (CDK). */
+  @Input() dragdrop = false;
+  @Input() dropListData?: any[];
+  /** Header "select all" checkbox with checkbox + multiple. */
+  @Input() showToggleAll = true;
+  /** Controlled select-all state, for virtual or lazy lists. */
+  @Input() selectAll?: boolean;
+  @Input() emptyMessage?: string;
+  @Input() emptyFilterMessage?: string;
+  @Input() filterMatchMode:
+    | 'contains'
+    | 'startsWith'
+    | 'endsWith'
+    | 'equals'
+    | 'notEquals'
+    | 'in'
+    | 'lt'
+    | 'lte'
+    | 'gt'
+    | 'gte' = 'contains';
+  @Input() filterBy?: string;
+  @Input() filterLocale?: string;
+  @Input() filterValue?: string;
+  @Input() dataKey?: string;
+  @Input() autoOptionFocus = false;
+  @Input() selectOnFocus = false;
+  @Input() focusOnHover = true;
+  @Input() searchLocale = false;
+  @Input() tabindex = 0;
+  @Input() listStyle?: Record<string, string | number>;
+  @Input() listStyleClass?: string;
+  @Input() invalid = false;
+  @Input() fluid = false;
+  @Input() ariaFilterLabel?: string;
+  @Input() searchMessage?: string;
+  @Input() emptySelectionMessage?: string;
+  @Input() selectionMessage?: string;
+  @Input() filterMessage?: string;
+
+  /** PrimeNG's onChange event (the form already gets the value). */
+  @Output() readonly changed = new EventEmitter<any>();
+  @Output() readonly clicked = new EventEmitter<any>();
+  @Output() readonly dblClicked = new EventEmitter<any>();
+  @Output() readonly filtered = new EventEmitter<any>();
+  @Output() readonly selectAllChange = new EventEmitter<any>();
+  @Output() readonly lazyLoad = new EventEmitter<any>();
+  @Output() readonly dropped = new EventEmitter<any>();
 
   @ContentChildren(PrimeTemplate) templates!: QueryList<PrimeTemplate>;
 
