@@ -254,6 +254,13 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/tokens` + `@org/ui-kit/styles` — patch, visual (Sampark):** drawer
+  and dialog mask is `rgba(0,0,0,0.32)`, SPM dev's computed value (was
+  Mono/100 at 45%). A drawer or dialog holding an open select / multiselect /
+  tree-select is no longer lifted above the page scrim: it greys with the page
+  and only the open list stays lit, as SPM dev (Templates Sort > "then by").
+  This reverses the 2026-11-19 "keep the drawer clear" rule (user call
+  2026-11-27).
 - **`@org/ui-kit/styles` — patch, visual (Sampark):** every input group is
   drawn per part, as SPM dev: label addons (Min | 1, Max | 100) too, not only
   control groups. The field carries a full 1px border and the addons the three

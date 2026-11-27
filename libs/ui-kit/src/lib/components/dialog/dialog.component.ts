@@ -455,7 +455,7 @@ export class BapsDialog {
    */
   protected get maskStyle(): Record<string, string> | undefined {
     return this.brand === 'sampark'
-      ? { '--p-mask-background': 'var(--drawer-sampark-mask-background, rgba(14, 13, 13, 0.45))' }
+      ? { '--p-mask-background': 'var(--drawer-sampark-mask-background, rgba(0, 0, 0, 0.32))' }
       : undefined;
   }
 }

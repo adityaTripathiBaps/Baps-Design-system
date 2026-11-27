@@ -601,30 +601,12 @@ html.baps-ds-sampark
   z-index: 3001 !important;
 }
 
-/* A drawer or dialog holding an open Select / MultiSelect / TreeSelect stays
-   ABOVE the 3000 scrim and is not dimmed: only the page behind it greys out,
-   and its body-level panel (3001 above, later in the DOM) sits on top of it.
-   This replaced a rule that dropped the drawer to z-index:auto to copy SPM dev,
-   where the drawer (2204) sits under its own mask (2900) and the whole panel
-   greys while the list is open. User call 2026-11-19: that grey drawer reads
-   as a stacking bug (Templates filters > Location Type, Sort > "then by").
-   3001 rather than the backdrop variable: the scrim above is a fixed 3000, and
-   an app may set --overlay-backdrop-z-index to anything (spm sets 3000, the
-   kit default is 500, which would park the drawer under the scrim). The
-   ::after is the base rule's local dim from _input.scss, switched off. */
-html.baps-ds-sampark
-  :is(.p-drawer, .p-dialog, .p-dialog-mask):has(
-    :is(.p-select-open, .p-multiselect-open, .p-treeselect-open)
-  ) {
-  z-index: 3001 !important;
-}
-
-html.baps-ds-sampark
-  :is(.p-drawer, .p-dialog):has(
-    :is(.p-select-open, .p-multiselect-open, .p-treeselect-open)
-  )::after {
-  content: none !important;
-}
+/* A drawer or dialog holding an open Select / MultiSelect / TreeSelect is NOT
+   lifted above the 3000 scrim: it greys with the page and only the open list
+   (3001, body-level) stays lit, as SPM dev does (drawer 1102 under scrim 3000,
+   panel 3200; Templates Sort > "then by", measured 2026-11-27). User call
+   2026-11-27, reversing the 2026-11-19 "keep the drawer clear" rule that sat
+   here and lifted the drawer to 3001. */
 
 /* Overlay gap from its trigger: SPM dev opens every select / multiselect /
    treeselect panel 10px below the field (parity T-17, Templates, measured

@@ -275,7 +275,7 @@ export class BapsDrawer implements OnDestroy {
     if (this.brand === 'sampark') {
       return {
         '--p-mask-background':
-          'var(--drawer-sampark-mask-background, rgba(14, 13, 13, 0.45))',
+          'var(--drawer-sampark-mask-background, rgba(0, 0, 0, 0.32))',
       };
     }
     // MyBKY frosts the scrim. This cannot be done from CSS: the mask is an

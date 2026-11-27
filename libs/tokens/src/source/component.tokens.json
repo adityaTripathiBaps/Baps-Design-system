@@ -403,8 +403,8 @@
         "comment": "Mono/Borders — header/footer separators"
       },
       "maskBackground": {
-        "value": "rgba(14,13,13,0.45)",
-        "comment": "scrim behind the panel; Mono/100 at 45%"
+        "value": "rgba(0,0,0,0.32)",
+        "comment": "scrim behind the panel; SPM dev computed value (drawer and dialog mask, measured 2026-11-27, user-approved); was Mono/100 at 45%"
       }
     },
     "mybky": {

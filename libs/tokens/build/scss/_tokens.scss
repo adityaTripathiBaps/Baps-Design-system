@@ -196,7 +196,7 @@ $drawer-sampark-width: max(31.25rem, 26.042vw); // fluid — min 500px, scales w
 $drawer-sampark-title-size: 1.25rem; // 20px — Inter/H2/(20)/Semi Bold
 $drawer-sampark-title-weight: 600;
 $drawer-sampark-title-line-height: 1.3;
-$drawer-sampark-mask-background: rgba(14,13,13,0.45); // scrim behind the panel; Mono/100 at 45%
+$drawer-sampark-mask-background: rgba(0,0,0,0.32); // scrim behind the panel; SPM dev computed value (drawer and dialog mask, measured 2026-11-27, user-approved); was Mono/100 at 45%
 $drawer-mybky-radius: 2rem; // 32px. Far beyond radius.mybky.md (8px) — a drawer is its own surface tier, not a big card.
 $drawer-mybky-backdrop-blur: 25px; // backdrop-filter on the mask
 $drawer-mybky-header-background: transparent; // FLAT panel — header and footer have no bar of their own, they inherit the panel white. Recorded so nobody re-adds one.

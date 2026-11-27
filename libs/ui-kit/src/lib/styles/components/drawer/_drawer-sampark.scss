@@ -303,7 +303,7 @@
 .baps-ds-sampark {
   --p-mask-background: var(
     --drawer-sampark-mask-background,
-    rgba(14, 13, 13, 0.45)
+    rgba(0, 0, 0, 0.32)
   );
   /* A drawer or dialog left on its default brand still gets the MyBKY
      frosted scrim from maskStyle (blur(var(--drawer-mybky-backdrop-blur))).
