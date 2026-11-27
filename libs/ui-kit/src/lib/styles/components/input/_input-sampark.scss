@@ -606,7 +606,25 @@ html.baps-ds-sampark
    (3001, body-level) stays lit, as SPM dev does (drawer 1102 under scrim 3000,
    panel 3200; Templates Sort > "then by", measured 2026-11-27). User call
    2026-11-27, reversing the 2026-11-19 "keep the drawer clear" rule that sat
-   here and lifted the drawer to 3001. */
+   here and lifted the drawer to 3001.
+   The base _input.scss rule still lifts the container to backdrop + 1 and dims
+   it with its own ::after, which left the drawer one dim lighter than dev
+   (pixel 140 vs dev 95: dev's drawer sits under the 0.32 mask AND the 0.45
+   scrim). z-index auto drops it under both; the ::after is switched off so it
+   is not dimmed a third time. */
+html.baps-ds-sampark
+  :is(.p-drawer, .p-dialog):has(
+    :is(.p-select-open, .p-multiselect-open, .p-treeselect-open)
+  ) {
+  z-index: auto !important;
+}
+
+html.baps-ds-sampark
+  :is(.p-drawer, .p-dialog):has(
+    :is(.p-select-open, .p-multiselect-open, .p-treeselect-open)
+  )::after {
+  content: none !important;
+}
 
 /* Overlay gap from its trigger: SPM dev opens every select / multiselect /
    treeselect panel 10px below the field (parity T-17, Templates, measured
