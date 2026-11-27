@@ -1,0 +1,52 @@
+import { Meta, Canvas } from '@storybook/blocks';
+
+import * as ColorPickerStories from './color-picker.stories';
+
+<Meta of={ColorPickerStories} />
+
+# ColorPicker
+
+`baps-color-picker` picks a colour from a saturation square and a hue strip. It wraps PrimeNG's `p-colorpicker` ([primeng.dev/colorpicker](https://primeng.dev/colorpicker)), which PrimeNG v21 lists as InputColor. The swatch is a 32px square with the field radius of the brand (MyBKY pill, Sampark 4px); the picker itself is PrimeNG's dark panel in both brands.
+
+## Usage
+
+```html
+<label for="colour">Colour</label>
+<baps-color-picker inputId="colour" formControlName="colour" />
+```
+
+## Examples
+
+### Basic
+
+<Canvas of={ColorPickerStories.Basic} />
+
+### Inline
+
+`[inline]="true"` puts the picker in the page instead of a popup.
+
+<Canvas of={ColorPickerStories.Inline} />
+
+### Format
+
+`format` sets the value type: `hex` (a string such as `#5f78b8`), `rgb` (`{ r, g, b }`) or `hsb` (`{ h, s, b }`).
+
+<Canvas of={ColorPickerStories.Format} />
+
+### Disabled
+
+<Canvas of={ColorPickerStories.Disabled} />
+
+### Reactive form
+
+`defaultColor` is where the picker opens while the value is empty. Closing the popup marks the control touched.
+
+<Canvas of={ColorPickerStories.ReactiveForm} />
+
+## Events
+
+`changed`, `shown`, `hidden`. The form gets the value itself.
+
+## Accessibility
+
+Name the swatch with a `<label for>` and `inputId`; without one PrimeNG reads it as "Select a color". On the swatch, Space opens the picker and Escape or Tab closes it, but choosing the colour itself needs a pointer: give keyboard users a text field for the hex value next to it where they must be able to set a colour.
