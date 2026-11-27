@@ -8,6 +8,7 @@ classification and deprecation policy.
 
 ### Added
 
+- **IftaLabel — `baps-iftalabel` wraps PrimeNG IftaLabel ([primeng.dev/iftalabel](https://primeng.dev/iftalabel)).** The label sits inside the field, above the value. PrimeNG's ifta rules live in `@layer primeng` and lost to the kit's `!important` input skin (fixed 36/32px height, 6px block padding), so the label landed on the value; the wrapper re-applies them with PrimeNG's own `--p-iftalabel-input-padding-top/bottom` (1.5rem / 0.5rem) for inputs, selects, multiselects, tree/cascade selects, autocompletes, date pickers and number inputs. Measured in Storybook, both brands: field 52px, label 8px from the top and in line with the field text (MyBKY 14px, Sampark 8px), error colour on invalid, primary colour on focus. Stories for PrimeNG's Basic and Invalid demos plus a select; docs and spec.
 - **`@org/ui-kit` — minor, new component:** `baps-cascade-select`, PrimeNG
   CascadeSelect for both brands: form control, Sampark error state from the
   form control, brand scope on the body-level panel, PrimeNG's inputs and

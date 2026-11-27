@@ -1,0 +1,44 @@
+import { Meta, Canvas } from '@storybook/blocks';
+
+import * as IftaLabelStories from './ifta-label.stories';
+
+<Meta of={IftaLabelStories} />
+
+# IftaLabel
+
+`baps-iftalabel` puts the label inside the field, above the value ("infield top aligned"). It wraps PrimeNG's `p-iftalabel` ([primeng.dev/iftalabel](https://primeng.dev/iftalabel)). The field grows to PrimeNG's ifta height (1.5rem above the value, 0.5rem below) and the label lines up with the field's text in both brands.
+
+Use it where the form is dense and a label above the field costs too much room. For the usual form, a label above the field (`baps-form-field`) stays the default; `baps-floatlabel` is the other in-field option.
+
+## Usage
+
+```html
+<baps-iftalabel>
+  <input bapsInputText id="username" [(ngModel)]="value" />
+  <label for="username">Username</label>
+</baps-iftalabel>
+```
+
+The label must come after the field and point at it with `for`.
+
+## Examples
+
+### Basic
+
+<Canvas of={IftaLabelStories.Basic} />
+
+### Invalid
+
+When the field is invalid, the label takes the error colour too.
+
+<Canvas of={IftaLabelStories.Invalid} />
+
+### With a select
+
+Selects, multiselects, tree selects, cascade selects, autocompletes, date pickers and number inputs work the same way.
+
+<Canvas of={IftaLabelStories.WithSelect} />
+
+## Accessibility
+
+The `<label for>` names the field; keep it even though it sits inside the field.

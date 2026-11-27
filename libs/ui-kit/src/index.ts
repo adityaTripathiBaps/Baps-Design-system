@@ -28,6 +28,7 @@ export * from './lib/components/users-dropdown/users-dropdown.component';
 export * from './lib/components/form-field/directives/input-text.directive';
 export * from './lib/components/form-field/directives/textarea.directive';
 export * from './lib/components/form-field/float-label.component';
+export * from './lib/components/form-field/ifta-label.component';
 export * from './lib/components/form-field/icon-field.component';
 export * from './lib/components/form-field/input-icon.component';
 export * from './lib/components/form-field/message.component';
