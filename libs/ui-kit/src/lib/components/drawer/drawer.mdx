@@ -54,7 +54,13 @@ A slide-in panel anchored to an edge of the screen. `baps-drawer` wraps PrimeNG 
   snippets={drawerSnippets.Playground}
 />
 
-<Controls of={DrawerStories.Playground} />
+{/* Text controls (styleClass, header, width) are left out ON PURPOSE: with any
+    of them on this page the Docs page locked up - its main thread spun on
+    selectionchange events from Storybook's autosize textarea, in the real
+    Chrome too (2026-11-27). Root cause not found: the same controls are fine on
+    other Docs pages, and a bare <button> as the story still froze. Edit those
+    three from the Playground story's own Controls tab instead. */}
+<Controls of={DrawerStories.Playground} exclude={['styleClass', 'header', 'width']} />
 
 ### Open
 

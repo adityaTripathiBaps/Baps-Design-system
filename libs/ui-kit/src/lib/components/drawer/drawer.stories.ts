@@ -444,7 +444,10 @@ export const SamparkBottomSheet: Story = {
   render: (args) => ({
     props: {
       ...args,
-      open: true,
+      // Closed by default, like every drawer story: autodocs mounts them all on
+      // one page, and an open modal drawer left its mask over the whole Docs
+      // page and froze it (see Open above). Click "Open sheet".
+      open: false,
       query: '',
       options: [
         { label: 'Satsang', on: false, count: 8 },

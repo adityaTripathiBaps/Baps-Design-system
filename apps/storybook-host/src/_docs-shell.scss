@@ -1706,3 +1706,26 @@ body.baps-dark.baps-ds-sampark {
   font: inherit;
   font-size: 0.8125rem;
 }
+
+/* ── Open overlays in a docs canvas stay above the page scrim ──────────────
+   Storybook's zoom wrapper (the parent of .innerZoomElementWrapper) always
+   carries transform: scale(1), even at 100%, and any transform makes a
+   stacking context. An overlay rendered inline (no appendTo="body") is sealed
+   inside it at the root level's z auto, so the kit's body::before scrim (500,
+   _input.scss 8h) painted over the open panel and greyed it with the page
+   (TreeSelect docs, the CRUD form before 9c43153). The transform cannot go -
+   it is the docs zoom - so while one of the story's overlays is open the
+   wrapper is lifted above the scrim. Docs only: story view and real apps have
+   no such wrapper. */
+.docs-story
+  div:has(> .innerZoomElementWrapper):has(
+    .p-overlay,
+    .p-connected-overlay-visible,
+    .p-datepicker-panel:not(.p-datepicker-panel-inline),
+    .p-popover,
+    .p-menu-overlay,
+    .p-tieredmenu-overlay
+  ) {
+  position: relative;
+  z-index: 3001;
+}

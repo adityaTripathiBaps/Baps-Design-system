@@ -254,6 +254,17 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **Docs:** an open dropdown, tree-select or date panel inside a Docs canvas
+  is no longer greyed out by the page scrim. Storybook's zoom wrapper always
+  carries `transform: scale(1)`, which trapped inline panels under the
+  `body::before` backdrop (TreeSelect docs, 3 examples, both brands); while a
+  panel is open its story is lifted above the scrim. Sweep of all 63
+  component/pattern Docs pages: 0 dimmed panels.
+- **Docs (Drawer):** the Docs page no longer freezes. The bottom-sheet story
+  started open (`open: true`, against the file's own rule) and the page's text
+  controls locked the main thread; the story now starts closed and the Docs
+  Controls leave out the three text controls (root cause of the freeze not
+  found; noted in drawer.mdx).
 - **Docs (patterns):** the CRUD form, data-management and date-filter
   patterns open their `baps-select` panels on `<body>` (`appendTo="body"`, as
   spm-ui does). Rendered inline, a panel inside the docs canvas sat in that
