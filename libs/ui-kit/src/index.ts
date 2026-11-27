@@ -89,4 +89,5 @@ export * from './lib/components/autocomplete/autocomplete.component';
 export * from './lib/components/cascade-select/cascade-select.component';
 export * from './lib/components/color-picker/color-picker.component';
 export * from './lib/components/input-mask/input-mask.component';
+export * from './lib/components/password/password.component';
 export * from './lib/theme/ramp';
