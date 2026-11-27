@@ -48,6 +48,36 @@ A modal window for a decision or a short form. `baps-dialog` wraps PrimeNG’s `
 
 <Canvas of={DialogStories.ActionsEnd} />
 
+### Draggable
+
+`[draggable]="true"` moves the panel by its header (the header shows a move cursor) and `keepInViewport` keeps it on screen. Off by default: a blocking decision should not move under the cursor. Use it for non-blocking panels.
+
+<Canvas of={DialogStories.Draggable} />
+
+### Maximizable and responsive
+
+`[maximizable]="true"` adds a maximize button; `breakpoints` sets the width per max-width breakpoint, e.g. `{ '1199px': '75vw', '575px': '90vw' }`.
+
+<Canvas of={DialogStories.MaximizableResponsive} />
+
+### Position
+
+`position` docks the panel to an edge or corner: left, right, top, bottom, topleft, topright, bottomleft, bottomright (default center).
+
+<Canvas of={DialogStories.Position} />
+
+### Without modal
+
+`[modal]="false"` leaves the page usable; pair it with `[blockScroll]="false"`.
+
+<Canvas of={DialogStories.WithoutModal} />
+
+### Headless and full screen
+
+`[showHeader]="false"` drops the title bar when the body has its own heading (give it `ariaLabel`); a full-screen panel is a 100vw width with a 100vh style. `maskStyleClass` and `contentStyleClass` add classes to the mask and the content.
+
+<Canvas of={DialogStories.HeadlessAndFullScreen} />
+
 ## API
 
 Inputs, outputs and their types, read from the component's own source.

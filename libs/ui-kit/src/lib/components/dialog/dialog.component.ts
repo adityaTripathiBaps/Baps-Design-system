@@ -156,9 +156,11 @@ const MYBKY_DIALOG_TOKENS = {
  * - `appendTo = 'body'`. A dialog is usually opened from a table cell, and
  *   `.baps-table-surface` has `overflow` — a `'self'`-attached panel is
  *   clipped by it.
- * - `draggable` / `resizable` / `maximizable` are not exposed at all. A
- *   blocking decision that the user can drag out from under their own cursor
- *   is a worse decision surface, and none of the Figma shells offer it.
+ * - `draggable` / `resizable` / `maximizable` default to false. A blocking
+ *   decision that the user can drag out from under their own cursor is a
+ *   worse decision surface, and none of the Figma shells offer it. They are
+ *   exposed as opt-ins (PrimeNG demo parity, user request 2026-11-27) for
+ *   non-blocking panels such as a draggable note or a maximizable viewer.
  */
 @Component({
   selector: 'baps-dialog',
@@ -175,8 +177,23 @@ const MYBKY_DIALOG_TOKENS = {
       [dismissableMask]="dismissableMask"
       [blockScroll]="blockScroll"
       [appendTo]="appendTo"
-      [draggable]="false"
-      [resizable]="false"
+      [draggable]="draggable"
+      [resizable]="resizable"
+      [maximizable]="maximizable"
+      [position]="position"
+      [breakpoints]="breakpoints"
+      [keepInViewport]="keepInViewport"
+      [focusOnShow]="focusOnShow"
+      [focusTrap]="focusTrap"
+      [contentStyle]="contentStyle"
+      [contentStyleClass]="contentStyleClass"
+      [maskStyleClass]="maskStyleClass"
+      [minX]="minX"
+      [minY]="minY"
+      [closeIcon]="closeIcon"
+      [closeTabindex]="closeTabindex"
+      [maximizeIcon]="maximizeIcon"
+      [minimizeIcon]="minimizeIcon"
       [closeAriaLabel]="closeAriaLabel"
       [style]="panelStyle"
       [styleClass]="resolvedPanelStyleClass"
@@ -186,6 +203,10 @@ const MYBKY_DIALOG_TOKENS = {
       [pt]="panelPt"
       (onShow)="shown.emit()"
       (onHide)="hidden.emit()"
+      (onDragEnd)="dragEnd.emit($event)"
+      (onResizeInit)="resizeInit.emit($event)"
+      (onResizeEnd)="resizeEnd.emit($event)"
+      (onMaximize)="maximize.emit($event)"
     >
       <!-- Replaces PrimeNG's title span outright, because the shell stacks a
            100x100 illustration above the title and PrimeNG's header has no
@@ -276,6 +297,10 @@ export class BapsDialog {
    */
   @Output() shown = new EventEmitter<void>();
   @Output() hidden = new EventEmitter<void>();
+  @Output() dragEnd = new EventEmitter<DragEvent>();
+  @Output() resizeInit = new EventEmitter<MouseEvent>();
+  @Output() resizeEnd = new EventEmitter<MouseEvent>();
+  @Output() maximize = new EventEmitter<{ maximized: boolean | undefined }>();
 
   /** Title text. Carries the id that `aria-labelledby` points at. */
   @Input() header?: string;
@@ -367,6 +392,44 @@ export class BapsDialog {
   /** Additional inline panel styles used by composed dialog wrappers. */
   @Input() style?: Record<string, string | number>;
 
+  /** Drag by the header. Off by default (see the class doc). */
+  @Input() draggable = false;
+  /** Resize from the bottom-right corner. Off by default. */
+  @Input() resizable = false;
+  /** A maximize button in the header. Off by default. */
+  @Input() maximizable = false;
+  /** Where the panel docks: center (default) or an edge / corner. */
+  @Input() position?:
+    | 'center'
+    | 'top'
+    | 'bottom'
+    | 'left'
+    | 'right'
+    | 'topleft'
+    | 'topright'
+    | 'bottomleft'
+    | 'bottomright';
+  /** Panel width per max-width breakpoint, e.g. { '1199px': '75vw', '575px': '90vw' }. */
+  @Input() breakpoints?: Record<string, string>;
+  /** Keep a dragged panel inside the viewport. */
+  @Input() keepInViewport = true;
+  /** Move focus into the panel when it opens. */
+  @Input() focusOnShow = true;
+  /** Keep Tab inside the panel while it is open. */
+  @Input() focusTrap = true;
+  @Input() contentStyle?: Record<string, string | number>;
+  @Input() contentStyleClass?: string;
+  /** Extra classes on the mask, e.g. a backdrop blur for a headless panel. */
+  @Input() maskStyleClass?: string;
+  /** Drag bounds. */
+  @Input() minX = 0;
+  @Input() minY = 0;
+  /** PrimeIcons class for the close button. */
+  @Input() closeIcon?: string;
+  @Input() closeTabindex = '0';
+  @Input() maximizeIcon?: string;
+  @Input() minimizeIcon?: string;
+
   /** Base stacking index forwarded to PrimeNG's portalled dialog. */
   @Input() baseZIndex = 0;
 
@@ -432,6 +495,7 @@ export class BapsDialog {
     return [
       'baps-dialog-panel',
       this.align === 'start' ? 'baps-dialog-align-start' : null,
+      this.draggable ? 'baps-dialog-draggable' : null,
       this.actionsAlign === 'end' ? 'baps-dialog-actions-end' : null,
       this.actionsAlign === 'center-auto' ? 'baps-dialog-actions-auto' : null,
       this.brand === 'sampark' ? 'baps-ds-sampark' : null,

@@ -1,5 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { BapsDialog, BapsDialogAlign } from './dialog.component';
 
 /**
@@ -302,5 +303,58 @@ describe('BapsDialog accessible name', () => {
       `<baps-dialog [visible]="true" header="Cancel upload" ariaLabel="Something else">Body</baps-dialog>`,
     );
     expect(name()).toBe('Cancel upload');
+  });
+});
+
+describe('BapsDialog PrimeNG opt-ins (primeng.dev/dialog)', () => {
+  @Component({
+    imports: [BapsDialog],
+    template: `<baps-dialog
+      [visible]="true"
+      header="Note"
+      [draggable]="true"
+      [resizable]="true"
+      [maximizable]="true"
+      position="topright"
+      [breakpoints]="bp"
+      [keepInViewport]="false"
+      maskStyleClass="m-x"
+      contentStyleClass="c-x"
+      appendTo="self"
+    >Body</baps-dialog>`,
+  })
+  class OptHost {
+    readonly bp = { '575px': '90vw' };
+  }
+
+  it('forwards the opt-in PrimeNG inputs', async () => {
+    const { Dialog } = await import('primeng/dialog');
+    const f = TestBed.createComponent(OptHost);
+    f.detectChanges();
+    await f.whenStable();
+    const p = f.debugElement.query(By.directive(Dialog)).componentInstance as any;
+    const read = (v: any) => (typeof v === 'function' ? v() : v);
+    expect(read(p.draggable)).toBe(true);
+    expect(read(p.resizable)).toBe(true);
+    expect(read(p.maximizable)).toBe(true);
+    expect(read(p.position)).toBe('topright');
+    expect(read(p.breakpoints)).toEqual({ '575px': '90vw' });
+    expect(read(p.keepInViewport)).toBe(false);
+    expect(read(p.maskStyleClass)).toBe('m-x');
+    expect(read(p.contentStyleClass)).toBe('c-x');
+  });
+
+  it('keeps drag, resize and maximize off by default', async () => {
+    const { Dialog } = await import('primeng/dialog');
+    @Component({ imports: [BapsDialog], template: `<baps-dialog [visible]="true" header="x" appendTo="self">b</baps-dialog>` })
+    class Plain {}
+    const f = TestBed.createComponent(Plain);
+    f.detectChanges();
+    await f.whenStable();
+    const p = f.debugElement.query(By.directive(Dialog)).componentInstance as any;
+    const read = (v: any) => (typeof v === 'function' ? v() : v);
+    expect(read(p.draggable)).toBe(false);
+    expect(read(p.resizable)).toBe(false);
+    expect(read(p.maximizable)).toBe(false);
   });
 });

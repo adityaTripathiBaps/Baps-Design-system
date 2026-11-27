@@ -433,3 +433,73 @@ export const ModalSemanticsInteraction: Story = {
     await expect(dialogEl).toHaveAttribute('aria-modal', 'true');
   },
 };
+
+const opener = (label: string, dialog: string, props = '') => `
+      <div class="story-pad" style="display:flex;gap:8px;flex-wrap:wrap">
+        <baps-button severity="secondary" [outlined]="true" label="${label}" (click)="visible = true" />
+        ${dialog}
+      </div>`;
+const body = `<p class="story-dialog-body">Notes you jot here stay with this record.</p>
+          <div dialog-footer><baps-button size="small" label="Close" (click)="visible = false" /></div>`;
+
+/** PrimeNG "Draggable": drag by the header; stays inside the viewport. Opt-in, not for blocking decisions. */
+export const Draggable: Story = {
+  render: () => ({
+    props: { visible: false },
+    template: opener('Open draggable note', `<baps-dialog [(visible)]="visible" header="Quick note" [draggable]="true" [modal]="false" [closable]="true" width="24rem">${body}</baps-dialog>`),
+    styles: [STORY_STYLES],
+  }),
+};
+
+/** PrimeNG "Maximizable" + "Responsive": a maximize button, and width per breakpoint. */
+export const MaximizableResponsive: Story = {
+  render: () => ({
+    props: { visible: false, bp: { '1199px': '75vw', '575px': '90vw' } },
+    template: opener('Open maximizable', `<baps-dialog [(visible)]="visible" header="Report" [maximizable]="true" [closable]="true" width="50rem" [breakpoints]="bp">${body}</baps-dialog>`),
+    styles: [STORY_STYLES],
+  }),
+};
+
+/** PrimeNG "Position": dock the panel to an edge or corner. */
+export const Position: Story = {
+  render: () => ({
+    props: { visible: false, pos: 'center', positions: ['left', 'right', 'top', 'bottom', 'topleft', 'topright', 'bottomleft', 'bottomright'] },
+    template: `
+      <div class="story-pad" style="display:flex;gap:8px;flex-wrap:wrap">
+        @for (p of positions; track p) {
+          <baps-button severity="secondary" [outlined]="true" size="small" [label]="p" (click)="pos = p; visible = true" />
+        }
+        <baps-dialog [(visible)]="visible" header="Edit profile" [position]="pos" [closable]="true" width="25rem">${body}</baps-dialog>
+      </div>`,
+    styles: [STORY_STYLES],
+  }),
+};
+
+/** PrimeNG "Without Modal": no mask; the page behind stays usable. */
+export const WithoutModal: Story = {
+  render: () => ({
+    props: { visible: false },
+    template: opener('Open without modal', `<baps-dialog [(visible)]="visible" header="Edit profile" [modal]="false" [blockScroll]="false" [closable]="true" width="25rem">${body}</baps-dialog>`),
+    styles: [STORY_STYLES],
+  }),
+};
+
+/** PrimeNG "Headless" and "Full Screen": no title bar (the body carries its own heading), and a panel that fills the screen. `maskStyleClass` adds classes to the mask when an app wants e.g. a blur. */
+export const HeadlessAndFullScreen: Story = {
+  render: () => ({
+    props: { visible: false, full: false },
+    template: `
+      <div class="story-pad" style="display:flex;gap:8px;flex-wrap:wrap">
+        <baps-button severity="secondary" [outlined]="true" label="Open headless" (click)="visible = true" />
+        <baps-button severity="secondary" [outlined]="true" label="Open full screen" (click)="full = true" />
+        <baps-dialog [(visible)]="visible" [showHeader]="false" ariaLabel="Sign in" width="22rem">
+          <p class="story-dialog-body">A panel with its own heading and no title bar.</p>
+          <div dialog-footer><baps-button size="small" label="Close" (click)="visible = false" /></div>
+        </baps-dialog>
+        <baps-dialog [(visible)]="full" header="Photo gallery" [closable]="true" width="100vw" [style]="{ height: '100vh', maxHeight: '100vh', borderRadius: '0' }">
+          <p class="story-dialog-body">Full-screen content.</p>
+        </baps-dialog>
+      </div>`,
+    styles: [STORY_STYLES],
+  }),
+};

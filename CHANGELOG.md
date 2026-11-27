@@ -8,6 +8,15 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/ui-kit` — minor, additive:** `baps-dialog` covers PrimeNG's Dialog
+  demo. Opt-ins (default off, kit design unchanged): `draggable` (header shows
+  a move cursor), `resizable`, `maximizable`. New pass-through inputs:
+  `position`, `breakpoints`, `keepInViewport`, `focusOnShow`, `focusTrap`,
+  `contentStyle`, `contentStyleClass`, `maskStyleClass`, `minX`, `minY`,
+  `closeIcon`, `closeTabindex`, `maximizeIcon`, `minimizeIcon`. New outputs:
+  `dragEnd`, `resizeInit`, `resizeEnd`, `maximize`. Stories and docs:
+  Draggable, Maximizable and responsive, Position, Without modal, Headless
+  and full screen.
 - **`@org/ui-kit` — minor, additive:** `baps-listbox` covers PrimeNG's Listbox
   demo. New pass-through inputs: `checkmark`, `highlightOnSelect`, `striped`
   (even rows in the brand's light surface, not PrimeNG's slate),

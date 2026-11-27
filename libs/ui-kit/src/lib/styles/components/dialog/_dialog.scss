@@ -172,3 +172,9 @@
 .baps-dark .baps-dialog-panel.baps-ds-sampark .baps-dialog__title {
   color: var(--color-sampark-dark-text-primary, #f8f7f7);
 }
+
+/* A draggable panel says so: PrimeNG 21 moves it by the header but sets no
+   cursor, so nothing showed the header could be grabbed. */
+.baps-dialog-panel.baps-dialog-draggable .p-dialog-header {
+  cursor: move;
+}
