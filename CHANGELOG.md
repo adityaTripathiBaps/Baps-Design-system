@@ -8,6 +8,13 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/ui-kit` — minor, new component:** `baps-autocomplete`, PrimeNG
+  AutoComplete for both brands (skin from the shared select partials). Form
+  control, Sampark error state that follows the form control, brand scope on
+  the body-level panel, all PrimeNG inputs (dropdown, forceSelection, group,
+  virtualScroll, focus behaviour, sizes, variant, fluid, messages …), outputs
+  without the `on` prefix, and 11 forwarded templates. Stories and docs for
+  every PrimeNG demo section; `multiple` is left to `baps-chips-input`.
 - **`@org/ui-kit` — minor, additive:** `baps-dialog` covers PrimeNG's Dialog
   demo. Opt-ins (default off, kit design unchanged): `draggable` (header shows
   a move cursor), `resizable`, `maximizable`. New pass-through inputs:

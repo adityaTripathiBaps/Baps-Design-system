@@ -1,0 +1,105 @@
+import { Meta, Canvas } from '@storybook/blocks';
+
+import * as AutocompleteStories from './autocomplete.stories';
+
+<Meta of={AutocompleteStories} />
+
+# AutoComplete
+
+`baps-autocomplete` is a text field that suggests matches as the user types. It wraps PrimeNG's `p-autocomplete` ([primeng.dev/autocomplete](https://primeng.dev/autocomplete)) and is skinned for both **MyBKY** and **Sampark** by the shared select styles, so the field and its panel match `baps-select`.
+
+The app does the filtering: listen to `(completeMethod)`, read `$event.query`, and set `[suggestions]`. That keeps a server search, a local filter and a debounced API call the same shape. `delay` (300 ms) and `minQueryLength` control when the query fires.
+
+For several values shown as chips, use [Chips input](?path=/docs/components-chips-input--docs): PrimeNG 21 deprecates AutoComplete's own `multiple`.
+
+## Usage
+
+```html
+<baps-autocomplete
+  ariaLabel="City"
+  optionLabel="name"
+  [suggestions]="cities"
+  (completeMethod)="cities = search($event.query)"
+  formControlName="city"
+/>
+```
+
+## Examples
+
+### Basic
+
+Strings in, strings out.
+
+<Canvas of={AutocompleteStories.Basic} />
+
+### Objects
+
+Suggestions are objects; `optionLabel` names the field shown and the form value is the whole object (or `optionValue`).
+
+<Canvas of={AutocompleteStories.Objects} />
+
+### Dropdown
+
+`[dropdown]="true"` adds a button that opens every suggestion. `dropdownMode` is `blank` (query "") or `current` (the typed text).
+
+<Canvas of={AutocompleteStories.Dropdown} />
+
+### Force selection
+
+`[forceSelection]="true"` clears typed text that is not one of the suggestions when the field loses focus.
+
+<Canvas of={AutocompleteStories.ForceSelection} />
+
+### Group
+
+`[group]="true"` with `optionGroupLabel` and `optionGroupChildren`.
+
+<Canvas of={AutocompleteStories.Group} />
+
+### Template
+
+`pTemplate` `item`, `header`, `footer`, `group`, `empty`, `selecteditem`, `loader`, `removeicon`, `loadingicon`, `clearicon` and `dropdownicon` are forwarded to PrimeNG.
+
+<Canvas of={AutocompleteStories.Template} />
+
+### Clear icon
+
+<Canvas of={AutocompleteStories.ClearIcon} />
+
+### Sizes
+
+<Canvas of={AutocompleteStories.Sizes} />
+
+### Filled, invalid and disabled
+
+Left unset, `invalid` on a Sampark field follows its form control (invalid and touched or dirty), as `baps-select` does.
+
+<Canvas of={AutocompleteStories.States} />
+
+### Fluid
+
+<Canvas of={AutocompleteStories.Fluid} />
+
+### Virtual scroll
+
+`[virtualScroll]="true"` with `virtualScrollItemSize` renders only the visible rows.
+
+<Canvas of={AutocompleteStories.VirtualScroll} />
+
+### Focus behavior
+
+`autoOptionFocus`, `selectOnFocus` and `focusOnHover`.
+
+<Canvas of={AutocompleteStories.FocusBehavior} />
+
+### Reactive form
+
+<Canvas of={AutocompleteStories.ReactiveForm} />
+
+## Events
+
+`completeMethod` (the query), `selected`, `unselected`, `dropdownClick`, `cleared`, `shown`, `hidden`, `lazyLoad`, `keyUp`. The form gets the value itself; `cleared` reports `null`.
+
+## Accessibility
+
+Give the field a name: a `<label for>` with `inputId`, or `ariaLabel`. PrimeNG supplies the combobox role, `aria-expanded`, the listbox and the screen-reader messages (`searchMessage`, `emptySelectionMessage`, `selectionMessage`). Name the dropdown button with `dropdownAriaLabel`.
