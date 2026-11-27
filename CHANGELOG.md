@@ -254,6 +254,13 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **`@org/ui-kit/styles` — patch, visual (Sampark):** input groups with a
+  control addon (`[input-group-control]`: number | unit select, time | AM/PM)
+  behave like SPM dev. Hovering or focusing the input lights only that input
+  (border #94928f, 3px #f2f1f0 focus ring), not the whole group; the select or
+  button segment never changes. Hovering the unit select no longer draws a
+  dark box round it (the Sampark select hover rule beat the segment's
+  `border: 0`). Label-addon groups (Min | 1) keep the group ring.
 - **Docs:** an open dropdown, tree-select or date panel inside a Docs canvas
   is no longer greyed out by the page scrim. Storybook's zoom wrapper always
   carries `transform: scale(1)`, which trapped inline panels under the
