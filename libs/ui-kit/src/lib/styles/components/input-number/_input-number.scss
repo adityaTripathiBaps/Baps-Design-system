@@ -103,3 +103,82 @@ baps-input-number .baps-input-number__button:disabled {
   color: var(--input-text-disabled);
   cursor: not-allowed;
 }
+
+/* ── Button layouts beyond the stacked spinner (PrimeNG buttonLayout) ─────
+   'horizontal': [-][field][+], PrimeNG's "Horizontal with Step" demo.
+   'vertical':   [+] over the field over [-]. The side buttons are full
+   squares of the field's height (horizontal) or width (vertical), share the
+   field's borders and radius, and reuse the spinner fill and hover above. */
+baps-input-number .baps-input-number__button--side {
+  flex: 0 0 var(--space-8);
+  border-width: 1px;
+  border-radius: 0;
+}
+
+baps-input-number .baps-input-number__control--fluid {
+  display: flex;
+  width: 100%;
+}
+
+baps-input-number
+  .baps-input-number__control--horizontal
+  > .baps-input-number__button--side:first-child {
+  border-start-start-radius: var(--baps-input-number-radius);
+  border-end-start-radius: var(--baps-input-number-radius);
+  border-inline-end: 0;
+}
+
+baps-input-number
+  .baps-input-number__control--horizontal
+  > .baps-input-number__button--side:last-child {
+  border-start-end-radius: var(--baps-input-number-radius);
+  border-end-end-radius: var(--baps-input-number-radius);
+  border-inline-start: 0;
+}
+
+baps-input-number .baps-input-number__control--horizontal .p-inputnumber-input {
+  border-radius: 0 !important;
+  text-align: center;
+}
+
+baps-input-number .baps-input-number__control--vertical {
+  flex-direction: column;
+  align-items: stretch;
+  /* As narrow as the field (inputStyle width), as PrimeNG's Vertical demo,
+     not stretched to its container. */
+  width: max-content;
+}
+
+baps-input-number
+  .baps-input-number__control--vertical
+  > .baps-input-number__button--side {
+  flex-basis: var(--space-8);
+  height: var(--space-8);
+}
+
+baps-input-number
+  .baps-input-number__control--vertical
+  > .baps-input-number__button--side:first-child {
+  border-start-start-radius: var(--baps-input-number-radius);
+  border-start-end-radius: var(--baps-input-number-radius);
+  border-block-end: 0;
+}
+
+baps-input-number
+  .baps-input-number__control--vertical
+  > .baps-input-number__button--side:last-child {
+  border-end-start-radius: var(--baps-input-number-radius);
+  border-end-end-radius: var(--baps-input-number-radius);
+  border-block-start: 0;
+}
+
+baps-input-number .baps-input-number__control--vertical .p-inputnumber-input {
+  border-radius: 0 !important;
+  text-align: center;
+  /* The field sets the column's width. A global form rule pins
+     .p-inputtext to width 100% !important, which beat the inputStyle width
+     and stretched the column to its container; the component passes
+     inputStyle.width through this variable instead. No width given: the
+     nearest spacing token (--space-10, 2.5rem; PrimeNG's demo uses 3rem). */
+  width: var(--baps-input-number-field-width, var(--space-10)) !important;
+}

@@ -55,6 +55,78 @@ Spinner buttons are enabled by default because every measured Sampark use has th
 
 </BrandOnly>
 
+### Buttons
+
+`buttonLayout` sets where the spin buttons sit: `stacked` (default, the measured Sampark spinner), or `horizontal` with minus before and plus after the field. `step` is the amount one press adds; fractional steps are rounded to the step's precision. This is PrimeNG's "Horizontal with Step".
+
+<Canvas of={InputNumberStories.Buttons} />
+
+### Vertical
+
+`buttonLayout="vertical"` puts plus above and minus below. The column is as wide as `inputStyle.width`.
+
+<Canvas of={InputNumberStories.Vertical} />
+
+### Numerals
+
+Integer only, without grouping, fraction digits (`minFractionDigits` / `maxFractionDigits`) and min/max boundaries.
+
+<Canvas of={InputNumberStories.Numerals} />
+
+### Locale
+
+`locale` sets the grouping and decimal marks.
+
+<Canvas of={InputNumberStories.Locale} />
+
+### Currency
+
+`mode="currency"` with an ISO 4217 `currency`, a `locale`, and `currencyDisplay` (symbol, code or name).
+
+<Canvas of={InputNumberStories.Currency} />
+
+### Prefix and suffix
+
+`prefix` and `suffix` add text around the number that is not part of the value.
+
+<Canvas of={InputNumberStories.PrefixSuffix} />
+
+### Clear icon
+
+`showClear` adds a clear control; clearing reports `null` to the form.
+
+<Canvas of={InputNumberStories.ClearIcon} />
+
+### Sizes
+
+`size` small, default or large.
+
+<Canvas of={InputNumberStories.Sizes} />
+
+### Fluid
+
+`fluid` fills the container.
+
+<Canvas of={InputNumberStories.Fluid} />
+
+### Filled
+
+`variant="filled"`.
+
+<Canvas of={InputNumberStories.Filled} />
+
+### Invalid
+
+`invalid` shows the error state without a form.
+
+<Canvas of={InputNumberStories.Invalid} />
+
+### Readonly
+
+`readonly` shows the value; typing and the buttons do nothing.
+
+<Canvas of={InputNumberStories.Readonly} />
+
 ## Forms
 
 The wrapper is a full `ControlValueAccessor`, including touched and disabled state, so both forms APIs work.

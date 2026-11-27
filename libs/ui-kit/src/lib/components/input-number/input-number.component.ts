@@ -31,32 +31,72 @@ import { BapsBrand, injectBapsBrand } from '../../theme/brand';
   selector: 'baps-input-number',
   imports: [FormsModule, InputNumber, BapsIcon],
   template: `
-    <span class="baps-input-number__control">
+    <span
+      class="baps-input-number__control"
+      [class.baps-input-number__control--horizontal]="showButtons && buttonLayout === 'horizontal'"
+      [class.baps-input-number__control--vertical]="showButtons && buttonLayout === 'vertical'"
+      [class.baps-input-number__control--fluid]="fluid"
+      [style.--baps-input-number-field-width]="inputStyle?.['width'] ?? null"
+    >
+      @if (showButtons && buttonLayout !== 'stacked') {
+        <button
+          type="button"
+          class="baps-input-number__button baps-input-number__button--side"
+          [class.baps-input-number__button--decrement]="buttonLayout === 'horizontal'"
+          [class.baps-input-number__button--increment]="buttonLayout === 'vertical'"
+          [attr.aria-label]="buttonLayout === 'vertical' ? 'Increase value' : 'Decrease value'"
+          [disabled]="disabled || readonly || (buttonLayout === 'vertical' ? atMaximum : atMinimum)"
+          (click)="stepValue($event, buttonLayout === 'vertical' ? 1 : -1)"
+        >
+          <baps-icon [name]="buttonLayout === 'vertical' ? 'plus' : 'minus'" size="xs" />
+        </button>
+      }
       <p-inputnumber
         [(ngModel)]="value"
         [showButtons]="false"
         [min]="min"
         [max]="max"
+        [step]="step"
         [maxlength]="maxlength ?? null"
+        [minFractionDigits]="minFractionDigits"
         [maxFractionDigits]="maxFractionDigits"
         [inputStyleClass]="inputStyleClass"
+        [inputStyle]="inputStyle"
         [styleClass]="styleClass"
         [useGrouping]="useGrouping"
         [mode]="mode"
+        [locale]="locale"
+        [currency]="currency"
+        [currencyDisplay]="currencyDisplay"
+        [prefix]="prefix"
+        [suffix]="suffix"
         [placeholder]="placeholder"
         [disabled]="disabled"
+        [readonly]="readonly"
+        [invalid]="invalid"
+        [fluid]="fluid"
+        [variant]="variant"
+        [showClear]="showClear"
+        [allowEmpty]="allowEmpty"
+        [format]="format"
+        [inputId]="inputId"
+        [ariaLabel]="ariaLabel"
+        [ariaLabelledBy]="ariaLabelledBy"
+        [tabindex]="tabindex"
+        [autofocus]="autofocus"
         [size]="size"
         (onInput)="handleInput($event)"
         (onBlur)="handleBlur()"
+        (onClear)="handleClear()"
       />
 
-      @if (showButtons) {
+      @if (showButtons && buttonLayout === 'stacked') {
         <span class="baps-input-number__buttons">
           <button
             type="button"
             class="baps-input-number__button baps-input-number__button--increment"
             aria-label="Increase value"
-            [disabled]="disabled || atMaximum"
+            [disabled]="disabled || readonly || atMaximum"
             (click)="stepValue($event, 1)"
           >
             <baps-icon name="plus" size="xs" />
@@ -65,12 +105,25 @@ import { BapsBrand, injectBapsBrand } from '../../theme/brand';
             type="button"
             class="baps-input-number__button baps-input-number__button--decrement"
             aria-label="Decrease value"
-            [disabled]="disabled || atMinimum"
+            [disabled]="disabled || readonly || atMinimum"
             (click)="stepValue($event, -1)"
           >
             <baps-icon name="minus" size="xs" />
           </button>
         </span>
+      }
+      @if (showButtons && buttonLayout !== 'stacked') {
+        <button
+          type="button"
+          class="baps-input-number__button baps-input-number__button--side"
+          [class.baps-input-number__button--increment]="buttonLayout === 'horizontal'"
+          [class.baps-input-number__button--decrement]="buttonLayout === 'vertical'"
+          [attr.aria-label]="buttonLayout === 'vertical' ? 'Decrease value' : 'Increase value'"
+          [disabled]="disabled || readonly || (buttonLayout === 'vertical' ? atMinimum : atMaximum)"
+          (click)="stepValue($event, buttonLayout === 'vertical' ? -1 : 1)"
+        >
+          <baps-icon [name]="buttonLayout === 'vertical' ? 'minus' : 'plus'" size="xs" />
+        </button>
       }
     </span>
   `,
@@ -100,6 +153,39 @@ export class BapsInputNumber implements ControlValueAccessor {
   @Input() styleClass?: string;
   @Input() useGrouping = true;
   @Input() mode: 'decimal' | 'currency' = 'decimal';
+  /**
+   * Where the spin buttons sit, as PrimeNG's buttonLayout. 'stacked' (default)
+   * is the measured Sampark spinner: a column of two to the right of the field.
+   * 'horizontal' puts minus before and plus after the field ("Horizontal with
+   * Step" in PrimeNG's demo); 'vertical' puts plus above and minus below.
+   */
+  @Input() buttonLayout: 'stacked' | 'horizontal' | 'vertical' = 'stacked';
+  /** Amount one button press or arrow key adds or removes. */
+  @Input() step = 1;
+  @Input() minFractionDigits?: number;
+  /** BCP 47 locale for grouping and decimal separators, e.g. 'en-IN'. */
+  @Input() locale?: string;
+  /** ISO 4217 code; required when mode is 'currency'. */
+  @Input() currency?: string;
+  @Input() currencyDisplay?: 'symbol' | 'code' | 'name';
+  @Input() prefix?: string;
+  @Input() suffix?: string;
+  @Input() inputStyle?: Record<string, string | number>;
+  @Input() readonly = false;
+  @Input() invalid = false;
+  /** Full width of its container. */
+  @Input() fluid = false;
+  @Input() variant: 'outlined' | 'filled' = 'outlined';
+  /** A clear icon inside the field; clearing reports null. */
+  @Input() showClear = false;
+  @Input() allowEmpty = true;
+  /** false shows the raw number without locale formatting. */
+  @Input() format = true;
+  @Input() inputId?: string;
+  @Input() ariaLabel?: string;
+  @Input() ariaLabelledBy?: string;
+  @Input() tabindex?: number;
+  @Input() autofocus = false;
   @Input() placeholder?: string;
   @Input() disabled = false;
   @Input() size?: 'small' | 'large';
@@ -153,10 +239,15 @@ export class BapsInputNumber implements ControlValueAccessor {
   }
 
   stepValue(event: MouseEvent, direction: 1 | -1): void {
-    if (this.disabled) return;
+    if (this.disabled || this.readonly) return;
 
     const base = this.value ?? 0;
-    const next = this.normalise(base + direction);
+    // Round to the precision of step or value: 0.1 + 0.2 must read 0.3, not
+    // 0.30000000000000004, when the step is a fraction (0.25, 0.1).
+    const digits = Math.max(decimals(this.step), decimals(base));
+    const factor = 10 ** digits;
+    const raw = Math.round((base + direction * this.step) * factor) / factor;
+    const next = this.normalise(raw);
     this.value = next;
     this.emit(next);
     this.onTouched();
@@ -165,6 +256,11 @@ export class BapsInputNumber implements ControlValueAccessor {
       value: next,
       formattedValue: next == null ? '' : String(next),
     });
+  }
+
+  handleClear(): void {
+    this.value = null;
+    this.emit(null);
   }
 
   /**
@@ -211,4 +307,10 @@ export class BapsInputNumber implements ControlValueAccessor {
 
     return next;
   }
+}
+
+function decimals(n: number): number {
+  const s = String(n);
+  const i = s.indexOf('.');
+  return i < 0 ? 0 : s.length - i - 1;
 }

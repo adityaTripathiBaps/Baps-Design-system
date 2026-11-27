@@ -8,6 +8,17 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/ui-kit` — minor, additive:** `baps-input-number` covers PrimeNG's
+  InputNumber demo. `buttonLayout` (`stacked` default | `horizontal` |
+  `vertical`) with `step` (fractional steps round to the step's precision):
+  `horizontal` is PrimeNG's "Horizontal with Step" (minus, field, plus). New
+  pass-through inputs: `minFractionDigits`, `locale`, `currency`,
+  `currencyDisplay`, `prefix`, `suffix`, `inputStyle`, `readonly`,
+  `invalid`, `fluid`, `variant`, `showClear` (clearing reports null),
+  `allowEmpty`, `format`, `inputId`, `ariaLabel`, `ariaLabelledBy`,
+  `tabindex`, `autofocus`. Stories and docs for every demo section: Buttons,
+  Vertical, Numerals, Locale, Currency, Prefix and suffix, Clear icon, Sizes,
+  Fluid, Filled, Invalid, Readonly.
 - **`@org/ui-kit` — minor, additive:** `baps-link` `variant` gains `info`,
   `success`, `warning` and `error` (Figma 178:8538): the status colour at rest,
   underlined on hover. Primary and Secondary are unchanged.
