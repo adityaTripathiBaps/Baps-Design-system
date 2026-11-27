@@ -8,6 +8,15 @@ classification and deprecation policy.
 
 ### Added
 
+- **`@org/ui-kit` — minor, new component:** `baps-cascade-select`, PrimeNG
+  CascadeSelect for both brands: form control, Sampark error state from the
+  form control, brand scope on the body-level panel, PrimeNG's inputs and
+  outputs, 8 forwarded templates, full width like `baps-select`. Stories and
+  docs for the PrimeNG demo sections.
+- **`@org/ui-kit/styles` — patch:** CascadeSelect's deeper levels now show.
+  The shared overlay `overflow: hidden` clipped them inside the root panel;
+  each level is now its own panel with the overlay skin. Sampark rows take the
+  Select rhythm (37px) and the Mono/40 frame.
 - **`@org/ui-kit` — minor, new component:** `baps-autocomplete`, PrimeNG
   AutoComplete for both brands (skin from the shared select partials). Form
   control, Sampark error state that follows the form control, brand scope on

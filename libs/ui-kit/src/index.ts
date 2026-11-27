@@ -85,4 +85,5 @@ export { BapsConfirmationService } from './lib/components/confirm-dialog/confirm
 export type { BapsConfirmation } from './lib/components/confirm-dialog/confirmation.service';
 export * from './lib/components/chips-input/chips-input.component';
 export * from './lib/components/autocomplete/autocomplete.component';
+export * from './lib/components/cascade-select/cascade-select.component';
 export * from './lib/theme/ramp';

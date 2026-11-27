@@ -650,6 +650,17 @@
   padding: var(--space-2) var(--space-3) !important;
 }
 
+/* CascadeSelect has no SPM dev screen; it takes the Sampark Select row
+   (10px/16px, content-sized, 37px) so the two read as one family. */
+.baps-ds-sampark .p-cascadeselect-option,
+.baps-ds-sampark .p-cascadeselect-option-content {
+  min-height: auto !important;
+  line-height: normal !important;
+}
+.baps-ds-sampark .p-cascadeselect-option-content {
+  padding: var(--space-2-5) var(--space-4) !important;
+}
+
 /* ── Selected option (SPM dev) ──────────────────────────────────────────
    SPM dev marks the chosen row with the plain hover surface and no bar; the
    bar stays a hover/keyboard-focus cue. Four classes so it also outranks
@@ -731,7 +742,10 @@
   .baps-ds-sampark.p-select-overlay,
   .baps-ds-sampark .p-select-overlay,
   .baps-ds-sampark.p-multiselect-overlay,
-  .baps-ds-sampark .p-multiselect-overlay
+  .baps-ds-sampark .p-multiselect-overlay,
+  .baps-ds-sampark.p-cascadeselect-overlay,
+  .baps-ds-sampark .p-cascadeselect-overlay,
+  .baps-ds-sampark .p-cascadeselect-overlay .p-cascadeselect-list .p-cascadeselect-list
 ) {
   border-color: var(--color-sampark-mono-40, #bcb9b9) !important;
 }

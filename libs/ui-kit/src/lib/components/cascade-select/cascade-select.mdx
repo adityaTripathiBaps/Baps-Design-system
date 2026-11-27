@@ -1,0 +1,68 @@
+import { Meta, Canvas } from '@storybook/blocks';
+
+import * as CascadeSelectStories from './cascade-select.stories';
+
+<Meta of={CascadeSelectStories} />
+
+# CascadeSelect
+
+`baps-cascade-select` picks one value from a nested tree, one level at a time (country → state → city). It wraps PrimeNG's `p-cascadeselect` ([primeng.dev/cascadeselect](https://primeng.dev/cascadeselect)). The field is the same as `baps-select` in both brands; each deeper level opens as its own panel to the right. Sampark rows take the Sampark Select rhythm (37px), since SPM dev has no cascade screen to measure.
+
+Hovering a group opens its next level; clicking the last level picks the value and closes the panel. The keyboard works the same way: arrows move, Right opens a level, Left closes it, Enter picks.
+
+## Usage
+
+```html
+<baps-cascade-select
+  ariaLabel="City"
+  [options]="countries"
+  optionLabel="cname"
+  optionGroupLabel="name"
+  [optionGroupChildren]="['states', 'cities']"
+  formControlName="city"
+/>
+```
+
+`optionGroupChildren` names the children field for each level in order; `optionLabel` (and `optionValue`) apply to the last level.
+
+## Examples
+
+### Basic
+
+<Canvas of={CascadeSelectStories.Basic} />
+
+### Template
+
+`pTemplate="option"` customises every row; `value`, `header`, `footer`, `triggericon`, `loadingicon`, `groupicon` and `clearicon` are forwarded too.
+
+<Canvas of={CascadeSelectStories.Template} />
+
+### Loading and clear icon
+
+<Canvas of={CascadeSelectStories.LoadingAndClear} />
+
+### Sizes
+
+<Canvas of={CascadeSelectStories.Sizes} />
+
+### Filled, invalid and disabled
+
+Left unset, `invalid` on a Sampark field follows its form control (invalid and touched or dirty).
+
+<Canvas of={CascadeSelectStories.States} />
+
+### Fluid
+
+<Canvas of={CascadeSelectStories.Fluid} />
+
+### Reactive form
+
+<Canvas of={CascadeSelectStories.ReactiveForm} />
+
+## Events
+
+`changed`, `groupChange`, `shown`, `hidden`, `cleared`. The form gets the value itself; clearing reports `null`.
+
+## Accessibility
+
+Name the field with a `<label for>` and `inputId`, or `ariaLabel`. PrimeNG supplies the combobox and tree roles and the screen-reader messages (`searchMessage`, `emptyMessage`, `selectionMessage`, `emptySelectionMessage`). Below `breakpoint` (960px) the levels stack instead of cascading sideways.

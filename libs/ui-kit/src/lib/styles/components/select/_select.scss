@@ -839,6 +839,23 @@ p-datepicker.p-datepicker:has(.p-datepicker-panel-inline) {
   margin-top: var(--select-overlay-offset, 0) !important;
 }
 
+/* CascadeSelect opens each deeper level as a list positioned OUTSIDE the
+   panel, to its right. The shared overflow: hidden above clipped those lists
+   inside the 130px root panel and scrolled the root list off to the left, so
+   a level never showed. The root panel lets them out; each nested list is
+   then a panel of its own, with the same skin. */
+.p-cascadeselect-overlay {
+  overflow: visible !important;
+}
+
+.p-cascadeselect-overlay .p-cascadeselect-list .p-cascadeselect-list {
+  background: var(--select-overlay-bg);
+  border: 1px solid var(--select-overlay-border);
+  border-radius: var(--select-overlay-radius, 1rem);
+  box-shadow: var(--select-overlay-shadow);
+  overflow: hidden;
+}
+
 /* Hide PrimeNG's close icon in the multiselect header */
 .p-multiselect-header .p-multiselect-close {
   display: none !important;
