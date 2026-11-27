@@ -254,6 +254,11 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **Docs (patterns):** the CRUD form, data-management and date-filter
+  patterns open their `baps-select` panels on `<body>` (`appendTo="body"`, as
+  spm-ui does). Rendered inline, a panel inside the docs canvas sat in that
+  canvas's stacking context, under the Sampark page scrim, so the open list was
+  dimmed with the page.
 - **`@org/ui-kit/styles` — patch, visual (both brands):** `baps-tree-table`
   sizes columns to their content (`table-layout: auto`, as `baps-table`) and a
   table wider than its box scrolls inside it. PrimeNG's tree-table default is

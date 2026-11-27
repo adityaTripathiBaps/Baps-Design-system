@@ -77,6 +77,7 @@ export const Default: Story = {
         <div [style]="panel">
           <div [style]="header">
             <baps-select
+              appendTo="body"
               [options]="conditions" optionLabel="label" optionValue="value"
               [(ngModel)]="condition" ariaLabel="Date condition"
               style="flex: none"

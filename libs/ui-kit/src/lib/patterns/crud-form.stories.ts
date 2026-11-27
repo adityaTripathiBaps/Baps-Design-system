@@ -125,6 +125,7 @@ export const Default: Story = {
           <div style="display:flex; flex-direction:column; gap:6px;">
             <label for="crud-role">Role <span class="p-error">*</span></label>
             <baps-select
+              appendTo="body"
               inputId="crud-role"
               formControlName="role"
               [options]="roles"

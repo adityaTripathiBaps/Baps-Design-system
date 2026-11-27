@@ -265,6 +265,7 @@ function dataManagementScreen({ rows = KARYAKARS, query = '', loading = false }:
           </baps-iconfield>
 
           <baps-select
+            appendTo="body"
             toolbar-right
             brand="sampark"
             ariaLabel="Filter by status"
@@ -278,6 +279,7 @@ function dataManagementScreen({ rows = KARYAKARS, query = '', loading = false }:
           />
 
           <baps-select
+            appendTo="body"
             toolbar-right
             brand="sampark"
             ariaLabel="Filter by center"
