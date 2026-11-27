@@ -1,0 +1,78 @@
+import { Meta, Canvas } from '@storybook/blocks';
+
+import * as InputMaskStories from './input-mask.stories';
+
+<Meta of={InputMaskStories} />
+
+# InputMask
+
+`baps-input-mask` takes input in a fixed format: a phone number, a date, a serial number. It wraps PrimeNG's `p-inputmask` ([primeng.dev/inputmask](https://primeng.dev/inputmask)). The inner field is a `pInputText`, so it is the kit input in both brands (MyBKY 36px pill, Sampark 32px with a 4px radius), sizes included.
+
+## Usage
+
+```html
+<label for="ssn">SSN</label>
+<baps-input-mask inputId="ssn" mask="999-99-9999" formControlName="ssn" />
+```
+
+In `mask`, `9` is a digit, `a` a letter (`characterPattern` changes which), `*` either; anything else is typed for the user. `unmask` sends only what the user typed, without the literals. An incomplete value is cleared on blur unless `autoClear` is false.
+
+## Examples
+
+### Basic
+
+<Canvas of={InputMaskStories.Basic} />
+
+### Mask
+
+<Canvas of={InputMaskStories.Mask} />
+
+### Optional
+
+Everything after `?` may be left empty.
+
+<Canvas of={InputMaskStories.Optional} />
+
+### SlotChar
+
+<Canvas of={InputMaskStories.SlotChar} />
+
+### Filled
+
+<Canvas of={InputMaskStories.Filled} />
+
+### Float label
+
+<Canvas of={InputMaskStories.FloatLabel} />
+
+### Ifta label
+
+<Canvas of={InputMaskStories.IftaLabel} />
+
+### Sizes
+
+<Canvas of={InputMaskStories.Sizes} />
+
+### Invalid
+
+Left unset, `invalid` on a Sampark field follows its form control (invalid and touched or dirty).
+
+<Canvas of={InputMaskStories.Invalid} />
+
+### Disabled
+
+<Canvas of={InputMaskStories.Disabled} />
+
+### Reactive form
+
+`completed` fires once every required slot is filled.
+
+<Canvas of={InputMaskStories.ReactiveForm} />
+
+## Events
+
+`completed`, `focused`, `blurred`, `inputChange`, `keydown`, `cleared`. The form gets the value itself.
+
+## Accessibility
+
+Name the field with a `<label for>` and `inputId`, or `ariaLabel`. Show the expected format in the label or the placeholder: the slots alone do not say what goes in them.
