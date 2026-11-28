@@ -1,0 +1,38 @@
+import { Meta, Canvas } from '@storybook/blocks';
+
+import * as KeyFilterStories from './key-filter.stories';
+
+<Meta of={KeyFilterStories} />
+
+# KeyFilter
+
+`bapsKeyFilter` blocks keystrokes and pastes that do not fit a pattern, on any text field. It is PrimeNG's `pKeyFilter` ([primeng.dev/keyfilter](https://primeng.dev/keyfilter)) as a host directive: no wrapper, the field keeps its own skin.
+
+## Usage
+
+```html
+<input bapsInputText bapsKeyFilter="int" formControlName="age" />
+<input bapsInputText [bapsKeyFilter]="noSpecial" />  <!-- noSpecial = /^[^<>*!]+$/ -->
+```
+
+Presets: `pint` (positive integer), `int`, `pnum` (positive number), `num`, `money`, `hex`, `email`, `alpha`, `alphanum`.
+
+## Examples
+
+### Presets
+
+<Canvas of={KeyFilterStories.Presets} />
+
+### Regex
+
+<Canvas of={KeyFilterStories.Regex} />
+
+### Validate only
+
+`[validateOnly]="true"` lets anything be typed and marks the form control invalid instead.
+
+<Canvas of={KeyFilterStories.ValidateOnly} />
+
+## Accessibility
+
+A blocked key does nothing and says nothing. Say what the field accepts in its label or hint, so a screen-reader user knows why a character did not appear.
