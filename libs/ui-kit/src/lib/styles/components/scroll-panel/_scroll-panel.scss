@@ -1,0 +1,16 @@
+/* =====================================================================
+   PrimeNG ScrollPanel — scrollbar thumb for baps-scrollpanel.
+
+   The Material base drew the thumb slate #e2e8f0 in both brands (measured,
+   ScrollPanel stories). It takes the kit's own scrollbar thumb, the one the
+   select lists use (_select.scss MyBKY mono-300; _select-sampark.scss
+   Sampark border-default), through PrimeNG's variable.
+   ===================================================================== */
+
+.p-scrollpanel {
+  --p-scrollpanel-bar-background: var(--color-mybky-mono-300, #e4ecf1);
+}
+
+:is(.p-scrollpanel.baps-sampark, .baps-ds-sampark .p-scrollpanel) {
+  --p-scrollpanel-bar-background: var(--color-sampark-border-default, #e1e0e0);
+}

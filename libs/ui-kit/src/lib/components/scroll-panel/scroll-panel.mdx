@@ -1,0 +1,35 @@
+import { Meta, Canvas } from '@storybook/blocks';
+
+import * as ScrollPanelStories from './scroll-panel.stories';
+
+<Meta of={ScrollPanelStories} />
+
+# ScrollPanel
+
+`baps-scrollpanel` (also `baps-scroll-panel`) is a scroll area with a thin scrollbar that looks the same on every system. It wraps PrimeNG's `p-scrollpanel` ([primeng.dev/scrollpanel](https://primeng.dev/scrollpanel)), listed as ScrollArea in PrimeNG v21. The thumb shows on hover in the kit's scrollbar colour (MyBKY `#e4ecf1`, Sampark `#e1e0e0`), the same as the select lists.
+
+## Usage
+
+```html
+<baps-scrollpanel style="height: 12rem">
+  …long content…
+</baps-scrollpanel>
+```
+
+Give it a height; the content is projected.
+
+## Examples
+
+### Basic
+
+<Canvas of={ScrollPanelStories.Basic} />
+
+### Methods
+
+`scrollTop(y)` scrolls from code; call `refresh()` after the content changes size.
+
+<Canvas of={ScrollPanelStories.Methods} />
+
+## Accessibility
+
+The content scrolls natively, so the mouse wheel, touch and the keyboard on focused content all work. The custom bars are focusable and move by `step` pixels with the arrow keys.
