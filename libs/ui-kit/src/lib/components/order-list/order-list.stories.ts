@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
-import { OrderList } from 'primeng/orderlist';
-import { BapsOrderList } from './order-list.directive';
+import { SharedModule } from 'primeng/api';
+import { BapsOrderList } from './order-list.component';
 
 const meta: Meta = {
   title: 'Components/Molecules/OrderList',
   id: 'components-orderlist',
   tags: ['ds:mybky', 'ds:sampark'],
-  decorators: [moduleMetadata({ imports: [OrderList, BapsOrderList] })],
+  decorators: [moduleMetadata({ imports: [BapsOrderList, SharedModule] })],
 };
 export default meta;
 type Story = StoryObj;
@@ -20,8 +20,8 @@ const STEPS = () => [
   { id: 5, name: 'Follow-up', duration: '4 min' },
   { id: 6, name: 'Notes', duration: '3 min' },
 ];
-const item = `<ng-template #header><span style="font-weight:600">Visit steps</span></ng-template>
-<ng-template #item let-step>
+const item = `<ng-template pTemplate="header"><span style="font-weight:600">Visit steps</span></ng-template>
+<ng-template pTemplate="item" let-step>
   <div style="display:flex;justify-content:space-between;gap:var(--space-3);width:100%">
     <span>{{ step.name }}</span><span style="color:var(--p-text-muted-color)">{{ step.duration }}</span>
   </div>
@@ -33,7 +33,7 @@ const props = () => ({ steps: STEPS(), order: (s: { name: string }[]) => s.map((
 export const Basic: Story = {
   render: () => ({
     props: props(),
-    template: `<p-orderlist bapsOrderList [value]="steps" dataKey="id" ariaLabel="Visit steps">${item}</p-orderlist>${order}`,
+    template: `<baps-orderlist [value]="steps" dataKey="id" ariaLabel="Visit steps">${item}</baps-orderlist>${order}`,
   }),
 };
 
@@ -41,7 +41,7 @@ export const Basic: Story = {
 export const DragDrop: Story = {
   render: () => ({
     props: props(),
-    template: `<p-orderlist bapsOrderList [value]="steps" dataKey="id" [dragdrop]="true" ariaLabel="Visit steps">${item}</p-orderlist>${order}`,
+    template: `<baps-orderlist [value]="steps" dataKey="id" [dragdrop]="true" ariaLabel="Visit steps">${item}</baps-orderlist>${order}`,
   }),
 };
 
@@ -49,7 +49,7 @@ export const DragDrop: Story = {
 export const Filter: Story = {
   render: () => ({
     props: props(),
-    template: `<p-orderlist bapsOrderList [value]="steps" dataKey="id" filterBy="name" filterPlaceholder="Search steps" ariaLabel="Visit steps">${item}</p-orderlist>`,
+    template: `<baps-orderlist [value]="steps" dataKey="id" filterBy="name" filterPlaceholder="Search steps" ariaLabel="Visit steps">${item}</baps-orderlist>`,
   }),
 };
 
@@ -57,6 +57,6 @@ export const Filter: Story = {
 export const ControlsRight: Story = {
   render: () => ({
     props: props(),
-    template: `<p-orderlist bapsOrderList [value]="steps" dataKey="id" controlsPosition="right" ariaLabel="Visit steps">${item}</p-orderlist>`,
+    template: `<baps-orderlist [value]="steps" dataKey="id" controlsPosition="right" ariaLabel="Visit steps">${item}</baps-orderlist>`,
   }),
 };

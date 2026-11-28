@@ -6,18 +6,18 @@ import * as OrderListStories from './order-list.stories';
 
 # OrderList
 
-OrderList lets the user put a list in order, with the side buttons or by dragging. Use PrimeNG's `p-orderlist` ([primeng.dev/orderlist](https://primeng.dev/orderlist)) with the `bapsOrderList` directive. Its list is the kit Listbox in both brands (MyBKY 16px radius, Sampark 4px; 14px rows with the brand's selected bar), and the move buttons are kit buttons.
+OrderList lets the user put a list in order, with the side buttons or by dragging. `baps-orderlist` (also `baps-order-list`) wraps PrimeNG's `p-orderlist` ([primeng.dev/orderlist](https://primeng.dev/orderlist)). Its list is the kit Listbox in both brands (MyBKY 16px radius, Sampark 4px; 14px rows with the brand's selected bar), and the move buttons are kit buttons.
 
 ## Usage
 
 ```html
-<p-orderlist bapsOrderList [value]="steps" dataKey="id" [dragdrop]="true" ariaLabel="Visit steps">
-  <ng-template #header>Visit steps</ng-template>
-  <ng-template #item let-step>{{ step.name }}</ng-template>
-</p-orderlist>
+<baps-orderlist [value]="steps" dataKey="id" [dragdrop]="true" ariaLabel="Visit steps">
+  <ng-template pTemplate="header">Visit steps</ng-template>
+  <ng-template pTemplate="item" let-step>{{ step.name }}</ng-template>
+</baps-orderlist>
 ```
 
-OrderList reorders `value` in place and emits `onReorder`. Use a `#header` template for a title: PrimeNG v21 accepts a `header` input but does not render it.
+OrderList reorders `value` in place and emits `reorder`. Use a `pTemplate="header"` template for a title: PrimeNG v21 accepts a `header` input but does not render it. Other templates: `empty`, `emptyfilter`, the move icons.
 
 ## Examples
 

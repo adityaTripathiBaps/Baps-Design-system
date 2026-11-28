@@ -96,7 +96,7 @@ export * from './lib/components/rating/rating.component';
 export * from './lib/components/toggle-button/toggle-button.component';
 export * from './lib/components/speed-dial/speed-dial.component';
 export * from './lib/components/data-view/data-view.directive';
-export * from './lib/components/order-list/order-list.directive';
+export * from './lib/components/order-list/order-list.component';
 export * from './lib/components/org-chart/organization-chart.component';
 export * from './lib/components/pick-list/pick-list.component';
 export * from './lib/components/timeline/timeline.component';
