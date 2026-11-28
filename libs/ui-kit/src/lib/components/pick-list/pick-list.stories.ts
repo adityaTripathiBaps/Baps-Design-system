@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
-import { PickList } from 'primeng/picklist';
-import { BapsPickList } from './pick-list.directive';
+import { SharedModule } from 'primeng/api';
+import { BapsPickList } from './pick-list.component';
 
 const meta: Meta = {
   title: 'Components/Molecules/PickList',
   id: 'components-picklist',
   tags: ['ds:mybky', 'ds:sampark'],
-  decorators: [moduleMetadata({ imports: [PickList, BapsPickList] })],
+  decorators: [moduleMetadata({ imports: [BapsPickList, SharedModule] })],
 };
 export default meta;
 type Story = StoryObj;
@@ -20,7 +20,7 @@ const KARYAKARS = () => [
   { id: 5, name: 'Nilesh Rao', center: 'Houston' },
   { id: 6, name: 'Kavya Mehta', center: 'Toronto' },
 ];
-const item = `<ng-template #item let-k>
+const item = `<ng-template pTemplate="item" let-k>
   <div style="display:flex;justify-content:space-between;gap:var(--space-3);width:100%">
     <span>{{ k.name }}</span><span style="color:var(--p-text-muted-color)">{{ k.center }}</span>
   </div>
@@ -32,8 +32,8 @@ const out = `<code style="display:block;margin-top:var(--space-3)">assigned: {{ 
 export const Basic: Story = {
   render: () => ({
     props: props(),
-    template: `<p-picklist bapsPickList [(source)]="source" [(target)]="target" dataKey="id" [dragdrop]="true"
-      sourceHeader="Available" targetHeader="Assigned" [responsive]="true" breakpoint="900px">${item}</p-picklist>${out}`,
+    template: `<baps-picklist [(source)]="source" [(target)]="target" dataKey="id" [dragdrop]="true"
+      sourceHeader="Available" targetHeader="Assigned" [responsive]="true" breakpoint="900px">${item}</baps-picklist>${out}`,
   }),
 };
 
@@ -41,8 +41,8 @@ export const Basic: Story = {
 export const Filter: Story = {
   render: () => ({
     props: props(),
-    template: `<p-picklist bapsPickList [(source)]="source" [(target)]="target" dataKey="id" filterBy="name"
+    template: `<baps-picklist [(source)]="source" [(target)]="target" dataKey="id" filterBy="name"
       sourceFilterPlaceholder="Search available" targetFilterPlaceholder="Search assigned"
-      sourceHeader="Available" targetHeader="Assigned" [showSourceControls]="false" [showTargetControls]="false">${item}</p-picklist>`,
+      sourceHeader="Available" targetHeader="Assigned" [showSourceControls]="false" [showTargetControls]="false">${item}</baps-picklist>`,
   }),
 };

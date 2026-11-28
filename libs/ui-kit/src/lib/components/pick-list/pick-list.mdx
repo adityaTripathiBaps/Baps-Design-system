@@ -6,18 +6,20 @@ import * as PickListStories from './pick-list.stories';
 
 # PickList
 
-PickList moves items between two lists (available and chosen) and lets the user order either. Use PrimeNG's `p-picklist` ([primeng.dev/picklist](https://primeng.dev/picklist)) with the `bapsPickList` directive. Both lists are the kit Listbox (MyBKY 16px radius, Sampark 4px; 14px rows; the header text inset like a row) and every control is a kit button.
+PickList moves items between two lists (available and chosen) and lets the user order either. `baps-picklist` (also `baps-pick-list`) wraps PrimeNG's `p-picklist` ([primeng.dev/picklist](https://primeng.dev/picklist)). Both lists are the kit Listbox (MyBKY 16px radius, Sampark 4px; 14px rows; the header text inset like a row) and every control is a kit button.
 
 For choosing a few items from a long list, `baps-multi-select` takes less room; reach for PickList when the chosen set is worked on as a list of its own.
 
 ## Usage
 
 ```html
-<p-picklist bapsPickList [(source)]="available" [(target)]="assigned" dataKey="id"
+<baps-picklist [(source)]="available" [(target)]="assigned" dataKey="id"
             sourceHeader="Available" targetHeader="Assigned" [dragdrop]="true">
-  <ng-template #item let-k>{{ k.name }}</ng-template>
-</p-picklist>
+  <ng-template pTemplate="item" let-k>{{ k.name }}</ng-template>
+</baps-picklist>
 ```
+
+Templates are `pTemplate` types (`item`, `sourceHeader`, `targetHeader`, `emptymessagesource`, …); each is handed to PrimeNG under the same type.
 
 ## Examples
 
@@ -35,7 +37,7 @@ Select rows and move them with the middle buttons, or drag them across. The side
 
 ## Events
 
-`sourceChange` / `targetChange` (two-way), `onMoveToTarget`, `onMoveAllToTarget`, `onMoveToSource`, `onMoveAllToSource`, `onSourceReorder`, `onTargetReorder`, `onSourceSelect`, `onTargetSelect`, `onSourceFilter`, `onTargetFilter`.
+`sourceChange` / `targetChange` (two-way), `moveToTarget`, `moveAllToTarget`, `moveToSource`, `moveAllToSource`, `sourceReorder`, `targetReorder`, `sourceSelect`, `targetSelect`, `sourceFilter`, `targetFilter`.
 
 ## Accessibility
 

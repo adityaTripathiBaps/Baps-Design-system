@@ -3,7 +3,6 @@ import { NgTemplateOutlet } from '@angular/common';
 import { PrimeTemplate, SharedModule, TreeNode } from 'primeng/api';
 import { OrganizationChart } from 'primeng/organizationchart';
 import { BapsBrand, injectBapsBrand } from '../../theme/brand';
-import { BapsOrgChart } from './org-chart.directive';
 
 /**
  * baps-organizationchart (also `baps-organization-chart`) — a tree drawn
@@ -13,15 +12,14 @@ import { BapsOrgChart } from './org-chart.directive';
  * Node templates are chosen by each node's `type`: write
  * `<ng-template pTemplate="person" let-node>` (any name, plus `default`)
  * inside the tag and the wrapper hands every one to PrimeNG under the same
- * name. Brand colours come from `_org-chart.scss` through `bapsOrgChart`.
+ * name. Brand colours come from `_org-chart.scss` (the Sampark class lands on the PrimeNG chart).
  */
 @Component({
   selector: 'baps-organizationchart, baps-organization-chart',
-  imports: [OrganizationChart, BapsOrgChart, SharedModule, NgTemplateOutlet],
+  imports: [OrganizationChart, SharedModule, NgTemplateOutlet],
   template: `
     <p-organizationchart
-      bapsOrgChart
-      [brand]="brand"
+      [class.baps-sampark]="brand === 'sampark'"
       [value]="value"
       [selectionMode]="selectionMode"
       [selection]="selection"
