@@ -101,4 +101,5 @@ export * from './lib/components/org-chart/org-chart.directive';
 export * from './lib/components/pick-list/pick-list.directive';
 export * from './lib/components/timeline/timeline.directive';
 export * from './lib/components/tree/tree.directive';
+export * from './lib/components/fieldset/fieldset.directive';
 export * from './lib/theme/ramp';

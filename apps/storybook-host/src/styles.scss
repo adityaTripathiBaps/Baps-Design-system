@@ -80,6 +80,8 @@
 @use '../../../libs/ui-kit/src/lib/styles/components/timeline/timeline';
 /* Tree — brand colours for PrimeNG Tree (bapsTree). */
 @use '../../../libs/ui-kit/src/lib/styles/components/tree/tree';
+/* Fieldset — brand colours for PrimeNG Fieldset (bapsFieldset). */
+@use '../../../libs/ui-kit/src/lib/styles/components/fieldset/fieldset';
 /* Event dashboard primitives (.hero-tile/.chart-card/.region-card). Wires the
    dashboard.mybky.* tokens, which had no consumer at all. */
 @use '../../../libs/ui-kit/src/lib/styles/layout/dashboard';

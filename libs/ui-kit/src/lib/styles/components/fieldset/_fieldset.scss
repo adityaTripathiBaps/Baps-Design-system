@@ -1,0 +1,29 @@
+/* =====================================================================
+   PrimeNG Fieldset — brand colours (used with bapsFieldset).
+
+   The Material base drew the border in slate #cbd5e1, text and legend in
+   slate #0f172a, the toggle icon in #475569 and a slate #f1f5f9 legend hover
+   in both brands (measured, Fieldset stories). Re-pointed through PrimeNG's
+   own variables to the brand border, text and hover tokens; geometry stays
+   PrimeNG's.
+   ===================================================================== */
+
+.p-fieldset {
+  --p-fieldset-border-color: var(--color-mybky-border-default, #e4ecf1);
+  --p-fieldset-color: var(--color-mybky-text-primary, #181b1d);
+  --p-fieldset-legend-color: var(--color-mybky-text-primary, #181b1d);
+  --p-fieldset-legend-hover-color: var(--color-mybky-text-primary, #181b1d);
+  --p-fieldset-legend-hover-background: var(--color-mybky-mono-100, #eff1f3);
+  --p-fieldset-toggle-icon-color: var(--color-mybky-text-secondary, #2b2f32);
+  --p-fieldset-toggle-icon-hover-color: var(--color-mybky-text-primary, #181b1d);
+}
+
+:is(.p-fieldset.baps-sampark, .baps-ds-sampark .p-fieldset) {
+  --p-fieldset-border-color: var(--color-sampark-border-default, #e1e0e0);
+  --p-fieldset-color: var(--color-sampark-text-primary, #151414);
+  --p-fieldset-legend-color: var(--color-sampark-text-primary, #151414);
+  --p-fieldset-legend-hover-color: var(--color-sampark-text-primary, #151414);
+  --p-fieldset-legend-hover-background: var(--color-sampark-mono-20, #f3f2f2);
+  --p-fieldset-toggle-icon-color: var(--color-sampark-text-secondary, #595656);
+  --p-fieldset-toggle-icon-hover-color: var(--color-sampark-text-primary, #151414);
+}

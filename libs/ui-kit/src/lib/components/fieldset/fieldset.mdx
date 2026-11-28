@@ -1,0 +1,43 @@
+import { Meta, Canvas } from '@storybook/blocks';
+
+import * as FieldsetStories from './fieldset.stories';
+
+<Meta of={FieldsetStories} />
+
+# Fieldset
+
+Fieldset groups related content in a bordered box with a legend on the border, and can fold it away. Use PrimeNG's `p-fieldset` ([primeng.dev/fieldset](https://primeng.dev/fieldset)) with the `bapsFieldset` directive. Border, text and legend hover take the brand colours (MyBKY `#e4ecf1` / `#181b1d`, Sampark `#e1e0e0` / `#151414`).
+
+For a titled block with actions in the header, `baps-card` or the accordion fit better; Fieldset suits a group of fields in a form.
+
+## Usage
+
+```html
+<p-fieldset bapsFieldset legend="Family" [toggleable]="true" [(collapsed)]="folded">
+  …
+</p-fieldset>
+```
+
+## Examples
+
+### Basic
+
+<Canvas of={FieldsetStories.Basic} />
+
+### Toggleable
+
+<Canvas of={FieldsetStories.Toggleable} />
+
+### Template
+
+A `#header` template replaces the legend text.
+
+<Canvas of={FieldsetStories.Template} />
+
+## Events
+
+`collapsedChange` (two-way with `[(collapsed)]`), `onBeforeToggle`, `onAfterToggle`.
+
+## Accessibility
+
+PrimeNG renders a real `fieldset` and `legend`; a toggleable legend is a button with `aria-expanded` and `aria-controls`.
