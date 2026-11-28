@@ -61,8 +61,8 @@ export class BapsPanel {
 
   @ContentChildren(PrimeTemplate) templates?: QueryList<PrimeTemplate>;
 
-  protected onCollapsed(v: boolean): void {
-    this.collapsed = v;
-    this.collapsedChange.emit(v);
+  protected onCollapsed(v: boolean | undefined): void {
+    this.collapsed = !!v;
+    this.collapsedChange.emit(this.collapsed);
   }
 }
