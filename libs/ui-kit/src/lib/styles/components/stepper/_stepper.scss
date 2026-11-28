@@ -133,7 +133,11 @@ p-stepper {
   --baps-step-size: 2rem;
   --baps-step-size-active: 2rem;
   --baps-step-fill-done: var(--color-sampark-primary-default, #c96868);
-  --baps-step-fill-active: transparent;
+  /* White, not transparent: the active and hovered slot lift 41.6px off the
+     rail with a white glyph, so a transparent fill made them vanish on the
+     page (only the badge dot stayed, measured in Storybook). The ring and
+     glyph colour come from the Sampark rule after the hover block. */
+  --baps-step-fill-active: var(--color-sampark-mono-0, #ffffff);
   --baps-step-fill-idle: transparent;
   --baps-step-ring-idle: var(--color-sampark-mono-40, #bcb9b9);
   --baps-step-icon-on: var(--color-sampark-mono-0, #ffffff);
@@ -460,6 +464,21 @@ p-stepper
   border: none;
   color: var(--baps-step-icon-on);
   box-shadow: var(--baps-step-shadow-lifted);
+}
+
+/* Sampark: the active, in-progress and hovered slot take Sampark's active
+   step look, the one raw p-stepper already has above (.p-step-active
+   .p-step-number): white circle, primary ring, primary glyph. The shared
+   rules give them `border: none` and the inverse glyph colour, which only
+   reads on MyBKY's gradient. Lift and label reveal stay shared with MyBKY. */
+:is(p-stepper.baps-sampark, .baps-ds-sampark p-stepper)
+  :is(
+    .baps-step__btn--active,
+    .baps-step__btn--in-progress,
+    .baps-step:is(:hover, :focus-within) .baps-step__btn:not(.baps-step__btn--active):not(.baps-step__btn--locked)
+  ) {
+  border: 1px solid var(--color-sampark-primary-default, #c96868);
+  color: var(--color-sampark-primary-default, #c96868);
 }
 
 p-stepper .baps-step:hover:has(.baps-step__btn:not(.baps-step__btn--locked)) .baps-step__icon-wrap,
