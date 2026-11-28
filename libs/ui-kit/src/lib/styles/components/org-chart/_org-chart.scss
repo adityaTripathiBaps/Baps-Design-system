@@ -31,3 +31,13 @@
   --p-organizationchart-node-toggle-button-hover-color: var(--color-sampark-text-primary, #151414);
   --p-organizationchart-node-toggle-button-hover-background: var(--color-sampark-mono-20, #f3f2f2);
 }
+
+/* Node accent: put `styleClass: 'baps-org-chart-node-primary'` on a node to
+   fill it with the brand primary (PrimeNG's "Colored" demo). A node takes a
+   class only; story and app templates cannot carry <style> (Angular strips
+   it), so the accent lives here. */
+.p-organizationchart .p-organizationchart-node.baps-org-chart-node-primary {
+  border-color: var(--p-primary-color);
+  background: var(--p-primary-color);
+  color: var(--p-primary-contrast-color);
+}

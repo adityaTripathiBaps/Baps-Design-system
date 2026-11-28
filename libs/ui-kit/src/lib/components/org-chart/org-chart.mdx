@@ -6,15 +6,15 @@ import * as OrgChartStories from './org-chart.stories';
 
 # OrgChart
 
-OrgChart draws a tree top-down with connector lines: regions and centres, or people and who they lead. Use PrimeNG's `p-organizationchart` ([primeng.dev/organizationchart](https://primeng.dev/organizationchart)) with the `bapsOrgChart` directive. Nodes, connectors and toggles take the brand's border and text colours (MyBKY `#e4ecf1` / `#181b1d`, Sampark `#e1e0e0` / `#151414`); a selected node takes the brand primary tint.
+OrgChart draws a tree top-down with connector lines: regions and centres, or people and who they lead. `baps-organizationchart` (also `baps-organization-chart`) wraps PrimeNG's `p-organizationchart` ([primeng.dev/organizationchart](https://primeng.dev/organizationchart)). Nodes, connectors and toggles take the brand's border and text colours (MyBKY `#e4ecf1` / `#181b1d`, Sampark `#e1e0e0` / `#151414`); a selected node takes the brand primary tint.
 
 ## Usage
 
 ```html
-<p-organizationchart bapsOrgChart [value]="tree" [collapsible]="true">
+<baps-organizationchart [value]="tree" [collapsible]="true">
   <ng-template let-node pTemplate="person"> … </ng-template>
   <ng-template let-node pTemplate="default">{{ node.label }}</ng-template>
-</p-organizationchart>
+</baps-organizationchart>
 ```
 
 `value` is a `TreeNode[]` with one root. A node's `type` picks its template; `default` covers the rest. `expanded: true` opens a branch.
@@ -37,9 +37,13 @@ OrgChart draws a tree top-down with connector lines: regions and centres, or peo
 
 ### Colored
 
-A node's `styleClass` sets its own class.
+A node's `styleClass` sets its own class; `baps-org-chart-node-primary` fills it with the brand primary.
 
 <Canvas of={OrgChartStories.Colored} />
+
+## Events
+
+`selectionChange` (two-way with `[(selection)]`), `nodeSelect`, `nodeUnselect`, `nodeExpand`, `nodeCollapse`.
 
 ## Accessibility
 

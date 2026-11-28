@@ -515,12 +515,15 @@ body.baps-dark .sbdocs-wrapper {
    stays light, so those rows become unreadable. It applies to every table on
    every docs page (the When Not to Use tables, the keyboard tables, the token
    tables), so this is one rule rather than a per-block fix.
-   Striping is kept, not removed — only re-pointed at the token tier. */
-.sbdocs-wrapper table tbody tr:nth-of-type(2n) {
+   Striping is kept, not removed — only re-pointed at the token tier.
+   Not inside a story canvas: components drawn with tables (OrgChart, the
+   datepicker grid, tree tables) striped their own rows grey on docs pages
+   (OrgChart docs, measured: connector rows #f8f7f7). */
+.sbdocs-wrapper table:not(.docs-story table) tbody tr:nth-of-type(2n) {
   background: var(--baps-docs-raised) !important;
 }
 
-.sbdocs-wrapper table tbody tr:nth-of-type(2n + 1) {
+.sbdocs-wrapper table:not(.docs-story table) tbody tr:nth-of-type(2n + 1) {
   background: var(--baps-docs-ground) !important;
 }
 

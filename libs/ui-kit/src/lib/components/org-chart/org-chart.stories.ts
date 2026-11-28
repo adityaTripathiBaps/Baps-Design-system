@@ -1,15 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
 import { SharedModule, TreeNode } from 'primeng/api';
-import { OrganizationChart } from 'primeng/organizationchart';
-import { BapsOrgChart } from './org-chart.directive';
+import { BapsOrganizationChart } from './organization-chart.component';
+
 import { BapsAvatar } from '../avatar/avatar.component';
 
 const meta: Meta = {
   title: 'Components/Molecules/OrgChart',
   id: 'components-orgchart',
   tags: ['ds:mybky', 'ds:sampark'],
-  decorators: [moduleMetadata({ imports: [OrganizationChart, BapsOrgChart, BapsAvatar, SharedModule] })],
+  decorators: [moduleMetadata({ imports: [BapsOrganizationChart, BapsAvatar, SharedModule] })],
 };
 export default meta;
 type Story = StoryObj;
@@ -54,7 +54,7 @@ const PEOPLE = (): TreeNode[] => [
 export const Basic: Story = {
   render: () => ({
     props: { tree: REGIONS() },
-    template: `<p-organizationchart bapsOrgChart [value]="tree" [collapsible]="true" />`,
+    template: `<baps-organizationchart [value]="tree" [collapsible]="true" />`,
   }),
 };
 
@@ -62,7 +62,7 @@ export const Basic: Story = {
 export const Template: Story = {
   render: () => ({
     props: { tree: PEOPLE() },
-    template: `<p-organizationchart bapsOrgChart [value]="tree" [collapsible]="true">
+    template: `<baps-organizationchart [value]="tree" [collapsible]="true">
       <ng-template let-node pTemplate="person">
         <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-2)">
           <baps-avatar [label]="node.data.name.charAt(0)" shape="circle" />
@@ -71,7 +71,7 @@ export const Template: Story = {
         </div>
       </ng-template>
       <ng-template let-node pTemplate="default">{{ node.label }}</ng-template>
-    </p-organizationchart>`,
+    </baps-organizationchart>`,
   }),
 };
 
@@ -79,7 +79,7 @@ export const Template: Story = {
 export const Selection: Story = {
   render: () => ({
     props: { tree: REGIONS(), selection: [], names: (s: TreeNode[]) => s.map((n) => n.label).join(', ') || 'none' },
-    template: `<p-organizationchart bapsOrgChart [value]="tree" selectionMode="multiple" [(selection)]="selection" />
+    template: `<baps-organizationchart [value]="tree" selectionMode="multiple" [(selection)]="selection" />
       <code style="display:block;margin-top:var(--space-3)">selected: {{ names(selection) }}</code>`,
   }),
 };
@@ -92,7 +92,7 @@ export const Colored: Story = {
         {
           label: 'North America',
           expanded: true,
-          styleClass: 'baps-orgchart-demo-accent',
+          styleClass: 'baps-org-chart-node-primary',
           children: [
             { label: 'Northeast', expanded: true, children: [{ label: 'Robbinsville' }, { label: 'Edison' }] },
             { label: 'Southeast', expanded: true, children: [{ label: 'Atlanta' }] },
@@ -100,7 +100,7 @@ export const Colored: Story = {
         },
       ],
     },
-    template: `<style>.baps-orgchart-demo-accent { background: var(--p-primary-color) !important; color: var(--p-primary-contrast-color) !important; border-color: var(--p-primary-color) !important; }</style>
-      <p-organizationchart bapsOrgChart [value]="tree" />`,
+    template: `
+      <baps-organizationchart [value]="tree" />`,
   }),
 };
