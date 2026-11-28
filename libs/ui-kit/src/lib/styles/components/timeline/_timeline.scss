@@ -1,0 +1,15 @@
+/* =====================================================================
+   PrimeNG Timeline — brand connector colour (used with bapsTimeline).
+
+   The marker already takes the brand primary from the preset; the connector
+   line stayed Material slate (#cbd5e1) in both brands (measured, Timeline
+   stories). Re-pointed to the brand border through PrimeNG's own variable.
+   ===================================================================== */
+
+.p-timeline {
+  --p-timeline-event-connector-color: var(--color-mybky-border-default, #e4ecf1);
+}
+
+:is(.p-timeline.baps-sampark, .baps-ds-sampark .p-timeline) {
+  --p-timeline-event-connector-color: var(--color-sampark-border-default, #e1e0e0);
+}

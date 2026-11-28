@@ -76,6 +76,8 @@
 @use '../../../libs/ui-kit/src/lib/styles/components/listbox/listbox';
 /* OrgChart — brand colours for PrimeNG OrganizationChart (bapsOrgChart). */
 @use '../../../libs/ui-kit/src/lib/styles/components/org-chart/org-chart';
+/* Timeline — brand connector colour for PrimeNG Timeline (bapsTimeline). */
+@use '../../../libs/ui-kit/src/lib/styles/components/timeline/timeline';
 /* Event dashboard primitives (.hero-tile/.chart-card/.region-card). Wires the
    dashboard.mybky.* tokens, which had no consumer at all. */
 @use '../../../libs/ui-kit/src/lib/styles/layout/dashboard';

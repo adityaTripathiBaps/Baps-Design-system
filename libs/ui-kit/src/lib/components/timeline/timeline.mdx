@@ -1,0 +1,46 @@
+import { Meta, Canvas } from '@storybook/blocks';
+
+import * as TimelineStories from './timeline.stories';
+
+<Meta of={TimelineStories} />
+
+# Timeline
+
+Timeline shows events in order along a line: a project's history, a family's visits. Use PrimeNG's `p-timeline` ([primeng.dev/timeline](https://primeng.dev/timeline)) with the `bapsTimeline` directive. Markers take the brand primary (MyBKY `#5f78b8`, Sampark `#c96868`) and the line the brand border (`#e4ecf1` / `#e1e0e0`).
+
+## Usage
+
+```html
+<p-timeline bapsTimeline [value]="events">
+  <ng-template #opposite let-e>{{ e.date }}</ng-template>
+  <ng-template #content let-e>{{ e.status }}</ng-template>
+</p-timeline>
+```
+
+## Examples
+
+### Alignment
+
+`align` is `left` (default), `right` or `alternate`.
+
+<Canvas of={TimelineStories.Alignment} />
+
+### Opposite
+
+<Canvas of={TimelineStories.Opposite} />
+
+### Template
+
+A `#marker` template replaces the dot; any kit component can sit in `#content`.
+
+<Canvas of={TimelineStories.Template} />
+
+### Horizontal
+
+`layout="horizontal"` with `align` `top`, `bottom` or `alternate`.
+
+<Canvas of={TimelineStories.Horizontal} />
+
+## Accessibility
+
+The timeline is a list of events with no roles of its own. Put the date in the content or the opposite text, not only in the marker, and keep the events in time order in `value`, which is also the reading order.
