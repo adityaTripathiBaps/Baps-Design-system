@@ -68,6 +68,19 @@ baps-slider .p-slider-handle {
   background: var(--baps-slider-handle);
   cursor: grab;
   touch-action: none;
+  /* One centring mechanism: the translate below. PrimeNG also pulls the
+     handle back by half its own size with negative margins, so on Angular
+     the two added up and the handle sat 9px above the track and 9px behind
+     its value (measured, Slider stories, both brands). The React twin has no
+     PrimeNG margins, which is why the translate is the one kept. */
+  margin: 0;
+}
+
+/* The handle is drawn by the rule above. PrimeNG's Material handle draws a
+   second 18px circle with its own shadow in ::before, which showed as a
+   ghost disc offset under each handle (measured, Range story). */
+baps-slider .p-slider-handle::before {
+  content: none;
 }
 
 baps-slider .p-slider-horizontal .p-slider-handle {
