@@ -124,14 +124,17 @@ p-stepper {
   --baps-step-label-fade-out: 0.15s;
 }
 
-/* Sampark keeps the conventional numbered rail: no pill, one slot size, flat
-   accent instead of gradients, and labels that are always legible. */
+/* Sampark: no pill, flat accent instead of gradients. The current step is
+   larger and lifts, and a hovered step previews it, with MyBKY's motion. */
 :is(p-stepper.baps-sampark, .baps-ds-sampark p-stepper) {
   --baps-step-rail-bg: transparent;
   --baps-step-rail-padding: 0;
   --baps-step-rail-max-width: none;
   --baps-step-size: 2rem;
-  --baps-step-size-active: 2rem;
+  /* The current step is larger, as on MyBKY, by MyBKY's own ratio (40 to
+     56px is 1.4): 32 x 1.4 = 2.8rem. The hover scale previews that size. */
+  --baps-step-size-active: calc(var(--baps-step-size) * 1.4);
+  --baps-step-hover-scale: 1.4;
   --baps-step-fill-done: var(--color-sampark-primary-default, #c96868);
   /* White, not transparent: the active and hovered slot lift 41.6px off the
      rail with a white glyph, so a transparent fill made them vanish on the
@@ -147,11 +150,8 @@ p-stepper {
   --baps-step-line: var(--color-sampark-border-default, #e1e0e0);
   --baps-step-text: var(--color-sampark-text-primary, #151414);
   --baps-step-text-idle: var(--color-sampark-text-muted, #9f9c9c);
-  --baps-step-hover-scale: 1;
-  --baps-step-motion: 150ms ease;
-  --baps-step-motion-icon: 150ms ease;
-  --baps-step-duration: 150ms;
-  --baps-step-border-duration: 150ms;
+  /* No motion overrides: Sampark takes MyBKY's timings (0.8s lift and resize,
+     0.6s / 0.15s label). Its 150ms made the lift read as a jump. */
 }
 
 /* ── Rail ─────────────────────────────────────────────────────────────── */
