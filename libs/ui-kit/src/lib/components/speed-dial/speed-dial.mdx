@@ -1,0 +1,68 @@
+import { Meta, Canvas } from '@storybook/blocks';
+
+import * as SpeedDialStories from './speed-dial.stories';
+
+<Meta of={SpeedDialStories} />
+
+# SpeedDial
+
+`baps-speed-dial` is a floating button that fans out a few related actions. It wraps PrimeNG's `p-speeddial` ([primeng.dev/speeddial](https://primeng.dev/speeddial)). The main button and the actions are kit buttons: primary circle (MyBKY 36px, Sampark 32px) and secondary actions; the icon turns 45° while open, so a plus reads as a close.
+
+Keep it to three to six actions that belong together, on a page where they are the main thing to do. Elsewhere, a split button or a menu is easier to find.
+
+## Usage
+
+```html
+<baps-speed-dial [model]="actions" direction="up" ariaLabel="Actions" />
+```
+
+```ts
+actions: MenuItem[] = [
+  { label: 'Add', icon: 'pi pi-pencil', command: () => this.add() },
+  { label: 'Delete', icon: 'pi pi-trash', command: () => this.remove() },
+];
+```
+
+Position the dial yourself (`[style]="{ position: 'fixed', right: '1.5rem', bottom: '1.5rem' }"` or inside a positioned box).
+
+## Examples
+
+### Linear
+
+<Canvas of={SpeedDialStories.Linear} />
+
+### Circle
+
+<Canvas of={SpeedDialStories.Circle} />
+
+### Semi circle
+
+<Canvas of={SpeedDialStories.SemiCircle} />
+
+### Quarter circle
+
+<Canvas of={SpeedDialStories.QuarterCircle} />
+
+### Tooltip
+
+`tooltipOptions` on each item (or on the dial for all of them) names the action on hover.
+
+<Canvas of={SpeedDialStories.Tooltip} />
+
+### Mask
+
+<Canvas of={SpeedDialStories.Mask} />
+
+### Template
+
+`button`, `item` and `icon` templates; call `toggleCallback` to open, close or run an item.
+
+<Canvas of={SpeedDialStories.Template} />
+
+## Events
+
+`visibleChange` (two-way with `[(visible)]`), `clicked` (main button), `shown`, `hidden`.
+
+## Accessibility
+
+Give the dial an `ariaLabel`. PrimeNG makes the main button control a menu of the actions (`aria-expanded`, `aria-controls`); the arrow keys move through the actions and Escape closes it. Icon-only actions need a `label` or a tooltip so they are named.

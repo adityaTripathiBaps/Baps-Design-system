@@ -94,4 +94,5 @@ export * from './lib/components/password/password.component';
 export * from './lib/components/knob/knob.component';
 export * from './lib/components/rating/rating.component';
 export * from './lib/components/toggle-button/toggle-button.component';
+export * from './lib/components/speed-dial/speed-dial.component';
 export * from './lib/theme/ramp';
