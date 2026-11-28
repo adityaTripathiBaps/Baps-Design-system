@@ -1,0 +1,46 @@
+import { Meta, Canvas } from '@storybook/blocks';
+
+import * as OrgChartStories from './org-chart.stories';
+
+<Meta of={OrgChartStories} />
+
+# OrgChart
+
+OrgChart draws a tree top-down with connector lines: regions and centres, or people and who they lead. Use PrimeNG's `p-organizationchart` ([primeng.dev/organizationchart](https://primeng.dev/organizationchart)) with the `bapsOrgChart` directive. Nodes, connectors and toggles take the brand's border and text colours (MyBKY `#e4ecf1` / `#181b1d`, Sampark `#e1e0e0` / `#151414`); a selected node takes the brand primary tint.
+
+## Usage
+
+```html
+<p-organizationchart bapsOrgChart [value]="tree" [collapsible]="true">
+  <ng-template let-node pTemplate="person"> … </ng-template>
+  <ng-template let-node pTemplate="default">{{ node.label }}</ng-template>
+</p-organizationchart>
+```
+
+`value` is a `TreeNode[]` with one root. A node's `type` picks its template; `default` covers the rest. `expanded: true` opens a branch.
+
+## Examples
+
+### Basic
+
+<Canvas of={OrgChartStories.Basic} />
+
+### Template
+
+<Canvas of={OrgChartStories.Template} />
+
+### Selection
+
+`selectionMode` is `single` or `multiple`; bind `[(selection)]`.
+
+<Canvas of={OrgChartStories.Selection} />
+
+### Colored
+
+A node's `styleClass` sets its own class.
+
+<Canvas of={OrgChartStories.Colored} />
+
+## Accessibility
+
+The chart is a layout of tables, not a tree widget: screen readers read the nodes in order, without levels. Where the hierarchy itself matters to the reader, give the same data as a nested list or a `baps-tree-table` too.

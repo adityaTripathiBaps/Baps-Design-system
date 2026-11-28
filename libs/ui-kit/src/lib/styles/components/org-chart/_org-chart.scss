@@ -1,0 +1,33 @@
+/* =====================================================================
+   PrimeNG OrganizationChart — brand colours (used with bapsOrgChart).
+
+   The Material base drew nodes, connectors and toggles in slate (#cbd5e1
+   borders, #0f172a text) in both brands (measured, OrgChart stories). Only
+   colours are re-pointed, through PrimeNG's own variables; geometry stays
+   PrimeNG's. MyBKY is the default; Sampark per instance (host class from
+   bapsOrgChart) or page-wide.
+   ===================================================================== */
+
+.p-organizationchart {
+  --p-organizationchart-node-border-color: var(--color-mybky-border-default, #e4ecf1);
+  --p-organizationchart-connector-color: var(--color-mybky-border-default, #e4ecf1);
+  --p-organizationchart-node-toggle-button-border-color: var(--color-mybky-border-default, #e4ecf1);
+  --p-organizationchart-node-color: var(--color-mybky-text-primary, #181b1d);
+  --p-organizationchart-node-hover-color: var(--color-mybky-text-primary, #181b1d);
+  --p-organizationchart-node-hover-background: var(--color-mybky-mono-100, #eff1f3);
+  --p-organizationchart-node-toggle-button-color: var(--color-mybky-text-secondary, #2b2f32);
+  --p-organizationchart-node-toggle-button-hover-color: var(--color-mybky-text-primary, #181b1d);
+  --p-organizationchart-node-toggle-button-hover-background: var(--color-mybky-mono-100, #eff1f3);
+}
+
+:is(.p-organizationchart.baps-sampark, .baps-ds-sampark .p-organizationchart) {
+  --p-organizationchart-node-border-color: var(--color-sampark-border-default, #e1e0e0);
+  --p-organizationchart-connector-color: var(--color-sampark-border-default, #e1e0e0);
+  --p-organizationchart-node-toggle-button-border-color: var(--color-sampark-border-default, #e1e0e0);
+  --p-organizationchart-node-color: var(--color-sampark-text-primary, #151414);
+  --p-organizationchart-node-hover-color: var(--color-sampark-text-primary, #151414);
+  --p-organizationchart-node-hover-background: var(--color-sampark-mono-20, #f3f2f2);
+  --p-organizationchart-node-toggle-button-color: var(--color-sampark-text-primary, #151414);
+  --p-organizationchart-node-toggle-button-hover-color: var(--color-sampark-text-primary, #151414);
+  --p-organizationchart-node-toggle-button-hover-background: var(--color-sampark-mono-20, #f3f2f2);
+}
