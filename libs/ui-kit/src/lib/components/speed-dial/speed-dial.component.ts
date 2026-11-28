@@ -114,8 +114,8 @@ export class BapsSpeedDial {
   @Output() readonly visibleChange = new EventEmitter<boolean>();
   /** The main button was clicked. */
   @Output() readonly clicked = new EventEmitter<MouseEvent>();
-  @Output() readonly shown = new EventEmitter<void>();
-  @Output() readonly hidden = new EventEmitter<void>();
+  @Output() readonly shown = new EventEmitter<Event>();
+  @Output() readonly hidden = new EventEmitter<Event>();
 
   @ContentChildren(PrimeTemplate) templates?: QueryList<PrimeTemplate>;
 

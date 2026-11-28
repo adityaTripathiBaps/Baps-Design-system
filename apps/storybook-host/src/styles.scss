@@ -70,17 +70,18 @@
    and it must come after nothing in particular. */
 @use '../../../libs/ui-kit/src/lib/styles/components/accordion/accordion';
 /* Listbox — also skins PrimeNG OrderList / PickList lists, which are used
-   through directives (bapsOrderList, bapsPickList) that cannot carry styles.
+   inside baps-orderlist / baps-picklist, which do not load the partial
+   themselves.
    baps-listbox still loads it through its own styleUrls; the shipped
    index.css bundles every partial anyway. */
 @use '../../../libs/ui-kit/src/lib/styles/components/listbox/listbox';
-/* OrgChart — brand colours for PrimeNG OrganizationChart (bapsOrgChart). */
+/* OrgChart — brand colours for PrimeNG OrganizationChart (baps-organizationchart). */
 @use '../../../libs/ui-kit/src/lib/styles/components/org-chart/org-chart';
-/* Timeline — brand connector colour for PrimeNG Timeline (bapsTimeline). */
+/* Timeline — brand connector colour for PrimeNG Timeline (baps-timeline). */
 @use '../../../libs/ui-kit/src/lib/styles/components/timeline/timeline';
-/* Tree — brand colours for PrimeNG Tree (bapsTree). */
+/* Tree — brand colours for PrimeNG Tree (baps-tree). */
 @use '../../../libs/ui-kit/src/lib/styles/components/tree/tree';
-/* Fieldset — brand colours for PrimeNG Fieldset (bapsFieldset). */
+/* Fieldset — brand colours for PrimeNG Fieldset (baps-fieldset). */
 @use '../../../libs/ui-kit/src/lib/styles/components/fieldset/fieldset';
 /* Event dashboard primitives (.hero-tile/.chart-card/.region-card). Wires the
    dashboard.mybky.* tokens, which had no consumer at all. */

@@ -1,11 +1,11 @@
 /* =====================================================================
-   PrimeNG OrganizationChart — brand colours (used with bapsOrgChart).
+   PrimeNG OrganizationChart — brand colours (baps-organizationchart).
 
    The Material base drew nodes, connectors and toggles in slate (#cbd5e1
    borders, #0f172a text) in both brands (measured, OrgChart stories). Only
    colours are re-pointed, through PrimeNG's own variables; geometry stays
    PrimeNG's. MyBKY is the default; Sampark per instance (host class from
-   bapsOrgChart) or page-wide.
+   baps-organizationchart) or page-wide.
    ===================================================================== */
 
 .p-organizationchart {
