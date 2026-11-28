@@ -98,4 +98,5 @@ export * from './lib/components/speed-dial/speed-dial.component';
 export * from './lib/components/data-view/data-view.directive';
 export * from './lib/components/order-list/order-list.directive';
 export * from './lib/components/org-chart/org-chart.directive';
+export * from './lib/components/pick-list/pick-list.directive';
 export * from './lib/theme/ramp';
