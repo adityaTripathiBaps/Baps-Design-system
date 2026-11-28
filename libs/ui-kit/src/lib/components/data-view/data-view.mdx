@@ -1,0 +1,56 @@
+import { Meta, Canvas } from '@storybook/blocks';
+
+import * as DataViewStories from './data-view.stories';
+
+<Meta of={DataViewStories} />
+
+# DataView
+
+DataView lays out a collection with your own template per item, as a list or a grid. Use PrimeNG's `p-dataview` ([primeng.dev/dataview](https://primeng.dev/dataview)) with the `bapsDataView` directive. There is no wrapper component: DataView finds its `#list`, `#grid`, `#header`, `#footer` and `#emptymessage` templates by reference name, and on PrimeNG's own element they work exactly as PrimeNG documents them.
+
+For rows of fields with sorting, selection and column control, use `baps-table` instead.
+
+## Usage
+
+```html
+<p-dataview bapsDataView [value]="centers" [layout]="layout">
+  <ng-template #list let-items> … one row per item … </ng-template>
+  <ng-template #grid let-items> … one card per item … </ng-template>
+</p-dataview>
+```
+
+## Examples
+
+### Basic
+
+<Canvas of={DataViewStories.Basic} />
+
+### Pagination
+
+DataView's own `[paginator]` draws PrimeNG's paginator, not the kit's. Page the value and put `baps-paginator` under it, as with `baps-table`.
+
+<Canvas of={DataViewStories.Pagination} />
+
+### Sort
+
+`sortField` and `sortOrder` (1 or -1) order the items; the `#header` template is the place for the control.
+
+<Canvas of={DataViewStories.Sort} />
+
+### Layout
+
+`layout` switches between the `#list` and `#grid` templates.
+
+<Canvas of={DataViewStories.Layout} />
+
+### Loading
+
+<Canvas of={DataViewStories.Loading} />
+
+### Empty
+
+<Canvas of={DataViewStories.Empty} />
+
+## Accessibility
+
+DataView adds no roles of its own; the templates are the content. Use a list (`ul` / `li`) or headings in them where the items are a list, and keep the sort and layout controls labelled.
