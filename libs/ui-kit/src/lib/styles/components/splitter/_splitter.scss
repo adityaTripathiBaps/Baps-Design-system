@@ -1,0 +1,32 @@
+/* =====================================================================
+   PrimeNG Splitter — brand surface for baps-splitter.
+
+   The Material base drew the border and gutter slate #cbd5e1 and text
+   slate #0f172a in both brands (measured, Splitter stories). It takes the
+   card border and radius tokens (as baps-panel does) and the brand text,
+   through PrimeNG's own variables. The gutter is the border colour.
+   ===================================================================== */
+
+.p-splitter {
+  --p-splitter-border-color: var(--card-mybky-border, #e4ecf1);
+  --p-splitter-gutter-background: var(--card-mybky-border, #e4ecf1);
+  --p-splitter-background: var(--card-mybky-background, #ffffff);
+  --p-splitter-color: var(--color-mybky-text-primary, #181b1d);
+
+  border-radius: var(--card-mybky-radius, 0.5rem);
+}
+
+:is(.p-splitter.baps-sampark, .baps-ds-sampark .p-splitter) {
+  --p-splitter-border-color: var(--card-sampark-border, #e1e0e0);
+  --p-splitter-gutter-background: var(--card-sampark-border, #e1e0e0);
+  --p-splitter-background: var(--card-sampark-background, #ffffff);
+  --p-splitter-color: var(--color-sampark-text-primary, #151414);
+
+  border-radius: var(--card-sampark-radius, 0.5rem);
+}
+
+/* A nested splitter sits inside a panel: no second border or corners. */
+.p-splitterpanel .p-splitter {
+  border: 0;
+  border-radius: 0;
+}

@@ -104,4 +104,5 @@ export * from './lib/components/tree/tree.component';
 export * from './lib/components/fieldset/fieldset.component';
 export * from './lib/components/panel/panel.component';
 export * from './lib/components/scroll-panel/scroll-panel.component';
+export * from './lib/components/splitter/splitter.component';
 export * from './lib/theme/ramp';

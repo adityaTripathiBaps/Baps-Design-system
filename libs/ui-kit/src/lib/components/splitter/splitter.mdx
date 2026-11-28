@@ -1,0 +1,46 @@
+import { Meta, Canvas } from '@storybook/blocks';
+
+import * as SplitterStories from './splitter.stories';
+
+<Meta of={SplitterStories} />
+
+# Splitter
+
+`baps-splitter` puts two or more panels side by side, or stacked, with a gutter the user drags to resize them. It wraps PrimeNG's `p-splitter` ([primeng.dev/splitter](https://primeng.dev/splitter)). The frame and gutter take the card border and radius (MyBKY `#e4ecf1`, Sampark `#e1e0e0`, 8px); a nested splitter drops its own frame.
+
+## Usage
+
+```html
+<baps-splitter style="height: 20rem" [panelSizes]="[25, 75]">
+  <ng-template pTemplate="panel">…</ng-template>
+  <ng-template pTemplate="panel">…</ng-template>
+</baps-splitter>
+```
+
+Give the splitter a height. Each panel is a template, in order (`pTemplate="panel"` or `#panel`); `panelSizes` and `minSizes` are percentages. `stateKey` remembers the sizes in session (or `stateStorage="local"`) storage.
+
+## Examples
+
+### Horizontal
+
+<Canvas of={SplitterStories.Horizontal} />
+
+### Size
+
+<Canvas of={SplitterStories.Size} />
+
+### Vertical
+
+<Canvas of={SplitterStories.Vertical} />
+
+### Nested
+
+<Canvas of={SplitterStories.Nested} />
+
+## Events
+
+`resizeStart`, `resizeEnd`.
+
+## Accessibility
+
+Each gutter is a focusable `separator`; the arrow keys resize the panels by `step` percent.

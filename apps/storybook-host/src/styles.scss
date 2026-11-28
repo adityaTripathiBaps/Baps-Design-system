@@ -87,6 +87,8 @@
 @use '../../../libs/ui-kit/src/lib/styles/components/panel/panel';
 /* ScrollPanel — kit scrollbar thumb (baps-scrollpanel). */
 @use '../../../libs/ui-kit/src/lib/styles/components/scroll-panel/scroll-panel';
+/* Splitter — card surface for PrimeNG Splitter (baps-splitter). */
+@use '../../../libs/ui-kit/src/lib/styles/components/splitter/splitter';
 /* Event dashboard primitives (.hero-tile/.chart-card/.region-card). Wires the
    dashboard.mybky.* tokens, which had no consumer at all. */
 @use '../../../libs/ui-kit/src/lib/styles/layout/dashboard';
