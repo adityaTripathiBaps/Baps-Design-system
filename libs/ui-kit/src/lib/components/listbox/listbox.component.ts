@@ -80,7 +80,7 @@ export interface BapsListboxOption {
       [filterMatchMode]="filterMatchMode"
       [filterBy]="filterBy"
       [filterLocale]="filterLocale"
-      [filterValue]="filterValue"
+      [filterValue]="filterValue!"
       [dataKey]="dataKey"
       [autoOptionFocus]="autoOptionFocus"
       [selectOnFocus]="selectOnFocus"

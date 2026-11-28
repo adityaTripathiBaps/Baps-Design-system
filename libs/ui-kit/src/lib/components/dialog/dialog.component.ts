@@ -399,7 +399,7 @@ export class BapsDialog {
   /** A maximize button in the header. Off by default. */
   @Input() maximizable = false;
   /** Where the panel docks: center (default) or an edge / corner. */
-  @Input() position?:
+  @Input() position:
     | 'center'
     | 'top'
     | 'bottom'
@@ -408,7 +408,7 @@ export class BapsDialog {
     | 'topleft'
     | 'topright'
     | 'bottomleft'
-    | 'bottomright';
+    | 'bottomright' = 'center';
   /** Panel width per max-width breakpoint, e.g. { '1199px': '75vw', '575px': '90vw' }. */
   @Input() breakpoints?: Record<string, string>;
   /** Keep a dragged panel inside the viewport. */
