@@ -69,6 +69,11 @@
    plus the Sampark colour scope. Standalone: no base PrimeNG rule to outrank,
    and it must come after nothing in particular. */
 @use '../../../libs/ui-kit/src/lib/styles/components/accordion/accordion';
+/* Listbox — also skins PrimeNG OrderList / PickList lists, which are used
+   through directives (bapsOrderList, bapsPickList) that cannot carry styles.
+   baps-listbox still loads it through its own styleUrls; the shipped
+   index.css bundles every partial anyway. */
+@use '../../../libs/ui-kit/src/lib/styles/components/listbox/listbox';
 /* Event dashboard primitives (.hero-tile/.chart-card/.region-card). Wires the
    dashboard.mybky.* tokens, which had no consumer at all. */
 @use '../../../libs/ui-kit/src/lib/styles/layout/dashboard';

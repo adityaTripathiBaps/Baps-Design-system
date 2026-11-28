@@ -3,9 +3,15 @@
  * Angular and React deliberately emit the same Prime-compatible class
  * contract. Keeping the rules here means both frameworks use one token-driven
  * visual implementation; neither component owns a private copy.
+ *
+ * PrimeNG's OrderList and PickList are built on the same p-listbox, so their
+ * lists take this skin too. Before, they fell through to the Material base:
+ * MyBKY drew a 99px pill radius on a 226px list and 16px slate options
+ * (measured, OrderList story) beside the kit Listbox's 16px radius and 14px
+ * options.
  */
 
-baps-listbox {
+:is(baps-listbox, .p-orderlist, .p-picklist) {
   --listbox-max-height: calc(var(--space-10) * 8);
   --listbox-radius: var(--select-overlay-radius);
   --listbox-bg: var(--color-mybky-mono-0);
@@ -18,16 +24,19 @@ baps-listbox {
   --listbox-bar-color: var(--color-mybky-blue-600);
   /* [striped] even rows: PrimeNG's own value is slate #f8fafc in both brands. */
   --p-listbox-option-striped-background: var(--color-mybky-mono-50, #f8fafb);
+}
 
+/* Host only: OrderList / PickList roots keep PrimeNG's flex layout. */
+baps-listbox {
   display: block;
 }
 
-baps-listbox .baps-listbox-item {
+:is(baps-listbox, .p-orderlist, .p-picklist) .baps-listbox-item {
   width: 100%;
   border: none;
 }
 
-baps-listbox .p-listbox {
+:is(baps-listbox, .p-orderlist, .p-picklist) .p-listbox {
   overflow: hidden;
   border: 1px solid var(--listbox-border);
   border-radius: var(--listbox-radius) !important;
@@ -35,18 +44,18 @@ baps-listbox .p-listbox {
   box-shadow: none;
 }
 
-baps-listbox .p-listbox-list-container {
+:is(baps-listbox, .p-orderlist, .p-picklist) .p-listbox-list-container {
   max-height: var(--listbox-max-height);
   overflow-y: auto;
 }
 
-baps-listbox .p-listbox-list {
+:is(baps-listbox, .p-orderlist, .p-picklist) .p-listbox-list {
   padding: var(--space-1) 0;
   margin: 0;
   list-style: none;
 }
 
-baps-listbox .p-listbox-option {
+:is(baps-listbox, .p-orderlist, .p-picklist) .p-listbox-option {
   position: relative;
   display: flex;
   min-height: var(--space-10);
@@ -65,7 +74,7 @@ baps-listbox .p-listbox-option {
   user-select: none;
 }
 
-baps-listbox .p-listbox-option::before {
+:is(baps-listbox, .p-orderlist, .p-picklist) .p-listbox-option::before {
   position: absolute;
   inset-block: 0;
   inset-inline-start: 0;
@@ -76,40 +85,40 @@ baps-listbox .p-listbox-option::before {
   transition: opacity var(--motion-duration-fast) var(--motion-easing-standard);
 }
 
-baps-listbox .p-listbox-option:hover:not(.p-disabled),
-baps-listbox .p-listbox-option.p-focus:not(.p-disabled),
-baps-listbox .p-listbox-option.p-listbox-option-selected {
+:is(baps-listbox, .p-orderlist, .p-picklist) .p-listbox-option:hover:not(.p-disabled),
+:is(baps-listbox, .p-orderlist, .p-picklist) .p-listbox-option.p-focus:not(.p-disabled),
+:is(baps-listbox, .p-orderlist, .p-picklist) .p-listbox-option.p-listbox-option-selected {
   background: var(--listbox-bg-selected);
   color: var(--listbox-text-selected);
 }
 
-baps-listbox .p-listbox-option:hover:not(.p-disabled)::before,
-baps-listbox .p-listbox-option.p-focus:not(.p-disabled)::before,
-baps-listbox .p-listbox-option.p-listbox-option-selected::before {
+:is(baps-listbox, .p-orderlist, .p-picklist) .p-listbox-option:hover:not(.p-disabled)::before,
+:is(baps-listbox, .p-orderlist, .p-picklist) .p-listbox-option.p-focus:not(.p-disabled)::before,
+:is(baps-listbox, .p-orderlist, .p-picklist) .p-listbox-option.p-listbox-option-selected::before {
   opacity: 1;
 }
 
-baps-listbox .p-listbox-option .menu-item,
-baps-listbox .p-listbox-option .menu-item:hover:not(.menu-item--disabled) {
+:is(baps-listbox, .p-orderlist, .p-picklist) .p-listbox-option .menu-item,
+:is(baps-listbox, .p-orderlist, .p-picklist) .p-listbox-option .menu-item:hover:not(.menu-item--disabled) {
   --menu-item-bar-width: 0;
 
   padding: 0;
   background: transparent;
 }
 
-baps-listbox .p-listbox-option .menu-item--disabled .menu-item__avatar,
-baps-listbox .p-listbox-option .menu-item--disabled .menu-item__control {
+:is(baps-listbox, .p-orderlist, .p-picklist) .p-listbox-option .menu-item--disabled .menu-item__avatar,
+:is(baps-listbox, .p-orderlist, .p-picklist) .p-listbox-option .menu-item--disabled .menu-item__control {
   opacity: 1;
 }
 
-baps-listbox .p-listbox-option.p-disabled {
+:is(baps-listbox, .p-orderlist, .p-picklist) .p-listbox-option.p-disabled {
   color: var(--listbox-text-disabled);
   cursor: not-allowed;
   opacity: 0.5;
   pointer-events: none;
 }
 
-baps-listbox .p-listbox-option-group {
+:is(baps-listbox, .p-orderlist, .p-picklist) .p-listbox-option-group {
   padding: var(--space-2) var(--space-4);
   border-top: 1px solid var(--listbox-border);
   margin-top: var(--space-1);
@@ -121,16 +130,26 @@ baps-listbox .p-listbox-option-group {
   text-transform: uppercase;
 }
 
-baps-listbox .p-listbox-option-group:first-child {
+:is(baps-listbox, .p-orderlist, .p-picklist) .p-listbox-option-group:first-child {
   border-top: none;
   margin-top: 0;
 }
 
-baps-listbox .p-checkbox {
+/* OrderList / PickList put a `#header` template's content in the listbox
+   header, whose padding the select skin zeroes (_select.scss: the filter
+   row brings its own). Text there sat flush on the border, centred: give it
+   the option inset and a rule under it. The filter row is left alone. */
+:is(.p-orderlist, .p-picklist) .p-listbox-header > :not(.p-iconfield) {
+  align-self: stretch;
+  padding: var(--space-2-5) var(--space-4);
+  border-bottom: 1px solid var(--listbox-border);
+}
+
+:is(baps-listbox, .p-orderlist, .p-picklist) .p-checkbox {
   margin-inline-end: var(--space-1);
 }
 
-:is(baps-listbox.baps-sampark, .baps-ds-sampark baps-listbox) {
+:is(baps-listbox.baps-sampark, .p-orderlist.baps-sampark, .p-picklist.baps-sampark, .baps-ds-sampark :is(baps-listbox, .p-orderlist, .p-picklist)) {
   --listbox-radius: var(--radius-sampark-default);
   --p-listbox-option-striped-background: var(--color-sampark-secondary-0, #f8f7f7);
   --listbox-bg: var(--color-sampark-mono-0);
@@ -143,7 +162,7 @@ baps-listbox .p-checkbox {
   --listbox-bar-color: var(--color-sampark-primary-default);
 }
 
-.baps-dark baps-listbox {
+.baps-dark :is(baps-listbox, .p-orderlist, .p-picklist) {
   --listbox-bg: var(--color-mybky-dark-surface-ground);
   --listbox-border: var(--color-mybky-dark-border-divider);
   --listbox-text: var(--color-mybky-dark-text-primary);
@@ -154,7 +173,7 @@ baps-listbox .p-checkbox {
   --listbox-bar-color: var(--color-mybky-dark-primary-default);
 }
 
-.baps-dark :is(baps-listbox.baps-sampark, .baps-ds-sampark baps-listbox) {
+.baps-dark :is(baps-listbox.baps-sampark, .p-orderlist.baps-sampark, .p-picklist.baps-sampark, .baps-ds-sampark :is(baps-listbox, .p-orderlist, .p-picklist)) {
   --listbox-bg: var(--color-sampark-dark-surface-ground);
   --listbox-border: var(--color-sampark-dark-border-divider);
   --listbox-text: var(--color-sampark-dark-text-primary);

@@ -1,0 +1,46 @@
+import { Meta, Canvas } from '@storybook/blocks';
+
+import * as OrderListStories from './order-list.stories';
+
+<Meta of={OrderListStories} />
+
+# OrderList
+
+OrderList lets the user put a list in order, with the side buttons or by dragging. Use PrimeNG's `p-orderlist` ([primeng.dev/orderlist](https://primeng.dev/orderlist)) with the `bapsOrderList` directive. Its list is the kit Listbox in both brands (MyBKY 16px radius, Sampark 4px; 14px rows with the brand's selected bar), and the move buttons are kit buttons.
+
+## Usage
+
+```html
+<p-orderlist bapsOrderList [value]="steps" dataKey="id" [dragdrop]="true" ariaLabel="Visit steps">
+  <ng-template #header>Visit steps</ng-template>
+  <ng-template #item let-step>{{ step.name }}</ng-template>
+</p-orderlist>
+```
+
+OrderList reorders `value` in place and emits `onReorder`. Use a `#header` template for a title: PrimeNG v21 accepts a `header` input but does not render it.
+
+## Examples
+
+### Basic
+
+Select a row, then move it up, to the top, down or to the bottom.
+
+<Canvas of={OrderListStories.Basic} />
+
+### Drag and drop
+
+<Canvas of={OrderListStories.DragDrop} />
+
+### Filter
+
+`filterBy` names the field to search; `filterPlaceholder` labels the box.
+
+<Canvas of={OrderListStories.Filter} />
+
+### Controls on the right
+
+<Canvas of={OrderListStories.ControlsRight} />
+
+## Accessibility
+
+Name the list with `ariaLabel` or `ariaLabelledBy`. PrimeNG gives it listbox semantics: the arrow keys move the focus, Space or Enter selects, and the move buttons carry labels from the locale (`moveUp`, `moveTop`, …).
