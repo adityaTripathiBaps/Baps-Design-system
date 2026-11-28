@@ -1,0 +1,27 @@
+/* =====================================================================
+   PrimeNG Panel — card surface for baps-panel.
+
+   The Material base drew a slate #cbd5e1 border, 4px corners and slate
+   #0f172a text in both brands (measured, Panel stories). A panel is the
+   kit card with a fold, so it takes the card tokens (_card.scss): border,
+   radius and title colour, per brand. Set through PrimeNG's own variables;
+   padding stays PrimeNG's.
+   ===================================================================== */
+
+.p-panel {
+  --p-panel-border-color: var(--card-mybky-border, #e4ecf1);
+  --p-panel-border-radius: var(--card-mybky-radius, 0.5rem);
+  --p-panel-background: var(--card-mybky-background, #ffffff);
+  --p-panel-color: var(--color-mybky-text-primary, #181b1d);
+  --p-panel-header-color: var(--card-mybky-title-color, #181b1d);
+  --p-panel-header-border-color: var(--card-mybky-border, #e4ecf1);
+}
+
+:is(.p-panel.baps-sampark, .baps-ds-sampark .p-panel) {
+  --p-panel-border-color: var(--card-sampark-border, #e1e0e0);
+  --p-panel-border-radius: var(--card-sampark-radius, 0.5rem);
+  --p-panel-background: var(--card-sampark-background, #ffffff);
+  --p-panel-color: var(--color-sampark-text-primary, #151414);
+  --p-panel-header-color: var(--card-sampark-title-color, #151414);
+  --p-panel-header-border-color: var(--card-sampark-border, #e1e0e0);
+}

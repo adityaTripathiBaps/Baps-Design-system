@@ -1,0 +1,45 @@
+import { Meta, Canvas } from '@storybook/blocks';
+
+import * as PanelStories from './panel.stories';
+
+<Meta of={PanelStories} />
+
+# Panel
+
+`baps-panel` is a titled container whose body can fold away. It wraps PrimeNG's `p-panel` ([primeng.dev/panel](https://primeng.dev/panel)). It is the kit card surface: border, 8px corners and title colour from the card tokens (MyBKY `#e4ecf1` / `#181b1d`, Sampark `#e1e0e0` / `#151414`); the toggle is a kit button.
+
+Use `baps-card` when nothing folds; use the accordion for several sections where one opens at a time.
+
+## Usage
+
+```html
+<baps-panel header="Robbinsville" [toggleable]="true" [(collapsed)]="folded">
+  …
+</baps-panel>
+```
+
+Content is projected. `pTemplate="header"`, `"icons"` (header actions), `"headericons"` (the toggle icon) and `"footer"` replace those parts.
+
+## Examples
+
+### Basic
+
+<Canvas of={PanelStories.Basic} />
+
+### Toggleable
+
+`toggler="header"` makes the whole header fold the panel.
+
+<Canvas of={PanelStories.Toggleable} />
+
+### Template
+
+<Canvas of={PanelStories.Template} />
+
+## Events
+
+`collapsedChange` (two-way with `[(collapsed)]`), `beforeToggle`, `afterToggle`.
+
+## Accessibility
+
+The toggle is a button with `aria-expanded` and `aria-controls`, labelled by the header; the content region is labelled by the title.

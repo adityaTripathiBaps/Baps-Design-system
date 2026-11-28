@@ -83,6 +83,8 @@
 @use '../../../libs/ui-kit/src/lib/styles/components/tree/tree';
 /* Fieldset — brand colours for PrimeNG Fieldset (baps-fieldset). */
 @use '../../../libs/ui-kit/src/lib/styles/components/fieldset/fieldset';
+/* Panel — card surface for PrimeNG Panel (baps-panel). */
+@use '../../../libs/ui-kit/src/lib/styles/components/panel/panel';
 /* Event dashboard primitives (.hero-tile/.chart-card/.region-card). Wires the
    dashboard.mybky.* tokens, which had no consumer at all. */
 @use '../../../libs/ui-kit/src/lib/styles/layout/dashboard';
