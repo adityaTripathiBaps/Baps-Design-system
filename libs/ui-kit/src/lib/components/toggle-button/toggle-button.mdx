@@ -1,0 +1,53 @@
+import { Meta, Canvas } from '@storybook/blocks';
+
+import * as ToggleButtonStories from './toggle-button.stories';
+
+<Meta of={ToggleButtonStories} />
+
+# ToggleButton
+
+`baps-toggle-button` is a button that stays pressed: on or off, with a label and icon for each state. It wraps PrimeNG's `p-togglebutton` ([primeng.dev/togglebutton](https://primeng.dev/togglebutton)) as a boolean form control. It has the kit button's size in each brand (MyBKY 36px pill, Sampark 32px with a 4px radius; small and large follow the button too). Pressed, it fills grey: MyBKY from the theme, Sampark `#e1e0e0` (hover `#f3f2f2`, the secondary button's hover).
+
+For a setting that applies at once, prefer `baps-toggle-switch`. For one choice out of several, use `baps-segmented`.
+
+## Usage
+
+```html
+<baps-toggle-button onLabel="On" offLabel="Off" formControlName="notify" />
+```
+
+## Examples
+
+### Basic
+
+<Canvas of={ToggleButtonStories.Basic} />
+
+### Customized
+
+`onLabel`, `offLabel`, `onIcon` and `offIcon` set each state; `iconPos` puts the icon on the right. `content` and `icon` templates replace them.
+
+<Canvas of={ToggleButtonStories.Customized} />
+
+### Sizes
+
+<Canvas of={ToggleButtonStories.Sizes} />
+
+### Invalid
+
+<Canvas of={ToggleButtonStories.Invalid} />
+
+### Disabled
+
+<Canvas of={ToggleButtonStories.Disabled} />
+
+### Reactive form
+
+<Canvas of={ToggleButtonStories.ReactiveForm} />
+
+## Events
+
+`changed` (`{ originalEvent, checked }`). The form gets the value itself; a toggle marks it touched.
+
+## Accessibility
+
+PrimeNG renders a button with `aria-pressed`. When the label changes with the state, keep it meaningful in both (not just "Yes" / "No"), or set `ariaLabel` to the setting's name.
