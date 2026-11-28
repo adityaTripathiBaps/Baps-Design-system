@@ -612,18 +612,34 @@ html.baps-ds-sampark
    (pixel 140 vs dev 95: dev's drawer sits under the 0.32 mask AND the 0.45
    scrim). z-index auto drops it under both; the ::after is switched off so it
    is not dimmed a third time. */
+/* Dialog: it renders INSIDE its mask, so z-index auto only reorders it
+   within the mask's stacking context; the mask keeps it above the page. */
 html.baps-ds-sampark
-  :is(.p-drawer, .p-dialog):has(
-    :is(.p-select-open, .p-multiselect-open, .p-treeselect-open)
-  ) {
+  .p-dialog:has(:is(.p-select-open, .p-multiselect-open, .p-treeselect-open)) {
   z-index: auto !important;
 }
 
 html.baps-ds-sampark
-  :is(.p-drawer, .p-dialog):has(
-    :is(.p-select-open, .p-multiselect-open, .p-treeselect-open)
-  )::after {
+  .p-dialog:has(:is(.p-select-open, .p-multiselect-open, .p-treeselect-open))::after {
   content: none !important;
+}
+
+/* Drawer: a body-level SIBLING of its mask. z-index auto dropped it out of
+   the stacking order altogether, so spm's top bar and the table's sticky
+   header and action cells painted over the open Filters drawer (spm
+   Templates, 2026-11-28; Storybook FilterPanel measured: drawer z auto, a
+   click on its header landed on the mask). It now sits one under the scrim,
+   which keeps it above the app chrome and still greys it with the page, and
+   its own ::after stands in for the 0.32 mask it used to sit under, so the
+   two dims still add up to dev's (0.32 then the 0.45 scrim: pixel 95). */
+html.baps-ds-sampark
+  .p-drawer:has(:is(.p-select-open, .p-multiselect-open, .p-treeselect-open)) {
+  z-index: calc(var(--overlay-backdrop-z-index) - 1) !important;
+}
+
+html.baps-ds-sampark
+  .p-drawer:has(:is(.p-select-open, .p-multiselect-open, .p-treeselect-open))::after {
+  background: var(--drawer-sampark-mask-background, rgba(0, 0, 0, 0.32)) !important;
 }
 
 /* Overlay gap from its trigger: SPM dev opens every select / multiselect /
