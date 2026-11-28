@@ -6,15 +6,15 @@ import * as TimelineStories from './timeline.stories';
 
 # Timeline
 
-Timeline shows events in order along a line: a project's history, a family's visits. Use PrimeNG's `p-timeline` ([primeng.dev/timeline](https://primeng.dev/timeline)) with the `bapsTimeline` directive. Markers take the brand primary (MyBKY `#5f78b8`, Sampark `#c96868`) and the line the brand border (`#e4ecf1` / `#e1e0e0`).
+Timeline shows events in order along a line: a project's history, a family's visits. `baps-timeline` wraps PrimeNG's `p-timeline` ([primeng.dev/timeline](https://primeng.dev/timeline)). Markers take the brand primary (MyBKY `#5f78b8`, Sampark `#c96868`) and the line the brand border (`#e4ecf1` / `#e1e0e0`).
 
 ## Usage
 
 ```html
-<p-timeline bapsTimeline [value]="events">
-  <ng-template #opposite let-e>{{ e.date }}</ng-template>
-  <ng-template #content let-e>{{ e.status }}</ng-template>
-</p-timeline>
+<baps-timeline [value]="events">
+  <ng-template pTemplate="opposite" let-e>{{ e.date }}</ng-template>
+  <ng-template pTemplate="content" let-e>{{ e.status }}</ng-template>
+</baps-timeline>
 ```
 
 ## Examples
@@ -31,7 +31,7 @@ Timeline shows events in order along a line: a project's history, a family's vis
 
 ### Template
 
-A `#marker` template replaces the dot; any kit component can sit in `#content`.
+A `marker` template replaces the dot; any kit component can sit in `pTemplate="content"`.
 
 <Canvas of={TimelineStories.Template} />
 

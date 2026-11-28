@@ -99,7 +99,7 @@ export * from './lib/components/data-view/data-view.directive';
 export * from './lib/components/order-list/order-list.directive';
 export * from './lib/components/org-chart/organization-chart.component';
 export * from './lib/components/pick-list/pick-list.component';
-export * from './lib/components/timeline/timeline.directive';
+export * from './lib/components/timeline/timeline.component';
 export * from './lib/components/tree/tree.directive';
 export * from './lib/components/fieldset/fieldset.directive';
 export * from './lib/theme/ramp';
