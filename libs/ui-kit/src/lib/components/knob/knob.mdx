@@ -1,0 +1,75 @@
+import { Meta, Canvas } from '@storybook/blocks';
+
+import * as KnobStories from './knob.stories';
+
+<Meta of={KnobStories} />
+
+# Knob
+
+`baps-knob` is a round dial for a number in a range. It wraps PrimeNG's `p-knob` ([primeng.dev/knob](https://primeng.dev/knob)). The value arc takes the brand's primary colour (MyBKY `#5f78b8`, Sampark `#c96868`) from the theme; nothing is restyled.
+
+Prefer `baps-slider` or `baps-input-number` in a form: a dial is hard to set precisely. Use the knob where the round shape says something, such as a level or a share of a whole.
+
+## Usage
+
+```html
+<baps-knob ariaLabel="Volume" formControlName="volume" />
+```
+
+## Examples
+
+### Basic
+
+<Canvas of={KnobStories.Basic} />
+
+### Min/Max
+
+<Canvas of={KnobStories.MinMax} />
+
+### Step
+
+<Canvas of={KnobStories.Step} />
+
+### Template
+
+`valueTemplate` sets the text in the middle; `{value}` is replaced.
+
+<Canvas of={KnobStories.Template} />
+
+### Stroke
+
+<Canvas of={KnobStories.Stroke} />
+
+### Size
+
+<Canvas of={KnobStories.Size} />
+
+### Color
+
+`valueColor`, `rangeColor` and `textColor` take any CSS colour; use theme variables to stay on brand.
+
+<Canvas of={KnobStories.Color} />
+
+### Reactive
+
+<Canvas of={KnobStories.Reactive} />
+
+### Read only
+
+<Canvas of={KnobStories.ReadOnly} />
+
+### Disabled
+
+<Canvas of={KnobStories.Disabled} />
+
+### Reactive form
+
+<Canvas of={KnobStories.ReactiveForm} />
+
+## Events
+
+`changed` with the new number. The form gets the value itself.
+
+## Accessibility
+
+Name the knob with `ariaLabel` or `ariaLabelledBy`. PrimeNG gives it the slider role with its min, max and current value. Arrow keys move it by `step`, Page Up and Page Down by 10, Home and End to the ends.
