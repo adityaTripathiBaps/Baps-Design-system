@@ -93,6 +93,52 @@ baps-slider .p-slider-vertical .p-slider-handle {
   transform: translate(-50%, 50%);
 }
 
+/* ── Sampark: SPM dev's slider (Projects > Filters, measured 2026-11-28) ──
+   Dev draws a 3px track and a 20px knob: a ring with a 16px white disc on
+   it, no hover change, and a 2px white + 4px primary focus ring. Geometry
+   is dev's; dev's slate fills (#e2e8f0 track and ring) map to the Sampark
+   border token. The fill (range) stays the primary. The 3px track has no
+   space token. */
+:is(baps-slider.baps-sampark, .baps-ds-sampark baps-slider) {
+  --baps-slider-track: var(--color-sampark-border-default, #e1e0e0);
+}
+
+:is(baps-slider.baps-sampark, .baps-ds-sampark baps-slider) .p-slider-horizontal {
+  height: 3px;
+}
+
+:is(baps-slider.baps-sampark, .baps-ds-sampark baps-slider) .p-slider-vertical {
+  width: 3px;
+}
+
+:is(baps-slider.baps-sampark, .baps-ds-sampark baps-slider) .p-slider-handle,
+:is(baps-slider.baps-sampark, .baps-ds-sampark baps-slider) .p-slider-handle:hover {
+  width: var(--space-5);
+  height: var(--space-5);
+  border: 0;
+  background: var(--color-sampark-border-default, #e1e0e0);
+}
+
+:is(baps-slider.baps-sampark, .baps-ds-sampark baps-slider) .p-slider-handle::before {
+  position: absolute;
+  inset: var(--space-0-5);
+  /* PrimeNG's own ::before sets a width and height, which beat the inset. */
+  width: calc(var(--space-5) - 2 * var(--space-0-5));
+  height: calc(var(--space-5) - 2 * var(--space-0-5));
+  border-radius: 50%;
+  background: var(--color-sampark-mono-0, #ffffff);
+  box-shadow:
+    0 0.5px 0 rgba(0, 0, 0, 0.08),
+    0 1px 1px rgba(0, 0, 0, 0.14);
+  content: '';
+}
+
+:is(baps-slider.baps-sampark, .baps-ds-sampark baps-slider) .p-slider-handle:focus-visible {
+  box-shadow:
+    0 0 0 var(--space-0-5) var(--color-sampark-mono-0, #ffffff),
+    0 0 0 var(--space-1) var(--color-sampark-primary-default, #c96868);
+}
+
 baps-slider .p-slider-handle:hover {
   border-color: var(--baps-slider-handle-hover);
   background: var(--baps-slider-handle-hover);
