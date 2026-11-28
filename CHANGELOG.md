@@ -98,6 +98,14 @@ classification and deprecation policy.
   components and patterns stages run the kit's Theme Preview and CRUD form
   stories live, and a component gallery lists every `Components/*` story
   from Storybook's index (all use cases, filtered to the chosen brand).
+  Each canvas stage first shows a captured still of its live screen
+  (`tools/capture-landing-stills.mjs`, 18 JPEGs, ~1.2 MB in all) and fades
+  the live story in over it; live screens boot one after another instead of
+  three at once, so the screen on the canvas is never a loading placeholder.
+  A booted live screen switches story, brand and accent in place through
+  Storybook's preview API instead of reloading, so a theme-swatch or gallery
+  click redraws in under a second rather than booting Angular again; the
+  theme box and gallery start booting a screen ahead of the viewport.
   Kit tokens throughout; its three fonts are a page-only exception recorded in
   `.agents/BRAIN.md`. Docs only; no package change.
 - **Docs:** `docs/FIGMA-COMPONENT-LIBRARY-COVERAGE.md` maps every set in the

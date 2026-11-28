@@ -241,6 +241,12 @@ em.s { font-family: var(--f-serif); font-style: italic; font-weight: 400; letter
 @keyframes shimmer { to { background-position: -200% 0; } }
 .layer.live iframe { position: relative; opacity: 0; transition: opacity var(--t-scene) var(--ease); }
 .layer.live iframe.ready { opacity: 1; }
+/* A captured still of the same screen (tools/capture-landing-stills.mjs)
+   shows at once; the live story boots behind it and fades in over it. Drawn
+   at its capture size from the top-left, the way the live story lays out,
+   so the swap does not jump. */
+.layer.live.has-still { background: var(--still) left top / auto no-repeat, var(--l-panel); animation: none; }
+.layer.live.has-still::before { content: none; }
 /* Boards: stages 1 and 2 fill the canvas with cards, not one small group. */
 .layer.board-layer { padding: var(--space-3); place-items: stretch; }
 .board { display: grid; gap: var(--space-2); width: 100%; height: 100%; min-height: 0; }
@@ -713,10 +719,36 @@ footer a:hover { color: var(--l-accent); }
       if (f.dataset.zoom && !d.getElementById('landing-zoom')) d.head.insertAdjacentHTML('beforeend', `<style id="landing-zoom">html{zoom:${f.dataset.zoom}}</style>`);
     } catch { /* another origin */ }
   };
+  // Captured for these stories only (tools/capture-landing-stills.mjs).
+  const STILLS = ['foundations-theme-preview--components', 'patterns-crud-form--default', 'patterns-login--default', 'components-table--full-listing-page', 'components-table--grouped-projects'];
+  const setStill = (f) => {
+    const layer = f.parentElement;
+    // Canvas stages only: the stills are photographed at the canvas's size and zoom.
+    const ok = !!layer.closest('#cBody') && STILLS.includes(f.dataset.id) && (!f.dataset.accent || f.dataset.accent === 'brand');
+    layer.classList.toggle('has-still', ok);
+    if (ok) layer.style.setProperty('--still', `image-set(url("${here(`shots/live/${f.dataset.id}--${frameBrand(f)}-${f.dataset.dark === '1' || mode === 'dark' ? 'dark' : 'light'}.jpg`)}") 2x)`);
+  };
   const want = (f, on) => {
+    setStill(f);
     if (!on) { if (f.dataset.src) { delete f.dataset.src; f.classList.remove('ready'); f.src = 'about:blank'; } return; }
     const src = frameSrc(f);
     if (f.dataset.src === src) { paint(f); return; }
+    // Already booted: switch story, brand and accent inside the running
+    // preview, as the Storybook toolbar does. A reload boots Angular again,
+    // which took seconds per accent or case click on a slow machine.
+    try {
+      const pv = f.dataset.src && f.classList.contains('ready') && f.contentWindow.__STORYBOOK_PREVIEW__;
+      if (pv?.onSetCurrentStory && pv.onUpdateGlobals) {
+        const [was, now] = [f.dataset.src, src].map((s) => new URL(s, location.href).searchParams);
+        f.dataset.src = src;
+        // Only what changed: a globals re-render racing a story switch drew
+        // the new component with the old story's args.
+        if (was.get('globals') !== now.get('globals')) pv.onUpdateGlobals({ globals: { designSystem: frameBrand(f), accent: f.dataset.accent || 'brand' } });
+        if (was.get('id') !== now.get('id')) pv.onSetCurrentStory({ storyId: f.dataset.id, viewMode: 'story' });
+        [0, 300].forEach((t) => setTimeout(() => paint(f), t));
+        return;
+      }
+    } catch { /* not booted or another origin: reload below */ }
     f.classList.remove('ready');
     f.dataset.src = src;
     f.src = src;
@@ -746,6 +778,7 @@ footer a:hover { color: var(--l-accent); }
     store.set('baps-landing-brand', brand);
     store.set('baps-landing-mode', mode);
     linkAll();
+    frames.forEach(setStill);
     frames.forEach((f) => f.dataset.src && want(f, true));
     ramp();
     stepCopy();
@@ -798,7 +831,14 @@ footer a:hover { color: var(--l-accent); }
     $$('.step').forEach((s, n) => s.classList.toggle('on', n === i));
     layers.forEach((l, n) => {
       l.classList.toggle('on', n === i);
-      if (l.frame) want(l.frame, n >= i && n <= i + 2);
+      if (!l.frame) return;
+      // Each live screen is a whole Storybook preview; booting three at once
+      // made the one on screen wait for the other two. The current stage
+      // loads now, the next two follow 1.5s apart, if still ahead.
+      clearTimeout(l.frame.wait);
+      const on = n >= i && n <= i + 2;
+      if (!on || n === i) want(l.frame, on);
+      else l.frame.wait = setTimeout(() => want(l.frame, n >= cur && n <= cur + 2), (n - i) * 1500);
     });
     $('#cStage').textContent = `Stage ${pad(i + 1)} / ${pad(STEPS.length)}`;
     $('#cName').textContent = STEPS[i][0];
@@ -876,7 +916,7 @@ footer a:hover { color: var(--l-accent); }
   };
   $('#swatches').innerHTML = ACCENTS.map(([k, label, c]) => `<button type="button" role="radio" aria-checked="false" data-accent="${k}"><i style="background:${c}"></i>${label}</button>`).join('');
   $('#swatches').addEventListener('click', (e) => { const b = e.target.closest('[data-accent]'); if (b) setAccent(b.dataset.accent); });
-  new IntersectionObserver(([e]) => want(themeFrame, e.isIntersecting), { rootMargin: '25% 0px' }).observe($('#themeLive'));
+  new IntersectionObserver(([e]) => want(themeFrame, e.isIntersecting), { rootMargin: '100% 0px' }).observe($('#themeLive'));
   setAccent('brand');
 
   /* ── Before / after on the last stage ── */
@@ -1000,7 +1040,7 @@ footer a:hover { color: var(--l-accent); }
   $('#gList').addEventListener('click', (e) => { const b = e.target.closest('[data-title]'); if (!b) return; gTitle = b.dataset.title; gId = null; gRender(); });
   $('#gCases').addEventListener('click', (e) => { const b = e.target.closest('[data-id]'); if (!b) return; gId = b.dataset.id; gShow(); });
   document.addEventListener('landing:brand', gRender);
-  new IntersectionObserver(([e]) => { gVisible = e.isIntersecting; if (gId) want(gFrame, gVisible); }, { rootMargin: '25% 0px' }).observe($('#gLive'));
+  new IntersectionObserver(([e]) => { gVisible = e.isIntersecting; if (gId) want(gFrame, gVisible); }, { rootMargin: '100% 0px' }).observe($('#gLive'));
 
   /* ── Live numbers ── */
   fetch(`${SB}index.json`).then((r) => r.json()).then((j) => {
