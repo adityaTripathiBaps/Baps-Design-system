@@ -111,8 +111,8 @@ const meta: Meta<BapsDialog> = {
     // merged Docs page dims the whole page, ArgsTable included. The real fix
     // (`docs.story.inline: false`, one iframe per example) was tried on
     // drawer and reverted — it means a separate Angular bootstrap per
-    // canvas, which blows the chunk-load timeout on this machine. Reload
-    // after opening a dialog here to clear the dim.
+    // canvas, which blows the chunk-load timeout on this machine. The dim is
+    // the app's own backdrop and clears when the dialog closes (measured).
     docs: { story: { inline: true } },
   },
 };

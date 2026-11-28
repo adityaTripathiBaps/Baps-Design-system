@@ -101,8 +101,8 @@ const meta: Meta<Args> = {
     // lazy-loading the PrimeNG vendor chunk in parallel, and on this
     // machine (already flagged for Storybook OOM/resource limits) that
     // blows the chunk-load timeout and the canvases go blank instead — a
-    // functional break traded for a cosmetic one. Reload after opening a
-    // drawer here to clear the dim.
+    // functional break traded for a cosmetic one. The dim is the app's own
+    // backdrop and clears when the drawer closes (measured).
   },
   render: (args) => ({
     props: { ...args, onShown: action('shown') },

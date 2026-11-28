@@ -141,30 +141,12 @@ if (typeof document !== 'undefined') {
   setDark(initialDark);
   addons.getChannel().on(DARK_MODE_EVENT_NAME, setDark);
 
-  // Hide PrimeNG overlay masks (drawer, dialog, …) on the merged Docs page
-  // only — matching PrimeNG's own reference docs (primeng.dev), where
-  // opening a demo's drawer never dims the surrounding page at all. PrimeNG
-  // always appends its mask (`position: fixed`, class `p-drawer-mask`/
-  // `p-dialog-mask`/…) to `document.body` regardless of any `appendTo`
-  // input — see baps-drawer's own doc comment — and it is never a DOM
-  // descendant of `.docs-story`, so no CSS containment rule can reach it.
-  // Transparent rather than removed/reparented: PrimeNG's own close logic
-  // still finds it exactly where it left it (`document.body.removeChild`,
-  // which throws if the node moved parents in the meantime) and the click
-  // catcher backing "dismiss on backdrop click" still works.
-  //
-  // A standalone story canvas (Playground, Open, …) has no `.docs-story` on
-  // the page at all, so `document.querySelector` below returns null and the
-  // mask is left alone — a real dim there is correct, matching production.
-  new MutationObserver((mutations) => {
-    for (const mutation of mutations) {
-      for (const node of mutation.addedNodes) {
-        if (!(node instanceof HTMLElement) || !node.className.includes('-mask')) continue;
-        if (!document.querySelector('.docs-story')) continue;
-        node.style.background = 'transparent';
-      }
-    }
-  }).observe(document.body, { childList: true });
+  // Overlay masks (dialog, drawer) are NOT hidden on Docs pages. A
+  // MutationObserver here used to set each body-level mask to an inline
+  // `background: transparent` on Docs only. PrimeNG's fade-in keyframes beat
+  // that inline style while they ran, so the backdrop appeared and then
+  // vanished about 300ms later (measured on the Dialog docs page: 0.32 at
+  // 300ms, transparent at 400ms). The docs now dim the page as the app does.
 }
 
 // Applies the design system chosen in the toolbar ("Design system" dropdown):
