@@ -6,17 +6,17 @@ import * as TreeStories from './tree.stories';
 
 # Tree
 
-Tree shows a nested list that opens branch by branch: regions, zones and centres. Use PrimeNG's `p-tree` ([primeng.dev/tree](https://primeng.dev/tree)) with the `bapsTree` directive. Node text takes the brand text colour (MyBKY `#181b1d`, Sampark `#151414`), toggles and icons the secondary text colour, hover the brand's light grey, and a selected node the brand primary tint.
+Tree shows a nested list that opens branch by branch: regions, zones and centres. `baps-tree` wraps PrimeNG's `p-tree` ([primeng.dev/tree](https://primeng.dev/tree)). Node text takes the brand text colour (MyBKY `#181b1d`, Sampark `#151414`), toggles and icons the secondary text colour, hover the brand's light grey, and a selected node the brand primary tint.
 
 To pick one or more nodes in a form field, use `baps-tree-select`; for a tree with columns, `baps-tree-table`.
 
 ## Usage
 
 ```html
-<p-tree bapsTree [value]="nodes" selectionMode="checkbox" [(selection)]="picked" />
+<baps-tree [value]="nodes" selectionMode="checkbox" [(selection)]="picked"></baps-tree>
 ```
 
-`value` is a `TreeNode[]` (`key`, `label`, `icon`, `children`, `expanded`, `type`, `data`). The brand colours key on the `bapsTree` attribute, so keep it on every tree.
+`value` is a `TreeNode[]` (`key`, `label`, `icon`, `children`, `expanded`, `type`, `data`). Node templates are `pTemplate` types (a node's `type`, plus `default`), and so are `header`, `footer`, `empty` and the icons.
 
 ## Examples
 
@@ -49,6 +49,10 @@ A node's `type` picks its `pTemplate`; `default` covers the rest.
 ### Drag and drop
 
 <Canvas of={TreeStories.DragDrop} />
+
+## Events
+
+`selectionChange` (two-way with `[(selection)]`), `nodeSelect`, `nodeUnselect`, `nodeExpand`, `nodeCollapse`, `nodeDoubleClick`, `nodeDrop`, `lazyLoad`, `filtered`.
 
 ## Accessibility
 

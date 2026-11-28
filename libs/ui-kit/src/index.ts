@@ -100,6 +100,6 @@ export * from './lib/components/order-list/order-list.component';
 export * from './lib/components/org-chart/organization-chart.component';
 export * from './lib/components/pick-list/pick-list.component';
 export * from './lib/components/timeline/timeline.component';
-export * from './lib/components/tree/tree.directive';
+export * from './lib/components/tree/tree.component';
 export * from './lib/components/fieldset/fieldset.component';
 export * from './lib/theme/ramp';

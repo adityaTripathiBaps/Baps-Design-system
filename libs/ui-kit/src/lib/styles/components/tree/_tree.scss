@@ -5,7 +5,8 @@
    slate #475569 in both brands, with a slate #f1f5f9 hover (measured, Tree
    stories). Re-pointed through PrimeNG's own variables to the brand text and
    hover tokens; the selected row already takes the brand primary tint.
-   Geometry stays PrimeNG's. Keyed on the bapsTree attribute: TreeSelect's
+   Geometry stays PrimeNG's. Keyed on the bapsTree attribute baps-tree puts
+   on its inner p-tree: TreeSelect's
    overlay renders a p-tree too, and its own skin (_select-sampark.scss)
    must not be touched.
    ===================================================================== */
