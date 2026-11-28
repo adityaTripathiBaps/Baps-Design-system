@@ -1,0 +1,55 @@
+import { Meta, Canvas } from '@storybook/blocks';
+
+import * as TreeStories from './tree.stories';
+
+<Meta of={TreeStories} />
+
+# Tree
+
+Tree shows a nested list that opens branch by branch: regions, zones and centres. Use PrimeNG's `p-tree` ([primeng.dev/tree](https://primeng.dev/tree)) with the `bapsTree` directive. Node text takes the brand text colour (MyBKY `#181b1d`, Sampark `#151414`), toggles and icons the secondary text colour, hover the brand's light grey, and a selected node the brand primary tint.
+
+To pick one or more nodes in a form field, use `baps-tree-select`; for a tree with columns, `baps-tree-table`.
+
+## Usage
+
+```html
+<p-tree bapsTree [value]="nodes" selectionMode="checkbox" [(selection)]="picked" />
+```
+
+`value` is a `TreeNode[]` (`key`, `label`, `icon`, `children`, `expanded`, `type`, `data`). The brand colours key on the `bapsTree` attribute, so keep it on every tree.
+
+## Examples
+
+### Basic
+
+<Canvas of={TreeStories.Basic} />
+
+### Controlled
+
+Set `expanded` on the nodes to open or close branches from outside.
+
+<Canvas of={TreeStories.Controlled} />
+
+### Selection
+
+`selectionMode` is `single`, `multiple` or `checkbox`; checkbox selection includes the parents of a fully checked branch.
+
+<Canvas of={TreeStories.Selection} />
+
+### Filter
+
+<Canvas of={TreeStories.Filter} />
+
+### Template
+
+A node's `type` picks its `pTemplate`; `default` covers the rest.
+
+<Canvas of={TreeStories.Template} />
+
+### Drag and drop
+
+<Canvas of={TreeStories.DragDrop} />
+
+## Accessibility
+
+PrimeNG renders a `tree` with `treeitem` rows and `aria-expanded` / `aria-selected`; the arrow keys move and open branches and Space selects. Give the tree an `ariaLabel` or label it with `ariaLabelledBy`.
