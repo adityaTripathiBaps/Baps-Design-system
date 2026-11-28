@@ -1,0 +1,53 @@
+import { Meta, Canvas } from '@storybook/blocks';
+
+import * as RatingStories from './rating.stories';
+
+<Meta of={RatingStories} />
+
+# Rating
+
+`baps-rating` picks a score out of a row of stars. It wraps PrimeNG's `p-rating` ([primeng.dev/rating](https://primeng.dev/rating)). Filled stars take the brand's primary colour (MyBKY `#5f78b8`, Sampark `#c96868`) from the theme; nothing is restyled.
+
+## Usage
+
+```html
+<baps-rating formControlName="score" />
+```
+
+Clicking the selected star again clears the value to `null`.
+
+## Examples
+
+### Basic
+
+<Canvas of={RatingStories.Basic} />
+
+### Number of stars
+
+<Canvas of={RatingStories.NumberOfStars} />
+
+### Template
+
+`onicon` and `officon` templates replace the stars; both get the star number as `$implicit`.
+
+<Canvas of={RatingStories.Template} />
+
+### Read only
+
+<Canvas of={RatingStories.ReadOnly} />
+
+### Disabled
+
+<Canvas of={RatingStories.Disabled} />
+
+### Reactive form
+
+<Canvas of={RatingStories.ReactiveForm} />
+
+## Events
+
+`rated` (`{ originalEvent, value }`), `focused`, `blurred`. The form gets the value itself; leaving the stars marks it touched.
+
+## Accessibility
+
+Each star is a radio input named by its number, so the row works with Tab and the arrow keys. Put a visible label next to it that says what is being rated.

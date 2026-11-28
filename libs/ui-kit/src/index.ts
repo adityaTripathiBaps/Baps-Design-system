@@ -91,4 +91,5 @@ export * from './lib/components/color-picker/color-picker.component';
 export * from './lib/components/input-mask/input-mask.component';
 export * from './lib/components/password/password.component';
 export * from './lib/components/knob/knob.component';
+export * from './lib/components/rating/rating.component';
 export * from './lib/theme/ramp';
