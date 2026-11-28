@@ -36,23 +36,29 @@
    height:100% on .p-drawer-right, so we must override those explicitly.
 
    height: calc(100% - 24px)  — 12px top + 12px bottom margin.
-   top/right/left/bottom      — 12px offset from the anchored edge. */
-.p-drawer-right.baps-drawer-mybky {
+   top/right/left/bottom      — 12px offset from the anchored edge.
+
+   :not(.baps-ds-sampark *) — on a Sampark page a drawer left on the default
+   brand takes the Sampark skin (_drawer-sampark.scss matches
+   .baps-drawer-mybky under the scope), but these !important margins and
+   radii still won there: the Sampark panel floated 12px off the edge with
+   MyBKY's 32px corners (measured in Storybook). */
+.p-drawer-right.baps-drawer-mybky:not(.baps-ds-sampark *) {
   margin: 12px 12px 12px 0 !important;
   height: calc(100% - 24px) !important;
   border-radius: var(--drawer-mybky-radius, 2rem) 0 0 var(--drawer-mybky-radius, 2rem) !important;
 }
-.p-drawer-left.baps-drawer-mybky {
+.p-drawer-left.baps-drawer-mybky:not(.baps-ds-sampark *) {
   margin: 12px 0 12px 12px !important;
   height: calc(100% - 24px) !important;
   border-radius: 0 var(--drawer-mybky-radius, 2rem) var(--drawer-mybky-radius, 2rem) 0 !important;
 }
-.p-drawer-top.baps-drawer-mybky {
+.p-drawer-top.baps-drawer-mybky:not(.baps-ds-sampark *) {
   margin: 12px 12px 0 12px !important;
   width: calc(100% - 24px) !important;
   border-radius: 0 0 var(--drawer-mybky-radius, 2rem) var(--drawer-mybky-radius, 2rem) !important;
 }
-.p-drawer-bottom.baps-drawer-mybky {
+.p-drawer-bottom.baps-drawer-mybky:not(.baps-ds-sampark *) {
   margin: 0 12px 12px 12px !important;
   width: calc(100% - 24px) !important;
   border-radius: var(--drawer-mybky-radius, 2rem) var(--drawer-mybky-radius, 2rem) 0 0 !important;
@@ -69,6 +75,15 @@
 
 .p-drawer.baps-drawer-mybky .p-drawer-content {
   padding: 0;
+}
+
+/* BapsDrawer always declares the footer template, so an unused footer is an
+   empty div with PrimeNG's 24px padding plus the panel's 24px gap. The
+   Sampark half hides it; this half did not, and in a top/bottom drawer
+   (PrimeNG's 10rem) those 72px left the content 0px tall: the body text was
+   not visible at all (measured in Storybook). */
+.p-drawer.baps-drawer-mybky .p-drawer-footer:empty {
+  display: none;
 }
 
 /* NOT here: --drawer-mybky-backdrop-blur. The blur belongs on the SCRIM

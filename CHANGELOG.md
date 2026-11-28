@@ -310,6 +310,7 @@ classification and deprecation policy.
 
 ### Fixed
 
+- **Drawer — every position now gets its brand skin.** Measured in Storybook (Playground, Positions left/right/top/bottom, docs page), both brands: the panel carried `baps-drawer-undefined`, so neither skin matched and every drawer was PrimeNG's bare 320px panel with the title pushed right and the close button mid-header. Cause: `[brand]="brand"` bound to nothing passed `undefined`, which replaced the injected default; `brand` now keeps the default for `undefined`. Two leaks that showed once the skin applied: on a Sampark page the MyBKY `!important` margins and 32px corners still won (panel 12px off the edge), now scoped with `:not(.baps-ds-sampark *)`; and a MyBKY drawer kept its empty footer (24px padding + 24px gap), which left a top/bottom drawer's content 0px tall, now hidden on `:empty` as in Sampark. After: Sampark 500px flush panel, 16px inner corners, title 20px left, close 32px radius 4 right, content 12/32/32px, in all four positions; MyBKY floats 12px with 32px corners, title left, close right, top/bottom content 40px.
 - **`@org/tokens` + `@org/ui-kit/styles` — patch, visual (Sampark):** drawer
   and dialog mask is `rgba(0,0,0,0.32)`, SPM dev's computed value (was
   Mono/100 at 45%). A drawer or dialog holding an open select / multiselect /

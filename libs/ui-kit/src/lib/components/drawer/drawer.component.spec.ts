@@ -220,6 +220,18 @@ describe('BapsDrawer', () => {
       expect(panel()!.classList.contains('baps-drawer-sampark')).toBe(false);
     });
 
+    // Every Drawer story bound [brand]="brand" with no arg behind it; the
+    // panel got baps-drawer-undefined and neither brand's skin.
+    it('keeps the default brand when [brand] is bound to undefined', async () => {
+      const fixture = TestBed.createComponent(Host);
+      fixture.componentInstance.brand.set(undefined as unknown as 'mybky');
+      await fixture.whenStable();
+      fixture.detectChanges();
+      await fixture.whenStable();
+      expect(panel()!.classList.contains('baps-drawer-mybky')).toBe(true);
+      expect(panel()!.className).not.toContain('undefined');
+    });
+
     it('preserves a consumer styleClass alongside the scope class', async () => {
       await setup({ brand: 'sampark', styleClass: 'my-panel' });
       const classList = panel()!.classList;

@@ -208,8 +208,25 @@ export class BapsDrawer implements OnDestroy {
   /** Extra classes for the panel element. */
   @Input() styleClass?: string;
 
-  /** Visual skin. 'sampark' also arrives page-wide via `.baps-ds-sampark`. */
-  @Input() brand: BapsBrand = injectBapsBrand();
+  /**
+   * Visual skin. 'sampark' also arrives page-wide via `.baps-ds-sampark`.
+   *
+   * An unset binding (`[brand]="brand"` with nothing behind it, as every
+   * Drawer story had) arrives as undefined. It used to replace the injected
+   * default, the panel got `baps-drawer-undefined`, and neither brand's skin
+   * matched: PrimeNG's 320px panel, title pushed right, close in the middle,
+   * every position, both brands (measured in Storybook). Undefined now keeps
+   * the default.
+   */
+  @Input()
+  set brand(value: BapsBrand | undefined) {
+    this._brand = value ?? this.defaultBrand;
+  }
+  get brand(): BapsBrand {
+    return this._brand;
+  }
+  private readonly defaultBrand = injectBapsBrand();
+  private _brand: BapsBrand = this.defaultBrand;
 
   /**
    * Mirrors PrimeNG's close back onto `visible` and re-emits it.
