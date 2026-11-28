@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
 import { FormsModule } from '@angular/forms';
-import { DataView } from 'primeng/dataview';
-import { BapsDataView } from './data-view.directive';
+
+import { BapsDataView } from './data-view.component';
 import { BapsSegmented } from '../segmented/segmented.component';
 import { BapsSelect } from '../select/select.component';
 import { BapsSkeleton } from '../skeleton/skeleton.component';
@@ -14,7 +14,7 @@ const meta: Meta = {
   title: 'Components/Molecules/DataView',
   id: 'components-dataview',
   tags: ['ds:mybky', 'ds:sampark'],
-  decorators: [moduleMetadata({ imports: [DataView, BapsDataView, BapsSegmented, BapsSelect, BapsSkeleton, BapsTag, BapsButton, BapsPaginator, FormsModule] })],
+  decorators: [moduleMetadata({ imports: [BapsDataView, BapsSegmented, BapsSelect, BapsSkeleton, BapsTag, BapsButton, BapsPaginator, FormsModule] })],
 };
 export default meta;
 type Story = StoryObj;
@@ -64,7 +64,7 @@ const gridTpl = `<ng-template #grid let-items>
 export const Basic: Story = {
   render: () => ({
     props: { centers: CENTERS.slice(0, 5) },
-    template: `<p-dataview bapsDataView [value]="centers">${listTpl}</p-dataview>`,
+    template: `<baps-dataview [value]="centers">${listTpl}</baps-dataview>`,
   }),
 };
 
@@ -77,7 +77,7 @@ export const Pagination: Story = {
   render: () => ({
     props: { centers: CENTERS, first: 0, rows: 5 },
     template: `<div style="display:grid;gap:var(--space-3)">
-      <p-dataview bapsDataView [value]="centers.slice(first, first + rows)">${listTpl}</p-dataview>
+      <baps-dataview [value]="centers.slice(first, first + rows)">${listTpl}</baps-dataview>
       <baps-paginator [first]="first" [rows]="rows" [totalRecords]="centers.length" (pageChange)="first = $event.first; rows = $event.rows" />
     </div>`,
   }),
@@ -100,14 +100,14 @@ export const Sort: Story = {
         this.sortField = v.replace('!', '');
       },
     },
-    template: `<p-dataview bapsDataView [value]="centers" [sortField]="sortField" [sortOrder]="sortOrder">
+    template: `<baps-dataview [value]="centers" [sortField]="sortField" [sortOrder]="sortOrder">
       <ng-template #header>
         <div style="max-width:14rem">
           <baps-select [options]="sortOptions" optionLabel="label" optionValue="value" placeholder="Sort by families" ariaLabel="Sort" [(ngModel)]="sortKey" (ngModelChange)="onSort($event)" />
         </div>
       </ng-template>
       ${listTpl}
-    </p-dataview>`,
+    </baps-dataview>`,
   }),
 };
 
@@ -115,7 +115,7 @@ export const Sort: Story = {
 export const Layout: Story = {
   render: () => ({
     props: { centers: CENTERS.slice(0, 6), layout: 'grid', options: [{ label: 'List', value: 'list' }, { label: 'Grid', value: 'grid' }] },
-    template: `<p-dataview bapsDataView [value]="centers" [layout]="layout">
+    template: `<baps-dataview [value]="centers" [layout]="layout">
       <ng-template #header>
         <div style="display:flex;justify-content:flex-end">
           <baps-segmented style="width:10rem" [options]="options" optionLabel="label" optionValue="value" [allowEmpty]="false" ariaLabel="Layout" [(ngModel)]="layout" />
@@ -123,7 +123,7 @@ export const Layout: Story = {
       </ng-template>
       ${listTpl}
       ${gridTpl}
-    </p-dataview>`,
+    </baps-dataview>`,
   }),
 };
 
@@ -131,7 +131,7 @@ export const Layout: Story = {
 export const Loading: Story = {
   render: () => ({
     props: { rows: [1, 2, 3, 4] },
-    template: `<p-dataview bapsDataView [value]="rows">
+    template: `<baps-dataview [value]="rows">
       <ng-template #list let-items>
         @for (r of items; track r) {
           <div style="display:flex;align-items:center;gap:var(--space-4);padding:var(--space-4) 0">
@@ -141,7 +141,7 @@ export const Loading: Story = {
           </div>
         }
       </ng-template>
-    </p-dataview>`,
+    </baps-dataview>`,
   }),
 };
 
@@ -149,6 +149,6 @@ export const Loading: Story = {
 export const Empty: Story = {
   render: () => ({
     props: { centers: [] },
-    template: `<p-dataview bapsDataView [value]="centers" emptyMessage="No centers match these filters.">${listTpl}</p-dataview>`,
+    template: `<baps-dataview [value]="centers" emptyMessage="No centers match these filters.">${listTpl}</baps-dataview>`,
   }),
 };

@@ -6,17 +6,17 @@ import * as DataViewStories from './data-view.stories';
 
 # DataView
 
-DataView lays out a collection with your own template per item, as a list or a grid. Use PrimeNG's `p-dataview` ([primeng.dev/dataview](https://primeng.dev/dataview)) with the `bapsDataView` directive. There is no wrapper component: DataView finds its `#list`, `#grid`, `#header`, `#footer` and `#emptymessage` templates by reference name, and on PrimeNG's own element they work exactly as PrimeNG documents them.
+DataView lays out a collection with your own template per item, as a list or a grid. `baps-dataview` (also `baps-data-view`) wraps PrimeNG's `p-dataview` ([primeng.dev/dataview](https://primeng.dev/dataview)). Write its `#list`, `#grid`, `#header`, `#footer` and `#emptymessage` templates (or the same names as `pTemplate`) inside the tag, as PrimeNG documents them; the wrapper hands each to DataView under its name.
 
 For rows of fields with sorting, selection and column control, use `baps-table` instead.
 
 ## Usage
 
 ```html
-<p-dataview bapsDataView [value]="centers" [layout]="layout">
+<baps-dataview [value]="centers" [layout]="layout">
   <ng-template #list let-items> … one row per item … </ng-template>
   <ng-template #grid let-items> … one card per item … </ng-template>
-</p-dataview>
+</baps-dataview>
 ```
 
 ## Examples
@@ -50,6 +50,10 @@ DataView's own `[paginator]` draws PrimeNG's paginator, not the kit's. Page the 
 ### Empty
 
 <Canvas of={DataViewStories.Empty} />
+
+## Events
+
+`lazyLoad`, `page`, `sort`, `changeLayout`.
 
 ## Accessibility
 
